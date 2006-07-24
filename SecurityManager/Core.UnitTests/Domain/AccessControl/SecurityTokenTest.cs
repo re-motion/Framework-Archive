@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Client client = CreateClient (transaction, "Testclient");
       Group group1 = CreateGroup (transaction, "Testgroup", null, client);
       User user = CreateUser (transaction, "test.user", "Test", "User", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
       Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
 
       List<Group> owningGroups = new List<Group> ();
@@ -84,8 +84,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Group group1 = CreateGroup (transaction, "Testgroup", null, client);
       Group group2 = CreateGroup (transaction, "Other group", null, client);
       User user = CreateUser (transaction, "test.user", "Test", "User", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
       Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
       Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
       Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
@@ -151,8 +151,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Group group1 = CreateGroup (transaction, "Testgroup", null, client);
       Group group2 = CreateGroup (transaction, "Other group", null, client);
       User user = CreateUser (transaction, "test.user", "Test", "User", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
       Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
       Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
       Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
@@ -175,8 +175,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Group group1 = CreateGroup (transaction, "Testgroup", null, client);
       Group group2 = CreateGroup (transaction, "Other group", null, client);
       User user = CreateUser (transaction, "test.user", "Test", "User", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
       Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
       Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
       Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
@@ -200,8 +200,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Group group2 = CreateGroup (transaction, "Other group", null, client);
       User user1 = CreateUser (transaction, "test.user1", "Test", "User 1", "Dipl.Ing.(FH)", group1, client);
       User user2 = CreateUser (transaction, "test.user2", "Test", "User 2", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
       Role user1OfficialInGroup1 = CreateRole (transaction, user1, group1, officialPosition);
       Role user2ManagerInGroup1 = CreateRole (transaction, user2, group1, managerPosition);
       Role user1OfficialInGroup2 = CreateRole (transaction, user1, group2, officialPosition);
@@ -225,8 +225,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Group group2 = CreateGroup (transaction, "Other group", null, client);
       User user1 = CreateUser (transaction, "test.user1", "Test", "User 1", "Dipl.Ing.(FH)", group1, client);
       User user2 = CreateUser (transaction, "test.user2", "Test", "User 2", "Dipl.Ing.(FH)", group1, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
       Role user1OfficialInGroup1 = CreateRole (transaction, user1, group1, officialPosition);
       Role user2ManagerInGroup1 = CreateRole (transaction, user2, group1, managerPosition);
       Role user1OfficialInGroup2 = CreateRole (transaction, user1, group2, officialPosition);
@@ -272,11 +272,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return user;
     }
 
-    private Position CreatePosition (ClientTransaction transaction, string name, Client client)
+    private Position CreatePosition (ClientTransaction transaction, string name)
     {
       Position position = _factory.CreatePosition (transaction);
       position.Name = name;
-      position.Client = client;
 
       return position;
     }

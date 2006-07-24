@@ -75,7 +75,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillPositionField ()
     {
-      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
+      PositionField.SetBusinessObjectList (Position.FindAll (CurrentFunction.CurrentTransaction));
     }
 
     private void FillGroupField ()

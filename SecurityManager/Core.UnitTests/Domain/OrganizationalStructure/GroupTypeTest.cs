@@ -13,15 +13,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class GroupTypeTest : DomainTest
   {
     [Test]
-    public void Find_GroupTypesByClientID ()
+    public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      Client exptectedClient = dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      dbFixtures.CreateOrganizationalStructureWithTwoClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection groupTypes = GroupType.FindByClientID (exptectedClient.ID, transaction);
+      DomainObjectCollection groupTypes = GroupType.FindAll (transaction);
 
-      Assert.AreEqual (2, groupTypes.Count);
+      Assert.AreEqual (3, groupTypes.Count);
     }
   }
 }

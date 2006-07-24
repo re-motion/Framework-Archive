@@ -121,10 +121,6 @@
         </property>
         <relationProperty name="Groups" relationID="GroupTypeToGroup" cardinality="many" isMandatory="false" />
         <relationProperty name="ConcretePositions" relationID="GroupTypeToConcretePosition" cardinality="many" isMandatory="false" />
-        <relationProperty name="Client" relationID="ClientToGroupType" cardinality="one" isMandatory="true">
-          <column>ClientID</column>
-          <oppositeClass>Client</oppositeClass>
-        </relationProperty>
         <relationProperty name="AccessControlEntries" relationID="GroupTypeToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
@@ -160,10 +156,6 @@
         </property>
         <relationProperty name="ConcretePositions" relationID="PositionToConcretePosition" cardinality="many" isMandatory="false" />
         <relationProperty name="Roles" relationID="PositionToRole" cardinality="many" isMandatory="false" />
-        <relationProperty name="Client" relationID="ClientToPosition" cardinality="one" isMandatory="true">
-          <column>ClientID</column>
-          <oppositeClass>Client</oppositeClass>
-        </relationProperty>
         <relationProperty name="AccessControlEntries" relationID="PositionToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>

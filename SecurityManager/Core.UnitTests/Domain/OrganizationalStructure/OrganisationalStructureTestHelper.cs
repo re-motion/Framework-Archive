@@ -66,11 +66,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       return user;
     }
 
-    public Position CreatePosition (string name, Client client)
+    public Position CreatePosition (string name)
     {
       Position position = _factory.CreatePosition (_transaction);
       position.Name = name;
-      position.Client = client;
 
       return position;
     }
@@ -85,11 +84,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       return role;
     }
 
-    public GroupType CreateGroupType (string name, Client client)
+    public GroupType CreateGroupType (string name)
     {
       GroupType groupType = new GroupType (_transaction);
       groupType.Name = name;
-      groupType.Client = client;
 
       return groupType;
     }

@@ -13,22 +13,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class PositionTest : DomainTest
   {
     [Test]
-    public void Find_PositionsByClientID ()
+    public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      Client exptectedClient = dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      dbFixtures.CreateOrganizationalStructureWithTwoClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection positions = Position.FindByClientID (exptectedClient.ID, transaction);
+      DomainObjectCollection positions = Position.FindAll (transaction);
 
-      Assert.AreEqual (2, positions.Count);
+      Assert.AreEqual (3, positions.Count);
     }
 
     [Test]
     public void DeletePosition_WithAccessControlEntry ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      Position position = testHelper.CreatePosition ("Position", testHelper.CreateClient ("Client"));
+      Position position = testHelper.CreatePosition ("Position");
       AccessControlEntry ace = testHelper.CreateAceWithPosition (position, GroupSelection.All);
 
       position.Delete ();
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, client);
       Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, client);
       User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, client);
-      Position position = testHelper.CreatePosition ("Position", client);
+      Position position = testHelper.CreatePosition ("Position");
       Role role = testHelper.CreateRole (user, roleGroup, position);
 
       position.Delete ();
@@ -57,8 +57,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
       Client client = testHelper.CreateClient ("Client");
-      GroupType groupType = testHelper.CreateGroupType ("GroupType", client);
-      Position position = testHelper.CreatePosition ("Position", client);
+      GroupType groupType = testHelper.CreateGroupType ("GroupType");
+      Position position = testHelper.CreatePosition ("Position");
       ConcretePosition concretePosition = testHelper.CreateConcretePosition ("ConcretePosition", groupType, position);
 
       position.Delete ();
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
       Client client = testHelper.CreateClient ("Client");
-      Position position = testHelper.CreatePosition ("PositionName", client);
+      Position position = testHelper.CreatePosition ("PositionName");
 
       Assert.AreEqual ("PositionName", position.DisplayName);
     }

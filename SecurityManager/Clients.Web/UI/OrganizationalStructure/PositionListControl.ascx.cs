@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         PositionList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
-      PositionList.LoadUnboundValue (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+      PositionList.LoadUnboundValue (Position.FindAll (CurrentFunction.CurrentTransaction), false);
     }
 
     protected void PositionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditPositionFormFunction) Page.ReturningFunction).HasUserCancelled)
-          PositionList.LoadUnboundValue (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          PositionList.LoadUnboundValue (Position.FindAll (CurrentFunction.CurrentTransaction), false);
       }
     }
 
@@ -75,7 +75,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditPositionFormFunction) Page.ReturningFunction).HasUserCancelled)
-          PositionList.LoadUnboundValue (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          PositionList.LoadUnboundValue (Position.FindAll (CurrentFunction.CurrentTransaction), false);
       }
     }
   }

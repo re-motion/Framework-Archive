@@ -179,7 +179,6 @@ CREATE TABLE [dbo].[GroupType]
 
   -- GroupType columns
   [Name] nvarchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_GroupType] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -206,7 +205,6 @@ CREATE TABLE [dbo].[Position]
 
   -- Position columns
   [Name] nvarchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_Position] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -451,15 +449,9 @@ ALTER TABLE [dbo].[Group] ADD
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Group] ([ID]),
   CONSTRAINT [FK_GroupTypeToGroup] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID])
 
-ALTER TABLE [dbo].[GroupType] ADD
-  CONSTRAINT [FK_ClientToGroupType] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID])
-
 ALTER TABLE [dbo].[ConcretePosition] ADD
   CONSTRAINT [FK_GroupTypeToConcretePosition] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID]),
   CONSTRAINT [FK_PositionToConcretePosition] FOREIGN KEY ([PositionID]) REFERENCES [dbo].[Position] ([ID])
-
-ALTER TABLE [dbo].[Position] ADD
-  CONSTRAINT [FK_ClientToPosition] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID])
 
 ALTER TABLE [dbo].[Role] ADD
   CONSTRAINT [FK_GroupToRole] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID]),
@@ -528,9 +520,9 @@ CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName]
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[GroupTypeView] ([ID], [ClassID], [Timestamp], [Name], [ClientID])
+CREATE VIEW [dbo].[GroupTypeView] ([ID], [ClassID], [Timestamp], [Name])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ClientID]
+  SELECT [ID], [ClassID], [Timestamp], [Name]
     FROM [dbo].[GroupType]
     WHERE [ClassID] IN ('GroupType')
   WITH CHECK OPTION
@@ -544,9 +536,9 @@ CREATE VIEW [dbo].[ConcretePositionView] ([ID], [ClassID], [Timestamp], [Name], 
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[PositionView] ([ID], [ClassID], [Timestamp], [Name], [ClientID])
+CREATE VIEW [dbo].[PositionView] ([ID], [ClassID], [Timestamp], [Name])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ClientID]
+  SELECT [ID], [ClassID], [Timestamp], [Name]
     FROM [dbo].[Position]
     WHERE [ClassID] IN ('Position')
   WITH CHECK OPTION

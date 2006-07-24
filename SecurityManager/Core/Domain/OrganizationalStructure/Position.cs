@@ -28,22 +28,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Position) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID");
-
-      query.Parameters.Add ("@clientID", clientID);
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
-    }
-
-    //TODO: Rewrite with test
-    public static DomainObjectCollection FindAll (ClientTransaction transaction)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
-      return transaction.QueryManager.GetCollection (query);
     }
 
     // member fields
@@ -80,12 +69,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
       set { } // marks property Roles as modifiable
-    }
-
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
     }
 
     private DomainObjectCollection AccessControlEntries

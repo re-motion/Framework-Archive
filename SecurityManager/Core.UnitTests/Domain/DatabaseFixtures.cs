@@ -60,22 +60,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       Group group = CreateGroup (transaction, "Testgroup", "UnqiueIdentifier: Testgroup", ownerGroup, client1);
       User user1 = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", group, client1);
       User user2 = CreateUser (transaction, "other.test.user", "other test", "user", "Dipl.Ing.(FH)", group, client1);
-      Position officialPosition = CreatePosition (transaction, "Official", client1);
-      Position managerPosition = CreatePosition (transaction, "Manager", client1);
+      Position officialPosition = CreatePosition (transaction, "Official");
+      Position managerPosition = CreatePosition (transaction, "Manager");
 
       Role officialInGroup = CreateRole (transaction, user1, group, officialPosition);
       Role managerInGroup = CreateRole (transaction, user1, group, managerPosition);
       Role managerInOwnerGroup = CreateRole (transaction, user1, ownerGroup, managerPosition);
       Role officialInRootGroup = CreateRole (transaction, user1, rootGroup, officialPosition);
       
-      GroupType groupType1 = CreateGroupType (transaction, "groupType 1", client1);
-      GroupType groupType2 = CreateGroupType (transaction, "groupType 2", client1);
+      GroupType groupType1 = CreateGroupType (transaction, "groupType 1");
+      GroupType groupType2 = CreateGroupType (transaction, "groupType 2");
 
       Client client2 = CreateClient (transaction, "Client 2");
       Group groupClient2 = CreateGroup (transaction, "Group Client 2", "UnqiueIdentifier: group Client 2", null, client2);
       User userClient2 = CreateUser (transaction, "User.Client2", "User", "Client 2", string.Empty, groupClient2, client2);
-      Position position2 = CreatePosition (transaction, "Position Client 2", client2);
-      GroupType groupTypeClient2 = CreateGroupType (transaction, "GroupType Client 2", client2);
+      Position position2 = CreatePosition (transaction, "Position Client 2");
+      GroupType groupTypeClient2 = CreateGroupType (transaction, "GroupType Client 2");
 
       transaction.Commit ();
 
@@ -309,20 +309,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return classDefinition;
     }
 
-    private GroupType CreateGroupType (ClientTransaction transaction, string name, Client client)
+    private GroupType CreateGroupType (ClientTransaction transaction, string name)
     {
       GroupType groupType = new GroupType (transaction);
       groupType.Name = name;
-      groupType.Client = client;
 
       return groupType;
     }
 
-    private Position CreatePosition (ClientTransaction transaction, string name, Client client)
+    private Position CreatePosition (ClientTransaction transaction, string name)
     {
       Position position = _factory.CreatePosition (transaction);
       position.Name = name;
-      position.Client = client;
 
       return position;
     }

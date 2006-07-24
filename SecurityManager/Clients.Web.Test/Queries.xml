@@ -78,24 +78,17 @@
     </statement>
   </query>
 
-  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID" type="collection">
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [GroupTypeView] WHERE ClientID = @clientID ORDER BY Name ASC;
-    </statement>
-  </query>
-
-  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [PositionView] WHERE ClientID = @clientID ORDER BY Name ASC;
+      SELECT * FROM [GroupTypeView] ORDER BY Name ASC;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [PositionView];
+      SELECT * FROM [PositionView] ORDER BY Name ASC;
     </statement>
   </query>
 

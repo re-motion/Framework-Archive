@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_EmptyTokenAndAceWithPositionFromGroupOfOwner ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
@@ -72,7 +72,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_TokenWithRoleAndAceWithPositionFromOwningGroup ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
@@ -86,7 +86,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_TokenWithRoleAndAbstractRoleAndAceWithPositionFromOwningGroup ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
@@ -100,7 +100,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_TokenWithRoleAndAceWithPositionFromOwningGroupAndAbstractRole ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
@@ -115,7 +115,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_EmptyTokenAndAceWithPositionFromAllGroups ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.All);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
@@ -126,7 +126,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesToken_TokenWithRoleAndAceWithPositionFromAllGroups ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
-      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Position managerPosition = _testHelper.CreatePosition ("Manager");
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
