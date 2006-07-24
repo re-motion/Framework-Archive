@@ -19,7 +19,7 @@
           <td style="height: 100%; vertical-align: top;">
             <rubicon:BocList ID="GroupTypeList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupTypeList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
               <FixedColumns>
-                <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Name">
+                <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
                   <PersistedCommand>
                     <rubicon:BocListItemCommand Type="Event" />
                   </PersistedCommand>

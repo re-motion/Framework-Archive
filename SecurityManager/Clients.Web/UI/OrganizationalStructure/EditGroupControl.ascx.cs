@@ -75,7 +75,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void RolesField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void RolesList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
@@ -87,10 +87,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         {
           EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
 
+          RolesList.LoadValue (!returningFunction.HasUserCancelled);
           if (returningFunction.HasUserCancelled)
             returningFunction.Role.Delete ();
           else
-            RolesField.Value = CurrentFunction.Group.Roles;
+            RolesList.IsDirty = true;
         }
       }
 
@@ -98,26 +99,26 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       {
         if (!Page.IsReturningPostBack)
         {
-          EditRole ((Role) RolesField.GetSelectedBusinessObjects ()[0], null, CurrentFunction.Group, null);
+          EditRole ((Role) RolesList.GetSelectedBusinessObjects ()[0], null, CurrentFunction.Group, null);
         }
         else
         {
           EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
           if (!returningFunction.HasUserCancelled)
-            RolesField.IsDirty = true;
+            RolesList.IsDirty = true;
         }
       }
 
       if (e.Item.ItemID == "DeleteItem")
       {
-        foreach (Role role in RolesField.GetSelectedBusinessObjects ())
+        foreach (Role role in RolesList.GetSelectedBusinessObjects ())
         {
-          RolesField.RemoveRow (role);
+          RolesList.RemoveRow (role);
           role.Delete ();
         }
       }
 
-      RolesField.ClearSelectedRows ();
+      RolesList.ClearSelectedRows ();
     }
 
     private void EditRole (Role role, User user, Group group, Position position)
@@ -129,7 +130,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       Page.ExecuteFunction (editRoleFormFunction);
     }
 
-    protected void ChildrenField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void ChildrenList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddItem")
       {
@@ -145,14 +146,17 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
           SearchGroupFormFunction returningFunction = (SearchGroupFormFunction) Page.ReturningFunction;
 
           if (!returningFunction.HasUserCancelled)
-            ChildrenField.AddRow (returningFunction.SelectedGroup);
+          {
+            if (!ChildrenList.Value.Contains (returningFunction.SelectedGroup))
+              ChildrenList.AddRow (returningFunction.SelectedGroup);
+          }
         }
       }
 
       if (e.Item.ItemID == "RemoveItem")
-        ChildrenField.RemoveRows (ChildrenField.GetSelectedBusinessObjects ());
+        ChildrenList.RemoveRows (ChildrenList.GetSelectedBusinessObjects ());
 
-      ChildrenField.ClearSelectedRows ();
+      ChildrenList.ClearSelectedRows ();
     }
   }
 }

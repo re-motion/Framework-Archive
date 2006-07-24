@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupTypeField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList RolesField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenList;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList RolesList;
     }
 }

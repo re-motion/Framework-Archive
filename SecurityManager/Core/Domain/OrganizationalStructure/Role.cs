@@ -61,6 +61,5 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       get { return (User) GetRelatedObject ("User"); }
       set { SetRelatedObject ("User", value); }
     }
-
   }
 }

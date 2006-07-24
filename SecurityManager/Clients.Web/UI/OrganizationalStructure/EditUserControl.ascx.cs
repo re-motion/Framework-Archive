@@ -51,6 +51,13 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnLoad (e);
 
+      if (!IsPostBack)
+      {
+        RolesList.SetSortingOrder (
+            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[0], SortingDirection.Ascending),
+            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
+      }
+
       FillGroupField ();
     }
 
@@ -68,7 +75,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void RolesField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void RolesList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
@@ -80,10 +87,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         {
           EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
 
+          RolesList.LoadValue (!returningFunction.HasUserCancelled);
           if (returningFunction.HasUserCancelled)
             returningFunction.Role.Delete ();
           else
-            RolesField.Value = CurrentFunction.User.Roles;
+            RolesList.IsDirty = true;
         }
       }
 
@@ -91,27 +99,27 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       {
         if (!Page.IsReturningPostBack)
         {
-          EditRole ((Role) RolesField.GetSelectedBusinessObjects ()[0], CurrentFunction.User, null, null);
+          EditRole ((Role) RolesList.GetSelectedBusinessObjects ()[0], CurrentFunction.User, null, null);
         }
         else
         {
           EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
 
           if (!returningFunction.HasUserCancelled)
-            RolesField.IsDirty = true;
+            RolesList.IsDirty = true;
         }
       }
 
       if (e.Item.ItemID == "DeleteItem")
       {
-        foreach (Role role in RolesField.GetSelectedBusinessObjects ())
+        foreach (Role role in RolesList.GetSelectedBusinessObjects ())
         {
-          RolesField.RemoveRow (role);
+          RolesList.RemoveRow (role);
           role.Delete ();
         }
       }
 
-      RolesField.ClearSelectedRows ();
+      RolesList.ClearSelectedRows ();
     }
 
     private void EditRole (Role role, User user, Group group, Position position)

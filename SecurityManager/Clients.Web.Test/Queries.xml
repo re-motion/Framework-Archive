@@ -57,6 +57,13 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName ASC;
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
@@ -64,31 +71,24 @@
     </statement>
   </query>
 
-  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName;
-    </statement>
-  </query>
-
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [GroupView] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [GroupView] WHERE ClientID = @clientID ORDER BY ShortName ASC, Name ASC;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [GroupTypeView] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [GroupTypeView] WHERE ClientID = @clientID ORDER BY Name ASC;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [PositionView] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [PositionView] WHERE ClientID = @clientID ORDER BY Name ASC;
     </statement>
   </query>
 

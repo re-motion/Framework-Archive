@@ -46,6 +46,18 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return NameField; }
     }
 
+    protected override void OnLoad (EventArgs e)
+    {
+      if (!IsPostBack)
+      {
+        GroupsList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupsList.FixedColumns[0], SortingDirection.Ascending));
+        ConcretePositionsList.SetSortingOrder (
+            new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[0], SortingDirection.Ascending),
+            new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[1], SortingDirection.Ascending));
+      }
+      base.OnLoad (e);
+    }
+
     public override bool Validate ()
     {
       bool isValid = base.Validate ();
@@ -55,7 +67,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void ConcretePositionsField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void ConcretePositionsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
@@ -70,7 +82,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
           if (returningFunction.HasUserCancelled)
             returningFunction.ConcretePosition.Delete ();
           else
-            ConcretePositionsField.Value = CurrentFunction.GroupType.ConcretePositions;
+            ConcretePositionsList.Value = CurrentFunction.GroupType.ConcretePositions;
         }
       }
 
@@ -78,27 +90,27 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       {
         if (!Page.IsReturningPostBack)
         {
-          EditConcretePosition ((ConcretePosition) ConcretePositionsField.GetSelectedBusinessObjects ()[0], null, CurrentFunction.GroupType);
+          EditConcretePosition ((ConcretePosition) ConcretePositionsList.GetSelectedBusinessObjects ()[0], null, CurrentFunction.GroupType);
         }
         else
         {
           EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
 
           if (!returningFunction.HasUserCancelled)
-            ConcretePositionsField.IsDirty = true;
+            ConcretePositionsList.IsDirty = true;
         }
       }
 
       if (e.Item.ItemID == "DeleteItem")
       {
-        foreach (ConcretePosition concretePosition in ConcretePositionsField.GetSelectedBusinessObjects ())
+        foreach (ConcretePosition concretePosition in ConcretePositionsList.GetSelectedBusinessObjects ())
         {
-          ConcretePositionsField.RemoveRow (concretePosition);
+          ConcretePositionsList.RemoveRow (concretePosition);
           concretePosition.Delete ();
         }
       }
 
-      ConcretePositionsField.ClearSelectedRows ();
+      ConcretePositionsList.ClearSelectedRows ();
     }
 
     private void EditConcretePosition (ConcretePosition concretePosition, Position position, GroupType groupType)
@@ -110,7 +122,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       Page.ExecuteFunction (editConcretePositionFormFunction);
     }
 
-    protected void GroupsField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void GroupsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddItem")
       {
@@ -126,14 +138,17 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
           SearchGroupFormFunction returningFunction = (SearchGroupFormFunction) Page.ReturningFunction;
 
           if (!returningFunction.HasUserCancelled)
-            GroupsField.AddRow (returningFunction.SelectedGroup);
+          {
+            if (!GroupsList.Value.Contains (returningFunction.SelectedGroup))
+              GroupsList.AddRow (returningFunction.SelectedGroup);
+          }
         }
       }
 
       if (e.Item.ItemID == "RemoveItem")
-        GroupsField.RemoveRows (GroupsField.GetSelectedBusinessObjects ());
+        GroupsList.RemoveRows (GroupsList.GetSelectedBusinessObjects ());
 
-      GroupsField.ClearSelectedRows ();
+      GroupsList.ClearSelectedRows ();
     }
   }
 }

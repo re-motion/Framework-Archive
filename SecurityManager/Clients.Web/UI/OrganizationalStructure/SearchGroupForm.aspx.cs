@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -28,9 +29,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     // methods and properties
 
-    protected void CloseButton_Click (object sender, EventArgs e)
+    protected void CancelButton_Click (object sender, EventArgs e)
     {
-      ExecuteNextStep ();
+      throw new WxeUserCancelException ();
     }
   }
 }

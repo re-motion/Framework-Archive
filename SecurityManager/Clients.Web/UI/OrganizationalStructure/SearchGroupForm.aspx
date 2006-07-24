@@ -13,7 +13,7 @@
   <table cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <rubicon:WebButton ID="CloseButton" runat="server" Text="$res:Close" OnClick="CloseButton_Click" CausesValidation="false"/>
+        <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" OnClick="CancelButton_Click" CausesValidation="false"/>
       </td>
     </tr>
   </table>
