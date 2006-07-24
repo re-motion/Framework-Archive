@@ -45,8 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void GetAndSet_UniqueIdentifier ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
 
       group.UniqueIdentifier = "My Unique Identifier";
 
@@ -56,8 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void GetAndSet_UniqueIdentifierFromBusinessObjectWithIdentity ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       group.UniqueIdentifier = "My Unique Identifier";
@@ -68,8 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void GetProperty_UniqueIdentifier ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
       
       group.UniqueIdentifier = "My Unique Identifier";
@@ -81,8 +78,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void SetProperty_UniqueIdentifier ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
@@ -93,8 +89,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void GetPropertyDefinition_UniqueIdentifier ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup ( string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
       group.UniqueIdentifier = "My Unique Identifier";
 
@@ -107,8 +102,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     [Test]
     public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Group group = _testHelper.CreateGroup (transaction, string.Empty, string.Empty, null, _testHelper.CreateClient (transaction, string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();

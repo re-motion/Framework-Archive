@@ -6,6 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -92,10 +93,23 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
     }
 
-    //TODO: UnitTests
     public override string DisplayName
     {
       get { return Name; }
+    }
+
+    protected override void OnDeleting (EventArgs args)
+    {
+      base.OnDeleting (args);
+
+      while (AccessControlEntries.Count > 0)
+        AccessControlEntries[0].Delete ();
+
+      while (Roles.Count > 0)
+        Roles[0].Delete ();
+
+      while (ConcretePositions.Count > 0)
+        ConcretePositions[0].Delete ();
     }
   }
 }

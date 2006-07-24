@@ -79,12 +79,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UserName_SameNameTwice ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Client client = _testHelper.CreateClient (transaction, "Testclient");
-      Group group = _testHelper.CreateGroup (transaction, "TestGroup", "UnqiueIdentifier: TestGroup", null, client);
-      User newUser = _testHelper.CreateUser (transaction, "test.user", "Test", "User", "Ing.", group, client);
+      Client client = _testHelper.CreateClient ("Testclient");
+      Group group = _testHelper.CreateGroup ("TestGroup", "UnqiueIdentifier: TestGroup", null, client);
+      User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
 
-      transaction.Commit ();
+      _testHelper.Transaction.Commit ();
     }
   }
 }

@@ -15,7 +15,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     private ReadOnlyCollection<Group> _owningGroups;
     private ReadOnlyCollection<Group> _userGroups;
     private ReadOnlyCollection<Role> _owningGroupRoles;
-    private ReadOnlyCollection<Role> _specificGroupRoles;
     private ReadOnlyCollection<AbstractRoleDefinition> _abstractRoles;
 
     public SecurityToken (User user, List<Group> ownningGroups, List<AbstractRoleDefinition> abstractRoles)

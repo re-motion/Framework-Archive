@@ -24,12 +24,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       get { return _transaction; }
     }
 
+    public Client CreateClient (string name)
+    {
+      return CreateClient (_transaction, name);
+    }
+
     public Client CreateClient (ClientTransaction transaction, string name)
     {
       Client client = new Client (transaction);
       client.Name = name;
 
       return client;
+    }
+
+    public Group CreateGroup (string name, string uniqueIdentifier, Group parent, Client client)
+    {
+      return CreateGroup (_transaction, name, uniqueIdentifier, parent, client);
     }
 
     public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
@@ -43,9 +53,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       return group;
     }
     
-    public User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
+    public User CreateUser (string userName, string firstName, string lastName, string title, Group group, Client client)
     {
-      User user = _factory.CreateUser (transaction);
+      User user = _factory.CreateUser (_transaction);
       user.UserName = userName;
       user.FirstName = firstName;
       user.LastName = lastName;
@@ -54,6 +64,45 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       user.Group = group;
 
       return user;
+    }
+
+    public Position CreatePosition (string name, Client client)
+    {
+      Position position = _factory.CreatePosition (_transaction);
+      position.Name = name;
+      position.Client = client;
+
+      return position;
+    }
+
+    public Role CreateRole (User user, Group group, Position position)
+    {
+      Role role = new Role (_transaction);
+      role.User = user;
+      role.Group = group;
+      role.Position = position;
+
+      return role;
+    }
+
+    public GroupType CreateGroupType (string name, Client client)
+    {
+      GroupType groupType = new GroupType (_transaction);
+      groupType.Name = name;
+      groupType.Client = client;
+
+      return groupType;
+    }
+
+    public ConcretePosition CreateConcretePosition (string name, GroupType groupType, Position position)
+    {
+      ConcretePosition concretePosition = new ConcretePosition (_transaction);
+      concretePosition.Name = name;
+      concretePosition.GroupType = groupType;
+      concretePosition.Position = position;
+
+      return concretePosition;
+
     }
   }
 }
