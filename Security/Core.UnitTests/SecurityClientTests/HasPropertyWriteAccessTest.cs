@@ -39,8 +39,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void OneCorrentAccessType_HasAccess ()
     {
-      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Read);
-      SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Read);
+      SetupNamePropertyWriteAccessTypes (TestAccessType.First);
+      SetupSecurityServiceResult (TestAccessType.First);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityClient.HasPropertyWriteAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
@@ -52,8 +52,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void OneWrongAccessType_HasNotAccess ()
     {
-      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Read);
-      SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Find);
+      SetupNamePropertyWriteAccessTypes (TestAccessType.First);
+      SetupSecurityServiceResult (TestAccessType.Third);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityClient.HasPropertyWriteAccess (new SecurableObject (_contextFactoryMock), "Name", _user);

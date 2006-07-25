@@ -97,7 +97,8 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType (), propertyName);
-      EnsureHasAccessType (ref requiredAccessTypeEnums, GeneralAccessType.Read);
+      if (requiredAccessTypeEnums.Length == 0)
+        requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Read };
 
       return HasRequiredAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
@@ -114,7 +115,8 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType (), propertyName);
-      EnsureHasAccessType (ref requiredAccessTypeEnums, GeneralAccessType.Edit);
+      if (requiredAccessTypeEnums.Length == 0)
+        requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Edit };
 
       return HasRequiredAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
@@ -167,16 +169,6 @@ namespace Rubicon.Security
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableClass, methodName);
       return HasRequiredAccess (securableClass, methodName, requiredAccessTypeEnums, user);
-    }
-
-
-    private void EnsureHasAccessType (ref Enum[] accessTypes, Enum requiredAccessType)
-    {
-      if (Array.IndexOf (accessTypes, requiredAccessType) < 0)
-      {
-        Array.Resize (ref accessTypes, accessTypes.Length + 1);
-        accessTypes[accessTypes.Length - 1] = requiredAccessType;
-      }
     }
 
 
