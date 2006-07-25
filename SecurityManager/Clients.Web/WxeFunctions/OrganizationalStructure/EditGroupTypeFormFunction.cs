@@ -46,6 +46,15 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       set { CurrentObject = value; }
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
+    private void Step1 ()
+    {
+      // TODO check CurrentTransaction
+      if (CurrentObject == null)
+      {
+        GroupType = new GroupType (CurrentTransaction);
+      }
+    }
+
+    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditGroupTypeForm), "UI/OrganizationalStructure/EditGroupTypeForm.aspx");
   }
 }
