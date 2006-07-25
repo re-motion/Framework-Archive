@@ -12,8 +12,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   public enum GroupSelection
   {
     All = 0,
-    OwningGroup = 1,
-    //SpecificGroup = 2,
-    //SpecificGroupType = 3
+    //OwningGroupAndParentGroups = 1,
+    OwningGroup = 1, // 2
+    //OwningGroupAndChildGroups = 2,
+    //SpecificGroup = 4,
+    //SpecificGroupAndChildGroups = 5,
+    //SpecificGroupType = 6,
   }
 }
