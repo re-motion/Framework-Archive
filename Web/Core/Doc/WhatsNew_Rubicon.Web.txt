@@ -1,3 +1,7 @@
+1.7.16
+======
+- Execution Engine URL Mapping akzeptiert nun Pfade relativ zum Application Root (Prefix: "~/") und Pfade relativ zum bin-Verzeichnis.
+
 1.7.11
 ======
 - WxePage

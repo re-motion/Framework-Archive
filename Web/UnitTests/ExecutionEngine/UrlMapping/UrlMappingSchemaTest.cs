@@ -12,6 +12,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Utilities;
 using Rubicon.Web.UnitTests.AspNetFramework;
+using Rubicon.Web.UnitTests.Configuration;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
 {
