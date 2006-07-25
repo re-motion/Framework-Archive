@@ -110,6 +110,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\TypeElement.cs" />
+    <Compile Include="Context\ISafeContextProvider.cs" />
+    <Compile Include="Context\SafeContext.cs" />
     <Compile Include="Data\ITransaction.cs">
       <SubType>Code</SubType>
     </Compile>

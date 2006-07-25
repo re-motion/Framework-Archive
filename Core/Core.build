@@ -19,6 +19,7 @@
         <include name="*.cs" />
         <include name="Collections/**/*.cs" />
         <include name="Configuration/**/*.cs" />
+        <include name="Context/**/*.cs" />
         <include name="Data/**/*.cs" />
         <include name="Globalization/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
