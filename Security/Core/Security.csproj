@@ -85,6 +85,7 @@
     <Compile Include="SecurityException.cs" />
     <Compile Include="ObjectSecurityProvider.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
+    <Compile Include="SecurityFreeSection.cs" />
     <Compile Include="SecurityStrategy.cs" />
     <Compile Include="ThreadUserProvider.cs" />
     <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">

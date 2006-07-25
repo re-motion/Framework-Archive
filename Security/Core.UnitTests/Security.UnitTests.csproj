@@ -116,6 +116,7 @@
     <Compile Include="SecurityClientTests\SecurityClientTestHelper.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityProviderTest.cs" />
+    <Compile Include="SecurityFreeSectionTest.cs" />
     <Compile Include="SecurityProviderRegistryMock.cs" />
     <Compile Include="SecurityProviderRegistryTest.cs" />
     <Compile Include="SecurityStrategyTests\CachingTest.cs" />
