@@ -16,8 +16,8 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    public DerivedSecurableObject (ISecurityContextFactory contextFactory)
-      : base (contextFactory)
+    public DerivedSecurableObject (IObjectSecurityStrategy objectSecurityStrategy)
+      : base (objectSecurityStrategy)
     {
     }
 

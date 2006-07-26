@@ -11,7 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class HasMethodAccessTest
+  public class HasStatelessMethodAccessTest
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
@@ -27,10 +27,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void Test_AccessGranted ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -40,10 +40,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void Test_AccessDenied ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
 
       _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -58,7 +58,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+        hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
       }
 
       _testHelper.VerifyAll ();
@@ -73,7 +73,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod");
       _testHelper.ReplayAll ();
 
-      _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
     }
 
     [Test]
@@ -86,18 +86,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       using (new SecurityFreeSection ())
       {
-        _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+        _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
       }
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
-    public void Test_WithSecurityStrategyIsNull ()
-    {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
-      _testHelper.ReplayAll ();
-
-      bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), "InstanceMethod");
     }
   }
 }

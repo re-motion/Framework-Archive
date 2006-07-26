@@ -12,7 +12,7 @@ using Rubicon.Security.UnitTests.SampleDomain;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class HasAccessTest
+  public class CheckAccessTest
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
@@ -30,22 +30,19 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
 
       _testHelper.VerifyAll ();
-      Assert.AreEqual (true, hasAccess);
     }
 
     [Test]
-    public void Test_AccessDenied ()
+    [ExpectedException (typeof (PermissionDeniedException))]
+    public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
-
-      _testHelper.VerifyAll ();
-      Assert.AreEqual (false, hasAccess);
+      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
     }
 
     [Test]
@@ -53,14 +50,12 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll ();
 
-      bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+        _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
       }
 
       _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
     }
 
     [Test]
@@ -69,7 +64,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessType.First));
+      _securityClient.CheckAccess (new SecurableObject (null), AccessType.Get (TestAccessType.First));
     }
   }
 }

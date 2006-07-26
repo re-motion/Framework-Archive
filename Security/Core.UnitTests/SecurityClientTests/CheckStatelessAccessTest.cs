@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
-using NUnit.Framework;
-using NMock2;
 
-using Rubicon.Security.UnitTests.SampleDomain;
+using NUnit.Framework;
+
 using Rubicon.Security.Metadata;
+using Rubicon.Security.UnitTests.TestDomain;
+using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class CheckConstructorAccessTest
+  public class CheckStatelessAccessTest
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
@@ -26,10 +27,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, true);
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+      _securityClient.CheckStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
 
       _testHelper.VerifyAll ();
     }
@@ -38,10 +39,12 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, false);
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+      _securityClient.CheckStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -51,7 +54,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       using (new SecurityFreeSection ())
       {
-        _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+        _securityClient.CheckStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
       }
 
       _testHelper.VerifyAll ();

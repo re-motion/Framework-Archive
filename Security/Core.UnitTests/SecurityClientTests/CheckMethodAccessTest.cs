@@ -13,80 +13,87 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   public class CheckMethodAccessTest
   {
     private SecurityClientTestHelper _testHelper;
-    private IPrincipal _user;
-    private SecurityContext _context;
     private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
     {
-      _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
-      _testHelper = new SecurityClientTestHelper (_context, _user);
-
+      _testHelper = SecurityClientTestHelper.CreateForStatefulSecurity ();
       _securityClient = _testHelper.CreateSecurityClient ();
     }
 
     [Test]
-    public void InstanceMethod_ShouldAllowAccess ()
+    public void Test_AccessGranted ()
     {
-      _testHelper.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
-      _testHelper.ExpectGetAccess (GeneralAccessType.Edit);
-      ISecurableObject securableObject = _testHelper.CreateSecurableObject ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckMethodAccess (securableObject, "Record", _user);
+      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
     }
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException))]
-    public void InstanceMethod_ShouldThrowPermissionDeniedException ()
+    public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
-      _testHelper.ExpectGetAccess (GeneralAccessType.Read);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckMethodAccess (_testHelper.CreateSecurableObject (), "Record", _user);
+      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
-    public void InstanceMethodWithoutDefinedPermissions_ShouldThrowArgumentException ()
+    public void Test_AccessGranted_WithinSecurityFreeSection ()
     {
-      _testHelper.ExpectGetRequiredMethodPermissions ("Save", new Enum[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckMethodAccess (_testHelper.CreateSecurableObject (), "Save", _user);
-    }
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      }
 
-    [Test]
-    public void StaticMethod_ShouldAllowAccess ()
-    {
-      _testHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
-      _testHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Edit);
-
-      _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
-
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
-    public void StaticMethod_ShouldThrowPermissionDeniedException ()
-    {
-      _testHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
-      _testHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Read);
-
-      _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
+      _testHelper.VerifyAll ();
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The member 'CreateForSpecialCase' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
-    public void StaticMethodWithoutDefinedPermissions_ShouldThrowArgumentException ()
+        "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+    public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
-      _testHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", new Enum[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod");
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
+      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+    public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod");
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
+    public void Test_WithSecurityStrategyIsNull ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
+      _testHelper.ReplayAll ();
+
+      _securityClient.CheckMethodAccess (new SecurableObject (null), "InstanceMethod");
     }
   }
 }

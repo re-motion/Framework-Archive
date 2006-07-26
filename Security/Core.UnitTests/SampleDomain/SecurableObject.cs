@@ -41,9 +41,9 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    public SecurableObject (ISecurityContextFactory contextFactory)
+    public SecurableObject (IObjectSecurityStrategy objectSecurityStrategy)
     {
-      _securityStrategy = new ObjectSecurityStrategy (contextFactory);
+      _securityStrategy = objectSecurityStrategy;
     }
 
     public IObjectSecurityStrategy GetSecurityStrategy ()

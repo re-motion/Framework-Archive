@@ -12,7 +12,7 @@ using Rubicon.Security.UnitTests.SampleDomain;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class HasAccessTest
+  public class HasStatelessAccessTest
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
@@ -20,17 +20,17 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = SecurityClientTestHelper.CreateForStatefulSecurity ();
+      _testHelper = SecurityClientTestHelper.CreateForStatelessSecurity ();
       _securityClient = _testHelper.CreateSecurityClient ();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -39,10 +39,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -56,20 +56,11 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+        hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
       }
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
-    public void Test_WithSecurityStrategyIsNull ()
-    {
-      _testHelper.ReplayAll ();
-
-      bool hasAccess = _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessType.First));
     }
   }
 }

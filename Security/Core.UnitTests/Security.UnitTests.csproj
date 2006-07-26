@@ -108,6 +108,12 @@
     <Compile Include="SecurityClientTests\CheckMethodAccessTest.cs" />
     <Compile Include="SecurityClientTests\CheckPropertyReadAccessTest.cs" />
     <Compile Include="SecurityClientTests\CheckPropertyWriteAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckStaticMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckStatelessAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasStatelessAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasStatelessMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasStaticMethodAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasPropertyWriteAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasConstructorAccessTest.cs" />

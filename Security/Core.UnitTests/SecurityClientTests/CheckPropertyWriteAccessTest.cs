@@ -13,87 +13,94 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   [TestFixture]
   public class CheckPropertyWriteAccessTest
   {
-    private MockRepository _mocks;
-    private ISecurityService _securityServiceMock;
-    private IPrincipal _user;
-    private SecurityContext _context;
-    private IPermissionProvider _permissionReflectorMock;
-    private ISecurityContextFactory _contextFactoryMock;
+    private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _securityServiceMock = _mocks.CreateMock<ISecurityService> ();
-      _permissionReflectorMock = _mocks.CreateMock<IPermissionProvider> ();
-      _contextFactoryMock = _mocks.CreateMock<ISecurityContextFactory> ();
+      _testHelper = SecurityClientTestHelper.CreateForStatefulSecurity ();
+      _securityClient = _testHelper.CreateSecurityClient ();
+    }
 
-      _user = CreateDummyUser ();
-      _context = CreateSimpleContext ();
-      SetupResult.For (_contextFactoryMock.CreateSecurityContext ()).Return (_context);
+    [Test]
+    public void Test_AccessGranted ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ReplayAll ();
 
-      _securityClient = CreateSecurityClient ();
+      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException))]
-    public void OneCorrectAttribute_AccessDenied ()
+    public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Find);
-      SetupSecurityServiceResult (GeneralAccessType.Edit);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
+      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
     }
 
     [Test]
-    public void OneWrongAttribute_AccessAllowed ()
+    public void Test_AccessGranted_WithinSecurityFreeSection ()
     {
-      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Find);
-      SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Find);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
-
-      _mocks.VerifyAll ();
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
+      }
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Name' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
-    public void NoAttributes_ThrowsException ()
+    public void Test_AccessGranted_WithDefaultAccessType ()
     {
-      SetupNamePropertyWriteAccessTypes ();
-      SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Find);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty");
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Edit, true);
+      _testHelper.ReplayAll ();
 
-      _securityClient.CheckPropertyWriteAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
+      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
-    private IPrincipal CreateDummyUser ()
+    [Test]
+    [ExpectedException (typeof (PermissionDeniedException))]
+    public void Test_AccessDenied_WithDefaultAccessType_ShouldThrowPermissionDeniedException ()
     {
-      return new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty");
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Edit, false);
+      _testHelper.ReplayAll ();
+
+      _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
     }
 
-    private SecurityContext CreateSimpleContext ()
+    [Test]
+    public void Test_AccessGranted_WithDefaultAccessTypeAndWithinSecurityFreeSection ()
     {
-      return new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty");
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
+      }
     }
 
-    private SecurityClient CreateSecurityClient ()
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
+    public void Test_WithSecurityStrategyIsNull ()
     {
-      return new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
-    }
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ReplayAll ();
 
-    private void SetupNamePropertyWriteAccessTypes (params Enum[] accessTypes)
-    {
-      Expect.Call (_permissionReflectorMock.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "Name")).Return (accessTypes);
-    }
-
-    private void SetupSecurityServiceResult (params Enum[] accessTypeEnums)
-    {
-      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get));
-      Expect.Call (_securityServiceMock.GetAccess (_context, _user)).Return (accessTypes);
+      _securityClient.CheckPropertyWriteAccess (new SecurableObject (null), "InstanceProperty");
     }
   }
 }

@@ -13,92 +13,108 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   [TestFixture]
   public class HasPropertyReadAccessTest
   {
-    private MockRepository _mocks;
-    private ISecurityService _securityServiceMock;
-    private IPrincipal _user;
-    private SecurityContext _context;
-    private IPermissionProvider _permissionReflectorMock;
-    private ISecurityContextFactory _contextFactoryMock;
+    private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _securityServiceMock = _mocks.CreateMock<ISecurityService> ();
-      _permissionReflectorMock = _mocks.CreateMock<IPermissionProvider> ();
-      _contextFactoryMock = _mocks.CreateMock<ISecurityContextFactory> ();
-
-      _user = CreateDummyUser ();
-      _context = CreateSimpleContext ();
-      SetupResult.For (_contextFactoryMock.CreateSecurityContext ()).Return (_context);
-
-      _securityClient = CreateSecurityClient ();
+      _testHelper = SecurityClientTestHelper.CreateForStatefulSecurity ();
+      _securityClient = _testHelper.CreateSecurityClient ();
     }
 
     [Test]
-    public void OneCorrentAccessType_HasAccess ()
+    public void Test_AccessGranted ()
     {
-      SetupNamePropertyReadAccessTypes (TestAccessType.First);
-      SetupSecurityServiceResult (TestAccessType.First);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
+      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
 
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
-      _mocks.VerifyAll ();
     }
 
     [Test]
-    public void OneWrongAccessType_HasNotAccess ()
+    public void Test_AccessDenied ()
     {
-      SetupNamePropertyReadAccessTypes (TestAccessType.First);
-      SetupSecurityServiceResult (GeneralAccessType.Read);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
+      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
 
+      _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
-      _mocks.VerifyAll ();
     }
 
     [Test]
-    public void DefaultAccessType_HasAccess ()
+    public void Test_AccessGranted_WithinSecurityFreeSection ()
     {
-      SetupNamePropertyReadAccessTypes ();
-      SetupSecurityServiceResult (GeneralAccessType.Read);
-      _mocks.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (_contextFactoryMock), "Name", _user);
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+      }
 
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
-      _mocks.VerifyAll ();
     }
 
-    private IPrincipal CreateDummyUser ()
+    [Test]
+    public void Test_AccessGranted_WithDefaultAccessType ()
     {
-      return new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty");
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Read, true);
+      _testHelper.ReplayAll ();
+
+      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
-    private SecurityContext CreateSimpleContext ()
+    [Test]
+    public void Test_AccessDenied_WithDefaultAccessType ()
     {
-      return new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty");
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Read, false);
+      _testHelper.ReplayAll ();
+
+      bool hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
+      Assert.IsFalse (hasAccess);
     }
 
-    private SecurityClient CreateSecurityClient ()
+    [Test]
+    public void Test_AccessGranted_WithDefaultAccessTypeAndWithinSecurityFreeSection ()
     {
-      return new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty");
+      _testHelper.ReplayAll ();
+
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+      }
+
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
-    private void SetupNamePropertyReadAccessTypes (params Enum[] accessTypes)
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
+    public void Test_WithSecurityStrategyIsNull ()
     {
-      Expect.Call (_permissionReflectorMock.GetRequiredPropertyReadPermissions (typeof (SecurableObject), "Name")).Return (accessTypes);
-    }
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessType.First);
+      _testHelper.ReplayAll ();
 
-    private void SetupSecurityServiceResult (params Enum[] accessTypeEnums)
-    {
-      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get));
-      Expect.Call (_securityServiceMock.GetAccess (_context, _user)).Return (accessTypes);
+      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "InstanceProperty");
     }
   }
 }
