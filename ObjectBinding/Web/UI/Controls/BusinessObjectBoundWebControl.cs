@@ -192,8 +192,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   private BusinessObjectBinding _binding;
-  /// <summary> Set or cleared depending on <see cref="HasValidBinding"/> during <see cref="OnLoad"/>. </summary>
-  bool _hasVisibleBinding = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
   private bool _controlExistedInPreviousRequest = false; 
@@ -213,14 +211,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     base.OnInit (e);
     EnsureChildControls();
     _binding.EnsureDataSource();
-  }
-
-  /// <remarks> Evaluates <see cref="HasValidBinding"/> to determine the control's visibility. </remarks>
-  protected override void OnLoad (EventArgs e)
-  {
-    base.OnLoad (e);
-    if (! IsDesignMode)
-      _hasVisibleBinding = HasValidBinding;
   }
 
   /// <summary>
@@ -270,7 +260,16 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </remarks>
   public override bool Visible
   {
-    get { return _hasVisibleBinding && base.Visible; }
+    get
+    {
+      if (!base.Visible)
+        return false;
+
+      if (IsDesignMode)
+        return true;
+      
+      return HasValidBinding; 
+    }
     set { base.Visible = value; }
   }
 

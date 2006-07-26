@@ -1,6 +1,8 @@
 1.7.16
 ======
 - BocList: SetSortingOrder: BocListSortingOrderEntry[] auf Params-Array umgestellt.
+- Business Object Controls: Visible wertet nun nicht nur im OnLoad ob das Binding gültig ist, sondern bei jeder Abfrage von Visible.
+  Binding ist gültig wenn DataSource und Property gesetzt sind und das BusinessObject der DataSource für die Property IsAccessible zurück liefert.
 
 1.7.11
 ======
