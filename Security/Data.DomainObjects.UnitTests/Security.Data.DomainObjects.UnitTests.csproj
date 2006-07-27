@@ -43,7 +43,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessTypeCacheClientTransactionExtensionTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ClientTransactionAccessTypeCacheProviderTest.cs" />
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />

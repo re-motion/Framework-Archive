@@ -31,16 +31,22 @@ namespace Rubicon.Security.Data.DomainObjects
       if (!ClientTransaction.HasCurrent)
         return _nullCache;
 
-      ClientTransaction transaction = ClientTransaction.Current;      
-      string extensionKey = typeof (AccessTypeCacheClientTransactionExtension).FullName;
-      AccessTypeCacheClientTransactionExtension extension = (AccessTypeCacheClientTransactionExtension) transaction.Extensions[extensionKey];
-      if (extension == null)
+      ClientTransaction transaction = ClientTransaction.Current;
+      string cacheKey = typeof (ClientTransactionAccessTypeCacheProvider).FullName;
+
+      Cache<Tupel<SecurityContext, string>, AccessType[]> cache;
+      object value;
+      if (transaction.ApplicationData.TryGetValue (cacheKey, out value))
       {
-        extension = new AccessTypeCacheClientTransactionExtension ();
-        transaction.Extensions.Add (extensionKey, extension);
+        cache = (Cache<Tupel<SecurityContext, string>, AccessType[]>) value;
+      }
+      else
+      {
+        cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
+        transaction.ApplicationData.Add (cacheKey, cache);
       }
 
-      return extension.Cache;
+      return cache;
     }
   }
 }

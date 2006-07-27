@@ -18,15 +18,15 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetCache_ExtensionIsRegistered ()
+    public void GetCache_CacheIsRegistered ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
-      AccessTypeCacheClientTransactionExtension extension = new AccessTypeCacheClientTransactionExtension ();
-      transaction.Extensions.Add (typeof (AccessTypeCacheClientTransactionExtension).FullName, extension);
+      Cache<Tupel<SecurityContext, string>, AccessType[]> cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
+      transaction.ApplicationData.Add (typeof (ClientTransactionAccessTypeCacheProvider).FullName, cache);
       ClientTransaction.SetCurrent (transaction);
 
-      Assert.AreSame (extension.Cache, provider.GetCache ());
+      Assert.AreSame (cache, provider.GetCache ());
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetCache_ExtensionIsNotRegistered ()
+    public void GetCache_CacheIsNotRegistered ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();

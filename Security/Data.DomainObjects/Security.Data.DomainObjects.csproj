@@ -36,7 +36,6 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessTypeCacheClientTransactionExtension.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ClientTransactionAccessTypeCacheProvider.cs" />
     <Compile Include="SecurityClientTransactionExtension.cs" />
