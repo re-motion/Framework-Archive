@@ -24,7 +24,7 @@ namespace Rubicon.Security.UnitTests
 
     private IObjectSecurityProvider _securityProvider;
     private MockRepository _mocks;
-    private ISecurableObject _mockSecurableObject;
+    private SecurableObject _securableObject;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private ISecurityService _securityService;
     private IUserProvider _userProvider;
@@ -52,92 +52,111 @@ namespace Rubicon.Security.UnitTests
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       SetupResult.For (_userProvider.GetUser ()).Return (_user);
-      
+
       SecurityConfiguration.Current.SecurityService = _securityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
       SecurityConfiguration.Current.PermissionProvider = _permissionProvider;
 
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
-      _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
-      SetupResult.For (_mockSecurableObject.GetSecurityStrategy ()).Return (_mockObjectSecurityStrategy);
+      _securableObject = new SecurableObject (_mockObjectSecurityStrategy);
     }
 
     [Test]
-    public void HasAccessOnGetAccessor_ValidAccessType ()
+    public void HasAccessOnGetAccessor_AccessGranted ()
     {
-      SetupAccessForRead (true);
-      SetupNamePropertyReadPermissions ();
+      ExpectGetRequiredPropertyReadPermissions ("Name");
+      ExpectExpectObjectSecurityStrategyHasAccess (true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject, "Name");
+      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnGetAccessor_InvalidAccessType ()
+    public void HasAccessOnGetAccessor_AccessDenied ()
     {
-      SetupAccessForRead (false);
-      SetupNamePropertyReadPermissions ();
+      ExpectGetRequiredPropertyReadPermissions ("Name");
+      ExpectExpectObjectSecurityStrategyHasAccess (false);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject, "Name");
+      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnSetAccessor_ValidAccessType ()
+    public void HasAccessOnGetAccessor_WithinSecurityFreeSeciton_AccessGranted ()
     {
-      SetupAccessForWrite (true);
-      SetupNamePropertyWritePermissions ();
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject, "Name");
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
+      }
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnSetAccessor_InvalidAccessType ()
+    public void HasAccessOnSetAccessor_AccessGranted ()
     {
-      SetupAccessForWrite (false);
-      SetupNamePropertyWritePermissions ();
+      ExpectGetRequiredPropertyWritePermissions ("Name");
+      ExpectExpectObjectSecurityStrategyHasAccess (true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject, "Name");
+      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasAccessOnSetAccessor_AccessDenied ()
+    {
+      ExpectGetRequiredPropertyWritePermissions ("Name");
+      ExpectExpectObjectSecurityStrategyHasAccess (false);
+      _mocks.ReplayAll ();
+
+      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
-    private void SetupAccessForRead (bool accessAllowed)
+    [Test]
+    public void HasAccessOnSetAccessor_WithinSecurityFreeSeciton_AccessGranted ()
     {
-      SetupAccess (accessAllowed, GeneralAccessType.Read);
+      _mocks.ReplayAll ();
+
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
+      }
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
-    private void SetupAccessForWrite (bool accessAllowed)
+    private void ExpectExpectObjectSecurityStrategyHasAccess (bool accessAllowed)
     {
-      SetupAccess (accessAllowed, GeneralAccessType.Edit);
-    }
-
-    private void SetupAccess (bool accessAllowed, params Enum[] expectedAccessTypes)
-    {
-      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (expectedAccessTypes, new Converter<Enum, AccessType> (AccessType.Get));
+      AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessType.First) };
       Expect.Call (_mockObjectSecurityStrategy.HasAccess (_securityService, _user, accessTypes)).Return (accessAllowed);
     }
 
-    private void SetupNamePropertyReadPermissions (params Enum[] accessTypes)
+    private void ExpectGetRequiredPropertyReadPermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (object), "Name")).IgnoreArguments ().Return (accessTypes);
+      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessType.First });
     }
 
-    private void SetupNamePropertyWritePermissions (params Enum[] accessTypes)
+    private void ExpectGetRequiredPropertyWritePermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (object), "Name")).IgnoreArguments ().Return (accessTypes);
+      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessType.First });
     }
   }
 }

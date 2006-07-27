@@ -26,6 +26,9 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
+      if (SecurityFreeSection.IsActive)
+        return true;
+
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       return securityClient.HasPropertyReadAccess (securableObject, propertyName);
     }
@@ -33,6 +36,9 @@ namespace Rubicon.Security
     public bool HasAccessOnSetAccessor (ISecurableObject securableObject, string propertyName)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
+
+      if (SecurityFreeSection.IsActive)
+        return true;
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       return securityClient.HasPropertyWriteAccess (securableObject, propertyName);
