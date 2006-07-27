@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security.Metadata;
@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IEnumerationReflector _enumeratedTypeReflectorMock;
     private StatePropertyReflector _statePropertyReflector;
     private MetadataCache _cache;
@@ -38,8 +38,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
+      _mocks = new MockRepository ();
+      _enumeratedTypeReflectorMock = _mocks.CreateMock<IEnumerationReflector> ();
       _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
     }
@@ -59,14 +59,12 @@ namespace Rubicon.Security.UnitTests.Metadata
       values.Add (Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
       values.Add (Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
-      Expect.Once.On (_enumeratedTypeReflectorMock)
-          .Method ("GetValues")
-          .With (typeof (Confidentiality), _cache)
-          .Will (Return.Value (values));
+      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (Confidentiality), _cache)).Return (values);
+      _mocks.ReplayAll ();
 
       StatePropertyInfo info = _statePropertyReflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
 
       Assert.IsNotNull (info);
       Assert.AreEqual ("Confidentiality", info.Name);

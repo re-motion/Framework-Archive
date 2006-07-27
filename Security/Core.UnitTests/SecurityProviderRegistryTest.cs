@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
@@ -19,7 +19,7 @@ namespace Rubicon.Security.UnitTests
     // member fields
 
     private SecurityProviderRegistry _securityProviderRegistry;
-    private Mockery _mocks;
+    private MockRepository _mocks;
 
     // construction and disposing
 
@@ -32,7 +32,7 @@ namespace Rubicon.Security.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
+      _mocks = new MockRepository ();
       _securityProviderRegistry = new SecurityProviderRegistryMock ();
     }
 
@@ -45,7 +45,9 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void SetAndGetProvider ()
     {
-      ISecurityProvider exptectedProvider = _mocks.NewMock<ISecurityProvider> ();
+      ISecurityProvider exptectedProvider = _mocks.CreateMock<ISecurityProvider> ();
+      _mocks.ReplayAll ();
+      
       _securityProviderRegistry.SetProvider<ISecurityProvider> (exptectedProvider);
 
       Assert.AreSame (exptectedProvider, _securityProviderRegistry.GetProvider<ISecurityProvider> ());
@@ -60,7 +62,9 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void SetProviderNull ()
     {
-      ISecurityProvider provider = _mocks.NewMock<ISecurityProvider> ();
+      ISecurityProvider provider = _mocks.CreateMock<ISecurityProvider> ();
+      _mocks.ReplayAll ();
+
       _securityProviderRegistry.SetProvider<ISecurityProvider>(provider);
       Assert.IsNotNull (_securityProviderRegistry.GetProvider<ISecurityProvider> ());
 

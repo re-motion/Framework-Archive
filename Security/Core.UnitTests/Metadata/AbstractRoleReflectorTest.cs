@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security.Metadata;
@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IEnumerationReflector _enumeratedTypeReflectorMock;
     private AbstractRoleReflector _abstractRoleReflector;
     private MetadataCache _cache;
@@ -38,8 +38,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
+      _mocks = new MockRepository ();
+      _enumeratedTypeReflectorMock = _mocks.CreateMock<IEnumerationReflector> ();
       _abstractRoleReflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
     }
@@ -61,19 +61,13 @@ namespace Rubicon.Security.UnitTests.Metadata
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
       specialAbstractRoles.Add (SpecialAbstractRole.Administrator, AbstractRoles.Administrator);
 
-      Expect.Once.On (_enumeratedTypeReflectorMock)
-          .Method ("GetValues")
-          .With (typeof (DomainAbstractRole), _cache)
-          .Will (Return.Value (domainAbstractRoles));
-
-      Expect.Once.On (_enumeratedTypeReflectorMock)
-          .Method ("GetValues")
-          .With (typeof (SpecialAbstractRole), _cache)
-          .Will (Return.Value (specialAbstractRoles));
+      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (DomainAbstractRole), _cache)).Return (domainAbstractRoles);
+      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (SpecialAbstractRole), _cache)).Return (specialAbstractRoles);
+      _mocks.ReplayAll ();
 
       List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles (typeof (File).Assembly, _cache);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
 
       Assert.IsNotNull (values);
       Assert.AreEqual (3, values.Count);
@@ -87,8 +81,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       AbstractRoleReflector reflector = new AbstractRoleReflector ();
       List<EnumValueInfo> expectedAbstractRoles = reflector.GetAbstractRoles (typeof (File).Assembly, _cache);
-      List<EnumValueInfo> actualAbstractRoles = _cache.GetAbstractRoles();
-     
+      List<EnumValueInfo> actualAbstractRoles = _cache.GetAbstractRoles ();
+
       Assert.AreEqual (3, expectedAbstractRoles.Count);
       foreach (EnumValueInfo expected in expectedAbstractRoles)
         Assert.Contains (expected, actualAbstractRoles);

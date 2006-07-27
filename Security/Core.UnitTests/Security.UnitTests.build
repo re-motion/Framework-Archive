@@ -28,7 +28,6 @@
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.UnitTests.TestDomain.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.Web.dll" />
-        <include name="${build.test.outputdir}/NMock2.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security.Metadata;
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IStatePropertyReflector _statePropertyReflectorMock;
     private IAccessTypeReflector _accessTypeReflectorMock;
     private ClassReflector _classReflector;
@@ -42,9 +42,9 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _statePropertyReflectorMock = _mocks.NewMock<IStatePropertyReflector> ();
-      _accessTypeReflectorMock = _mocks.NewMock<IAccessTypeReflector> ();
+      _mocks = new MockRepository ();
+      _statePropertyReflectorMock = _mocks.CreateMock<IStatePropertyReflector> ();
+      _accessTypeReflectorMock = _mocks.CreateMock<IAccessTypeReflector> ();
       _classReflector = new ClassReflector (_statePropertyReflectorMock, _accessTypeReflectorMock);
       _cache = new MetadataCache ();
 
@@ -79,34 +79,16 @@ namespace Rubicon.Security.UnitTests.Metadata
       paperFileAccessTypes.Add (AccessTypes.Journalize);
       paperFileAccessTypes.Add (AccessTypes.Archive);
 
-      Expect.Once.On (_statePropertyReflectorMock)
-          .Method ("GetMetadata")
-          .With (typeof (PaperFile).GetProperty ("Confidentiality"), _cache)
-          .Will (Return.Value (_confidentialityProperty));
-
-      Expect.Once.On (_statePropertyReflectorMock)
-          .Method ("GetMetadata")
-          .With (typeof (PaperFile).GetProperty ("State"), _cache)
-          .Will (Return.Value (_stateProperty));
-
-      Expect.Once.On (_statePropertyReflectorMock)
-          .Method ("GetMetadata")
-          .With (typeof (File).GetProperty ("Confidentiality"), _cache)
-          .Will (Return.Value (_confidentialityProperty));
-
-      Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypesFromType")
-          .With (typeof (File), _cache)
-          .Will (Return.Value (fileAccessTypes));
-
-      Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypesFromType")
-          .With (typeof (PaperFile), _cache)
-          .Will (Return.Value (paperFileAccessTypes));
+      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache)).Return (_confidentialityProperty);
+      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (PaperFile).GetProperty ("State"), _cache)).Return (_stateProperty);
+      Expect.Call (_statePropertyReflectorMock.GetMetadata (typeof (File).GetProperty ("Confidentiality"), _cache)).Return (_confidentialityProperty);
+      Expect.Call (_accessTypeReflectorMock.GetAccessTypesFromType (typeof (File), _cache)).Return (fileAccessTypes);
+      Expect.Call (_accessTypeReflectorMock.GetAccessTypesFromType(typeof (PaperFile), _cache)).Return (paperFileAccessTypes);
+      _mocks.ReplayAll ();
 
       SecurableClassInfo info = _classReflector.GetMetadata (typeof (PaperFile), _cache);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
 
       Assert.IsNotNull (info);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile, Rubicon.Security.UnitTests.TestDomain", info.Name);

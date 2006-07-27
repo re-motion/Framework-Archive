@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security.Metadata;

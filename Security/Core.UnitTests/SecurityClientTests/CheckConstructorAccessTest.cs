@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using NUnit.Framework;
-using NMock2;
 
 using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Metadata;

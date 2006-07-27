@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 
 using NUnit.Framework;
-using NMock2;
+using Rhino.Mocks;
 
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IClassReflector _classReflectorMock;
     private IAbstractRoleReflector _abstractRoleReflectorMock;
     private IAccessTypeReflector _accessTypeReflectorMock;
@@ -40,10 +40,10 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _accessTypeReflectorMock = _mocks.NewMock<IAccessTypeReflector> ();
-      _classReflectorMock = _mocks.NewMock < IClassReflector> ();
-      _abstractRoleReflectorMock = _mocks.NewMock <IAbstractRoleReflector> ();
+      _mocks = new MockRepository ();
+      _accessTypeReflectorMock = _mocks.CreateMock<IAccessTypeReflector> ();
+      _classReflectorMock = _mocks.CreateMock<IClassReflector> ();
+      _abstractRoleReflectorMock = _mocks.CreateMock<IAbstractRoleReflector> ();
       _assemblyReflector = new AssemblyReflector (_accessTypeReflectorMock, _classReflectorMock, _abstractRoleReflectorMock);
       _cache = new MetadataCache ();
     }
@@ -62,40 +62,23 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assembly securityAssembly = typeof (IAccessTypeReflector).Assembly;
       Assembly assembly = typeof (File).Assembly;
 
-      Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypesFromAssembly")
-          .With (securityAssembly, _cache)
-          .Will (Return.Value (new List<EnumValueInfo> (new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write})));
-
-      Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypesFromAssembly")
-          .With (assembly, _cache)
-          .Will (Return.Value (new List<EnumValueInfo> (new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive })));
-
-      Expect.Once.On (_abstractRoleReflectorMock)
-          .Method ("GetAbstractRoles")
-          .With (securityAssembly, _cache)
-          .Will (Return.Value (new List<EnumValueInfo> ()));
-
-      Expect.Once.On (_abstractRoleReflectorMock)
-          .Method ("GetAbstractRoles")
-          .With (assembly, _cache)
-          .Will (Return.Value (new List<EnumValueInfo> (
-              new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator })));
-
-      Expect.Once.On (_classReflectorMock)
-          .Method ("GetMetadata")
-          .With (typeof (File), _cache)
-          .Will (Return.Value (new SecurableClassInfo()));
-
-      Expect.Once.On (_classReflectorMock)
-          .Method ("GetMetadata")
-          .With (typeof (PaperFile), _cache)
-          .Will (Return.Value (new SecurableClassInfo ()));
+      Expect
+          .Call (_accessTypeReflectorMock.GetAccessTypesFromAssembly(securityAssembly, _cache))
+          .Return (new List<EnumValueInfo> (new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write}));
+      Expect
+        .Call (_accessTypeReflectorMock.GetAccessTypesFromAssembly (assembly, _cache))
+        .Return (new List<EnumValueInfo> (new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive }));
+      Expect.Call (_abstractRoleReflectorMock.GetAbstractRoles (securityAssembly, _cache)).Return (new List<EnumValueInfo> ());
+      Expect
+          .Call (_abstractRoleReflectorMock.GetAbstractRoles (assembly, _cache))
+          .Return (new List<EnumValueInfo> (new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }));
+      Expect.Call (_classReflectorMock.GetMetadata (typeof (File), _cache)).Return (new SecurableClassInfo());
+      Expect.Call (_classReflectorMock.GetMetadata (typeof (PaperFile), _cache)).Return (new SecurableClassInfo ());
+      _mocks.ReplayAll ();
 
       _assemblyReflector.GetMetadata (assembly, _cache);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
   }
 }
