@@ -115,7 +115,7 @@ public class ClientTransaction : ITransaction
   private DataManager _dataManager;
   private QueryManager _queryManager;
   private ClientTransactionExtensionCollection _extensions;
-  private Dictionary<string, object> _customProperties;
+  private Dictionary<string, object> _applicationData;
 
   // construction and disposing
 
@@ -126,7 +126,7 @@ public class ClientTransaction : ITransaction
   {
     _dataManager = new DataManager (this);
     _extensions = new ClientTransactionExtensionCollection ();
-    _customProperties = new Dictionary<string, object> ();
+    _applicationData = new Dictionary<string, object> ();
   }
 
   // methods and properties
@@ -658,9 +658,13 @@ public class ClientTransaction : ITransaction
     }
   }
 
-  public Dictionary<string, object> CustomProperties
+  /// <summary>
+  /// Gets a <see cref="System.Collections.Generic.Dictionary {TKey, TValue}"/> to store application specific objects 
+  /// within the <see cref="ClientTransaction"/> which have the same lifetime.
+  /// </summary>
+  public Dictionary<string, object> ApplicationData
   {
-    get { return _customProperties; }
+    get { return _applicationData; }
   }
 
   private void BeginCommit ()

@@ -605,10 +605,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void CustomProperties ()
+    public void ApplicationData ()
     {
-      Assert.IsNotNull (ClientTransaction.Current.CustomProperties);
-      Assert.IsAssignableFrom (typeof (Dictionary<string, object>), ClientTransaction.Current.CustomProperties);
+      Assert.IsNotNull (ClientTransaction.Current.ApplicationData);
+      Assert.IsAssignableFrom (typeof (Dictionary<string, object>), ClientTransaction.Current.ApplicationData);
     }
   }
 }
