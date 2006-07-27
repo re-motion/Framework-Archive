@@ -50,7 +50,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted_WithinSecurityFreeSection ()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
       _testHelper.ReplayAll ();
@@ -98,6 +98,29 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), "InstanceMethod");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+      }
     }
   }
 }

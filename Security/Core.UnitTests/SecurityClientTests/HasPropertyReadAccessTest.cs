@@ -50,7 +50,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted_WithinSecurityFreeSection ()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessType.First);
       _testHelper.ReplayAll ();
@@ -115,6 +115,29 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "InstanceProperty");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+      }
     }
   }
 }

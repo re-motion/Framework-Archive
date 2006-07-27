@@ -132,6 +132,9 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
+      if (requiredAccessTypeEnums == null)
+        throw new InvalidOperationException ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
+
       return HasAccess (securableObject, methodName, requiredAccessTypeEnums, user);
     }
 
@@ -163,6 +166,9 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType (), propertyName);
+      if (requiredAccessTypeEnums == null)
+        throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.");
+      
       if (requiredAccessTypeEnums.Length == 0)
         requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Read };
 
@@ -197,6 +203,9 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType (), propertyName);
+      if (requiredAccessTypeEnums == null)
+        throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyWritePermissions evaluated and returned null.");
+      
       if (requiredAccessTypeEnums.Length == 0)
         requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Edit };
 
@@ -264,6 +273,9 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
+      if (requiredAccessTypeEnums == null)
+        throw new InvalidOperationException ("IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.");
+      
       return HasStatelessAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 
@@ -297,6 +309,9 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableClass, methodName);
+      if (requiredAccessTypeEnums == null)
+        throw new InvalidOperationException ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
+      
       return HasStatelessAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 

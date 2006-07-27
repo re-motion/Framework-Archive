@@ -47,7 +47,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted_WithinSecurityFreeSection ()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ReplayAll ();
 

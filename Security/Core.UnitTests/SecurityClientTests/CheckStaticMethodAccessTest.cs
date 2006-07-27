@@ -46,7 +46,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted_WithinSecurityFreeSection ()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessType.First);
       _testHelper.ReplayAll ();
@@ -75,12 +75,35 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
         "The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("StaticMethod");
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod");
       _testHelper.ReplayAll ();
 
       using (new SecurityFreeSection ())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "StaticMethod");
+        _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
       }
     }
   }

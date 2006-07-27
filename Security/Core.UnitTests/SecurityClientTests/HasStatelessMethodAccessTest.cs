@@ -50,7 +50,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Test_AccessGranted_WithinSecurityFreeSection ()
+    public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessType.First);
       _testHelper.ReplayAll ();
@@ -87,6 +87,29 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       using (new SecurityFreeSection ())
       {
         _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "InstanceMethod");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("StaticMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "StaticMethod");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
+    {
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("StaticMethod", (Enum[]) null);
+      _testHelper.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "StaticMethod");
       }
     }
   }
