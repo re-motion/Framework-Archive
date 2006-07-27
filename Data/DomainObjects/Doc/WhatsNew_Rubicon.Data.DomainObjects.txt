@@ -1,3 +1,9 @@
+1.7.18.0
+========
+
+- Property ClientTransaction.CustomProperties vom Typ Dictionary<string, object> hinzugefügt.
+
+
 1.7.13.0
 ========
 

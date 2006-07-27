@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -603,5 +604,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsTrue (ClientTransaction.Current.HasChanged ());
     }
 
+    [Test]
+    public void CustomProperties ()
+    {
+      Assert.IsNotNull (ClientTransaction.Current.CustomProperties);
+      Assert.IsAssignableFrom (typeof (Dictionary<string, object>), ClientTransaction.Current.CustomProperties);
+    }
   }
 }

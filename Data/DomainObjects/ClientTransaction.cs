@@ -115,6 +115,7 @@ public class ClientTransaction : ITransaction
   private DataManager _dataManager;
   private QueryManager _queryManager;
   private ClientTransactionExtensionCollection _extensions;
+  private Dictionary<string, object> _customProperties;
 
   // construction and disposing
 
@@ -125,6 +126,7 @@ public class ClientTransaction : ITransaction
   {
     _dataManager = new DataManager (this);
     _extensions = new ClientTransactionExtensionCollection ();
+    _customProperties = new Dictionary<string, object> ();
   }
 
   // methods and properties
@@ -654,6 +656,11 @@ public class ClientTransaction : ITransaction
 
       return _queryManager; 
     }
+  }
+
+  public Dictionary<string, object> CustomProperties
+  {
+    get { return _customProperties; }
   }
 
   private void BeginCommit ()
