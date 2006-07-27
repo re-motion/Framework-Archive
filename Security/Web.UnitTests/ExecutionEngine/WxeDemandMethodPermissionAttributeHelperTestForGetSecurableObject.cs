@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security.Web.UnitTests.Domain;
@@ -20,7 +19,6 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     // static members
 
     // member fields
-    private Mockery _mocks;
     private WxeDemandTargetMethodPermissionAttribute _attribute;
     private TestFunctionWithThisObjectAsSecondParameter _functionWithThisObjectAsSecondParamter;
 
@@ -35,7 +33,6 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
       _attribute = new WxeDemandTargetMethodPermissionAttribute ("Read");
 
       object someObject = new object ();

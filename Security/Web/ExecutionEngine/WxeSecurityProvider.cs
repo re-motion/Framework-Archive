@@ -29,6 +29,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("function", function);
 
+      if (SecurityFreeSection.IsActive)
+        return;
+
       WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return;
@@ -58,6 +61,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("function", function);
 
+      if (SecurityFreeSection.IsActive)
+        return true;
+
       WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return true;
@@ -83,6 +89,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
     public bool HasStatelessAccess (Type functionType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
+
+      if (SecurityFreeSection.IsActive)
+        return true;
 
       WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (functionType);
       if (attribute == null)

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 
 using Rubicon.Utilities;
 using System.Security.Principal;
@@ -20,7 +20,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IPrincipal _user;
     private ISecurityService _mockSecurityService;
     private IUserProvider _mockUserProvider;
@@ -32,65 +32,47 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
 
     public WebPermissionProviderTestHelper ()
     {
-      _mocks = new Mockery ();
+      _mocks = new MockRepository ();
       
-      _mockSecurityService = _mocks.NewMock<ISecurityService> ();
-      _mockObjectSecurityStrategy = _mocks.NewMock<IObjectSecurityStrategy> ();
-      _mockFunctionalSecurityStrategy = _mocks.NewMock<IFunctionalSecurityStrategy> ();
-      _mockWxeSecurityProvider = _mocks.NewMock<IWxeSecurityProvider> ();
+      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
+      _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
+      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _mockUserProvider = _mocks.NewMock<IUserProvider> ();
-      Stub.On (_mockUserProvider)
-          .Method ("GetUser")
-          .WithNoArguments ()
-          .Will (Return.Value (_user));
+      _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
+      SetupResult.For (_mockUserProvider.GetUser()).Return (_user);
     }
 
     // methods and properties
 
-    public void ExpectObjectSecurityStrategyToBeNeverCalled ()
+    public void ExpectHasAccess (Enum[] accessTypeEnums, bool returnValue)
     {
-      Expect.Never.On (_mockObjectSecurityStrategy);
+      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
+      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, accessTypes)).Return (returnValue);
     }
 
-    public void ExpectFunctionalSecurityStrategyToBeNeverCalled ()
+    public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypeEnums, bool returnValue)
     {
-      Expect.Never.On (_mockObjectSecurityStrategy);
-    }
-
-    public void ExpectWxeSecurityProviderToBeNeverCalled ()
-    {
-      Expect.Never.On (_mockWxeSecurityProvider);
-    }
-
-    public void ExpectHasAccess (Enum[] accessTypes, bool returnValue)
-    {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-         .Method ("HasAccess")
-         .With (_mockSecurityService, _user, Array.ConvertAll<Enum, AccessType> (accessTypes, AccessType.Get))
-         .Will (Return.Value (returnValue));
-    }
-
-    public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypes, bool returnValue)
-    {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-         .Method ("HasAccess")
-         .With (typeof (SecurableObject), _mockSecurityService, _user, Array.ConvertAll<Enum, AccessType> (accessTypes, AccessType.Get))
-         .Will (Return.Value (returnValue));
+        AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
+        Expect
+            .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityService, _user, accessTypes))
+            .Return (returnValue);
     }
 
     public void ExpectHasStatelessAccessForWxeFunction (Type functionType, bool returnValue)
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-         .Method ("HasStatelessAccess")
-         .With (functionType)
-         .Will (Return.Value (returnValue));
+      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (functionType)).Return (returnValue);
     }
 
-    public void VerifyAllExpectationsHaveBeenMet ()
+    public void ReplayAll ()
     {
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.ReplayAll ();
+    }
+
+    public void VerifyAll ()
+    {
+      _mocks.VerifyAll ();
     }
 
     public ISecurityService SecurityService
@@ -101,11 +83,6 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public IUserProvider UserProvider
     {
       get { return _mockUserProvider; }
-    }
-
-    public IObjectSecurityStrategy ObjectSecurityStrategy
-    {
-      get { return _mockObjectSecurityStrategy; }
     }
 
     public IFunctionalSecurityStrategy FunctionalSecurityStrategy

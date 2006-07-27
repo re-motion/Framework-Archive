@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI;
 
-using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security.Web.UI;
@@ -41,10 +40,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessGranted ()
     {
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), true);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
@@ -52,10 +52,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessDenied ()
     {
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), false);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
@@ -24,7 +24,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     // member fields
 
     private IWxeSecurityProvider _securityProvider;
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
     private ISecurityService _securityService;
     private IUserProvider _userProvider;
@@ -42,11 +42,11 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _securityProvider = new WxeSecurityProvider ();
 
-      _mocks = new Mockery ();
+      _mocks = new MockRepository ();
 
-      _securityService = _mocks.NewMock<ISecurityService> ();
-      _userProvider = _mocks.NewMock<IUserProvider> ();
-      _mockFunctionalSecurityStrategy = _mocks.NewMock<IFunctionalSecurityStrategy> ();
+      _securityService = _mocks.CreateMock<ISecurityService> ();
+      _userProvider = _mocks.CreateMock<IUserProvider> ();
+      _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
       SecurityConfiguration.Current.SecurityService = _securityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
@@ -62,40 +62,34 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    public void CheckAccess ()
+    public void CheckAccess_AccessGranted ()
     {
-      Expect.Never.On (_securityService);
-      Expect.Never.On (_userProvider);
-      Expect.Never.On (_mockFunctionalSecurityStrategy);
-      
+      _mocks.ReplayAll ();
+
       _securityProvider.CheckAccess (new TestFunctionWithoutPermissions ());
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
 
     [Test]
-    public void HasAccess ()
+    public void HasAccess_AccessGranted ()
     {
-      Expect.Never.On (_securityService);
-      Expect.Never.On (_userProvider);
-      Expect.Never.On (_mockFunctionalSecurityStrategy);
+      _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithoutPermissions ());
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasStatelessAccess ()
+    public void HasStatelessAccess_AccessGranted ()
     {
-      Expect.Never.On (_securityService);
-      Expect.Never.On (_userProvider);
-      Expect.Never.On (_mockFunctionalSecurityStrategy);
+      _mocks.ReplayAll ();
       
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithoutPermissions));
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
   }

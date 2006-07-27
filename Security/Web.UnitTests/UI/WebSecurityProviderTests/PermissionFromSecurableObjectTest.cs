@@ -4,7 +4,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Web.UI;
 
-using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security.Configuration;
@@ -42,11 +41,26 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted_WithoutHandler ()
     {
-      _testHelper.ExpectObjectSecurityStrategyToBeNeverCalled ();
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), null);
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasAccessGranted_WithinSecurityFreeSection ()
+    {
+      _testHelper.ReplayAll ();
+
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+      }
+
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
@@ -54,10 +68,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessGranted ()
     {
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, true);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
@@ -65,10 +80,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessDenied ()
     {
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, false);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
@@ -76,10 +92,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessGranted_WithSecurableObjectSetToNull ()
     {
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, true);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
@@ -87,10 +104,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public void HasAccessDenied_WithSecurableObjectSetToNull ()
     {
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, false);
+      _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 

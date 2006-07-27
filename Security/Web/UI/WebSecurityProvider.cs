@@ -32,6 +32,9 @@ namespace Rubicon.Security.Web.UI
       if (handler == null)
         return true;
 
+      if (SecurityFreeSection.IsActive)
+        return true;
+
       List<DemandTargetPermissionAttribute> attributes = GetPermissionAttributes (handler.GetInvocationList ());
 
       bool hasAccess = true;

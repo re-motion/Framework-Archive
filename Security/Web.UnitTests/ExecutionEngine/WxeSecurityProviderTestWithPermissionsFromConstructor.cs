@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
@@ -25,9 +25,9 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     // member fields
 
     private IWxeSecurityProvider _securityProvider;
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private ISecurityService _securityService;
+    private ISecurityService _mockSecurityService;
     private IUserProvider _userProvider;
     private IPrincipal _user;
 
@@ -44,18 +44,15 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _securityProvider = new WxeSecurityProvider ();
 
-      _mocks = new Mockery ();
+      _mocks = new MockRepository ();
 
-      _securityService = _mocks.NewMock<ISecurityService> ();
+      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _userProvider = _mocks.NewMock<IUserProvider> ();
-      Stub.On (_userProvider)
-          .Method ("GetUser")
-          .WithNoArguments ()
-          .Will (Return.Value (_user));
-      _mockFunctionalSecurityStrategy = _mocks.NewMock<IFunctionalSecurityStrategy> ();
+      _userProvider = _mocks.CreateMock<IUserProvider> ();
+      SetupResult.For (_userProvider.GetUser ()).Return (_user);
+      _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
-      SecurityConfiguration.Current.SecurityService = _securityService;
+      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
     }
@@ -69,83 +66,122 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    public void CheckAccessGranted ()
+    public void CheckAccess_AccessGranted ()
     {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (true));
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      _mocks.ReplayAll ();
 
       _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+
+      _mocks.VerifyAll ();
     }
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException))]
-    public void CheckAccessDenied ()
+    public void CheckAccess_AccessDenied ()
     {
-      Stub.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (false));
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      _mocks.ReplayAll ();
 
       _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
     }
 
     [Test]
-    public void HasAccessGranted ()
+    public void CheckAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (true));
+      _mocks.ReplayAll ();
+
+      using (new SecurityFreeSection ())
+      {
+        _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
+      }
+
+      _mocks.VerifyAll ();
+    }
+
+    [Test]
+    public void HasAccess_AccessGranted ()
+    {
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccessDenied ()
+    public void HasAccess_AccessDenied ()
     {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (false));
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
     [Test]
-    public void HasStatelessAccessGranted ()
+    public void HasAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (true));
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
+      }
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasStatelessAccessDenied ()
+    public void HasStatelessAccess_AccessGranted ()
     {
-      Expect.Once.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
-          .Will (Return.Value (false));
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasStatelessAccess_AccessDenied ()
+    {
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      _mocks.ReplayAll ();
+
+      bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+
+      _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
+    }
+
+    [Test]
+    public void HasStatelessAccess_WithinSecurityFreeSection_AccessGranted ()
+    {
+      _mocks.ReplayAll ();
+
+      bool hasAccess;
+      using (new SecurityFreeSection ())
+      {
+        hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+      }
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    private void ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
+    {
+      Expect
+          .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityService, _user, AccessType.Get (accessTypeEnum)))
+          .Return (returnValue);
     }
   }
 }
