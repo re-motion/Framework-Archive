@@ -52,6 +52,16 @@ namespace Rubicon.Security.UnitTests
       Assert.AreSame (AccessType.Get (TestAccessType.Third), AccessType.Get (TestAccessType.Third));
     }
 
+    [Test]
+    public void Test_ToString ()
+    {
+      EnumWrapper wrapper = new EnumWrapper(TestAccessType.First);
+      AccessType accessType = AccessType.Get (wrapper);
+
+      Assert.AreEqual (wrapper.ToString (), accessType.ToString ());
+    }
+
+
     private void ClearAccessTypeCache ()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (AccessType), "s_cache", new Dictionary<EnumWrapper, AccessType> ());
