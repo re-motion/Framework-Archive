@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mapping application="Rubicon.Security.Data.DomainObjects.UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\Data\DomainObjects\Schemas\mapping.xsd">
+  <classes>
+    <class id="SecurableObject">
+      <type>Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject, Rubicon.Security.Data.DomainObjects.UnitTests</type>
+      <entity name="SecurableObject"/>
+      <storageProviderID>StorageProvider</storageProviderID>
+      <properties>
+        <property name="StringProperty">
+          <type>string</type>
+        </property>
+        <property name="OtherStringProperty">
+          <type>string</type>
+        </property>
+        <relationProperty name="Parent" relationID="ChildrenToParentSecurableObject" cardinality="one" isMandatory="false">
+          <column>ParentID</column>
+        </relationProperty>
+        <relationProperty name="Children" relationID="ChildrenToParentSecurableObject" cardinality="many" isMandatory="false"/>
+        <relationProperty name="OtherParent" relationID="OtherChildrenToOtherParentSecurableObject" cardinality="one" isMandatory="false">
+          <column>OtherParentID</column>
+        </relationProperty>
+        <relationProperty name="OtherChildren" relationID="OtherChildrenToOtherParentSecurableObject" cardinality="many" isMandatory="false"/>
+      </properties>
+    </class>
+
+    <class id="NonSecurableObject">
+      <type>Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.NonSecurableObject, Rubicon.Security.Data.DomainObjects.UnitTests</type>
+      <entity name="NonSecurableObject"/>
+      <storageProviderID>StorageProvider</storageProviderID>
+      <properties>
+        <property name="StringProperty">
+          <type>string</type>
+        </property>
+        <relationProperty name="Parent" relationID="ChildrenToParentNonSecurableObject" cardinality="one" isMandatory="false">
+          <column>ParentID</column>
+        </relationProperty>
+        <relationProperty name="Children" relationID="ChildrenToParentNonSecurableObject" cardinality="many" isMandatory="false"/>
+      </properties>
+    </class>
+  </classes>
+</mapping>

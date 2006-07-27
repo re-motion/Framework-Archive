@@ -26,10 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // methods and properties
 
-    public Cache<Tupel<SecurityContext, string>, AccessType[]> Cache
-    {
-      get { return _cache; }
-    }
+    #region IClientTransactionExtension Implementation
 
     void IClientTransactionExtension.NewObjectCreating (Type type)
     {
@@ -101,6 +98,13 @@ namespace Rubicon.Security.Data.DomainObjects
 
     void IClientTransactionExtension.RolledBack (DomainObjectCollection changedDomainObjects)
     {
+    }
+
+    #endregion
+
+    public Cache<Tupel<SecurityContext, string>, AccessType[]> Cache
+    {
+      get { return _cache; }
     }
   }
 }

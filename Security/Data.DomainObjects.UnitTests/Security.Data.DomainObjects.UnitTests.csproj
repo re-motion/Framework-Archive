@@ -33,6 +33,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=2.8.9.24225, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -44,6 +48,20 @@
     <Compile Include="ClientTransactionAccessTypeCacheProviderTest.cs" />
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\BaseTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\RelationChangingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\RelationReadingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\PropertyValueChangingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\PropertyValueReadingTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\InterfaceTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\FilterQueryResultTest.cs" />
+    <Compile Include="SecurityClientTransactionExtensionTests\SecurityClientTransactionExtensionTestHelper.cs" />
+    <Compile Include="TestDomain\StubStorageProvider.cs" />
+    <Compile Include="TestDomain\NonSecurableObject.cs" />
+    <Compile Include="TestDomain\SecurableObject.cs" />
+    <Compile Include="TestDomain\TestAccessTypes.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Data.DomainObjects.UnitTests.build" />
   </ItemGroup>
@@ -51,6 +69,10 @@
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
@@ -65,12 +87,22 @@
       <Name>Security.Data.DomainObjects</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <MappingFiles Include="Security.Data.DomainObjects.UnitTests.Mapping.xml">
+    </MappingFiles>
+    <MappingFiles Include="Security.Data.DomainObjects.UnitTests.StorageProviders.xml">
+    </MappingFiles>
+    <MappingFiles Include="Security.Data.DomainObjects.UnitTests.Queries.xml">
+    </MappingFiles>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+  </Target>
 </Project>
