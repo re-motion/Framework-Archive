@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using NUnit.Framework;
-using NMock2;
+using Rhino.Mocks;
 
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.NullableValueTypes;
@@ -17,24 +17,31 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
   [TestFixture]
   public class BasePropertySecurityTest
   {
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IObjectSecurityProvider _mockObjectSecurityProvider;
-    private StringProperty _property;
-    private SecurableSearchObject _securableSearchObject;
+    private StringProperty _securableProperty;
+    private StringProperty _nonSecurableProperty;
+    private StringProperty _nonSecurablePropertyReadOnly;
+    private SecurableSearchObject _securableObject;
+    private TestSearchObject _nonSecurableObject;
 
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _mockObjectSecurityProvider = _mocks.NewMock<IObjectSecurityProvider> ();
+      _mocks = new MockRepository ();
+      _mockObjectSecurityProvider = _mocks.CreateMock<IObjectSecurityProvider> ();
 
       SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
-      _securableSearchObject = new SecurableSearchObject (_mocks.NewMock<IObjectSecurityStrategy> ());
+      _securableObject = new SecurableSearchObject (_mocks.CreateMock<IObjectSecurityStrategy> ());
 
-      Type domainObjectType = typeof (SecurableSearchObject);
-      PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
-      _property = new StringProperty (stringPropertyInfo, false, typeof (string), false, new NaInt32 (200));
-    }
+      Type securableType = typeof (SecurableSearchObject);
+      _securableProperty = new StringProperty (securableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
+
+      Type nonSecurableType = typeof (TestSearchObject);
+      _nonSecurablePropertyReadOnly = new StringProperty (nonSecurableType.GetProperty ("ReadOnlyStringProperty"), false, typeof (string), false, 200);
+      _nonSecurableProperty = new StringProperty (nonSecurableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
+      _nonSecurableObject = new TestSearchObject ();
+ }
 
     [TearDown]
     public void TearDown ()
@@ -46,104 +53,115 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     public void IsAccessibleWithoutObjectSecurityProvider ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
-      Assert.AreEqual (true, _property.IsAccessible (_securableSearchObject));
+      _mocks.ReplayAll ();
+
+      bool isAccessible = _securableProperty.IsAccessible (_securableObject);
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isAccessible);
     }
 
     [Test]
     public void IsAccessible ()
     {
-      Expect.Once.On (_mockObjectSecurityProvider)
-          .Method ("HasAccessOnGetAccessor")
-          .With (_securableSearchObject, _property.PropertyInfo.Name)
-          .Will (Return.Value (true));
+      ExpectHasAccessOnGetAccessor (true);
+      _mocks.ReplayAll ();
 
-      Assert.AreEqual (true, _property.IsAccessible (_securableSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      bool isAccessible = _securableProperty.IsAccessible (_securableObject);
+
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isAccessible);
     }
 
     [Test]
     public void IsNotAccessible ()
     {
-      Expect.Once.On (_mockObjectSecurityProvider)
-          .Method ("HasAccessOnGetAccessor")
-          .With (_securableSearchObject, _property.PropertyInfo.Name)
-          .Will (Return.Value (false));
+      ExpectHasAccessOnGetAccessor (false);
+      _mocks.ReplayAll ();
 
-      Assert.AreEqual (false, _property.IsAccessible (_securableSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      bool isAccessible = _securableProperty.IsAccessible (_securableObject);
+
+      _mocks.VerifyAll ();
+      Assert.IsFalse (isAccessible);
     }
 
     [Test]
     public void IsAccessibleForNonSecurableType ()
     {
-      Expect.Never.On (_mockObjectSecurityProvider);
+      _mocks.ReplayAll ();
 
-      Type domainObjectType = typeof (TestSearchObject);
-      PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
-      BaseProperty property = new StringProperty (stringPropertyInfo, false, typeof (string), false, new NaInt32 (200));
+      bool isAccessible = _nonSecurableProperty.IsAccessible (_nonSecurableObject);
 
-      TestSearchObject testSearchObject = new TestSearchObject ();
-      Assert.AreEqual (true, property.IsAccessible (testSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isAccessible);
     }
 
     [Test]
     public void IsNotReadOnlyWithoutObjectSecurityProvider ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
-      Assert.AreEqual (false, _property.IsReadOnly (_securableSearchObject));
+      _mocks.ReplayAll ();
+
+      bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
+    
+      _mocks.VerifyAll ();
+      Assert.IsFalse (isReadOnly);
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Expect.Once.On (_mockObjectSecurityProvider)
-          .Method ("HasAccessOnSetAccessor")
-          .With (_securableSearchObject, _property.PropertyInfo.Name)
-          .Will (Return.Value (false));
+      ExpectHasAccessOnSetAccessor (false);
+      _mocks.ReplayAll ();
 
-      Assert.AreEqual (true, _property.IsReadOnly (_securableSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
+      
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isReadOnly);
     }
 
     [Test]
     public void IsNotReadOnly ()
     {
-      Expect.Once.On (_mockObjectSecurityProvider)
-          .Method ("HasAccessOnSetAccessor")
-          .With (_securableSearchObject, _property.PropertyInfo.Name)
-          .Will (Return.Value (true));
+      ExpectHasAccessOnSetAccessor (true);
+      _mocks.ReplayAll ();
 
-      Assert.AreEqual (false, _property.IsReadOnly (_securableSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
+
+      _mocks.VerifyAll ();
+      Assert.IsFalse (isReadOnly);
     }
 
     [Test]
     public void IsNotReadOnlyForNonSecurableType ()
     {
-      Expect.Never.On (_mockObjectSecurityProvider);
+      _mocks.ReplayAll ();
 
-      Type domainObjectType = typeof (TestSearchObject);
-      PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
-      BaseProperty property = new StringProperty (stringPropertyInfo, false, typeof (string), false, new NaInt32 (200));
-
-      TestSearchObject testSearchObject = new TestSearchObject ();
-      Assert.AreEqual (false, property.IsReadOnly (testSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      bool isReadOnly = _nonSecurableProperty.IsReadOnly (_nonSecurableObject);
+      
+      _mocks.VerifyAll ();
+      Assert.IsFalse (isReadOnly);
     }
 
     [Test]
     public void IsReadOnlyForNonSecurableType ()
     {
-      Expect.Never.On (_mockObjectSecurityProvider);
+      _mocks.ReplayAll ();
 
-      Type domainObjectType = typeof (TestSearchObject);
-      PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("ReadOnlyStringProperty");
-      BaseProperty property = new StringProperty (stringPropertyInfo, false, typeof (string), false, new NaInt32 (200));
+      bool isReadOnly = _nonSecurablePropertyReadOnly.IsReadOnly (_nonSecurableObject);
 
-      TestSearchObject testSearchObject = new TestSearchObject ();
-      Assert.AreEqual (true, property.IsReadOnly (testSearchObject));
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
+      Assert.IsTrue (isReadOnly);
+    }
+
+    private void ExpectHasAccessOnGetAccessor (bool returnValue)
+    {
+      Expect.Call (_mockObjectSecurityProvider.HasAccessOnGetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
+    }
+
+    private void ExpectHasAccessOnSetAccessor (bool returnValue)
+    {
+      Expect.Call (_mockObjectSecurityProvider.HasAccessOnSetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
     }
   }
 }
