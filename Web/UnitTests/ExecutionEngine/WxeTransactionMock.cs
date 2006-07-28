@@ -89,9 +89,9 @@ public class WxeTransactionMock: WxeTransactionBase<TestTransaction>
     return base.CreateChildTransaction (parentTransaction);
   }
 
-  public new WxeTransactionBase<TestTransaction> ParentTransaction
+  public new WxeTransactionBase<TestTransaction> GetParentTransaction()
   {
-    get { return base.ParentTransaction; }
+    return base.GetParentTransaction();
   }
 
   public bool HasCreatedRootTransaction

@@ -72,10 +72,15 @@ namespace Rubicon.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("wxeTransaction", wxeTransaction);
 
-      wxeTransaction.TransactionCommitting += new EventHandler (WxeTransaction_TransactionCommitting);
-      wxeTransaction.TransactionCommitted += new EventHandler (WxeTransaction_TransactionCommitted);
-      wxeTransaction.TransactionRollingBack += new EventHandler (WxeTransaction_TransactionRollingBack);
-      wxeTransaction.TransactionRolledBack += new EventHandler (WxeTransaction_TransactionRolledBack);
+      wxeTransaction.TransactionCreating += delegate { OnTransactionCreating (); };
+      wxeTransaction.TransactionCreated += delegate (object sender, WxeTransactionEventArgs<TTransaction> args) 
+          { 
+            OnTransactionCreated (args.Transaction); 
+          };
+      wxeTransaction.TransactionCommitting += delegate { OnCommitting (); };
+      wxeTransaction.TransactionCommitted += delegate { OnCommitted(); };
+      wxeTransaction.TransactionRollingBack += delegate { OnRollingBack (); };
+      wxeTransaction.TransactionRolledBack += delegate { OnRolledBack (); };
     }
 
     void IDeserializationCallback.OnDeserialization (Object sender)
@@ -85,100 +90,121 @@ namespace Rubicon.Web.ExecutionEngine
     }
 
     /// <summary> 
-    ///   Handles the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.TransactionCommitting"/> event.
+    ///   Called before creating the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/>. 
     /// </summary>
-    private void WxeTransaction_TransactionCommitting (object sender, EventArgs e)
+    protected virtual void OnTransactionCreating ()
     {
-      OnCommitting ();
+      if (TransactionCreating != null)
+        TransactionCreating (this, EventArgs.Empty);
     }
 
     /// <summary> 
-    ///   Handles the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.TransactionCommitted"/> event.
+    ///   Called after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been created.
     /// </summary>
-    private void WxeTransaction_TransactionCommitted (object sender, EventArgs e)
+    protected virtual void OnTransactionCreated (TTransaction transaction)
     {
-      OnCommitted ();
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      if (TransactionCreated != null)
+        TransactionCreated (this, new WxeTransactedFunctionEventArgs<TTransaction> (transaction));
     }
 
     /// <summary> 
-    ///   Handles the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.TransactionRollingBack"/> event.
+    ///   Called before committing the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/>. 
     /// </summary>
-    private void WxeTransaction_TransactionRollingBack (object sender, EventArgs e)
-    {
-      OnRollingBack ();
-    }
-
-    /// <summary> 
-    ///   Handles the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.TransactionRolledBack"/> event.
-    /// </summary>
-    private void WxeTransaction_TransactionRolledBack (object sender, EventArgs e)
-    {
-      OnRolledBack ();
-    }
-
-    /// <summary> Called before committing the <see cref="WxeTransactionBase{TTransaction}"/>. </summary>
     protected virtual void OnCommitting ()
     {
       if (Committing != null)
         Committing (this, EventArgs.Empty);
     }
 
-    /// <summary> Called after the <see cref="WxeTransactionBase{TTransaction}"/> has been committed. </summary>
+    /// <summary> 
+    ///   Called after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been committed. 
+    /// </summary>
     protected virtual void OnCommitted ()
     {
       if (Committed != null)
         Committed (this, EventArgs.Empty);
     }
 
-    /// <summary> Called before rolling the <see cref="WxeTransactionBase{TTransaction}"/> back. </summary>
+    /// <summary> 
+    ///   Called before rolling the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> back. 
+    /// </summary>
     protected virtual void OnRollingBack ()
     {
       if (RollingBack != null)
         RollingBack (this, EventArgs.Empty);
     }
 
-    /// <summary> Called after the <see cref="WxeTransactionBase{TTransaction}"/> has been rolled back. </summary>
+    /// <summary> 
+    ///   Called after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been rolled back. 
+    /// </summary>
     protected virtual void OnRolledBack ()
     {
       if (RolledBack != null)
         RolledBack (this, EventArgs.Empty);
     }
+    /// <summary> 
+    ///   Is fired before the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> is created. 
+    /// </summary>
+    /// <remarks>
+    ///   <note type="caution">
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
+    ///   </note>
+    /// </remarks>
+    [field: NonSerialized]
+    public event EventHandler TransactionCreating;
 
-    /// <summary> Is raises before the<see cref="WxeTransactionBase{TTransaction}"/> is committed. </summary>
+    /// <summary> 
+    ///   Is fired after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> is created. 
+    /// </summary>
+    /// <remarks>
+    ///   <note type="caution">
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
+    ///   </note>
+    /// </remarks>
+    [field: NonSerialized]
+    public event EventHandler<WxeTransactedFunctionEventArgs<TTransaction>> TransactionCreated;
+
+    /// <summary> 
+    ///   Is fired before the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> is committed. 
+    /// </summary>
     /// <remarks> 
     ///   <note type="caution">
-    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> 
-    ///     has been deserialized.
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
     ///   </note>
     /// </remarks>
     [field: NonSerialized]
     public event EventHandler Committing;
 
-    /// <summary> Is raised after the <see cref="WxeTransactionBase{TTransaction}"/> has been committed. </summary>
+    /// <summary> 
+    ///   Is fired after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been committed. 
+    /// </summary>
     /// <remarks> 
     ///   <note type="caution">
-    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> 
-    ///     has been deserialized.
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
     ///   </note>
     /// </remarks>
     [field: NonSerialized]
     public event EventHandler Committed;
 
-    /// <summary> Is raised before the <see cref="WxeTransactionBase{TTransaction}"/> is rolled back. </summary>
+    /// <summary> 
+    ///   Is fired before the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> is rolled back. 
+    /// </summary>
     /// <remarks> 
     ///   <note type="caution">
-    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> 
-    ///     has been deserialized.
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
     ///   </note>
     /// </remarks>
     [field: NonSerialized]
     public event EventHandler RollingBack;
 
-    /// <summary> Is raised after the <see cref="WxeTransactionBase{TTransaction}"/> has been rolled back. </summary>
+    /// <summary> 
+    ///   Is fired after the <see cref="WxeTransactionBase{TTransaction}"/>'s <see cref="WxeTransactionBase{TTransaction}.Transaction"/> has been rolled back. 
+    /// </summary>
     /// <remarks> 
     ///   <note type="caution">
-    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> 
-    ///     has been deserialized.
+    ///     The event handler must be reattached after the <see cref="WxeTransactedFunctionBase{TTransaction}"/> has been deserialized.
     ///   </note>
     /// </remarks>
     [field: NonSerialized]

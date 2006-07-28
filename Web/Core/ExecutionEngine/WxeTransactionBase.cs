@@ -89,18 +89,40 @@ namespace Rubicon.Web.ExecutionEngine
         if (hasCurrentTransaction && parentTransaction.Transaction != CurrentTransaction)
           throw new InvalidOperationException ("The parent transaction does not match the current transaction.");
 
+        OnTransactionCreating ();
         transaction = CreateChildTransaction (parentTransaction.Transaction);
         s_log.Debug ("Created child " + this.GetType ().Name + ".");
       }
       else
       {
+        OnTransactionCreating ();
         transaction = CreateRootTransaction ();
         if (transaction == null)
           throw new InvalidOperationException (string.Format ("{0}.CreateRootTransaction() evaluated and returned null.", GetType ().Name));
         s_log.Debug ("Created root " + this.GetType ().Name + ".");
       }
 
+      OnTransactionCreated (transaction);
       return transaction;
+    }
+
+    /// <summary> Called before the <see cref="Transaction"/> is created. </summary>
+    /// <remarks> Raises the <see cref="TransactionCreating"/> event. </remarks>
+    protected virtual void OnTransactionCreating ()
+    {
+      if (TransactionCreating != null)
+        TransactionCreating (this, EventArgs.Empty);
+    }
+    
+    /// <summary> Called after the <see cref="Transaction"/> has been created. </summary>
+    /// <param name="transaction"> The <typeparamref name="TTransaction"/> that has been created. </param>
+    /// <remarks> Raises the <see cref="TransactionCreated"/> event. </remarks>
+    protected virtual void OnTransactionCreated (TTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      
+      if (TransactionCreated != null)
+        TransactionCreated (this, new WxeTransactionEventArgs<TTransaction> (transaction));
     }
 
     /// <summary> Creates a new root transaction. </summary>
@@ -246,7 +268,7 @@ namespace Rubicon.Web.ExecutionEngine
       OnTransactionCommitted ();
     }
 
-    /// <summary> Called before the transaction is committed. </summary>
+    /// <summary> Called before the <see cref="Transaction"/> is committed. </summary>
     /// <remarks> Raises the <see cref="TransactionCommitting"/> event. </remarks>
     protected virtual void OnTransactionCommitting ()
     {
@@ -254,7 +276,7 @@ namespace Rubicon.Web.ExecutionEngine
         TransactionCommitting (this, EventArgs.Empty);
     }
 
-    /// <summary> Called after the transaction has been committed. </summary>
+    /// <summary> Called after the <see cref="Transaction"/> has been committed. </summary>
     /// <remarks> Raises the <see cref="TransactionCommitted"/> event. </remarks>
     protected virtual void OnTransactionCommitted ()
     {
@@ -300,7 +322,7 @@ namespace Rubicon.Web.ExecutionEngine
       OnTransactionRolledBack ();
     }
 
-    /// <summary> Called before the transaction is rolled back. </summary>
+    /// <summary> Called before the <see cref="Transaction"/> is rolled back. </summary>
     /// <remarks> Raises the <see cref="TransactionRollingBack"/> event. </remarks>
     protected virtual void OnTransactionRollingBack ()
     {
@@ -308,7 +330,7 @@ namespace Rubicon.Web.ExecutionEngine
         TransactionRollingBack (this, EventArgs.Empty);
     }
 
-    /// <summary> Called after the transaction has been rolled back. </summary>
+    /// <summary> Called after the <see cref="Transaction"/> has been rolled back. </summary>
     /// <remarks> Raises the <see cref="TransactionRolledBack"/> event. </remarks>
     protected virtual void OnTransactionRolledBack ()
     {
@@ -337,7 +359,25 @@ namespace Rubicon.Web.ExecutionEngine
       get { return _forceRoot; }
     }
 
-    /// <summary> Is raises before the transaction is committed. </summary>
+    /// <summary> Is fired before the <see cref="Transaction"/> is created. </summary>
+    /// <remarks>
+    ///   <note type="caution">
+    ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.
+    ///   </note>
+    /// </remarks>
+    [field: NonSerialized]
+    public event EventHandler TransactionCreating;
+
+    /// <summary> Is fired after the <see cref="Transaction"/> has been created. </summary>
+    /// <remarks>
+    ///   <note type="caution">
+    ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.
+    ///   </note>
+    /// </remarks>
+    [field: NonSerialized]
+    public event EventHandler<WxeTransactionEventArgs<TTransaction>> TransactionCreated;
+
+    /// <summary> Is fired before the <see cref="Transaction"/> is committed. </summary>
     /// <remarks>
     ///   <note type="caution">
     ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.
@@ -346,7 +386,7 @@ namespace Rubicon.Web.ExecutionEngine
     [field: NonSerialized]
     public event EventHandler TransactionCommitting;
 
-    /// <summary> Is fired after the transaction has been committed. </summary>
+    /// <summary> Is fired after the <see cref="Transaction"/> has been committed. </summary>
     /// <remarks>
     ///   <note type="caution">
     ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.
@@ -355,7 +395,7 @@ namespace Rubicon.Web.ExecutionEngine
     [field: NonSerialized]
     public event EventHandler TransactionCommitted;
 
-    /// <summary> Is fired before the transaction is rolled back. </summary>
+    /// <summary> Is fired before the <see cref="Transaction"/> is rolled back. </summary>
     /// <remarks>
     ///   <note type="caution">
     ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.
@@ -364,7 +404,7 @@ namespace Rubicon.Web.ExecutionEngine
     [field: NonSerialized]
     public event EventHandler TransactionRollingBack;
 
-    /// <summary> Is fired after the transaction has been rolled back. </summary>
+    /// <summary> Is fired after the <see cref="Transaction"/> has been rolled back. </summary>
     /// <remarks>
     ///   <note type="caution">
     ///     The event handler must be reattached after the <see cref="WxeTransactionBase{TTransaction}"/> has been deserialized.

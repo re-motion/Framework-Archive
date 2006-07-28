@@ -121,6 +121,8 @@
     <Compile Include="Configuration\WebConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxeTransactedFunctionEventArgs.cs" />
+    <Compile Include="ExecutionEngine\WxeTransactionEventArgs.cs" />
     <Compile Include="ExecutionEngine\WxeUnhandledException.cs" />
     <Compile Include="ExecutionEngine\IWxeSecurityProvider.cs" />
     <Compile Include="ExecutionEngine\NumberedMemberFinder.cs">

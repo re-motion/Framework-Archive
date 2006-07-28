@@ -3,6 +3,12 @@
 - WxeTransactionBase und WxeTransactedFunctionBase sind nun Generic Types. Innerhalb einer Parent-Child Hierarchy müssen alle WxeTransactionBase's
   den gleichen Typ für die ITransaction verwenden.
 
+- WxeTransactionBase:
+  * Neue Events TransactionCreating und TransactionCreated und dazugehörige OnTransactionCreating bzw OnTransactionCreated Methoden.
+
+- WxeTransactedFunctionBase:
+  * Neue Events TransactionCreating und TransactionCreated und dazugehörige OnTransactionCreating bzw OnTransactionCreated Methoden.
+
 1.7.16
 ======
 - Execution Engine URL Mapping akzeptiert nun Pfade relativ zum Application Root (Prefix: "~/") und Pfade relativ zum bin-Verzeichnis.
