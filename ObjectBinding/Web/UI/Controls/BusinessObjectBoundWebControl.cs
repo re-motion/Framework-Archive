@@ -60,9 +60,6 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 ///   <b>BusinessObjectBoundWebControl</b> is the <see langword="abstract"/> default implementation of 
 ///   <see cref="IBusinessObjectBoundWebControl"/>.
 /// </summary>
-/// <remarks>
-///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
-/// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
 // It is required to use a Designer from the same assambly as is the control (or the GAC etc), 
 // otherwise the VS 2003 Toolbox will have trouble loading the assembly.
@@ -250,8 +247,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   <para>
   ///     The <b>set accessor</b> passes the value to the base class's <b>Visible</b> property.
   ///   </para><para>
-  ///     The <b>get accessor</b> ANDs the base class's <b>Visible</b> setting with the value of the 
-  ///     <see cref="HasValidBinding"/> property cached during <see cref="OnLoad"/>.
+  ///     The <b>get accessor</b> ANDs the base class's <b>Visible</b> setting with the value of the <see cref="HasValidBinding"/> property.
   ///   </para>
   /// </value>
   /// <remarks>
