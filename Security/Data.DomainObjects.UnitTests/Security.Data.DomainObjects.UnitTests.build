@@ -11,7 +11,7 @@
       <nowarn>
       </nowarn> 
       <sources failonempty="true">
-        <include name="**/.cs" />
+        <include name="**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
