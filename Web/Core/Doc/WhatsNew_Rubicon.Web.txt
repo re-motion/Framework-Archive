@@ -1,3 +1,8 @@
+1.7.18
+======
+- WxeTransactionBase und WxeTransactedFunctionBase sind nun Generic Types. Innerhalb einer Parent-Child Hierarchy müssen alle WxeTransactionBase's
+  den gleichen Typ für die ITransaction verwenden.
+
 1.7.16
 ======
 - Execution Engine URL Mapping akzeptiert nun Pfade relativ zum Application Root (Prefix: "~/") und Pfade relativ zum bin-Verzeichnis.
@@ -15,8 +20,10 @@
 - WebTab
   * Methode EvaluateDisabled zu EvaluateEnabled umgebaut und Semantik invertiert.
 
-- WxeUserControl: inherited "Page" property of type "Page" was hidden by new "Page" property of type "IWxePage". The new property
-  was renamed to "WxePage". 
+- WxeUserControl
+  * Bugfix: Geerbte Property "Page" vom Typ "System.Web.UI.Page" wurde von neu-definierten Property "Page" 
+    vom Typ "Rubicon.Web.ExecutionEngine.IWxePage" überschrieben. Diese Property wurde nun zu "WxePage" umbenannt. 
+    Unter .net 2.0 hat dies zu Casting-Problemen im generierten Code geführt.
 
 - WxeFunction
   * Exception Logik geändert. Nicht abgefangene Exceptions werden nun in einer WxeUnhandledException gekapselt, damit ASP.NET in der Lage ist,

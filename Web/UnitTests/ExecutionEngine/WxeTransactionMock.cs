@@ -14,7 +14,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
 /// <summary> Provides a test implementation of the <see langword="abstract"/> <see cref="WxeTransactionBase"/> type. </summary>
 [Serializable]
-public class WxeTransactionMock: WxeTransactionBase
+public class WxeTransactionMock: WxeTransactionBase<TestTransaction>
 {
   private bool _hasCreatedRootTransaction;
 
@@ -23,18 +23,18 @@ public class WxeTransactionMock: WxeTransactionBase
   {
   }
 
-  protected override ITransaction CreateRootTransaction()
+  protected override TestTransaction CreateRootTransaction()
   {
     _hasCreatedRootTransaction = true;
     return new TestTransaction();
   }
 
-  protected override ITransaction CurrentTransaction
+  protected override TestTransaction CurrentTransaction
   {
     get { return TestTransaction.Current; }
   }
 
-  protected override void SetCurrentTransaction (ITransaction transaction)
+  protected override void SetCurrentTransaction (TestTransaction transaction)
   {
     TestTransaction.Current = (TestTransaction) transaction;
   }
@@ -67,29 +67,29 @@ public class WxeTransactionMock: WxeTransactionBase
     set { PrivateInvoke.SetNonPublicField (this, "_isPreviousCurrentTransactionRestored", value); }
   }
 
-  public new ITransaction Transaction
+  public new TestTransaction Transaction
   {
     get { return base.Transaction; }
     set { PrivateInvoke.SetNonPublicField (this, "_transaction", value); }
   }
 
-  public ITransaction PreviousCurrentTransaction
+  public TestTransaction PreviousCurrentTransaction
   {
-    get { return (ITransaction) PrivateInvoke.GetNonPublicField (this, "_previousCurrentTransaction"); }
+    get { return (TestTransaction) PrivateInvoke.GetNonPublicField (this, "_previousCurrentTransaction"); }
     set { PrivateInvoke.SetNonPublicField (this, "_previousCurrentTransaction", value); }
   }
 
-  public new ITransaction CreateTransaction()
+  public new TestTransaction CreateTransaction ()
   {
     return base.CreateTransaction();
   }
 
-  public new ITransaction CreateChildTransaction (ITransaction parentTransaction)
+  public new TestTransaction CreateChildTransaction (TestTransaction parentTransaction)
   {
     return base.CreateChildTransaction (parentTransaction);
   }
 
-  public new WxeTransactionBase ParentTransaction
+  public new WxeTransactionBase<TestTransaction> ParentTransaction
   {
     get { return base.ParentTransaction; }
   }

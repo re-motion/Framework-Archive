@@ -258,7 +258,7 @@ public class WxeTransactionBaseTest: WxeTest
 
     TestTransaction.Current = new TestTransaction();
     _wxeTransaction.Transaction = null;
-    ITransaction previousCurrentTransaction = new TestTransaction();
+    TestTransaction previousCurrentTransaction = new TestTransaction();
     _wxeTransaction.PreviousCurrentTransaction = previousCurrentTransaction;
     _wxeTransaction.RestorePreviousCurrentTransaction();
 
@@ -289,7 +289,7 @@ public class WxeTransactionBaseTest: WxeTest
     _parentWxeTransaction.AutoCommit = true;
     _parentWxeTransaction.ForceRoot = true;
     _parentWxeTransaction.IsPreviousCurrentTransactionRestored = true;
-    _childWxeTransaction.Transaction = _parentWxeTransaction.Transaction.CreateChild();
+    _childWxeTransaction.Transaction = (TestTransaction) _parentWxeTransaction.Transaction.CreateChild();
     _childWxeTransaction.PreviousCurrentTransaction = _parentWxeTransaction.Transaction;
 
     BinaryFormatter formatter = new BinaryFormatter();
