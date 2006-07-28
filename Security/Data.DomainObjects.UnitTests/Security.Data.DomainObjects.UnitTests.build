@@ -29,8 +29,8 @@
     </csc>
     
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
-      <fileset basedir="${build.outputdir}">
-        <include name="Security.Data.DomainObjects.UnitTests.*.xml" />
+      <fileset>
+        <include name="Rubicon.Security.Data.DomainObjects.UnitTests.*.xml" />
       </fileset>
     </copy>
 
