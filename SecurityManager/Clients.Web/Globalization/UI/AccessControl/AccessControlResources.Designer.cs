@@ -62,6 +62,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to for.
+        /// </summary>
+        internal static string AbstractRoleAndGroupLinkingLabel {
+            get {
+                return ResourceManager.GetString("AbstractRoleAndGroupLinkingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ACE (Access Control Entry).
         /// </summary>
         internal static string auto_AccessControlEntryTitle_InnerText {

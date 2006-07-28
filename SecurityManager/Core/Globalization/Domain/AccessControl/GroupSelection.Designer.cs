@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group of the Object (2).
+        ///   Looks up a localized string similar to Group of the Object or parent groups (2).
         /// </summary>
         internal static string Rubicon_SecurityManager_Domain_AccessControl_GroupSelection_OwningGroup {
             get {

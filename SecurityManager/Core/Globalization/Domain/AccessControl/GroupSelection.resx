@@ -121,6 +121,6 @@
     <value>Any Group (0)</value>
   </data>
   <data name="Rubicon.SecurityManager.Domain.AccessControl.GroupSelection.OwningGroup" xml:space="preserve">
-    <value>Group of the Object (2)</value>
+    <value>Group of the Object or parent groups (2)</value>
   </data>
 </root>

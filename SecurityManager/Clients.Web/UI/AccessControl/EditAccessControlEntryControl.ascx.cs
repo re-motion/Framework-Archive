@@ -36,6 +36,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     // construction and disposing
 
     // methods and properties
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -44,6 +45,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     protected AccessControlEntry CurrentAccessControlEntry
     {
       get { return (AccessControlEntry) CurrentObject.BusinessObject; }
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+      AbstractRoleAndGroupLinkingLabel.Text = AccessControlResources.AbstractRoleAndGroupLinkingLabel;
     }
 
     public override void LoadValues (bool interim)
@@ -96,6 +103,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         CurrentAccessControlEntry.User = UserSelection.SpecificPosition;
       else
         CurrentAccessControlEntry.User = UserSelection.All;
+      // TODO: Remove when Group can stand alone during ACE lookup.
+      if (CurrentAccessControlEntry.SpecificAbstractRole == null)
+        CurrentAccessControlEntry.Group = GroupSelection.All;
 
       SavePermissions (interim);
     }

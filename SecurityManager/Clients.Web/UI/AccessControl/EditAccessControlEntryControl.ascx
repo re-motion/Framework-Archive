@@ -16,17 +16,22 @@
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="GroupLabel" runat="server" ForControl="GroupField" /></td>
-    <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" >
-    </rubicon:BocEnumValue></td>
-  </tr> 
-  <tr>
     <td><rubicon:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/> (4)</td>
-    <td><rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
-      <PersistedCommand>
-        <rubicon:BocCommand />
-      </PersistedCommand>
-    </rubicon:BocReferenceValue></td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <tr>
+          <td>
+            <rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
+              <PersistedCommand>
+                <rubicon:BocCommand />
+              </PersistedCommand>
+            </rubicon:BocReferenceValue> 
+          </td>
+          <td>&nbsp;<asp:label id="AbstractRoleAndGroupLinkingLabel" runat="server" Text="###" />&nbsp;</td>
+          <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em"/></td>
+        </tr>
+      </table>
+    </td>
  </tr>
   <tr>
     <td><rubicon:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/> (8)</td>

@@ -121,6 +121,6 @@
     <value>Beliebige Gruppe (0)</value>
   </data>
   <data name="Rubicon.SecurityManager.Domain.AccessControl.GroupSelection.OwningGroup" xml:space="preserve">
-    <value>Gruppe des Objekts (2)</value>
+    <value>Gruppe des Objekts oder übergeordnete (2)</value>
   </data>
 </root>
