@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// To change this behavior for a function you can overwrite this property.</para>
 /// </remarks>
 [Serializable]
-public class WxeTransactedFunction : WxeTransactedFunctionBase
+public class WxeTransactedFunction : WxeTransactedFunctionBase<ClientTransaction>
 {
   private WxeTransactionMode _transactionMode;
 
@@ -48,7 +48,7 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   /// </summary>
   public new ClientTransaction Transaction
   {
-    get { return (ClientTransaction) base.Transaction; }
+    get { return base.Transaction; }
   }
 
   /// <summary>
@@ -78,7 +78,7 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   /// Derived classes should not override this method. Use the overloaded version instead.
   /// </summary>
   /// <returns>A new WxeTransaction, if <see cref="WxeTransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
-  protected override WxeTransactionBase CreateWxeTransaction ()
+  protected override WxeTransactionBase<ClientTransaction> CreateWxeTransaction ()
   {
     if (_transactionMode == WxeTransactionMode.CreateRoot)
       return CreateWxeTransaction (AutoCommit, true);

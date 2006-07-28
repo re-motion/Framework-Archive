@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// </summary>
 /// <remarks>Derived classes can provide specific implementations of <see cref="ClientTransaction"/>s by overriding <see cref="CreateRootTransaction"/>.</remarks>
 [Serializable]
-public class WxeTransaction : WxeTransactionBase
+  public class WxeTransaction : WxeTransactionBase<ClientTransaction>
 {
   /// <summary>Creates a new instance with an empty step list and autoCommit enabled that uses the existing transaction, if one exists.</summary>
   public WxeTransaction () : this (null, true, true)
@@ -45,7 +45,7 @@ public class WxeTransaction : WxeTransactionBase
   /// As opposed to <see cref="Rubicon.Data.DomainObjects.ClientTransaction.Current"/> this property returns <see langword="null"/>, 
   /// if <see cref="Rubicon.Data.DomainObjects.ClientTransaction.HasCurrent"/> is false.
   /// </remarks>
-  protected override ITransaction CurrentTransaction
+  protected override ClientTransaction CurrentTransaction
   {
     get 
     { 
@@ -59,11 +59,10 @@ public class WxeTransaction : WxeTransactionBase
   /// <summary>
   /// Sets a new current transaction.
   /// </summary>
-  /// <param name="transaction">The new transaction. This must be a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or derived type.</param>
-  /// <exception cref="System.InvalidCastException"><paramref name="transaction"/> cannot be casted to <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</exception>
-  protected override void SetCurrentTransaction (ITransaction transaction)
+  /// <param name="transaction">The new transaction.</param>
+  protected override void SetCurrentTransaction (ClientTransaction transaction)
   {
-    ClientTransaction.SetCurrent ((ClientTransaction) transaction);
+    ClientTransaction.SetCurrent (transaction);
   }
 
   /// <summary>
@@ -71,7 +70,7 @@ public class WxeTransaction : WxeTransactionBase
   /// </summary>
   /// <returns>A new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</returns>
   /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
-  protected override ITransaction CreateRootTransaction ()
+  protected override ClientTransaction CreateRootTransaction ()
   {
     return new ClientTransaction ();
   }
