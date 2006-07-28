@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AbstractRoleAndGroupLinkingLabel" xml:space="preserve">
-    <value>for</value>
-  </data>
   <data name="auto:AccessControlEntryTitle:InnerText" xml:space="preserve">
     <value>ACE (Access Control Entry)</value>
   </data>
@@ -146,6 +143,9 @@
   </data>
   <data name="NewStateCombinationButton" xml:space="preserve">
     <value>Assign State</value>
+  </data>
+  <data name="SpecificPositionAndGroupLinkingLabelText" xml:space="preserve">
+    <value>for</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>{0} - Edit Permissions</value>

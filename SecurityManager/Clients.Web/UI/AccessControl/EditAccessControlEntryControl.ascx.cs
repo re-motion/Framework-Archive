@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
-      AbstractRoleAndGroupLinkingLabel.Text = AccessControlResources.AbstractRoleAndGroupLinkingLabel;
+      SpecificPositionAndGroupLinkingLabel.Text = AccessControlResources.SpecificPositionAndGroupLinkingLabelText;
     }
 
     public override void LoadValues (bool interim)
@@ -100,12 +100,15 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       base.SaveValues (interim);
 
       if (CurrentAccessControlEntry.SpecificPosition != null)
+      {
         CurrentAccessControlEntry.User = UserSelection.SpecificPosition;
+      }
       else
+      {
         CurrentAccessControlEntry.User = UserSelection.All;
-      // TODO: Remove when Group can stand alone during ACE lookup.
-      if (CurrentAccessControlEntry.SpecificAbstractRole == null)
+        // TODO: Remove when Group can stand alone during ACE lookup.
         CurrentAccessControlEntry.Group = GroupSelection.All;
+      }
 
       SavePermissions (interim);
     }

@@ -18,10 +18,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         protected Rubicon.Web.UI.Controls.WebButton DeleteAccessControlEntryButton;
         protected Rubicon.Web.UI.Controls.SmartLabel SpecificAbstractRoleLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificAbstractRoleField;
-        protected System.Web.UI.WebControls.Label AbstractRoleAndGroupLinkingLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
         protected Rubicon.Web.UI.Controls.SmartLabel SpecificPositionLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificPositionField;
+        protected System.Web.UI.WebControls.Label SpecificPositionAndGroupLinkingLabel;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
         protected Rubicon.Web.UI.Controls.SmartLabel PriorityLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PriorityField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ActualPriority;
