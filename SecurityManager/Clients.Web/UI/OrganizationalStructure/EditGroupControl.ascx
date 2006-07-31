@@ -54,7 +54,7 @@
     <td>
       <rubicon:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" OnMenuItemClick="ChildrenList_MenuItemClick" Selection="Multiple">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="DisplayName">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>
@@ -80,12 +80,12 @@
     <td>
       <rubicon:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="UserNameItem" PropertyPathIdentifier="User.DisplayName">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="User">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
-          <rubicon:BocSimpleColumnDefinition ItemID="PositionNameItem" PropertyPathIdentifier="Position.Name">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>

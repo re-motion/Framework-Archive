@@ -79,10 +79,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         {
           EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
 
+          ConcretePositionsList.LoadValue (!returningFunction.HasUserCancelled);
           if (returningFunction.HasUserCancelled)
             returningFunction.ConcretePosition.Delete ();
           else
-            ConcretePositionsList.Value = CurrentFunction.GroupType.ConcretePositions;
+            ConcretePositionsList.IsDirty = true;
         }
       }
 

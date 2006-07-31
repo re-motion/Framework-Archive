@@ -25,7 +25,7 @@
     <td>
       <rubicon:BocList ID="GroupsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups" OnMenuItemClick="GroupsList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="DisplayName">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>
@@ -51,12 +51,12 @@
     <td>
       <rubicon:BocList ID="ConcretePositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsList_MenuItemClick" Selection="Multiple">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="ConcretePositionNameItem" PropertyPathIdentifier="Name">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
-          <rubicon:BocSimpleColumnDefinition ItemID="PositionNameItem" PropertyPathIdentifier="Position.Name">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>

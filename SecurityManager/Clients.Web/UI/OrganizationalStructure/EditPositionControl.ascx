@@ -23,50 +23,14 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
-        <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="UserNameItem" PropertyPathIdentifier="User.DisplayName">
-            <PersistedCommand>
-              <rubicon:BocListItemCommand />
-            </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
-          <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="Group.DisplayName">
-            <PersistedCommand>
-              <rubicon:BocListItemCommand />
-            </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
-        </FixedColumns>
-        <ListMenuItems>
-          <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
-            <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
-            </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
-            <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
-            </PersistedCommand>
-          </rubicon:BocMenuItem>
-          <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
-            <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
-            </PersistedCommand>
-          </rubicon:BocMenuItem>
-        </ListMenuItems>
-      </rubicon:BocList>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
       <rubicon:BocList ID="ConcretePositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition ItemID="ConcretePositionsNameItem" PropertyPathIdentifier="Name">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
-          <rubicon:BocSimpleColumnDefinition ItemID="GroupTypeNameItem" PropertyPathIdentifier="GroupType.Name">
+          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="GroupType">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
             </PersistedCommand>

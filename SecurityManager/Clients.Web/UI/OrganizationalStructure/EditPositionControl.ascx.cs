@@ -54,9 +54,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
       {
-        RolesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[0], SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
         ConcretePositionsList.SetSortingOrder (
             new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[0], SortingDirection.Ascending),
             new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[1], SortingDirection.Ascending));
@@ -72,61 +69,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void RolesList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
-    {
-      if (e.Item.ItemID == "NewItem")
-      {
-        if (!Page.IsReturningPostBack)
-        {
-          EditRole (null, null, null, CurrentFunction.Position);
-        }
-        else
-        {
-          EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
-
-          RolesList.LoadValue (!returningFunction.HasUserCancelled);
-          if (returningFunction.HasUserCancelled)
-            returningFunction.Role.Delete ();
-          else
-            RolesList.IsDirty = true;
-        }
-      }
-
-      if (e.Item.ItemID == "EditItem")
-      {
-        if (!Page.IsReturningPostBack)
-        {
-          EditRole ((Role) RolesList.GetSelectedBusinessObjects ()[0], null, null, CurrentFunction.Position);
-        }
-        else
-        {
-          EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
-
-          if (!returningFunction.HasUserCancelled)
-            RolesList.IsDirty = true;
-        }
-      }
-      if (e.Item.ItemID == "DeleteItem")
-      {
-        foreach (Role role in RolesList.GetSelectedBusinessObjects ())
-        {
-          RolesList.RemoveRow (role);
-          role.Delete ();
-        }
-      }
-
-      RolesList.ClearSelectedRows ();
-    }
-
-    private void EditRole (Role role, User user, Group group, Position position)
-    {
-      EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (
-          CurrentFunction.ClientID, role == null ? null : role.ID, user, group, position);
-
-      editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
-      Page.ExecuteFunction (editRoleFormFunction);
-    }
-
     protected void ConcretePositionsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
@@ -139,10 +81,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         {
           EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
 
+          ConcretePositionsList.LoadValue (!returningFunction.HasUserCancelled);
           if (returningFunction.HasUserCancelled)
             returningFunction.ConcretePosition.Delete ();
           else
-            ConcretePositionsList.Value = CurrentFunction.Position.ConcretePositions;
+            ConcretePositionsList.IsDirty = true;
         }
       }
       if (e.Item.ItemID == "EditItem")
