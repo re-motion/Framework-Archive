@@ -27,10 +27,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -39,10 +39,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -56,7 +56,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessType.First));
+        hasAccess = _securityClient.HasStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessTypes.First));
       }
 
       _testHelper.VerifyAll ();

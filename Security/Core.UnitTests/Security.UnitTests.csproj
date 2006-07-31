@@ -93,9 +93,9 @@
     <Compile Include="SampleDomain\SecurableObjectWithSecuredStaticMethods.cs" />
     <Compile Include="SampleDomain\SimpleEnum.cs" />
     <Compile Include="SampleDomain\SimpleType.cs" />
-    <Compile Include="SampleDomain\TestAbstractRole.cs" />
-    <Compile Include="SampleDomain\TestAccessType.cs" />
-    <Compile Include="SampleDomain\TestAccessTypeWithoutAccessTypeAttribute.cs" />
+    <Compile Include="SampleDomain\TestAbstractRoles.cs" />
+    <Compile Include="SampleDomain\TestAccessTypes.cs" />
+    <Compile Include="SampleDomain\TestAccessTypesWithoutAccessTypeAttribute.cs" />
     <Compile Include="SampleDomain\TestFlags.cs" />
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />

@@ -8,7 +8,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
 {
 
   [AccessType]
-  public enum TestAccessType
+  public enum TestAccessTypes
   {
     First = 1,
     Second = 2,

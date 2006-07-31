@@ -27,8 +27,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessType.First);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessTypes.First);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
@@ -40,8 +40,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessType.First);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessTypes.First);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
@@ -53,7 +53,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessType.First);
+      _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
       bool hasAccess;

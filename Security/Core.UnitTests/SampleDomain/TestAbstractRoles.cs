@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
-
-  public enum TestAccessTypeWithoutAccessTypeAttribute
+  [AbstractRole]
+  public enum TestAbstractRoles
   {
-    First
+    QualityEngineer,
+    Developer,
+    Manager
   }
-
 }

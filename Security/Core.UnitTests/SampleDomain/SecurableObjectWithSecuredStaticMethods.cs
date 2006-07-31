@@ -8,17 +8,17 @@ namespace Rubicon.Security.UnitTests.SampleDomain
 {
   public class SecurableObjectWithSecuredStaticMethods : ISecurableObject
   {
-    [DemandMethodPermission (TestAccessType.First)]
+    [DemandMethodPermission (TestAccessTypes.First)]
     public static void StaticMethod ()
     {
     }
 
-    [DemandMethodPermission (TestAccessType.Second)]
+    [DemandMethodPermission (TestAccessTypes.Second)]
     public static void StaticMethod (string value)
     {
     }
 
-    [DemandMethodPermission (TestAccessType.Third)]
+    [DemandMethodPermission (TestAccessTypes.Third)]
     public static void OtherStaticMethod (string value)
     {
     }

@@ -15,18 +15,18 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void AcceptValidAccessType ()
     {
-      DemandMethodPermissionAttribute methodPermissionAttribute = new DemandMethodPermissionAttribute (TestAccessType.Second);
-      Assert.AreEqual (TestAccessType.Second, methodPermissionAttribute.AccessTypes[0]);
+      DemandMethodPermissionAttribute methodPermissionAttribute = new DemandMethodPermissionAttribute (TestAccessTypes.Second);
+      Assert.AreEqual (TestAccessTypes.Second, methodPermissionAttribute.AccessTypes[0]);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypeWithoutAccessTypeAttribute' cannot be used as an access type. "
+        "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void RejectAccessTypeWithoutAccessTypeAttribute ()
     {
       DemandMethodPermissionAttribute methodPermissionAttribute = 
-          new DemandMethodPermissionAttribute (TestAccessTypeWithoutAccessTypeAttribute.First);
+          new DemandMethodPermissionAttribute (TestAccessTypesWithoutAccessTypeAttribute.First);
     }
 
     [Test]
@@ -40,11 +40,11 @@ namespace Rubicon.Security.UnitTests
     public void AcceptMultipleAccessTypes ()
     {
       DemandMethodPermissionAttribute methodPermissionAttribute =
-          new DemandMethodPermissionAttribute (TestAccessType.Second, TestAccessType.Fourth);
+          new DemandMethodPermissionAttribute (TestAccessTypes.Second, TestAccessTypes.Fourth);
 
       Assert.AreEqual (2, methodPermissionAttribute.AccessTypes.Length);
-      Assert.Contains (TestAccessType.Second, methodPermissionAttribute.AccessTypes);
-      Assert.Contains (TestAccessType.Fourth, methodPermissionAttribute.AccessTypes);
+      Assert.Contains (TestAccessTypes.Second, methodPermissionAttribute.AccessTypes);
+      Assert.Contains (TestAccessTypes.Fourth, methodPermissionAttribute.AccessTypes);
     }
   }
 }

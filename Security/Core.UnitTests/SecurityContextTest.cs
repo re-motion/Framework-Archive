@@ -15,12 +15,12 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void CreateSecurityContextWithAbstractRole ()
     {
-      Enum[] abstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };
+      Enum[] abstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Developer };
       SecurityContext context = CreateTestSecurityContextWithAbstractRoles (abstractRoles);
 
       Assert.AreEqual (2, context.AbstractRoles.Length);
-      Assert.Contains (new EnumWrapper (TestAbstractRole.QualityEngineer), context.AbstractRoles);
-      Assert.Contains (new EnumWrapper (TestAbstractRole.Developer), context.AbstractRoles);
+      Assert.Contains (new EnumWrapper (TestAbstractRoles.QualityEngineer), context.AbstractRoles);
+      Assert.Contains (new EnumWrapper (TestAbstractRoles.Developer), context.AbstractRoles);
     }
 
     [Test]
@@ -165,13 +165,13 @@ namespace Rubicon.Security.UnitTests
       Dictionary<string, Enum>leftStates = new Dictionary<string, Enum> ();
       leftStates.Add ("State", TestSecurityState.Public);
       leftStates.Add ("Confidentiality", TestSecurityState.Public);
-      Enum[] leftAbstractRoles = new Enum[] { TestAbstractRole.Developer, TestAbstractRole.QualityEngineer };
+      Enum[] leftAbstractRoles = new Enum[] { TestAbstractRoles.Developer, TestAbstractRoles.QualityEngineer };
       SecurityContext left = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", leftStates, leftAbstractRoles);
       
       Dictionary<string, Enum> rightStates = new Dictionary<string, Enum> ();
       rightStates.Add ("Confidentiality", TestSecurityState.Public);
       rightStates.Add ("State", TestSecurityState.Public);
-      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };
+      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Developer };
       SecurityContext right = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", rightStates, rightAbstractRoles);
 
       Assert.IsTrue (left.Equals (right));
@@ -264,7 +264,7 @@ namespace Rubicon.Security.UnitTests
     {
       SecurityContext left = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", CreateTwoStates (), CreateTwoAbstractRoles ());
 
-      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRole.QualityEngineer };
+      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer };
       SecurityContext right = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", CreateTwoStates (), rightAbstractRoles);
 
       Assert.IsFalse (left.Equals (right));
@@ -277,7 +277,7 @@ namespace Rubicon.Security.UnitTests
     {
       SecurityContext left = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", CreateTwoStates (), CreateTwoAbstractRoles ());
 
-      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Manager };
+      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Manager };
       SecurityContext right = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", CreateTwoStates (), rightAbstractRoles);
 
       Assert.IsFalse (left.Equals (right));
@@ -315,13 +315,13 @@ namespace Rubicon.Security.UnitTests
       Dictionary<string, Enum> leftStates = new Dictionary<string, Enum> ();
       leftStates.Add ("State", TestSecurityState.Public);
       leftStates.Add ("Confidentiality", TestSecurityState.Public);
-      Enum[] leftAbstractRoles = new Enum[] { TestAbstractRole.Developer, TestAbstractRole.QualityEngineer };
+      Enum[] leftAbstractRoles = new Enum[] { TestAbstractRoles.Developer, TestAbstractRoles.QualityEngineer };
       SecurityContext left = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", leftStates, leftAbstractRoles);
 
       Dictionary<string, Enum> rightStates = new Dictionary<string, Enum> ();
       rightStates.Add ("Confidentiality", TestSecurityState.Public);
       rightStates.Add ("State", TestSecurityState.Public);
-      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };
+      Enum[] rightAbstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Developer };
       SecurityContext right = new SecurityContext (typeof (File), "owner", "ownerGroup", "ownerClient", rightStates, rightAbstractRoles);
 
       Assert.AreEqual (left.GetHashCode(), right.GetHashCode());
@@ -337,7 +337,7 @@ namespace Rubicon.Security.UnitTests
 
     private static Enum[] CreateTwoAbstractRoles ()
     {
-      return new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };;
+      return new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Developer };;
     }
 
     private SecurityContext CreateTestSecurityContextForType (Type type)

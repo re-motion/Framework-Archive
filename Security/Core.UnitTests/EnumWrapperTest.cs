@@ -14,19 +14,19 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void InitializeFromEnum ()
     {
-      EnumWrapper wrapper = new EnumWrapper (TestAccessType.First);
+      EnumWrapper wrapper = new EnumWrapper (TestAccessTypes.First);
 
       Assert.AreEqual ("First", wrapper.Name);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests", wrapper.TypeName);
     }
 
     [Test]
     public void InitializeFromString ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::SampleDomain.TestAccessType");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::SampleDomain.TestAccessTypes");
 
       Assert.AreEqual ("First", wrapper.Name);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests", wrapper.TypeName);
     }
 
     [Test]
@@ -41,22 +41,22 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void Equals ()
     {
-      EnumWrapper expected = new EnumWrapper (TestAccessType.First);
+      EnumWrapper expected = new EnumWrapper (TestAccessTypes.First);
       Assert.IsTrue (expected.Equals (expected));
-      Assert.IsTrue (expected.Equals (new EnumWrapper (TestAccessType.First)));
-      Assert.IsTrue (new EnumWrapper (TestAccessType.First).Equals (expected));
-      Assert.IsFalse (expected.Equals (new EnumWrapper (TestAccessType.Second)));
-      Assert.IsFalse (new EnumWrapper (TestAccessType.Second).Equals (expected));
+      Assert.IsTrue (expected.Equals (new EnumWrapper (TestAccessTypes.First)));
+      Assert.IsTrue (new EnumWrapper (TestAccessTypes.First).Equals (expected));
+      Assert.IsFalse (expected.Equals (new EnumWrapper (TestAccessTypes.Second)));
+      Assert.IsFalse (new EnumWrapper (TestAccessTypes.Second).Equals (expected));
       Assert.IsFalse (expected.Equals (null));
 
-      Assert.AreEqual (expected, new EnumWrapper (TestAccessType.First));
-      Assert.AreNotEqual (expected, new EnumWrapper (TestAccessType.Second));
+      Assert.AreEqual (expected, new EnumWrapper (TestAccessTypes.First));
+      Assert.AreNotEqual (expected, new EnumWrapper (TestAccessTypes.Second));
     }
 
     [Test]
     public void TestGetHashCode ()
     {
-      Assert.AreEqual (new EnumWrapper (TestAccessType.First).GetHashCode (), new EnumWrapper (TestAccessType.First).GetHashCode ());
+      Assert.AreEqual (new EnumWrapper (TestAccessTypes.First).GetHashCode (), new EnumWrapper (TestAccessTypes.First).GetHashCode ());
     }
 
     [Test]
@@ -78,10 +78,10 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessType, Rubicon.Security.UnitTests' does not define the value 'Invalid'.")]
+    [ExpectedException (typeof (InvalidOperationException), "The enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests' does not define the value 'Invalid'.")]
     public void GetEnum_FromInvalidName ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Invalid", "Rubicon.Security.UnitTests::SampleDomain.TestAccessType");
+      EnumWrapper wrapper = new EnumWrapper ("Invalid", "Rubicon.Security.UnitTests::SampleDomain.TestAccessTypes");
 
       wrapper.GetEnum ();
     }

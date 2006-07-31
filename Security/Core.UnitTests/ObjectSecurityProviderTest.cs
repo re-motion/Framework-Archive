@@ -145,18 +145,18 @@ namespace Rubicon.Security.UnitTests
 
     private void ExpectExpectObjectSecurityStrategyHasAccess (bool accessAllowed)
     {
-      AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessType.First) };
+      AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessTypes.First) };
       Expect.Call (_mockObjectSecurityStrategy.HasAccess (_securityService, _user, accessTypes)).Return (accessAllowed);
     }
 
     private void ExpectGetRequiredPropertyReadPermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessType.First });
+      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
     }
 
     private void ExpectGetRequiredPropertyWritePermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessType.First });
+      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
     }
   }
 }

@@ -29,33 +29,33 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetAccessTypeFromEnum ()
     {
-      AccessType accessType = AccessType.Get (new EnumWrapper (TestAccessType.First));
+      AccessType accessType = AccessType.Get (new EnumWrapper (TestAccessTypes.First));
 
-      Assert.AreEqual (new EnumWrapper (TestAccessType.First), accessType.Value);
+      Assert.AreEqual (new EnumWrapper (TestAccessTypes.First), accessType.Value);
     }
 
     [Test]
     [Ignore]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypeWithoutAccessTypeAttribute' cannot be used as an access type. "
+        "Enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {
-      AccessType.Get (new EnumWrapper (TestAccessTypeWithoutAccessTypeAttribute.First));
+      AccessType.Get (new EnumWrapper (TestAccessTypesWithoutAccessTypeAttribute.First));
     }
 
     [Test]
     public void GetFromCache ()
     {
-      Assert.AreSame (AccessType.Get (TestAccessType.First), AccessType.Get (TestAccessType.First));
-      Assert.AreSame (AccessType.Get (TestAccessType.Second), AccessType.Get (TestAccessType.Second));
-      Assert.AreSame (AccessType.Get (TestAccessType.Third), AccessType.Get (TestAccessType.Third));
+      Assert.AreSame (AccessType.Get (TestAccessTypes.First), AccessType.Get (TestAccessTypes.First));
+      Assert.AreSame (AccessType.Get (TestAccessTypes.Second), AccessType.Get (TestAccessTypes.Second));
+      Assert.AreSame (AccessType.Get (TestAccessTypes.Third), AccessType.Get (TestAccessTypes.Third));
     }
 
     [Test]
     public void Test_ToString ()
     {
-      EnumWrapper wrapper = new EnumWrapper(TestAccessType.First);
+      EnumWrapper wrapper = new EnumWrapper(TestAccessTypes.First);
       AccessType accessType = AccessType.Get (wrapper);
 
       Assert.AreEqual (wrapper.ToString (), accessType.ToString ());

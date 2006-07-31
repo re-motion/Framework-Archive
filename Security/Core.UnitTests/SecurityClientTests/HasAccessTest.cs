@@ -27,10 +27,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -39,10 +39,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -56,7 +56,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+        hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
       }
 
       _testHelper.VerifyAll ();
@@ -69,7 +69,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessType.First));
+      bool hasAccess = _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessTypes.First));
     }
   }
 }

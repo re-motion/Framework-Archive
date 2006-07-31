@@ -27,10 +27,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
 
       _testHelper.VerifyAll ();
     }
@@ -39,10 +39,10 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessType.First, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+      _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       using (new SecurityFreeSection ())
       {
-        _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessType.First));
+        _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
       }
 
       _testHelper.VerifyAll ();
@@ -64,7 +64,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll ();
 
-      _securityClient.CheckAccess (new SecurableObject (null), AccessType.Get (TestAccessType.First));
+      _securityClient.CheckAccess (new SecurableObject (null), AccessType.Get (TestAccessTypes.First));
     }
   }
 }

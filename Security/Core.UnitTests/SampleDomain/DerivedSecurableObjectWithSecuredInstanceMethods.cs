@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandMethodPermission (TestAccessType.Fourth)]
+    [DemandMethodPermission (TestAccessTypes.Fourth)]
     public new void InstanceMethod ()
     {
     }
