@@ -26,6 +26,16 @@ namespace Rubicon.Web.ExecutionEngine
   [Serializable]
   public abstract class WxeFunction : WxeStepList
   {
+    private static MethodInfo s_checkPermissionsStep;
+
+    static WxeFunction ()
+    {
+      Type type = typeof (WxeFunction);
+      s_checkPermissionsStep = type.GetMethod (
+          "CheckPermissionsStep", 
+          BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+    }
+
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -223,6 +233,8 @@ namespace Rubicon.Web.ExecutionEngine
       _variables = new NameObjectCollection ();
       _returnUrl = null;
       _actualParameters = actualParameters;
+
+      Insert (0, new WxeMethodStep (this, s_checkPermissionsStep));
     }
 
     /// <summary> 
@@ -296,7 +308,6 @@ namespace Rubicon.Web.ExecutionEngine
         s_log.Debug ("Initializing execution of " + this.GetType ().FullName + ".");
         NameObjectCollection parentVariables = (ParentStep != null) ? ParentStep.Variables : null;
         EnsureParametersInitialized (null);
-        CheckPermissions (context);
       }
       else
       {
@@ -565,6 +576,10 @@ namespace Rubicon.Web.ExecutionEngine
       return serializedParameters;
     }
 
+    private void CheckPermissionsStep (WxeContext context)
+    {
+      CheckPermissions (context);
+    }
 
     protected virtual void CheckPermissions (WxeContext context)
     {

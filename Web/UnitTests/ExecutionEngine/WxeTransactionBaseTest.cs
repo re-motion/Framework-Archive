@@ -299,6 +299,13 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _parentWxeTransaction.AutoCommit = true;
       _parentWxeTransaction.ForceRoot = true;
       _parentWxeTransaction.IsPreviousCurrentTransactionRestored = true;
+      _parentWxeTransaction.TransactionCreating += delegate { };
+      _parentWxeTransaction.TransactionCreated += delegate { };
+      _parentWxeTransaction.TransactionCommitting += delegate { };
+      _parentWxeTransaction.TransactionCommitted += delegate { };
+      _parentWxeTransaction.TransactionRollingBack += delegate { };
+      _parentWxeTransaction.TransactionRolledBack += delegate { };
+
       _childWxeTransaction.Transaction = (TestTransaction) _parentWxeTransaction.Transaction.CreateChild ();
       _childWxeTransaction.PreviousCurrentTransaction = _parentWxeTransaction.Transaction;
 

@@ -132,6 +132,9 @@
     <Compile Include="Configuration\WebConfigurationMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\ProxyWxeTransaction.cs" />
+    <Compile Include="ExecutionEngine\WxeTransactedFunctionBaseTest.cs" />
+    <Compile Include="ExecutionEngine\WxeTransactedFunctionMock.cs" />
     <Compile Include="ExecutionEngine\TestFunction.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -41,7 +41,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), "Test Exception")]
     public void ExecuteFunctionWithAccessDenied ()
     {
       TestFunction function = new TestFunction ();
@@ -49,9 +48,18 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       LastCall.Throw (new PermissionDeniedException ("Test Exception"));
       _mocks.ReplayAll ();
 
-      function.Execute ();
+      try
+      {
+        function.Execute ();
+      }
+      catch (WxeUnhandledException e)
+      {
+        _mocks.VerifyAll ();
 
-      _mocks.VerifyAll ();
+        Assert.IsInstanceOfType (typeof (PermissionDeniedException), e.InnerException);
+        return;
+      }
+      Assert.Fail ("Expected PermissionDeniedException.");
     }
 
     [Test]
