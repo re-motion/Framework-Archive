@@ -68,7 +68,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
       _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
@@ -80,7 +80,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
       _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
@@ -102,7 +102,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
@@ -114,7 +114,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
@@ -141,7 +141,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
@@ -153,7 +153,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Create, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));

@@ -49,7 +49,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
 
       Assert.IsNotNull (requiredAccessTypes);
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Create, requiredAccessTypes);
     }
 
     [Test]

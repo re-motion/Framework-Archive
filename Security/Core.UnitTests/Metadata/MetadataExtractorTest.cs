@@ -107,20 +107,20 @@ namespace Rubicon.Security.UnitTests.Metadata
             </stateProperties>
 
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""0"" />
-              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""1"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""2"" />
-              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""3"" />
-              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""4"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""5"" />
-              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
+              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""1"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
-              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -189,20 +189,20 @@ namespace Rubicon.Security.UnitTests.Metadata
             </stateProperties>
 
             <accessTypes>
-              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""0"" />
-              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""1"" />
-              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""2"" />
-              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""3"" />
-              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""4"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""5"" />
-              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""0"" />
+              <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""1"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessTypes, Rubicon.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessTypes, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
-              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
-              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>";
 

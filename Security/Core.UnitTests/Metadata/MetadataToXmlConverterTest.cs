@@ -94,7 +94,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       EnumValueInfo accessType = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
-      _cache.AddAccessType (DomainAccessType.Archive, accessType);
+      _cache.AddAccessType (DomainAccessTypes.Archive, accessType);
 
       XmlDocument document = _converter.Convert (_cache);
 
@@ -111,16 +111,16 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Convert_OneAbstractRole ()
     {
-      EnumValueInfo abstractRole = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "Administrator", 0);
+      EnumValueInfo abstractRole = new EnumValueInfo ("Domain.SpecialAbstractRoles, Domain", "Administrator", 0);
       abstractRole.ID = "00000004-0001-0000-0000-000000000000";
-      _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole);
+      _cache.AddAbstractRole (SpecialAbstractRoles.Administrator, abstractRole);
 
       XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRoles, Domain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -246,11 +246,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
-      _cache.AddAccessType (DomainAccessType.Archive, accessType1);
+      _cache.AddAccessType (DomainAccessTypes.Archive, accessType1);
 
       EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
-      _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
+      _cache.AddAccessType (DomainAccessTypes.Journalize, accessType2);
 
       XmlDocument document = _converter.Convert (_cache);
 
@@ -268,11 +268,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Convert_MultipleAbstractRoles ()
     {
-      EnumValueInfo abstractRole1 = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "Administrator", 0);
+      EnumValueInfo abstractRole1 = new EnumValueInfo ("Domain.SpecialAbstractRoles, Domain", "Administrator", 0);
       abstractRole1.ID = "00000004-0001-0000-0000-000000000000";
-      _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole1);
+      _cache.AddAbstractRole (SpecialAbstractRoles.Administrator, abstractRole1);
 
-      EnumValueInfo abstractRole2 = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "PowerUser", 1);
+      EnumValueInfo abstractRole2 = new EnumValueInfo ("Domain.SpecialAbstractRoles, Domain", "PowerUser", 1);
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";
       _cache.AddAbstractRole (SomeEnum.First, abstractRole2);
 
@@ -281,8 +281,8 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
-              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" name=""PowerUser|Domain.SpecialAbstractRole, Domain"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRoles, Domain"" value=""0"" />
+              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" name=""PowerUser|Domain.SpecialAbstractRoles, Domain"" value=""1"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -344,11 +344,11 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "64d8f74e-685f-44ab-9705-1fda9ff836a4";
-      _cache.AddAccessType (DomainAccessType.Archive, accessType1);
+      _cache.AddAccessType (DomainAccessTypes.Archive, accessType1);
 
       EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
-      _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
+      _cache.AddAccessType (DomainAccessTypes.Journalize, accessType2);
 
       classInfo.AccessTypes.Add (accessType1);
       classInfo.AccessTypes.Add (accessType2);
@@ -417,11 +417,11 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "64d8f74e-685f-44ab-9705-1fda9ff836a4";
-      _cache.AddAccessType (DomainAccessType.Archive, accessType1);
+      _cache.AddAccessType (DomainAccessTypes.Archive, accessType1);
 
       EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
-      _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
+      _cache.AddAccessType (DomainAccessTypes.Journalize, accessType2);
 
       classInfo.AccessTypes.Add (accessType1);
       derivedClassInfo.AccessTypes.Add (accessType1);
@@ -429,7 +429,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       EnumValueInfo abstractRole1 = new EnumValueInfo ("Domain.AbstractRole, Domain", "Administrator", 0);
       abstractRole1.ID = "00000004-0001-0000-0000-000000000000";
-      _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole1);
+      _cache.AddAbstractRole (SpecialAbstractRoles.Administrator, abstractRole1);
 
       EnumValueInfo abstractRole2 = new EnumValueInfo ("Domain.AbstractRole, Domain", "PowerUser", 1);
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";

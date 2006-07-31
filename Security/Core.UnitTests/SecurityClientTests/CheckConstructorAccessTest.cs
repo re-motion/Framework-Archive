@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
       _securityClient.CheckConstructorAccess (typeof (SecurableObject));
@@ -37,7 +37,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
 
       _securityClient.CheckConstructorAccess (typeof (SecurableObject));

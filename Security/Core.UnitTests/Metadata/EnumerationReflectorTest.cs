@@ -48,24 +48,24 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetValues ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessType), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessTypes), _cache);
 
       Assert.IsNotNull (values);
       Assert.AreEqual (2, values.Count);
 
-      Assert.AreEqual (0, values[DomainAccessType.Journalize].Value);
-      Assert.AreEqual ("Journalize", values[DomainAccessType.Journalize].Name);
-      Assert.AreEqual ("00000002-0001-0000-0000-000000000000", values[DomainAccessType.Journalize].ID);
+      Assert.AreEqual (0, values[DomainAccessTypes.Journalize].Value);
+      Assert.AreEqual ("Journalize", values[DomainAccessTypes.Journalize].Name);
+      Assert.AreEqual ("00000002-0001-0000-0000-000000000000", values[DomainAccessTypes.Journalize].ID);
       
-      Assert.AreEqual (1, values[DomainAccessType.Archive].Value);
-      Assert.AreEqual ("Archive", values[DomainAccessType.Archive].Name);
-      Assert.AreEqual ("00000002-0002-0000-0000-000000000000", values[DomainAccessType.Archive].ID);
+      Assert.AreEqual (1, values[DomainAccessTypes.Archive].Value);
+      Assert.AreEqual ("Archive", values[DomainAccessTypes.Archive].Name);
+      Assert.AreEqual ("00000002-0002-0000-0000-000000000000", values[DomainAccessTypes.Archive].ID);
     }
 
     [Test]
     public void GetValue ()
     {
-      EnumValueInfo value = _enumerationReflector.GetValue (DomainAccessType.Journalize, _cache);
+      EnumValueInfo value = _enumerationReflector.GetValue (DomainAccessTypes.Journalize, _cache);
 
       Assert.IsNotNull (value);
 
@@ -77,10 +77,10 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetValuesFromCache ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessType), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessTypes), _cache);
 
-      Assert.AreSame (values[DomainAccessType.Journalize], _cache.GetEnumValueInfo (DomainAccessType.Journalize));
-      Assert.AreSame (values[DomainAccessType.Archive], _cache.GetEnumValueInfo (DomainAccessType.Archive));
+      Assert.AreSame (values[DomainAccessTypes.Journalize], _cache.GetEnumValueInfo (DomainAccessTypes.Journalize));
+      Assert.AreSame (values[DomainAccessTypes.Archive], _cache.GetEnumValueInfo (DomainAccessTypes.Archive));
     }
 
     [Test]

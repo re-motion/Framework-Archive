@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "CreateForSpecialCase");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.AreEqual (GeneralAccessType.Create, requiredAccessTypes[0]);
+      Assert.AreEqual (GeneralAccessTypes.Create, requiredAccessTypes[0]);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "IsValid");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.AreEqual (GeneralAccessType.Read, requiredAccessTypes[0]);
+      Assert.AreEqual (GeneralAccessTypes.Read, requiredAccessTypes[0]);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (DerivedSecurableObject), "CreateForSpecialCase");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.AreEqual (GeneralAccessType.Create, requiredAccessTypes[0]);
+      Assert.AreEqual (GeneralAccessTypes.Create, requiredAccessTypes[0]);
     }
 
     [Test]

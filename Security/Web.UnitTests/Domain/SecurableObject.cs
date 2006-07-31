@@ -16,7 +16,7 @@ namespace Rubicon.Security.Web.UnitTests.Domain
       Search
     }
 
-    [DemandMethodPermission (GeneralAccessType.Search)]
+    [DemandMethodPermission (GeneralAccessTypes.Search)]
     public static void Search ()
     {
     }
@@ -28,12 +28,12 @@ namespace Rubicon.Security.Web.UnitTests.Domain
       _securityStrategy = securityStrategy;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public void Show ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessTypes.Delete)]
     public void Delete ()
     {
     }

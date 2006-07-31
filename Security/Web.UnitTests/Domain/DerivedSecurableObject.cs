@@ -31,7 +31,7 @@ namespace Rubicon.Security.Web.UnitTests.Domain
 
     // methods and properties
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public void ShowSpecial ()
     {
     }

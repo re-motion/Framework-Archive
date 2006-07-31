@@ -67,7 +67,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted ()
     {
-      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, true);
+      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, true);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
@@ -79,7 +79,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessDenied ()
     {
-      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, false);
+      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, false);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
@@ -91,7 +91,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted_WithSecurableObjectSetToNull ()
     {
-      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, true);
+      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, true);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
@@ -103,7 +103,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessDenied_WithSecurableObjectSetToNull ()
     {
-      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, false);
+      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, false);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));

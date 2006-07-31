@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Record");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Edit, requiredAccessTypes);
     }
 
     [Test]
@@ -57,7 +57,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Delete");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.AreEqual (GeneralAccessType.Delete, requiredAccessTypes[0]);
+      Assert.AreEqual (GeneralAccessTypes.Delete, requiredAccessTypes[0]);
     }
 
     [Test]
@@ -66,8 +66,8 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Show");
 
       Assert.AreEqual (2, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Edit, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Create, requiredAccessTypes);
     }
 
     [Test]
@@ -84,8 +84,8 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Show");
 
       Assert.AreEqual (2, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Edit, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Create, requiredAccessTypes);
     }
 
     [Test]
@@ -125,8 +125,8 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Close");
 
       Assert.AreEqual (2, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
-      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Edit, requiredAccessTypes);
+      Assert.Contains (GeneralAccessTypes.Find, requiredAccessTypes);
     }
   }
 }

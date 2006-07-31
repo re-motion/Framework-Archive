@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessTypes.Create)]
     public static SecurableObject CreateForSpecialCase ()
     {
       return new SecurableObject ();
@@ -23,13 +23,13 @@ namespace Rubicon.Security.UnitTests.SampleDomain
       return false;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public static bool IsValid (SecurableObject securableClass)
     {
       return true;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public static string GetObjectName (SecurableObject securableObject)
     {
       return null;
@@ -51,32 +51,32 @@ namespace Rubicon.Security.UnitTests.SampleDomain
       return _securityStrategy;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessTypes.Edit, GeneralAccessTypes.Create)]
     public void Show ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Edit)]
+    [DemandMethodPermission (GeneralAccessTypes.Edit)]
     public void Record ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessTypes.Delete)]
     public void Load ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessTypes.Create)]
     public void Load (string filename)
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Find)]
+    [DemandMethodPermission (GeneralAccessTypes.Find)]
     public virtual void Print ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessTypes.Delete)]
     public void Send ()
     {
     }
@@ -89,12 +89,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessTypes.Delete)]
     public void Delete (int count)
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Find, GeneralAccessType.Edit)]
+    [DemandMethodPermission (GeneralAccessTypes.Edit, GeneralAccessTypes.Find, GeneralAccessTypes.Edit)]
     public void Close ()
     {
     }
@@ -104,8 +104,8 @@ namespace Rubicon.Security.UnitTests.SampleDomain
       get { return true; }
     }
 
-    [DemandPropertyReadPermission (GeneralAccessType.Create)]
-    [DemandPropertyWritePermission (GeneralAccessType.Find)]
+    [DemandPropertyReadPermission (GeneralAccessTypes.Create)]
+    [DemandPropertyWritePermission (GeneralAccessTypes.Find)]
     public bool IsVisible
     {
       get { return true; }

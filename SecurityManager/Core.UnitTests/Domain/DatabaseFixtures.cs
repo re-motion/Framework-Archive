@@ -202,7 +202,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       ClientTransaction transaction = new ClientTransaction ();
 
       Guid metadataItemID = new Guid ("00000004-0001-0000-0000-000000000000");
-      string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain";
+      string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain";
       AbstractRoleDefinition administratorAbstractRole = new AbstractRoleDefinition (transaction, metadataItemID, abstractRoleName, 0);
 
       transaction.Commit ();

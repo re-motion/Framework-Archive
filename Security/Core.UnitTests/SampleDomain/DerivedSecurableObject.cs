@@ -6,7 +6,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
 {
   public class DerivedSecurableObject : SecurableObject
   {
-    //[RequiredMethodPermission (GeneralAccessType.Edit)]
+    //[RequiredMethodPermission (GeneralAccessTypes.Edit)]
     //public static new string GetObjectName (SecurableObject securableObject)
     //{
     //  return null;
@@ -21,12 +21,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public new void Send ()
     {
     }
 
-    [DemandMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessTypes.Create)]
     public override void Print ()
     {
       base.Print ();

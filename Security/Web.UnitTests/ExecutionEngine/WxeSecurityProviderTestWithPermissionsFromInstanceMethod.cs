@@ -73,7 +73,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Read, true);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, true);
       SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy);
       TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
@@ -88,7 +88,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckAccess_AccessDenied ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Read, false);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
       SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy);
       TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
@@ -116,7 +116,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasAccess_AccessGranted ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessType.Read, true);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Read, true);
       SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy);
       TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
@@ -131,7 +131,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasAccess_AccessDenied ()
     {
-      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Read, false);
+      ExpectObjectSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
       SecurableObject thisObject = new SecurableObject (_mockObjectSecurityStrategy);
       TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (thisObject);
       function.ThisObject = thisObject; // Required because in this test the WxeFunction has not started executing.
@@ -164,7 +164,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Read, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, true);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
@@ -176,7 +176,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessType.Read, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Read, false);
       _mocks.ReplayAll ();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));

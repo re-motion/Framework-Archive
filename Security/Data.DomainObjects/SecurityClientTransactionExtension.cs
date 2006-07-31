@@ -98,7 +98,7 @@ namespace Rubicon.Security.Data.DomainObjects
         try
         {
           _isActive = true;
-          hasAccess = securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessType.Find));
+          hasAccess = securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessTypes.Find));
         }
         finally
         {
@@ -155,7 +155,7 @@ namespace Rubicon.Security.Data.DomainObjects
       try
       {
         _isActive = true;
-        securityClient.CheckAccess (securableObject, AccessType.Get (GeneralAccessType.Delete));
+        securityClient.CheckAccess (securableObject, AccessType.Get (GeneralAccessTypes.Delete));
       }
       finally
       {

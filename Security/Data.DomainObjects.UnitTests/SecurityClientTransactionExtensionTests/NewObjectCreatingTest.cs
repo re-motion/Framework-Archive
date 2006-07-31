@@ -34,7 +34,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public void Test_AccessGranted ()
     {
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessType.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
       _extension.NewObjectCreating (typeof (SecurableObject));
@@ -47,7 +47,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public void Test_AccessDenied ()
     {
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessType.Create, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
 
       _extension.NewObjectCreating (typeof (SecurableObject));
@@ -88,7 +88,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
         new SecurableObject (_testHelper.Transaction, objectSecurityStrategy);
         return true;
       };
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessType.Create, hasAccess);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, hasAccess);
       _testHelper.ReplayAll ();
 
       _extension.NewObjectCreating (typeof (SecurableObject));
@@ -101,7 +101,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     {
       IObjectSecurityStrategy objectSecurityStrategy = _testHelper.CreateObjectSecurityStrategy ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessType.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
       new SecurableObject (_testHelper.Transaction, objectSecurityStrategy);

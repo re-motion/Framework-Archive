@@ -106,33 +106,33 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void CacheAccessTypes ()
     {
-      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Journalize));
-      Assert.IsNull (_cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessTypes.Journalize));
+      Assert.IsNull (_cache.GetAccessType (DomainAccessTypes.Journalize));
 
-      _cache.AddAccessType (DomainAccessType.Journalize, AccessTypes.Journalize);
-      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessType.Journalize));
-      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Archive));
-      Assert.IsNull (_cache.GetAccessType (DomainAccessType.Archive));
+      _cache.AddAccessType (DomainAccessTypes.Journalize, AccessTypes.Journalize);
+      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessTypes.Journalize));
+      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessTypes.Archive));
+      Assert.IsNull (_cache.GetAccessType (DomainAccessTypes.Archive));
 
-      _cache.AddAccessType (DomainAccessType.Archive, AccessTypes.Archive);
-      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessType.Journalize));
-      Assert.AreSame (AccessTypes.Archive, _cache.GetAccessType (DomainAccessType.Archive));
+      _cache.AddAccessType (DomainAccessTypes.Archive, AccessTypes.Archive);
+      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessTypes.Journalize));
+      Assert.AreSame (AccessTypes.Archive, _cache.GetAccessType (DomainAccessTypes.Archive));
     }
 
     [Test]
     public void CacheAbstractRoles ()
     {
-      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Clerk));
-      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
+      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRoles.Clerk));
+      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRoles.Secretary));
 
-      _cache.AddAbstractRole (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
-      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
-      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Secretary));
-      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
+      _cache.AddAbstractRole (DomainAbstractRoles.Clerk, AbstractRoles.Clerk);
+      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRoles.Clerk));
+      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRoles.Secretary));
+      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRoles.Secretary));
 
-      _cache.AddAbstractRole (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
-      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
-      Assert.AreSame (AbstractRoles.Secretary, _cache.GetAbstractRole (DomainAbstractRole.Secretary));
+      _cache.AddAbstractRole (DomainAbstractRoles.Secretary, AbstractRoles.Secretary);
+      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRoles.Clerk));
+      Assert.AreSame (AbstractRoles.Secretary, _cache.GetAbstractRole (DomainAbstractRoles.Secretary));
     }
 
     [Test]
@@ -178,8 +178,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetCachedAccessTypes ()
     {
-      _cache.AddAccessType (DomainAccessType.Journalize, AccessTypes.Journalize);
-      _cache.AddAccessType (DomainAccessType.Archive, AccessTypes.Archive);
+      _cache.AddAccessType (DomainAccessTypes.Journalize, AccessTypes.Journalize);
+      _cache.AddAccessType (DomainAccessTypes.Archive, AccessTypes.Archive);
 
       List<EnumValueInfo> infos = _cache.GetAccessTypes ();
 
@@ -192,8 +192,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetCachedAbstractRoles ()
     {
-      _cache.AddAbstractRole (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
-      _cache.AddAbstractRole (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
+      _cache.AddAbstractRole (DomainAbstractRoles.Clerk, AbstractRoles.Clerk);
+      _cache.AddAbstractRole (DomainAbstractRoles.Secretary, AbstractRoles.Secretary);
 
       List<EnumValueInfo> infos = _cache.GetAbstractRoles ();
 

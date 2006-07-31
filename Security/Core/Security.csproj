@@ -42,6 +42,7 @@
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityContextFactory.cs" />
+    <Compile Include="GeneralAccessTypes.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProvider.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
@@ -81,7 +82,6 @@
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityConfigurationException.cs" />
-    <Compile Include="GeneralAccessType.cs" />
     <Compile Include="SecurityException.cs" />
     <Compile Include="ObjectSecurityProvider.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />

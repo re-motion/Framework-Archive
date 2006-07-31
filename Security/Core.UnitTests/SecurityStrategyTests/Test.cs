@@ -38,10 +38,10 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     [Test]
     public void HasAccess ()
     {
-      Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) });
+      Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (new AccessType[] { AccessType.Get (GeneralAccessTypes.Edit) });
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessTypes.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -50,10 +50,10 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     [Test]
     public void HasNotAccess ()
     {
-      Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) });
+      Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (new AccessType[] { AccessType.Get (GeneralAccessTypes.Edit) });
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Create));
+      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessTypes.Create));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -63,14 +63,14 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     public void HasAccessWithMultipleAllowedAccessResults ()
     {
       AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
+          AccessType.Get (GeneralAccessTypes.Create),
+          AccessType.Get (GeneralAccessTypes.Delete),
+          AccessType.Get (GeneralAccessTypes.Read) };
 
       Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (mockResult);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Read));
+      bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessTypes.Read));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -80,15 +80,15 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     public void HasAccessWithMultipleRequiredAccessTypes ()
     {
       AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
+          AccessType.Get (GeneralAccessTypes.Create),
+          AccessType.Get (GeneralAccessTypes.Delete),
+          AccessType.Get (GeneralAccessTypes.Read) };
 
       Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (mockResult);
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user,
-          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Create));
+          AccessType.Get (GeneralAccessTypes.Delete), AccessType.Get (GeneralAccessTypes.Create));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -98,15 +98,15 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     public void HasNotAccessWithMultipleRequiredAccessTypes ()
     {
       AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
+          AccessType.Get (GeneralAccessTypes.Create),
+          AccessType.Get (GeneralAccessTypes.Delete),
+          AccessType.Get (GeneralAccessTypes.Read) };
 
       Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return(mockResult);
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user,
-          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Find));
+          AccessType.Get (GeneralAccessTypes.Delete), AccessType.Get (GeneralAccessTypes.Find));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -119,7 +119,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user,
-          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
+          AccessType.Get (GeneralAccessTypes.Find), AccessType.Get (GeneralAccessTypes.Edit), AccessType.Get (GeneralAccessTypes.Read));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -132,7 +132,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubContextFactory, _mockSecurityService, _user,
-          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
+          AccessType.Get (GeneralAccessTypes.Find), AccessType.Get (GeneralAccessTypes.Edit), AccessType.Get (GeneralAccessTypes.Read));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);

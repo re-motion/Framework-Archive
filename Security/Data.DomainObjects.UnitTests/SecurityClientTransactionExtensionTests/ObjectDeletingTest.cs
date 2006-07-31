@@ -36,7 +36,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.Transaction.Commit ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessType.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, true);
       _testHelper.ReplayAll ();
 
       _extension.ObjectDeleting (securableObject);
@@ -51,7 +51,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.Transaction.Commit ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessType.Delete, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, false);
       _testHelper.ReplayAll ();
 
       _extension.ObjectDeleting (securableObject);
@@ -98,7 +98,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
         otherObject.Delete ();
         return true;
       };
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessType.Delete, hasAccess);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, hasAccess);
       _testHelper.ReplayAll ();
 
       _extension.ObjectDeleting (securableObject);
@@ -112,7 +112,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject securableObject = _testHelper.CreateSecurableObject ();
       _testHelper.Transaction.Commit ();
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessType.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Delete, true);
       _testHelper.ReplayAll ();
 
       securableObject.Delete ();

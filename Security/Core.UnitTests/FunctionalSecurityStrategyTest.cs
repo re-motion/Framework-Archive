@@ -33,7 +33,7 @@ namespace Rubicon.Security.UnitTests
       _stubSecurityService = _mocks.CreateMock<ISecurityService> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessType.Read), AccessType.Get (GeneralAccessType.Edit) };
+      _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
 
       _strategy = new FunctionalSecurityStrategy (_mockSecurityStrategy);
     }

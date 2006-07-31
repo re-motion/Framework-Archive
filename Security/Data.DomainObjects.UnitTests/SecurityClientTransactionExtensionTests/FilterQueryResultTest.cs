@@ -40,7 +40,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       collection.Add (allowedObject);
       IQuery query = new Query ("Dummy");
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (allowedObject, GeneralAccessType.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (allowedObject, GeneralAccessTypes.Find, true);
       _testHelper.ReplayAll ();
 
       _extension.FilterQueryResult (collection, query);
@@ -73,7 +73,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       collection.Add (deniedObject);
       IQuery query = new Query ("Dummy");
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessType.Find, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessTypes.Find, false);
       _testHelper.ReplayAll ();
 
       _extension.FilterQueryResult (collection, query);
@@ -92,8 +92,8 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       collection.Add (deniedObject);
       IQuery query = new Query ("Dummy");
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (allowedObject, GeneralAccessType.Find, true);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessType.Find, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (allowedObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (deniedObject, GeneralAccessTypes.Find, false);
       _testHelper.ReplayAll ();
 
       _extension.FilterQueryResult (collection, query);
@@ -156,7 +156,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
         _testHelper.Transaction.QueryManager.GetCollection (new Query ("GetSecurableObjects"));
         return true;
       };
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessType.Find, hasAccess);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, GeneralAccessTypes.Find, hasAccess);
       _testHelper.ReplayAll ();
 
       _extension.FilterQueryResult (collection, query);
@@ -168,7 +168,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public void Test_AccessedViaDomainObject ()
     {
       _testHelper.AddExtension (_extension);
-      _testHelper.ExpectSecurityServiceGetAccess (new SecurityContext (typeof (SecurableObject)), GeneralAccessType.Find);
+      _testHelper.ExpectSecurityServiceGetAccess (new SecurityContext (typeof (SecurableObject)), GeneralAccessTypes.Find);
       _testHelper.ReplayAll ();
 
       _testHelper.Transaction.QueryManager.GetCollection (new Query ("GetSecurableObjects"));

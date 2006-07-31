@@ -16,7 +16,7 @@ namespace Rubicon.Security.Web.UnitTests.Domain
       _securityStrategy = securityStrategy;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessTypes.Read)]
     public void Show ()
     {
     }

@@ -51,8 +51,8 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       set { SetRelatedObject ("Client", value); }
     }
 
-    //[DemandPropertyGetterPermission (DomainAccessType.ReadName)]
-    //[DemandPropertySetterPermission (DomainAccessType.WriteName)]
+    //[DemandPropertyGetterPermission (DomainAccessTypes.ReadName)]
+    //[DemandPropertySetterPermission (DomainAccessTypes.WriteName)]
     public string Name
     {
       get { return (string) DataContainer["Name"]; }

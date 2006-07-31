@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
@@ -37,7 +37,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessType.Create, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, false);
       _testHelper.ReplayAll ();
 
       bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));

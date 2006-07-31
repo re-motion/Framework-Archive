@@ -6,7 +6,7 @@ using Rubicon.Data;
 namespace Rubicon.Security
 {
   [AccessType]
-  public enum GeneralAccessType
+  public enum GeneralAccessTypes
   {
     [PermanentGuid ("1D6D25BC-4E85-43ab-A42D-FB5A829C30D5")]
     Create = 0,

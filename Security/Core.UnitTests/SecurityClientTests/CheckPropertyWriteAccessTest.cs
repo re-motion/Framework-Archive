@@ -62,7 +62,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void Test_AccessGranted_WithDefaultAccessType ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty");
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Edit, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Edit, true);
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
@@ -75,7 +75,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void Test_AccessDenied_WithDefaultAccessType_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty");
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessType.Edit, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Edit, false);
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");

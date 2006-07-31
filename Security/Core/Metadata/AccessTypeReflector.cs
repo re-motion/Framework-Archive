@@ -66,7 +66,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues (typeof (GeneralAccessType), cache);
+      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues (typeof (GeneralAccessTypes), cache);
       foreach (KeyValuePair<Enum, EnumValueInfo> entry in accessTypes)
       {
         if (!cache.ContainsAccessType (entry.Key))

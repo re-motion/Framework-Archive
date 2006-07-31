@@ -55,14 +55,14 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetAbstractRoles ()
     {
       Dictionary<Enum, EnumValueInfo> domainAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
-      domainAbstractRoles.Add (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
-      domainAbstractRoles.Add (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
+      domainAbstractRoles.Add (DomainAbstractRoles.Clerk, AbstractRoles.Clerk);
+      domainAbstractRoles.Add (DomainAbstractRoles.Secretary, AbstractRoles.Secretary);
 
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
-      specialAbstractRoles.Add (SpecialAbstractRole.Administrator, AbstractRoles.Administrator);
+      specialAbstractRoles.Add (SpecialAbstractRoles.Administrator, AbstractRoles.Administrator);
 
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (DomainAbstractRole), _cache)).Return (domainAbstractRoles);
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (SpecialAbstractRole), _cache)).Return (specialAbstractRoles);
+      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (DomainAbstractRoles), _cache)).Return (domainAbstractRoles);
+      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (SpecialAbstractRoles), _cache)).Return (specialAbstractRoles);
       _mocks.ReplayAll ();
 
       List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles (typeof (File).Assembly, _cache);

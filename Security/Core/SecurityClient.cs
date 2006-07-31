@@ -170,7 +170,7 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.");
       
       if (requiredAccessTypeEnums.Length == 0)
-        requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Read };
+        requiredAccessTypeEnums = new Enum[] { GeneralAccessTypes.Read };
 
       return HasAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
@@ -207,7 +207,7 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyWritePermissions evaluated and returned null.");
       
       if (requiredAccessTypeEnums.Length == 0)
-        requiredAccessTypeEnums = new Enum[] { GeneralAccessType.Edit };
+        requiredAccessTypeEnums = new Enum[] { GeneralAccessTypes.Edit };
 
       return HasAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
@@ -241,7 +241,7 @@ namespace Rubicon.Security
       if (SecurityFreeSection.IsActive)
         return true;
 
-      AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessType.Create) };
+      AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessTypes.Create) };
 
       return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, requiredAccessTypes);
     }

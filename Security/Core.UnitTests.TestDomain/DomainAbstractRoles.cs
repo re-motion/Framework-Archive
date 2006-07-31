@@ -4,7 +4,7 @@ using Rubicon.Data;
 namespace Rubicon.Security.UnitTests.TestDomain
 {
   [AbstractRole]
-  public enum DomainAbstractRole
+  public enum DomainAbstractRoles
   {
     [PermanentGuid ("00000003-0001-0000-0000-000000000000")]
     Clerk,
