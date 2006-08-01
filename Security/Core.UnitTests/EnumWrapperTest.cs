@@ -42,11 +42,18 @@ namespace Rubicon.Security.UnitTests
     public void Equals ()
     {
       EnumWrapper expected = new EnumWrapper (TestAccessTypes.First);
+
       Assert.IsTrue (expected.Equals (expected));
+      
       Assert.IsTrue (expected.Equals (new EnumWrapper (TestAccessTypes.First)));
       Assert.IsTrue (new EnumWrapper (TestAccessTypes.First).Equals (expected));
+
+      Assert.IsTrue (expected.Equals (new EnumWrapper ("First", "Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests")));
+      Assert.IsTrue (new EnumWrapper ("First", "Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests").Equals (expected));
+      
       Assert.IsFalse (expected.Equals (new EnumWrapper (TestAccessTypes.Second)));
       Assert.IsFalse (new EnumWrapper (TestAccessTypes.Second).Equals (expected));
+      
       Assert.IsFalse (expected.Equals (null));
 
       Assert.AreEqual (expected, new EnumWrapper (TestAccessTypes.First));
@@ -56,7 +63,10 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void TestGetHashCode ()
     {
-      Assert.AreEqual (new EnumWrapper (TestAccessTypes.First).GetHashCode (), new EnumWrapper (TestAccessTypes.First).GetHashCode ());
+      EnumWrapper expected = new EnumWrapper (TestAccessTypes.First);
+
+      Assert.AreEqual (expected.GetHashCode (), new EnumWrapper (TestAccessTypes.First).GetHashCode ());
+      Assert.AreEqual (expected.GetHashCode (), new EnumWrapper ("First", "Rubicon.Security.UnitTests.SampleDomain.TestAccessTypes, Rubicon.Security.UnitTests").GetHashCode ());
     }
 
     [Test]

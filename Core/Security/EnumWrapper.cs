@@ -120,7 +120,8 @@ namespace Rubicon.Security
     /// <returns> <see langword="true"/> if the two are equal; otherwise <see langword="false"/>. </returns>
     public bool Equals (EnumWrapper value)
     {
-      return this._name == value._name && String.Equals (this._typeName, value._typeName, StringComparison.Ordinal);
+      return this._name.Equals (value._name, StringComparison.Ordinal)
+          && this._typeName.Equals (value._typeName, StringComparison.Ordinal);
     }
 
     public override int GetHashCode ()
