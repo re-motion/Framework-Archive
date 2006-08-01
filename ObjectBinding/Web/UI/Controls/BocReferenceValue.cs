@@ -1843,7 +1843,7 @@ public class BocReferenceValue:
   /// </value>
   [Category ("Menu")]
   [Description ("Determines whether to use the value as the options menu's head.")]
-  [DefaultValue (typeof (NaBoolean), "")]
+  [DefaultValue (typeof (NaBoolean), "null")]
   public NaBoolean HasValueEmbeddedInsideOptionsMenu
   {
     get { return _hasValueEmbeddedInsideOptionsMenu; }
