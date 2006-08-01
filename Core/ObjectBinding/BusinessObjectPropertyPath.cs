@@ -206,7 +206,7 @@ namespace Rubicon.ObjectBinding
       if (property.IsList)
       {
         if (!getFirstListEntry)
-          throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is a not a single-value property.", propertyIndex, this));
+          throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is not a single-value property.", propertyIndex, this));
 
         IList list = (IList) obj.GetProperty (property);
         if (list.Count > 0)

@@ -75,7 +75,7 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Element 0 of property path ReferenceListProperty.Property is a not a single-value property.")]
+    [ExpectedException (typeof (InvalidOperationException), "Element 0 of property path ReferenceListProperty.Property is not a single-value property.")]
     public void GetValue_ThrowsInvalidOperationExceptionBecauseOfListProperty ()
     {
       using (_testHelper.Ordered ())
