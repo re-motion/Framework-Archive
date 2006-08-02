@@ -1,3 +1,9 @@
+1.7.21
+======
+- FormGridManager:
+  * Bugfix: Wurde ein Validator verwendet, der keinem Control zugeordnet ist, aber trotzdem einen Validierungsfehler hat, gab es eine
+    ArgumentNullException.
+  
 1.7.18
 ======
 - WxeTransactionBase und WxeTransactedFunctionBase sind nun Generic Types. Innerhalb einer Parent-Child Hierarchy müssen alle WxeTransactionBase's
