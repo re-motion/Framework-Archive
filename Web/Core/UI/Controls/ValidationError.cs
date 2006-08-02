@@ -42,10 +42,9 @@ public class ValidationError
   /// </summary>
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
-  /// <param name="validator"> The validator used to validate the <paramref name="validatedControl"/>. </param>
+  /// <param name="validator"> The validator used to validate the <paramref name="validatedControl"/>.  Must not be <see langword="null"/>. </param>
 	public ValidationError (Control validatedControl, IValidator validator, ControlCollection labels)
 	{
-    ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
     ArgumentUtility.CheckNotNull ("validator", validator);
 
     _validatedControl = validatedControl;
@@ -65,11 +64,10 @@ public class ValidationError
   /// </summary>
   /// <overload> Overloaded. </overload>
   /// <param name="validatedControl"> The control with an invalid state. </param>
-  /// <param name="validationMessage"> The message to be displayed to the user. </param>
+  /// <param name="validationMessage"> The message to be displayed to the user. Must not be <see langword="null"/> or empty. </param>
   public ValidationError (Control validatedControl, string validationMessage, ControlCollection labels)
 	{
-    ArgumentUtility.CheckNotNull ("validatedControl", validatedControl);
-    ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+    ArgumentUtility.CheckNotNullOrEmpty ("validationMessage", validationMessage);
 
     _validatedControl = validatedControl;
     _validationMessage = validationMessage;
@@ -129,10 +127,10 @@ public class ValidationError
   public HtmlGenericControl ToLabel (string cssClass)
   {
     HtmlGenericControl label = new HtmlGenericControl ("label");
-    
-    label.ID = ValidatedControl.ClientID + "_ValidationError_Label";
+
     label.InnerText = ValidationMessage;
-    label.Attributes["for"] = ValidatedControl.ClientID;
+    if (_validatedControl != null)
+      label.Attributes["for"] = _validatedControl.ClientID;
 
     if (! StringUtility.IsNullOrEmpty (cssClass))
       label.Attributes ["class"] = cssClass;
@@ -151,7 +149,8 @@ public class ValidationError
     HyperLink hyperLink = new HyperLink();
 
     hyperLink.Text = ValidationMessage;
-    hyperLink.Attributes.Add ("href", "#" + ValidatedControl.ClientID);
+    if (_validatedControl != null)
+      hyperLink.Attributes.Add ("href", "#" + _validatedControl.ClientID);
 
     if (! StringUtility.IsNullOrEmpty (cssClass))
       hyperLink.CssClass = cssClass;
