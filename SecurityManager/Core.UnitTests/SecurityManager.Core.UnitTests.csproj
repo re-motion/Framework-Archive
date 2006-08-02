@@ -86,6 +86,7 @@
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganisationalStructureTestHelper.cs" />
     <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\RoleTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResultTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />

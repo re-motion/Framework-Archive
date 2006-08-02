@@ -7,12 +7,16 @@ using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.Security;
+using System.Collections.Generic;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
-  public class Position : OrganizationalStructureObject
+  [PermanentGuid ("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
+  public class Position : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
 
@@ -35,7 +39,15 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 
+    [DemandMethodPermission (SecurityManagerAccessTypes.AssignRole)]
+    [System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
+    public static void Dummy_AssignRole ()
+    {
+    }
+
     // member fields
+
+    private IObjectSecurityStrategy _securityStrategy;
 
     // construction and disposing
 
@@ -59,10 +71,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["Name"] = value; }
     }
 
-    public DomainObjectCollection ConcretePositions
+    [PermanentGuid ("5C31F600-88F3-4ff7-988C-0E45A857AB4B")]
+    public Delegation Delegation
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("ConcretePositions"); }
-      set { } // marks property ConcretePositions as modifiable
+      get { return (Delegation) DataContainer["Delegation"]; }
+      set { DataContainer["Delegation"] = value; }
+    }
+
+    public DomainObjectCollection GroupTypes
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("GroupTypes"); }
+      set { } // marks property GroupTypes as modifiable
     }
 
     private DomainObjectCollection Roles
@@ -90,8 +109,38 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       while (Roles.Count > 0)
         Roles[0].Delete ();
 
-      while (ConcretePositions.Count > 0)
-        ConcretePositions[0].Delete ();
+      while (GroupTypes.Count > 0)
+        GroupTypes[0].Delete ();
+    }
+
+    IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
+    {
+      if (_securityStrategy == null)
+        _securityStrategy = new ObjectSecurityStrategy (this);
+
+      return _securityStrategy;
+    }
+
+    SecurityContext ISecurityContextFactory.CreateSecurityContext ()
+    {
+      string owner = string.Empty;
+      string ownerGroup = string.Empty;
+      string ownerClient = string.Empty;
+
+      return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
+    }
+
+    protected virtual IDictionary<string, Enum> GetStates ()
+    {
+      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      states.Add ("Delegation", Delegation);
+
+      return states;
+    }
+
+    protected virtual IList<Enum> GetAbstractRoles ()
+    {
+      return new List<Enum> ();
     }
   }
 }

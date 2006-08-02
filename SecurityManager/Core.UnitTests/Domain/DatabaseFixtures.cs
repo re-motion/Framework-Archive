@@ -48,34 +48,62 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       ClientTransaction transaction = new ClientTransaction ();
 
-      AbstractRoleDefinition qualityManagerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 0);
+      AbstractRoleDefinition qualityManagerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", 0);
       qualityManagerRole.Index = 1;
-      AbstractRoleDefinition developerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 1);
+      AbstractRoleDefinition developerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", 1);
       developerRole.Index = 0;
 
-      Client client1 = CreateClient (transaction, "Testclient");
-      Group rootGroup = CreateGroup (transaction, "rootGroup", "UnqiueIdentifier: rootGroup", null, client1);
-      Group parentOfOwnerGroup = CreateGroup (transaction, "parentOfOwnerGroup", "UnqiueIdentifier: parentOfOwnerGroup", rootGroup, client1);
-      Group ownerGroup = CreateGroup (transaction, "ownerGroup", "UnqiueIdentifier: ownerGroup", parentOfOwnerGroup, client1);
-      Group group = CreateGroup (transaction, "Testgroup", "UnqiueIdentifier: Testgroup", ownerGroup, client1);
-      User user1 = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", group, client1);
-      User user2 = CreateUser (transaction, "other.test.user", "other test", "user", "Dipl.Ing.(FH)", group, client1);
+      Position globalPosition = CreatePosition (transaction, "Global");
+      globalPosition.Delegation = Delegation.Enabled;
       Position officialPosition = CreatePosition (transaction, "Official");
+      officialPosition.Delegation = Delegation.Enabled;
       Position managerPosition = CreatePosition (transaction, "Manager");
+      managerPosition.Delegation = Delegation.Disabled;
 
-      Role officialInGroup = CreateRole (transaction, user1, group, officialPosition);
-      Role managerInGroup = CreateRole (transaction, user1, group, managerPosition);
-      Role managerInOwnerGroup = CreateRole (transaction, user1, ownerGroup, managerPosition);
-      Role officialInRootGroup = CreateRole (transaction, user1, rootGroup, officialPosition);
-      
       GroupType groupType1 = CreateGroupType (transaction, "groupType 1");
       GroupType groupType2 = CreateGroupType (transaction, "groupType 2");
 
+      GroupTypePosition groupType1_managerPosition = new GroupTypePosition (transaction);
+      groupType1_managerPosition.GroupType = groupType1;
+      groupType1_managerPosition.Position = managerPosition;
+      GroupTypePosition groupType1_officialPosition = new GroupTypePosition (transaction);
+      groupType1_officialPosition.GroupType = groupType1;
+      groupType1_officialPosition.Position = officialPosition;
+      GroupTypePosition groupType2_officialPosition = new GroupTypePosition (transaction);
+      groupType2_officialPosition.GroupType = groupType2;
+      groupType2_officialPosition.Position = officialPosition;
+
+      Client client1 = CreateClient (transaction, "Testclient");
+      Group rootGroup = CreateGroup (transaction, "rootGroup", "UID: rootGroup", null, client1);
+      for (int i = 0; i < 2; i++)
+      {
+        Group parentGroup = CreateGroup (transaction, string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, client1);
+        parentGroup.GroupType = groupType1;
+        
+        Group group = CreateGroup (transaction, string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, client1);
+        group.GroupType = groupType2;
+        
+        User user1 = CreateUser (transaction, string.Format ("group{0}/user1", i), string.Empty, "user1", string.Empty, group, client1);
+        User user2 = CreateUser (transaction, string.Format ("group{0}/user2", i), string.Empty, "user2", string.Empty, group, client1);
+
+        CreateRole (transaction, user1, parentGroup, managerPosition);
+        CreateRole (transaction, user2, parentGroup, officialPosition);
+      }
+
+      Group testRootGroup = CreateGroup (transaction, "testRootGroup", "UID: testRootGroup", null, client1);
+      Group testParentOfOwnerGroup = CreateGroup (transaction, "testParentOfOwnerGroup", "UID: testParentOfOwnerGroup", testRootGroup, client1);
+      Group testOwnerGroup = CreateGroup (transaction, "testOwnerGroup", "UID: testOwnerGroup", testParentOfOwnerGroup, client1);
+      Group testGroup = CreateGroup (transaction, "testGroup", "UID: testGroup", null, client1);
+      User testUser = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwnerGroup, client1);
+
+      CreateRole (transaction, testUser, testGroup, officialPosition);
+      CreateRole (transaction, testUser, testGroup, managerPosition);
+      CreateRole (transaction, testUser, testOwnerGroup, managerPosition);
+      CreateRole (transaction, testUser, testRootGroup, officialPosition);
+
       Client client2 = CreateClient (transaction, "Client 2");
-      Group groupClient2 = CreateGroup (transaction, "Group Client 2", "UnqiueIdentifier: group Client 2", null, client2);
+      Group groupClient2 = CreateGroup (transaction, "Group Client 2", "UID: group Client 2", null, client2);
       User userClient2 = CreateUser (transaction, "User.Client2", "User", "Client 2", string.Empty, groupClient2, client2);
-      Position position2 = CreatePosition (transaction, "Position Client 2");
-      GroupType groupTypeClient2 = CreateGroupType (transaction, "GroupType Client 2");
 
       transaction.Commit ();
 
@@ -88,7 +116,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       ClientTransaction transaction = new ClientTransaction ();
 
       SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (transaction, classDefinitionCount, derivedClassDefinitionCount);
-      
+
       transaction.Commit ();
 
       return classDefinitions;
@@ -137,7 +165,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
       ClientTransaction transaction = new ClientTransaction ();
-   
+
       SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
       for (int i = 0; i < accessControlLists; i++)
       {
@@ -177,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
       ClientTransaction transaction = new ClientTransaction ();
-   
+
       SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
@@ -190,7 +218,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         else
           CreateStateCombination (transaction, acl, string.Format ("Property {0}", i));
       }
-      
+
       transaction.Commit ();
 
       return acl;
@@ -215,7 +243,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       ClientTransaction transaction = new ClientTransaction ();
 
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (transaction, permissions);
-      AccessControlList acl = classDefinition.CreateAccessControlList();
+      AccessControlList acl = classDefinition.CreateAccessControlList ();
       AccessControlEntry ace = acl.CreateAccessControlEntry ();
 
       transaction.Commit ();
@@ -265,8 +293,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     }
 
     private SecurableClassDefinition[] CreateSecurableClassDefinitions (
-        ClientTransaction transaction, 
-        int classDefinitionCount, 
+        ClientTransaction transaction,
+        int classDefinitionCount,
         int derivedClassDefinitionCount)
     {
       SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[classDefinitionCount];

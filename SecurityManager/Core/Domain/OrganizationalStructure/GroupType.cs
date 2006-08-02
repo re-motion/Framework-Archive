@@ -64,10 +64,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { } // marks property Groups as modifiable
     }
 
-    public DomainObjectCollection ConcretePositions
+    public DomainObjectCollection Positions
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("ConcretePositions"); }
-      set { } // marks property ConcretePositions as modifiable
+      get { return (DomainObjectCollection) GetRelatedObjects ("Positions"); }
+      set { } // marks property Positions as modifiable
     }
 
     private DomainObjectCollection AccessControlEntries

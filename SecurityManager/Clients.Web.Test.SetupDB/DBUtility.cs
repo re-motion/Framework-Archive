@@ -83,7 +83,7 @@ public class DBUtility
         "Client", 
         "Group", 
         "GroupType", 
-        "ConcretePosition", 
+        "GroupTypePosition", 
         "Position", 
         "Role", 
         "User", 
@@ -93,7 +93,12 @@ public class DBUtility
         "StatePropertyReference",
         "AccessTypeReference",
         "Culture",
-        "LocalizedName"
+        "LocalizedName",
+        "AccessControlList",
+        "StateCombination",
+        "StateUsage",
+        "AccessControlEntry",
+        "Permission"
    };
 
     if (resetTables)

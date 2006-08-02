@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure {
+namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditConcretePositionFormResources {
+    internal class Delegation {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditConcretePositionFormResources() {
+        internal Delegation() {
         }
         
         /// <summary>
@@ -39,8 +39,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Edit" +
-                            "ConcretePositionFormResources", typeof(EditConcretePositionFormResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation", typeof(Delegation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,11 +61,20 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Konkrete Stelle bearbeiten.
+        ///   Looks up a localized string similar to Disabled.
         /// </summary>
-        internal static string auto_this_Title {
+        internal static string Rubicon_SecurityManager_Domain_OrganizationalStructure_Delegation_Disabled {
             get {
-                return ResourceManager.GetString("auto:this:Title", resourceCulture);
+                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.OrganizationalStructure.Delegation.Disabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        internal static string Rubicon_SecurityManager_Domain_OrganizationalStructure_Delegation_Enabled {
+            get {
+                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.OrganizationalStructure.Delegation.Enabled", resourceCulture);
             }
         }
     }

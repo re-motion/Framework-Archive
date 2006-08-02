@@ -17,8 +17,8 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
-  [WebMultiLingualResources (typeof (EditConcretePositionFormResources))]
-  public partial class EditConcretePositionForm : BaseEditPage
+  [WebMultiLingualResources (typeof (EditGroupTypePositionFormResources))]
+  public partial class EditGroupTypePositionForm : BaseEditPage
   {
 
     // types
@@ -32,19 +32,19 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     // methods and properties
     protected override IFocusableControl InitialFocusControl
     {
-      get { return EditConcretePositionControl.InitialFocusControl; }
+      get { return EditGroupTypePositionControl.InitialFocusControl; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      RegisterDataEditUserControl (EditConcretePositionControl);
+      RegisterDataEditUserControl (EditGroupTypePositionControl);
 
       base.OnLoad (e);
     }
 
     protected void ApplyButton_Click (object sender, EventArgs e)
     {
-      if (EditConcretePositionControl.Validate ())
+      if (EditGroupTypePositionControl.Validate ())
       {
         SaveData ();
         ExecuteNextStep ();
@@ -57,7 +57,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void SaveData ()
     {
-      EditConcretePositionControl.SaveValues (false);
+      EditGroupTypePositionControl.SaveValues (false);
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)

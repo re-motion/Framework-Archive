@@ -11,8 +11,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'GroupView'
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'GroupTypeView')
   DROP VIEW [dbo].[GroupTypeView]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcretePositionView')
-  DROP VIEW [dbo].[ConcretePositionView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'GroupTypePositionView')
+  DROP VIEW [dbo].[GroupTypePositionView]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PositionView')
   DROP VIEW [dbo].[PositionView]
@@ -77,7 +77,7 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
+    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'GroupTypePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
@@ -92,8 +92,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Group')
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'GroupType')
   DROP TABLE [dbo].[GroupType]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcretePosition')
-  DROP TABLE [dbo].[ConcretePosition]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'GroupTypePosition')
+  DROP TABLE [dbo].[GroupTypePosition]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Position')
   DROP TABLE [dbo].[Position]
@@ -183,18 +183,17 @@ CREATE TABLE [dbo].[GroupType]
   CONSTRAINT [PK_GroupType] PRIMARY KEY CLUSTERED ([ID])
 )
 
-CREATE TABLE [dbo].[ConcretePosition]
+CREATE TABLE [dbo].[GroupTypePosition]
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
 
-  -- ConcretePosition columns
-  [Name] nvarchar (100) NOT NULL,
+  -- GroupTypePosition columns
   [GroupTypeID] uniqueidentifier NULL,
   [PositionID] uniqueidentifier NULL,
 
-  CONSTRAINT [PK_ConcretePosition] PRIMARY KEY CLUSTERED ([ID])
+  CONSTRAINT [PK_GroupTypePosition] PRIMARY KEY CLUSTERED ([ID])
 )
 
 CREATE TABLE [dbo].[Position]
@@ -205,6 +204,7 @@ CREATE TABLE [dbo].[Position]
 
   -- Position columns
   [Name] nvarchar (100) NOT NULL,
+  [Delegation] int NOT NULL,
 
   CONSTRAINT [PK_Position] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -449,9 +449,9 @@ ALTER TABLE [dbo].[Group] ADD
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Group] ([ID]),
   CONSTRAINT [FK_GroupTypeToGroup] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID])
 
-ALTER TABLE [dbo].[ConcretePosition] ADD
-  CONSTRAINT [FK_GroupTypeToConcretePosition] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID]),
-  CONSTRAINT [FK_PositionToConcretePosition] FOREIGN KEY ([PositionID]) REFERENCES [dbo].[Position] ([ID])
+ALTER TABLE [dbo].[GroupTypePosition] ADD
+  CONSTRAINT [FK_GroupTypeToGroupTypePosition] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID]),
+  CONSTRAINT [FK_PositionToGroupTypePosition] FOREIGN KEY ([PositionID]) REFERENCES [dbo].[Position] ([ID])
 
 ALTER TABLE [dbo].[Role] ADD
   CONSTRAINT [FK_GroupToRole] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID]),
@@ -528,17 +528,17 @@ CREATE VIEW [dbo].[GroupTypeView] ([ID], [ClassID], [Timestamp], [Name])
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[ConcretePositionView] ([ID], [ClassID], [Timestamp], [Name], [GroupTypeID], [PositionID])
+CREATE VIEW [dbo].[GroupTypePositionView] ([ID], [ClassID], [Timestamp], [GroupTypeID], [PositionID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [GroupTypeID], [PositionID]
-    FROM [dbo].[ConcretePosition]
-    WHERE [ClassID] IN ('ConcretePosition')
+  SELECT [ID], [ClassID], [Timestamp], [GroupTypeID], [PositionID]
+    FROM [dbo].[GroupTypePosition]
+    WHERE [ClassID] IN ('GroupTypePosition')
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[PositionView] ([ID], [ClassID], [Timestamp], [Name])
+CREATE VIEW [dbo].[PositionView] ([ID], [ClassID], [Timestamp], [Name], [Delegation])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [Delegation]
     FROM [dbo].[Position]
     WHERE [ClassID] IN ('Position')
   WITH CHECK OPTION

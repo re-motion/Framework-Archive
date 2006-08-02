@@ -120,25 +120,20 @@
           <maxLength>100</maxLength>
         </property>
         <relationProperty name="Groups" relationID="GroupTypeToGroup" cardinality="many" isMandatory="false" />
-        <relationProperty name="ConcretePositions" relationID="GroupTypeToConcretePosition" cardinality="many" isMandatory="false" />
+        <relationProperty name="Positions" relationID="GroupTypeToGroupTypePosition" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlEntries" relationID="GroupTypeToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
-    <class id="ConcretePosition">
-      <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.ConcretePosition, Rubicon.SecurityManager</type>
-      <entity name="ConcretePosition"/>
+    <class id="GroupTypePosition">
+      <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupTypePosition, Rubicon.SecurityManager</type>
+      <entity name="GroupTypePosition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <property name="Name">
-          <type>string</type>
-          <column>Name</column>
-          <maxLength>100</maxLength>
-        </property>
-        <relationProperty name="GroupType" relationID="GroupTypeToConcretePosition" cardinality="one" isMandatory="true">
+        <relationProperty name="GroupType" relationID="GroupTypeToGroupTypePosition" cardinality="one" isMandatory="true">
           <column>GroupTypeID</column>
         </relationProperty>
-        <relationProperty name="Position" relationID="PositionToConcretePosition" cardinality="one" isMandatory="true">
+        <relationProperty name="Position" relationID="PositionToGroupTypePosition" cardinality="one" isMandatory="true">
           <column>PositionID</column>
         </relationProperty>
       </properties>
@@ -154,7 +149,11 @@
           <column>Name</column>
           <maxLength>100</maxLength>
         </property>
-        <relationProperty name="ConcretePositions" relationID="PositionToConcretePosition" cardinality="many" isMandatory="false" />
+        <property name="Delegation">
+          <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Delegation, Rubicon.SecurityManager</type>
+          <column>Delegation</column>
+        </property>
+        <relationProperty name="GroupTypes" relationID="PositionToGroupTypePosition" cardinality="many" isMandatory="false" />
         <relationProperty name="Roles" relationID="PositionToRole" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlEntries" relationID="PositionToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
@@ -339,10 +338,6 @@
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-
-
-
-
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
         <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
       </properties>
@@ -411,7 +406,7 @@
         <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="true">
           <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
-        <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
+        <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="false">
           <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
       </properties>
@@ -448,28 +443,23 @@
           <column>Priority</column>
           <nullable>true</nullable>
         </property>
-        <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="true">
+        <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="false">
           <column>AccessControlListID</column>
         </relationProperty>
         <relationProperty name="SpecificGroup" relationID="GroupToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupID</column>
-
         </relationProperty>
         <relationProperty name="SpecificGroupType" relationID="GroupTypeToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupTypeID</column>
-
         </relationProperty>
         <relationProperty name="SpecificPosition" relationID="PositionToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>PositionID</column>
-
         </relationProperty>
         <relationProperty name="SpecificUser" relationID="UserToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>UserID</column>
-
         </relationProperty>
         <relationProperty name="SpecificAbstractRole" relationID="AbstractRoleToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>AbstractRoleID</column>
-
         </relationProperty>
         <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" >
           <sortExpression>[Index] ASC</sortExpression>

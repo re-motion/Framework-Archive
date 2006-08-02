@@ -32,3 +32,6 @@ ID,ClassID,MetadataItemID,Name,BaseSecurableClassID,BaseSecurableClassIDClassID,
 {B2EC7F75-D221-4fc3-81F6-8FE206338538},SecurableClassDefinition,{D521A086-1D83-4f8b-AFDB-E3B4E2FB1D45},"Rubicon.SecurityManager.Clients.Web.Test.Domain.ClassD, Rubicon.SecurityManager.Clients.Web.Test",{2BE5BD03-80AC-4a36-B0C9-65F9561C56C1},SecurableClassDefinition,30
 {B1243BB3-E7CA-4986-B093-3B10D74F07A7},SecurableClassDefinition,{D2351B07-9BA4-400e-9DF5-F2612FB639B3},"Rubicon.SecurityManager.Clients.Web.Test.Domain.ClassRootAB, Rubicon.SecurityManager.Clients.Web.Test",,,31
 {2BE5BD03-80AC-4a36-B0C9-65F9561C56C1},SecurableClassDefinition,{BF97D934-8FA5-4c1f-B53F-584ED5CFC45C},"Rubicon.SecurityManager.Clients.Web.Test.Domain.ClassRootCD, Rubicon.SecurityManager.Clients.Web.Test",,,32
+{FE3D60D6-EE68-4977-8234-C6280EA6D348},SecurableClassDefinition,{759DA370-E2C4-4221-B878-BE378C916042},"Rubicon.SecurityManager.Domain.OrganizationalStructure.User, Rubicon.SecurityManager",,,33
+{C10B1942-ADE9-4AEB-AB07-19C20139B3DA},SecurableClassDefinition,{AA1761A4-226C-4ebe-91F0-8FFF4974B175},"Rubicon.SecurityManager.Domain.OrganizationalStructure.Group, Rubicon.SecurityManager",,,34
+{EC829A7C-CF1A-461A-9FB9-27B4B4BCD018},SecurableClassDefinition,{5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333},"Rubicon.SecurityManager.Domain.OrganizationalStructure.Position, Rubicon.SecurityManager",,,35

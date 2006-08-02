@@ -24,10 +24,11 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue runat="server" ID="GroupField" DataSourceControl="CurrentObject" PropertyIdentifier="Group">
+      <rubicon:BocReferenceValue runat="server" ID="GroupField" DataSourceControl="CurrentObject" PropertyIdentifier="Group" OnSelectionChanged="GroupField_SelectionChanged">
         <PersistedCommand>
           <rubicon:BocCommand />
         </PersistedCommand>
+        <DropDownListStyle AutoPostBack="True" />
       </rubicon:BocReferenceValue>
     </td>
   </tr>

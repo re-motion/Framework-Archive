@@ -62,47 +62,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Konkrete Stelle.
-        /// </summary>
-        internal static string auto_ConcretePositionsField_FixedColumns_ConcretePositionsNameItem_ColumnTitle {
-            get {
-                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:ConcretePositionsNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Struktureinheit.
-        /// </summary>
-        internal static string auto_ConcretePositionsField_FixedColumns_GroupTypeNameItem_ColumnTitle {
-            get {
-                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:GroupTypeNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Stelle bearbeiten.
         /// </summary>
         internal static string auto_PositionLabel_Text {
             get {
                 return ResourceManager.GetString("auto:PositionLabel:Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
-        /// </summary>
-        internal static string auto_RolesField_FixedColumns_GroupNameItem_ColumnTitle {
-            get {
-                return ResourceManager.GetString("auto:RolesField:FixedColumns:GroupNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Benutzer.
-        /// </summary>
-        internal static string auto_RolesField_FixedColumns_UserNameItem_ColumnTitle {
-            get {
-                return ResourceManager.GetString("auto:RolesField:FixedColumns:UserNameItem:ColumnTitle", resourceCulture);
             }
         }
     }

@@ -6,6 +6,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -53,13 +54,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void DeletePosition_WithConcretePosition ()
+    public void DeletePosition_WithGroupTypePosition ()
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
-      Client client = testHelper.CreateClient ("Client");
       GroupType groupType = testHelper.CreateGroupType ("GroupType");
       Position position = testHelper.CreatePosition ("Position");
-      ConcretePosition concretePosition = testHelper.CreateConcretePosition ("ConcretePosition", groupType, position);
+      GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
 
       position.Delete ();
 
@@ -70,11 +70,44 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetDisplayName ()
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
-      Client client = testHelper.CreateClient ("Client");
       Position position = testHelper.CreatePosition ("PositionName");
 
       Assert.AreEqual ("PositionName", position.DisplayName);
     }
 
+    [Test]
+    public void GetSecurityStrategy ()
+    {
+      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+
+      Assert.IsNotNull (position.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void GetSecurityStrategy_SameTwice ()
+    {
+      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+
+      Assert.AreSame (position.GetSecurityStrategy (), position.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void CreateSecurityContext ()
+    {
+      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      Position position = testHelper.CreatePosition ("PositionName");
+      position.Delegation = Delegation.Enabled;
+
+      SecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext ();
+      Assert.AreEqual (position.GetType (), Type.GetType (securityContext.Class));
+      Assert.IsEmpty (securityContext.Owner);
+      Assert.IsEmpty (securityContext.OwnerGroup);
+      Assert.IsEmpty (securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.AbstractRoles);
+      Assert.AreEqual (1, securityContext.GetNumberOfStates());
+      Assert.AreEqual (new EnumWrapper (Delegation.Enabled), securityContext.GetState ("Delegation"));
+    }
   }
 }

@@ -84,6 +84,14 @@
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Security\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>

@@ -10,9 +10,9 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
-    public partial class EditConcretePositionForm {
+    public partial class EditGroupTypePositionForm {
         protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditConcretePositionControl EditConcretePositionControl;
+        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypePositionControl EditGroupTypePositionControl;
         protected Rubicon.Web.UI.Controls.WebButton CloseButton;
         protected Rubicon.Web.UI.Controls.WebButton CancelButton;
     }

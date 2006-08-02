@@ -92,10 +92,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       return groupType;
     }
 
-    public ConcretePosition CreateConcretePosition (string name, GroupType groupType, Position position)
+    public GroupTypePosition CreateGroupTypePosition (GroupType groupType, Position position)
     {
-      ConcretePosition concretePosition = new ConcretePosition (_transaction);
-      concretePosition.Name = name;
+      GroupTypePosition concretePosition = new GroupTypePosition (_transaction);
       concretePosition.GroupType = groupType;
       concretePosition.Position = position;
 

@@ -23,7 +23,13 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="ConcretePositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
+      <rubicon:BocEnumValue runat="server" ID="DelegationField" DataSourceControl="CurrentObject" PropertyIdentifier="Delegation" />
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <rubicon:BocList ID="GroupTypesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GroupTypes" OnMenuItemClick="GroupTypesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>

@@ -1,13 +1,13 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditConcretePositionForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditGroupTypePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditGroupTypePositionForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
-<%@ Register TagPrefix="securityManager" Src="EditConcretePositionControl.ascx" TagName="EditConcretePositionControl" %>
+<%@ Register TagPrefix="securityManager" Src="EditGroupTypePositionControl.ascx" TagName="EditGroupTypePositionControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder">
   <securityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
-  <securityManager:EditConcretePositionControl id="EditConcretePositionControl" runat="server"></securityManager:EditConcretePositionControl>
+  <securityManager:EditGroupTypePositionControl id="EditGroupTypePositionControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActualBottomControlsPlaceHolder" runat="server" ContentPlaceHolderID="BottomControlsPlaceHolder">
   <table cellpadding="0" cellspacing="0">

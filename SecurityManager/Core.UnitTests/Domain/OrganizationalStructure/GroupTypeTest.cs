@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       DomainObjectCollection groupTypes = GroupType.FindAll (transaction);
 
-      Assert.AreEqual (3, groupTypes.Count);
+      Assert.AreEqual (2, groupTypes.Count);
     }
   }
 }

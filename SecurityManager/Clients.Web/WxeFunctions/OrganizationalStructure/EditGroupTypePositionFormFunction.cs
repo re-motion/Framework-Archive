@@ -17,7 +17,7 @@ using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
-  public class EditConcretePositionFormFunction : FormFunction
+  public class EditGroupTypePositionFormFunction : FormFunction
   {
     // types
 
@@ -27,16 +27,16 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
 
     // construction and disposing
 
-    public EditConcretePositionFormFunction ()
+    public EditGroupTypePositionFormFunction ()
     {
     }
 
-    protected EditConcretePositionFormFunction (params object[] args)
+    protected EditGroupTypePositionFormFunction (params object[] args)
       : base (args)
     {
     }
 
-    public EditConcretePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, Position position, GroupType groupType)
+    public EditGroupTypePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, Position position, GroupType groupType)
       : base (clientID, organizationalStructureObjectID)
     {
       GroupType = groupType;
@@ -56,9 +56,9 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       set { Variables["Position"] = value; }
     }
 
-    public ConcretePosition ConcretePosition
+    public GroupTypePosition GroupTypePosition
     {
-      get { return (ConcretePosition) CurrentObject; }
+      get { return (GroupTypePosition) CurrentObject; }
       set { CurrentObject = value; }
     }
 
@@ -67,12 +67,12 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        ConcretePosition = new ConcretePosition (CurrentTransaction);
-        ConcretePosition.GroupType = GroupType;
-        ConcretePosition.Position = Position;
+        GroupTypePosition = new GroupTypePosition (CurrentTransaction);
+        GroupTypePosition.GroupType = GroupType;
+        GroupTypePosition.Position = Position;
       }
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditConcretePositionForm), "UI/OrganizationalStructure/EditConcretePositionForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditGroupTypePositionForm), "UI/OrganizationalStructure/EditGroupTypePositionForm.aspx");
   }
 }

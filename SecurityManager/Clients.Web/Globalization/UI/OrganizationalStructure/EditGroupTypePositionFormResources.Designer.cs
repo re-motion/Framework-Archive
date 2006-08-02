@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditConcretePositionControlResources {
+    internal class EditGroupTypePositionFormResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditConcretePositionControlResources() {
+        internal EditGroupTypePositionFormResources() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Edit" +
-                            "ConcretePositionControlResources", typeof(EditConcretePositionControlResources).Assembly);
+                            "GroupTypePositionFormResources", typeof(EditGroupTypePositionFormResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -64,9 +64,9 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         /// <summary>
         ///   Looks up a localized string similar to Konkrete Stelle bearbeiten.
         /// </summary>
-        internal static string auto_ConcretePositionLabel_Text {
+        internal static string auto_this_Title {
             get {
-                return ResourceManager.GetString("auto:ConcretePositionLabel:Text", resourceCulture);
+                return ResourceManager.GetString("auto:this:Title", resourceCulture);
             }
         }
     }

@@ -3,7 +3,7 @@
     application="Rubicon.SecurityManager" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\DomainObjects\queries.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\..\..\Data\DomainObjects\Schemas\queries.xsd">
 
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>

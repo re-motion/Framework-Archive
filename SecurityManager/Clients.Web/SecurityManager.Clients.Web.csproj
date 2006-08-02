@@ -54,8 +54,8 @@
     <Content Include="SecurityManagerUrlMapping.xml" />
     <Content Include="res\Html\ContentViewStyle.css" />
     <Content Include="res\Html\Style.css" />
-    <Content Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx" />
-    <Content Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupTypePositionControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupTypePositionForm.aspx" />
     <Content Include="UI\OrganizationalStructure\EditGroupControl.ascx" />
     <Content Include="UI\OrganizationalStructure\EditGroupForm.aspx" />
     <Content Include="UI\OrganizationalStructure\EditGroupTypeControl.ascx" />
@@ -114,13 +114,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurableClassDefinitionListFormResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\EditConcretePositionControlResources.Designer.cs">
-      <DependentUpon>EditConcretePositionControlResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.Designer.cs">
+      <DependentUpon>EditGroupTypePositionControlResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\EditConcretePositionFormResources.Designer.cs">
-      <DependentUpon>EditConcretePositionFormResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionFormResources.Designer.cs">
+      <DependentUpon>EditGroupTypePositionFormResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -278,19 +278,19 @@
     <Compile Include="UI\ErrorMessageControl.ascx.designer.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx.cs">
-      <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypePositionControl.ascx.cs">
+      <DependentUpon>EditGroupTypePositionControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx.designer.cs">
-      <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypePositionControl.ascx.designer.cs">
+      <DependentUpon>EditGroupTypePositionControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx.cs">
-      <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypePositionForm.aspx.cs">
+      <DependentUpon>EditGroupTypePositionForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx.designer.cs">
-      <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypePositionForm.aspx.designer.cs">
+      <DependentUpon>EditGroupTypePositionForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\OrganizationalStructure\EditGroupControl.ascx.cs">
       <DependentUpon>EditGroupControl.ascx</DependentUpon>
@@ -450,7 +450,7 @@
     <Compile Include="WxeFunctions\AccessControl\SecurableClassDefinitionListFormFunction.cs" />
     <Compile Include="WxeFunctions\BaseTransactedFunction.cs" />
     <Compile Include="WxeFunctions\FormFunction.cs" />
-    <Compile Include="WxeFunctions\OrganizationalStructure\EditConcretePositionFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypePositionFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypeFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditPositionFormFunction.cs" />
@@ -522,14 +522,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SecurableClassDefinitionListFormResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditConcretePositionControlResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EditConcretePositionControlResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>EditGroupTypePositionControlResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditConcretePositionFormResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionFormResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EditConcretePositionFormResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>EditGroupTypePositionFormResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditRoleControlResources.resx">

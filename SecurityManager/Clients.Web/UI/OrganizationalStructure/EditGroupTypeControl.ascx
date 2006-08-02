@@ -49,13 +49,8 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="ConcretePositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsList_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="PositionsList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Positions" OnMenuItemClick="PositionsList_MenuItemClick" Selection="Multiple">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-            <PersistedCommand>
-              <rubicon:BocListItemCommand />
-            </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
           <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Position">
             <PersistedCommand>
               <rubicon:BocListItemCommand />

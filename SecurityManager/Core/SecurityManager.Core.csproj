@@ -88,10 +88,11 @@
     <Compile Include="Domain\Metadata\StateDefinition.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinition.cs" />
     <Compile Include="Domain\Metadata\StatePropertyReference.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Delegation.cs" />
     <Compile Include="Domain\OrganizationalStructure\Client.cs" />
-    <Compile Include="Domain\OrganizationalStructure\ConcretePosition.cs" />
     <Compile Include="Domain\OrganizationalStructure\Group.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupType.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypePosition.cs" />
     <Compile Include="Domain\OrganizationalStructure\IOrganizationalStructureFactory.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureFactory.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureObject.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Domain\OrganizationalStructure\User.cs" />
     <Compile Include="Domain\QueryBuilder.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
+    <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,6 +111,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GroupSelection.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\Domain\OrganizationalStructure\Delegation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delegation.resx</DependentUpon>
     </Compile>
     <Compile Include="SecurityManagerException.cs" />
     <Compile Include="SecurityService.cs" />
@@ -133,13 +140,21 @@
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\ConcretePosition.resx">
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.de.resx">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Delegation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.resx">

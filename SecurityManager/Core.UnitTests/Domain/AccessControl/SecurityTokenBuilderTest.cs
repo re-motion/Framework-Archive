@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
-      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
+      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithNotExistingAbstractRole ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurityContext context = CreateContextWithAbstractRoles (ProjectRole.Developer, UndefinedAbstractRoles.Undefined, ProjectRole.QualityManager);
+      SecurityContext context = CreateContextWithAbstractRoles (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: ownerGroup", token.OwningGroups);
+      AccessControlObjectAssert.ContainsGroup ("UID: testOwnerGroup", token.OwningGroups);
     }
 
     [Test]
@@ -125,7 +125,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), "The group 'UID: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingOwningGroup ()
     {
       ClientTransaction transaction = new ClientTransaction ();
@@ -146,7 +146,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: rootGroup", token.OwningGroups);
+      AccessControlObjectAssert.ContainsGroup ("UID: testRootGroup", token.OwningGroups);
     }
 
     private IPrincipal CreateTestUser ()
@@ -166,7 +166,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateStatelessContext ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: ownerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwnerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithoutOwnerGroup ()
@@ -176,22 +176,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContextWithNotExistingOwnerGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: NotExistingGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UID: NotExistingGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithQualityManagerRole ()
     {
-      return CreateContextWithAbstractRoles (ProjectRole.QualityManager);
+      return CreateContextWithAbstractRoles (ProjectRoles.QualityManager);
     }
 
     private SecurityContext CreateContextWithQualityManagerAndDeveloperRoles ()
     {
-      return CreateContextWithAbstractRoles (ProjectRole.QualityManager, ProjectRole.Developer);
+      return CreateContextWithAbstractRoles (ProjectRoles.QualityManager, ProjectRoles.Developer);
     }
 
     private SecurityContext CreateContextWithAbstractRoles (params Enum[] abstractRoles)
     {
-      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: ownerGroup", "ownerClient", new Dictionary<string, Enum> (), abstractRoles);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwnerGroup", "ownerClient", new Dictionary<string, Enum> (), abstractRoles);
     }
   }
 }

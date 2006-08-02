@@ -41,10 +41,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
     [Test]
     public void Find_ValidAbstractRole ()
     {
-      DomainObjectCollection result = AbstractRoleDefinition.Find (_transaction, new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });
+      DomainObjectCollection result = AbstractRoleDefinition.Find (_transaction, new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) });
 
       Assert.AreEqual (1, result.Count);
-      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
+      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
     }
 
     [Test]

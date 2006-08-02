@@ -7,12 +7,15 @@ using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
 using System.Collections.Generic;
+using Rubicon.Security;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
-  public class Group : OrganizationalStructureObject
+  [PermanentGuid ("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
+  public class Group : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
 
@@ -50,6 +53,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     // member fields
+
+    private IObjectSecurityStrategy _securityStrategy;
 
     // construction and disposing
 
@@ -104,6 +109,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { SetRelatedObject ("GroupType", value); }
     }
 
+    [DemandPropertyWritePermission (SecurityManagerAccessTypes.AssignRole)]
     public DomainObjectCollection Roles
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
@@ -124,12 +130,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //TODO: UnitTests
     public override string DisplayName
     {
-      get 
-      { 
+      get
+      {
         if (StringUtility.IsNullOrEmpty (ShortName))
-          return Name; 
+          return Name;
         else
-          return string.Format ("{0} ({1})", ShortName, Name); 
+          return string.Format ("{0} ({1})", ShortName, Name);
       }
     }
 
@@ -137,12 +143,39 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in Group.FindByClientID (clientID, this.ClientTransaction))
+      foreach (Group group in Group.FindByClientID (clientID, ClientTransaction))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);
       }
       return groups;
+    }
+
+    IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
+    {
+      if (_securityStrategy == null)
+        _securityStrategy = new ObjectSecurityStrategy (this);
+
+      return _securityStrategy;
+    }
+
+    SecurityContext ISecurityContextFactory.CreateSecurityContext ()
+    {
+      string owner = string.Empty;
+      string ownerGroup = UniqueIdentifier;
+      string ownerClient = string.Empty;
+
+      return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
+    }
+
+    protected virtual IDictionary<string, Enum> GetStates ()
+    {
+      return new Dictionary<string, Enum> ();
+    }
+
+    protected virtual IList<Enum> GetAbstractRoles ()
+    {
+      return new List<Enum> ();
     }
   }
 }

@@ -5,6 +5,11 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using System.Collections.Generic;
+using System.Security.Principal;
+using Rubicon.Security;
+using Rubicon.Collections;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -25,7 +30,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       return (Role) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
-
     // member fields
 
     // construction and disposing
@@ -60,6 +64,57 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (User) GetRelatedObject ("User"); }
       set { SetRelatedObject ("User", value); }
+    }
+
+
+    public List<Group> GetPossibleGroups (ObjectID clientID)
+    {
+      ArgumentUtility.CheckNotNull ("clientID", clientID);
+
+      List<Group> groups = new List<Group> ();
+      foreach (Group group in Group.FindByClientID (clientID, ClientTransaction))
+        groups.Add (group);
+
+      return FilterByAccess (groups, SecurityManagerAccessTypes.AssignRole);
+    }
+
+    public List<Position> GetPossiblePositions (Group group)
+    {
+      ArgumentUtility.CheckNotNull ("group", group);
+
+      List<Position> positions = new List<Position> ();
+      if (group.GroupType == null)
+      {
+        foreach (Position position in Position.FindAll (ClientTransaction))
+          positions.Add (position);
+      }
+      else
+      {
+        foreach (GroupTypePosition groupTypePosition in group.GroupType.Positions)
+        {
+          if (!positions.Contains (groupTypePosition.Position))
+            positions.Add (groupTypePosition.Position);
+        }
+      }
+
+      return FilterByAccess (positions, SecurityManagerAccessTypes.AssignRole);
+    }
+
+    private List<T> FilterByAccess<T> (List<T> securableObjects, params Enum[] requiredAccessTypeEnums) where T : ISecurableObject
+    {
+      if (SecurityConfiguration.Current.SecurityService == null)
+        return securableObjects;
+
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+      AccessType[] requiredAccessTypes = Array.ConvertAll<Enum, AccessType> (requiredAccessTypeEnums, AccessType.Get);
+      List<T> filteredObjects = new List<T> ();
+      foreach (T securableObject in securableObjects)
+      {
+        if (securityClient.HasAccess (securableObject, requiredAccessTypes))
+          filteredObjects.Add (securableObject);
+      }
+
+      return filteredObjects;
     }
   }
 }

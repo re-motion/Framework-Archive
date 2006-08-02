@@ -10,7 +10,12 @@
 </head>
 <body>
   <form id="ThisForm" runat="server">
+    <p>
     <a href="UserList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid">Aufbauorganisation verwalten</a>
+    </p>
+    <p>
+    <a href="SecurableClassDefinitionList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid&WxeReturnToSelf=True&TabbedMenuSelection=AccessControlTab">Berechtigungen verwalten</a>
+    </p>
   </form>
 </body>
 </html>

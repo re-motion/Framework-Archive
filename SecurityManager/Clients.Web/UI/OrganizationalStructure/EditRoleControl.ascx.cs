@@ -52,19 +52,42 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnLoad (e);
 
-      if (CurrentFunction.User != null)
+      InitializeUserField (IsPostBack);
+      InitializeGroupField (IsPostBack);
+      InitializePositionField (IsPostBack);
+    }
+
+    private void InitializeUserField (bool interim)
+    {
+      if (CurrentFunction.User == null)
+      {
+        if (!interim)
+          FillUserField ();
+      }
+      else
+      {
         UserField.ReadOnly = NaBoolean.True;
-      else
-        FillUserField ();
+      }
+    }
 
-      if (CurrentFunction.Group != null)
+    private void InitializeGroupField (bool interim)
+    {
+      if (CurrentFunction.Group == null)
+      {
+        if (!interim)
+          FillGroupField ();
+      }
+      else
+      {
         GroupField.ReadOnly = NaBoolean.True;
-      else
-        FillGroupField ();
+      }
+    }
 
-      if (CurrentFunction.Position != null)
-        PositionField.ReadOnly = NaBoolean.True;
-      else
+    private void InitializePositionField (bool interim)
+    {
+      bool isGroupSelected = GroupField.Value != null;
+      PositionField.Enabled = isGroupSelected;
+      if (!interim)
         FillPositionField ();
     }
 
@@ -73,14 +96,24 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       UserField.SetBusinessObjectList (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
-    private void FillPositionField ()
-    {
-      PositionField.SetBusinessObjectList (Position.FindAll (CurrentFunction.CurrentTransaction));
-    }
-
     private void FillGroupField ()
     {
-      GroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
+      User user = CurrentFunction.User;
+      if (user != null)
+        GroupField.SetBusinessObjectList (CurrentFunction.Role.GetPossibleGroups (CurrentFunction.ClientID));
+    }
+
+    private void FillPositionField ()
+    {
+      if (GroupField.Value == null)
+        PositionField.ClearBusinessObjectList ();
+      else
+        PositionField.SetBusinessObjectList (CurrentFunction.Role.GetPossiblePositions ((Group) GroupField.Value));
+    }
+
+    protected void GroupField_SelectionChanged (object sender, EventArgs e)
+    {
+      InitializePositionField (false);
     }
 
     public override bool Validate ()

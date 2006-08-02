@@ -11,7 +11,9 @@
 namespace Rubicon.SecurityManager.Clients.Web.Test {
     
     public partial class _Default {
+        protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
         protected System.Web.UI.HtmlControls.HtmlForm form1;
         protected System.Web.UI.WebControls.Button EvaluateSecurity;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue UsersField;
     }
 }

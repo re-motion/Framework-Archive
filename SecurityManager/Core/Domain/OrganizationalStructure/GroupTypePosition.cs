@@ -9,33 +9,33 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.ConcretePosition")]
-  public class ConcretePosition : OrganizationalStructureObject
+  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
+  public class GroupTypePosition : OrganizationalStructureObject
   {
     // types
 
     // static members and constants
 
-    public static new ConcretePosition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static new GroupTypePosition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (ConcretePosition) DomainObject.GetObject (id, clientTransaction);
+      return (GroupTypePosition) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new ConcretePosition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public static new GroupTypePosition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
-      return (ConcretePosition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      return (GroupTypePosition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     // member fields
 
     // construction and disposing
 
-    public ConcretePosition (ClientTransaction clientTransaction)
+    public GroupTypePosition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }
 
-    protected ConcretePosition (DataContainer dataContainer)
+    protected GroupTypePosition (DataContainer dataContainer)
       : base (dataContainer)
     {
       // This infrastructure constructor is necessary for the DomainObjects framework.
@@ -43,12 +43,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     // methods and properties
-
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
 
     public GroupType GroupType
     {
@@ -65,7 +59,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //TODO: UnitTests
     public override string DisplayName
     {
-      get { return Name; }
+      get
+      {
+        string groupTypeName = (GroupType != null) ? GroupType.Name : string.Empty;
+        string positionName = (Position != null) ? Position.Name : string.Empty;
+
+        return string.Format ("{0} / {1}", groupTypeName, positionName); 
+      }
     }
   }
 }

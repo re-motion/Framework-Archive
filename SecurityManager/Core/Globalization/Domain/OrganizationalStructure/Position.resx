@@ -123,10 +123,13 @@
   <data name="property:Roles" xml:space="preserve">
     <value>Rollen</value>
   </data>
-  <data name="property:ConcretePositions" xml:space="preserve">
+  <data name="property:GroupTypes" xml:space="preserve">
     <value>Konkrete Stellen</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="property:Delegation" xml:space="preserve">
+    <value>Delegation</value>
   </data>
 </root>

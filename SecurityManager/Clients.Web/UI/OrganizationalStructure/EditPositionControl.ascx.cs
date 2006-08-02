@@ -54,9 +54,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
       {
-        ConcretePositionsList.SetSortingOrder (
-            new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[0], SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((BocColumnDefinition) ConcretePositionsList.FixedColumns[1], SortingDirection.Ascending));
+        GroupTypesList.SetSortingOrder (
+            new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypesList.FixedColumns[0], SortingDirection.Ascending),
+            new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypesList.FixedColumns[1], SortingDirection.Ascending));
       }
     }
 
@@ -69,59 +69,59 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void ConcretePositionsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void GroupTypesList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
         if (!Page.IsReturningPostBack)
         {
-          EditConcretePosition (null, CurrentFunction.Position, null);
+          EditGroupTypePosition (null, CurrentFunction.Position, null);
         }
         else
         {
-          EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
+          EditGroupTypePositionFormFunction returningFunction = (EditGroupTypePositionFormFunction) Page.ReturningFunction;
 
-          ConcretePositionsList.LoadValue (!returningFunction.HasUserCancelled);
+          GroupTypesList.LoadValue (!returningFunction.HasUserCancelled);
           if (returningFunction.HasUserCancelled)
-            returningFunction.ConcretePosition.Delete ();
+            returningFunction.GroupTypePosition.Delete ();
           else
-            ConcretePositionsList.IsDirty = true;
+            GroupTypesList.IsDirty = true;
         }
       }
       if (e.Item.ItemID == "EditItem")
       {
         if (!Page.IsReturningPostBack)
         {
-          EditConcretePosition ((ConcretePosition) ConcretePositionsList.GetSelectedBusinessObjects ()[0], CurrentFunction.Position, null);
+          EditGroupTypePosition ((GroupTypePosition) GroupTypesList.GetSelectedBusinessObjects ()[0], CurrentFunction.Position, null);
         }
         else
         {
-          EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
+          EditGroupTypePositionFormFunction returningFunction = (EditGroupTypePositionFormFunction) Page.ReturningFunction;
 
           if (!returningFunction.HasUserCancelled)
-            ConcretePositionsList.IsDirty = true;
+            GroupTypesList.IsDirty = true;
         }
       }
 
       if (e.Item.ItemID == "DeleteItem")
       {
-        foreach (ConcretePosition concretePosition in ConcretePositionsList.GetSelectedBusinessObjects ())
+        foreach (GroupTypePosition groupTypePosition in GroupTypesList.GetSelectedBusinessObjects ())
         {
-          ConcretePositionsList.RemoveRow (concretePosition);
-          concretePosition.Delete ();
+          GroupTypesList.RemoveRow (groupTypePosition);
+          groupTypePosition.Delete ();
         }
       }
 
-      ConcretePositionsList.ClearSelectedRows ();
+      GroupTypesList.ClearSelectedRows ();
     }
 
-    private void EditConcretePosition (ConcretePosition concretePosition, Position position, GroupType groupType)
+    private void EditGroupTypePosition (GroupTypePosition groupTypePosition, Position position, GroupType groupType)
     {
-      EditConcretePositionFormFunction editConcretePositionFormFunction =
-        new EditConcretePositionFormFunction (CurrentFunction.ClientID, concretePosition == null ? null : concretePosition.ID, position, groupType);
+      EditGroupTypePositionFormFunction editGroupTypePositionFormFunction =
+        new EditGroupTypePositionFormFunction (CurrentFunction.ClientID, groupTypePosition == null ? null : groupTypePosition.ID, position, groupType);
 
-      editConcretePositionFormFunction.TransactionMode = WxeTransactionMode.None;
-      Page.ExecuteFunction (editConcretePositionFormFunction);
+      editGroupTypePositionFormFunction.TransactionMode = WxeTransactionMode.None;
+      Page.ExecuteFunction (editGroupTypePositionFormFunction);
     }
   }
 }

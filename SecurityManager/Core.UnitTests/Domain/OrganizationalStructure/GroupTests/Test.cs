@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.GroupTests
 {
@@ -31,13 +32,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
 
       ClientTransaction transaction1 = new ClientTransaction ();
       Client client1 = _testHelper.CreateClient (transaction1, "NewClient1");
-      Group group1 = _testHelper.CreateGroup (transaction1, "NewGroup1", "UnqiueIdentifier: NewGroup", null, client1);
+      Group group1 = _testHelper.CreateGroup (transaction1, "NewGroup1", "UID: NewGroup", null, client1);
 
       transaction1.Commit ();
 
       ClientTransaction transaction2 = new ClientTransaction ();
       Client client2 = _testHelper.CreateClient (transaction2, "NewClient2");
-      Group group2 = _testHelper.CreateGroup (transaction2, "NewGroup2", "UnqiueIdentifier: NewGroup", null, client2);
+      Group group2 = _testHelper.CreateGroup (transaction2, "NewGroup2", "UID: NewGroup", null, client2);
 
       transaction2.Commit ();
     }
@@ -118,6 +119,44 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
       }
 
       Assert.IsTrue (isFound, "Property UnqiueIdentifier declared on Group was not found.");
+    }
+
+    [Test]
+    public void GetSecurityStrategy ()
+    {
+      ISecurableObject group = CreateGroup ();
+
+      Assert.IsNotNull (group.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void GetSecurityStrategy_SameTwice ()
+    {
+      ISecurableObject group = CreateGroup ();
+
+      Assert.AreSame (group.GetSecurityStrategy (), group.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void CreateSecurityContext ()
+    {
+      Group group = CreateGroup ();
+
+      SecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext ();
+      Assert.AreEqual (group.GetType (), Type.GetType (securityContext.Class));
+      Assert.IsEmpty (securityContext.Owner);
+      Assert.AreEqual (group.UniqueIdentifier, securityContext.OwnerGroup);
+      Assert.IsEmpty (securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.AbstractRoles);
+      Assert.IsTrue (securityContext.IsStateless);
+    }
+
+    private Group CreateGroup ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Group group = _testHelper.CreateGroup ("TestGroup", "UID: TestGroup", null, client);
+      
+      return group;
     }
   }
 }

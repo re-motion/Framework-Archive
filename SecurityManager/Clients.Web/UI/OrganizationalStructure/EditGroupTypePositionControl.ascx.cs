@@ -22,8 +22,8 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
-  [WebMultiLingualResources (typeof (EditConcretePositionControlResources))]
-  public partial class EditConcretePositionControl : BaseControl
+  [WebMultiLingualResources (typeof (EditGroupTypePositionControlResources))]
+  public partial class EditGroupTypePositionControl : BaseControl
   {
     // types
 
@@ -39,9 +39,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return CurrentObject; }
     }
 
-    protected new EditConcretePositionFormFunction CurrentFunction
+    protected new EditGroupTypePositionFormFunction CurrentFunction
     {
-      get { return (EditConcretePositionFormFunction) base.CurrentFunction; }
+      get { return (EditGroupTypePositionFormFunction) base.CurrentFunction; }
     }
 
     public override IFocusableControl InitialFocusControl

@@ -34,37 +34,30 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, User user, Group group, Position position)
+    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, User user, Group group)
       : base (clientID, organizationalStructureObjectID)
     {
       User = user;
       Group = group;
-      Position = position;
     }
 
     // methods and properties
     public User User
     {
       get { return (User) Variables["User"]; }
-      set { Variables["User"] = value; }
+      private set { Variables["User"] = value; }
     }
 
     public Group Group
     {
       get { return (Group) Variables["Group"]; }
-      set { Variables["Group"] = value; }
-    }
-
-    public Position Position
-    {
-      get { return (Position) Variables["Position"]; }
-      set { Variables["Position"] = value; }
+      private set { Variables["Group"] = value; }
     }
 
     public Role Role
     {
       get { return (Role) CurrentObject; }
-      set { CurrentObject = value; }
+      private set { CurrentObject = value; }
     }
 
     private void Step1 ()
@@ -75,7 +68,6 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
         Role = new Role (CurrentTransaction);
         Role.User = User;
         Role.Group = Group;
-        Role.Position = Position;
       }
     }
 

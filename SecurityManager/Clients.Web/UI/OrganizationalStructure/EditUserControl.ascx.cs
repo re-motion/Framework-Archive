@@ -125,7 +125,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     private void EditRole (Role role, User user, Group group, Position position)
     {
       EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (
-          CurrentFunction.ClientID, role == null ? null : role.ID, user, group, position);
+          CurrentFunction.ClientID, role == null ? null : role.ID, user, group);
 
       editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
       Page.ExecuteFunction (editRoleFormFunction);

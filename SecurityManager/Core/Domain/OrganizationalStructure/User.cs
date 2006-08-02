@@ -7,12 +7,15 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Security;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
-  public class User : OrganizationalStructureObject
+  [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")] 
+  public class User : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
 
@@ -50,6 +53,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     // member fields
+
+    private IObjectSecurityStrategy _securityStrategy;
 
     // construction and disposing
 
@@ -91,6 +96,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["UserName"] = value; }
     }
 
+    [DemandPropertyWritePermission (SecurityManagerAccessTypes.AssignRole)]
     public DomainObjectCollection Roles
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
@@ -146,6 +152,33 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
         formattedName += ", " + Title;
 
       return formattedName;
+    }
+
+    IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
+    {
+      if (_securityStrategy == null)
+        _securityStrategy = new ObjectSecurityStrategy (this);
+
+      return _securityStrategy;
+    }
+
+    SecurityContext ISecurityContextFactory.CreateSecurityContext ()
+    {
+      string owner = UserName;
+      string ownerGroup = Group == null ? string.Empty : Group.UniqueIdentifier;
+      string ownerClient = string.Empty;
+
+      return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates(), GetAbstractRoles ());
+    }
+
+    protected virtual IDictionary<string, Enum> GetStates ()
+    {
+      return new Dictionary<string, Enum> ();
+    }
+
+    protected virtual IList<Enum> GetAbstractRoles ()
+    {
+      return new List<Enum> ();
     }
   }
 }

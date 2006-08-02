@@ -1,5 +1,7 @@
 using System;
 using System.Web.UI;
+using System.Web;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI
 {
@@ -18,7 +20,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
     {
       base.OnLoad (e);
 
-      UserNameLabel.InnerText = Page.Request.LogonUserIdentity.Name;
+      if (StringUtility.IsNullOrEmpty ( HttpContext.Current.User.Identity.Name))
+        UserNameLabel.InnerText = "Anonymous";
+      else
+        UserNameLabel.InnerText = HttpContext.Current.User.Identity.Name;
     }
   }
 }
