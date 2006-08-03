@@ -58,7 +58,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-      return GetPermissionsFromCache<DemandPropertyReadPermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+      return GetPermissionsFromCache<DemandPropertyReadPermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     public Enum[] GetRequiredPropertyWritePermissions (Type type, string propertyName)
@@ -66,7 +66,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-      return GetPermissionsFromCache<DemandPropertyWritePermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+      return GetPermissionsFromCache<DemandPropertyWritePermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     public Enum[] GetPermissions<TAttribute> (MemberInfo methodInfo) where TAttribute : BaseDemandPermissionAttribute

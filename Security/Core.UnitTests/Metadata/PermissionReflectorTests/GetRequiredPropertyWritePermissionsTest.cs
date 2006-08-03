@@ -49,7 +49,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
 
       Assert.IsNotNull (requiredAccessTypes);
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessTypes.Find, requiredAccessTypes);
+      Assert.Contains (TestAccessTypes.Fourth, requiredAccessTypes);
     }
 
     [Test]
@@ -58,6 +58,16 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "IsVisible");
 
       Assert.AreSame (requiredAccessTypes, _permissionReflector.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "IsVisible"));
+    }
+
+    [Test]
+    public void Test_NonPublicPropertyWithOneAttribute ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "NonPublicProperty");
+
+      Assert.IsNotNull (requiredAccessTypes);
+      Assert.AreEqual (1, requiredAccessTypes.Length);
+      Assert.Contains (TestAccessTypes.Second, requiredAccessTypes);
     }
   }
 }

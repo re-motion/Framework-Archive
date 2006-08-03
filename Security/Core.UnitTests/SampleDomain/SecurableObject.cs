@@ -104,11 +104,21 @@ namespace Rubicon.Security.UnitTests.SampleDomain
       get { return true; }
     }
 
-    [DemandPropertyReadPermission (GeneralAccessTypes.Create)]
-    [DemandPropertyWritePermission (GeneralAccessTypes.Find)]
+    [DemandPropertyReadPermission (TestAccessTypes.Third)]
+    [DemandPropertyWritePermission (TestAccessTypes.Fourth)]
     public bool IsVisible
     {
       get { return true; }
+      set { }
     }
+
+    [DemandPropertyReadPermission (TestAccessTypes.First)]
+    [DemandPropertyWritePermission (TestAccessTypes.Second)]
+    private object NonPublicProperty
+    {
+      get { return null; }
+      set {  }
+    }
+	
   }
 }
