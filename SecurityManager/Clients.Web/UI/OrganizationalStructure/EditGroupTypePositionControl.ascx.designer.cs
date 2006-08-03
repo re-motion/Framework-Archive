@@ -15,7 +15,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
         protected Rubicon.Web.UI.Controls.SmartLabel GroupTypePositionLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupTypeField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PositionField;
     }

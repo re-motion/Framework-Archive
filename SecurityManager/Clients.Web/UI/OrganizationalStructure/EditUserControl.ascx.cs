@@ -59,6 +59,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       }
 
       FillGroupField ();
+
+      if (RolesList.IsReadOnly)
+        RolesList.Selection = RowSelection.Disabled;
     }
 
     private void FillGroupField ()

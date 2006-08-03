@@ -54,6 +54,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       FillParentField ();
       FillGroupTypeField ();
+
+      if (ChildrenList.IsReadOnly)
+        ChildrenList.Selection = RowSelection.Disabled;
+
+      if (RolesList.IsReadOnly)
+        RolesList.Selection = RowSelection.Disabled;
     }
 
     private void FillGroupTypeField ()

@@ -46,7 +46,15 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     public override IFocusableControl InitialFocusControl
     {
-      get { return NameField; }
+      get 
+      {
+        if (!GroupTypeField.IsReadOnly)
+          return GroupTypeField;
+        else if (!PositionField.IsReadOnly)
+          return PositionField;
+        else
+          return null;
+      }
     }
 
     protected override void OnLoad (EventArgs e)

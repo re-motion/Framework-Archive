@@ -48,12 +48,19 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
+      base.OnLoad (e);
+
       if (!IsPostBack)
       {
         GroupsList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupsList.FixedColumns[0], SortingDirection.Ascending));
         PositionsList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionsList.FixedColumns[0], SortingDirection.Ascending));
       }
-      base.OnLoad (e);
+
+      if (GroupsList.IsReadOnly)
+        GroupsList.Selection = RowSelection.Disabled;
+
+      if (PositionsList.IsReadOnly)
+        PositionsList.Selection = RowSelection.Disabled;
     }
 
     public override bool Validate ()

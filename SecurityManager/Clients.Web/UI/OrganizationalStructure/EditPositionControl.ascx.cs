@@ -54,10 +54,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
       {
-        GroupTypesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypesList.FixedColumns[0], SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypesList.FixedColumns[1], SortingDirection.Ascending));
+        GroupTypesList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypesList.FixedColumns[0], SortingDirection.Ascending));
       }
+
+      if (GroupTypesList.IsReadOnly)
+        GroupTypesList.Selection = RowSelection.Disabled;
     }
 
     public override bool Validate ()

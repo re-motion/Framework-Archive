@@ -31,11 +31,6 @@
     <td>
       <rubicon:BocList ID="GroupTypesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GroupTypes" OnMenuItemClick="GroupTypesList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
-          <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-            <PersistedCommand>
-              <rubicon:BocListItemCommand />
-            </PersistedCommand>
-          </rubicon:BocSimpleColumnDefinition>
           <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="GroupType">
             <PersistedCommand>
               <rubicon:BocListItemCommand />
@@ -45,17 +40,17 @@
         <ListMenuItems>
           <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
         </ListMenuItems>

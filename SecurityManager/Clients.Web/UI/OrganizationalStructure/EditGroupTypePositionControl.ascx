@@ -14,15 +14,6 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
-        PropertyIdentifier="Name">
-        <TextBoxStyle MaxLength="100" />
-      </rubicon:BocTextValue>
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
       <rubicon:BocReferenceValue runat="server" ID="GroupTypeField" DataSourceControl="CurrentObject" PropertyIdentifier="GroupType">
         <PersistedCommand>
           <rubicon:BocCommand />

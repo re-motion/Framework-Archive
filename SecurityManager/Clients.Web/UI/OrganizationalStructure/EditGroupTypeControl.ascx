@@ -34,12 +34,12 @@
         <ListMenuItems>
           <rubicon:BocMenuItem ItemID="AddItem" Text="$res:Add">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="RemoveItem" RequiredSelection="OneOrMore" Text="$res:Remove">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
         </ListMenuItems>
@@ -60,17 +60,17 @@
         <ListMenuItems>
           <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="OneOrMore" Text="$res:Edit">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
             <PersistedCommand>
-              <rubicon:BocMenuItemCommand />
+              <rubicon:BocMenuItemCommand Show="EditMode" />
             </PersistedCommand>
           </rubicon:BocMenuItem>
         </ListMenuItems>
