@@ -9,6 +9,7 @@ using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
 using Rubicon.Data;
+using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -18,6 +19,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   public class User : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
+
+    //public enum Methods
+    //{
+    //  Create
+    //}
 
     // static members and constants
 
@@ -51,6 +57,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
+
+    //[DemandMethodPermission (GeneralAccessTypes.Create)]
+    //public static User Create (ClientTransaction clientTransaction)
+    //{
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (clientTransaction);
+    //}
 
     // member fields
 

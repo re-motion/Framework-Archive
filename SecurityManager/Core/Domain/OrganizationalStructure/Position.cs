@@ -10,6 +10,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Security;
 using System.Collections.Generic;
 using Rubicon.Data;
+using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -19,6 +20,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   public class Position : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
+
+    //public enum Methods
+    //{
+    //  Create
+    //}
 
     // static members and constants
 
@@ -44,6 +50,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public static void Dummy_AssignRole ()
     {
     }
+
+    //[DemandMethodPermission (GeneralAccessTypes.Create)]
+    //public static Position Create (ClientTransaction clientTransaction)
+    //{
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition (clientTransaction);
+    //}
 
     // member fields
 

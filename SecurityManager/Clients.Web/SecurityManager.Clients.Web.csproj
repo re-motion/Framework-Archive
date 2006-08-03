@@ -491,6 +491,14 @@
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
       <Name>ObjectBinding.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Web\Security.Web.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Security.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.csproj">
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web</Name>

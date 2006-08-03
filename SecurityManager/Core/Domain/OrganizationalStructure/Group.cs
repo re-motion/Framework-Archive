@@ -9,6 +9,8 @@ using Rubicon.Data.DomainObjects.Queries;
 using System.Collections.Generic;
 using Rubicon.Security;
 using Rubicon.Data;
+using Rubicon.SecurityManager.Configuration;
+using System.Security.Principal;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -18,6 +20,35 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   public class Group : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
   {
     // types
+
+    //public enum Methods
+    //{
+    //  Create
+    //}
+
+    // TODO: Rewrite with test
+    protected class GroupSecurityStrategy : ObjectSecurityStrategy
+    {
+      private Group _group;
+
+      public GroupSecurityStrategy (Group group)
+        : base (group)
+      {
+        ArgumentUtility.CheckNotNull ("group", group);
+
+        _group = group;
+      }
+
+      public override bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+      {
+        //TODO: if (!_group.IsDiscarded && _group.State == StateType.New)
+        // Move ObjectSecurityProvider into RPA and add IsDiscarded check.
+        if (_group.IsDiscarded || _group.State == StateType.New)
+          return true;
+
+        return base.HasAccess (securityService, user, requiredAccessTypes);
+      }
+    }
 
     // static members and constants
 
@@ -51,6 +82,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
+
+    //[DemandMethodPermission (GeneralAccessTypes.Create)]
+    //public static Group Create (ClientTransaction clientTransaction)
+    //{
+    //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup (clientTransaction);
+    //}
 
     // member fields
 
@@ -154,7 +191,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
       if (_securityStrategy == null)
-        _securityStrategy = new ObjectSecurityStrategy (this);
+        _securityStrategy = new GroupSecurityStrategy (this);
 
       return _securityStrategy;
     }

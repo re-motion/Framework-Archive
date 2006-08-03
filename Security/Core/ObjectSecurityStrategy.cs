@@ -42,7 +42,7 @@ namespace Rubicon.Security
       _securityStrategy.InvalidateLocalCache ();
     }
 
-    public bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public virtual bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securityService", securityService);
       ArgumentUtility.CheckNotNull ("user", user);

@@ -15,6 +15,9 @@ using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Rubicon.Security.Web.UI;
+using Rubicon.Security;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -47,6 +50,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
         GroupList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupList.FixedColumns[0], SortingDirection.Ascending));
       GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+
+      if (SecurityConfiguration.Current.SecurityService != null)
+      {
+        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+        NewGroupButton.Visible = securityClient.HasConstructorAccess (typeof (Group));
+      }
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
