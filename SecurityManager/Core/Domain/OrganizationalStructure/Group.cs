@@ -11,6 +11,7 @@ using Rubicon.Security;
 using Rubicon.Data;
 using Rubicon.SecurityManager.Configuration;
 using System.Security.Principal;
+using System.ComponentModel;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -159,7 +160,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["UniqueIdentifier"] = value; }
     }
 
-    private DomainObjectCollection AccessControlEntries
+    // Must not be private because PermissionReflection would not work with derived classes.
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    protected DomainObjectCollection AccessControlEntries
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
     }

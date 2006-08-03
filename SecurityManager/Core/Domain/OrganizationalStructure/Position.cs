@@ -11,6 +11,7 @@ using Rubicon.Security;
 using System.Collections.Generic;
 using Rubicon.Data;
 using Rubicon.SecurityManager.Configuration;
+using System.ComponentModel;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -96,12 +97,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { } // marks property GroupTypes as modifiable
     }
 
-    private DomainObjectCollection Roles
+    // Must not be private because PermissionReflection would not work with derived classes.
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    protected DomainObjectCollection Roles
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
     }
 
-    private DomainObjectCollection AccessControlEntries
+    // Must not be private because PermissionReflection would not work with derived classes.
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    protected DomainObjectCollection AccessControlEntries
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
     }
