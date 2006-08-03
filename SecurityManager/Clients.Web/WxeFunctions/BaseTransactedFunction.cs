@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
@@ -23,7 +24,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 
     // construction and disposing
 
-    public BaseTransactedFunction ()
+    protected BaseTransactedFunction ()
     {
       Initialize ();
     }
@@ -34,23 +35,19 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
       Initialize ();
     }
 
-    public BaseTransactedFunction (ObjectID ClientID)
+    protected BaseTransactedFunction (ObjectID ClientID)
       : base (ClientID)
     {
       Initialize ();
     }
 
     // methods and properties
+
     [WxeParameter (1, true, WxeParameterDirection.In)]
     public ObjectID ClientID
     {
       get { return (ObjectID) Variables["ClientID"]; }
       set { Variables["ClientID"] = value; }
-    }
-
-    protected virtual void Initialize ()
-    {
-      SetCatchExceptionTypes (typeof (WxeUserCancelException));
     }
 
     public bool HasUserCancelled
@@ -75,6 +72,30 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
         }
         return currentTransaction;
       }
+    }
+
+    protected virtual void Initialize ()
+    {
+      SetCatchExceptionTypes (typeof (WxeUserCancelException));
+
+      InitializeEvents ();
+    }
+
+    protected override void OnDeserialization (object sender)
+    {
+      base.OnDeserialization (sender);
+
+      InitializeEvents ();
+    }
+
+    private void InitializeEvents ()
+    {
+      TransactionCreated += new EventHandler<WxeTransactedFunctionEventArgs<ClientTransaction>> (OrganisationalStructureFunction_TransactionCreated);
+    }
+
+    private void OrganisationalStructureFunction_TransactionCreated (object sender, WxeTransactedFunctionEventArgs<ClientTransaction> e)
+    {
+      e.Transaction.Extensions.Add (typeof (SecurityClientTransactionExtension).FullName, new SecurityClientTransactionExtension ());
     }
   }
 }

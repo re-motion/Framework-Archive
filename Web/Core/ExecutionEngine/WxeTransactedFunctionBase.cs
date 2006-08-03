@@ -68,10 +68,8 @@ namespace Rubicon.Web.ExecutionEngine
       base.Execute (context);
     }
 
-    protected void InitializeEvents (WxeTransactionBase<TTransaction> wxeTransaction)
+    private void InitializeEvents (WxeTransactionBase<TTransaction> wxeTransaction)
     {
-      ArgumentUtility.CheckNotNull ("wxeTransaction", wxeTransaction);
-
       wxeTransaction.TransactionCreating += delegate { OnTransactionCreating (); };
       wxeTransaction.TransactionCreated += delegate (object sender, WxeTransactionEventArgs<TTransaction> args) 
           { 
@@ -84,6 +82,11 @@ namespace Rubicon.Web.ExecutionEngine
     }
 
     void IDeserializationCallback.OnDeserialization (Object sender)
+    {
+      OnDeserialization (sender);
+    }
+
+    protected virtual void OnDeserialization (Object sender)
     {
       if (_wxeTransaction != null)
         InitializeEvents (_wxeTransaction);
