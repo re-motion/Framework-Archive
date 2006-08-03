@@ -8,6 +8,7 @@ using Rubicon.Security;
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [SecurityState]
+  [EnumDescriptionResource ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Delegation")]
   public enum Delegation
   {
     Disabled = 0,
