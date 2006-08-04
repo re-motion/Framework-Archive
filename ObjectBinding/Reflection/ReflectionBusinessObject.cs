@@ -67,6 +67,12 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
+  string IBusinessObjectWithIdentity.DisplayNameSafe
+  {
+    get { return DisplayName; }
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Never)]
   string IBusinessObjectWithIdentity.UniqueIdentifier
   {
     get { return _id.ToString(); }

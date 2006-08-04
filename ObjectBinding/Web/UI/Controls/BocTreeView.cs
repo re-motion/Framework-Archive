@@ -347,7 +347,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   protected virtual string GetText (IBusinessObjectWithIdentity businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    return ObjectBindingUtilities.GetDisplayName (businessObject);
+    return businessObject.DisplayNameSafe;
   }
 
   protected virtual string GetToolTip (IBusinessObjectWithIdentity businessObject)

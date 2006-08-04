@@ -1,3 +1,8 @@
+1.7.28
+======
+- Rubicon.ObjectBinding.IBusinessObjectWithIdentity
+  Neue Property DisplayNameSafe. Liefert den DisplayName zurück bzw Fehlerinformation wenn der Zugriff fehlschlägt.
+ 
 1.7.27
 ======
 - Rubicon.ObjectBinding.IBusinessObjectProvider

@@ -147,7 +147,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (Value != null)
     {
       _dropDownMenu.GetSelectionCount = "function() { return 1; }";
-      _dropDownMenu.TitleText = ObjectBindingUtilities.GetDisplayName (Value);
+      _dropDownMenu.TitleText = Value.DisplayNameSafe;
 
      if (_enableIcon)
      {

@@ -1495,7 +1495,7 @@ public class BocReferenceValue:
   /// </remarks>
   protected virtual string GetDisplayName (IBusinessObjectWithIdentity businessObject)
   {
-    return ObjectBindingUtilities.GetDisplayName (businessObject);
+    return businessObject.DisplayNameSafe;
   }
 
   /// <summary> 
