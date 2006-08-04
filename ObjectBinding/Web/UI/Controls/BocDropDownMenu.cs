@@ -147,12 +147,11 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (Value != null)
     {
       _dropDownMenu.GetSelectionCount = "function() { return 1; }";
-      _dropDownMenu.TitleText = Value.DisplayName;
+      _dropDownMenu.TitleText = ObjectBindingUtilities.GetDisplayName (Value);
 
      if (_enableIcon)
      {
-       _dropDownMenu.TitleIcon = 
-         BusinessObjectBoundWebControl.GetIcon (Value, Value.BusinessObjectClass.BusinessObjectProvider);
+       _dropDownMenu.TitleIcon = BusinessObjectBoundWebControl.GetIcon (Value, Value.BusinessObjectClass.BusinessObjectProvider);
       }
     }
     else

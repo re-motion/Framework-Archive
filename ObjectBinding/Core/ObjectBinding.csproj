@@ -133,6 +133,7 @@
     <Compile Include="IBusinessObjectClassSource.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ObjectBindingUtilities.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.build" />
     <EmbeddedResource Include="Design\PropertyPathPickerControl.resx">

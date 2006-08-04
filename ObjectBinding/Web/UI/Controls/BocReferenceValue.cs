@@ -1484,25 +1484,22 @@ public class BocReferenceValue:
   /// <summary>
   ///   Returns the string to be used in the drop down list for the specified <see cref="IBusinessObjectWithIdentity"/>.
   /// </summary>
-  /// <param name="obj"> The <see cref="IBusinessObjectWithIdentity"/> to get the display name for. </param>
+  /// <param name="businessObject"> The <see cref="IBusinessObjectWithIdentity"/> to get the display name for. </param>
   /// <returns> The display name for the specified <see cref="IBusinessObjectWithIdentity"/>. </returns>
   /// <remarks> 
   ///   <para>
   ///     Override this method to change the way the display name is composed. 
   ///   </para><para>
-  ///     The default implementation used the <see cref="IBusinessObjectWithIdentity.DisplayName"/> property to get
-  ///     the display name.
+  ///     The default implementation used the <see cref="IBusinessObjectWithIdentity.DisplayName"/> property to get the display name.
   ///   </para>
   /// </remarks>
-  protected virtual string GetDisplayName (IBusinessObjectWithIdentity obj)
+  protected virtual string GetDisplayName (IBusinessObjectWithIdentity businessObject)
   {
-    return obj.DisplayName;
-
+    return ObjectBindingUtilities.GetDisplayName (businessObject);
   }
 
   /// <summary> 
-  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
-  ///   interface.
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user interface.
   /// </summary>
   /// <returns> 
   ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
