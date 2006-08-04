@@ -1,3 +1,8 @@
+1.7.27
+======
+- Rubicon.ObjectBinding.IBusinessObjectProvider
+  Neue Methode GetNotAccessiblePropertyStringPlaceHolder. Liefert den String der angezeigt werden soll wenn die Property IsAccessible = false liefert.
+  
 1.7.13
 ======
 - Rubicon.Collections.Tupel<TA, TB>: 2-wertige Tupel Klasse, z.B.: für Keys im Dictionary

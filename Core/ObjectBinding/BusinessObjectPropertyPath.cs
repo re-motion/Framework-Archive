@@ -21,8 +21,6 @@ namespace Rubicon.ObjectBinding
   /// </remarks>
   public class BusinessObjectPropertyPath
   {
-    private const string c_notAccessible = "×";
-
     /// <summary> Property path formatters can be passed to <see cref="String.Format"/> for full <see cref="IFormattable"/> support. </summary>
     public class Formatter : IFormattable
     {
@@ -151,7 +149,7 @@ namespace Rubicon.ObjectBinding
       ArgumentUtility.CheckNotNull ("obj", obj);
       
       if (!IsAccessible (obj, false, true))
-        return c_notAccessible;
+        return obj.BusinessObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ();
 
       IBusinessObject obj2 = GetValueWithoutLast (obj, false, true);
       if (obj2 == null)

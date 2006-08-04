@@ -16,6 +16,8 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
 
     // static members
 
+    public const string NotAccessible = "Not Accessible";
+
     // member fields
 
     private MockRepository _mocks;
@@ -23,34 +25,34 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
     private IBusinessObjectProperty _mockProperty;
     private IBusinessObjectReferenceProperty _mockReferenceProperty;
     private IBusinessObjectReferenceProperty _mockReferenceListProperty;
-    
+
     private IBusinessObjectClass _mockBusinessObjectClass;
     private IBusinessObjectClassWithIdentity _mockBusinessObjectClassWithIdentity;
-    
+
     private IBusinessObject _mockBusinessObject;
     private IBusinessObjectWithIdentity _mockBusinessObjectWithIdentity;
     private IBusinessObjectWithIdentity[] _businessObjectWithIdentityList;
 
-    private IBusinessObjectProvider _stubBusinessObjectProvider;
+    private IBusinessObjectProvider _mockBusinessObjectProvider;
 
     // construction and disposing
 
     public BusinessObjectPropertyPathTestHelper ()
     {
       _mocks = new MockRepository ();
-      
+
       _mockProperty = _mocks.CreateMock<IBusinessObjectProperty> ();
       _mockReferenceProperty = _mocks.CreateMock<IBusinessObjectReferenceProperty> ();
       _mockReferenceListProperty = _mocks.CreateMock<IBusinessObjectReferenceProperty> ();
-      
+
       _mockBusinessObjectClass = _mocks.CreateMock<IBusinessObjectClass> ();
       _mockBusinessObjectClassWithIdentity = _mocks.CreateMock<IBusinessObjectClassWithIdentity> ();
-      
+
       _mockBusinessObject = _mocks.CreateMock<IBusinessObject> ();
       _mockBusinessObjectWithIdentity = _mocks.CreateMock<IBusinessObjectWithIdentity> ();
       _businessObjectWithIdentityList = new IBusinessObjectWithIdentity[] { _mockBusinessObjectWithIdentity };
 
-      _stubBusinessObjectProvider = new StubBusinessObjectProvider ();
+      _mockBusinessObjectProvider = _mocks.CreateMock<IBusinessObjectProvider> ();
 
       SetupResult.For (_mockBusinessObject.BusinessObjectClass).Return (_mockBusinessObjectClass);
       SetupResult.For (_mockBusinessObjectWithIdentity.BusinessObjectClass).Return (_mockBusinessObjectClassWithIdentity);
@@ -61,9 +63,15 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
       SetupResult.For (_mockReferenceProperty.Identifier).Return ("ReferenceProperty");
       SetupResult.For (_mockReferenceListProperty.Identifier).Return ("ReferenceListProperty");
 
-      SetupResult.For (_mockProperty.BusinessObjectProvider).Return (_stubBusinessObjectProvider);
-      SetupResult.For (_mockReferenceProperty.BusinessObjectProvider).Return (_stubBusinessObjectProvider);
-      SetupResult.For (_mockReferenceListProperty.BusinessObjectProvider).Return (_stubBusinessObjectProvider);
+      SetupResult.For (_mockProperty.BusinessObjectProvider).Return (_mockBusinessObjectProvider);
+      SetupResult.For (_mockReferenceProperty.BusinessObjectProvider).Return (_mockBusinessObjectProvider);
+      SetupResult.For (_mockReferenceListProperty.BusinessObjectProvider).Return (_mockBusinessObjectProvider);
+
+      SetupResult.For (_mockBusinessObjectClass.BusinessObjectProvider).Return (_mockBusinessObjectProvider);
+      SetupResult.For (_mockBusinessObjectClassWithIdentity.BusinessObjectProvider).Return (_mockBusinessObjectProvider);
+
+      SetupResult.For (_mockBusinessObjectProvider.GetPropertyPathSeparator ()).Return ('.');
+      SetupResult.For (_mockBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ()).Return (BusinessObjectPropertyPathTestHelper.NotAccessible);
     }
 
     // methods and properties

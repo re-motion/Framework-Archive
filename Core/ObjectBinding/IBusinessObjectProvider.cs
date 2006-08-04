@@ -46,6 +46,10 @@ public interface IBusinessObjectProvider
   /// <param name="properties"> An array of <see cref="IBusinessObjectProperty"/> instances. </param>
   /// <returns> A new instance of the <see cref="BusinessObjectPropertyPath"/> type. </returns>
   BusinessObjectPropertyPath CreatePropertyPath (IBusinessObjectProperty[] properties);
+
+  /// <summary> Returns a <see cref="String"/> to be used instead of the actual value if the property is not accessible. </summary>
+  /// <returns> A <see cref="String"/> that can be easily distinguished from typical property values. </returns>
+  string GetNotAccessiblePropertyStringPlaceHolder ();
 }
 
 /// <summary> 
@@ -94,6 +98,13 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   public virtual BusinessObjectPropertyPath CreatePropertyPath (IBusinessObjectProperty[] properties)
   {
     return new BusinessObjectPropertyPath (properties);
+  }
+
+  /// <summary> Returns a <see cref="String"/> to be used instead of the actual value if the property is not accessible. </summary>
+  /// <returns> A <see cref="String"/> that can be easily distinguished from typical property values. </returns>
+  public virtual string GetNotAccessiblePropertyStringPlaceHolder ()
+  {
+    return "×";
   }
 }
 

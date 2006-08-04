@@ -138,7 +138,7 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
       string actual = _path.GetString (_testHelper.BusinessObject, string.Empty);
 
       _testHelper.VerifyAll ();
-      Assert.AreEqual ("×", actual);
+      Assert.AreEqual (BusinessObjectPropertyPathTestHelper.NotAccessible, actual);
     }
 
     private void ExpectOnceOnReferencePropertyIsAccessible (bool returnValue)
