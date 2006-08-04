@@ -121,5 +121,17 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       _testHelper.VerifyAll ();
     }
+
+    [Test]
+    public void Test_ID ()
+    {
+      SecurableObject securableObject = _testHelper.CreateSecurableObject ();
+      _testHelper.AddExtension (_extension);
+      _testHelper.ReplayAll ();
+
+      object dummy = securableObject.ID;
+
+      _testHelper.VerifyAll ();
+    }
   }
 }
