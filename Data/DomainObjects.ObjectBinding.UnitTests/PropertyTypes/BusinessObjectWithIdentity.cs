@@ -17,6 +17,11 @@ public class BusinessObjectWithIdentity : IBusinessObjectWithIdentity
     get { return null; }
   }
 
+  public string DisplayNameSafe
+  {
+    get { return null; }
+  }
+
   public string UniqueIdentifier
   {
     get { return null; }

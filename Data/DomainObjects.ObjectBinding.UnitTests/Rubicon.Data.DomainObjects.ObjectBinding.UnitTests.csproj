@@ -114,6 +114,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BindableDomainObjectTest.cs" />
+    <Compile Include="BusinessObjectReflectorTest.cs" />
     <Compile Include="DatabaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,6 +148,7 @@
     <Compile Include="TestDomain\OrderTicket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDomain\SecurableOrder.cs" />
     <Compile Include="TestDomain\SecurableSearchObject.cs" />
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>

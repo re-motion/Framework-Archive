@@ -69,7 +69,7 @@ public class BusinessObjectReflector
     IBusinessObjectWithIdentity businessObject = value as IBusinessObjectWithIdentity;
     if (businessObject != null)
     {
-      strValue = businessObject.DisplayName;
+      strValue = businessObject.DisplayNameSafe;
     }
     else if (property is IBusinessObjectBooleanProperty)
     {

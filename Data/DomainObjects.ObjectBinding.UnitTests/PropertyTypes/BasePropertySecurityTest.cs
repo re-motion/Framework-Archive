@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _nonSecurablePropertyReadOnly = new StringProperty (nonSecurableType.GetProperty ("ReadOnlyStringProperty"), false, typeof (string), false, 200);
       _nonSecurableProperty = new StringProperty (nonSecurableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
       _nonSecurableObject = new TestSearchObject ();
- }
+    }
 
     [TearDown]
     public void TearDown ()
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _mocks.ReplayAll ();
 
       bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
-    
+
       _mocks.VerifyAll ();
       Assert.IsFalse (isReadOnly);
     }
@@ -115,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _mocks.ReplayAll ();
 
       bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
-      
+
       _mocks.VerifyAll ();
       Assert.IsTrue (isReadOnly);
     }
@@ -138,7 +138,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _mocks.ReplayAll ();
 
       bool isReadOnly = _nonSecurableProperty.IsReadOnly (_nonSecurableObject);
-      
+
       _mocks.VerifyAll ();
       Assert.IsFalse (isReadOnly);
     }
