@@ -17,7 +17,12 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
     protected void Page_Load (object sender, EventArgs e)
     {
       if (!IsPostBack)
-        UsersField.SetBusinessObjectList (SecurityManagerUser.FindByClientID (ObjectID.Parse ("Client|00000001-0000-0000-0000-000000000001|System.Guid"), new ClientTransaction ()));
+      {
+        using (new SecurityFreeSection ())
+        {
+          UsersField.SetBusinessObjectList (SecurityManagerUser.FindByClientID (ObjectID.Parse ("Client|00000001-0000-0000-0000-000000000001|System.Guid"), new ClientTransaction ()));
+        }
+      }
     }
 
     protected void EvaluateSecurity_Click (object sender, EventArgs e)
