@@ -12,6 +12,11 @@ namespace Rubicon.Security.Data.DomainObjects
   {
     // types
 
+    public enum CacheKey
+    {
+      Value
+    }
+
     // static members
 
     // member fields
@@ -32,18 +37,17 @@ namespace Rubicon.Security.Data.DomainObjects
         return _nullCache;
 
       ClientTransaction transaction = ClientTransaction.Current;
-      string cacheKey = typeof (ClientTransactionAccessTypeCacheProvider).FullName;
 
       Cache<Tupel<SecurityContext, string>, AccessType[]> cache;
       object value;
-      if (transaction.ApplicationData.TryGetValue (cacheKey, out value))
+      if (transaction.ApplicationData.TryGetValue (CacheKey.Value, out value))
       {
         cache = (Cache<Tupel<SecurityContext, string>, AccessType[]>) value;
       }
       else
       {
         cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
-        transaction.ApplicationData.Add (cacheKey, cache);
+        transaction.ApplicationData.Add (CacheKey.Value, cache);
       }
 
       return cache;

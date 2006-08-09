@@ -23,7 +23,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Cache<Tupel<SecurityContext, string>, AccessType[]> cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
-      transaction.ApplicationData.Add (typeof (ClientTransactionAccessTypeCacheProvider).FullName, cache);
+      transaction.ApplicationData.Add (ClientTransactionAccessTypeCacheProvider.CacheKey.Value, cache);
       ClientTransaction.SetCurrent (transaction);
 
       Assert.AreSame (cache, provider.GetCache ());
