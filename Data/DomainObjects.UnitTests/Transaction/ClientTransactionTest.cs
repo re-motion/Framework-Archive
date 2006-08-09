@@ -16,6 +16,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   {
     // types
 
+    private enum ApplicationDataKey
+    {
+      Key1 = 0
+    }
+
     // static members and constants
 
     // member fields
@@ -608,7 +613,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ApplicationData ()
     {
       Assert.IsNotNull (ClientTransaction.Current.ApplicationData);
-      Assert.IsAssignableFrom (typeof (Dictionary<string, object>), ClientTransaction.Current.ApplicationData);
+      Assert.IsAssignableFrom (typeof (Dictionary<Enum, object>), ClientTransaction.Current.ApplicationData);
+
+      Assert.IsFalse (ClientTransaction.Current.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
+      ClientTransaction.Current.ApplicationData[ApplicationDataKey.Key1] = "TestData";
+      Assert.AreEqual ("TestData", ClientTransaction.Current.ApplicationData[ApplicationDataKey.Key1]);
+      ClientTransaction.Current.ApplicationData.Remove (ApplicationDataKey.Key1);
+      Assert.IsFalse (ClientTransaction.Current.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
     }
   }
 }

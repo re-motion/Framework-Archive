@@ -115,7 +115,7 @@ public class ClientTransaction : ITransaction
   private DataManager _dataManager;
   private QueryManager _queryManager;
   private ClientTransactionExtensionCollection _extensions;
-  private Dictionary<string, object> _applicationData;
+  private Dictionary<Enum, object> _applicationData;
 
   // construction and disposing
 
@@ -126,7 +126,7 @@ public class ClientTransaction : ITransaction
   {
     _dataManager = new DataManager (this);
     _extensions = new ClientTransactionExtensionCollection ();
-    _applicationData = new Dictionary<string, object> ();
+    _applicationData = new Dictionary<Enum, object> ();
   }
 
   // methods and properties
@@ -660,9 +660,10 @@ public class ClientTransaction : ITransaction
 
   /// <summary>
   /// Gets a <see cref="System.Collections.Generic.Dictionary {TKey, TValue}"/> to store application specific objects 
-  /// within the <see cref="ClientTransaction"/> which have the same lifetime.
+  /// within the <see cref="ClientTransaction"/> which have the same lifetime.<br/>
+  /// To store and access values create project specific <see cref="System.Enum"/>(s) which ensure namespace separation of keys in the dictionary.
   /// </summary>
-  public Dictionary<string, object> ApplicationData
+  public Dictionary<Enum, object> ApplicationData
   {
     get { return _applicationData; }
   }
