@@ -39,22 +39,22 @@ insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-F
 
 
 -- Person 
-insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
-    values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/3', 'Max', 'Mustermann', '1980/6/9')
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo])
+    values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/3', 'Max', 'Mustermann', '1980/6/9', null)
 
 -- Note: This person has an OrganizationalUnit with the same ID. It needs at least one HistoryEntry.
-insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
-    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests','2006/1/4', '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9')
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo])
+    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests','2006/1/4', '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9', null)
 
 
 -- Customer
-insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo], [CustomerType], [CustomerSince])
     values ('{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', '{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}',
-    'UnitTests', '2006/1/5', 'Zaphod', 'Beeblebrox', '1950/1/1', 1, '1992/12/24')
+    'UnitTests', '2006/1/5', 'Zaphod', 'Beeblebrox', '1950/1/1', null, 1, '1992/12/24')
 
 -- Note: The customer's order contains an invalid CustomerIDClassID value.
-insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
-    values ('{3C8854E7-16C6-4783-93B2-8C303A881761}', 'Customer', null, null, 'UnitTests', '2006/1/15', '', 'CustomerWithInvalidOrder', '1951/1/1', 1, '1992/12/26')
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo], [CustomerType], [CustomerSince])
+    values ('{3C8854E7-16C6-4783-93B2-8C303A881761}', 'Customer', null, null, 'UnitTests', '2006/1/15', '', 'CustomerWithInvalidOrder', '1951/1/1', null, 1, '1992/12/26')
 
 
 -- HistoryEntry

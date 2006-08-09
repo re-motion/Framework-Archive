@@ -556,7 +556,8 @@ CREATE TABLE [TableInheritance_Person] (
   -- Person columns
   [FirstName] varchar (100) NOT NULL,
   [LastName] varchar (100) NOT NULL,
-  [DateOfBirth] datetime NOT NULL,     
+  [DateOfBirth] datetime NOT NULL,
+  [Photo] image NULL,   
 
   -- Customer columns
   [CustomerType] int NULL,

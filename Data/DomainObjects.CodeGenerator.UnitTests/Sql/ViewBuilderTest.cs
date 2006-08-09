@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
           + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], null, null, null\n"
           + "    FROM [dbo].[Customer]\n"
           + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\n"
-          + "  UNION\n"
+          + "  UNION ALL\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\n"
           + "    FROM [dbo].[DevelopmentPartner]\n"
           + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\n";

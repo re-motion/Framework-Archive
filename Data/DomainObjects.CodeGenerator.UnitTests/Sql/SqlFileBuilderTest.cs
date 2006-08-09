@@ -11,6 +11,8 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 {
+  //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
+  //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION
   [TestFixture]
   public class SqlFileBuilderTest : MappingBaseTest
   {

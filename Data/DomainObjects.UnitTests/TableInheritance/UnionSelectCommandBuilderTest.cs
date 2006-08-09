@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       {
         string expectedCommandText = 
             "SELECT [ID], [ClassID] FROM [TableInheritance_Person] WHERE [ClientID] = @ClientID\n"
-            + "UNION SELECT [ID], [ClassID] FROM [TableInheritance_OrganizationalUnit] WHERE [ClientID] = @ClientID;";
+            + "UNION ALL SELECT [ID], [ClassID] FROM [TableInheritance_OrganizationalUnit] WHERE [ClientID] = @ClientID;";
 
         Assert.IsNotNull (command);
         Assert.AreEqual (expectedCommandText, command.CommandText);
@@ -97,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       {
         string expectedCommandText =
             "SELECT [ID], [ClassID], CreatedAt FROM [TableInheritance_Person] WHERE [ClientID] = @ClientID\n"
-            + "UNION SELECT [ID], [ClassID], CreatedAt FROM [TableInheritance_OrganizationalUnit] WHERE [ClientID] = @ClientID ORDER BY CreatedAt asc;";
+            + "UNION ALL SELECT [ID], [ClassID], CreatedAt FROM [TableInheritance_OrganizationalUnit] WHERE [ClientID] = @ClientID ORDER BY CreatedAt asc;";
 
         Assert.IsNotNull (command);
         Assert.AreEqual (expectedCommandText, command.CommandText);

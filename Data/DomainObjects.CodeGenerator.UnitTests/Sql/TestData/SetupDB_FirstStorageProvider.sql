@@ -318,7 +318,7 @@ CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNum
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], null, null, null
     FROM [dbo].[Customer]
     WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')
-  UNION
+  UNION ALL
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]
     FROM [dbo].[DevelopmentPartner]
     WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')

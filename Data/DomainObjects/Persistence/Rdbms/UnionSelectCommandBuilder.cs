@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       foreach (string entityName in allConcreteEntityNames)
       {
         if (commandTextStringBuilder.Length > 0)
-          commandTextStringBuilder.Append ("\nUNION ");
+          commandTextStringBuilder.Append ("\nUNION ALL ");
 
         commandTextStringBuilder.AppendFormat (selectTemplate, columnsFromSortExpression, entityName, whereClauseBuilder.ToString ());
       }

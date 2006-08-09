@@ -90,6 +90,11 @@
           <type>dateTime</type>
           <column>DateOfBirth</column>
         </property>
+        <property name="Photo">
+          <type>binary</type>
+          <column>Photo</column>
+          <nullable>true</nullable>
+        </property>
         <relationProperty relationID="PersonToAddress" name="Address" cardinality="one" isMandatory="false" />
       </properties>
     </class>

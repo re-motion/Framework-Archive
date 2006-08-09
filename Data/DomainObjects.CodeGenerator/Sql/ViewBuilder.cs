@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
         foreach (ClassDefinition tableRootClass in concreteClasses)
         {
           if (numberOfSelects > 0)
-            _createViewBuilder.AppendFormat ("  UNION\n");
+            _createViewBuilder.AppendFormat ("  UNION ALL\n");
 
           _createViewBuilder.AppendFormat (
               "  SELECT [ID], [ClassID], [Timestamp], {0}\n"
