@@ -1,3 +1,14 @@
+1.7.28.0
+========
+
+- Property ClientTransaction.ApplicationData:
+  Typ des Keys auf System.Enum geändert um Konflikte bei der Vergabe von Keys zu vermeiden.
+
+- Bugfix für Concrete Table Inheritance:
+  RPF verwendet jetzt "UNION ALL" statt "UNION" um die Datentypen text, ntext und image bei der Selektion von Daten 
+  aus mehreren Tabellen zu unterstützen. Von DOGen generierte Views verwenden jetzt ebenfalls "UNION ALL".
+
+
 1.7.18.0
 ========
 
