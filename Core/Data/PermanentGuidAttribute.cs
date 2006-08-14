@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data
 {
@@ -18,6 +19,8 @@ namespace Rubicon.Data
     /// <param name="value"> The <see cref="String"/> representation of a <see cref="Guid"/>. </param>
     public PermanentGuidAttribute (string value)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+
       _value = new Guid (value);
     }
 
