@@ -124,7 +124,7 @@
     <value>Gruppen</value>
   </data>
   <data name="property:Positions" xml:space="preserve">
-    <value>Konkrete Stellen</value>
+    <value>M&ouml;gliche Stellen</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>

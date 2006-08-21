@@ -124,7 +124,7 @@
     <value>Rollen</value>
   </data>
   <data name="property:GroupTypes" xml:space="preserve">
-    <value>Konkrete Stellen</value>
+    <value>M&ouml;gliche Stellen</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>
