@@ -477,7 +477,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     if (IsReadOnly)
       return new BaseValidator[0];
 
-    string baseID = ID + "_ValidatorDateTime";
+    string baseID = ID + "_Validator";
     ArrayList validators = new ArrayList(3);
 
     IResourceManager resourceManager = GetResourceManager();
@@ -498,7 +498,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     if (! _textBoxStyle.MaxLength.IsNull)
     {
       LengthValidator lengthValidator = new LengthValidator();
-      lengthValidator.ID = ID + "_ValidatorMaxLength";
+      lengthValidator.ID = baseID + "MaxLength";
       lengthValidator.ControlToValidate = TargetControl.ID;
       lengthValidator.MaximumLength = _textBoxStyle.MaxLength.Value;
       if (StringUtility.IsNullOrEmpty (_errorMessage))
