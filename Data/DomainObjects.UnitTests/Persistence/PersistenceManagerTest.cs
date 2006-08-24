@@ -187,7 +187,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
           classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "ClassWithValidRelationsNonOptional"));
 
-      ObjectID expectedID = new ObjectID ("ClassWithValidRelations", new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
+      ObjectID expectedID = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
       Assert.IsNotNull (relatedContainer);
       Assert.AreEqual (expectedID, relatedContainer.ID);
@@ -210,11 +210,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
     [Test]
     [ExpectedException (typeof (PersistenceException),
-        "Property 'ClassWithGuidKey' of object 'ClassWithInvalidRelation|35ba182c-c836-490e-af79-74c72145bce5|System.Guid' refers"
+        "Property 'ClassWithGuidKey' of object 'ClassWithInvalidRelation|afa9cf46-8e77-4da8-9793-53caa86a277c|System.Guid' refers"
         + " to non-existing object 'ClassWithGuidKey|a53f679d-0e91-4504-aee8-59250de249b3|System.Guid'.")]
     public void LoadRelatedDataContainerByInvalidID ()
     {
-      ObjectID id = new ObjectID ("ClassWithInvalidRelation", new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));
+      ObjectID id = new ObjectID ("ClassWithInvalidRelation", new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
 
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
@@ -382,6 +382,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       _persistenceManager.LoadRelatedDataContainers (endPointID);
     }
 
+    [Test]
+    [ExpectedException (typeof (PersistenceException), 
+        "Multiple related DataContainers where found for property 'AssociatedPartnerCompany' of"
+        + " DataContainer 'Person|911957d1-483c-4a8b-aa53-ff07464c58f9|System.Guid'.")]
+    public void LoadRelatedDataContainersOverOneToOneRelationWithMultipleFound ()
+    {
+      DataContainer contactPersonInTwoOrganizations = _persistenceManager.LoadDataContainer (DomainObjectIDs.ContactPersonInTwoOrganizations);
+      RelationEndPointID endPointID = new RelationEndPointID (contactPersonInTwoOrganizations.ID, "AssociatedPartnerCompany");
+
+      _persistenceManager.LoadRelatedDataContainer (contactPersonInTwoOrganizations, endPointID);
+    }
+    
     private DataContainer CreateOrder1DataContainerWithInvalidCustomer ()
     {
       DataContainer dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null);

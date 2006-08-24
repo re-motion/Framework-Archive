@@ -190,17 +190,18 @@ namespace Rubicon.Data.DomainObjects.Persistence
           relationEndPointID.OppositeEndPointDefinition.PropertyName,
           relationEndPointID.ObjectID);
 
-      // TODO: Raise exception if more than one DataContainer is found.
+      if (oppositeDataContainers.Count > 1)
+      {
+        throw CreatePersistenceException (
+            "Multiple related DataContainers where found for property '{0}' of DataContainer '{1}'.",
+            relationEndPointID.PropertyName, relationEndPointID.ObjectID);      
+      }
 
-      if (oppositeDataContainers.Count > 0)
-      {
-        CheckClassIDForVirtualEndPoint (relationEndPointID, oppositeDataContainers[0]);
-        return oppositeDataContainers[0];
-      }
-      else
-      {
+      if (oppositeDataContainers.Count == 0)
         return GetNullDataContainerWithRelationCheck (relationEndPointID);
-      }
+
+      CheckClassIDForVirtualEndPoint (relationEndPointID, oppositeDataContainers[0]);
+      return oppositeDataContainers[0];
     }
 
     private DataContainer GetOppositeDataContainerForEndPoint (DataContainer dataContainer, RelationEndPointID relationEndPointID)

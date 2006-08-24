@@ -102,6 +102,11 @@ insert into [Person] (ID, ClassID, [Name])
 insert into [Person] (ID, ClassID, [Name]) 
     values ('{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}', 'Person', 'Hans Dampf')
 
+-- Note: This does not conform to mapping, because it is a contact person in two organizations.
+insert into [Person] (ID, ClassID, [Name]) 
+    values ('{911957D1-483C-4a8b-AA53-FF07464C58F9}', 'Person', 'Contact person in two organizations')
+
+
 -- IndustrialSector
 insert into [IndustrialSector] (ID, ClassID, [Name]) 
     values ('{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}', 'IndustrialSector', 'Raumschiffproduktion')
@@ -153,6 +158,15 @@ insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID
 -- This row does not conform to mapping, because no CEO row points to this:
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
     values ('{A65B123A-6E17-498e-A28E-946217C0AE30}', 'Partner', 'Partner 3', '{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}', '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+
+-- This row does not conform to mapping, because this and the row below refer to the same person:
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
+    values ('{A3B45592-8756-48b9-B68F-6BDEA1393CA6}', 'Partner', 'Invalid Company 1', '{911957D1-483C-4a8b-AA53-FF07464C58F9}', null)
+
+-- This row does not conform to mapping, because this and the row above refer to the same person:
+insert into [Company] (ID, ClassID, [Name], ContactPersonID, [IndustrialSectorID]) 
+    values ('{38E7DB32-C14F-4b61-863D-6F5188562D61}', 'Partner', 'Invalid Company 2', '{911957D1-483C-4a8b-AA53-FF07464C58F9}', null)
+
 
 -- Supplier
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, SupplierQuality, [IndustrialSectorID]) 
@@ -393,10 +407,6 @@ insert into [TableWithoutTimestampColumn] (ID, ClassID)
     values ('{027DCBD7-ED68-461d-AE80-B8E145A7B816}', 'ClassWithoutTimestampColumn')
  
 -- TableWithValidRelations
-insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, TableWithGuidKeyNonOptionalID) 
-    values ('{35BA182C-C836-490e-AF79-74C72145BCE5}', 'ClassWithValidRelations', 
-    '{7D1F5F2E-D111-433b-A675-300B55DC4756}', '{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}')
-    
 insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, TableWithGuidKeyNonOptionalID)  
     values ('{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}', 'ClassWithValidRelations', 
     null, '{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}')
@@ -409,7 +419,7 @@ insert into [TableWithValidRelations] (ID, ClassID, TableWithGuidKeyOptionalID, 
 -- TableWithInvalidRelation
 -- This row points to non-existing row in TableWithGuidKey
 insert into [TableWithInvalidRelation] (ID, ClassID, TableWithGuidKeyID) 
-    values ('{35BA182C-C836-490e-AF79-74C72145BCE5}', 'ClassWithInvalidRelation', 
+    values ('{AFA9CF46-8E77-4da8-9793-53CAA86A277C}', 'ClassWithInvalidRelation', 
     '{A53F679D-0E91-4504-AEE8-59250DE249B3}')
 
 -- TableWithRelatedClassIDColumnAndNoInheritance

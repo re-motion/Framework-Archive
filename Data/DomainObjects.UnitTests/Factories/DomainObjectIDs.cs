@@ -85,6 +85,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     public readonly ObjectID Person7 = new ObjectID ("Person", new Guid ("{E4F6F59F-80F7-4e41-A004-1A5BA0F68F78}"));
 
+    public readonly ObjectID ContactPersonInTwoOrganizations = new ObjectID ("Person", new Guid ("{911957D1-483C-4a8b-AA53-FF07464C58F9}"));
+
     #endregion
 
     #region IndustrialSector
