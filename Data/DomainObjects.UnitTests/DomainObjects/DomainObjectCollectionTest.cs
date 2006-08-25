@@ -1019,6 +1019,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (oldCount, _collection.Count);
     }
 
+    [Test]
+    [Ignore ("TODO: Fix this bug")]
+    public void ClearWithDiscardedObject ()
+    {
+      DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
+      Customer customer = new Customer ();
+      domainObjectCollection.Add (customer);
+      customer.Delete ();
+      Assert.IsTrue (customer.IsDiscarded);
+
+      //The next line throws an ObjectDiscardedException:
+      domainObjectCollection.Clear ();
+
+      Assert.IsEmpty (domainObjectCollection);
+    }
+
+    [Test]
+    [Ignore ("TODO: Fix this bug")]
+    public void RemoveWithDiscardedObject ()
+    {
+      DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
+      Customer customer = new Customer ();
+      domainObjectCollection.Add (customer);
+      customer.Delete ();
+      Assert.IsTrue (customer.IsDiscarded);
+
+      //The next line throws an ObjectDiscardedException:
+      domainObjectCollection.Remove (customer);
+
+      Assert.IsEmpty (domainObjectCollection);
+    }
+
     private DomainObjectCollection CreateCustomerCollection ()
     {
       DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
