@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 using Rubicon.Security;
-using Rubicon.Data;
+using Rubicon;
 
 namespace Rubicon.SecurityManager.Domain
 {

@@ -12,7 +12,7 @@ using Rubicon.Security;
 using Rubicon.Data.DomainObjects;
 using System.Collections.Generic;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data;
+using Rubicon;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {

@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Security;
 using System.Collections.Generic;
-using Rubicon.Data;
+using Rubicon;
 using Rubicon.SecurityManager.Configuration;
 using System.ComponentModel;
 

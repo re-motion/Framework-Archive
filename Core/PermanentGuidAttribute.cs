@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data
+namespace Rubicon
 {
   /// <summary>
   ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types, properties and fields.

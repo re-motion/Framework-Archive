@@ -22,7 +22,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
-      Cache<Tupel<SecurityContext, string>, AccessType[]> cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
+      Cache<Tuple<SecurityContext, string>, AccessType[]> cache = new Cache<Tuple<SecurityContext, string>, AccessType[]> ();
       transaction.ApplicationData.Add (ClientTransactionAccessTypeCacheProvider.CacheKey.Value, cache);
       ClientTransaction.SetCurrent (transaction);
 
@@ -45,9 +45,9 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransaction transaction = new ClientTransaction ();
       ClientTransaction.SetCurrent (transaction);
 
-      ICache<Tupel<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
       transaction.Rollback ();
-      ICache<Tupel<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
 
       Assert.AreSame (first, second);
     }
@@ -68,7 +68,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (null);
 
-      Assert.IsInstanceOfType (typeof (NullCache<Tupel<SecurityContext, string>, AccessType[]>), provider.GetCache ());
+      Assert.IsInstanceOfType (typeof (NullCache<Tuple<SecurityContext, string>, AccessType[]>), provider.GetCache ());
     }
 
     [Test]
@@ -86,9 +86,9 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
 
-      ICache<Tupel<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
-      ICache<Tupel<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
 
       Assert.IsNotNull (first);
       Assert.IsNotNull (second);

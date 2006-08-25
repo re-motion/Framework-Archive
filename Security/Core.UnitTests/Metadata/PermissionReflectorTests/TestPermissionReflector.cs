@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
 
     // static members
 
-    public new static Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> Cache
+    public new static Cache<Tuple<Type, Type, string, BindingFlags>, Enum[]> Cache
     {
       get { return PermissionReflector.Cache; }
     }

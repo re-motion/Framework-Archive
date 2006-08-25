@@ -20,9 +20,9 @@ namespace Rubicon.Security.Metadata
 
     // static members
 
-    private static Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> s_cache = new Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> ();
+    private static Cache<Tuple<Type, Type, string, BindingFlags>, Enum[]> s_cache = new Cache<Tuple<Type, Type, string, BindingFlags>, Enum[]> ();
 
-    protected static Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> Cache
+    protected static Cache<Tuple<Type, Type, string, BindingFlags>, Enum[]> Cache
     {
       get { return s_cache; }
     }
@@ -90,7 +90,7 @@ namespace Rubicon.Security.Metadata
 
     private Enum[] GetPermissionsFromCache<TAttribute> (Type type, string memberName, BindingFlags bindingFlags) where TAttribute : BaseDemandPermissionAttribute
     {
-      Tupel<Type, Type, string, BindingFlags> cacheKey = new Tupel<Type, Type, string, BindingFlags> (typeof (TAttribute), type, memberName, bindingFlags);
+      Tuple<Type, Type, string, BindingFlags> cacheKey = new Tuple<Type, Type, string, BindingFlags> (typeof (TAttribute), type, memberName, bindingFlags);
       Enum[] cachedPermissions;
       if (!s_cache.TryGet (cacheKey, out cachedPermissions))
       {

@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 
 using Rubicon.Utilities;
-using Rubicon.Data;
+using Rubicon;
 
 namespace Rubicon.Security.Metadata
 {

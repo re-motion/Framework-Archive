@@ -14,7 +14,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Initialize ()
     {
-      Tupel<int, string> tupel = new Tupel<int, string> (1, "X");
+      Tuple<int, string> tupel = new Tuple<int, string> (1, "X");
 
       Assert.AreEqual (1, tupel.A);
       Assert.AreEqual ("X", tupel.B);
@@ -23,7 +23,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithNull ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
 
       Assert.IsFalse (left.Equals (null));
     }
@@ -31,7 +31,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithSame ()
     {
-      Tupel<int, string> tupel = new Tupel<int, string> (1, "X");
+      Tuple<int, string> tupel = new Tuple<int, string> (1, "X");
 
       Assert.IsTrue (tupel.Equals (tupel));
     }
@@ -39,8 +39,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithEqual ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
-      Tupel<int, string> right = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      Tuple<int, string> right = new Tuple<int, string> (1, "X");
 
       Assert.IsTrue (left.Equals (right));
       Assert.IsTrue (right.Equals (left));
@@ -49,8 +49,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDifferentA ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
-      Tupel<int, string> right = new Tupel<int, string> (-1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      Tuple<int, string> right = new Tuple<int, string> (-1, "X");
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -59,8 +59,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDiffentB ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
-      Tupel<int, string> right = new Tupel<int, string> (1, "A");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      Tuple<int, string> right = new Tuple<int, string> (1, "A");
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -69,8 +69,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithEqual ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
-      Tupel<int, string> right = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      Tuple<int, string> right = new Tuple<int, string> (1, "X");
 
       Assert.IsTrue (left.Equals ((object) right));
     }
@@ -78,7 +78,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithNull ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
 
       Assert.IsFalse (left.Equals ((object) null));
     }
@@ -86,7 +86,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithObject ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
 
       Assert.IsFalse (left.Equals (new object ()));
     }
@@ -94,8 +94,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void TestGetHashCode ()
     {
-      Tupel<int, string> left = new Tupel<int, string> (1, "X");
-      Tupel<int, string> right = new Tupel<int, string> (1, "X");
+      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      Tuple<int, string> right = new Tuple<int, string> (1, "X");
 
       Assert.AreEqual (left.GetHashCode (), right.GetHashCode ());
     }

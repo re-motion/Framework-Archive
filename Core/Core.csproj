@@ -97,12 +97,12 @@
     </Compile>
     <Compile Include="Collections\ICache.cs" />
     <Compile Include="Collections\NullCache.cs" />
-    <Compile Include="Collections\TupelAbcd.cs" />
-    <Compile Include="Collections\TupelAbc.cs" />
-    <Compile Include="Collections\TupelAb.cs" />
     <Compile Include="Collections\NameObjectCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\TupleAb.cs" />
+    <Compile Include="Collections\TupleAbc.cs" />
+    <Compile Include="Collections\TupleAbcd.cs" />
     <Compile Include="Collections\TypedArrayList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -115,7 +115,6 @@
     <Compile Include="Data\ITransaction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Data\PermanentGuidAttribute.cs" />
     <Compile Include="Globalization\IObjectWithResources.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -236,6 +235,7 @@
     <Compile Include="ObjectBinding\IBusinessObjectService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PermanentGuidAttribute.cs" />
     <Compile Include="Security\AbstractRoleAttribute.cs" />
     <Compile Include="Security\AccessType.cs" />
     <Compile Include="Security\AccessTypeAttribute.cs" />
@@ -252,6 +252,7 @@
     <Compile Include="Security\SecurityContext.cs" />
     <Compile Include="Security\SecurityProviderRegistry.cs" />
     <Compile Include="Security\SecurityStateAttribute.cs" />
+    <Compile Include="StandardDelegates.cs" />
     <Compile Include="Text\CommandLine\CommandLineArgument.cs">
       <SubType>Code</SubType>
     </Compile>

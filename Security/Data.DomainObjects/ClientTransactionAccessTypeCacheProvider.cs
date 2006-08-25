@@ -21,7 +21,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // member fields
 
-    private NullCache<Tupel<SecurityContext, string>, AccessType[]> _nullCache = new NullCache<Tupel<SecurityContext, string>, AccessType[]> ();
+    private NullCache<Tuple<SecurityContext, string>, AccessType[]> _nullCache = new NullCache<Tuple<SecurityContext, string>, AccessType[]> ();
 
     // construction and disposing
 
@@ -31,22 +31,22 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // methods and properties
 
-    public ICache<Tupel<SecurityContext, string>, AccessType[]> GetCache ()
+    public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache ()
     {
       if (!ClientTransaction.HasCurrent)
         return _nullCache;
 
       ClientTransaction transaction = ClientTransaction.Current;
 
-      Cache<Tupel<SecurityContext, string>, AccessType[]> cache;
+      Cache<Tuple<SecurityContext, string>, AccessType[]> cache;
       object value;
       if (transaction.ApplicationData.TryGetValue (CacheKey.Value, out value))
       {
-        cache = (Cache<Tupel<SecurityContext, string>, AccessType[]>) value;
+        cache = (Cache<Tuple<SecurityContext, string>, AccessType[]>) value;
       }
       else
       {
-        cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
+        cache = new Cache<Tuple<SecurityContext, string>, AccessType[]> ();
         transaction.ApplicationData.Add (CacheKey.Value, cache);
       }
 

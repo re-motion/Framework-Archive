@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetAccessTypeCache ()
     {
-      Assert.IsInstanceOfType (typeof (NullCache<Tupel<SecurityContext, string>, AccessType[]>), _provider.GetCache ());
+      Assert.IsInstanceOfType (typeof (NullCache<Tuple<SecurityContext, string>, AccessType[]>), _provider.GetCache ());
     }
   }
 }

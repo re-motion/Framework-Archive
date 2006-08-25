@@ -9,6 +9,6 @@ namespace Rubicon.Security
 {
   public interface IGlobalAccessTypeCacheProvider
   {
-    ICache<Tupel<SecurityContext, string>, AccessType[]> GetCache ();
+    ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache ();
   }
 }

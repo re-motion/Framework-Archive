@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Utilities;
-using Rubicon.Data;
+using Rubicon;
 using System.Reflection;
 
 namespace Rubicon.Security.Metadata

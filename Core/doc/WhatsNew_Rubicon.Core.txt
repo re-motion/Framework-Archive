@@ -1,3 +1,11 @@
+1.7.29
+======
+- Rubicon.Proc: Verschiedene generic Delegates mit 0-10 Parametern und void und Return Type.
+- Rubicon.Data.PermanentGuidAttribute: Verschoben von Rubicon.Data nach Rubicon.
+- Rubicon.Collections.Tupel<TA, TB>: Umbenannt zu Tuple<TA, TB>
+- Rubicon.Collections.Tupel<TA, TB, TC>:  Umbenannt zu Tuple<TA, TB, TC>
+- Rubicon.Collections.Tupel<TA, TB, TC, TD>:  Umbenannt zu Tuple<TA, TB, TC, TD>
+
 1.7.28
 ======
 - Rubicon.ObjectBinding.IBusinessObjectWithIdentity

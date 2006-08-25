@@ -8,7 +8,7 @@ using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
-using Rubicon.Data;
+using Rubicon;
 using Rubicon.SecurityManager.Configuration;
 using System.ComponentModel;
 

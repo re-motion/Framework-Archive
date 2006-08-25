@@ -8,7 +8,7 @@ using System.Security.Principal;
 namespace Rubicon.Collections
 {
   // TODO: Doc
-  public class Tupel<TA, TB, TC, TD> : IEquatable<Tupel<TA, TB, TC, TD>>
+  public class Tuple<TA, TB, TC, TD> : IEquatable<Tuple<TA, TB, TC, TD>>
   {
     // types
 
@@ -23,7 +23,7 @@ namespace Rubicon.Collections
 
     // construction and disposing
 
-    public Tupel (TA a, TB b, TC c, TD d)
+    public Tuple (TA a, TB b, TC c, TD d)
     {
       ArgumentUtility.CheckNotNull ("a", a);
       ArgumentUtility.CheckNotNull ("b", b);
@@ -59,7 +59,7 @@ namespace Rubicon.Collections
       get { return _d; }
     }
 
-    public bool Equals (Tupel<TA, TB, TC, TD> other)
+    public bool Equals (Tuple<TA, TB, TC, TD> other)
     {
       if (other == null)
         return false;
@@ -69,7 +69,7 @@ namespace Rubicon.Collections
 
     public override bool Equals (object obj)
     {
-      Tupel<TA, TB, TC, TD> other = obj as Tupel<TA, TB, TC, TD>;
+      Tuple<TA, TB, TC, TD> other = obj as Tuple<TA, TB, TC, TD>;
       if (other == null)
         return false;
       return Equals (other);

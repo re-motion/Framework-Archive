@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Data;
+using Rubicon;
 
 namespace Rubicon.Security.UnitTests.TestDomain
 {

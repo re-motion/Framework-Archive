@@ -1,5 +1,5 @@
 using System;
-using Rubicon.Data;
+using Rubicon;
 
 namespace Rubicon.Security.UnitTests.TestDomain
 {
