@@ -87,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     private string GetColumnsFromSortExpression (string sortExpression)
     {
-      if (StringUtility.IsNullOrEmpty (sortExpression))
+      if (string.IsNullOrEmpty (sortExpression))
         return string.Empty;
 
       return ", " + Provider.GetColumnsFromSortExpression (sortExpression);

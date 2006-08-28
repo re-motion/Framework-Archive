@@ -26,7 +26,7 @@ public class SqlProvider : RdbmsProvider
 
   public override string GetColumnsFromSortExpression (string sortExpression)
   {
-    if (StringUtility.IsNullOrEmpty (sortExpression))
+    if (string.IsNullOrEmpty (sortExpression))
       return sortExpression;
 
     // Collapse all whitespaces (space, tab, carrriage return, ...) to a single space
