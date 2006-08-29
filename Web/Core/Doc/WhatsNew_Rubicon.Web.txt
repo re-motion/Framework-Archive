@@ -1,3 +1,9 @@
+1.7.29
+======
+- Rubicon.Web.Utilities
+  * Bugfix: RegisterClientScriptBlock hat Scripte als StartupScript (d.h. am Ende der Seite) registriert, 
+    anstatt als ClientScript (d.h. zu Beginn der Seite). Aufgetreten mit 1.7.0
+  
 1.7.21
 ======
 - FormGridManager:

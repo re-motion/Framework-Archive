@@ -111,7 +111,7 @@ namespace Rubicon.Web.Utilities
           javascript +
           "\r\n//-->\r\n</script>";
 
-      page.ClientScript.RegisterStartupScript (typeof (Page), key, script);
+      page.ClientScript.RegisterClientScriptBlock (typeof (Page), key, script);
     }
 
     /// <summary>
