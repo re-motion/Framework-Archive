@@ -135,6 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       newOrder.Delete ();
 
       //Expectation: no exception
+
       Assert.IsTrue (newOrder.IsDiscarded);
       Assert.IsTrue (newOrderTicket.IsDiscarded);
       Assert.IsTrue (newOrderItem.IsDiscarded);

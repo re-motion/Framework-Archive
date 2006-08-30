@@ -9,7 +9,15 @@
 - Die Reihenfolge von Events und ClientTransactionExtension-Benachrichtigungen wurde geändert, damit kaskadierte Löschvorgänge
   in der Applikationsdomäne, die durch das Deleted-Event auf einem in der aktuellen Transaktion erzeugten Objekt angestoßen werden, 
   zu keiner Exception führen.
-  
+
+- Breaking Change: Alle DomainObjectCollection-Changed Events (Adding, Added, Removing, Removed) haben nun einen einheitlichen 
+  Delegate DomainObjectCollectionChangeEventHandler mit einheitlichen DomainObjectCollectionChangeEventArgs.
+  Notwendige Schritte für Upgrade:
+    * Alle Vorkommnisse von DomainObjectCollectionChangingEventHandler und DomainObjectCollectionChangedEventHandler 
+      durch DomainObjectCollectionChangeEventHandler ersetzen.
+    * Alle Vorkommnisse von DomainObjectCollectionChangingEventArgs und DomainObjectCollectionChangedEventArgs 
+      durch DomainObjectCollectionChangeEventArgs ersetzen.
+
 
 1.7.28.0
 ========

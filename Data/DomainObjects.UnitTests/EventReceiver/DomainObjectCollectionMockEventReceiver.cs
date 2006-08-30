@@ -19,18 +19,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     {
       ArgumentUtility.CheckNotNull ("domainObjectCollection", domainObjectCollection);
 
-      domainObjectCollection.Added += new DomainObjectCollectionChangedEventHandler (Added);
-      domainObjectCollection.Adding += new DomainObjectCollectionChangingEventHandler (Adding);
-      domainObjectCollection.Removed += new DomainObjectCollectionChangedEventHandler (Removed);
-      domainObjectCollection.Removing += new DomainObjectCollectionChangingEventHandler (Removing);
+      domainObjectCollection.Added += new DomainObjectCollectionChangeEventHandler (Added);
+      domainObjectCollection.Adding += new DomainObjectCollectionChangeEventHandler (Adding);
+      domainObjectCollection.Removed += new DomainObjectCollectionChangeEventHandler (Removed);
+      domainObjectCollection.Removing += new DomainObjectCollectionChangeEventHandler (Removing);
     }
 
     // abstract methods and properties
 
-    public abstract void Added (object sender, DomainObjectCollectionChangedEventArgs args);
-    public abstract void Adding (object sender, DomainObjectCollectionChangingEventArgs args);
-    public abstract void Removed (object sender, DomainObjectCollectionChangedEventArgs args);
-    public abstract void Removing (object sender, DomainObjectCollectionChangingEventArgs args);
+    public abstract void Added (object sender, DomainObjectCollectionChangeEventArgs args);
+    public abstract void Adding (object sender, DomainObjectCollectionChangeEventArgs args);
+    public abstract void Removed (object sender, DomainObjectCollectionChangeEventArgs args);
+    public abstract void Removing (object sender, DomainObjectCollectionChangeEventArgs args);
 
   }
 }

@@ -193,12 +193,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Occurs before an object is added to the collection.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event DomainObjectCollectionChangingEventHandler Adding;
+  public event DomainObjectCollectionChangeEventHandler Adding;
   /// <summary>
   /// Occurs after an object is added to the collection.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event DomainObjectCollectionChangedEventHandler Added;
+  public event DomainObjectCollectionChangeEventHandler Added;
 
   /// <summary>
   /// Occurs before an object is removed to the collection.
@@ -209,7 +209,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// business logic handling this situation.
   /// </remarks>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event DomainObjectCollectionChangingEventHandler Removing;
+  public event DomainObjectCollectionChangeEventHandler Removing;
   /// <summary>
   /// Occurs after an object is removed to the collection.
   /// </summary>
@@ -219,7 +219,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// business logic handling this situation.
   /// </remarks>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event DomainObjectCollectionChangedEventHandler Removed;
+  public event DomainObjectCollectionChangeEventHandler Removed;
 
   private Type _requiredItemType;
   private ICollectionChangeDelegate _changeDelegate = null;
@@ -843,7 +843,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
   internal void BeginAdd (DomainObject domainObject)
   {
-    OnAdding (new DomainObjectCollectionChangingEventArgs (domainObject));
+    OnAdding (new DomainObjectCollectionChangeEventArgs (domainObject));
   }
 
   /// <summary>
@@ -957,12 +957,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
   internal void EndAdd (DomainObject domainObject)
   {
-    OnAdded (new DomainObjectCollectionChangedEventArgs (domainObject));
+    OnAdded (new DomainObjectCollectionChangeEventArgs (domainObject));
   }
 
   internal void BeginRemove (DomainObject domainObject)
   {
-    OnRemoving (new DomainObjectCollectionChangingEventArgs (domainObject));
+    OnRemoving (new DomainObjectCollectionChangeEventArgs (domainObject));
   }
 
   /// <summary>
@@ -981,7 +981,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
   internal void EndRemove (DomainObject domainObject)
   {
-    OnRemoved (new DomainObjectCollectionChangedEventArgs (domainObject));
+    OnRemoved (new DomainObjectCollectionChangeEventArgs (domainObject));
   }
 
   /// <summary>
@@ -1000,8 +1000,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Raises the <see cref="Adding"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="DomainObjectCollectionChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnAdding (DomainObjectCollectionChangingEventArgs args)
+  /// <param name="args">A <see cref="DomainObjectCollectionChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnAdding (DomainObjectCollectionChangeEventArgs args)
   {
     if (Adding != null)
       Adding (this, args);
@@ -1010,9 +1010,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Raises the <see cref="Added"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangeEventArgs"/> object that contains the event data.</param>
   /// <remarks>This method can be used to adjust internal state whenever a new item is added to the collection.</remarks>
-  protected virtual void OnAdded (DomainObjectCollectionChangedEventArgs args)
+  protected virtual void OnAdded (DomainObjectCollectionChangeEventArgs args)
   {
     if (Added != null)
       Added (this, args);
@@ -1021,10 +1021,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Raises the <see cref="Removing"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="DomainObjectCollectionChangingEventArgs"/> object that contains the event data.</param>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangeEventArgs"/> object that contains the event data.</param>
   ///   If the collection is cleared through the <see cref="Clear"/> method <see cref="OnRemoving"/> 
   ///   is called for every item.
-  protected virtual void OnRemoving (DomainObjectCollectionChangingEventArgs args)
+  protected virtual void OnRemoving (DomainObjectCollectionChangeEventArgs args)
   {
     if (Removing != null)
       Removing (this, args);
@@ -1033,13 +1033,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Raises the <see cref="Removed"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="DomainObjectCollectionChangedEventArgs"/> object that contains the event data.</param>
+  /// <param name="args">A <see cref="DomainObjectCollectionChangeEventArgs"/> object that contains the event data.</param>
   /// <remarks>
   ///   This method can be used to adjust internal state whenever an item is removed from the collection.
   ///   If the collection is cleared through the <see cref="Clear"/> method <see cref="OnRemoved"/> 
   ///   is called for every item.
   /// </remarks>
-  protected virtual void OnRemoved (DomainObjectCollectionChangedEventArgs args)
+  protected virtual void OnRemoved (DomainObjectCollectionChangeEventArgs args)
   {
     if (Removed != null)
       Removed (this, args);

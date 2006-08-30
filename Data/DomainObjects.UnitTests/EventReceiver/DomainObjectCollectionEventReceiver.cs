@@ -36,13 +36,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     {
       _cancel = cancel;
 
-      collection.Adding += new DomainObjectCollectionChangingEventHandler (DomainObjectCollection_Adding);
-      collection.Added += new DomainObjectCollectionChangedEventHandler (DomainObjectCollection_Added);
+      collection.Adding += new DomainObjectCollectionChangeEventHandler (DomainObjectCollection_Adding);
+      collection.Added += new DomainObjectCollectionChangeEventHandler (DomainObjectCollection_Added);
 
       _removingDomainObjects = new DomainObjectCollection ();
       _removedDomainObjects = new DomainObjectCollection ();
-      collection.Removing += new DomainObjectCollectionChangingEventHandler (DomainObjectCollection_Removing);
-      collection.Removed += new DomainObjectCollectionChangedEventHandler (DomainObjectCollection_Removed);
+      collection.Removing += new DomainObjectCollectionChangeEventHandler (DomainObjectCollection_Removing);
+      collection.Removed += new DomainObjectCollectionChangeEventHandler (DomainObjectCollection_Removed);
     }
 
     // methods and properties
@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       get { return _hasRemovedEventBeenCalled; }
     }
 
-    private void DomainObjectCollection_Adding (object sender, DomainObjectCollectionChangingEventArgs args)
+    private void DomainObjectCollection_Adding (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _hasAddingEventBeenCalled = true;
       _addingDomainObject = args.DomainObject;
@@ -102,13 +102,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
         CancelOperation ();
     }
 
-    private void DomainObjectCollection_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void DomainObjectCollection_Added (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _addedDomainObject = args.DomainObject;
       _hasAddedEventBeenCalled = true;
     }
 
-    private void DomainObjectCollection_Removing (object sender, DomainObjectCollectionChangingEventArgs args)
+    private void DomainObjectCollection_Removing (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _hasRemovingEventBeenCalled = true;
       _removingDomainObjects.Add (args.DomainObject);
@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
         CancelOperation ();
     }
 
-    private void DomainObjectCollection_Removed (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void DomainObjectCollection_Removed (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _removedDomainObjects.Add (args.DomainObject);
       _hasRemovedEventBeenCalled = true;

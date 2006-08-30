@@ -7,19 +7,17 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects
 {
 /// <summary>
-/// Represents the method that will handle the <see cref="DomainObjectCollection.Adding"/> and <see cref="DomainObjectCollection.Removing"/> events of a <see cref="DomainObjectCollection"/>.
+/// Represents the method that will handle the <see cref="DomainObjectCollection.Adding"/>, <see cref="DomainObjectCollection.Added"/>, 
+/// <see cref="DomainObjectCollection.Removed"/> and <see cref="DomainObjectCollection.Removing"/> events of a <see cref="DomainObjectCollection"/>.
 /// </summary>
-public delegate void DomainObjectCollectionChangingEventHandler (object sender, DomainObjectCollectionChangingEventArgs args);
-/// <summary>
-/// Represents the method that will handle the <see cref="DomainObjectCollection.Added"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
-/// </summary>
-public delegate void DomainObjectCollectionChangedEventHandler (object sender, DomainObjectCollectionChangedEventArgs args);
+public delegate void DomainObjectCollectionChangeEventHandler (object sender, DomainObjectCollectionChangeEventArgs args);
 
 /// <summary>
-/// Provides data for the <see cref="DomainObjectCollection.Adding"/> and <see cref="DomainObjectCollection.Removing"/> event of a <see cref="DomainObjectCollection"/>.
+/// Provides data for the <see cref="DomainObjectCollection.Adding"/>, <see cref="DomainObjectCollection.Added"/>, 
+/// <see cref="DomainObjectCollection.Removing"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
 [Serializable]
-public class DomainObjectCollectionChangingEventArgs : EventArgs
+public class DomainObjectCollectionChangeEventArgs : EventArgs
 {
   private DomainObject _domainObject;
 
@@ -28,7 +26,7 @@ public class DomainObjectCollectionChangingEventArgs : EventArgs
   /// </summary>
   /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-  public DomainObjectCollectionChangingEventArgs (DomainObject domainObject)
+  public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     _domainObject = domainObject;
@@ -36,34 +34,6 @@ public class DomainObjectCollectionChangingEventArgs : EventArgs
 
   /// <summary>
   /// Gets the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed.
-  /// </summary>
-  public DomainObject DomainObject
-  {
-    get { return _domainObject; }
-  }
-}
-
-/// <summary>
-/// Provides data for the <see cref="DomainObjectCollection.Added"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
-/// </summary>
-[Serializable]
-public class DomainObjectCollectionChangedEventArgs : EventArgs
-{
-  private DomainObject _domainObject;
-
-  /// <summary>
-  /// Initializes a new instance of the <b>DomainObjectCollectionChangedEventArgs</b> class.
-  /// </summary>
-  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been added or removed to the collection. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-  public DomainObjectCollectionChangedEventArgs (DomainObject domainObject)
-  {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    _domainObject = domainObject;
-  }
-
-  /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been added or removed.
   /// </summary>
   public DomainObject DomainObject
   {

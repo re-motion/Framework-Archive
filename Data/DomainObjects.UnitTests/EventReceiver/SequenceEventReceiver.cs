@@ -63,10 +63,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
       foreach (DomainObjectCollection collection in collections)
       {
-        collection.Adding += new DomainObjectCollectionChangingEventHandler (Collection_Changing);
-        collection.Added += new DomainObjectCollectionChangedEventHandler (Collection_Changed);
-        collection.Removing += new DomainObjectCollectionChangingEventHandler (Collection_Changing);
-        collection.Removed += new DomainObjectCollectionChangedEventHandler (Collection_Changed);
+        collection.Adding += new DomainObjectCollectionChangeEventHandler (Collection_Changing);
+        collection.Added += new DomainObjectCollectionChangeEventHandler (Collection_Changed);
+        collection.Removing += new DomainObjectCollectionChangeEventHandler (Collection_Changing);
+        collection.Removed += new DomainObjectCollectionChangeEventHandler (Collection_Changed);
       }
     }
 
@@ -122,10 +122,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
       foreach (DomainObjectCollection collection in _collections)
       {
-        collection.Adding -= new DomainObjectCollectionChangingEventHandler (Collection_Changing);
-        collection.Added -= new DomainObjectCollectionChangedEventHandler (Collection_Changed);
-        collection.Removing -= new DomainObjectCollectionChangingEventHandler (Collection_Changing);
-        collection.Removed -= new DomainObjectCollectionChangedEventHandler (Collection_Changed);
+        collection.Adding -= new DomainObjectCollectionChangeEventHandler (Collection_Changing);
+        collection.Added -= new DomainObjectCollectionChangeEventHandler (Collection_Changed);
+        collection.Removing -= new DomainObjectCollectionChangeEventHandler (Collection_Changing);
+        collection.Removed -= new DomainObjectCollectionChangeEventHandler (Collection_Changed);
       }
     }
 
@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       _states.Add (new ObjectDeletionState (sender));
     }
 
-    public void Collection_Changing (object sender, DomainObjectCollectionChangingEventArgs args)
+    public void Collection_Changing (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _states.Add (new CollectionChangeState (sender, args.DomainObject));
 
@@ -176,7 +176,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
         CancelOperation ();
     }
 
-    public void Collection_Changed (object sender, DomainObjectCollectionChangedEventArgs args)
+    public void Collection_Changed (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       _states.Add (new CollectionChangeState (sender, args.DomainObject));
     }
