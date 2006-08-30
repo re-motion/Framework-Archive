@@ -26,6 +26,8 @@ public class SqlProvider : RdbmsProvider
 
   public override string GetColumnsFromSortExpression (string sortExpression)
   {
+    CheckDisposed ();
+
     if (string.IsNullOrEmpty (sortExpression))
       return sortExpression;
 
@@ -68,6 +70,24 @@ public class SqlProvider : RdbmsProvider
     CheckDisposed ();
     
     return new SqlConnection ();
+  }
+  
+  public new SqlConnection Connection
+  {
+    get
+    {
+      CheckDisposed ();
+      return (SqlConnection) base.Connection;
+    }
+  }
+
+  public new SqlTransaction Transaction
+  {
+    get
+    {
+      CheckDisposed ();
+      return (SqlTransaction) base.Transaction;
+    }
   }
 }
 }

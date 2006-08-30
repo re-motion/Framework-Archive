@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using System.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -62,6 +63,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       Assert.AreEqual ("@parameter", Provider.GetParameterName ("parameter"));
       Assert.AreEqual ("@parameter", Provider.GetParameterName ("@parameter"));
+    }
+
+    [Test]
+    public void ConnectionReturnsSqlConnection ()
+    {
+      // Note: If Provider.Connection returns a SqlConnection instead of IDbConnection, the line below does not create a compiler error.
+      SqlConnection sqlConnection = Provider.Connection;
+    }
+
+    [Test]
+    public void TransactionReturnsSqlTransaction ()
+    {
+      // Note: If Provider.Transaction returns a SqlTransaction instead of IDbTransaction, the line below does not create a compiler error.
+      SqlTransaction sqlTransaction = Provider.Transaction;
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDisposedException))]
+    public void GetColumnsFromSortExpressionChecksForDisposal ()
+    {
+      Provider.Dispose ();
+      Provider.GetColumnsFromSortExpression ("ColumnName asc");
     }
   }
 }
