@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Rubicon.Utilities;
+using Rhino.Mocks;
+using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -26,12 +28,36 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       clientTransaction.RolledBack += new ClientTransactionEventHandler (RolledBack);
     }
 
-    // methods and properties
+    // abstract methods and properties
 
     public abstract void Loaded (object sender, ClientTransactionEventArgs args);
     public abstract void Committing (object sender, ClientTransactionEventArgs args);
     public abstract void Committed (object sender, ClientTransactionEventArgs args);
     public abstract void RollingBack (object sender, ClientTransactionEventArgs args);
     public abstract void RolledBack (object sender, ClientTransactionEventArgs args);
+
+    // methods and properties
+
+    public void RollingBack (object sender, params DomainObject[] domainObjects)
+    {
+      RollingBack (null, (ClientTransactionEventArgs) null);
+
+      LastCall.Constraints (
+          Is.Same (sender), 
+          Property.ValueConstraint ("DomainObjects", 
+              Property.Value ("Count", domainObjects.Length)
+              & new ContainsConstraint (domainObjects)));
+    }
+
+    public void RolledBack (object sender, params DomainObject[] domainObjects)
+    {
+      RolledBack (null, (ClientTransactionEventArgs) null);
+
+      LastCall.Constraints (
+          Is.Same (sender),
+          Property.ValueConstraint ("DomainObjects",
+              Property.Value ("Count", domainObjects.Length)
+              & new ContainsConstraint (domainObjects)));
+    }
   }
 }

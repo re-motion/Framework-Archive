@@ -81,13 +81,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (mockRepository.Ordered ())
       {
-        clientTransactionMockEventReceiver.RollingBack (null, null);
-        LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1) & List.IsIn (_newCustomer)));
-
-        clientTransactionMockEventReceiver.RolledBack (null, null);
-        LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 0)));
+        clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _newCustomer);
+        clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock);
       }
 
       mockRepository.ReplayAll ();
