@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects
     ///     every one of them right before this method.
     ///   </para>
     ///   <para>
-    ///     The events <see cref="DomainObject.RelationChanged"/> and <see cref="DomainObject.Deleted"/> are fired before this method is invoked.
+    ///     The events <see cref="DomainObject.RelationChanged"/> and <see cref="DomainObject.Deleted"/> are fired after this method is invoked.
     ///   </para>
     /// </remarks>
     /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="ObjectDeleting"/> instead.</note>
@@ -242,7 +242,7 @@ namespace Rubicon.Data.DomainObjects
     ///     Use this method to perform actions on a successful execution, whereas <see cref="RelationChanging"/> should be used to cancel the operation.
     ///   </para>
     ///   <para>
-    ///     The <see cref="DomainObject.RelationChanged"/> events are fired before this method is invoked.
+    ///     The <see cref="DomainObject.RelationChanged"/> events are fired after this method is invoked.
     ///   </para>
     /// </remarks>
     /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationChanging"/> instead.</note>

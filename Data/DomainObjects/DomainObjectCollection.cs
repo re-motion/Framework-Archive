@@ -38,9 +38,8 @@ namespace Rubicon.Data.DomainObjects
 ///     <term><see cref="OnDeleting"/>, <see cref="OnDeleted"/></term>
 ///     <description>
 ///       These methods can be used to clear all internal state or to unsubscribe from events whenever the <see cref="DomainObject"/> 
-///       holding this collection is deleted. The actual adjustment can be performed either in the 
-///       <see cref="OnDeleting"/> or in the <see cref="OnDeleted"/> method, 
-///       because the operation cannot be cancelled after the <see cref="OnDeleting"/> method has been called.
+///       holding this collection is deleted. The actual adjustment should be performed in the 
+///       <see cref="OnDeleted"/> method, because the operation could be cancelled after the <see cref="OnDeleting"/> method has been called. 
 ///     </description>
 ///   </item>
 ///   <item>
@@ -1051,9 +1050,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// </summary>
   /// <remarks>
   /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
-  /// Immediately before all <see cref="DomainObject"/>s will be removed the <b>OnDeleting</b> method is invoked 
-  /// to allow derived collections to adjust their internal state or to unsubscribe from events raised by <see cref="DomainObject"/>s that 
-  /// are part of the <b>DomainObjectCollection</b>.<br/><br/>
+  /// Immediately before all <see cref="DomainObject"/>s will be removed the <b>OnDeleting</b> method is invoked.
+  /// To clear any internal state or to unsubscribe from events whenever the <see cref="DomainObject"/> holding this collection is deleted 
+  /// use the <see cref="OnDeleted"/> method, because the operation could be cancelled after the <see cref="OnDeleting"/> method has been called.<br/><br/>
   /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
   protected virtual void OnDeleting ()
@@ -1066,7 +1065,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <remarks>
   /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <b>DomainObjectCollection</b> without notifying other objects.
   /// After all <see cref="DomainObject"/>s have been removed the <b>OnDeleted</b> method is invoked 
-  /// to allow derived collections to adjust their internal state.<br/><br/>
+  /// to allow derived collections to adjust their internal state or to unsubscribe from events of contained <see cref="DomainObject"/>s.<br/><br/>
   /// <b>Note:</b> A derived collection overriding this method must not raise an exception.
   /// </remarks>
   protected virtual void OnDeleted ()

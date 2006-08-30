@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectsLoadedWithEvents ()
     {
-      ClientTransactionMockEventReceiver clientTransactionEventReceiver = 
+      ClientTransactionMockEventReceiver clientTransactionEventReceiver =
           _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
 
       using (_mockRepository.Ordered ())
@@ -119,12 +119,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ObjectDelete ()
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      DomainObjectMockEventReceiver computerEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (computer);
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
         _extension.ObjectDeleting (computer);
+        computerEventReceiver.Deleting (computer, EventArgs.Empty);
         _extension.ObjectDeleted (computer);
+        computerEventReceiver.Deleted (computer, EventArgs.Empty);
       }
 
       _mockRepository.ReplayAll ();
@@ -142,9 +145,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderTicket orderTicket = _order1.OrderTicket;
       Official official = _order1.Official;
       Customer customer = _order1.Customer;
-      OrderCollection preloadedOrders1 = customer.Orders;
-      DomainObjectCollection preloadedOrders2 = official.Orders;
+      OrderCollection customerOrders = customer.Orders;
+      DomainObjectCollection officialOrders = official.Orders;
       Order preloadedOrder1 = orderTicket.Order;
+
+      DomainObjectMockEventReceiver order1MockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_order1);
+      DomainObjectMockEventReceiver orderItem1MockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderItem1);
+      DomainObjectMockEventReceiver orderItem2MockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderItem2);
+      DomainObjectMockEventReceiver orderTicketMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket);
+      DomainObjectMockEventReceiver officialMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (official);
+      DomainObjectMockEventReceiver customerMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (customer);
+
+      DomainObjectCollectionMockEventReceiver customerOrdersMockEventReceiver =
+          _mockRepository.CreateMock<DomainObjectCollectionMockEventReceiver> (customerOrders);
+
+      DomainObjectCollectionMockEventReceiver officialOrdersMockEventReceiver =
+          _mockRepository.CreateMock<DomainObjectCollectionMockEventReceiver> (officialOrders);
 
       _mockRepository.BackToRecord (_extension);
 
@@ -152,25 +168,77 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.ObjectDeleting (_order1);
 
-        _extension.RelationChanging (customer, "Orders", _order1, null);
-        _extension.RelationChanging (orderTicket, "Order", _order1, null);
         using (_mockRepository.Unordered ())
         {
+          _extension.RelationChanging (customer, "Orders", _order1, null);
+          _extension.RelationChanging (orderTicket, "Order", _order1, null);
           _extension.RelationChanging (orderItem1, "Order", _order1, null);
           _extension.RelationChanging (orderItem2, "Order", _order1, null);
+          _extension.RelationChanging (official, "Orders", _order1, null);
         }
-        _extension.RelationChanging (official, "Orders", _order1, null);
 
-        _extension.RelationChanged (customer, "Orders");
-        _extension.RelationChanged (orderTicket, "Order");
+        order1MockEventReceiver.Deleting (_order1, EventArgs.Empty);
+
         using (_mockRepository.Unordered ())
         {
+          customerMockEventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (customer), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+          customerOrdersMockEventReceiver.Removing (null, null);
+          LastCall.Constraints (Is.Same (customerOrders), Property.Value ("DomainObject", _order1));
+
+          orderTicketMockEventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (orderTicket), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+          orderItem1MockEventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (orderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+          orderItem2MockEventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (orderItem2), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+          officialMockEventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (official), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+          officialOrdersMockEventReceiver.Removing (null, null);
+          LastCall.Constraints (Is.Same (officialOrders), Property.Value ("DomainObject", _order1));
+        }
+
+        using (_mockRepository.Unordered ())
+        {
+          _extension.RelationChanged (customer, "Orders");
+          _extension.RelationChanged (orderTicket, "Order");
           _extension.RelationChanged (orderItem1, "Order");
           _extension.RelationChanged (orderItem2, "Order");
+          _extension.RelationChanged (official, "Orders");
         }
-        _extension.RelationChanged (official, "Orders");
 
         _extension.ObjectDeleted (_order1);
+
+        using (_mockRepository.Unordered ())
+        {
+          customerMockEventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (customer), Property.Value ("PropertyName", "Orders"));
+
+          customerOrdersMockEventReceiver.Removed (null, null);
+          LastCall.Constraints (Is.Same (customerOrders), Property.Value ("DomainObject", _order1));
+
+          orderTicketMockEventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (orderTicket), Property.Value ("PropertyName", "Order"));
+
+          orderItem1MockEventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (orderItem1), Property.Value ("PropertyName", "Order"));
+
+          orderItem2MockEventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (orderItem2), Property.Value ("PropertyName", "Order"));
+
+          officialMockEventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (official), Property.Value ("PropertyName", "Orders"));
+
+          officialOrdersMockEventReceiver.Removed (null, null);
+          LastCall.Constraints (Is.Same (officialOrders), Property.Value ("DomainObject", _order1));
+        }
+
+        order1MockEventReceiver.Deleted (_order1, EventArgs.Empty);
       }
 
       _mockRepository.ReplayAll ();
@@ -714,7 +782,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       computer.SerialNumber = "newSerialNumber";
       _mockRepository.BackToRecord (_extension);
 
-      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver = 
+      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver =
           _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
 
       DomainObjectMockEventReceiver computerEventReveiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (computer);

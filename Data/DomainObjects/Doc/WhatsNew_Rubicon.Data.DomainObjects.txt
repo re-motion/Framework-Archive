@@ -5,7 +5,11 @@
   * Property Connection gibt SqlConnection statt IDbConnection zurück
   * Property Transaction gibt SqlTransaction statt IDbTransaction zurück
   * GetColumnsFromSortExpression prüft jetzt ob das Objekt bereits disposed wurde und wirft eine ObjectDisposedException 
-   
+
+- Die Reihenfolge von Events und ClientTransactionExtension-Benachrichtigungen wurde geändert, damit kaskadierte Löschvorgänge
+  in der Applikationsdomäne, die durch das Deleted-Event auf einem in der aktuellen Transaktion erzeugten Objekt angestoßen werden, 
+  zu keiner Exception führen.
+  
 
 1.7.28.0
 ========

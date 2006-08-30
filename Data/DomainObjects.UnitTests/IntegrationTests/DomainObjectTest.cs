@@ -103,14 +103,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCeo1));
 
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer1, "Ceo");
+
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo"));
-
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer1, "Ceo");
 
 
         //2
@@ -128,6 +128,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCeo1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", newCustomer1) & Property.Value ("NewRelatedObject", null));
 
+        extension.RelationChanged (newCeo2, "Company");
+        extension.RelationChanged (newCustomer1, "Ceo");
+        extension.RelationChanged (newCeo1, "Company");
+
         newCeo2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo2), Property.Value ("PropertyName", "Company"));
 
@@ -136,10 +140,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
-
-        extension.RelationChanged (newCeo2, "Company");
-        extension.RelationChanged (newCustomer1, "Ceo");
-        extension.RelationChanged (newCeo1, "Company");
 
 
         //3
@@ -153,14 +153,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCeo1));
 
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer2, "Ceo");
+
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo"));
-
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer2, "Ceo");
 
 
         //4
@@ -174,14 +174,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", newCeo1) & Property.Value ("NewRelatedObject", null));
 
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer2, "Ceo");
+
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo"));
-
-        extension.RelationChanged (newCeo1, "Company");
-        extension.RelationChanged (newCustomer2, "Ceo");
 
 
         //5
@@ -202,6 +202,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
 
+        extension.RelationChanged (newOrder1, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Customer"));
 
@@ -210,9 +213,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-
-        extension.RelationChanged (newOrder1, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
 
 
         //6
@@ -233,6 +233,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
 
@@ -241,9 +244,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
 
 
         //7
@@ -264,6 +264,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
 
@@ -272,9 +275,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
 
 
         //8
@@ -291,6 +291,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem1));
 
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
 
@@ -299,9 +302,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
 
 
         //9
@@ -318,6 +318,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem2));
 
+        extension.RelationChanged (newOrderItem2, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
         newOrderItem2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem2), Property.Value ("PropertyName", "Order"));
 
@@ -326,9 +329,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-
-        extension.RelationChanged (newOrderItem2, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
 
 
         //10
@@ -345,6 +345,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem1) & Property.Value ("NewRelatedObject", null));
 
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
 
@@ -353,9 +356,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder1, "OrderItems");
 
 
         //11
@@ -372,6 +372,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem1));
 
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder2, "OrderItems");
+
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
 
@@ -380,9 +383,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderItems"));
-
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.RelationChanged (newOrder2, "OrderItems");
 
 
         //12
@@ -399,6 +399,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         official2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (official2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
 
+        extension.RelationChanged (newOrder1, "Official");
+        extension.RelationChanged (official2, "Orders");
+
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Official"));
 
@@ -407,9 +410,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         official2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (official2), Property.Value ("PropertyName", "Orders"));
-
-        extension.RelationChanged (newOrder1, "Official");
-        extension.RelationChanged (official2, "Orders");
 
 
         //13
@@ -425,12 +425,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.ValueConstraint ("NewRelatedObject", Is.TypeOf<OrderTicket> ()));
 
-        newOrder1EventReceiver.RelationChanged (null, null);
-        LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
-
         extension.RelationChanged (null, null);
         LastCall.Constraints (Is.TypeOf<OrderTicket> (), Is.Equal ("Order"));
         extension.RelationChanged (newOrder1, "OrderTicket");
+
+        newOrder1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
       }
 
       ClientTransaction.Current.Extensions.Add ("Extension", extension);
@@ -489,6 +489,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderTicket1));
 
+        extension.RelationChanged (newOrderTicket1, "Order");
+        extension.RelationChanged (newOrder1, "OrderTicket");
+        extension.RelationChanged (newOrder2, "OrderTicket");
+
         newOrderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
 
@@ -497,10 +501,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderTicket"));
-
-        extension.RelationChanged (newOrderTicket1, "Order");
-        extension.RelationChanged (newOrder1, "OrderTicket");
-        extension.RelationChanged (newOrder2, "OrderTicket");
 
 
         //15a
@@ -517,6 +517,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
 
@@ -525,9 +528,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer1, "Orders");
 
 
         //15b
@@ -551,6 +551,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer2, "Orders");
+        extension.RelationChanged (newCustomer1, "Orders");
+
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
 
@@ -566,52 +570,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
 
-        extension.RelationChanged (newOrder2, "Customer");
-        extension.RelationChanged (newCustomer2, "Orders");
-        extension.RelationChanged (newCustomer1, "Orders");
-
 
         //16
         //newOrder2.Delete ();
         extension.ObjectDeleting (newOrder2);
-        extension.RelationChanging (newCustomer2, "Orders", newOrder2, null);
-        extension.RelationChanging (newOrderTicket1, "Order", newOrder2, null);
-        extension.RelationChanging (newOrderItem1, "Order", newOrder2, null);
+
+        using (mockRepository.Unordered ())
+        {
+          extension.RelationChanging (newCustomer2, "Orders", newOrder2, null);
+          extension.RelationChanging (newOrderTicket1, "Order", newOrder2, null);
+          extension.RelationChanging (newOrderItem1, "Order", newOrder2, null);
+        }
 
         newOrder2EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
 
-        newCustomer2OrdersEventReceiver.Removing (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
+        using (mockRepository.Unordered ())
+        {
+          newCustomer2OrdersEventReceiver.Removing (null, null);
+          LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
 
-        newCustomer2EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
+          newCustomer2EventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
 
-        newOrderTicket1EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
+          newOrderTicket1EventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
 
-        newOrderItem1EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
+          newOrderItem1EventReceiver.RelationChanging (null, null);
+          LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
+        }
 
-        newCustomer2OrdersEventReceiver.Removed (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
+        using (mockRepository.Unordered ())
+        {
+          extension.RelationChanged (newCustomer2, "Orders");
+          extension.RelationChanged (newOrderTicket1, "Order");
+          extension.RelationChanged (newOrderItem1, "Order");
+        }
 
-        newCustomer2EventReceiver.RelationChanged (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders"));
+        extension.ObjectDeleted (newOrder2);
 
-        newOrderTicket1EventReceiver.RelationChanged (null, null);
-        LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
+        using (mockRepository.Unordered ())
+        {
+          newCustomer2OrdersEventReceiver.Removed (null, null);
+          LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
 
-        newOrderItem1EventReceiver.RelationChanged (null, null);
-        LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
+          newCustomer2EventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders"));
+
+          newOrderTicket1EventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
+
+          newOrderItem1EventReceiver.RelationChanged (null, null);
+          LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
+        }
 
         newOrder2EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
-
-        extension.RelationChanged (newCustomer2, "Orders");
-        extension.RelationChanged (newOrderTicket1, "Order");
-        extension.RelationChanged (newOrderItem1, "Order");
-        extension.ObjectDeleted (newOrder2);
 
         //17
         //newOrderTicket1.Order = newOrder1;
@@ -624,14 +638,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderTicket1));
 
+        extension.RelationChanged (newOrderTicket1, "Order");
+        extension.RelationChanged (newOrder1, "OrderTicket");
+
         newOrderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
-
-        extension.RelationChanged (newOrderTicket1, "Order");
-        extension.RelationChanged (newOrder1, "OrderTicket");
 
 
         //cleanup for commit
@@ -641,10 +655,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCustomer2EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
-        newCustomer2EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
 
         extension.ObjectDeleted (newCustomer2);
+        
+        newCustomer2EventReceiver.Deleted (null, null);
+        LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
 
 
         //19
@@ -653,10 +668,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newCeo1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
+
+        extension.ObjectDeleted (newCeo1);
+
         newCeo1EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
 
-        extension.ObjectDeleted (newCeo1);
 
         //20
         //newOrderItem1.Delete ();
@@ -664,10 +681,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrderItem1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
-        newOrderItem1EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
 
         extension.ObjectDeleted (newOrderItem1);
+
+        newOrderItem1EventReceiver.Deleted (null, null);
+        LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
 
 
         //21

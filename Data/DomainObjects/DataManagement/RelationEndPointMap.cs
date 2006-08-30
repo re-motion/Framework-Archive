@@ -305,8 +305,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     endPoint.PerformRelationChange ();
     
-    endPoint.EndRelationChange ();
     endPoint.NotifyClientTransactionOfEndRelationChange ();
+    endPoint.EndRelationChange ();
   }
 
   private void SetRelatedObjectForBidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
@@ -364,15 +364,15 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     newRelatedEndPoint.PerformRelationChange ();
     oldRelatedEndPointOfNewRelatedEndPoint.PerformRelationChange ();
 
-    endPoint.EndRelationChange ();
-    oldRelatedEndPoint.EndRelationChange ();
-    newRelatedEndPoint.EndRelationChange ();
-    oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
-
     endPoint.NotifyClientTransactionOfEndRelationChange ();
     oldRelatedEndPoint.NotifyClientTransactionOfEndRelationChange ();
     newRelatedEndPoint.NotifyClientTransactionOfEndRelationChange ();
     oldRelatedEndPointOfNewRelatedEndPoint.NotifyClientTransactionOfEndRelationChange ();
+
+    endPoint.EndRelationChange ();
+    oldRelatedEndPoint.EndRelationChange ();
+    newRelatedEndPoint.EndRelationChange ();
+    oldRelatedEndPointOfNewRelatedEndPoint.EndRelationChange ();
   }
 
   private void SetRelatedObjectForOneToManyRelation (
@@ -563,13 +563,13 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     endPoint.PerformRelationChange ();
     oldRelatedOfAddingEndPoint.PerformRelationChange ();
 
-    addingEndPoint.EndRelationChange ();
-    endPoint.EndRelationChange ();
-    oldRelatedOfAddingEndPoint.EndRelationChange ();
-
     addingEndPoint.NotifyClientTransactionOfEndRelationChange ();
     endPoint.NotifyClientTransactionOfEndRelationChange ();
     oldRelatedOfAddingEndPoint.NotifyClientTransactionOfEndRelationChange ();
+
+    addingEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
+    oldRelatedOfAddingEndPoint.EndRelationChange ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformReplace  (
@@ -605,15 +605,15 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     endPoint.PerformRelationChange ();
     oldEndPointOfNewEndPoint.PerformRelationChange ();
 
-    oldEndPoint.EndRelationChange ();
-    newEndPoint.EndRelationChange ();
-    endPoint.EndRelationChange ();
-    oldEndPointOfNewEndPoint.EndRelationChange ();
-
     oldEndPoint.NotifyClientTransactionOfEndRelationChange ();
     newEndPoint.NotifyClientTransactionOfEndRelationChange ();
     endPoint.NotifyClientTransactionOfEndRelationChange ();
     oldEndPointOfNewEndPoint.NotifyClientTransactionOfEndRelationChange ();
+
+    oldEndPoint.EndRelationChange ();
+    newEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
+    oldEndPointOfNewEndPoint.EndRelationChange ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
@@ -633,11 +633,11 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     removingEndPoint.PerformRelationChange ();
     endPoint.PerformRelationChange ();
 
-    removingEndPoint.EndRelationChange ();
-    endPoint.EndRelationChange ();
-
     removingEndPoint.NotifyClientTransactionOfEndRelationChange ();
     endPoint.NotifyClientTransactionOfEndRelationChange ();
+
+    removingEndPoint.EndRelationChange ();
+    endPoint.EndRelationChange ();
   }
 
   #endregion

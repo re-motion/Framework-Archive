@@ -85,14 +85,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _orderTicket1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (_order1, "OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Order");
+
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket"));
 
         _orderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order"));
-
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -124,14 +124,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         orderTicketEventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (orderTicket), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", order));
 
+        _extension.RelationChanged (order, "OrderTicket");
+        _extension.RelationChanged (orderTicket, "Order");
+
         orderEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (order), Property.Value ("PropertyName", "OrderTicket"));
 
         orderTicketEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (orderTicket), Property.Value ("PropertyName", "Order"));
-
-        _extension.RelationChanged (order, "OrderTicket");
-        _extension.RelationChanged (orderTicket, "Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -170,6 +170,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _orderTicket1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (orderTicket3, "Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+        _extension.RelationChanged (_order1, "OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Order");
 
         orderTicket3EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (orderTicket3), Property.Value ("PropertyName", "Order"));
@@ -182,12 +186,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _orderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order"));
-
-
-        _extension.RelationChanged (orderTicket3, "Order");
-        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -238,6 +236,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         oldOrderOfOrderTicket3EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", orderTicket3) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (_order1, "OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Order");
+        _extension.RelationChanged (orderTicket3, "Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
 
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket"));
@@ -250,12 +252,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         oldOrderOfOrderTicket3EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket"));
-
-
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
-        _extension.RelationChanged (orderTicket3, "Order");
-        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
       }
 
       _mockRepository.ReplayAll ();
@@ -287,10 +283,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _location1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client") & Property.Value ("OldRelatedObject", _client1) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (_location1, "Client");
+
         _location1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client"));
-
-        _extension.RelationChanged (_location1, "Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -315,10 +311,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         newLocationEventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newLocation), Property.Value ("PropertyName", "Client") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", _client1));
 
+        _extension.RelationChanged (newLocation, "Client");
+
         newLocationEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newLocation), Property.Value ("PropertyName", "Client"));
-
-        _extension.RelationChanged (newLocation, "Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -343,10 +339,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _location1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client") & Property.Value ("OldRelatedObject", _client1) & Property.Value ("NewRelatedObject", newClient));
 
+        _extension.RelationChanged (_location1, "Client");
+
         _location1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client"));
-
-        _extension.RelationChanged (_location1, "Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -382,14 +378,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _order1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", orderItem) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (orderItem, "Order");
+        _extension.RelationChanged (_order1, "OrderItems");
+
         orderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (orderItem), Property.Value ("PropertyName", "Order"));
 
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems"));
-
-        _extension.RelationChanged (orderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -423,14 +419,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _order1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", orderItem));
 
+        _extension.RelationChanged (orderItem, "Order");
+        _extension.RelationChanged (_order1, "OrderItems");
+
         orderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (orderItem), Property.Value ("PropertyName", "Order"));
 
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems"));
-
-        _extension.RelationChanged (orderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -471,6 +467,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         oldOrderOfNewOrderItemEventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (newOrderItem, "Order");
+        _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+
         newOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem), Property.Value ("PropertyName", "Order"));
 
@@ -479,10 +479,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         oldOrderOfNewOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems"));
-
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
-        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -541,6 +537,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _order1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", oldOrderItem) & Property.Value ("NewRelatedObject", newOrderItem));
 
+        _extension.RelationChanged (oldOrderItem, "Order");
+        _extension.RelationChanged (newOrderItem, "Order");
+        _extension.RelationChanged (_order1, "OrderItems");
+
         oldOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (oldOrderItem), Property.Value ("PropertyName", "Order"));
 
@@ -549,10 +549,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems"));
-
-        _extension.RelationChanged (oldOrderItem, "Order");
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -601,6 +597,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         oldOrderOfNewOrderItemEventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem) & Property.Value ("NewRelatedObject", null));
 
+        _extension.RelationChanged (oldOrderItem, "Order");
+        _extension.RelationChanged (newOrderItem, "Order");
+        _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+
         oldOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (oldOrderItem), Property.Value ("PropertyName", "Order"));
 
@@ -612,11 +613,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         oldOrderOfNewOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems"));
-
-        _extension.RelationChanged (oldOrderItem, "Order");
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
-        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();

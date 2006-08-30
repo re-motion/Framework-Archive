@@ -116,5 +116,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       CheckIfObjectIsDeleted (DomainObjectIDs.Employee4);
       CheckIfObjectIsDeleted (DomainObjectIDs.Employee5);
     }
+
+    [Test]
+    public void CascadedDeleteForNewObjects ()
+    {
+      Order newOrder = new Order ();
+      OrderTicket newOrderTicket = new OrderTicket (newOrder);
+      Assert.AreSame (newOrderTicket, newOrder.OrderTicket);
+      OrderItem newOrderItem = new OrderItem (newOrder);
+      Assert.Contains (newOrderItem, newOrder.OrderItems);
+
+      newOrder.Deleted += delegate
+      {
+        newOrderTicket.Delete ();
+        newOrderItem.Delete ();
+      };
+
+      newOrder.Delete ();
+
+      //Expectation: no exception
+      Assert.IsTrue (newOrder.IsDiscarded);
+      Assert.IsTrue (newOrderTicket.IsDiscarded);
+      Assert.IsTrue (newOrderItem.IsDiscarded);
+    }
   }
 }

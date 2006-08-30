@@ -138,6 +138,8 @@ public class DataManager
 
   public void Delete (DomainObject domainObject)
   {
+    //TODO later: Start here when implementing oldRelatedObject and NewRelatedObject on IClientTransactionExtension.RelationChanged () 
+    //      and RelationChanged events of ClientTransaction and DomainObject
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
     CheckClientTransactionForDeletion (domainObject);
 
@@ -145,11 +147,10 @@ public class DataManager
       return;
 
     RelationEndPointCollection allAffectedRelationEndPoints = _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
-    BeginDelete (domainObject, allAffectedRelationEndPoints);
-
     RelationEndPointCollection allOppositeRelationEndPoints = allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
-    PerformDelete (domainObject);
 
+    BeginDelete (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
+    PerformDelete (domainObject);
     EndDelete (domainObject, allOppositeRelationEndPoints);
   }
 
@@ -160,24 +161,65 @@ public class DataManager
     domainObject.DataContainer.Delete ();
   }
 
-  private void BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
+  private void BeginDelete (
+      DomainObject domainObject, 
+      RelationEndPointCollection allAffectedRelationEndPoints, 
+      RelationEndPointCollection allOppositeRelationEndPoints)
   {
-    //TODO later: Start here when implementing oldRelatedObject and NewRelatedObject on IClientTransactionExtension.RelationChanged () 
-    //      and RelationChanged events of ClientTransaction and DomainObject
     _clientTransaction.ObjectDeleting (domainObject);
-    allAffectedRelationEndPoints.NotifyClientTransactionOfBeginDelete (domainObject);
+    NotifyClientTransactionOfBeginRelationChange (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
 
     domainObject.BeginDelete ();
-    allAffectedRelationEndPoints.BeginDelete (domainObject);
+    NotifyOppositeEndPointsOfBeginRelationChange (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
+  }
+
+  private void NotifyClientTransactionOfBeginRelationChange (
+      DomainObject domainObject, 
+      RelationEndPointCollection allAffectedRelationEndPoints, 
+      RelationEndPointCollection allOppositeRelationEndPoints)
+  {
+    foreach (RelationEndPoint oppositeEndPoint in allOppositeRelationEndPoints)
+    {
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = allAffectedRelationEndPoints[new RelationEndPointID (domainObject.ID, endPointDefinition)];
+
+      oppositeEndPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPoint);
+    }
+  }
+
+  private void NotifyOppositeEndPointsOfBeginRelationChange (
+      DomainObject domainObject, 
+      RelationEndPointCollection allAffectedRelationEndPoints, 
+      RelationEndPointCollection allOppositeRelationEndPoints)
+  {
+    foreach (RelationEndPoint oppositeEndPoint in allOppositeRelationEndPoints)
+    {
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = allAffectedRelationEndPoints[new RelationEndPointID (domainObject.ID, endPointDefinition)];
+
+      oppositeEndPoint.BeginRelationChange (oldEndPoint);
+    }
   }
 
   private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)
   {
-    allOppositeRelationEndPoints.EndDelete ();
-    domainObject.EndDelete ();
-
-    allOppositeRelationEndPoints.NotifyClientTransactionOfEndDelete ();
+    NotifyClientTransactionOfEndRelationChange (allOppositeRelationEndPoints);
     _clientTransaction.ObjectDeleted (domainObject);
+
+    NotifyOppositeEndPointsOfEndRelationChange (allOppositeRelationEndPoints);
+    domainObject.EndDelete ();
+  }
+
+  private void NotifyClientTransactionOfEndRelationChange (RelationEndPointCollection allOppositeRelationEndPoints)
+  {
+    foreach (RelationEndPoint endPoint in allOppositeRelationEndPoints)
+      endPoint.NotifyClientTransactionOfEndRelationChange ();
+  }
+
+  private void NotifyOppositeEndPointsOfEndRelationChange (RelationEndPointCollection allOppositeRelationEndPoints)
+  {
+    foreach (RelationEndPoint endPoint in allOppositeRelationEndPoints)
+      endPoint.EndRelationChange ();
   }
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)
