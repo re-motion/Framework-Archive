@@ -19,6 +19,13 @@
       durch DomainObjectCollectionChangeEventArgs ersetzen.
 
 
+1.7.29.0
+========
+
+- PersistenceManager: Werden beim Laden eines Objektes über eine 1:1-Beziehung und einen virtuellen Endpunkt 
+  mehrere Objekte gefunden, wird nicht mehr das erste zurückgegeben, sondern eine PersistenceException geworfen.
+
+
 1.7.28.0
 ========
 
