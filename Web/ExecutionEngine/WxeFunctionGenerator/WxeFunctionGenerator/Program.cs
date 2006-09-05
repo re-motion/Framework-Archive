@@ -294,6 +294,9 @@ namespace WxeFunctionGenerator
       ns.Types.Add (functionClass);
       functionClass.Attributes = MemberAttributes.Public;
       functionClass.BaseTypes.Add (new CodeTypeReference (functionDeclaration.FunctionBaseType));
+      functionClass.CustomAttributes.Add (new CodeAttributeDeclaration (new CodeTypeReference (typeof (SerializableAttribute))));
+
+      int parameterIndex = 0;
 
       // generate local variables in partial/variables class, and
       // generate function parameters in partial/variables class and function class
@@ -307,7 +310,8 @@ namespace WxeFunctionGenerator
           localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
         #else 
           partialPageClass.Members.Add (localProperty);
-          localProperty.Attributes = MemberAttributes.Family | MemberAttributes.Final;
+          localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+          // TODO: can get-accessor alone be set to protected via CodeDOM?
         #endif
 
         ParameterDeclaration parameterDeclaration = variableDeclaration as ParameterDeclaration;
@@ -349,10 +353,12 @@ namespace WxeFunctionGenerator
 
           if (parameterDeclaration.Direction != WxeParameterDirection.In)
           {
-            // Out or InOut: set from page, get from function
-            localProperty.SetStatements.Add (setStatement);
+            // Out or InOut: get from function
             functionProperty.GetStatements.Add (getStatement);
           }
+
+          // all directions: set from page
+          localProperty.SetStatements.Add (setStatement);
         }
         else
         {
@@ -363,12 +369,12 @@ namespace WxeFunctionGenerator
 
         if (functionProperty != null)
         {
-          // add attribute [WxeParameter (Index, [Required,] Direction)
+          // add attribute [WxeParameter (parameterIndex, [Required,] Direction)
           CodeAttributeDeclaration wxeParameterAttribute = new CodeAttributeDeclaration (
               new CodeTypeReference (typeof (WxeParameterAttribute)));
           functionProperty.CustomAttributes.Add (wxeParameterAttribute);
           wxeParameterAttribute.Arguments.Add (new CodeAttributeArgument (
-              new CodePrimitiveExpression (parameterDeclaration.Index)));
+              new CodePrimitiveExpression (parameterIndex)));
           if (parameterDeclaration.IsRequired.HasValue)
           {
             wxeParameterAttribute.Arguments.Add (new CodeAttributeArgument (
@@ -379,6 +385,9 @@ namespace WxeFunctionGenerator
                   new CodeTypeReferenceExpression (typeof (WxeParameterDirection)),
                   parameterDeclaration.Direction.ToString ())));
         }
+
+        if (parameterDeclaration != null)
+          ++ parameterIndex;
       }
 
       #if NET11
@@ -520,8 +529,9 @@ namespace WxeFunctionGenerator
         }
         else if (parameterDeclaration.IsReturnValue)
         {
+          // TODO: Throw Exception if any but last parameter has return value flag!
           ifNotIsReturningPostBack.FalseStatements.Add (new CodeMethodReturnStatement (
-              new CodePropertyReferenceExpression (function, parameterDeclaration.Name)));
+            new CodePropertyReferenceExpression (function, parameterDeclaration.Name)));
         }
       }
 

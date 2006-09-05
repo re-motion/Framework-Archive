@@ -17,10 +17,10 @@ namespace Test
 	//[WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
 	//[WxePageVariable ("Suffix", typeof (string))]
 
-	[WxeFunctionTargetPage (typeof (AutoPage))]
-	public class AutoPageFunction
-	{
-	}
+  //[WxeFunctionTargetPage (typeof (AutoPage))]
+  //public class AutoPageFunction
+  //{
+  //}
 
 	// <WxePageFunction pageType="Test.AutoPage" aspxFile="AutoPage.aspx" functionBaseType="WxeFunction">
 	//   <Parameter name="InArg" type="String" required="true" />

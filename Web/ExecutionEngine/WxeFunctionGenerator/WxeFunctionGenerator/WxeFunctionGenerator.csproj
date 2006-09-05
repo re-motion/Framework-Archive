@@ -40,11 +40,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\prereq\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Core, Version=1.1.2.111, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd">
+    <Reference Include="Rubicon.Core, Version=1.6.1.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\prereq\Rubicon.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Web, Version=1.1.12.20362, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd">
+    <Reference Include="Rubicon.Web, Version=1.6.1.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\prereq\Rubicon.Web.dll</HintPath>
     </Reference>
