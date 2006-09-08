@@ -8,6 +8,8 @@
     targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
     xml:lang="en">
 
+  <!-- TODO: Import should contain schemaLocation to ensure application developer can check its mapping during design time. 
+             Before this is done it should be verified that schemaLocation there is no problem when XSD is used as embedded ressource during run time. -->
   <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" />
 
   <xs:element name="mapping">
