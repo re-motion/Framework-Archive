@@ -694,7 +694,7 @@ function SmartPage_Context (
   // and if javascript is used as the HREF.
   function IsJavaScriptAnchor (element)
   {
-    if (element == null)
+    if (TypeUtility.IsNull (element) || TypeUtility.IsUndefined (element.tagName))
       return false;
     ArgumentUtility.CheckTypeIsObject ('element', element);
 
@@ -763,4 +763,9 @@ SmartPage_Context.Instance = null;
 function SmartPage_OnStartUp()
 {
   SmartPage_Context.Instance.OnStartUp();
+}
+
+function RenderThisHtml (theHtml)
+{
+  document.write (theHtml);
 }
