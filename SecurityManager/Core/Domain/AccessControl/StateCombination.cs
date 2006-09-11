@@ -30,6 +30,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // member fields
 
+    private DomainObjectCollection _stateUsagesToBeDeleted;
+
     // construction and disposing
 
     public StateCombination (ClientTransaction clientTransaction)
@@ -104,18 +106,27 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     //TODO: Rewrite with test
+
     protected override void OnDeleting (EventArgs args)
     {
       base.OnDeleting (args);
 
-      while (StateUsages.Count > 0)
-        StateUsages[0].Delete ();
+      _stateUsagesToBeDeleted = StateUsages.Clone ();
+    }
+    
+    protected override void OnDeleted (EventArgs args)
+    {
+      base.OnDeleted (args);
+
+      foreach (StateUsage stateUsage in _stateUsagesToBeDeleted)
+        stateUsage.Delete ();
+      _stateUsagesToBeDeleted = null;
     }
 
     protected override void OnCommitting (EventArgs args)
     {
       base.OnCommitting (args);
-      //Class.Touch ();
+      Class.Touch ();
     }
   }
 }

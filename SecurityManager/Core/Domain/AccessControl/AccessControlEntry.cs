@@ -37,6 +37,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // member fields
 
+    private DomainObjectCollection _permissionsToBeDeleted;
+
     // construction and disposing
 
     public AccessControlEntry (ClientTransaction clientTransaction)
@@ -296,12 +298,22 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     //TODO: Rewrite with test
+
     protected override void OnDeleting (EventArgs args)
     {
       base.OnDeleting (args);
 
-      while (Permissions.Count > 0)
-        Permissions[0].Delete ();
+      _permissionsToBeDeleted = Permissions.Clone();
+    }
+
+    protected override void OnDeleted (EventArgs args)
+    {
+      base.OnDeleted (args);
+
+      foreach (Permission permission in _permissionsToBeDeleted)
+        permission.Delete ();
+
+      _permissionsToBeDeleted = null;
     }
   }
 }

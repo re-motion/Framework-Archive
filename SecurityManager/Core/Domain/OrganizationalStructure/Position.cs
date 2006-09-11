@@ -62,6 +62,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     private IObjectSecurityStrategy _securityStrategy;
 
+    private DomainObjectCollection _accessControlEntriesToBeDeleted;
+    private DomainObjectCollection _rolesToBeDeleted;
+    private DomainObjectCollection _groupTypePositionsToBeDeleted;
+
     // construction and disposing
 
     protected internal Position (ClientTransaction clientTransaction)
@@ -120,14 +124,26 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleting (args);
 
-      while (AccessControlEntries.Count > 0)
-        AccessControlEntries[0].Delete ();
+      _accessControlEntriesToBeDeleted = AccessControlEntries.Clone ();
+      _rolesToBeDeleted = Roles.Clone ();
+      _groupTypePositionsToBeDeleted = GroupTypes.Clone ();
+    }
 
-      while (Roles.Count > 0)
-        Roles[0].Delete ();
+    protected override void OnDeleted (EventArgs args)
+    {
+      base.OnDeleted (args);
 
-      while (GroupTypes.Count > 0)
-        GroupTypes[0].Delete ();
+      foreach (AccessControlEntry accessControlEntry in _accessControlEntriesToBeDeleted)
+        accessControlEntry.Delete ();
+      _accessControlEntriesToBeDeleted = null;
+
+      foreach (Role role in _rolesToBeDeleted)
+        role.Delete ();
+      _rolesToBeDeleted = null;
+
+      foreach (GroupTypePosition groupTypePosition in _groupTypePositionsToBeDeleted)
+        groupTypePosition.Delete ();
+      _groupTypePositionsToBeDeleted = null;
     }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()

@@ -30,6 +30,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // member fields
 
+    private DomainObjectCollection _accessControlEntriesToBeDeleted;
+    private DomainObjectCollection _stateCombinations;
+
     // construction and disposing
 
     public AccessControlList (ClientTransaction clientTransaction)
@@ -170,15 +173,26 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     //TODO: Rewrite with test
+
     protected override void OnDeleting (EventArgs args)
     {
       base.OnDeleting (args);
 
-      while (AccessControlEntries.Count > 0)
-        AccessControlEntries[0].Delete ();
+      _accessControlEntriesToBeDeleted = AccessControlEntries.Clone ();
+      _stateCombinations = StateCombinations.Clone ();
+    }
 
-      while (StateCombinations.Count > 0)
-        StateCombinations[0].Delete ();
+    protected override void OnDeleted (EventArgs args)
+    {
+      base.OnDeleted (args);
+
+      foreach (AccessControlEntry accessControlEntry in _accessControlEntriesToBeDeleted)
+        accessControlEntry.Delete ();
+      _accessControlEntriesToBeDeleted = null;
+
+      foreach (StateCombination stateCombination in _stateCombinations)
+        stateCombination.Delete ();
+      _stateCombinations = null;
     }
 
     public StateCombination CreateStateCombination ()
