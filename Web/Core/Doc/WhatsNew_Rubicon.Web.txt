@@ -1,3 +1,11 @@
+1.7.30
+======
+
+- Rubicon.Web.UI.SmartPage
+  * Bugfix: In bestimmten Situationen (kein HTML-Element aktiv) konnte es beim weg-navigieren von der Seite zu einen Javascript Fehler kommen.
+  * Neues Feautre: function RenderThisHtml (string) um beliegigen HTML Text an der aufrufenden Stelle in die Seite zu rendern.
+    (Benötigt, wenn für ActiveX das Javascript iin einer separaten Datei liegen muss.)
+
 1.7.29
 ======
 - Rubicon.Web.Utilities
