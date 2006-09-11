@@ -56,11 +56,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private void Initialize ()
     {
-      StateCombinations.Added += new DomainObjectCollectionChangedEventHandler (StateCombinations_Added);
-      AccessControlEntries.Added += new DomainObjectCollectionChangedEventHandler (AccessControlEntries_Added);
+      StateCombinations.Added += new DomainObjectCollectionChangeEventHandler (StateCombinations_Added);
+      AccessControlEntries.Added += new DomainObjectCollectionChangeEventHandler (AccessControlEntries_Added);
     }
 
-    private void StateCombinations_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void StateCombinations_Added (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       StateCombination stateCombination = (StateCombination) args.DomainObject;
       DomainObjectCollection stateCombinations = StateCombinations;
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       Touch ();
     }
 
-    private void AccessControlEntries_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void AccessControlEntries_Added (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       AccessControlEntry ace = (AccessControlEntry) args.DomainObject;
       DomainObjectCollection accessControlEntries = AccessControlEntries;

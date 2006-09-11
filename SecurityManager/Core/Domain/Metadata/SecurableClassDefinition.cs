@@ -91,10 +91,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private void Initialize ()
     {
-      AccessControlLists.Added += new DomainObjectCollectionChangedEventHandler (AccessControlLists_Added);
+      AccessControlLists.Added += new DomainObjectCollectionChangeEventHandler (AccessControlLists_Added);
     }
 
-    private void AccessControlLists_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void AccessControlLists_Added (object sender, DomainObjectCollectionChangeEventArgs args)
     {
       AccessControlList accessControlList = (AccessControlList) args.DomainObject;
       DomainObjectCollection accessControlLists = AccessControlLists;
