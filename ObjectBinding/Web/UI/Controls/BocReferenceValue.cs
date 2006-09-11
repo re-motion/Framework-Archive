@@ -189,7 +189,7 @@ public class BocReferenceValue:
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    if (HasBeenRenderedInPreviousLifecycle)
+    if (RequiresLoadPostData)
       return LoadPostData (postDataKey, postCollection);
     else
       return false;

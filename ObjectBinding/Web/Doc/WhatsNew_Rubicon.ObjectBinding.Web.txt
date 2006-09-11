@@ -1,3 +1,8 @@
+1.7.30
+========
+- Bugfix: Business Object Controls haben nicht die POST-Daten ausgewertet wenn sie auf einer Out-Of-Sequence-WxePage waren und im vorigen
+  Pagelifecycle nicht gerendert wurden (z.B.: ExeceuteFunction und anschlieﬂendes Back im Browser). Aufgetreten mit 1.4.34
+
 1.7.16
 ======
 - BocList: SetSortingOrder: BocListSortingOrderEntry[] auf Params-Array umgestellt.

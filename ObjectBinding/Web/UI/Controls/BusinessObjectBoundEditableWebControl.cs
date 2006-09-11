@@ -15,6 +15,7 @@ using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Globalization;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -289,9 +290,16 @@ public abstract class BusinessObjectBoundEditableWebControl:
     _isRenderedInCurrentLifecycle = true;
   }
 
-  protected bool HasBeenRenderedInPreviousLifecycle
+  protected virtual bool RequiresLoadPostData
   {
-    get { return _hasBeenRenderedInPreviousLifecycle; }
+    get 
+    {
+      IWxePage wxePage = Page as IWxePage;
+      if (wxePage != null)
+        return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
+      
+      return _hasBeenRenderedInPreviousLifecycle;
+    }
   }
 
   protected override void LoadViewState(object savedState)
