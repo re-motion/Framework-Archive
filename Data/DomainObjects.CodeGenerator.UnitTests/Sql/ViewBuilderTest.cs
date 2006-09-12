@@ -193,7 +193,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     {
       _createViewBuilder.AddView (OrderClass);
 
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView')\n"
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP VIEW [dbo].[OrderView]\n";
 
       Assert.AreEqual (expectedScript, _createViewBuilder.GetDropViewScript ());
@@ -204,7 +204,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     {
       _createViewBuilder.AddView (CompanyClass);
 
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView')\n"
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP VIEW [dbo].[CompanyView]\n";
 
       Assert.AreEqual (expectedScript, _createViewBuilder.GetDropViewScript ());
@@ -216,9 +216,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
       _createViewBuilder.AddView (OrderClass);
       _createViewBuilder.AddView (CompanyClass);
 
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView')\n"
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP VIEW [dbo].[OrderView]\n\n"
-          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView')\n"
+          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP VIEW [dbo].[CompanyView]\n";
 
       Assert.AreEqual (expectedScript, _createViewBuilder.GetDropViewScript ());

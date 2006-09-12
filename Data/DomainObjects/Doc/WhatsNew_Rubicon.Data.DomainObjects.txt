@@ -1,3 +1,10 @@
+1.7.31.0
+========
+
+- DoGen generiert jetzt in den SQL Skripts das Schema dbo für alle erstllten oder gelöschten Objekte. 
+  Dadurch kann über Suchen-Ersetzen dieses Schema einfach auf ein anderes Schema geändert werden.
+  
+
 1.7.30.0
 ========
 

@@ -2,10 +2,10 @@ USE CodeGeneratorUnitTests2
 GO
 
 -- Drop all views that will be created below
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OfficialView')
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OfficialView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[OfficialView]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SpecialOfficialView')
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SpecialOfficialView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SpecialOfficialView]
 GO
 
@@ -20,7 +20,7 @@ exec sp_executesql @statement
 GO
 
 -- Drop all tables that will be created below
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Official')
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Official' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Official]
 GO
 

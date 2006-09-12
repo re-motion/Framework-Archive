@@ -146,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       if (_dropViewBuilder.Length != 0)
         _dropViewBuilder.Append ("\n");
 
-      _dropViewBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{0}')\n"
+      _dropViewBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
           + "  DROP VIEW [{1}].[{0}]\n",
           GetViewName (classDefinition),
           SqlFileBuilder.DefaultSchema);

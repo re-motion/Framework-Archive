@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       if (_dropTableBuilder.Length != 0)
         _dropTableBuilder.Append ("\n");
 
-      _dropTableBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}')\n"
+      _dropTableBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
           + "  DROP TABLE [{1}].[{0}]\n",
           concreteTableClassDefinition.MyEntityName,
           SqlFileBuilder.DefaultSchema);

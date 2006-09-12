@@ -235,7 +235,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     {
       _tableBuilder.AddTable (CustomerClass);
 
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer')\n"
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Customer]\n";
 
       Assert.AreEqual (expectedScript, _tableBuilder.GetDropTableScript ());
@@ -247,9 +247,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
       _tableBuilder.AddTable (CustomerClass);
       _tableBuilder.AddTable (OrderClass);
 
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer')\n"
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Customer]\n\n"
-          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order')\n"
+          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Order]\n";
 
       Assert.AreEqual (expectedScript, _tableBuilder.GetDropTableScript ());
@@ -295,9 +295,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 
       Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
 
-      string expectedDropTableScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer')\n"
+      string expectedDropTableScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Customer]\n\n"
-          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order')\n"
+          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Order]\n";
 
       Assert.AreEqual (expectedDropTableScript, _tableBuilder.GetDropTableScript ());
