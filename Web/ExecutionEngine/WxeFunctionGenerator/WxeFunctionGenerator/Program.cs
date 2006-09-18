@@ -222,72 +222,46 @@ namespace WxeFunctionGenerator
 			ns.Imports.Add (new CodeNamespaceImport ("System"));
 			ns.Imports.Add (new CodeNamespaceImport ("Rubicon.Web.ExecutionEngine"));
 
-      #if NET11
-        // for ASP.NET 1.1, generate a "<page>Variables" class for each page that allows access to parameters and 
-        // local variables from page code. This class must explicitly be referenced from the page class:
-        // <class>Variables Variables { get { return ((<class>Function) CurrentFunction).PageVariables; } }
-        CodeTypeDeclaration variablesClass = new CodeTypeDeclaration (type.Name + "Variables");
-        ns.Types.Add (variablesClass);
-        variablesClass.Attributes = MemberAttributes.Assembly;
+      // generate a partial class for the page that allows access to parameters and
+      // local variables from page code
+      CodeTypeDeclaration partialPageClass = new CodeTypeDeclaration (typeName);
+      ns.Types.Add (partialPageClass);
+      partialPageClass.IsPartial = true;
+      partialPageClass.Attributes = MemberAttributes.Public;
 
-        // private readonly NameObjectCollection Variables;
-        CodeMemberField variablesField = new CodeMemberField (
-            typeof (Rubicon.Collections.NameObjectCollection), "Variables");
-        variablesClass.Members.Add (variablesField);
+      // add Return() method as alias for ExecuteNextStep()
+      CodeMemberMethod returnMethod = new CodeMemberMethod ();
+      partialPageClass.Members.Add (returnMethod);
+      returnMethod.Name = "Return";
+      returnMethod.Attributes = MemberAttributes.Family | MemberAttributes.Final;
+      CodeExpression executeNextStep = new CodeMethodInvokeExpression (
+          new CodeThisReferenceExpression (),
+          "ExecuteNextStep",
+          new CodeExpression[0]);
+      returnMethod.Statements.Add (executeNextStep);
 
-        // public AutoPageVariables (NameObjectCollection variables)
-        CodeConstructor variableClassCtor = new CodeConstructor ();
-        variablesClass.Members.Add (variableClassCtor);
-        variableClassCtor.Attributes = MemberAttributes.Public;
-        variableClassCtor.Parameters.Add (new CodeParameterDeclarationExpression (
-            new CodeTypeReference (typeof (Rubicon.Collections.NameObjectCollection)),
-            "variables"));
-        // { Variables = variables; }
-        variableClassCtor.Statements.Add (new CodeAssignStatement (
-            new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), "Variables"),
-            new CodeArgumentReferenceExpression ("variables")));
-      #else
-        // for ASP.NET above 1.1, generate a partial class for the page that allows access to parameters and
-        // local variables from page code
-        CodeTypeDeclaration partialPageClass = new CodeTypeDeclaration (typeName);
-        ns.Types.Add (partialPageClass);
-        partialPageClass.IsPartial = true;
-        partialPageClass.Attributes = MemberAttributes.Public;
-
-        // add Return() method as alias for ExecuteNextStep()
-        CodeMemberMethod returnMethod = new CodeMemberMethod ();
-        partialPageClass.Members.Add (returnMethod);
-        returnMethod.Name = "Return";
-        returnMethod.Attributes = MemberAttributes.Family | MemberAttributes.Final;
-        CodeExpression executeNextStep = new CodeMethodInvokeExpression (
-            new CodeThisReferenceExpression (),
-            "ExecuteNextStep",
-            new CodeExpression[0]);
-        returnMethod.Statements.Add (executeNextStep);
-
-        //// add Return (outPar1, outPar2, ...) method 
-        //// -- removed (unneccessary, possibly confusing)
-        //CodeMemberMethod returnParametersMethod = new CodeMemberMethod ();
-        //foreach (WxePageParameterAttribute parameterDeclaration in GetPageParameterAttributesOrdered (type))
-        //{
-        //  if (parameterDeclaration.Direction != WxeParameterDirection.In)
-        //  {
-        //    returnParametersMethod.Parameters.Add (new CodeParameterDeclarationExpression (
-        //        new CodeTypeReference (parameterDeclaration.Type),
-        //        parameterDeclaration.Name));
-        //    returnParametersMethod.Statements.Add (new CodeAssignStatement (
-        //        new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), parameterDeclaration.Name),
-        //        new CodeArgumentReferenceExpression (parameterDeclaration.Name)));
-        //  }
-        //}
-        //if (returnParametersMethod.Parameters.Count > 0)
-        //{
-        //  partialPageClass.Members.Add (returnParametersMethod);
-        //  returnParametersMethod.Name = "Return";
-        //  returnParametersMethod.Attributes = MemberAttributes.Family | MemberAttributes.Final;
-        //  returnParametersMethod.Statements.Add (executeNextStep);
-        //}
-      #endif
+      //// add Return (outPar1, outPar2, ...) method 
+      //// -- removed (unneccessary, possibly confusing)
+      //CodeMemberMethod returnParametersMethod = new CodeMemberMethod ();
+      //foreach (WxePageParameterAttribute parameterDeclaration in GetPageParameterAttributesOrdered (type))
+      //{
+      //  if (parameterDeclaration.Direction != WxeParameterDirection.In)
+      //  {
+      //    returnParametersMethod.Parameters.Add (new CodeParameterDeclarationExpression (
+      //        new CodeTypeReference (parameterDeclaration.Type),
+      //        parameterDeclaration.Name));
+      //    returnParametersMethod.Statements.Add (new CodeAssignStatement (
+      //        new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), parameterDeclaration.Name),
+      //        new CodeArgumentReferenceExpression (parameterDeclaration.Name)));
+      //  }
+      //}
+      //if (returnParametersMethod.Parameters.Count > 0)
+      //{
+      //  partialPageClass.Members.Add (returnParametersMethod);
+      //  returnParametersMethod.Name = "Return";
+      //  returnParametersMethod.Attributes = MemberAttributes.Family | MemberAttributes.Final;
+      //  returnParametersMethod.Statements.Add (executeNextStep);
+      //}
 
       // generate a WxeFunction class
       CodeTypeDeclaration functionClass = new CodeTypeDeclaration (functionName);
@@ -295,6 +269,19 @@ namespace WxeFunctionGenerator
       functionClass.Attributes = MemberAttributes.Public;
       functionClass.BaseTypes.Add (new CodeTypeReference (functionDeclaration.FunctionBaseType));
       functionClass.CustomAttributes.Add (new CodeAttributeDeclaration (new CodeTypeReference (typeof (SerializableAttribute))));
+
+      // generate a strongly typed CurrentFunction property for the page class
+      CodeMemberProperty currentFunctionProperty = new CodeMemberProperty ();
+      currentFunctionProperty.Name = "CurrentFunction";
+      currentFunctionProperty.Type = new CodeTypeReference (functionClass.Name);
+      currentFunctionProperty.Attributes = MemberAttributes.New | MemberAttributes.Family | MemberAttributes.Final;
+      currentFunctionProperty.GetStatements.Add (new CodeMethodReturnStatement (
+          new CodeCastExpression (
+            new CodeTypeReference (functionClass.Name), 
+            new CodePropertyReferenceExpression (
+                new CodeBaseReferenceExpression (),
+                "CurrentFunction"))));
+      partialPageClass.Members.Add (currentFunctionProperty);
 
       int parameterIndex = 0;
 
@@ -305,14 +292,10 @@ namespace WxeFunctionGenerator
         CodeMemberProperty localProperty = new CodeMemberProperty ();
         localProperty.Name = variableDeclaration.Name;
         localProperty.Type = new CodeTypeReference (variableDeclaration.TypeName);
-        #if NET11
-          variablesClass.Members.Add (localProperty);
-          localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-        #else 
-          partialPageClass.Members.Add (localProperty);
-          localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-          // TODO: can get-accessor alone be set to protected via CodeDOM?
-        #endif
+
+        partialPageClass.Members.Add (localProperty);
+        localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+        // TODO: can get-accessor alone be set to protected via CodeDOM?
 
         ParameterDeclaration parameterDeclaration = variableDeclaration as ParameterDeclaration;
         CodeMemberProperty functionProperty = null;
@@ -389,22 +372,6 @@ namespace WxeFunctionGenerator
         if (parameterDeclaration != null)
           ++ parameterIndex;
       }
-
-      #if NET11
-        // AutoPageVariables PageVariables
-        CodeMemberProperty pageVariablesProperty = new CodeMemberProperty ();
-        functionClass.Members.Add (pageVariablesProperty);
-        pageVariablesProperty.Name = "PageVariables";
-        pageVariablesProperty.Type = new CodeTypeReference (variablesClass.Name);
-        pageVariablesProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-        // get { return new <variablesClass> (Variables); }
-        pageVariablesProperty.GetStatements.Add (new CodeMethodReturnStatement (
-            new CodeObjectCreateExpression (
-                new CodeTypeReference (variablesClass.Name),
-                new CodeExpression[] {
-                    new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), "Variables") 
-                })));
-      #endif
 
       // add PageStep to WXE function
       CodeMemberField step1 = new CodeMemberField (typeof (WxePageStep), "Step1");
