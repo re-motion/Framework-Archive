@@ -1,5 +1,11 @@
+1.7.31
+======
+- Bugfix: BocList SwitchRowIntoEditMode bzw AddAndEditRow hat nicht zur zu editierenden Zeile gepaged wenn Paging aktiviert war und es 
+  mehr als eine Seite gibt, und sich nicht bereits auf der Seite befand wo die Zeile erscheint (bei dekativierter Sortierung die letzte  
+  Seite). Aufgetreten mit 1.3.3
+
 1.7.30
-========
+======
 - Bugfix: Business Object Controls haben nicht die POST-Daten ausgewertet wenn sie auf einer Out-Of-Sequence-WxePage waren und im vorigen
   Pagelifecycle nicht gerendert wurden (z.B.: ExeceuteFunction und anschlieﬂendes Back im Browser). Aufgetreten mit 1.4.34
 

@@ -1287,6 +1287,20 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
+    // Must be executed before CalculateCurrentPage
+    if (IsRowEditModeActive)
+    {
+      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted ();
+      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+      {
+        int originalRowIndex = sortedRows[idxRows].Index;
+        if (EditableRowIndex.Value == originalRowIndex)
+        {
+          _currentRow = idxRows;
+          break;
+        }
+      }
+    }
     CalculateCurrentPage (true);
 
     BocColumnDefinition[] columns = EnsureColumnsGot (true);
@@ -1306,20 +1320,6 @@ public class BocList:
       InitCustomColumns();
       LoadCustomColumns();
       PreRenderCustomColumns();
-    }
-
-    if (IsRowEditModeActive)
-    {
-      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
-      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-      {
-        int originalRowIndex = sortedRows[idxRows].Index;
-        if (EditableRowIndex.Value == originalRowIndex)
-        {
-          _currentRow = idxRows;
-          break;
-        }
-      }
     }
   }
 
