@@ -213,7 +213,7 @@ public class DomainObject
   {
     get 
     {
-      CheckDiscarded ();
+      CheckIfObjectIsDiscarded ();
       return _dataContainer.ID; 
     }
   }
@@ -226,7 +226,7 @@ public class DomainObject
   {
     get
     {
-      CheckDiscarded ();
+      CheckIfObjectIsDiscarded ();
       if (_dataContainer.State == StateType.Unchanged)
       {
         if (ClientTransaction.HasRelationChanged (this))
@@ -265,8 +265,8 @@ public class DomainObject
   protected internal DataContainer DataContainer
   {
     get 
-    { 
-      CheckDiscarded ();
+    {
+      CheckIfObjectIsDiscarded ();
       return _dataContainer; 
     }
   }
@@ -278,7 +278,7 @@ public class DomainObject
   /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="OnDeleting"/> and <see cref="OnDeleted"/> should be overridden.</remarks>
   public void Delete ()
   {
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     ClientTransaction.Delete (this);
   }
@@ -295,7 +295,7 @@ public class DomainObject
   protected virtual DomainObject GetRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     return ClientTransaction.GetRelatedObject (new RelationEndPointID (ID, propertyName));
   }
@@ -313,7 +313,7 @@ public class DomainObject
   protected virtual DomainObject GetOriginalRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     return ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (ID, propertyName));
   }
@@ -331,7 +331,7 @@ public class DomainObject
   protected virtual DomainObjectCollection GetRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     return ClientTransaction.GetRelatedObjects (new RelationEndPointID (ID, propertyName));
   }
@@ -348,7 +348,7 @@ public class DomainObject
   protected virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     return ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (ID, propertyName));
   }
@@ -364,7 +364,7 @@ public class DomainObject
   protected void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
+    CheckIfObjectIsDiscarded ();
 
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
   }
@@ -542,7 +542,7 @@ public class DomainObject
     OnPropertyChanged (args);
   }
 
-  private void CheckDiscarded ()
+  protected void CheckIfObjectIsDiscarded ()
   {
     if (IsDiscarded)
       throw new ObjectDiscardedException (_dataContainer.GetID ());
