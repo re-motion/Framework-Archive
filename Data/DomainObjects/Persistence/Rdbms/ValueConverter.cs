@@ -27,7 +27,7 @@ public class ValueConverter : ValueConverterBase
 
   // methods and properties
 
-  public object GetDBValue (object value)
+  public virtual object GetDBValue (object value)
   {
     if (value == null)
       return DBNull.Value;
@@ -49,7 +49,7 @@ public class ValueConverter : ValueConverterBase
     return value;
   }
 
-  public object GetDBValue (ObjectID id, string storageProviderID)
+  public virtual object GetDBValue (ObjectID id, string storageProviderID)
   {
     ArgumentUtility.CheckNotNull ("id", id);
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);

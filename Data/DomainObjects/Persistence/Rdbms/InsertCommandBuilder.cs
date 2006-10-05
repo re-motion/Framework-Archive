@@ -61,8 +61,11 @@ public class InsertCommandBuilder : CommandBuilder
     }
     
     command.CommandText = string.Format (
-        "INSERT INTO [{0}] ({1}) VALUES ({2});",
-        _dataContainer.ClassDefinition.GetEntityName (), _columnBuilder.ToString (), _valueBuilder.ToString ());
+        "INSERT INTO {0} ({1}) VALUES ({2}){3}",
+        Provider.DelimitIdentifier (_dataContainer.ClassDefinition.GetEntityName ()),
+        _columnBuilder.ToString (), 
+        _valueBuilder.ToString (),
+        Provider.StatementDelimiter);
 
     return command;
   }
@@ -72,9 +75,7 @@ public class InsertCommandBuilder : CommandBuilder
     if (_columnBuilder.Length > 0)
       _columnBuilder.Append (", ");
 
-    _columnBuilder.Append ("[");
-    _columnBuilder.Append (columnName);
-    _columnBuilder.Append ("]");
+    _columnBuilder.Append (Provider.DelimitIdentifier (columnName));
 
     if (_valueBuilder.Length > 0)
       _valueBuilder.Append (", ");

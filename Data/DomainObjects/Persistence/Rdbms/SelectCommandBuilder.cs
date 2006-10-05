@@ -103,8 +103,12 @@ public class SelectCommandBuilder : CommandBuilder
     //if (_whereClauseValueIsRelatedID && _whereClauseID.ClassDefinition.IsPartOfInheritanceHierarchy && IsOfSameStorageProvider (_whereClauseID))
     //  whereClauseBuilder.Add (RdbmsProvider.GetClassIDColumnName (_whereClauseColumnName), _whereClauseID.ClassID);
 
-    command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};",
-        _selectColumns, _entityName, whereClauseBuilder.ToString (), GetOrderClause (_orderExpression));
+    command.CommandText = string.Format ("SELECT {0} FROM {1} WHERE {2}{3}{4}",
+        _selectColumns, 
+        Provider.DelimitIdentifier (_entityName), 
+        whereClauseBuilder.ToString (), 
+        GetOrderClause (_orderExpression),
+        Provider.StatementDelimiter);
 
     return command;
   }

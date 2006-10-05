@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (Provider, reader);
           return dataContainerFactory.CreateCollection ();
         }
       }

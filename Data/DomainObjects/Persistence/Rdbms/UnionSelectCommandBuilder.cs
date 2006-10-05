@@ -68,13 +68,18 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       string columnsFromSortExpression = GetColumnsFromSortExpression (oppositeRelationEndPointDefinition.SortExpression);
 
       StringBuilder commandTextStringBuilder = new StringBuilder ();
-      string selectTemplate = "SELECT [ID], [ClassID]{0} FROM [{1}] WHERE {2}";
+      string selectTemplate = "SELECT {0}, {1}{2} FROM {3} WHERE {4}";
       foreach (string entityName in allConcreteEntityNames)
       {
         if (commandTextStringBuilder.Length > 0)
           commandTextStringBuilder.Append ("\nUNION ALL ");
 
-        commandTextStringBuilder.AppendFormat (selectTemplate, columnsFromSortExpression, entityName, whereClauseBuilder.ToString ());
+        commandTextStringBuilder.AppendFormat (selectTemplate, 
+                  Provider.DelimitIdentifier ("ID"),
+                  Provider.DelimitIdentifier ("ClassID"),
+                  columnsFromSortExpression, 
+                  Provider.DelimitIdentifier (entityName),
+                  whereClauseBuilder.ToString ());
       }
 
       commandTextStringBuilder.Append (GetOrderClause (oppositeRelationEndPointDefinition.SortExpression));

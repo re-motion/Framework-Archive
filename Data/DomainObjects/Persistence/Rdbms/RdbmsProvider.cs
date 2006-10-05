@@ -244,7 +244,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader);
         return dataContainerFactory.CreateDataContainer ();
       }
     }
@@ -336,7 +336,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (dataReader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader);
         return dataContainerFactory.CreateCollection ();
       }
     }  
@@ -360,7 +360,7 @@ public abstract class RdbmsProvider : StorageProvider
       throw CreateArgumentException ("dataContainer", "Timestamp cannot be set for a deleted DataContainer.");
 
     SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (
-        this, "Timestamp", dataContainer.ClassDefinition.GetEntityName (), dataContainer.ID);
+        this, DelimitIdentifier("Timestamp"), dataContainer.ClassDefinition.GetEntityName (), dataContainer.ID);
 
     using (IDbCommand command = commandBuilder.Create ())
     {
@@ -484,5 +484,14 @@ public abstract class RdbmsProvider : StorageProvider
           ID);
     }
   }
+
+  public virtual ValueConverter ValueConverter 
+  {
+    get { return new ValueConverter(); }
+  }
+
+  public abstract string DelimitIdentifier (string identifier);
+
+  public abstract string StatementDelimiter { get; }
 }
 }

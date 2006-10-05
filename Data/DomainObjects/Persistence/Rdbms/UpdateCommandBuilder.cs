@@ -59,8 +59,11 @@ public class UpdateCommandBuilder : CommandBuilder
       whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
     command.CommandText = string.Format (
-        "UPDATE [{0}] SET {1} WHERE {2};",
-        _dataContainer.ClassDefinition.GetEntityName (), _updateBuilder.ToString (), whereClauseBuilder.ToString ());
+        "UPDATE {0} SET {1} WHERE {2}{3}",
+        Provider.DelimitIdentifier (_dataContainer.ClassDefinition.GetEntityName ()),
+        _updateBuilder.ToString (), 
+        whereClauseBuilder.ToString (),
+        Provider.StatementDelimiter);
 
     return command;
   }
@@ -70,7 +73,9 @@ public class UpdateCommandBuilder : CommandBuilder
     if (_updateBuilder.Length > 0)
       _updateBuilder.Append (", ");
 
-    _updateBuilder.AppendFormat ("[{0}] = {1}", columnName, Provider.GetParameterName (parameterName));
+    _updateBuilder.AppendFormat ("{0} = {1}", 
+        Provider.DelimitIdentifier (columnName), 
+        Provider.GetParameterName (parameterName));
   }
 
   private void AddPropertyValue (IDbCommand command, PropertyValue propertyValue)

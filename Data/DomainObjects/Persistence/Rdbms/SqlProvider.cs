@@ -89,5 +89,15 @@ public class SqlProvider : RdbmsProvider
       return (SqlTransaction) base.Transaction;
     }
   }
+
+  public override string DelimitIdentifier (string identifier)
+  {
+    return "[" + identifier + "]";
+  }
+
+  public override string StatementDelimiter
+  {
+    get { return ";"; }
+  }
 }
 }

@@ -17,13 +17,16 @@ public class DataContainerFactory
   // member fields
 
   private IDataReader _dataReader;
+  private RdbmsProvider _provider;
 
   // construction and disposing
 
-  public DataContainerFactory (IDataReader dataReader)
+  public DataContainerFactory (RdbmsProvider provider, IDataReader dataReader)
   {
+    ArgumentUtility.CheckNotNull ("provider", provider);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
     _dataReader = dataReader;
+    _provider = provider;
   }
 
   // methods and properties
@@ -48,7 +51,7 @@ public class DataContainerFactory
 
   protected virtual DataContainer CreateDataContainerFromReader ()
   {
-    ValueConverter valueConverter = new ValueConverter ();
+    ValueConverter valueConverter = _provider.ValueConverter;
     
     ObjectID id = valueConverter.GetID (_dataReader);
     object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
