@@ -41,8 +41,10 @@ public class DeleteCommandBuilder : CommandBuilder
       whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
     command.CommandText = string.Format (
-        "DELETE FROM [{0}] WHERE {1};",
-        _dataContainer.ClassDefinition.GetEntityName (), whereClauseBuilder.ToString ());
+        "DELETE FROM {0} WHERE {1}{2}",
+        Provider.DelimitIdentifier (_dataContainer.ClassDefinition.GetEntityName ()), 
+        whereClauseBuilder.ToString (),
+        Provider.StatementDelimiter);
 
     return command;
   }

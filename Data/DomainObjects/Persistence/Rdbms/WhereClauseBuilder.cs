@@ -41,7 +41,9 @@ public class WhereClauseBuilder
       _whereClauseBuilder.Append (" AND ");
 
     string parameterName = _commandBuilder.Provider.GetParameterName (columnName);
-    _whereClauseBuilder.AppendFormat ("[{0}] = {1}", columnName, parameterName);
+    _whereClauseBuilder.AppendFormat ("{0} = {1}", 
+        _commandBuilder.Provider.DelimitIdentifier (columnName), 
+        parameterName);
     _commandBuilder.AddCommandParameter (_command, columnName, value);
   }
 
@@ -53,7 +55,7 @@ public class WhereClauseBuilder
     if (_whereClauseBuilder.Length > 0)
       throw new InvalidOperationException ("SetInExpression can only be used with an empty WhereClauseBuilder.");
 
-    _whereClauseBuilder.AppendFormat ("[{0}] IN (", columnName);
+    _whereClauseBuilder.AppendFormat ("{0} IN (", _commandBuilder.Provider.DelimitIdentifier (columnName));
 
     for (int i = 0; i < values.Length; i++)
     {

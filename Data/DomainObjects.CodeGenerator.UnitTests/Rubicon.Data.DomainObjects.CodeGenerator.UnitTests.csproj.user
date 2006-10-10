@@ -2,4 +2,9 @@
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Install\NUnit\2.1.8\bin\nunit-gui.exe</StartProgram>
+    <StartArguments>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.dll</StartArguments>
+  </PropertyGroup>
 </Project>

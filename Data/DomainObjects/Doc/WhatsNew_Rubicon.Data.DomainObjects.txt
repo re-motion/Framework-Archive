@@ -4,7 +4,11 @@
 - DoGen generiert jetzt in den SQL Skripts das Schema dbo für alle erstllten oder gelöschten Objekte. 
   Dadurch kann über Suchen-Ersetzen dieses Schema einfach auf ein anderes Schema geändert werden.
 - Neue protected Methode DomainObject.CheckIfObjectIsDiscarded zum Überprüfen, ob ein Object discarded ist.
-
+- ValueConverter wird vom RdbmsProvider erstellt (es kann also pro Provider ein Converter abgeleitet werden).
+- RdbmsProvider kann Identifier delimiten (zB. [Identifier], "Identifier" ...).
+- RdbmsProvider kann Terminierung für Statement liefern (zB. ";").
+- Div. Klassen (v.a. CommandBuilder) bekommen Provider übergeben und verwenden dessen neue Features.
+- Achtung: Div. Unit Tests verwenden diese Features noch nicht (erzeugen Statements und ValueConverter hard coded).
 
 1.7.30.0
 ========

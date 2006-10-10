@@ -244,7 +244,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader);
         return dataContainerFactory.CreateDataContainer ();
       }
     }
@@ -336,7 +336,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (dataReader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader);
         return dataContainerFactory.CreateCollection ();
       }
     }  
@@ -360,7 +360,7 @@ public abstract class RdbmsProvider : StorageProvider
       throw CreateArgumentException ("dataContainer", "Timestamp cannot be set for a deleted DataContainer.");
 
     SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (
-        this, "Timestamp", dataContainer.ClassDefinition.GetEntityName (), dataContainer.ID);
+        this, DelimitIdentifier("Timestamp"), dataContainer.ClassDefinition.GetEntityName (), dataContainer.ID);
 
     using (IDbCommand command = commandBuilder.Create ())
     {
@@ -484,5 +484,17 @@ public abstract class RdbmsProvider : StorageProvider
           ID);
     }
   }
+
+  /// <summary> Gets a value converter that converts database types to .NET types according to the providers type mapping rules. </summary>
+  public virtual ValueConverter ValueConverter 
+  {
+    get { return new ValueConverter(); }
+  }
+
+  /// <summary> Surrounds an identifier with delimiters according to the database's syntax. </summary>
+  public abstract string DelimitIdentifier (string identifier);
+
+  /// <summary> A delimiter to end a SQL statement if the database requires one, an empty string otherwise. </summary>
+  public abstract string StatementDelimiter { get; }
 }
 }
