@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Rubicon.Collections;
 using Rubicon.Security.Configuration;
 using Rhino.Mocks;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -30,6 +31,7 @@ namespace Rubicon.Security.UnitTests
     public void TearDown ()
     {
       SecurityConfiguration.Current.SecurityService = null;
+      System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision", null);
     }
 
     [Test]
@@ -49,7 +51,7 @@ namespace Rubicon.Security.UnitTests
     public void GetCache_SameCacheTwice ()
     {
       IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      Expect.Call (_mockSecurityService.GetRevision ()).Return (0).Repeat.Twice();
+      Expect.Call (_mockSecurityService.GetRevision ()).Return (0);
       _mocks.ReplayAll ();
 
       ICache<Tuple<SecurityContext, string>, AccessType[]> expected = provider.GetCache ();
@@ -60,7 +62,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void GetCache_Invalidate ()
+    public void GetCache_InvalidateFromOtherThread ()
     {
       IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
       using (_mocks.Ordered ())
@@ -71,7 +73,12 @@ namespace Rubicon.Security.UnitTests
       _mocks.ReplayAll ();
 
       ICache<Tuple<SecurityContext, string>, AccessType[]> expected = provider.GetCache ();
-      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = null;
+
+      ThreadRunner.Run (delegate ()
+          {
+            actual = provider.GetCache ();
+          });
 
       _mocks.VerifyAll ();
       Assert.AreNotSame (expected, actual);
