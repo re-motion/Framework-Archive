@@ -84,6 +84,7 @@
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\MetadataExtractorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
+    <Compile Include="RevisionBasedAccessTypeCacheProviderTest.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObject.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredStaticMethods.cs" />

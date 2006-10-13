@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ClientTransactionAccessTypeCacheProvider.cs" />
     <Compile Include="SecurityClientTransactionExtension.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Data.DomainObjects.build" />

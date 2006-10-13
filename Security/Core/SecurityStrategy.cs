@@ -64,7 +64,7 @@ namespace Rubicon.Security
     private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
       AccessType[] actualAccessTypes;
-      if (!_localCache.TryGet (user.Identity.Name, out actualAccessTypes))
+      if (!_localCache.TryGetValue (user.Identity.Name, out actualAccessTypes))
       {
         actualAccessTypes = GetAccessFromGlobalCache (factory, securityService, user);
         _localCache.Add (user.Identity.Name, actualAccessTypes);
@@ -84,7 +84,7 @@ namespace Rubicon.Security
 
       Tuple<SecurityContext, string> key = new Tuple<SecurityContext, string> (context, user.Identity.Name);
       AccessType[] actualAccessTypes;
-      if (!globalAccessTypeCache.TryGet (key, out actualAccessTypes))
+      if (!globalAccessTypeCache.TryGetValue (key, out actualAccessTypes))
       {
         actualAccessTypes = GetAccessFromSecurityService (securityService, context, user);
         globalAccessTypeCache.Add (key, actualAccessTypes);

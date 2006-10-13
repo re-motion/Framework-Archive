@@ -17,7 +17,7 @@ namespace Rubicon.Collections
     {
     }
 
-    public bool TryGet (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, out TValue value)
     {
       value = default (TValue);
       return false;

@@ -8,5 +8,7 @@ namespace Rubicon.Security
   public interface ISecurityService
   {
     AccessType[] GetAccess (SecurityContext context, IPrincipal user);
+
+    int GetRevision ();
   }
 }

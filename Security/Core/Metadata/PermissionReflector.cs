@@ -92,12 +92,12 @@ namespace Rubicon.Security.Metadata
     {
       Tuple<Type, Type, string, BindingFlags> cacheKey = new Tuple<Type, Type, string, BindingFlags> (typeof (TAttribute), type, memberName, bindingFlags);
       Enum[] cachedPermissions;
-      if (!s_cache.TryGet (cacheKey, out cachedPermissions))
+      if (!s_cache.TryGetValue (cacheKey, out cachedPermissions))
       {
         Enum[] permissions = GetPermissions<TAttribute> (type, memberName, bindingFlags);
         lock (s_cache)
         {
-          if (!s_cache.TryGet (cacheKey, out cachedPermissions))
+          if (!s_cache.TryGetValue (cacheKey, out cachedPermissions))
           {
             s_cache.Add (cacheKey, permissions);
             cachedPermissions = permissions;

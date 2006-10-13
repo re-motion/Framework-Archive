@@ -61,6 +61,14 @@ namespace Rubicon.Security.UnitTests
       _securableObject = new SecurableObject (_mockObjectSecurityStrategy);
     }
 
+    [TearDown]
+    public void TearDown ()
+    {
+      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
+      SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
+    }
+
     [Test]
     public void HasAccessOnGetAccessor_AccessGranted ()
     {

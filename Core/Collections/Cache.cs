@@ -32,7 +32,7 @@ namespace Rubicon.Collections
       _cache[key] = value;
     }
 
-    public bool TryGet (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, out TValue value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       

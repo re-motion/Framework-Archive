@@ -8,6 +8,7 @@ using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
 using log4net;
+using Rubicon.SecurityManager.Domain;
 
 namespace Rubicon.SecurityManager
 {
@@ -58,6 +59,11 @@ namespace Rubicon.SecurityManager
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
       return Array.ConvertAll <AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition,AccessType> (ConvertToAccessType));
+    }
+
+    public int GetRevision ()
+    {
+      return Revision.GetRevision (new ClientTransaction());
     }
 
     private AccessType ConvertToAccessType (AccessTypeDefinition accessTypeDefinition)

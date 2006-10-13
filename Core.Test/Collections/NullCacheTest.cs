@@ -22,7 +22,7 @@ namespace Rubicon.Core.UnitTests.Collections
     public void TryGet ()
     {
       object actual;
-      Assert.IsFalse (_cache.TryGet ("anyKey", out actual));
+      Assert.IsFalse (_cache.TryGetValue ("anyKey", out actual));
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       _cache.Add ("key1", new object());
       object actual;
-      Assert.IsFalse (_cache.TryGet ("key1", out actual));
+      Assert.IsFalse (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);
     }
 

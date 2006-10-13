@@ -89,6 +89,8 @@
     <Compile Include="Domain\OrganizationalStructure\RoleTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResultTest.cs" />
+    <Compile Include="Domain\RevisionTest.cs" />
+    <Compile Include="Persistence\RevisionSqlProviderExtensionTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />
@@ -127,6 +129,8 @@
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
     </DatabaseFiles>
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupConstraints.sql">
+    </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql">
     </DatabaseFiles>
     <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml">
     </MappingFiles>

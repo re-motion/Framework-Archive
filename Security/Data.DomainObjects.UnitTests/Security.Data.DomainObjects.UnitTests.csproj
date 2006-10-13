@@ -44,9 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ClientTransactionAccessTypeCacheProviderTest.cs" />
-    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
-    <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\BaseTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />

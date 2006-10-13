@@ -5,6 +5,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\..\..\Data\DomainObjects\Schemas\queries.xsd">
 
+  <query id="Rubicon.SecurityManager.Domain.Revision.GetRevision" type="scalar">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT TOP 1 Value FROM [Revision];
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Revision.IncrementRevision" type="scalar">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      Update [Revision] SET [Value] = [Value] + 1;
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>

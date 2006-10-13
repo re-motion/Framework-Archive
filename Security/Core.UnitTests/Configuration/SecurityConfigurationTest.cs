@@ -247,14 +247,12 @@ namespace Rubicon.Security.UnitTests.Configuration
     }
 
     [Test]
-    [Explicit]
-    public void DeserializeSecurityConfigurationWithDomainObjectGlobalAccessTypeCacheProvider ()
+    public void DeserializeSecurityConfigurationWithRevisionBasedAccessTypeCacheProvider ()
     {
-      string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""ClientTransaction"" />";
+      string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""RevisionBased"" />";
       _configuration.DeserializeSection (xmlFragment);
-      Type expectedType = TypeUtility.GetType ("Rubicon.Security.Data.DomainObjects::ClientTransactionAccessTypeCacheProvider", true, false);
 
-      Assert.IsInstanceOfType (expectedType, _configuration.GlobalAccessTypeCacheProvider);
+      Assert.IsInstanceOfType (typeof (RevisionBasedAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
     }
 
     [Test]

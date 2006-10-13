@@ -42,6 +42,7 @@
     <None Include="App.config" />
     <None Include="CreateDB.sql" />
     <Content Include="SecurityManagerSetupConstraints.sql" />
+    <None Include="SecurityManagerSetupDBSpecialTables.sql" />
     <None Include="SecurityManagerSetupDB.sql" />
     <None Include="SetupDB.sql" />
     <None Include="TestData\AccessControlEntry.csv" />

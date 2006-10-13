@@ -23,7 +23,7 @@ namespace Rubicon.Core.UnitTests.Collections
     public void TryGet_WithResultNotInCache ()
     {
       object actual;
-      Assert.IsFalse (_cache.TryGet ("key1", out actual));
+      Assert.IsFalse (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);
     }
 
@@ -34,7 +34,7 @@ namespace Rubicon.Core.UnitTests.Collections
 
       _cache.Add ("key1", expected);
       object actual;
-      Assert.IsTrue (_cache.TryGet ("key1", out actual));
+      Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.AreSame (expected, actual);
     }
 
@@ -45,10 +45,10 @@ namespace Rubicon.Core.UnitTests.Collections
 
       _cache.Add ("key1", expected);
       object actual;
-      Assert.IsTrue (_cache.TryGet ("key1", out actual));
+      Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.AreSame (expected, actual);
       _cache.Clear ();
-      Assert.IsFalse (_cache.TryGet ("key1", out actual));
+      Assert.IsFalse (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);
     }
 
@@ -57,7 +57,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       _cache.Add ("key1", null);
       object actual;
-      Assert.IsTrue (_cache.TryGet ("key1", out actual));
+      Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);
     }
   }

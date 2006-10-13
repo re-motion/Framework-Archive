@@ -61,7 +61,7 @@
   <xs:simpleType name="GlobalAccessTypeCacheProviderType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None" />
-      <xs:enumeration value="ClientTransaction" />
+      <xs:enumeration value="RevisionBased" />
       <xs:enumeration value="Custom" />
     </xs:restriction>
   </xs:simpleType>

@@ -212,9 +212,6 @@ namespace Rubicon.Security.Configuration
 
       if (UserProviderType == UserProviderType.HttpContext)
         EnsureHttpContextUserProviderTypeInitialized ();
-
-      if (GlobalAccessTypeCacheProviderType == GlobalAccessTypeCacheProviderType.ClientTransaction)
-        EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ();
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -328,9 +325,8 @@ namespace Rubicon.Security.Configuration
       {
         case GlobalAccessTypeCacheProviderType.None:
           return new NullGlobalAccessTypeCacheProvider ();
-        case GlobalAccessTypeCacheProviderType.ClientTransaction:
-          EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ();
-          return (IGlobalAccessTypeCacheProvider) Activator.CreateInstance (_clientTransactionGlobalAccessTypeCacheProviderType);
+        case GlobalAccessTypeCacheProviderType.RevisionBased:
+          return new RevisionBasedAccessTypeCacheProvider ();
         case GlobalAccessTypeCacheProviderType.Custom:
           return (IGlobalAccessTypeCacheProvider) Activator.CreateInstance (CustomGlobalAccessTypeCacheProvider.Type);
         default:
@@ -367,23 +363,6 @@ namespace Rubicon.Security.Configuration
                 "Rubicon.Security.Web", 
                 "Rubicon.Security.Web.HttpContextUserProvider", 
                 _userProviderTypeProperty);
-          }
-        }
-      }
-    }
-
-    private void EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ()
-    {
-      if (_clientTransactionGlobalAccessTypeCacheProviderType == null)
-      {
-        lock (_lock)
-        {
-          if (_clientTransactionGlobalAccessTypeCacheProviderType == null)
-          {
-            _clientTransactionGlobalAccessTypeCacheProviderType = GetTypeWithMatchingVersionNumber (
-               "Rubicon.Security.Data.DomainObjects",
-               "Rubicon.Security.Data.DomainObjects.ClientTransactionAccessTypeCacheProvider",
-               _globalAccessTypeCacheProviderTypeProperty);
           }
         }
       }
@@ -437,7 +416,7 @@ namespace Rubicon.Security.Configuration
   public enum GlobalAccessTypeCacheProviderType
   {
     None,
-    ClientTransaction,
+    RevisionBased,
     Custom
   }
 }

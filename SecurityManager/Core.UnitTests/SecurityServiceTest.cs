@@ -14,6 +14,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using log4net.Appender;
 using log4net.Config;
 using log4net;
+using Rubicon.SecurityManager.UnitTests.Domain;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -154,6 +155,15 @@ namespace Rubicon.SecurityManager.UnitTests
       Assert.AreEqual (1, events.Length);
       Assert.AreSame (expectedException, events[0].ExceptionObject);
       Assert.AreEqual (log4net.Core.Level.Error, events[0].Level);
+    }
+
+    [Test]
+    public void GetRevision ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
+
+      Assert.AreEqual (0, _service.GetRevision ());
     }
 
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)

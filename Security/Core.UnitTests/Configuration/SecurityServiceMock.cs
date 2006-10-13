@@ -27,5 +27,10 @@ namespace Rubicon.Security.UnitTests.Configuration
     {
       return new AccessType[0];
     }
+
+    public int GetRevision ()
+    {
+      return 0;
+    }
   }
 }

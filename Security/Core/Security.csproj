@@ -80,6 +80,7 @@
     <Compile Include="Metadata\SecurityMetadataSchema.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
+    <Compile Include="RevisionBasedAccessTypeCacheProvider.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityConfigurationException.cs" />
     <Compile Include="SecurityException.cs" />

@@ -16,6 +16,7 @@
         <include name="*.cs" />
         <include name="Configuration/**/*.cs" />
         <include name="Domain/**/*.cs" />
+        <include name="Persistence/**/*.cs" />
         <include name="TestDomain/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>

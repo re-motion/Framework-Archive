@@ -101,6 +101,7 @@
     <Compile Include="Domain\OrganizationalStructure\User.cs" />
     <Compile Include="Domain\QueryBuilder.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
+    <Compile Include="Domain\Revision.cs" />
     <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -117,6 +118,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Delegation.resx</DependentUpon>
     </Compile>
+    <Compile Include="Persistence\RevisionStorageProviderExtension.cs" />
+    <Compile Include="Persistence\SecurityManagerSqlProvider.cs" />
     <Compile Include="SecurityManagerException.cs" />
     <Compile Include="SecurityService.cs" />
   </ItemGroup>
@@ -186,6 +189,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Database\SecurityManagerSetupDBSpecialTables.sql" />
     <None Include="Domain\SecurityManagerMapping.xml">
     </None>
     <None Include="Domain\SecurityManagerQueries.xml">
