@@ -1,4 +1,6 @@
 using System;
+using System.Text.RegularExpressions;
+using R = System.Text.RegularExpressions;
 
 namespace Rubicon.Utilities
 {
@@ -12,7 +14,7 @@ public sealed class TypeUtility
   ///   Converts abbreviated qualified type names into standard qualified type names.
   /// </summary>
   /// <remarks>
-  ///   Abbreviated type names use the format <c>assemblyname::subnamespace::type</c>. For instance, the
+  ///   Abbreviated type names use the format <c>assemblyname::subnamespace.type</c>. For instance, the
   ///   abbreviated type name <c>"Rubicon.Web::Utilities.ControlHelper"</c> would result in the standard
   ///   type name <c>"Rubicon.Web.Utilities.ControlHelper, Rubicon.Web"</c>.
   /// </remarks>
@@ -23,14 +25,73 @@ public sealed class TypeUtility
     if (abbreviatedTypeName == null)
       return null;
 
-    int posDoubleColon = abbreviatedTypeName.IndexOf ("::");
-    if (posDoubleColon < 0)
-      return abbreviatedTypeName;
+    string typeNamePattern =                // <asm>::<type>
+          @"(?<asm>[^\[\]\,]+)"             //    <asm> is the assembly part of the type name (before ::)
+        + @"::" 
+        + @"(?<type>[^\[\]\,]+)";           //    <type> is the partially qualified type name (after ::)
 
-    string assembly = abbreviatedTypeName.Substring (0, posDoubleColon);
-    string type = abbreviatedTypeName.Substring (posDoubleColon + 2);
+    string bracketPattern =                 // [...] (an optional pair of matching square brackets and anything in between)
+          @"(?<br> \[          "            //    see "Mastering Regular Expressions" (O'Reilly) for how the construct "balancing group definition" 
+        + @"  (                "            //    is used to match brackets: http://www.oreilly.com/catalog/regex2/chapter/ch09.pdf
+        + @"      [^\[\]]      "
+        + @"    |              "
+        + @"      \[ (?<d>)    "            //    increment nesting counter <d>
+        + @"    |              "
+        + @"      \] (?<-d>)   "            //    decrement <d>
+        + @"  )*               "
+        + @"  (?(d)(?!))       "            //    ensure <d> is 0 before considering next match
+        + @"\] )?              ";
 
-    return assembly + "." + type + ", " + assembly;
+    string strongNameParts =                // comma-separated list of name=value pairs
+          @"(?<sn> (, \s* \w+ = [^,]+ )* )";
+
+    string typePattern =                    // <asm>::<type>[...] (square brackets are optional)
+          typeNamePattern 
+        + bracketPattern;
+
+    string openUnqualifiedPattern =         // requires the pattern to be preceded by [ or ,
+          @"(?<= [\[,] )";   
+    string closeUnqualifiedPattern =        // requires the pattern to be followed by ] or ,
+          @"(?= [\],] )";
+
+    string enclosedTypePattern =            // type within argument list
+          openUnqualifiedPattern
+        + typePattern
+        + closeUnqualifiedPattern;
+
+    string qualifiedTypePattern =           // <asm>::<type>[...], name=val, name=val ... (square brackets are optional)
+          typePattern 
+        + strongNameParts;
+
+    string openQualifiedPattern =           // requires the pattern to be preceded by [[ or ,[
+          @"(?<= [\[,] \[)";   
+    string closeQualifiedPattern =          // requires the pattern to be followed by ]] or ],
+          @"(?= \] [\],] )";
+
+    string enclosedQualifiedTypePattern =   // qualified type within argument list
+          openQualifiedPattern 
+        + qualifiedTypePattern
+        + closeQualifiedPattern;
+
+    RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.IgnorePatternWhitespace; // | RegexOptions.Compiled
+    string result = abbreviatedTypeName;
+    string replace =          @"${asm}.${type}${br}, ${asm}";
+    result = ReplaceRecursive (result, enclosedQualifiedTypePattern,  replace + "${sn}",   options);
+    result = ReplaceRecursive (result, enclosedTypePattern,           "[" + replace + "]", options);
+    result = Regex.Replace    (result, typePattern,                   replace,             options);
+    return result;
+  }
+
+  private static string ReplaceRecursive (string input, string pattern, string replacement, RegexOptions options)
+  {
+    Regex regex = new Regex (pattern, options);
+    string result = regex.Replace (input, replacement);
+    while (result != input)
+    {
+      input = result;
+      result = regex.Replace (input, replacement);
+    }
+    return result;
   }
 
   /// <summary>

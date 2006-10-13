@@ -39,7 +39,7 @@ public interface ITransaction
   /// </value>
   ITransaction Parent { get; }
 
-  /// <summary> Gets a flag taht describes whether the transaction is a child transaction. </summary>
+  /// <summary> Gets a flag that describes whether the transaction is a child transaction. </summary>
   /// <value> <see langword="true"/> if the transaction is a child transaction. </value>
   bool IsChild { get; }
 }

@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "ObjectBinding\Web.Test\ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "web\ExecutionEngine\Test\WxeTest.csproj", "{0B5318E7-4878-402A-8CF8-6BFFC47F571D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "Web\ExecutionEngine\Test\WxeTest.csproj", "{0B5318E7-4878-402A-8CF8-6BFFC47F571D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A26DF385-8556-4278-A6D9-0AD27ECE4D7A}"
 	ProjectSection(SolutionItems) = preProject

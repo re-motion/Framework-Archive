@@ -108,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Collections\CacheTest.cs" />
+    <Compile Include="Collections\InterlockedCacheTest.cs" />
     <Compile Include="Collections\NullCacheTest.cs" />
     <Compile Include="Collections\TupleAbcdTest.cs" />
     <Compile Include="Collections\TupleAbcTest.cs" />

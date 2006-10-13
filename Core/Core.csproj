@@ -96,6 +96,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Collections\ICache.cs" />
+    <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Collections\NullCache.cs" />
     <Compile Include="Collections\NameObjectCollection.cs">
       <SubType>Code</SubType>
@@ -115,6 +116,7 @@
     <Compile Include="Data\ITransaction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DisposableBase.cs" />
     <Compile Include="Globalization\IObjectWithResources.cs">
       <SubType>Code</SubType>
     </Compile>

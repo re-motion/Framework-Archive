@@ -1,3 +1,8 @@
+1.7.30
+======
+- Neue Klasse Rubicon.Collections.InterlockedCache
+- Rubicon.Utilities.TypeUtility: Kann jetzt auch mit Generics umgehen. zB: MyAsm::MyNs.MyCollection'1[MyAsm::MyNs.MyType] 
+
 1.7.29
 ======
 - Rubicon.Proc: Generic Delegates mit 0-10 Parametern und void Return Type.
