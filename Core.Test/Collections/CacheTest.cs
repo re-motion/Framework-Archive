@@ -46,6 +46,15 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
+    public void Add_GetOrCreateValue ()
+    {
+      object expected = new object ();
+
+      _cache.Add ("key1", expected);
+      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate () { throw new InvalidOperationException ("The valueFactory must not be invoked."); }));
+    }
+
+    [Test]
     public void Add_TryGetValue ()
     {
       object expected = new object();

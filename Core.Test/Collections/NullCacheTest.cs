@@ -29,7 +29,7 @@ namespace Rubicon.Core.UnitTests.Collections
     public void GetOrCreateValue ()
     {
       object exptected = new object();
-      Assert.AreSame (exptected, _cache.GetOrCreateValue ("anyKey", delegate () { return exptected; }));
+      Assert.AreSame (exptected, _cache.GetOrCreateValue ("anyKey", delegate { return exptected; }));
     }
 
     [Test]

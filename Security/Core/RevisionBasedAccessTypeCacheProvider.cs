@@ -18,7 +18,7 @@ namespace Rubicon.Security
 
     // member fields
 
-    private Cache<Tuple<SecurityContext, string>, AccessType[]> _cache = new Cache<Tuple<SecurityContext, string>, AccessType[]> ();
+    private InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> _cache = new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> ();
     private int _revision = 0;
     private object _syncRoot = new object ();
 
@@ -44,7 +44,7 @@ namespace Rubicon.Security
           if (_revision < currentRevision)
           {
             _revision = currentRevision;
-            _cache = new Cache<Tuple<SecurityContext, string>, AccessType[]> ();
+            _cache = new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> ();
           }
         }
       }

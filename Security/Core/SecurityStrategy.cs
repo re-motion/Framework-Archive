@@ -63,13 +63,7 @@ namespace Rubicon.Security
 
     private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
-      AccessType[] actualAccessTypes;
-      if (!_localCache.TryGetValue (user.Identity.Name, out actualAccessTypes))
-      {
-        actualAccessTypes = GetAccessFromGlobalCache (factory, securityService, user);
-        _localCache.Add (user.Identity.Name, actualAccessTypes);
-      }
-      return actualAccessTypes;
+      return _localCache.GetOrCreateValue (user.Identity.Name, delegate { return GetAccessFromGlobalCache (factory, securityService, user); });
     }
 
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
@@ -83,13 +77,7 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
       Tuple<SecurityContext, string> key = new Tuple<SecurityContext, string> (context, user.Identity.Name);
-      AccessType[] actualAccessTypes;
-      if (!globalAccessTypeCache.TryGetValue (key, out actualAccessTypes))
-      {
-        actualAccessTypes = GetAccessFromSecurityService (securityService, context, user);
-        globalAccessTypeCache.Add (key, actualAccessTypes);
-      }
-      return actualAccessTypes;
+      return globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityService (securityService, context, user); });
     }
 
     private AccessType[] GetAccessFromSecurityService (ISecurityService securityService, SecurityContext context, IPrincipal user)
