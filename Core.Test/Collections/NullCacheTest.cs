@@ -19,14 +19,21 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
-    public void TryGet ()
+    public void TryGetValue ()
     {
       object actual;
       Assert.IsFalse (_cache.TryGetValue ("anyKey", out actual));
     }
 
     [Test]
-    public void Add_TryGet ()
+    public void GetOrCreateValue ()
+    {
+      object exptected = new object();
+      Assert.AreSame (exptected, _cache.GetOrCreateValue ("anyKey", delegate () { return exptected; }));
+    }
+
+    [Test]
+    public void Add_TryGetValue ()
     {
       _cache.Add ("key1", new object());
       object actual;

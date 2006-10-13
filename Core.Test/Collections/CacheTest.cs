@@ -28,7 +28,25 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
-    public void Add_TryGet ()
+    public void GetOrCreateValue ()
+    {
+      object expected = new object ();
+      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate () { return expected; }));
+    }
+
+    [Test]
+    public void GetOrCreateValue_TryGetValue ()
+    {
+      object expected = new object ();
+
+      _cache.GetOrCreateValue ("key1", delegate () { return expected; });
+      object actual;
+      Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
+      Assert.AreSame (expected, actual);
+    }
+
+    [Test]
+    public void Add_TryGetValue ()
     {
       object expected = new object();
 
@@ -39,7 +57,7 @@ namespace Rubicon.Core.UnitTests.Collections
     }
 
     [Test]
-    public void Add_TryGet_Clear_TryGet ()
+    public void Add_TryGetValue_Clear_TryGetValue ()
     {
       object expected = new object ();
 

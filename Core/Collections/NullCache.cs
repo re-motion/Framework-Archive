@@ -23,6 +23,12 @@ namespace Rubicon.Collections
       return false;
     }
 
+    public TValue GetOrCreateValue (TKey key, Func<TValue> valueFactory)
+    {
+      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
+      return valueFactory();
+    }
+
     public void Clear ()
     {
     }

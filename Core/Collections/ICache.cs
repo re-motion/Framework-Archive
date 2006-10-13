@@ -10,6 +10,7 @@ namespace Rubicon.Collections
   public interface ICache<TKey, TValue>
   {
     void Add (TKey key, TValue value);
+    TValue GetOrCreateValue (TKey key, Func<TValue> valueFactory);
     bool TryGetValue (TKey key, out TValue value);
     void Clear ();
   }
