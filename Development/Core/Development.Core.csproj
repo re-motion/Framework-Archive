@@ -94,6 +94,7 @@
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTesting\ThreadRunner.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Development.Core.build" />
   </ItemGroup>
