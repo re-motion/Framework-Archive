@@ -5,6 +5,7 @@ using System.Threading;
 
 using Rubicon.Utilities;
 using NUnit.Framework;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -97,14 +98,7 @@ namespace Rubicon.Security.UnitTests
       SecurityFreeSection section = new SecurityFreeSection ();
       Assert.IsTrue (SecurityFreeSection.IsActive);
 
-      Exception lastException = null;
-      UnhandledExceptionEventHandler unhandledExceptionEventHandler = delegate (object sender, UnhandledExceptionEventArgs e)
-          {
-            lastException = (Exception) e.ExceptionObject;
-          };
-      AppDomain.CurrentDomain.UnhandledException += unhandledExceptionEventHandler;
-
-      Thread otherThread = new Thread (delegate ()
+      ThreadRunner.Run (delegate ()
           {
             Assert.IsFalse (SecurityFreeSection.IsActive);
             using (new SecurityFreeSection ())
@@ -113,19 +107,6 @@ namespace Rubicon.Security.UnitTests
             }
             Assert.IsFalse (SecurityFreeSection.IsActive);
           });
-
-      try
-      {
-        otherThread.Start ();
-        otherThread.Join ();
-      }
-      catch
-      {
-      }
-
-      AppDomain.CurrentDomain.UnhandledException -= unhandledExceptionEventHandler;
-      if (lastException != null)
-        throw lastException;
 
       section.Leave ();
       Assert.IsFalse (SecurityFreeSection.IsActive);

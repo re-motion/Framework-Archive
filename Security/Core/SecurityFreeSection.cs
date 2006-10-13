@@ -3,37 +3,43 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Utilities;
+using System.Runtime.Remoting.Messaging;
 
 namespace Rubicon.Security
 {
   public sealed class SecurityFreeSection : IDisposable
   {
-    // types
-
-    // static members
-
-    [ThreadStatic]
-    private static int s_activeSectionCount = 0;
+    private static string s_activeSectionCountKey = typeof (SecurityFreeSection).AssemblyQualifiedName + "_ActiveSectionCount";
 
     public static bool IsActive
     {
-      get { return s_activeSectionCount > 0; }
+      get { return ActiveSectionCount > 0; }
     }
 
-    // member fields
+    private static int ActiveSectionCount
+    {
+      get
+      {
+        int? count = (int?) CallContext.GetData (s_activeSectionCountKey);
+        if (!count.HasValue)
+        {
+          count = 0;
+          CallContext.SetData (s_activeSectionCountKey, count);
+        }
 
-    private bool _isDisposed = false;
+        return count.Value;
+      }
+      set
+      {
+        CallContext.SetData (s_activeSectionCountKey, value);
+      }
+    }
 
-    // construction and disposing
+    private bool _isDisposed;
 
     public SecurityFreeSection ()
     {
-      s_activeSectionCount++;
-    }
-
-    ~SecurityFreeSection ()
-    {
-      Dispose ();
+      ActiveSectionCount++;
     }
 
     void IDisposable.Dispose ()
@@ -45,13 +51,10 @@ namespace Rubicon.Security
     {
       if (!_isDisposed)
       {
-        s_activeSectionCount--;
+        ActiveSectionCount--;
         _isDisposed = true;
-        GC.SuppressFinalize (this);
       }
     }
-
-    // methods and properties
 
     public void Leave ()
     {
