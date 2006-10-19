@@ -490,8 +490,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> 
-    ///   Returns the <see cref="IBusinessObjectBoundEditableWebControl"/> to be used for editing this column during 
-    ///   edit mode.
+    ///   Returns an instance the class specified by the <see cref="EditModeControlType"/> property, which will then be used for editing this 
+    ///   column during edit mode.
     /// </summary>
     public IBusinessObjectBoundEditableWebControl CreateEditModeControl ()
     {
