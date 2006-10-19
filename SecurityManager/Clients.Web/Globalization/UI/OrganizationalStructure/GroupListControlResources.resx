@@ -121,6 +121,6 @@
     <value>Gruppen verwalten</value>
   </data>
   <data name="auto:NewGroupButton:Text" xml:space="preserve">
-    <value>Neuen Gruppe anlegen</value>
-  </data> 
+    <value>Neue Gruppe anlegen</value>
+  </data>
 </root>

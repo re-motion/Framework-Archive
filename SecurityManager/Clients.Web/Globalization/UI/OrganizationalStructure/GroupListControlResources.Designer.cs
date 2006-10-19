@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Neuen Gruppe anlegen.
+        ///   Looks up a localized string similar to Neue Gruppe anlegen.
         /// </summary>
         internal static string auto_NewGroupButton_Text {
             get {

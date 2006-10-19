@@ -8,7 +8,7 @@
   <storageProvider id="SecurityManager">
     <type>Rubicon.SecurityManager.Persistence.SecurityManagerSqlProvider, Rubicon.SecurityManager</type>
     <configuration type="Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Rubicon.Data.DomainObjects">
-      <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=RubiconSecurityManager;Data Source=localhost</connectionString>
+      <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=RubiconSecurityManagerWebClientTest;Data Source=localhost</connectionString>
     </configuration>
   </storageProvider>
 

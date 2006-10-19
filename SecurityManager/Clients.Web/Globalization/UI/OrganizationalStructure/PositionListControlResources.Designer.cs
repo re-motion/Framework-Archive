@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Neuen Stelle anlegen.
+        ///   Looks up a localized string similar to Neue Stelle anlegen.
         /// </summary>
         internal static string auto_NewPositionButton_Text {
             get {

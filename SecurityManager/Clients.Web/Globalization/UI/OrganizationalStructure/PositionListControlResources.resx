@@ -121,6 +121,6 @@
     <value>Stellen verwalten</value>
   </data>
   <data name="auto:NewPositionButton:Text" xml:space="preserve">
-    <value>Neuen Stelle anlegen</value>
-  </data> 
+    <value>Neue Stelle anlegen</value>
+  </data>
 </root>
