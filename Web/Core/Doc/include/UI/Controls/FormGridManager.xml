@@ -80,7 +80,7 @@
     Example for a row with both the labels and the controls in the same row.
       <code>
 <![CDATA[
-  <table id="MyFormGrid">
+  <table id="MyFormGrid" runat="server" >
     <tr>
       <td>
         <asp:Label ... />
@@ -91,11 +91,11 @@
     </tr>
   </table>                
 ]]>
-      </code>
-    Example for a row with labels and the controls in adjecent row.
-      <code>
+</code>
+Example for a row with labels and the controls in adjecent row.
+<code>
 <![CDATA[
-  <table id="MyFormGrid">
+  <table id="MyFormGrid" runat="server" >
     <tr>
       <td>
         <asp:Label ... />
