@@ -62,7 +62,7 @@ public class SmartPageInfo
 
   private ResourceManagerSet _cachedResourceManager;
 
-  private FieldInfo _htmlFormField = null;
+  private Tuple<Control, FieldInfo> _htmlFormField = null;
   private bool _htmlFormFieldInitialized = false;
 
 	public SmartPageInfo (ISmartPage page)
@@ -164,20 +164,29 @@ public class SmartPageInfo
       bool isDesignMode = ControlHelper.IsDesignMode (_page);
 
       Control page = (Page) _page;
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
+      MemberInfo[] fields;
+      do {
+        fields = page.GetType().FindMembers (
+              MemberTypes.Field, 
+              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+              new MemberFilter (FindHtmlFormControlFilter), null);
 
-      MemberInfo[] fields = page.GetType().FindMembers (
-            MemberTypes.Field, 
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
-            new MemberFilter (FindHtmlFormControlFilter), null);
-      if (fields.Length < 1 && ! isDesignMode)
+        if (fields.Length == 0)
+        {
+          if (page is Page)
+            page = ((Page) page).Master;
+          else
+            page = ((MasterPage) page).Master;
+        }
+      } while (fields.Length == 0 && page != null);
+
+      if (fields.Length == 0 && ! isDesignMode)
         throw new ApplicationException ("Page class " + page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
       else if (fields.Length > 1)
         throw new ApplicationException ("Page class " + page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
       if (fields.Length > 0) // Can only be null without an exception during design mode
       {
-        _htmlFormField = (FieldInfo) fields[0];
+        _htmlFormField = new Tuple<Control,FieldInfo> (page, (FieldInfo) fields[0]);
         _htmlFormFieldInitialized = true;
       }
     }
@@ -197,25 +206,27 @@ public class SmartPageInfo
     {
       EnsureHtmlFormFieldInitialized();
 
-      Control page = (Page) _page;
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
-
       if (_htmlFormField != null) // Can only be null without an exception during design mode
-        return (HtmlForm) _htmlFormField.GetValue (page);
+      {
+        Control page = _htmlFormField.A;
+        FieldInfo htmlFormField = _htmlFormField.B;
+        return (HtmlForm) htmlFormField.GetValue (page);
+      }
       else
+      {
         return null;
+      }
     }
     set
     {
       EnsureHtmlFormFieldInitialized();
 
-      Control page = (Page) _page;
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
-
       if (_htmlFormField != null) // Can only be null without an exception during design mode
-        _htmlFormField.SetValue (page, value);
+      {
+        Control page = _htmlFormField.A;
+        FieldInfo htmlFormField = _htmlFormField.B;
+        htmlFormField.SetValue (page, value);
+      }
     }
   }
 

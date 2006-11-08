@@ -1,3 +1,8 @@
+1.7.32
+======
+- Rubicon.Web.UI.Smartpage
+  * Bugfix: Smartpage konnte nicht mit verschachtelten MasterPages umgehen.
+  
 1.7.30
 ======
 
