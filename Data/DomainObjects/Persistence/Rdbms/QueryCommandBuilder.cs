@@ -29,7 +29,7 @@ public class QueryCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    IDbCommand command = CreateCommand ();
+    IDbCommand command = Provider.CreateDbCommand ();
 
     string statement = _query.Statement;
     foreach (QueryParameter parameter in _query.Parameters)

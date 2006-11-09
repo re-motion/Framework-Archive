@@ -37,7 +37,7 @@ public class InsertCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    IDbCommand command = CreateCommand ();
+    IDbCommand command = Provider.CreateDbCommand ();
 
     _columnBuilder = new StringBuilder ();
     _valueBuilder = new StringBuilder ();

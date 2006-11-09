@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       if (allConcreteEntityNames.Length == 0)
         return null;
 
-      IDbCommand command = CreateCommand ();
+      IDbCommand command = Provider.CreateDbCommand ();
       WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
       whereClauseBuilder.Add (_propertyDefinition.ColumnName, GetObjectIDValueForParameter (_relatedID));
 

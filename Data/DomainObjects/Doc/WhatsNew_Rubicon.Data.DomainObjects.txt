@@ -1,3 +1,10 @@
+1.7.33.0
+========
+
+- Das Erzeugen eines IDbCommand-Objects wird nicht mehr von Rubicon.Data.DomainObjects.Persistence.Rdbms.CommandBuilder übernommen.
+  Diese Aufgabe übernimmt der Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProvider, damit das Erzeugen projektspezifisch angepasst werden kann.
+
+
 1.7.31.0
 ========
 

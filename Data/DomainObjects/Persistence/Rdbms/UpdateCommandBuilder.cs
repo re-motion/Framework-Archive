@@ -36,7 +36,7 @@ public class UpdateCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    IDbCommand command = CreateCommand ();
+    IDbCommand command = Provider.CreateDbCommand ();
     _updateBuilder = new StringBuilder ();
 
     foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)

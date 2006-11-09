@@ -414,6 +414,26 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
+  protected internal virtual IDbCommand CreateDbCommand ()
+  {
+    CheckDisposed ();
+
+    IDbCommand command = _connection.CreateCommand ();
+
+    try
+    {
+      command.Connection = _connection;
+      command.Transaction = _transaction;
+    }
+    catch (Exception)
+    {
+      command.Dispose ();
+      throw;
+    }
+
+    return command;
+  }
+
   protected RdbmsProviderException CreateRdbmsProviderException (
       string formatString,
       params object[] args)

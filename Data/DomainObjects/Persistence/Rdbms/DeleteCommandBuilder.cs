@@ -32,7 +32,7 @@ public class DeleteCommandBuilder : CommandBuilder
 
   public override System.Data.IDbCommand Create ()
   {
-    IDbCommand command = CreateCommand ();
+    IDbCommand command = Provider.CreateDbCommand ();
 
     WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
     whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);

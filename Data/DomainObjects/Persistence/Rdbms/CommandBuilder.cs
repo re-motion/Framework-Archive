@@ -81,16 +81,6 @@ public abstract class CommandBuilder
     return commandParameter;
   }
 
-  
-  protected IDbCommand CreateCommand ()
-  {
-    IDbCommand command = _provider.Connection.CreateCommand ();
-    command.Connection = _provider.Connection;
-    command.Transaction = _provider.Transaction;
-
-    return command;
-  }
-
   protected void AddObjectIDAndClassIDParameters (      
       IDbCommand command, 
       ClassDefinition classDefinition,

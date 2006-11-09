@@ -87,7 +87,7 @@ public class SelectCommandBuilder : CommandBuilder
 
   public override IDbCommand Create ()
   {
-    IDbCommand command = CreateCommand ();
+    IDbCommand command = Provider.CreateDbCommand ();
     WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
 
     if (_whereClauseIDs.Length == 1)
