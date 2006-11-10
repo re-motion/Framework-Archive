@@ -40,25 +40,27 @@
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.build" />
+    <TestDataFiles Include="Sql\SqlServer\TestData\SetupDB_FirstStorageProvider.sql" />
+    <TestDataFiles Include="Sql\SqlServer\TestData\SetupDB_SecondStorageProvider.sql" />
     <Compile Include="DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectCollectionBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\EnumBuilderTest.cs" />
-    <None Include="IntegrationTests\TestDomain\Ceo.cs" />
-    <None Include="IntegrationTests\TestDomain\ClassWithAllDataTypes.cs" />
-    <None Include="IntegrationTests\TestDomain\Company.cs" />
-    <None Include="IntegrationTests\TestDomain\Customer.cs" />
-    <None Include="IntegrationTests\TestDomain\Official.cs" />
-    <None Include="IntegrationTests\TestDomain\Order.cs" />
-    <None Include="IntegrationTests\TestDomain\OrderCollection.cs" />
-    <None Include="IntegrationTests\TestDomain\OrderItem.cs" />
-    <None Include="IntegrationTests\TestDomain\OrderPriority.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\Ceo.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\ClassWithAllDataTypes.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\Company.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\Customer.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\Official.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\Order.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderCollection.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderItem.cs" />
+    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderPriority.cs" />
     <Compile Include="MappingBaseTest.cs" />
     <Compile Include="NonRdbmsStorageProvider.cs" />
-    <Compile Include="Sql\ConstraintBuilderTest.cs" />
-    <Compile Include="Sql\TableBuilderTest.cs" />
-    <Compile Include="Sql\ViewBuilderTest.cs" />
-    <Compile Include="Sql\SqlFileBuilderTest.cs" />
+    <Compile Include="Sql\SqlServer\ConstraintBuilderTest.cs" />
+    <Compile Include="Sql\SqlServer\SqlFileBuilderTest.cs" />
+    <Compile Include="Sql\SqlServer\TableBuilderTest.cs" />
+    <Compile Include="Sql\SqlServer\ViewBuilderTest.cs" />
     <Compile Include="TypeNameTest.cs" />
     <Compile Include="NonRdbmsStorageProviderDefinition.cs" />
   </ItemGroup>
@@ -87,8 +89,6 @@
     <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sql\TestData\SetupDB_FirstStorageProvider.sql" />
-    <Content Include="Sql\TestData\SetupDB_SecondStorageProvider.sql" />
     <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -101,11 +101,11 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)IntegrationTests\TestDomain\*.cs" $(TargetDir)
-copy "$(ProjectDir)Sql\TestData\*.sql" $(TargetDir)</PostBuildEvent>
-  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <Delete Files="@(TestDomainFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(TestDataFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(TestDomainFiles->'%(Fullpath)')" DestinationFiles="@(TestDomainFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(TestDataFiles->'%(Fullpath)')" DestinationFiles="@(TestDataFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+  </Target>
 </Project>

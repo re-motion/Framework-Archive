@@ -6,7 +6,7 @@ using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {

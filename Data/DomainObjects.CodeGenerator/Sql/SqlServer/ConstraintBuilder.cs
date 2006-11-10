@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using System.Collections;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
+namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 {
   public class ConstraintBuilder
   {

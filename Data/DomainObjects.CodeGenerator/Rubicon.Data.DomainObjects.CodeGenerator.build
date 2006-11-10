@@ -15,7 +15,7 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
-        <include name="Sql/*.cs"/>
+        <include name="Sql/**/*.cs"/>
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">

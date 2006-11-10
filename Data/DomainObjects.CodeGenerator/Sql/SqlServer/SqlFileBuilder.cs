@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using System.IO;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
+namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 {
   public class SqlFileBuilder
   {

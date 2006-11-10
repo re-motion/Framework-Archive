@@ -30,7 +30,7 @@
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset>
         <include name="*.xml" />
-        <include name="Sql/TestData/*.sql" />
+        <include name="Sql/SqlServer/TestData/*.sql" />
         <include name="IntegrationTests/TestDomain/*.cs" />
       </fileset>
     </copy>

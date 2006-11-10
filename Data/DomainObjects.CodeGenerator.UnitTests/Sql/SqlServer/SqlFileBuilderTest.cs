@@ -5,11 +5,11 @@ using NUnit.Framework;
 using System.IO;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION
@@ -117,12 +117,12 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     [Test]
     public void BuildWithStorageProviderDefinition ()
     {
-      DeleteOnDemand ("SetupDB_FirstStorageProvider.sql");
+      DeleteOnDemand (@"SetupDB_FirstStorageProvider.sql");
 
-      SqlFileBuilder.Build (MappingConfiguration, _firstStorageProviderDefinition, "SetupDB_FirstStorageProvider.sql");
+      SqlFileBuilder.Build (MappingConfiguration, _firstStorageProviderDefinition, @"SetupDB_FirstStorageProvider.sql");
 
-      Assert.IsTrue (File.Exists ("SetupDB_FirstStorageProvider.sql"));
-      Assert.AreEqual (_firstStorageProviderSetupDBScript, File.ReadAllText ("SetupDB_FirstStorageProvider.sql"));
+      Assert.IsTrue (File.Exists (@"SetupDB_FirstStorageProvider.sql"));
+      Assert.AreEqual (_firstStorageProviderSetupDBScript, File.ReadAllText (@"SetupDB_FirstStorageProvider.sql"));
     }
 
     [Test]

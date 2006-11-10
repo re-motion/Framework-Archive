@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using System.Collections;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 {
   [TestFixture]
   public class ConstraintBuilderTest : MappingBaseTest
