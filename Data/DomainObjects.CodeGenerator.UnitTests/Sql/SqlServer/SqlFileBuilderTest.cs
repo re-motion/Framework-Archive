@@ -91,5 +91,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       Assert.AreEqual (_firstStorageProviderSetupDBScript, _fileBuilder.GetScript ());
     }
+
+    [Test]
+    public void BuildWithMappingConfiguration ()
+    {
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilder), MappingConfiguration, StorageProviderConfiguration, "TestDirectory");
+
+      Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
+      Assert.AreEqual (_firstStorageProviderSetupDBScript, File.ReadAllText (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
+      Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB_SecondStorageProvider.sql"));
+      Assert.AreEqual (_secondStorageProviderSetupDBScript, File.ReadAllText (@"TestDirectory\SetupDB_SecondStorageProvider.sql"));
+    }
   }
 }

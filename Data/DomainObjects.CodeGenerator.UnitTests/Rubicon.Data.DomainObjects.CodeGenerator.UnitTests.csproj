@@ -69,6 +69,7 @@
     <Compile Include="Sql\SqlServer\SqlFileBuilderTest.cs" />
     <Compile Include="Sql\SqlServer\TableBuilderTest.cs" />
     <Compile Include="Sql\SqlServer\ViewBuilderTest.cs" />
+    <Compile Include="Sql\TableBuilderBaseTest.cs" />
     <Compile Include="TypeNameTest.cs" />
     <Compile Include="NonRdbmsStorageProviderDefinition.cs" />
   </ItemGroup>

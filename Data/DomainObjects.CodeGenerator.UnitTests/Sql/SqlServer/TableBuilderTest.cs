@@ -18,9 +18,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     // member fields
 
     private TableBuilder _tableBuilder;
-    private ClassDefinition _ceoClass;
-    private ClassDefinition _customerClass;
-    private ClassDefinition _orderItemClass;
 
     // construction and disposing
 
@@ -35,9 +32,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       base.SetUp ();
 
       _tableBuilder = new TableBuilder ();
-      _ceoClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Ceo");
-      _customerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
-      _orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
     }
 
     [Test]
@@ -59,8 +53,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual ("text", TableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string")));
 
       Assert.AreEqual ("image", TableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, NaInt32.Null)));
-      Assert.AreEqual ("uniqueidentifier", TableBuilder.GetSqlDataType (_orderItemClass.GetMandatoryPropertyDefinition ("Order")));
-      Assert.AreEqual ("varchar (255)", TableBuilder.GetSqlDataType (_customerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
+      Assert.AreEqual ("uniqueidentifier", TableBuilder.GetSqlDataType (OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
+      Assert.AreEqual ("varchar (255)", TableBuilder.GetSqlDataType (CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
     }
 
     [Test]
@@ -71,10 +65,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     }
 
     [Test]
-    public void AddTable ()
+    public void AddToCreateTableScript ()
     {
-      _tableBuilder.AddTable (_ceoClass);
-
       string expectedStatement = "CREATE TABLE [dbo].[Ceo]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
@@ -86,15 +78,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  [CompanyIDClassID] varchar (100) NULL,\n\n"
           + "  CONSTRAINT [PK_Ceo] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n";
+      StringBuilder stringBuilder = new StringBuilder ();
+ 
+      _tableBuilder.AddToCreateTableScript (CeoClass, stringBuilder);
 
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
     [Test]
-    public void AddTableWithConcreteClass ()
+    public void AddToCreateTableScriptWithConcreteClass ()
     {
-      _tableBuilder.AddTable (_customerClass);
-
       string expectedStatement = "CREATE TABLE [dbo].[Customer]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
@@ -110,12 +103,15 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  [PrimaryOfficialID] varchar (255) NULL,\n\n"
           + "  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n";
+      StringBuilder stringBuilder = new StringBuilder();
+   
+      _tableBuilder.AddToCreateTableScript (CustomerClass, stringBuilder);
 
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
     [Test]
-    public void AddTableForWithTwoAbstractBaseClasses ()
+    public void AddToCreateTableScriptWithTwoAbstractBaseClasses ()
     {
       ClassDefinition abstractClass = new ClassDefinition ("AbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
       abstractClass.MyPropertyDefinitions.Add (
@@ -133,8 +129,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       derivedConcreteClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", "string", false, true, 102));
 
-      _tableBuilder.AddTable (derivedConcreteClass);
-
       string expectedStatement = "CREATE TABLE [dbo].[EntityName]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
@@ -148,15 +142,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  [PropertyInDerivedConcreteClass] nvarchar (102) NULL,\n\n"
           + "  CONSTRAINT [PK_EntityName] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n";
+      StringBuilder stringBuilder = new StringBuilder ();
 
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
+      _tableBuilder.AddToCreateTableScript (derivedConcreteClass, stringBuilder);
+
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
     [Test]
-    public void AddTableWithDerivedClasses ()
+    public void AddToCreateTableScriptWithDerivedClasses ()
     {
-      _tableBuilder.AddTable (MappingConfiguration.ClassDefinitions.GetMandatory ("ConcreteClass"));
-
       string expectedStatement = "CREATE TABLE [dbo].[ConcreteClass]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
@@ -174,15 +169,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,\n\n"
           + "  CONSTRAINT [PK_ConcreteClass] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n";
+      StringBuilder stringBuilder = new StringBuilder ();
 
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
+      _tableBuilder.AddToCreateTableScript (MappingConfiguration.ClassDefinitions.GetMandatory ("ConcreteClass"), stringBuilder);
+
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
     [Test]
-    public void AddTableWithRelationToClassWithoutInheritance ()
+    public void AddToCreateTableScriptWithRelationToClassWithoutInheritance ()
     {
-      _tableBuilder.AddTable (OrderItemClass);
-
       string expectedStatement = "CREATE TABLE [dbo].[OrderItem]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
@@ -194,69 +190,27 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  [OrderID] uniqueidentifier NULL,\n\n"
           + "  CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n";
+      StringBuilder stringBuilder = new StringBuilder ();
 
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
+      _tableBuilder.AddToCreateTableScript (OrderItemClass, stringBuilder);
+
+      Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
     [Test]
-    public void AddTableTwice ()
+    public void AddToDropTableScript ()
     {
-      _tableBuilder.AddTable (OrderItemClass);
-      _tableBuilder.AddTable (OrderItemClass);
-
-      string expectedStatement = "CREATE TABLE [dbo].[OrderItem]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- OrderItem columns\n"
-          + "  [Position] int NOT NULL,\n"
-          + "  [Product] nvarchar (100) NOT NULL,\n"
-          + "  [OrderID] uniqueidentifier NULL,\n\n"
-          + "  CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n\n"
-          + "CREATE TABLE [dbo].[OrderItem]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- OrderItem columns\n"
-          + "  [Position] int NOT NULL,\n"
-          + "  [Product] nvarchar (100) NOT NULL,\n"
-          + "  [OrderID] uniqueidentifier NULL,\n\n"
-          + "  CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
-
-      Assert.AreEqual (expectedStatement, _tableBuilder.GetCreateTableScript ());
-    }
-
-    [Test]
-    public void GetDropTableScript ()
-    {
-      _tableBuilder.AddTable (CustomerClass);
-
       string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
           + "  DROP TABLE [dbo].[Customer]\n";
+      StringBuilder stringBuilder = new StringBuilder();
 
-      Assert.AreEqual (expectedScript, _tableBuilder.GetDropTableScript ());
+      _tableBuilder.AddToDropTableScript (CustomerClass, stringBuilder);
+      
+      Assert.AreEqual (expectedScript, stringBuilder.ToString());
     }
 
     [Test]
-    public void GetDropTableScriptWithMultipleTables ()
-    {
-      _tableBuilder.AddTable (CustomerClass);
-      _tableBuilder.AddTable (OrderClass);
-
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
-          + "  DROP TABLE [dbo].[Customer]\n\n"
-          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order' AND TABLE_SCHEMA = 'dbo')\n"
-          + "  DROP TABLE [dbo].[Order]\n";
-
-      Assert.AreEqual (expectedScript, _tableBuilder.GetDropTableScript ());
-    }
-
-    [Test]
-    public void AddTables ()
+    public void IntegrationTest ()
     {
       ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
       classes.Add (CustomerClass);
@@ -301,42 +255,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           + "  DROP TABLE [dbo].[Order]\n";
 
       Assert.AreEqual (expectedDropTableScript, _tableBuilder.GetDropTableScript ());
-    }
-
-    [Test]
-    public void AddTableWithAbstractClass ()
-    {
-      _tableBuilder.AddTable (CompanyClass);
-
-      Assert.IsEmpty (_tableBuilder.GetCreateTableScript ());
-      Assert.IsEmpty (_tableBuilder.GetDropTableScript ());
-    }
-
-    [Test]
-    public void AddTableWithDerivedClassWithoutEntityName ()
-    {
-      _tableBuilder.AddTable (DerivedClass);
-
-      Assert.IsEmpty (_tableBuilder.GetCreateTableScript ());
-      Assert.IsEmpty (_tableBuilder.GetDropTableScript ());
-    }
-
-    [Test]
-    public void AddTableWithDerivedClassWithEntityName ()
-    {
-      _tableBuilder.AddTable (SecondDerivedClass);
-
-      Assert.IsEmpty (_tableBuilder.GetCreateTableScript ());
-      Assert.IsEmpty (_tableBuilder.GetDropTableScript ());
-    }
-
-    [Test]
-    public void AddTableWithDerivedOfDerivedClassWithEntityName ()
-    {
-      _tableBuilder.AddTable (DerivedOfDerivedClass);
-
-      Assert.IsEmpty (_tableBuilder.GetCreateTableScript ());
-      Assert.IsEmpty (_tableBuilder.GetDropTableScript ());
     }
   }
 }

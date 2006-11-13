@@ -126,6 +126,7 @@
     <Compile Include="Sql\SqlServer\SqlFileBuilder.cs" />
     <Compile Include="Sql\SqlServer\TableBuilder.cs" />
     <Compile Include="Sql\SqlServer\ViewBuilder.cs" />
+    <Compile Include="Sql\TableBuilderBase.cs" />
     <Compile Include="TypeName.cs" />
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>

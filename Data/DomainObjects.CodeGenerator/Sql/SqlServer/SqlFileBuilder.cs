@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
     {
     }
 
-    // methods and properties
+    // methods and properties 
 
     public string GetDatabaseName ()
     {
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           + "-- Drop foreign keys of all tables that will be created below\n"
           + "{2}GO\n\n"
           + "-- Drop all tables that will be created below\n"
-          + "{3}GO\n\n"
+          + "{3}GO\n\n" 
           + "-- Create all tables\n"
           + "{4}GO\n\n"
           + "-- Create constraints for tables that were created above\n"

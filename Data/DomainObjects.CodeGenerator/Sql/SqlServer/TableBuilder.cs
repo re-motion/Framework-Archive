@@ -7,35 +7,11 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 {
-  public class TableBuilder
+  public class TableBuilder : TableBuilderBase
   {
     // types
 
     // static members and constants
-
-    public static bool IsConcreteTable (ClassDefinition classDefinition)
-    {
-      return classDefinition.MyEntityName != null && (classDefinition.BaseClass == null || classDefinition.BaseClass.GetEntityName () == null);
-    }
-
-    public static bool HasClassIDColumn (PropertyDefinition propertyDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-
-      RelationDefinition relationDefinition = propertyDefinition.ClassDefinition.GetRelationDefinition (propertyDefinition.PropertyName);
-      if (relationDefinition != null)
-      {
-        IRelationEndPointDefinition oppositeEndPointDefinition = relationDefinition.GetOppositeEndPointDefinition (
-            propertyDefinition.ClassDefinition.ID, propertyDefinition.PropertyName);
-
-        if (oppositeEndPointDefinition.ClassDefinition.IsPartOfInheritanceHierarchy
-            && propertyDefinition.ClassDefinition.StorageProviderID == oppositeEndPointDefinition.ClassDefinition.StorageProviderID)
-        {
-          return true;
-        }
-      }
-      return false;
-    }
 
     private static Dictionary<string, string> s_sqlTypeMapping = new Dictionary<string, string> ();
 
@@ -88,54 +64,20 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     // member fields
 
-    private StringBuilder _createTableBuilder;
-    private StringBuilder _dropTableBuilder;
-
     // construction and disposing
 
     public TableBuilder ()
     {
-      _createTableBuilder = new StringBuilder ();
-      _dropTableBuilder = new StringBuilder ();
     }
 
     // methods and properties
 
-    public string GetCreateTableScript ()
-    {
-      return _createTableBuilder.ToString ();
-    }
-
-    public string GetDropTableScript ()
-    {
-      return _dropTableBuilder.ToString ();
-    }
-
-    public void AddTables (ClassDefinitionCollection classes)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("classes", classes);
-
-      foreach (ClassDefinition currentClass in classes)
-        AddTable (currentClass);
-    }
-
-    public void AddTable (ClassDefinition classDefinition)
+    public override void AddToCreateTableScript (ClassDefinition classDefinition, StringBuilder createTableStringBuilder)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("createTableStringBuilder", createTableStringBuilder);
 
-      if (IsConcreteTable (classDefinition))
-      {
-        AddToCreateTableScript (classDefinition);
-        AddToDropTableScript (classDefinition);
-      }
-    }
-
-    private void AddToCreateTableScript (ClassDefinition concreteTableClassDefinition)
-    {
-      if (_createTableBuilder.Length != 0)
-        _createTableBuilder.Append ("\n");
-
-      _createTableBuilder.AppendFormat ("CREATE TABLE [{0}].[{1}]\n"
+      createTableStringBuilder.AppendFormat ("CREATE TABLE [{0}].[{1}]\n"
           + "(\n"
           + "  [ID] uniqueidentifier NOT NULL,\n"
           + "  [ClassID] varchar (100) NOT NULL,\n"
@@ -143,59 +85,25 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           + "{2}  CONSTRAINT [PK_{1}] PRIMARY KEY CLUSTERED ([ID])\n"
           + ")\n",
           SqlFileBuilder.DefaultSchema,
-          concreteTableClassDefinition.MyEntityName,
-          GetColumnList (concreteTableClassDefinition));
+          classDefinition.MyEntityName,
+          GetColumnList (classDefinition));
     }
 
-    private void AddToDropTableScript (ClassDefinition concreteTableClassDefinition)
+    public override void AddToDropTableScript (ClassDefinition classDefinition, StringBuilder dropTableStringBuilder)
     {
-      if (_dropTableBuilder.Length != 0)
-        _dropTableBuilder.Append ("\n");
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("dropTableStringBuilder", dropTableStringBuilder);
 
-      _dropTableBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
+      dropTableStringBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
           + "  DROP TABLE [{1}].[{0}]\n",
-          concreteTableClassDefinition.MyEntityName,
+          classDefinition.MyEntityName,
           SqlFileBuilder.DefaultSchema);
     }
 
-    private string GetColumnList (ClassDefinition concreteTableClassDefinition)
+    public override string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable)
     {
-      string columnList = string.Empty;
-      ClassDefinition currentClassDefinition = concreteTableClassDefinition;
-      while (currentClassDefinition != null)
-      {
-        columnList = GetColumnListOfParticularClass (currentClassDefinition, false) + columnList;
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
-        currentClassDefinition = currentClassDefinition.BaseClass;
-      }
-
-      StringBuilder columnListStringBuilder = new StringBuilder ();
-      AppendColumnListOfDerivedClasses (concreteTableClassDefinition, columnListStringBuilder);
-      columnList += columnListStringBuilder.ToString ();
-      return columnList;
-    }
-
-    private void AppendColumnListOfDerivedClasses (ClassDefinition classDefinition, StringBuilder columnListStringBuilder)
-    {
-      foreach (ClassDefinition derivedClassDefinition in classDefinition.DerivedClasses)
-      {
-        columnListStringBuilder.Append (GetColumnListOfParticularClass (derivedClassDefinition, true));
-        AppendColumnListOfDerivedClasses (derivedClassDefinition, columnListStringBuilder);
-      }
-    }
-
-    private string GetColumnListOfParticularClass (ClassDefinition classDefinition, bool forceNullable)
-    {
-      StringBuilder columnListStringBuilder = new StringBuilder ();
-
-      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
-        columnListStringBuilder.Append (GetColumn (propertyDefinition, forceNullable));
-
-      return string.Format ("  -- {0} columns\n{1}\n", classDefinition.ID, columnListStringBuilder);
-    }
-
-    private string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable)
-    {
       string nullable;
       if (propertyDefinition.IsNullable || forceNullable)
         nullable = " NULL";
