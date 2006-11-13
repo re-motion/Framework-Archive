@@ -55,6 +55,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     public abstract void AddToCreateTableScript (ClassDefinition concreteTableClassDefinition, StringBuilder createTableStringBuilder);
     public abstract void AddToDropTableScript (ClassDefinition concreteTableClassDefinition, StringBuilder dropTableStringBuilder);
     public abstract string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable);
+    protected abstract string ColumnListOfParticularClassFormatString { get; }
 
     public string GetCreateTableScript ()
     {
@@ -120,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       return columnList;
     }
 
-    protected void AppendColumnListOfDerivedClasses (ClassDefinition classDefinition, StringBuilder columnListStringBuilder)
+    private void AppendColumnListOfDerivedClasses (ClassDefinition classDefinition, StringBuilder columnListStringBuilder)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("columnListStringBuilder", columnListStringBuilder);
@@ -132,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       }
     }
 
-    protected string GetColumnListOfParticularClass (ClassDefinition classDefinition, bool forceNullable)
+    private string GetColumnListOfParticularClass (ClassDefinition classDefinition, bool forceNullable)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
@@ -141,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
         columnListStringBuilder.Append (GetColumn (propertyDefinition, forceNullable));
 
-      return string.Format ("  -- {0} columns\n{1}\n", classDefinition.ID, columnListStringBuilder);
+      return string.Format (ColumnListOfParticularClassFormatString, classDefinition.ID, columnListStringBuilder);
     }
   }
 }

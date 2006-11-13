@@ -117,6 +117,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           GetClassIDColumn (propertyDefinition));
     }
 
+    protected override string ColumnListOfParticularClassFormatString
+    {
+      get { return "  -- {0} columns\n{1}\n"; }
+    }
     private string GetClassIDColumn (PropertyDefinition propertyDefinition)
     {
       if (!HasClassIDColumn (propertyDefinition))

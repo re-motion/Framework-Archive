@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 {
-  public class ConstraintBuilder
+  public class ConstraintBuilder : ConstraintBuilderBase
   {
     // types
 
@@ -15,32 +15,23 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     // member fields
 
-    private StringBuilder _scriptBuilder;
-    private List<string> _entityNamesForDropConstraintScript;
     private Hashtable _constraintNamesUsed;
 
     // construction and disposing
 
     public ConstraintBuilder ()
     {
-      _scriptBuilder = new StringBuilder ();
       _constraintNamesUsed = new Hashtable ();
-      _entityNamesForDropConstraintScript = new List<string> ();
     }
 
     // methods and properties
 
-    public string GetAddConstraintScript ()
+    public override void AddToDropConstraintScript (List<string> entityNamesForDropConstraintScript, StringBuilder dropConstraintStringBuilder)
     {
-      return _scriptBuilder.ToString ();
-    }
+      ArgumentUtility.CheckNotNullOrItemsNull ("entityNamesForDropConstraintScript", entityNamesForDropConstraintScript);
+      ArgumentUtility.CheckNotNull ("dropConstraintStringBuilder", dropConstraintStringBuilder);
 
-    public string GetDropConstraintScript ()
-    {
-      if (_entityNamesForDropConstraintScript.Count == 0)
-        return string.Empty;
-      
-      return string.Format ("DECLARE @statement nvarchar (4000)\n"
+      dropConstraintStringBuilder.AppendFormat ("DECLARE @statement nvarchar (4000)\n"
           + "SET @statement = ''\n"
           + "SELECT @statement = @statement + 'ALTER TABLE [{0}].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
           + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
@@ -48,76 +39,41 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           + "    ORDER BY t.name, fk.name\n"
           + "exec sp_executesql @statement\n",
           SqlFileBuilder.DefaultSchema,
-          string.Join ("', '", _entityNamesForDropConstraintScript.ToArray ()));
+          string.Join ("', '", entityNamesForDropConstraintScript.ToArray ()));
     }
 
-    public void AddConstraints (ClassDefinitionCollection classes)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("classes", classes);
-
-      foreach (ClassDefinition currentClass in classes)
-        AddConstraint (currentClass);
-    }
-
-    public void AddConstraint (ClassDefinition classDefinition)
+    public override void AddToCreateConstraintScript (ClassDefinition classDefinition, StringBuilder createConstraintStringBuilder)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("createConstraintStringBuilder", createConstraintStringBuilder);
 
-      if (TableBuilder.IsConcreteTable (classDefinition))
+      string constraints = GetConstraints (classDefinition);
+      if (constraints.Length != 0)
       {
-        _entityNamesForDropConstraintScript.Add (classDefinition.MyEntityName);
-
-        string constraints = GetConstraints (classDefinition);
-        if (constraints.Length != 0)
-        {
-          if (_scriptBuilder.Length != 0)
-            _scriptBuilder.Append ("\n");
-
-          _scriptBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\n{2}\n",
-              SqlFileBuilder.DefaultSchema,
-              classDefinition.MyEntityName,
-              constraints);
-        }
+        createConstraintStringBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\n{2}\n",
+            SqlFileBuilder.DefaultSchema,
+            classDefinition.MyEntityName,
+            constraints);
       }
     }
 
-    private string GetConstraints (ClassDefinition tableRootClassDefinition)
-    {
-      StringBuilder constraintBuilder = new StringBuilder ();
-      foreach (IRelationEndPointDefinition relationEndPoint in GetAllRelationEndPoints (tableRootClassDefinition))
-      {
-        string constraint = GetConstraint (relationEndPoint);
-
-        if (constraint.Length != 0)
-        {
-          if (constraintBuilder.Length != 0)
-            constraintBuilder.Append (",\n");
-
-          constraintBuilder.Append (constraint);
-        }
-      }
-      return constraintBuilder.ToString ();
-    }
-
-    private string GetConstraint (IRelationEndPointDefinition relationEndPoint)
+    public override string GetConstraint (IRelationEndPointDefinition relationEndPoint, PropertyDefinition propertyDefinition, ClassDefinition oppositeClassDefinition)
     {
       ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-
-      if (relationEndPoint.IsNull)
-        return string.Empty;
-
-      ClassDefinition oppositeClassDefinition = relationEndPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (relationEndPoint.PropertyName);
-
-      if (!HasConstraint (relationEndPoint, oppositeClassDefinition))
-        return string.Empty;
-
-      PropertyDefinition propertyDefinition = relationEndPoint.ClassDefinition.GetMandatoryPropertyDefinition (relationEndPoint.PropertyName);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull ("oppositeClassDefinition", oppositeClassDefinition);
 
       return string.Format ("  CONSTRAINT [FK_{0}] FOREIGN KEY ([{1}]) REFERENCES [{2}].[{3}] ([ID])",
           GetUniqueConstraintName (relationEndPoint),
           propertyDefinition.ColumnName,
           SqlFileBuilder.DefaultSchema,
           oppositeClassDefinition.GetEntityName ());
+    }
+
+
+    protected override string ConstraintSeparator
+    {
+      get { return ",\n"; }
     }
 
     private string GetUniqueConstraintName (IRelationEndPointDefinition relationEndPoint)
@@ -133,46 +89,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
       _constraintNamesUsed.Add (constraintName, constraintName);
       return constraintName;
-    }
-
-    private List<IRelationEndPointDefinition> GetAllRelationEndPoints (ClassDefinition classDefinition)
-    {
-      List<IRelationEndPointDefinition> allRelationEndPointDefinitions = new List<IRelationEndPointDefinition> ();
-      if (classDefinition.BaseClass != null)
-        allRelationEndPointDefinitions.AddRange (classDefinition.BaseClass.GetRelationEndPointDefinitions ());
-
-      FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (classDefinition, allRelationEndPointDefinitions);
-
-      return allRelationEndPointDefinitions;
-    }
-
-    private void FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (ClassDefinition classDefinition, List<IRelationEndPointDefinition> allRelationEndPointDefinitions)
-    {
-      foreach (RelationDefinition relationDefinition in classDefinition.MyRelationDefinitions)
-      {
-        foreach (IRelationEndPointDefinition relationEndPointDefinition in relationDefinition.EndPointDefinitions)
-        {
-          if (relationEndPointDefinition.ClassDefinition == classDefinition)
-            allRelationEndPointDefinitions.Add (relationEndPointDefinition);
-        }
-      }
-
-      foreach (ClassDefinition derivedClass in classDefinition.DerivedClasses)
-        FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (derivedClass, allRelationEndPointDefinitions);
-    }
-
-    private bool HasConstraint (IRelationEndPointDefinition relationEndPoint, ClassDefinition oppositeClassDefinition)
-    {
-      if (relationEndPoint.IsVirtual)
-        return false;
-
-      if (oppositeClassDefinition.StorageProviderID != relationEndPoint.ClassDefinition.StorageProviderID)
-        return false;
-
-      if (oppositeClassDefinition.GetEntityName () == null)
-        return false;
-
-      return true;
     }
   }
 }

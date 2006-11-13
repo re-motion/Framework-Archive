@@ -8,6 +8,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 {
+  //TODO: Cover execution path from GetColumnList (ClassDefinition) to GetColumn (PropertyDefinition, bool)
   [TestFixture]
   public class TableBuilderTest : MappingBaseTest
   {
