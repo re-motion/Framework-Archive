@@ -123,7 +123,7 @@
     </Compile>
     <Compile Include="Sql\SqlFileBuilderBase.cs" />
     <Compile Include="Sql\SqlServer\ConstraintBuilder.cs" />
-    <Compile Include="Sql\SqlServer\FileBuilder.cs" />
+    <Compile Include="Sql\SqlServer\SqlFileBuilder.cs" />
     <Compile Include="Sql\SqlServer\TableBuilder.cs" />
     <Compile Include="Sql\SqlServer\ViewBuilder.cs" />
     <Compile Include="TypeName.cs" />
