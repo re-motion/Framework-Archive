@@ -8,7 +8,6 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 {
-  //TODO: Cover execution path from GetColumnList (ClassDefinition) to GetColumn (PropertyDefinition, bool)
   [TestFixture]
   public class TableBuilderTest : MappingBaseTest
   {
@@ -86,6 +85,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
+    //TODO: Move to TableBuilderBaseTest
     [Test]
     public void AddToCreateTableScriptWithConcreteClass ()
     {
@@ -111,6 +111,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
+    //TODO: Move to TableBuilderBaseTest
     [Test]
     public void AddToCreateTableScriptWithTwoAbstractBaseClasses ()
     {
@@ -150,6 +151,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
+    //TODO: Move to TableBuilderBaseTest
     [Test]
     public void AddToCreateTableScriptWithDerivedClasses ()
     {
@@ -177,6 +179,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
     }
 
+    //TODO: Move to TableBuilderBaseTest
     [Test]
     public void AddToCreateTableScriptWithRelationToClassWithoutInheritance ()
     {
