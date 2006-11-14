@@ -13,55 +13,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     // static members and constants
 
-    private static Dictionary<string, string> s_sqlTypeMapping = new Dictionary<string, string> ();
-
-    static TableBuilder ()
-    {
-      s_sqlTypeMapping.Add ("boolean", "bit");
-      s_sqlTypeMapping.Add ("byte", "tinyint");
-      s_sqlTypeMapping.Add ("date", "datetime");
-      s_sqlTypeMapping.Add ("dateTime", "datetime");
-      s_sqlTypeMapping.Add ("decimal", "decimal (38, 3)");
-      s_sqlTypeMapping.Add ("double", "float");
-      s_sqlTypeMapping.Add ("guid", "uniqueidentifier");
-      s_sqlTypeMapping.Add ("int16", "smallint");
-      s_sqlTypeMapping.Add ("int32", "int");
-      s_sqlTypeMapping.Add ("int64", "bigint");
-      s_sqlTypeMapping.Add ("single", "real");
-      s_sqlTypeMapping.Add ("string", "nvarchar");
-      s_sqlTypeMapping.Add ("stringWithoutMaxLength", "text");
-      s_sqlTypeMapping.Add ("binary", "image");
-      s_sqlTypeMapping.Add (TypeInfo.ObjectIDMappingTypeName, "uniqueidentifier");
-      s_sqlTypeMapping.Add ("SerializedObjectID", "varchar (255)");
-      s_sqlTypeMapping.Add ("ClassID", "varchar (100)");
-    }
-
-    public static string GetSqlDataType (PropertyDefinition propertyDefinition)
-    {
-      if (!s_sqlTypeMapping.ContainsKey (propertyDefinition.MappingTypeName))
-      {
-        // must be an enum type
-        return s_sqlTypeMapping["int32"];
-      }
-
-      if (propertyDefinition.MappingTypeName == TypeInfo.ObjectIDMappingTypeName)
-      {
-        ClassDefinition oppositeClass = propertyDefinition.ClassDefinition.GetOppositeClassDefinition (propertyDefinition.PropertyName);
-        if (oppositeClass.StorageProviderID != propertyDefinition.ClassDefinition.StorageProviderID)
-          return s_sqlTypeMapping["SerializedObjectID"];
-      }
-
-      if (propertyDefinition.MappingTypeName == "string")
-      {
-        if (propertyDefinition.MaxLength.IsNull)
-          return s_sqlTypeMapping["stringWithoutMaxLength"];
-        else
-          return s_sqlTypeMapping[propertyDefinition.MappingTypeName] +  " (" + propertyDefinition.MaxLength.ToString () + ")";
-      }
-
-      return s_sqlTypeMapping[propertyDefinition.MappingTypeName];
-    }
-
     // member fields
 
     // construction and disposing
@@ -71,6 +22,24 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
     }
 
     // methods and properties
+
+    protected override string SqlDataTypeBoolean { get { return "bit"; } }
+    protected override string SqlDataTypeByte { get { return "tinyint"; } }
+    protected override string SqlDataTypeDate { get { return "datetime"; } }
+    protected override string SqlDataTypeDateTime { get { return "datetime"; } }
+    protected override string SqlDataTypeDecimal { get { return "decimal (38, 3)"; } }
+    protected override string SqlDataTypeDouble { get { return "float"; } }
+    protected override string SqlDataTypeGuid { get { return "uniqueidentifier"; } }
+    protected override string SqlDataTypeInt16 { get { return "smallint"; } }
+    protected override string SqlDataTypeInt32 { get { return "int"; } }
+    protected override string SqlDataTypeInt64 { get { return "bigint"; } }
+    protected override string SqlDataTypeSingle { get { return "real"; } }
+    protected override string SqlDataTypeString { get { return "nvarchar"; } }
+    protected override string SqlDataTypeStringWithoutMaxLength { get { return "text"; } }
+    protected override string SqlDataTypeBinary { get { return "image"; } }
+    protected override string SqlDataTypeObjectID { get { return "uniqueidentifier"; } }
+    protected override string SqlDataTypeSerializedObjectID { get { return "varchar (255)"; } }
+    protected override string SqlDataTypeClassID { get { return "varchar (100)"; } }
 
     public override void AddToCreateTableScript (ClassDefinition classDefinition, StringBuilder createTableStringBuilder)
     {
@@ -126,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       if (!HasClassIDColumn (propertyDefinition))
         return string.Empty;
 
-      return string.Format ("  [{0}] {1} NULL,\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), s_sqlTypeMapping["ClassID"]);
+      return string.Format ("  [{0}] {1} NULL,\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), SqlDataTypeClassID);
     }
   }
 }
