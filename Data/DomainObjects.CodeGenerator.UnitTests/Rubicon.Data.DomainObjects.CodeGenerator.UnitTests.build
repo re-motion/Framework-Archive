@@ -27,11 +27,13 @@
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests">
+        <include name="Sql/SqlServer/TestData/*.sql" />
+      </resources>
     </csc>
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset>
         <include name="*.xml" />
-        <include name="Sql/SqlServer/TestData/*.sql" />
         <include name="IntegrationTests/TestDomain/*.cs" />
       </fileset>
     </copy>
