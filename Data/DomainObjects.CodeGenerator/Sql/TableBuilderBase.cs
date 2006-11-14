@@ -170,7 +170,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     private void AddToCreateTableScript (ClassDefinition classDefinition)
     {
       if (_createTableStringBuilder.Length != 0)
-        _createTableStringBuilder.Append ("\n");
+        _createTableStringBuilder.Append ("\r\n");
 
       AddToCreateTableScript (classDefinition, _createTableStringBuilder);
     }
@@ -178,7 +178,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     private void AddToDropTableScript (ClassDefinition classDefinition)
     {
       if (_dropTableStringBuilder.Length != 0)
-        _dropTableStringBuilder.Append ("\n");
+        _dropTableStringBuilder.Append ("\r\n");
 
       AddToDropTableScript (classDefinition, _dropTableStringBuilder);
     }

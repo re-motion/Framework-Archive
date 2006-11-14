@@ -7,7 +7,7 @@ using Rubicon.NullableValueTypes;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 {
   //TODO: Cover execution path from GetColumnList (ClassDefinition) to GetColumn (PropertyDefinition, bool)
   [TestFixture]
@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       string actualScript = _mockTableBuilder.GetCreateTableScript ();
 
       _mocks.VerifyAll ();
-      Assert.AreEqual ("CREATE TABLE [dbo].[Order] ()\nCREATE TABLE [dbo].[Order] ()", actualScript);
+      Assert.AreEqual ("CREATE TABLE [dbo].[Order] ()\r\nCREATE TABLE [dbo].[Order] ()", actualScript);
     }
 
     [Test]
@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       string actualScript = _mockTableBuilder.GetDropTableScript ();
 
       _mocks.VerifyAll ();
-      Assert.AreEqual ("DROP TABLE [dbo].[Customer]\nDROP TABLE [dbo].[Order]", actualScript);
+      Assert.AreEqual ("DROP TABLE [dbo].[Customer]\r\nDROP TABLE [dbo].[Order]", actualScript);
     }
 
     [Test]
@@ -149,8 +149,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       string actualDropTableScript = _mockTableBuilder.GetDropTableScript ();
 
       _mocks.VerifyAll ();
-      Assert.AreEqual ("CREATE TABLE [dbo].[Customer] ()\nCREATE TABLE [dbo].[Order] ()", actualCreateTableScript);
-      Assert.AreEqual ("DROP TABLE [dbo].[Customer]\nDROP TABLE [dbo].[Order]", actualDropTableScript);
+      Assert.AreEqual ("CREATE TABLE [dbo].[Customer] ()\r\nCREATE TABLE [dbo].[Order] ()", actualCreateTableScript);
+      Assert.AreEqual ("DROP TABLE [dbo].[Customer]\r\nDROP TABLE [dbo].[Order]", actualDropTableScript);
     }
 
     [Test]

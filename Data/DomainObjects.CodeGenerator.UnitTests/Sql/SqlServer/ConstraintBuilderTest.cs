@@ -41,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       _constraintBuilder.AddConstraint (OrderItemClass);
 
-      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
-          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -52,8 +52,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       _constraintBuilder.AddConstraint (OrderClass);
 
-      string expectedScript = "ALTER TABLE [dbo].[Order] ADD\n"
-          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[Order] ADD\r\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -64,10 +64,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       _constraintBuilder.AddConstraint (OrderItemClass);
       _constraintBuilder.AddConstraint (OrderClass);
 
-      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
-          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n\n"
-          + "ALTER TABLE [dbo].[Order] ADD\n"
-          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
+          + "ALTER TABLE [dbo].[Order] ADD\r\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
 
@@ -107,9 +107,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 
       _constraintBuilder.AddConstraint (firstClass);
 
-      string expectedScript = "ALTER TABLE [dbo].[FirstEntity] ADD\n"
-          + "  CONSTRAINT [FK_FirstClassToSecondClass] FOREIGN KEY ([SecondClassID]) REFERENCES [dbo].[SecondEntity] ([ID]),\n"
-          + "  CONSTRAINT [FK_FirstClassToThirdClass] FOREIGN KEY ([ThirdClassID]) REFERENCES [dbo].[ThirdEntity] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[FirstEntity] ADD\r\n"
+          + "  CONSTRAINT [FK_FirstClassToSecondClass] FOREIGN KEY ([SecondClassID]) REFERENCES [dbo].[SecondEntity] ([ID]),\r\n"
+          + "  CONSTRAINT [FK_FirstClassToThirdClass] FOREIGN KEY ([ThirdClassID]) REFERENCES [dbo].[ThirdEntity] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -146,8 +146,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 
       _constraintBuilder.AddConstraint (baseClass);
 
-      string expectedScript = "ALTER TABLE [dbo].[BaseClassEntity] ADD\n"
-          + "  CONSTRAINT [FK_OtherClassToDerivedClass] FOREIGN KEY ([OtherClassID]) REFERENCES [dbo].[OtherClassEntity] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[BaseClassEntity] ADD\r\n"
+          + "  CONSTRAINT [FK_OtherClassToDerivedClass] FOREIGN KEY ([OtherClassID]) REFERENCES [dbo].[OtherClassEntity] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -157,8 +157,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       _constraintBuilder.AddConstraint (ClassWithRelations);
 
-      string expectedScript = "ALTER TABLE [dbo].[ClassWithRelations] ADD\n"
-          + "  CONSTRAINT [FK_DerivedClassToClassWithRelations] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[ClassWithRelations] ADD\r\n"
+          + "  CONSTRAINT [FK_DerivedClassToClassWithRelations] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -207,10 +207,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 
       _constraintBuilder.AddConstraints (classes);
 
-      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
-          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n\n"
-          + "ALTER TABLE [dbo].[Order] ADD\n"
-          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
+          + "ALTER TABLE [dbo].[Order] ADD\r\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -220,13 +220,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       _constraintBuilder.AddConstraint (ClassWithRelations);
 
-      string expectedScript = "DECLARE @statement nvarchar (4000)\n"
-          + "SET @statement = ''\n"
-          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
-          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
-          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations')\n"
-          + "    ORDER BY t.name, fk.name\n"
-          + "exec sp_executesql @statement\n";
+      string expectedScript = "DECLARE @statement nvarchar (4000)\r\n"
+          + "SET @statement = ''\r\n"
+          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
+          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations')\r\n"
+          + "    ORDER BY t.name, fk.name\r\n"
+          + "exec sp_executesql @statement\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetDropConstraintScript ());
     }
@@ -237,13 +237,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       _constraintBuilder.AddConstraint (ClassWithRelations);
       _constraintBuilder.AddConstraint (ConcreteClass);
 
-      string expectedScript = "DECLARE @statement nvarchar (4000)\n"
-          + "SET @statement = ''\n"
-          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
-          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
-          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations', 'ConcreteClass')\n"
-          + "    ORDER BY t.name, fk.name\n"
-          + "exec sp_executesql @statement\n";
+      string expectedScript = "DECLARE @statement nvarchar (4000)\r\n"
+          + "SET @statement = ''\r\n"
+          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
+          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations', 'ConcreteClass')\r\n"
+          + "    ORDER BY t.name, fk.name\r\n"
+          + "exec sp_executesql @statement\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetDropConstraintScript ());
     }

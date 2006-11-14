@@ -31,13 +31,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNullOrItemsNull ("entityNamesForDropConstraintScript", entityNamesForDropConstraintScript);
       ArgumentUtility.CheckNotNull ("dropConstraintStringBuilder", dropConstraintStringBuilder);
 
-      dropConstraintStringBuilder.AppendFormat ("DECLARE @statement nvarchar (4000)\n"
-          + "SET @statement = ''\n"
-          + "SELECT @statement = @statement + 'ALTER TABLE [{0}].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
-          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
-          + "    WHERE fk.xtype = 'F' AND t.name IN ('{1}')\n"
-          + "    ORDER BY t.name, fk.name\n"
-          + "exec sp_executesql @statement\n",
+      dropConstraintStringBuilder.AppendFormat ("DECLARE @statement nvarchar (4000)\r\n"
+          + "SET @statement = ''\r\n"
+          + "SELECT @statement = @statement + 'ALTER TABLE [{0}].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
+          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('{1}')\r\n"
+          + "    ORDER BY t.name, fk.name\r\n"
+          + "exec sp_executesql @statement\r\n",
           SqlFileBuilder.DefaultSchema,
           string.Join ("', '", entityNamesForDropConstraintScript.ToArray ()));
     }
@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       string constraints = GetConstraints (classDefinition);
       if (constraints.Length != 0)
       {
-        createConstraintStringBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\n{2}\n",
+        createConstraintStringBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\r\n{2}\r\n",
             SqlFileBuilder.DefaultSchema,
             classDefinition.MyEntityName,
             constraints);
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     protected override string ConstraintSeparator
     {
-      get { return ",\n"; }
+      get { return ",\r\n"; }
     }
 
     private string GetUniqueConstraintName (IRelationEndPointDefinition relationEndPoint)

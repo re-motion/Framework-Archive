@@ -46,13 +46,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("createTableStringBuilder", createTableStringBuilder);
 
-      createTableStringBuilder.AppendFormat ("CREATE TABLE [{0}].[{1}]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "{2}  CONSTRAINT [PK_{1}] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n",
+      createTableStringBuilder.AppendFormat ("CREATE TABLE [{0}].[{1}]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "{2}  CONSTRAINT [PK_{1}] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n",
           SqlFileBuilder.DefaultSchema,
           classDefinition.MyEntityName,
           GetColumnList (classDefinition));
@@ -63,8 +63,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("dropTableStringBuilder", dropTableStringBuilder);
 
-      dropTableStringBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
-          + "  DROP TABLE [{1}].[{0}]\n",
+      dropTableStringBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\r\n"
+          + "  DROP TABLE [{1}].[{0}]\r\n",
           classDefinition.MyEntityName,
           SqlFileBuilder.DefaultSchema);
     }
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       else
         nullable = " NOT NULL";
 
-      return string.Format ("  [{0}] {1}{2},\n{3}",
+      return string.Format ("  [{0}] {1}{2},\r\n{3}",
           propertyDefinition.ColumnName,
           GetSqlDataType (propertyDefinition),
           nullable,
@@ -88,14 +88,14 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     protected override string ColumnListOfParticularClassFormatString
     {
-      get { return "  -- {0} columns\n{1}\n"; }
+      get { return "  -- {0} columns\r\n{1}\r\n"; }
     }
     private string GetClassIDColumn (PropertyDefinition propertyDefinition)
     {
       if (!HasClassIDColumn (propertyDefinition))
         return string.Empty;
 
-      return string.Format ("  [{0}] {1} NULL,\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), SqlDataTypeClassID);
+      return string.Format ("  [{0}] {1} NULL,\r\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), SqlDataTypeClassID);
     }
   }
 }

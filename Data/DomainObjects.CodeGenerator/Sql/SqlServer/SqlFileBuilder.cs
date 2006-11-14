@@ -47,20 +47,20 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ConstraintBuilder constraintBuilder = new ConstraintBuilder ();
       constraintBuilder.AddConstraints (Classes);
 
-      return string.Format ("USE {0}\n"
-          + "GO\n\n"
-          + "-- Drop all views that will be created below\n"
-          + "{1}GO\n\n"
-          + "-- Drop foreign keys of all tables that will be created below\n"
-          + "{2}GO\n\n"
-          + "-- Drop all tables that will be created below\n"
-          + "{3}GO\n\n" 
-          + "-- Create all tables\n"
-          + "{4}GO\n\n"
-          + "-- Create constraints for tables that were created above\n"
-          + "{5}GO\n\n"
-          + "-- Create a view for every class\n"
-          + "{6}GO\n", 
+      return string.Format ("USE {0}\r\n"
+          + "GO\r\n\r\n"
+          + "-- Drop all views that will be created below\r\n"
+          + "{1}GO\r\n\r\n"
+          + "-- Drop foreign keys of all tables that will be created below\r\n"
+          + "{2}GO\r\n\r\n"
+          + "-- Drop all tables that will be created below\r\n"
+          + "{3}GO\r\n\r\n" 
+          + "-- Create all tables\r\n"
+          + "{4}GO\r\n\r\n"
+          + "-- Create constraints for tables that were created above\r\n"
+          + "{5}GO\r\n\r\n"
+          + "-- Create a view for every class\r\n"
+          + "{6}GO\r\n", 
           GetDatabaseName (), 
           viewBuilder.GetDropViewScript (),
           constraintBuilder.GetDropConstraintScript (), 

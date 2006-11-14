@@ -53,8 +53,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       _firstStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("FirstStorageProvider");
       _secondStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("SecondStorageProvider");
       _fileBuilder = new SqlFileBuilder (MappingConfiguration, _firstStorageProviderDefinition);
-      _firstStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_FirstStorageProvider.sql").Replace ("\r\n", "\n");
-      _secondStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_SecondStorageProvider.sql").Replace ("\r\n", "\n");
+      _firstStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_FirstStorageProvider.sql");
+      _secondStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_SecondStorageProvider.sql");
     }
 
     private string GetEmbeddedStringResource (string name)

@@ -67,17 +67,17 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToCreateTableScript ()
     {
-      string expectedStatement = "CREATE TABLE [dbo].[Ceo]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- Ceo columns\n"
-          + "  [Name] nvarchar (100) NOT NULL,\n"
-          + "  [CompanyID] uniqueidentifier NULL,\n"
-          + "  [CompanyIDClassID] varchar (100) NULL,\n\n"
-          + "  CONSTRAINT [PK_Ceo] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedStatement = "CREATE TABLE [dbo].[Ceo]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- Ceo columns\r\n"
+          + "  [Name] nvarchar (100) NOT NULL,\r\n"
+          + "  [CompanyID] uniqueidentifier NULL,\r\n"
+          + "  [CompanyIDClassID] varchar (100) NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_Ceo] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
  
       _tableBuilder.AddToCreateTableScript (CeoClass, stringBuilder);
@@ -89,21 +89,21 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToCreateTableScriptWithConcreteClass ()
     {
-      string expectedStatement = "CREATE TABLE [dbo].[Customer]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- Company columns\n"
-          + "  [Name] nvarchar (100) NOT NULL,\n"
-          + "  [PhoneNumber] nvarchar (100) NULL,\n"
-          + "  [AddressID] uniqueidentifier NULL,\n\n"
-          + "  -- Customer columns\n"
-          + "  [CustomerType] int NOT NULL,\n"
-          + "  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,\n"
-          + "  [PrimaryOfficialID] varchar (255) NULL,\n\n"
-          + "  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedStatement = "CREATE TABLE [dbo].[Customer]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- Company columns\r\n"
+          + "  [Name] nvarchar (100) NOT NULL,\r\n"
+          + "  [PhoneNumber] nvarchar (100) NULL,\r\n"
+          + "  [AddressID] uniqueidentifier NULL,\r\n\r\n"
+          + "  -- Customer columns\r\n"
+          + "  [CustomerType] int NOT NULL,\r\n"
+          + "  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,\r\n"
+          + "  [PrimaryOfficialID] varchar (255) NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
       StringBuilder stringBuilder = new StringBuilder();
    
       _tableBuilder.AddToCreateTableScript (CustomerClass, stringBuilder);
@@ -131,19 +131,19 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       derivedConcreteClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", "string", false, true, 102));
 
-      string expectedStatement = "CREATE TABLE [dbo].[EntityName]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- AbstractClass columns\n"
-          + "  [PropertyInAbstractClass] nvarchar (100) NULL,\n\n"
-          + "  -- DerivedAbstractClass columns\n"
-          + "  [PropertyInAbstractDerivedClass] nvarchar (101) NOT NULL,\n\n"
-          + "  -- DerivedConcreteClass columns\n"
-          + "  [PropertyInDerivedConcreteClass] nvarchar (102) NULL,\n\n"
-          + "  CONSTRAINT [PK_EntityName] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedStatement = "CREATE TABLE [dbo].[EntityName]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- AbstractClass columns\r\n"
+          + "  [PropertyInAbstractClass] nvarchar (100) NULL,\r\n\r\n"
+          + "  -- DerivedAbstractClass columns\r\n"
+          + "  [PropertyInAbstractDerivedClass] nvarchar (101) NOT NULL,\r\n\r\n"
+          + "  -- DerivedConcreteClass columns\r\n"
+          + "  [PropertyInDerivedConcreteClass] nvarchar (102) NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_EntityName] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
 
       _tableBuilder.AddToCreateTableScript (derivedConcreteClass, stringBuilder);
@@ -155,23 +155,23 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToCreateTableScriptWithDerivedClasses ()
     {
-      string expectedStatement = "CREATE TABLE [dbo].[ConcreteClass]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- ConcreteClass columns\n"
-          + "  [PropertyInConcreteClass] nvarchar (100) NOT NULL,\n\n"
-          + "  -- DerivedClass columns\n"
-          + "  [PropertyInDerivedClass] nvarchar (100) NULL,\n\n"
-          + "  -- DerivedOfDerivedClass columns\n"
-          + "  [PropertyInDerivedOfDerivedClass] nvarchar (100) NULL,\n"
-          + "  [ClassWithRelationsInDerivedOfDerivedClassID] uniqueidentifier NULL,\n\n"
-          + "  -- SecondDerivedClass columns\n"
-          + "  [PropertyInSecondDerivedClass] nvarchar (100) NULL,\n"
-          + "  [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,\n\n"
-          + "  CONSTRAINT [PK_ConcreteClass] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedStatement = "CREATE TABLE [dbo].[ConcreteClass]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- ConcreteClass columns\r\n"
+          + "  [PropertyInConcreteClass] nvarchar (100) NOT NULL,\r\n\r\n"
+          + "  -- DerivedClass columns\r\n"
+          + "  [PropertyInDerivedClass] nvarchar (100) NULL,\r\n\r\n"
+          + "  -- DerivedOfDerivedClass columns\r\n"
+          + "  [PropertyInDerivedOfDerivedClass] nvarchar (100) NULL,\r\n"
+          + "  [ClassWithRelationsInDerivedOfDerivedClassID] uniqueidentifier NULL,\r\n\r\n"
+          + "  -- SecondDerivedClass columns\r\n"
+          + "  [PropertyInSecondDerivedClass] nvarchar (100) NULL,\r\n"
+          + "  [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_ConcreteClass] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
 
       _tableBuilder.AddToCreateTableScript (MappingConfiguration.ClassDefinitions.GetMandatory ("ConcreteClass"), stringBuilder);
@@ -183,17 +183,17 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToCreateTableScriptWithRelationToClassWithoutInheritance ()
     {
-      string expectedStatement = "CREATE TABLE [dbo].[OrderItem]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- OrderItem columns\n"
-          + "  [Position] int NOT NULL,\n"
-          + "  [Product] nvarchar (100) NOT NULL,\n"
-          + "  [OrderID] uniqueidentifier NULL,\n\n"
-          + "  CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedStatement = "CREATE TABLE [dbo].[OrderItem]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- OrderItem columns\r\n"
+          + "  [Position] int NOT NULL,\r\n"
+          + "  [Product] nvarchar (100) NOT NULL,\r\n"
+          + "  [OrderID] uniqueidentifier NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
 
       _tableBuilder.AddToCreateTableScript (OrderItemClass, stringBuilder);
@@ -204,8 +204,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToDropTableScript ()
     {
-      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
-          + "  DROP TABLE [dbo].[Customer]\n";
+      string expectedScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\r\n"
+          + "  DROP TABLE [dbo].[Customer]\r\n";
       StringBuilder stringBuilder = new StringBuilder();
 
       _tableBuilder.AddToDropTableScript (CustomerClass, stringBuilder);
@@ -222,41 +222,41 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
 
       _tableBuilder.AddTables (classes);
 
-      string expectedCreateTableScript = "CREATE TABLE [dbo].[Customer]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- Company columns\n"
-          + "  [Name] nvarchar (100) NOT NULL,\n"
-          + "  [PhoneNumber] nvarchar (100) NULL,\n"
-          + "  [AddressID] uniqueidentifier NULL,\n\n"
-          + "  -- Customer columns\n"
-          + "  [CustomerType] int NOT NULL,\n"
-          + "  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,\n"
-          + "  [PrimaryOfficialID] varchar (255) NULL,\n\n"
-          + "  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n\n"
-          + "CREATE TABLE [dbo].[Order]\n"
-          + "(\n"
-          + "  [ID] uniqueidentifier NOT NULL,\n"
-          + "  [ClassID] varchar (100) NOT NULL,\n"
-          + "  [Timestamp] rowversion NOT NULL,\n\n"
-          + "  -- Order columns\n"
-          + "  [Number] int NOT NULL,\n"
-          + "  [Priority] int NOT NULL,\n"
-          + "  [CustomerID] uniqueidentifier NULL,\n"
-          + "  [CustomerIDClassID] varchar (100) NULL,\n"
-          + "  [OfficialID] varchar (255) NULL,\n\n"
-          + "  CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED ([ID])\n"
-          + ")\n";
+      string expectedCreateTableScript = "CREATE TABLE [dbo].[Customer]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- Company columns\r\n"
+          + "  [Name] nvarchar (100) NOT NULL,\r\n"
+          + "  [PhoneNumber] nvarchar (100) NULL,\r\n"
+          + "  [AddressID] uniqueidentifier NULL,\r\n\r\n"
+          + "  -- Customer columns\r\n"
+          + "  [CustomerType] int NOT NULL,\r\n"
+          + "  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,\r\n"
+          + "  [PrimaryOfficialID] varchar (255) NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n\r\n"
+          + "CREATE TABLE [dbo].[Order]\r\n"
+          + "(\r\n"
+          + "  [ID] uniqueidentifier NOT NULL,\r\n"
+          + "  [ClassID] varchar (100) NOT NULL,\r\n"
+          + "  [Timestamp] rowversion NOT NULL,\r\n\r\n"
+          + "  -- Order columns\r\n"
+          + "  [Number] int NOT NULL,\r\n"
+          + "  [Priority] int NOT NULL,\r\n"
+          + "  [CustomerID] uniqueidentifier NULL,\r\n"
+          + "  [CustomerIDClassID] varchar (100) NULL,\r\n"
+          + "  [OfficialID] varchar (255) NULL,\r\n\r\n"
+          + "  CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED ([ID])\r\n"
+          + ")\r\n";
 
       Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
 
-      string expectedDropTableScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\n"
-          + "  DROP TABLE [dbo].[Customer]\n\n"
-          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order' AND TABLE_SCHEMA = 'dbo')\n"
-          + "  DROP TABLE [dbo].[Order]\n";
+      string expectedDropTableScript = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')\r\n"
+          + "  DROP TABLE [dbo].[Customer]\r\n\r\n"
+          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order' AND TABLE_SCHEMA = 'dbo')\r\n"
+          + "  DROP TABLE [dbo].[Order]\r\n";
 
       Assert.AreEqual (expectedDropTableScript, _tableBuilder.GetDropTableScript ());
     }

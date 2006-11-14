@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 
     public override string GetScript ()
     {
-      return string.Format ("Contents of SetupDB for StorageProvider\n  {0}", RdbmsProviderDefinition.ID);
+      return string.Format ("Contents of SetupDB for StorageProvider\r\n  {0}", RdbmsProviderDefinition.ID);
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     public override string CreateViewSeparator
     {
-      get { return "GO\n\n"; }
+      get { return "GO\r\n\r\n"; }
     }
 
     public override void AddViewForConcreteClassToCreateViewScript (ClassDefinition classDefinition, StringBuilder createViewStringBuilder)
@@ -34,12 +34,12 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNull ("createViewStringBuilder", createViewStringBuilder); 
 
       createViewStringBuilder.AppendFormat (
-          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\n"
-          + "  WITH SCHEMABINDING AS\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], {2}\n"
-          + "    FROM [{0}].[{3}]\n"
-          + "    WHERE [ClassID] IN ({4})\n"
-          + "  WITH CHECK OPTION\n",
+          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\r\n"
+          + "  WITH SCHEMABINDING AS\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], {2}\r\n"
+          + "    FROM [{0}].[{3}]\r\n"
+          + "    WHERE [ClassID] IN ({4})\r\n"
+          + "  WITH CHECK OPTION\r\n",
           SqlFileBuilder.DefaultSchema,
           GetViewName (classDefinition),
           GetColumnList (GetAllPropertyDefinitions (classDefinition)),
@@ -60,8 +60,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       string classIDListForWhereClause = GetClassIDList (GetClassDefinitionsForWhereClause (classDefinition));
 
       createViewStringBuilder.AppendFormat (
-          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\n"
-          + "  WITH SCHEMABINDING AS\n",
+          "CREATE VIEW [{0}].[{1}] ([ID], [ClassID], [Timestamp], {2})\r\n"
+          + "  WITH SCHEMABINDING AS\r\n",
           SqlFileBuilder.DefaultSchema,
           GetViewName (classDefinition),
           GetColumnList (allPropertyDefinitions));
@@ -70,12 +70,12 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       foreach (ClassDefinition tableRootClass in concreteClasses)
       {
         if (numberOfSelects > 0)
-          createViewStringBuilder.AppendFormat ("  UNION ALL\n");
+          createViewStringBuilder.AppendFormat ("  UNION ALL\r\n");
 
         createViewStringBuilder.AppendFormat (
-            "  SELECT [ID], [ClassID], [Timestamp], {0}\n"
-            + "    FROM [{1}].[{2}]\n"
-            + "    WHERE [ClassID] IN ({3})\n",
+            "  SELECT [ID], [ClassID], [Timestamp], {0}\r\n"
+            + "    FROM [{1}].[{2}]\r\n"
+            + "    WHERE [ClassID] IN ({3})\r\n",
             GetColumnListForUnionSelect (tableRootClass, allPropertyDefinitions),
             SqlFileBuilder.DefaultSchema,
             tableRootClass.MyEntityName,
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
         numberOfSelects++;
       }
       if (numberOfSelects == 1)
-        createViewStringBuilder.Append ("  WITH CHECK OPTION\n");
+        createViewStringBuilder.Append ("  WITH CHECK OPTION\r\n");
     }
 
     public override void AddToDropViewScript (ClassDefinition classDefinition, StringBuilder dropViewStringBuilder)
@@ -92,8 +92,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("dropViewStringBuilder", dropViewStringBuilder);
 
-      dropViewStringBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\n"
-          + "  DROP VIEW [{1}].[{0}]\n",
+      dropViewStringBuilder.AppendFormat ("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{0}' AND TABLE_SCHEMA = '{1}')\r\n"
+          + "  DROP VIEW [{1}].[{0}]\r\n",
           GetViewName (classDefinition),
           SqlFileBuilder.DefaultSchema);
     }

@@ -72,13 +72,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     private void AddToCreateConstraintScript (ClassDefinition classDefinition)
     {
       if (_createConstraintStringBuilder.Length != 0)
-        _createConstraintStringBuilder.Append ("\n");
+        _createConstraintStringBuilder.Append ("\r\n");
       int length = _createConstraintStringBuilder.Length;
 
       AddToCreateConstraintScript (classDefinition, _createConstraintStringBuilder);
 
-      if (_createConstraintStringBuilder.Length == length && length > 0)
-        _createConstraintStringBuilder.Remove (length - 1, 1);
+      if (_createConstraintStringBuilder.Length == length && length > 1)
+        _createConstraintStringBuilder.Remove (length - 2, 2);
     }
 
     protected List<IRelationEndPointDefinition> GetAllRelationEndPoints (ClassDefinition classDefinition)

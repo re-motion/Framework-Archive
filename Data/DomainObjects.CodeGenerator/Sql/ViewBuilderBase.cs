@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     private void AddToDropViewScript (ClassDefinition classDefinition)
     {
       if (_dropViewStringBuilder.Length != 0)
-        _dropViewStringBuilder.Append ("\n");
+        _dropViewStringBuilder.Append ("\r\n");
 
       AddToDropViewScript (classDefinition, _dropViewStringBuilder);
     }
