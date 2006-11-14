@@ -1,3 +1,8 @@
+1.7.34.0
+========
+- DoGen kann nun eine eigene SqlFileBuilder Klasse angegeben werden um andere SQL Dialekte (statt T-SQL) zu unterstüzten.
+  Diese muss von Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlFileBuilderBase ableiten.
+
 1.7.33.0
 ========
 
