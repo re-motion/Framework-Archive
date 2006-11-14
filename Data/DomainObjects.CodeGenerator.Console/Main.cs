@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
@@ -38,7 +39,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
             Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
-          SqlFileBuilderBase.Build (typeof (SqlFileBuilder), mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);
+        {
+          Type sqlFileBuilderType = TypeUtility.GetType (arguments.SqlBuilderTypeName, true, false);
+          SqlFileBuilderBase.Build (sqlFileBuilderType, mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);
+        }
 
         if ((arguments.Mode & OperationMode.DomainModel) != 0)
         {

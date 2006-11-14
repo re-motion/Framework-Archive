@@ -70,6 +70,11 @@ public class Arguments
       Description = "Verbose output")]
   public bool Verbose;
 
+  [CommandLineStringArgument ("sqlBuilder", true,
+      Description = "The assembly qualified type name of the SqlFileBuilder to use for generating the SQL scripts.",
+      Placeholder = "Namespace.ClassName,AssemblyName")]
+  public string SqlBuilderTypeName = typeof (Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer.SqlFileBuilder).AssemblyQualifiedName;
+
   public void CheckArguments()
   {
     if ((Mode & OperationMode.DomainModel) != 0)
