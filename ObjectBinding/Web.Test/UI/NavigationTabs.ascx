@@ -30,6 +30,12 @@
 </PersistedCommand>
 </rubicon:submenutab>
 
+<rubicon:submenutab Text="BocLiteral" ItemID="BocLiteral">
+<persistedcommand>
+<rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocLiteralUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
+</PersistedCommand>
+</rubicon:submenutab>
+
 <rubicon:submenutab Text="BocList" ItemID="BocList">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocListUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>

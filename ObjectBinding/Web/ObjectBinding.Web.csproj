@@ -219,6 +219,7 @@
     <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\BocLiteral.cs" />
     <Compile Include="UI\Controls\DataEditControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -15,7 +15,7 @@
     <td><rubicon:boctextvalue id="FirstNameField" runat="server" propertyidentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></rubicon:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocdatetimevalue id="DateOfBirthField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" requirederrormessage="Eingabe erforderlich">
+    <td><rubicon:bocdatetimevalue id="DateOfBirthField" runat="server" propertyidentifier="DateOfBirth" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" >
 <datetimetextboxstyle autopostback="True">
 </DateTimeTextBoxStyle></rubicon:bocdatetimevalue></td></tr>
   <tr>
@@ -23,7 +23,7 @@
     <td><rubicon:bocbooleanvalue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" nullitemerrormessage="Eingabe erforderlich" autopostback="True"></rubicon:bocbooleanvalue></td></tr>
   <tr>
     <td></td>
-    <td><rubicon:bocdatetimevalue id="DateOfDeathField" runat="server" propertyidentifier="DateOfDeath" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" requirederrormessage="Eingabe erforderlich"></rubicon:bocdatetimevalue></td></tr>
+    <td><rubicon:bocdatetimevalue id="DateOfDeathField" runat="server" propertyidentifier="DateOfDeath" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" ></rubicon:bocdatetimevalue></td></tr>
   <tr>
     <td></td>
     <td><rubicon:bocenumvalue id="MarriageStatusField" runat="server" propertyidentifier="MarriageStatus" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" nullitemerrormessage="Eingabe erforderlich">

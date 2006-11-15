@@ -26,8 +26,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
-///     information on the data binding process.
+///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general information on the 
+///     data binding process.
 ///   </para><para>
 ///     See <see cref="BusinessObjectBoundWebControl"/> for the <see langword="abstract"/> default implementation.
 ///   </para>
@@ -42,16 +42,10 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
   ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
   ///   <see cref="IBusinessObjectDataSource"/> this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
   /// </summary>
-  /// <value> 
-  ///   A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current
-  ///   naming container.
-  /// </value>
+  /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
   /// <remarks>
-  ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls
-  ///   collection.
-  ///   <note type="inotes">
-  ///     Apply an <see cref="BusinessObjectDataSourceControlConverter"/> when implementing the property. 
-  ///   </note>
+  ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls collection.
+  ///   <note type="inotes">Apply an <see cref="BusinessObjectDataSourceControlConverter"/> when implementing the property.</note>
   /// </remarks>
   string DataSourceControl { get; set; }
 }
@@ -68,10 +62,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 {
   #region BusinessObjectBinding implementation
 
-  /// <summary>
-  ///   Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this
-  ///   <see cref="BusinessObjectBoundWebControl"/>.
-  /// </summary>
+  /// <summary>Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this <see cref="BusinessObjectBoundWebControl"/>.</summary>
   /// <value> The <see cref="BusinessObjectBinding"/> instance used to manage this control's binding. </value>
   [Browsable(false)]
   public BusinessObjectBinding Binding
@@ -79,10 +70,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return _binding; }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="IBusinessObjectBoundWebControl"/> 
-  ///   is bound to.
-  /// </summary>
+  /// <summary>Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="IBusinessObjectBoundWebControl"/> is bound to.</summary>
   /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -92,12 +80,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { _binding.DataSource = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the string representation of the <see cref="Property"/>.
-  /// </summary>
+  /// <summary>Gets or sets the string representation of the <see cref="Property"/>.</summary>
   /// <value> 
-  ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
-  ///   the <see cref="IBusinessObjectProperty"/>. 
+  ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for the 
+  ///   <see cref="IBusinessObjectProperty"/>. 
   /// </value>
   [Category ("Data")]
   [Description ("The string representation of the Property.")]
@@ -110,14 +96,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     set { _binding.PropertyIdentifier = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into 
-  ///   <see cref="Value"/>.
-  /// </summary>
-  /// <value> 
-  ///   An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s
-  ///   <see cref="IBusinessObjectClass"/>
-  /// </value>
+  /// <summary>Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into <see cref="Value"/>.</summary>
+  /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public IBusinessObjectProperty Property
@@ -127,13 +107,10 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
-  ///   <see cref="IBusinessObjectDataSource"/> this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
+  ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the <see cref="IBusinessObjectDataSource"/> 
+  ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
   /// </summary>
-  /// <value> 
-  ///   A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current
-  ///   naming container.
-  /// </value>
+  /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
   [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Data")]
@@ -144,19 +121,35 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return _binding.DataSourceControl; }
     set { _binding.DataSourceControl = value; }
   }
+
+  /// <summary>Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.</summary>
+  /// <remarks>
+  ///   The configuration is considered invalid if data binding is configured for a property that is not available for the bound class or object.
+  /// </remarks>
+  /// <value> 
+  ///   <list type="bullet">
+  ///     <item><see langword="true"/> if the <see cref="DataSource"/> or the <see cref="Property"/> is <see langword="null"/>.</item>
+  ///     <item>The result of the <see cref="IBusinessObjectProperty.IsAccessible">IBusinessObjectProperty.IsAccessible</see> method.</item>
+  ///     <item>Otherwise, <see langword="false"/> is returned.</item>
+  ///   </list>
+  /// </value>
+  [Browsable (false)]
+  public bool HasValidBinding
+  {
+    get { return _binding.HasValidBinding;  }
+  }
   #endregion
 
   /// <summary>
-  ///   Gets the <see cref="IBusinessObjectService"/> from the <paramref name="businessObjectProvider"/> 
-  ///   and queries it for an <see cref="IconInfo"/> object.
+  ///   Gets the <see cref="IBusinessObjectService"/> from the <paramref name="businessObjectProvider"/> and queries it for an <see cref="IconInfo"/> 
+  ///   object.
   /// </summary>
   /// <param name="businessObject"> 
-  ///   The <see cref="IBusinessObject"/> to be passed to the <see cref="IBusinessObjectWebUIService"/>'s
+  ///   The <see cref="IBusinessObject"/> to be passed to the <see cref="IBusinessObjectWebUIService"/>'s 
   ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> method.
   /// </param>
   /// <param name="businessObjectProvider"> 
-  ///   The <see cref="IBusinessObjectProvider"/> to be used to get the <see cref="IconInfo"/> object.
-  ///   Must not be <see langowrd="null"/>. 
+  ///   The <see cref="IBusinessObjectProvider"/> to be used to get the <see cref="IconInfo"/> object. Must not be <see langowrd="null"/>. 
   /// </param>
   public static IconInfo GetIcon (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
   {
@@ -199,48 +192,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _binding = new BusinessObjectBinding (this);
   }
 
-  /// <remarks>
-  ///   Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/>
-  ///   method.
-  /// </remarks>
+  /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
     EnsureChildControls();
     _binding.EnsureDataSource();
-  }
-
-  /// <summary>
-  ///   Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.
-  /// </summary>
-  /// <remarks>
-  ///   The configuration is considered invalid if data binding is configured for a property 
-  ///   that is not available for the bound class or object.
-  /// </remarks>
-  /// <value> 
-  ///   <list type="bullet">
-  ///     <item>
-  ///       <see langword="true"/> if the <see cref="DataSource"/> or the <see cref="Property"/> is 
-  ///       <see langword="null"/>. 
-  ///     </item>
-  ///     <item>
-  ///       The result of the 
-  ///       <see cref="IBusinessObjectProperty.IsAccessible">IBusinessObjectProperty.IsAccessible</see> method.
-  ///     </item>
-  ///     <item>Otherwise, <see langword="false"/> is returned.</item>
-  ///   </list>
-  /// </value>
-  [Browsable (false)]
-  public bool HasValidBinding
-  {
-    get 
-    { 
-      IBusinessObjectDataSource dataSource = _binding.DataSource;
-      IBusinessObjectProperty property = _binding.Property;
-      if (dataSource == null || property == null)
-        return true;
-      return property.IsAccessible (dataSource.BusinessObjectClass, dataSource.BusinessObject);
-    } 
   }
 
   /// <value> 
@@ -251,8 +208,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   </para>
   /// </value>
   /// <remarks>
-  ///   The control only saves the set value of <b>Visible</b> into the view state. Therefor the control can change
-  ///   its visibilty during during subsequent postbacks.
+  ///   The control only saves the set value of <b>Visible</b> into the view state. Therefor the control can change its visibilty during during 
+  ///   subsequent postbacks.
   /// </remarks>
   public override bool Visible
   {
@@ -280,8 +237,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   <para>
   ///     Override <see cref="ValueImplementation"/> to define the behaviour of <c>Value</c>. 
   ///   </para><para>
-  ///     Redefine <c>Value</c> using the keyword <c>new</c> (<c>Shadows</c> in Visual Basic) 
-  ///     to provide a typesafe implementation in derived classes.
+  ///     Redefine <see cref="Value"/> using the keyword <see langword="new"/> to provide a typesafe implementation in derived classes.
   ///   </para>
   /// </remarks>
   [Browsable (false)]
@@ -325,20 +281,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     }
   }
 
-  /// <summary>
-  ///   Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.
-  /// </summary>
-  /// <param name="property"> 
-  ///   The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.
-  /// </param>
+  /// <summary>Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.</summary>
+  /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
   /// <returns>
   ///   <list type="bullet">
-  ///     <item>
-  ///       <see langword="true"/> is <see cref="SupportedPropertyInterfaces"/> is null.
-  ///     </item>
-  ///     <item>
-  ///       <see langword="false"/> if the <see cref="DataSource"/> is in <see cref="DataSourceMode.Search"/> mode.
-  ///     </item>
+  ///     <item><see langword="true"/> is <see cref="SupportedPropertyInterfaces"/> is null.</item>
+  ///     <item><see langword="false"/> if the <see cref="DataSource"/> is in <see cref="DataSourceMode.Search"/> mode.</item>
   ///     <item>Otherwise, <see langword="IsPropertyInterfaceSupported"/> is evaluated and returned as result.</item>
   ///   </list>
   /// </returns>
@@ -358,20 +306,14 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (property, SupportedPropertyInterfaces);
   }
 
-  /// <summary>
-  ///   Tests whether the <paramref name="property"/>'s type is part of the 
-  ///   <paramref name="supportedPropertyInterfaces"/> array.
-  /// </summary>
-  /// <param name="property"> 
-  ///   The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.
-  /// </param>
+  /// <summary>Tests whether the <paramref name="property"/>'s type is part of the <paramref name="supportedPropertyInterfaces"/> array.</summary>
+  /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
   /// <param name="supportedPropertyInterfaces"> 
-  ///   The list of interfaces to test the <paramref name="property"/> against. Use <see langword="null"/> if no 
-  ///   restrictions are made. Items must not be <see langword="null"/>.
+  ///   The list of interfaces to test the <paramref name="property"/> against. Use <see langword="null"/> if no restrictions are made. Items must 
+  ///   not be <see langword="null"/>.
   /// </param>
   /// <returns> 
-  ///   <see langword="true"/> if the <paramref name="property"/>'s type is found in the 
-  ///   <paramref name="supportedPropertyInterfaces"/> array. 
+  ///   <see langword="true"/> if the <paramref name="property"/>'s type is found in the <paramref name="supportedPropertyInterfaces"/> array. 
   /// </returns>
   public static bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
   {
@@ -394,8 +336,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   Gets the interfaces derived from <see cref="IBusinessObjectProperty"/> supported by this control, 
-  ///   or <see langword="null"/> if no restrictions are made.
+  ///   Gets the interfaces derived from <see cref="IBusinessObjectProperty"/> supported by this control, or <see langword="null"/> if no 
+  ///   restrictions are made.
   /// </summary>
   /// <value> <see langword="null"/> in the default implementation. </value>
   /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
@@ -416,8 +358,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
   /// <param name="localResourcesType"> 
-  ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
-  ///   Typically an <b>enum</b> or the derived class itself.
+  ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it. Typically an <b>enum</b> or the derived class itself.
   /// </param>
   protected IResourceManager GetResourceManager (Type localResourcesType)
   {
@@ -429,10 +370,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = 
-        MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
-    IResourceManager namingContainerResourceManager = 
-        ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+    IResourceManager localResourceManager = MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+    IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
 
     if (namingContainerResourceManager == null)
       _cachedResourceManager = new ResourceManagerSet (localResourceManager);
@@ -457,10 +396,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return null; }
   }
 
-  /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
-  ///   <see cref="Control.ClientID"/>.
-  /// </summary>
+  /// <summary>Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its <see cref="Control.ClientID"/>.</summary>
   /// <value> This instance for the default implementation. </value>
   [Browsable(false)]
   public virtual Control TargetControl
@@ -468,10 +404,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return this; }
   }
 
-  /// <summary>
-  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
-  ///   <see cref="TargetControl"/>.
-  /// </summary>
+  /// <summary>Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the <see cref="TargetControl"/>.</summary>
   /// <value>
   ///   <see langword="true"/> unsless the <see cref="TargetControl"/> is a <see cref="DropDownList"/> or an 
   ///   <see cref="System.Web.UI.HtmlControls.HtmlSelect"/> control.
@@ -501,9 +434,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   /// <summary> Gets a flag whether the control already existed in the previous page life cycle. </summary>
   /// <remarks> 
-  ///   This property utilizes the <see cref="LoadViewState"/> method for determining a post back. It therefor 
-  ///   requires the control to use the view state. In addition, the property is only useful after the load view state
-  ///   phase of the page life cycle.
+  ///   This property utilizes the <see cref="LoadViewState"/> method for determining a post back. It therefor requires the control to use the 
+  ///   view state. In addition, the property is only useful after the load view state phase of the page life cycle.
   /// </remarks>
   /// <value> <see langword="true"/> if the control has been on the page in the previous life cycle. </value>
   protected bool ControlExistedInPreviousRequest 

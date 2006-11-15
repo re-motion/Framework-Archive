@@ -10,7 +10,7 @@
           <td colSpan=4><obw:boctextvalue id=FirstNameField runat="server" ReadOnly="True" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject"></obw:boctextvalue>&nbsp;<obw:boctextvalue id=LastNameField runat="server" ReadOnly="True" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject"></obw:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obw:bocdatetimevalue id=BirthdayField runat="server" PropertyIdentifier="DateOfBirth" datasourcecontrol="CurrentObject" requirederrormessage="Eingabe erforderlich" invalidtimeerrormessage="Ungültige Zeit" invaliddateerrormessage="Ungültiges Datum" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" incompleteerrormessage="Unvollständige Daten" width="300px" showseconds="False"></obw:bocdatetimevalue></td>
+          <td><obw:bocdatetimevalue id=BirthdayField runat="server" PropertyIdentifier="DateOfBirth" datasourcecontrol="CurrentObject"  invalidtimeerrormessage="Ungültige Zeit" invaliddateerrormessage="Ungültiges Datum" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" incompleteerrormessage="Unvollständige Daten" width="300px" showseconds="False"></obw:bocdatetimevalue></td>
           <td>
             <p>bound</p></td>
           <td style="WIDTH: 20%"><asp:label id=BirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
@@ -76,7 +76,7 @@
           <td style="WIDTH: 20%"><asp:label id=ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
           <td></td>
-          <td><obw:bocdatetimevalue id=DisabledBirthdayField runat="server" PropertyIdentifier="DateOfBirth" datasourcecontrol="CurrentObject" requirederrormessage="Eingabe erforderlich" invalidtimeerrormessage="Ungültige Zeit" invaliddateerrormessage="Ungültiges Datum" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" incompleteerrormessage="Unvollständige Daten" width="300px" showseconds="False" enabled=false></obw:bocdatetimevalue></td>
+          <td><obw:bocdatetimevalue id=DisabledBirthdayField runat="server" PropertyIdentifier="DateOfBirth" datasourcecontrol="CurrentObject"  invalidtimeerrormessage="Ungültige Zeit" invaliddateerrormessage="Ungültiges Datum" invaliddateandtimeerrormessage="Ungültiges Datum oder Zeit" incompleteerrormessage="Unvollständige Daten" width="300px" showseconds="False" enabled=false></obw:bocdatetimevalue></td>
           <td>
             <p>disabled, bound</p></td>
           <td style="WIDTH: 20%"><asp:label id=DisabledBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>

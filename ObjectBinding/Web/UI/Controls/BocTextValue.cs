@@ -384,7 +384,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> 
-  ///   The boxed <see cref="Int32"/>, <see cref="Double"/>, or <see cref="DateTime"/> value to load, 
+  ///   The <see cref="String"/>, boxed <see cref="Int32"/>, boxed <see cref="Double"/>, or boxed <see cref="DateTime"/> value to load, 
   ///   or <see langword="null"/>. 
   /// </param>
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
@@ -748,7 +748,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
   /// <summary> Gets or sets the string representation of the current value. </summary>
   /// <value> 
-  ///   an empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
+  ///   An empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
   ///   The default value is an empty <see cref="String"/>. 
   /// </value>
   [Description("Gets or sets the string representation of the current value.")]

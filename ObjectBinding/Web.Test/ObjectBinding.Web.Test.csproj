@@ -233,6 +233,9 @@
       <DependentUpon>BocListUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="IndividualControlTests\BocLiteralUserControl.ascx.designer.cs">
+      <DependentUpon>BocLiteralUserControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="IndividualControlTests\BocMultilineTextValueUserControl.ascx.cs">
       <DependentUpon>BocMultilineTextValueUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -243,6 +246,10 @@
     </Compile>
     <Compile Include="IndividualControlTests\BocTextValueUserControl.ascx.cs">
       <DependentUpon>BocTextValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocLiteralUserControl.ascx.cs">
+      <DependentUpon>BocLiteralUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="IndividualControlTests\EmptyUserControl.ascx.cs">
@@ -410,6 +417,9 @@
       <SubType>UserControl</SubType>
     </Content>
     <Content Include="IndividualControlTests\BocTextValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocLiteralUserControl.ascx">
       <SubType>UserControl</SubType>
     </Content>
     <Content Include="IndividualControlTests\EmptyUserControl.ascx">

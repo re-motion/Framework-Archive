@@ -211,6 +211,15 @@ public class Person: ReflectionBusinessObject
     set { _cv = value; }
   }
 
+  public string CVString
+  {
+    get {
+      if (_cv == null)
+        return null;
+      return string.Join ("<br/>", _cv);
+    }
+  }
+
   public override string DisplayName
   {
     get { return LastName + ", " + FirstName; }
