@@ -72,6 +72,16 @@
           </td>
         </tr>
         <tr>
+          <td>
+            <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocLiteral"/>
+          </td>
+          <td>
+            Use this control for displaying the value of an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty"/> 
+            when used with data binding if the property contains HTML formatted content. 
+            It can also be assigned a <see cref="T:System.String"/> and <see langword="null"/>.
+          </td>
+        </tr>
+        <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
@@ -323,6 +333,20 @@
           <td style="text-align:center;">1)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
+          <td>
+            <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocLiteral"/>
+          </td>
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
+          <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
+          <td style="text-align:center;">X</td><!-- Firefox 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.0 -->
+          <td style="text-align:center;">X</td><!-- Mozilla 1.7.5 -->
+          <td style="text-align:center;">X</td><!-- Netscape 6.0 -->
+          <td style="text-align:center;">X</td><!-- Netscape 7.2 -->
+          <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
+        </tr>
+        <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
@@ -453,6 +477,13 @@
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
           <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
+        </tr>
+        <tr>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocLiteral"/></td>
+          <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
+          <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
+          <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
           <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>

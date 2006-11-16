@@ -22,6 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
   /// <summary> This control can be used to render text without any escaping applied. </summary>
+  /// <include file='doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/Class/*' />
   [ToolboxItemFilter ("System.Web.UI")]
   [Designer (typeof (BocDesigner))]
   public class BocLiteral : Control, IExtendedBusinessObjectBoundWebControl
@@ -132,7 +133,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     // fields
 
     private BusinessObjectBinding _binding;
-    private string _text = string.Empty;
+    private string _value = string.Empty;
     private LiteralMode _mode = LiteralMode.Transform;
 
     public BocLiteral ()
@@ -176,12 +177,12 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      if (!string.IsNullOrEmpty (_text))
+      if (!string.IsNullOrEmpty (_value))
       {
         if (_mode != LiteralMode.Encode)
-          writer.Write (_text);
+          writer.Write (_value);
         else
-          HttpUtility.HtmlEncode (_text, writer);
+          HttpUtility.HtmlEncode (_value, writer);
       }
       else if (IsDesignMode)
       {
@@ -206,6 +207,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+    /// <include file='doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadValue/*' />
     public virtual void LoadValue (bool interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
@@ -217,6 +219,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
+    /// <include file='doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
     public void LoadUnboundValue (object value, bool interim)
     {
       LoadValueInternal (value, interim);
@@ -224,6 +227,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
+    /// <include file='doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
     public void LoadUnboundValue (string value, bool interim)
     {
       LoadValueInternal (value, interim);
@@ -236,12 +240,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    [Description ("Gets or sets the current value.")]
-    [Browsable (false)]
+    [Description ("The text to be shown in for the BocLiteral.")]
+    [Category ("Data")]
+    [DefaultValue ("")]
     public string Value
     {
-      get { return _text; }
-      set { _text = value; }
+      get { return _value; }
+      set { _value = value; }
     }
 
     object IBusinessObjectBoundControl.Value
@@ -255,20 +260,6 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     {
       get { return Value; }
       set { Value = (string) value; }
-    }
-
-    /// <summary> Gets or sets the string representation of the current value. </summary>
-    /// <value> 
-    ///   An empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
-    ///   The default value is an empty <see cref="String"/>. 
-    /// </value>
-    [Description ("Gets or sets the string representation of the current value.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
-    public string Text
-    {
-      get { return StringUtility.NullToEmpty (_text); }
-      set { _text = value; }
     }
 
     /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
@@ -288,7 +279,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
     /// <summary> The <see cref="BocLiteral"/> supports only scalar properties. </summary>
     /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
-    /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
+    /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
+    /// <param name="isList"> <see langword="true"/> if the property is a list property. </param>
     protected virtual bool SupportsPropertyMultiplicity (bool isList)
     {
       return !isList;
@@ -299,10 +291,8 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return SupportedPropertyInterfaces; }
     }
 
-    /// <summary>
-    ///   The <see cref="BocLiteral"/> supports properties of type <see cref="IBusinessObjectStringProperty"/>.
-    /// </summary>
-    /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
+    /// <summary>The <see cref="BocLiteral"/> supports properties of type <see cref="IBusinessObjectStringProperty"/>.</summary>
+    /// <remarks> Used by <see cref="SupportsProperty"/>. </remarks>
     protected virtual Type[] SupportedPropertyInterfaces
     {
       get { return s_supportedPropertyInterfaces; }
@@ -316,9 +306,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return (Property != null) ? Property.DisplayName : null; }
     }
 
-    /// <summary> Specifies the relative URL to the help text for this control. </summary>
-    [Browsable (false)]
-    public virtual string HelpUrl
+    string ISmartControl.HelpUrl
     {
       get { return null; }
     }
@@ -350,6 +338,9 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       get { return ControlHelper.IsDesignMode (this, Context); }
     }
 
+    [Category ("Behavior")]
+    [Description ("Determines whether the text is transformed or encoded.")]
+    [DefaultValue (LiteralMode.Transform)]
     public LiteralMode Mode
     {
       get { return _mode; }

@@ -306,6 +306,7 @@
     <Content Include="Doc\include\UI\Controls\BocReferenceValue.xml" />
     <Content Include="Doc\include\UI\Controls\BocTextValue.xml" />
     <Content Include="Doc\include\UI\Controls\BocTreeView.xml" />
+    <Content Include="Doc\include\UI\Controls\BocLiteral.xml" />
     <Content Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
     <Content Include="Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt" />
     <Content Include="Res\HTML\BocBooleanValue.css" />
