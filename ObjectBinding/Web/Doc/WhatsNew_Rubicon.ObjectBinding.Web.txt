@@ -1,3 +1,10 @@
+1.7.34
+======
+- BocLiteral: Neues Control, entspricht einem ASP Literal Control mit object binding Unterstützung.
+- BusinessObjectBoundWebControl: Static Methode IsPropertyInterfaceSupported zu einer Instanz Methode auf BusinessObjectBinding geändert.
+- IExtendedBusinessObjectBoundWebControl: Infrastruktur Interface, welches zusätzliche Methoden und Properties für die Kommunikation mit 
+  BusinessObjectBinding bereit stellt. Setzt auf IBusinessObjectBoundWebControl auf.
+
 1.7.31
 ======
 - Bugfix: BocList SwitchRowIntoEditMode bzw AddAndEditRow hat nicht zur zu editierenden Zeile gepaged wenn Paging aktiviert war und es 

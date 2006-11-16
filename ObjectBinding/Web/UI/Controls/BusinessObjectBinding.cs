@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class BusinessObjectBinding
   {
-    private readonly IBusinessObjectBoundWebControl _control;
+    private readonly IExtendedBusinessObjectBoundWebControl _control;
 
     private IBusinessObjectDataSource _dataSource;
     private string _dataSourceControl;
@@ -37,13 +37,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// </summary>
     private bool _hasDesignModePropertyChanged = false;
 
-    public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
+    public BusinessObjectBinding (IExtendedBusinessObjectBoundWebControl control)
     {
       _control = control;
     }
 
     /// <summary> The <see cref="IBusinessObjectBoundWebControl"/> whose binding this instance encapsulates. </summary>
-    public IBusinessObjectBoundWebControl Control
+    public IExtendedBusinessObjectBoundWebControl Control
     {
       get { return _control; }
     }
@@ -278,6 +278,73 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary> Executed when the <see cref="Property"/> is assigned a new value. </summary>
+    protected void OnBindingChanged ()
+    {
+      if (BindingChanged != null)
+        BindingChanged (this, EventArgs.Empty);
+    }
+
+    /// <summary> Raised when the <see cref="Property"/> is assigned a new value. </summary>
+    /// <remarks> 
+    ///   Register for this event to execute code updating the <see cref="Control"/>'s state for the new binding.
+    /// </remarks>
+    public event EventHandler BindingChanged;
+
+    /// <summary>Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.</summary>
+    /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
+    /// <returns>
+    ///   <list type="bullet">
+    ///     <item><see langword="true"/> is <see cref="SupportedPropertyInterfaces"/> is null.</item>
+    ///     <item><see langword="false"/> if the <see cref="DataSource"/> is in <see cref="DataSourceMode.Search"/> mode.</item>
+    ///     <item>Otherwise, <see langword="IsPropertyInterfaceSupported"/> is evaluated and returned as result.</item>
+    ///   </list>
+    /// </returns>
+    public bool SupportsProperty (IBusinessObjectProperty property)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+
+      if (_control.SupportedPropertyInterfaces == null)
+        return true;
+
+      bool isSearchMode = DataSource != null && DataSource.Mode == DataSourceMode.Search;
+      if (!isSearchMode && !_control.SupportsPropertyMultiplicity (property.IsList))
+      {
+        return false;
+      }
+
+      return IsPropertyInterfaceSupported (property, _control.SupportedPropertyInterfaces);
+    }
+
+    /// <summary>Tests whether the <paramref name="property"/>'s type is part of the <paramref name="supportedPropertyInterfaces"/> array.</summary>
+    /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
+    /// <param name="supportedPropertyInterfaces"> 
+    ///   The list of interfaces to test the <paramref name="property"/> against. Use <see langword="null"/> if no restrictions are made. Items must 
+    ///   not be <see langword="null"/>.
+    /// </param>
+    /// <returns> 
+    ///   <see langword="true"/> if the <paramref name="property"/>'s type is found in the <paramref name="supportedPropertyInterfaces"/> array. 
+    /// </returns>
+    public bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+      if (supportedPropertyInterfaces == null)
+        return true;
+      ArgumentUtility.CheckNotNullOrItemsNull ("supportedPropertyInterfaces", supportedPropertyInterfaces);
+
+      bool isSupportedPropertyInterface = false;
+      for (int i = 0; i < supportedPropertyInterfaces.Length; i++)
+      {
+        Type supportedInterface = supportedPropertyInterfaces[i];
+        if (supportedInterface.IsAssignableFrom (property.GetType ()))
+        {
+          isSupportedPropertyInterface = true;
+          break;
+        }
+      }
+      return isSupportedPropertyInterface;
+    }
+
     /// <summary>Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.</summary>
     /// <remarks>
     ///   The configuration is considered invalid if data binding is configured for a property that is not available for the bound class or object.
@@ -294,26 +361,12 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        IBusinessObjectDataSource dataSource = _binding.DataSource;
-        IBusinessObjectProperty property = _binding.Property;
+        IBusinessObjectDataSource dataSource = DataSource;
+        IBusinessObjectProperty property = Property;
         if (dataSource == null || property == null)
           return true;
         return property.IsAccessible (dataSource.BusinessObjectClass, dataSource.BusinessObject);
       }
     }
-
-    /// <summary> Executed when the <see cref="Property"/> is assigned a new value. </summary>
-    protected void OnBindingChanged ()
-    {
-      if (BindingChanged != null)
-        BindingChanged (this, EventArgs.Empty);
-    }
-
-    /// <summary> Raised when the <see cref="Property"/> is assigned a new value. </summary>
-    /// <remarks> 
-    ///   Register for this event to execute code updating the <see cref="Control"/>'s state for the new binding.
-    /// </remarks>
-    public event EventHandler BindingChanged;
   }
-
 }

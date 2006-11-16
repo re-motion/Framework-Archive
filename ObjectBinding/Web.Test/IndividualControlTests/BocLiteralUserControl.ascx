@@ -10,14 +10,13 @@
           <td colSpan=4><obw:boctextvalue id=FirstNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="FirstName"></obw:boctextvalue>&nbsp;<obw:boctextvalue id=LastNameField runat="server" ReadOnly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></obw:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obw:BocLiteral id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CVString" Width="150px">
-            </obw:BocLiteral></td>
+          <td><obw:BocLiteral id=CVField runat="server" datasourcecontrol="CurrentObject" PropertyIdentifier="CVString" /></td>
           <td>
             <p>bound</p></td>
           <td style="WIDTH: 20%"><asp:label id=CVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
           <td></td>
-          <td><obw:BocLiteral id=UnboundCVField runat="server" Width="150px"></obw:BocLiteral></td>
+          <td><obw:BocLiteral id=UnboundCVField runat="server" /></td>
           <td>
             <p>unbound, value not set</p></td>
           <td style="WIDTH: 20%"><asp:label id=UnboundCVFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
