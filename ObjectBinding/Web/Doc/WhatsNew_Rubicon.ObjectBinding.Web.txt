@@ -1,4 +1,4 @@
-1.7.34
+1.7.35
 ======
 - BocLiteral: Neues Control, entspricht einem ASP Literal Control mit object binding Unterstützung.
 - BusinessObjectBoundWebControl: Static Methode IsPropertyInterfaceSupported zu einer Instanz Methode auf BusinessObjectBinding geändert.
