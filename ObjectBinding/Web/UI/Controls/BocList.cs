@@ -2260,7 +2260,7 @@ public class BocList:
     {
       writer.WriteBeginTag ("col");
       writer.Write (" style=\"");
-      writer.WriteStyleAttribute ("width", "0.5em");
+      writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
       writer.Write (">");
     }
@@ -2269,7 +2269,7 @@ public class BocList:
     {
       writer.WriteBeginTag ("col");
       writer.Write (" style=\"");
-      writer.WriteStyleAttribute ("width", "0.5em");
+      writer.WriteStyleAttribute ("width", "1.6em");
       writer.Write ("\"");
       writer.Write (">");
     }
@@ -2290,7 +2290,7 @@ public class BocList:
         BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
         if (valueColumn != null && valueColumn.EnforceWidth && column.Width.Type != UnitType.Percentage)
         {
-          width = "0.5em";
+          width = "2em";
         }
         else
         {

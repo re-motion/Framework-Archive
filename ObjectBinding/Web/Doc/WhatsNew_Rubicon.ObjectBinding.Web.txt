@@ -1,3 +1,7 @@
+1.7.36
+======
+- BocList: Spaltenbrite für Index- und Checkboxspalte von 0.5em auf 1.6em geändert um besseren Support für tableLayout: fixed zu erhalten.
+
 1.7.35
 ======
 - BocLiteral: Neues Control, entspricht einem ASP Literal Control mit object binding Unterstützung.
