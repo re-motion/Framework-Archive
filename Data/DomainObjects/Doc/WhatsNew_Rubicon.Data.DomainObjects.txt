@@ -1,5 +1,11 @@
+1.7.37.0
+========
+
+- Bugifx: DoGen hat statt "ntext" "text" als SQL Datentyp für unbegrenzte Strings generiert.
+
 1.7.34.0
 ========
+
 - DoGen kann nun eine eigene SqlFileBuilder Klasse angegeben werden um andere SQL Dialekte (statt T-SQL) zu unterstüzten.
   Diese muss von Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlFileBuilderBase ableiten.
 

@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
     protected override string SqlDataTypeInt64 { get { return "bigint"; } }
     protected override string SqlDataTypeSingle { get { return "real"; } }
     protected override string SqlDataTypeString { get { return "nvarchar"; } }
-    protected override string SqlDataTypeStringWithoutMaxLength { get { return "text"; } }
+    protected override string SqlDataTypeStringWithoutMaxLength { get { return "ntext"; } }
     protected override string SqlDataTypeBinary { get { return "image"; } }
     protected override string SqlDataTypeObjectID { get { return "uniqueidentifier"; } }
     protected override string SqlDataTypeSerializedObjectID { get { return "varchar (255)"; } }

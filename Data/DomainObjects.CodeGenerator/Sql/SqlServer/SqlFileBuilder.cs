@@ -38,13 +38,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
     public override string GetScript ()
     {
-      ViewBuilder viewBuilder = new ViewBuilder ();
+      ViewBuilder viewBuilder = CreateViewBuilder ();
       viewBuilder.AddViews (Classes);
 
-      TableBuilder tableBuilder = new TableBuilder ();
+      TableBuilder tableBuilder = CreateTableBuilder ();
       tableBuilder.AddTables (Classes);
 
-      ConstraintBuilder constraintBuilder = new ConstraintBuilder ();
+      ConstraintBuilder constraintBuilder = CreateConstraintBuilder ();
       constraintBuilder.AddConstraints (Classes);
 
       return string.Format ("USE {0}\r\n"
@@ -68,6 +68,21 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           tableBuilder.GetCreateTableScript (),
           constraintBuilder.GetAddConstraintScript (), 
           viewBuilder.GetCreateViewScript ());
+    }
+
+    protected virtual TableBuilder CreateTableBuilder ()
+    {
+      return new TableBuilder ();
+    }
+
+    protected virtual ViewBuilder CreateViewBuilder ()
+    {
+      return new ViewBuilder ();
+    }
+
+    protected virtual ConstraintBuilder CreateConstraintBuilder ()
+    {
+      return new ConstraintBuilder ();
     }
   }
 }

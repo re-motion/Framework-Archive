@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "single", false, false, NaInt32.Null)));
       Assert.AreEqual ("nvarchar (100)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string", false, false, 100)));
 
-      Assert.AreEqual ("text", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string")));
+      Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string")));
 
       Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, NaInt32.Null)));
       Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
