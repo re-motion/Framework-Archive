@@ -222,7 +222,16 @@ public class WxePageStep: WxeStep
   {
     if (_isRedirectToPermanentUrlRequired && ! _isRedirectedToPermanentUrl)
     {
-      string destinationUrl = GetDestinationPermanentUrl (context);
+      string destinationUrl;
+      try
+      {
+        destinationUrl = GetDestinationPermanentUrl (context);
+      }
+      catch (WxePermanentUrlTooLongException)
+      {
+        _function = null;
+        throw;
+      }
 
       _permaUrlParameters = null;
       _resumeUrl = context.GetResumePath();
@@ -269,8 +278,16 @@ public class WxePageStep: WxeStep
     {
       string functionToken = GetFunctionTokenForExternalFunction (_function, _returnToCaller);
 
-      string destinationUrl = GetDestinationUrlForExternalFunction (
-          _function, functionToken, _createPermaUrl, _useParentPermaUrl, _permaUrlParameters);
+      string destinationUrl;
+      try
+      {
+        destinationUrl = GetDestinationUrlForExternalFunction (_function, functionToken, _createPermaUrl, _useParentPermaUrl, _permaUrlParameters);
+      }
+      catch (WxePermanentUrlTooLongException)
+      {
+        _function = null;
+        throw;
+      }
 
       if (_returnToCaller)
       {

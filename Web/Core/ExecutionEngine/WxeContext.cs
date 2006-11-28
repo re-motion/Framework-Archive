@@ -114,7 +114,7 @@ public class WxeContext
     int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
     if (permanentUrl.Length > maxLength)
     {
-      throw new WxeException (string.Format (
+      throw new WxePermanentUrlTooLongException (string.Format (
           "Error while creating the permanent URL for WXE function '{0}'. "
           + "The URL exceeds the maximum length of {1} bytes. Generated URL: {2}",
           functionType.Name, maxLength, permanentUrl));

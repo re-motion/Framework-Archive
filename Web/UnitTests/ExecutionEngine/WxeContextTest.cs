@@ -116,7 +116,7 @@ public class WxeContextTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
+  [ExpectedException (typeof (WxePermanentUrlTooLongException))]
   public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";
@@ -167,7 +167,7 @@ public class WxeContextTest
   }
 
   [Test]
-  [ExpectedException (typeof (WxeException))]
+  [ExpectedException (typeof (WxePermanentUrlTooLongException))]
   public void GetPermanentUrlWithQueryStringExceedingMaxLength()
   {
     string parameterName = "Param";

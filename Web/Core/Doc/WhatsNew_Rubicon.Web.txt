@@ -1,3 +1,9 @@
+1.7.37
+======
+- ExecutionEngine
+  * Bugfix: Wenn eine PermanentURL einer neuer Funktion die Maximallänge überschritt, konnte man die Ausführung der neuen Funktion nicht mehr beenden.
+    Neues Verhalten: die neu ausgeführte Funktion wird abgebrochen.
+
 1.7.32
 ======
 - Rubicon.Web.UI.Smartpage
