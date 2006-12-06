@@ -11,6 +11,8 @@ using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Security.Data.DomainObjects;
+using Rubicon.Utilities;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
@@ -77,25 +79,16 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
     protected virtual void Initialize ()
     {
       SetCatchExceptionTypes (typeof (WxeUserCancelException));
-
-      InitializeEvents ();
     }
 
-    protected override void OnDeserialization (object sender)
+    protected override void OnTransactionCreated (ClientTransaction transaction)
     {
-      base.OnDeserialization (sender);
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-      InitializeEvents ();
-    }
+      base.OnTransactionCreated (transaction);
 
-    private void InitializeEvents ()
-    {
-      TransactionCreated += new EventHandler<WxeTransactedFunctionEventArgs<ClientTransaction>> (OrganisationalStructureFunction_TransactionCreated);
-    }
-
-    private void OrganisationalStructureFunction_TransactionCreated (object sender, WxeTransactedFunctionEventArgs<ClientTransaction> e)
-    {
-      e.Transaction.Extensions.Add (typeof (SecurityClientTransactionExtension).FullName, new SecurityClientTransactionExtension ());
+      if (SecurityConfiguration.Current.SecurityService != null)
+        transaction.Extensions.Add (typeof (SecurityClientTransactionExtension).FullName, new SecurityClientTransactionExtension ());
     }
   }
 }
