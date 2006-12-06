@@ -1,0 +1,116 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+
+namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
+{
+  public class TableBuilder : TableBuilderBase
+  {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    // construction and disposing
+
+    public TableBuilder ()
+    {
+    }
+
+    // methods and properties
+
+    protected override string SqlDataTypeBoolean { get { return "number (1,0)"; } }
+    protected override string SqlDataTypeByte { get { return "number (3,0)"; } }
+    protected override string SqlDataTypeDate { get { return "timestamp"; } }
+    protected override string SqlDataTypeDateTime { get { return "timestamp"; } }
+    protected override string SqlDataTypeDecimal { get { return null; } }
+    protected override string SqlDataTypeDouble { get { return "binary_float"; } }
+    protected override string SqlDataTypeGuid { get { return "raw (16)"; } }
+    protected override string SqlDataTypeInt16 { get { return "number (5,0)"; } }
+    protected override string SqlDataTypeInt32 { get { return "number (9,0)"; } }
+    protected override string SqlDataTypeInt64 { get { return "number (19,0)"; } }
+    protected override string SqlDataTypeSingle { get { return "binary_double"; } }
+    protected override string SqlDataTypeString { get { return "nvarchar2"; } }
+    protected override string SqlDataTypeStringWithoutMaxLength { get { return null; } }
+    protected override string SqlDataTypeBinary { get { return null; } }
+    protected override string SqlDataTypeObjectID { get { return "raw (16)"; } }
+    protected override string SqlDataTypeSerializedObjectID { get { return "varchar2 (255)"; } }
+    protected override string SqlDataTypeClassID { get { return "varchar2 (100)"; } }
+
+    public override void AddToCreateTableScript (ClassDefinition classDefinition, StringBuilder createTableStringBuilder)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("createTableStringBuilder", createTableStringBuilder);
+
+      createTableStringBuilder.AppendFormat ("CREATE TABLE \"{0}\"\r\n"
+          + "(\r\n"
+          + "  \"ID\" raw (16) NOT NULL,\r\n"
+          + "  \"ClassID\" varchar2 (100) NOT NULL,\r\n"
+          + "  \"Timestamp\" number (9,0) DEFAULT 1 NOT NULL,\r\n\r\n"
+          + "{1}  CONSTRAINT \"PK_{0}\" PRIMARY KEY (\"ID\")\r\n"
+          + ");\r\n"
+          + "-- timestamp trigger\r\n"
+          + "CREATE TRIGGER \"{0}_ts\" BEFORE UPDATE ON \"{0}\" FOR EACH ROW\r\n"
+          + "BEGIN\r\n"
+          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
+          + "END;\r\n",
+          classDefinition.MyEntityName,
+          GetColumnList (classDefinition));
+    }
+
+    public override void AddToDropTableScript (ClassDefinition classDefinition, StringBuilder dropTableStringBuilder)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("dropTableStringBuilder", dropTableStringBuilder);
+
+      dropTableStringBuilder.AppendFormat ("DROP TABLE \"{0}\";\r\n",
+          classDefinition.MyEntityName);
+    }
+
+    public override string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable)
+    {
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      string nullable;
+      if (propertyDefinition.IsNullable || forceNullable)
+        nullable = " NULL";
+      else
+        nullable = " NOT NULL";
+
+      return string.Format ("  \"{0}\" {1}{2}{3},\r\n{4}",
+          propertyDefinition.ColumnName,
+          GetSqlDataType (propertyDefinition),
+          nullable,
+          GetBooleanConstraint (propertyDefinition),
+          GetClassIDColumn (propertyDefinition));
+    }
+
+    protected override string ColumnListOfParticularClassFormatString
+    {
+      get { return "  -- {0} columns\r\n{1}\r\n"; }
+    }
+
+    private string GetClassIDColumn (PropertyDefinition propertyDefinition)
+    {
+      if (!HasClassIDColumn (propertyDefinition))
+        return string.Empty;
+
+      return string.Format ("  \"{0}\" {1} NULL,\r\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), SqlDataTypeClassID);
+    }
+
+    private string GetBooleanConstraint (PropertyDefinition propertyDefinition)
+    {
+      if (propertyDefinition.MappingTypeName != "boolean")
+        return string.Empty;
+
+      return string.Format (" CONSTRAINT \"{0}_{1}_Range\" CHECK (\"{1}\" BETWEEN 0 AND 1)",
+          propertyDefinition.ClassDefinition.MyEntityName,
+          propertyDefinition.ColumnName);
+    }
+  }
+}
