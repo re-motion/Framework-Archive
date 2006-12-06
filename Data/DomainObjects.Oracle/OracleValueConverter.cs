@@ -24,8 +24,7 @@ namespace Rubicon.Data.DomainObjects.Oracle
         return ((Guid)value).ToByteArray();
       else if (value is bool)
         return (bool) value ? 1 : 0;
-      else
-        return value;
+      return value;
     }
 
     public override ObjectID GetObjectID (ClassDefinition classDefinition, object dataValue)
