@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
     protected override string SqlDataTypeSingle { get { return "binary_double"; } }
     protected override string SqlDataTypeString { get { return "nvarchar2"; } }
     protected override string SqlDataTypeStringWithoutMaxLength { get { return null; } }
-    protected override string SqlDataTypeBinary { get { return null; } }
+    protected override string SqlDataTypeBinary { get { return "blob"; } }
     protected override string SqlDataTypeObjectID { get { return "raw (16)"; } }
     protected override string SqlDataTypeSerializedObjectID { get { return "varchar2 (255)"; } }
     protected override string SqlDataTypeClassID { get { return "varchar2 (100)"; } }
