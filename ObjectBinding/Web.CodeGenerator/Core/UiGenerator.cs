@@ -52,7 +52,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 			Placeholder.Postfix = _configuration.PlaceholderPostfix;
 
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler (CurrentDomain_AssemblyResolve);
-			MappingConfiguration.SetCurrent(new MappingConfiguration(_configuration.MappingXml, _configuration.MappingXsd, true));
+			MappingConfiguration.SetCurrent (new MappingConfiguration (_configuration.MappingXml, true));
 		}
 
     public void Dispose()
