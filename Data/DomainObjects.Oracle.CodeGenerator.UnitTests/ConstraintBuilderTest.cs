@@ -6,6 +6,9 @@ using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using System.Collections;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 
 namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
@@ -158,6 +161,25 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           "ALTER TABLE \"ClassWithRelations\" ADD CONSTRAINT \"FK_DerivedClassToClassWithRelations\" FOREIGN KEY (\"DerivedClassID\") REFERENCES \"ConcreteClass\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithRelationNameExceedsMaximumLength ()
+    {
+      MemoryAppender memoryAppender = new MemoryAppender ();
+      BasicConfigurator.Configure (memoryAppender);
+
+      _constraintBuilder.AddConstraint (ClassWithRelations);
+
+      string expectedScript =
+          "ALTER TABLE \"ClassWithRelations\" ADD CONSTRAINT \"FK_DerivedClassToClassWithRelations\" FOREIGN KEY (\"DerivedClassID\") REFERENCES \"ConcreteClass\" (\"ID\");\r\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+      
+      LoggingEvent[] events = memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreEqual (Level.Warn, events[0].Level);
+      Assert.AreEqual ("The relation name 'DerivedClassToClassWithRelations' in class 'ClassWithRelations' is too long (32 characters). Maximum length: 25", events[0].RenderedMessage);
     }
 
     [Test]

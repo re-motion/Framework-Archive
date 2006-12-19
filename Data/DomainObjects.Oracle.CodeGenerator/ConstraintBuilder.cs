@@ -14,6 +14,8 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
 
     // static members and constants
 
+    private const int c_relationNameMaximumLength = 25;
+
     // member fields
 
     private Hashtable _constraintNamesUsed;
@@ -69,6 +71,12 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
       ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("oppositeClassDefinition", oppositeClassDefinition);
+
+      if (relationEndPoint.RelationDefinition.ID.Length > c_relationNameMaximumLength)
+      {
+        LogUtility.LogWarning (string.Format ("The relation name '{0}' in class '{1}' is too long ({2} characters). Maximum length: {3}",
+            relationEndPoint.RelationDefinition.ID, relationEndPoint.ClassDefinition.ID, relationEndPoint.RelationDefinition.ID.Length, c_relationNameMaximumLength));
+      }
 
       return string.Format ("CONSTRAINT \"FK_{0}\" FOREIGN KEY (\"{1}\") REFERENCES \"{2}\" (\"ID\")",
           GetUniqueConstraintName (relationEndPoint),

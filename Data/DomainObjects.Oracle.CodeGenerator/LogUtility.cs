@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using log4net;
 using Rubicon.Utilities;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
+using log4net.Layout;
+using System.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
 {
@@ -26,7 +31,18 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
         {
           if (s_logger == null)
           {
-            log4net.Config.XmlConfigurator.Configure ();
+            if (ConfigurationManager.GetSection ("log4net") != null)
+            {
+              XmlConfigurator.Configure ();
+            }
+            else
+            {
+              ConsoleAppender consoleAppender = new ConsoleAppender ();
+              consoleAppender.Threshold = Level.Warn;
+              consoleAppender.Name = "ConsoleAppender";
+              consoleAppender.Layout = new PatternLayout ("%m\r\n\r\n");
+              BasicConfigurator.Configure (consoleAppender);
+            }
             s_logger = LogManager.GetLogger ("Rubicon.Data.DomainObjects.Oracle.CodeGenerator");
           }
         }
