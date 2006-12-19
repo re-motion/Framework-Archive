@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using log4net;
 
 namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
 {
@@ -13,6 +14,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
     // types
 
     // static members and constants
+
+    private const int c_tableNameMaximumLength = 25;
+    private const int c_columnNameMaximumLength = 23;
 
     // member fields
 
@@ -47,6 +51,12 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("createTableStringBuilder", createTableStringBuilder);
 
+      if (classDefinition.MyEntityName.Length > c_tableNameMaximumLength)
+      {
+        LogUtility.LogWarning (string.Format ("The entity name of class '{0}' is too long ({1} characters). Maximum length: {2}", 
+            classDefinition.ID, classDefinition.MyEntityName.Length, c_tableNameMaximumLength));
+      }
+
       createTableStringBuilder.AppendFormat ("CREATE TABLE \"{0}\"\r\n"
           + "(\r\n"
           + "  \"ID\" raw (16) NOT NULL,\r\n"
@@ -75,6 +85,12 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
     public override string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      if (propertyDefinition.ColumnName.Length > c_columnNameMaximumLength)
+      {
+        LogUtility.LogWarning (string.Format ("The column name '{0}' of class '{1}' is too long ({2} characters). Maximum length: {3}", 
+            propertyDefinition.ColumnName, propertyDefinition.ClassDefinition.ID, propertyDefinition.ColumnName.Length, c_columnNameMaximumLength));
+      }
 
       string nullable;
       if (propertyDefinition.IsNullable || forceNullable)
@@ -108,9 +124,22 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
       if (propertyDefinition.MappingTypeName != "boolean")
         return string.Empty;
 
-      return string.Format (" CONSTRAINT \"{0}_{1}_Range\" CHECK (\"{1}\" BETWEEN 0 AND 1)",
+      return string.Format (" CONSTRAINT \"C_{0}_{1}\" CHECK (\"{2}\" BETWEEN 0 AND 1)",
           propertyDefinition.ClassDefinition.MyEntityName,
+          GetIndex (propertyDefinition),
           propertyDefinition.ColumnName);
+    }
+
+    private int GetIndex (PropertyDefinition propertyDefinition)
+    {
+      PropertyDefinitionCollection propertyDefinitions = propertyDefinition.ClassDefinition.GetPropertyDefinitions ();
+      for (int i = 0; i < propertyDefinitions.Count; i++)
+      {
+        if (propertyDefinitions[i] == propertyDefinition)
+          return i;
+      }
+
+      return -1;
     }
   }
 }

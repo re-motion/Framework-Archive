@@ -56,12 +56,11 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("createConstraintStringBuilder", createConstraintStringBuilder);
 
-      string constraints = GetConstraints (classDefinition);
-      if (constraints.Length != 0)
+      foreach (string constraint in GetConstraints (classDefinition))
       {
-        createConstraintStringBuilder.AppendFormat ("ALTER TABLE \"{0}\" ADD\r\n{1};\r\n",
+        createConstraintStringBuilder.AppendFormat ("ALTER TABLE \"{0}\" ADD {1};\r\n",
             classDefinition.MyEntityName,
-            constraints);
+            constraint);
       }
     }
 
@@ -71,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("oppositeClassDefinition", oppositeClassDefinition);
 
-      return string.Format ("  CONSTRAINT \"FK_{0}\" FOREIGN KEY (\"{1}\") REFERENCES \"{2}\" (\"ID\")",
+      return string.Format ("CONSTRAINT \"FK_{0}\" FOREIGN KEY (\"{1}\") REFERENCES \"{2}\" (\"ID\")",
           GetUniqueConstraintName (relationEndPoint),
           propertyDefinition.ColumnName,
           oppositeClassDefinition.GetEntityName ());
@@ -80,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
 
     protected override string ConstraintSeparator
     {
-      get { return ",\r\n"; }
+      get { throw new NotSupportedException ("Oracle does not support adding multiple constraints within a single ALTER TABLE statement."); }
     }
 
     private string GetUniqueConstraintName (IRelationEndPointDefinition relationEndPoint)

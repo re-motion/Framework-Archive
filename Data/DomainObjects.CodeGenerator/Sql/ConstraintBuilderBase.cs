@@ -94,35 +94,30 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       return allRelationEndPointDefinitions;
     }
 
-    protected string GetConstraints (ClassDefinition tableRootClassDefinition)
+    protected List<string> GetConstraints (ClassDefinition tableRootClassDefinition)
     {
       ArgumentUtility.CheckNotNull ("tableRootClassDefinition", tableRootClassDefinition);
 
-      StringBuilder constraintBuilder = new StringBuilder ();
+      List<string> constraints = new List<string> ();
       foreach (IRelationEndPointDefinition relationEndPoint in GetAllRelationEndPoints (tableRootClassDefinition))
       {
         string constraint = GetConstraint (relationEndPoint);
-
-        if (constraint.Length != 0)
-        {
-          if (constraintBuilder.Length != 0)
-            constraintBuilder.Append (ConstraintSeparator);
-
-          constraintBuilder.Append (constraint);
-        }
+        if (constraint != null)
+          constraints.Add (constraint);
       }
-      return constraintBuilder.ToString ();
+
+      return constraints;
     }
 
     private string GetConstraint (IRelationEndPointDefinition relationEndPoint)
     {
       if (relationEndPoint.IsNull)
-        return string.Empty;
+        return null;
 
       ClassDefinition oppositeClassDefinition = relationEndPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (relationEndPoint.PropertyName);
 
       if (!HasConstraint (relationEndPoint, oppositeClassDefinition))
-        return string.Empty;
+        return null;
 
       PropertyDefinition propertyDefinition = relationEndPoint.ClassDefinition.GetMandatoryPropertyDefinition (relationEndPoint.PropertyName);
 

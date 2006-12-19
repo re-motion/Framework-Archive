@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("createConstraintStringBuilder", createConstraintStringBuilder);
 
-      string constraints = GetConstraints (classDefinition);
+      string constraints = ConcatenateConstraints (GetConstraints (classDefinition));
       if (constraints.Length != 0)
       {
         createConstraintStringBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\r\n{2}\r\n",
@@ -55,6 +55,20 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
             classDefinition.MyEntityName,
             constraints);
       }
+    }
+
+    private string ConcatenateConstraints (List<string> constraints)
+    {
+      StringBuilder constraintBuilder = new StringBuilder ();
+      foreach (string constraint in constraints)
+      {
+        if (constraintBuilder.Length != 0)
+          constraintBuilder.Append (ConstraintSeparator);
+
+        constraintBuilder.Append (constraint);
+      }
+
+      return constraintBuilder.ToString ();
     }
 
     public override string GetConstraint (IRelationEndPointDefinition relationEndPoint, PropertyDefinition propertyDefinition, ClassDefinition oppositeClassDefinition)

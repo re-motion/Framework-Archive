@@ -4,6 +4,9 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
+using log4net.Appender;
+using log4net.Config;
+using log4net.Core;
 
 namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 {
@@ -25,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     }
 
     // methods and properties
-    
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -47,6 +50,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
       Assert.AreEqual ("number (19,0)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int64", false, false, NaInt32.Null)));
       Assert.AreEqual ("binary_double", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "single", false, false, NaInt32.Null)));
       Assert.AreEqual ("nvarchar2 (100)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string", false, false, 100)));
+      Assert.AreEqual ("blob", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, NaInt32.Null)));
       Assert.AreEqual ("raw (16)", _tableBuilder.GetSqlDataType (OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
       Assert.AreEqual ("varchar2 (255)", _tableBuilder.GetSqlDataType (CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
     }
@@ -73,13 +77,6 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The data type 'binary' cannot be mapped to a SQL data type.")]
-    public void GetSqlDataType_WithImage_ThrowArgumentException ()
-    {
-      _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, NaInt32.Null));
-    }
-
-    [Test]
     public void AddToCreateTableScript ()
     {
       string expectedStatement = "CREATE TABLE \"Ceo\"\r\n"
@@ -99,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
           + "END;\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
- 
+
       _tableBuilder.AddToCreateTableScript (CeoClass, stringBuilder);
 
       Assert.AreEqual (expectedStatement, stringBuilder.ToString ());
@@ -114,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + "  \"ClassID\" varchar2 (100) NOT NULL,\r\n"
           + "  \"Timestamp\" number (9,0) DEFAULT 1 NOT NULL,\r\n\r\n"
           + "  -- ClassWithBoolean columns\r\n"
-          + "  \"Boolean\" number (1,0) NOT NULL CONSTRAINT \"ClassWithBoolean_Boolean_Range\" CHECK (\"Boolean\" BETWEEN 0 AND 1),\r\n\r\n"
+          + "  \"Boolean\" number (1,0) NOT NULL CONSTRAINT \"C_ClassWithBoolean_0\" CHECK (\"Boolean\" BETWEEN 0 AND 1),\r\n\r\n"
           + "  CONSTRAINT \"PK_ClassWithBoolean\" PRIMARY KEY (\"ID\")\r\n"
           + ");\r\n"
           + "-- timestamp trigger\r\n"
@@ -141,8 +138,85 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     }
 
     [Test]
+    public void AddToCreateTableScriptForClassWithEntityNameExceedsMaximumLength ()
+    {
+      MemoryAppender memoryAppender = new MemoryAppender ();
+      BasicConfigurator.Configure (memoryAppender);
+
+      ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithVeryLongEntityName", "Entity_ClassWithVeryLongEntityName", "FirstStorageProvider", "ClassWithVeryLongEntityName", false);
+      classes.Add (classDefinition);
+
+      _tableBuilder.AddTables (classes);
+
+      string expectedCreateTableScript = "CREATE TABLE \"Entity_ClassWithVeryLongEntityName\"\r\n"
+          + "(\r\n"
+          + "  \"ID\" raw (16) NOT NULL,\r\n"
+          + "  \"ClassID\" varchar2 (100) NOT NULL,\r\n"
+          + "  \"Timestamp\" number (9,0) DEFAULT 1 NOT NULL,\r\n\r\n"
+          + "  -- ClassWithVeryLongEntityName columns\r\n\r\n"
+          + "  CONSTRAINT \"PK_Entity_ClassWithVeryLongEntityName\" PRIMARY KEY (\"ID\")\r\n"
+          + ");\r\n"
+          + "-- timestamp trigger\r\n"
+          + "CREATE TRIGGER \"Entity_ClassWithVeryLongEntityName_ts\" BEFORE UPDATE ON \"Entity_ClassWithVeryLongEntityName\" FOR EACH ROW\r\n"
+          + "BEGIN\r\n"
+          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
+          + "END;\r\n";
+
+      Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
+
+      LoggingEvent[] events = memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreEqual (Level.Warn, events[0].Level);
+      Assert.AreEqual ("The entity name of class 'ClassWithVeryLongEntityName' is too long (34 characters). Maximum length: 25", events[0].RenderedMessage);
+    }
+
+    [Test]
+    public void AddToCreateTableScriptForClassWithColumnNameExceedsMaximumLength ()
+    {
+      MemoryAppender memoryAppender = new MemoryAppender ();
+      BasicConfigurator.Configure (memoryAppender);
+
+      ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
+      classes.Add (CustomerClass);
+
+      _tableBuilder.AddTables (classes);
+
+      string expectedCreateTableScript = "CREATE TABLE \"Customer\"\r\n"
+          + "(\r\n"
+          + "  \"ID\" raw (16) NOT NULL,\r\n"
+          + "  \"ClassID\" varchar2 (100) NOT NULL,\r\n"
+          + "  \"Timestamp\" number (9,0) DEFAULT 1 NOT NULL,\r\n\r\n"
+          + "  -- Company columns\r\n"
+          + "  \"Name\" nvarchar2 (100) NOT NULL,\r\n"
+          + "  \"PhoneNumber\" nvarchar2 (100) NULL,\r\n"
+          + "  \"AddressID\" raw (16) NULL,\r\n\r\n"
+          + "  -- Customer columns\r\n"
+          + "  \"CustomerType\" number (9,0) NOT NULL,\r\n"
+          + "  \"CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches\" nvarchar2 (100) NOT NULL,\r\n"
+          + "  \"PrimaryOfficialID\" varchar2 (255) NULL,\r\n\r\n"
+          + "  CONSTRAINT \"PK_Customer\" PRIMARY KEY (\"ID\")\r\n"
+          + ");\r\n"
+          + "-- timestamp trigger\r\n"
+          + "CREATE TRIGGER \"Customer_ts\" BEFORE UPDATE ON \"Customer\" FOR EACH ROW\r\n"
+          + "BEGIN\r\n"
+          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
+          + "END;\r\n";
+
+      Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
+
+      LoggingEvent[] events = memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreEqual (Level.Warn, events[0].Level);
+      Assert.AreEqual ("The column name 'CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches' of class 'Customer' is too long (63 characters). Maximum length: 23", events[0].RenderedMessage);
+    }
+
+    [Test]
     public void IntegrationTest ()
     {
+      MemoryAppender memoryAppender = new MemoryAppender ();
+      BasicConfigurator.Configure (memoryAppender);
+
       ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
       classes.Add (CustomerClass);
       classes.Add (OrderClass);
@@ -194,6 +268,11 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + "DROP TABLE \"Order\";\r\n";
 
       Assert.AreEqual (expectedDropTableScript, _tableBuilder.GetDropTableScript ());
+
+      LoggingEvent[] events = memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreEqual (Level.Warn, events[0].Level);
+      Assert.AreEqual ("The column name 'CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches' of class 'Customer' is too long (63 characters). Maximum length: 23", events[0].RenderedMessage);
     }
   }
 }

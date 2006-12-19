@@ -41,8 +41,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     {
       _constraintBuilder.AddConstraint (OrderItemClass);
 
-      string expectedScript = "ALTER TABLE \"OrderItem\" ADD\r\n"
-          + "  CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n";
+      string expectedScript = "ALTER TABLE \"OrderItem\" ADD CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -52,8 +51,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     {
       _constraintBuilder.AddConstraint (OrderClass);
 
-      string expectedScript = "ALTER TABLE \"Order\" ADD\r\n"
-          + "  CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
+      string expectedScript = "ALTER TABLE \"Order\" ADD CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -64,10 +62,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
       _constraintBuilder.AddConstraint (OrderItemClass);
       _constraintBuilder.AddConstraint (OrderClass);
 
-      string expectedScript = "ALTER TABLE \"OrderItem\" ADD\r\n"
-          + "  CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n\r\n"
-          + "ALTER TABLE \"Order\" ADD\r\n"
-          + "  CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
+      string expectedScript =
+          "ALTER TABLE \"OrderItem\" ADD CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n\r\n"
+        + "ALTER TABLE \"Order\" ADD CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
 
@@ -107,9 +104,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 
       _constraintBuilder.AddConstraint (firstClass);
 
-      string expectedScript = "ALTER TABLE \"FirstEntity\" ADD\r\n"
-          + "  CONSTRAINT \"FK_FirstClassToSecondClass\" FOREIGN KEY (\"SecondClassID\") REFERENCES \"SecondEntity\" (\"ID\"),\r\n"
-          + "  CONSTRAINT \"FK_FirstClassToThirdClass\" FOREIGN KEY (\"ThirdClassID\") REFERENCES \"ThirdEntity\" (\"ID\");\r\n";
+      string expectedScript =
+          "ALTER TABLE \"FirstEntity\" ADD CONSTRAINT \"FK_FirstClassToSecondClass\" FOREIGN KEY (\"SecondClassID\") REFERENCES \"SecondEntity\" (\"ID\");\r\n"
+        + "ALTER TABLE \"FirstEntity\" ADD CONSTRAINT \"FK_FirstClassToThirdClass\" FOREIGN KEY (\"ThirdClassID\") REFERENCES \"ThirdEntity\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -146,8 +143,8 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 
       _constraintBuilder.AddConstraint (baseClass);
 
-      string expectedScript = "ALTER TABLE \"BaseClassEntity\" ADD\r\n"
-          + "  CONSTRAINT \"FK_OtherClassToDerivedClass\" FOREIGN KEY (\"OtherClassID\") REFERENCES \"OtherClassEntity\" (\"ID\");\r\n";
+      string expectedScript = 
+          "ALTER TABLE \"BaseClassEntity\" ADD CONSTRAINT \"FK_OtherClassToDerivedClass\" FOREIGN KEY (\"OtherClassID\") REFERENCES \"OtherClassEntity\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -157,8 +154,8 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
     {
       _constraintBuilder.AddConstraint (ClassWithRelations);
 
-      string expectedScript = "ALTER TABLE \"ClassWithRelations\" ADD\r\n"
-          + "  CONSTRAINT \"FK_DerivedClassToClassWithRelations\" FOREIGN KEY (\"DerivedClassID\") REFERENCES \"ConcreteClass\" (\"ID\");\r\n";
+      string expectedScript =
+          "ALTER TABLE \"ClassWithRelations\" ADD CONSTRAINT \"FK_DerivedClassToClassWithRelations\" FOREIGN KEY (\"DerivedClassID\") REFERENCES \"ConcreteClass\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -207,10 +204,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 
       _constraintBuilder.AddConstraints (classes);
 
-      string expectedScript = "ALTER TABLE \"OrderItem\" ADD\r\n"
-          + "  CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n\r\n"
-          + "ALTER TABLE \"Order\" ADD\r\n"
-          + "  CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
+      string expectedScript =
+          "ALTER TABLE \"OrderItem\" ADD CONSTRAINT \"FK_OrderToOrderItem\" FOREIGN KEY (\"OrderID\") REFERENCES \"Order\" (\"ID\");\r\n\r\n"
+          + "ALTER TABLE \"Order\" ADD CONSTRAINT \"FK_CustomerToOrder\" FOREIGN KEY (\"CustomerID\") REFERENCES \"Customer\" (\"ID\");\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
     }
@@ -239,9 +235,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetDropConstraintScript ());
     }
-    
-    
-    
+
+
+
     [Test]
     public void GetDropConstraintsScriptWithMultipleEntities ()
     {

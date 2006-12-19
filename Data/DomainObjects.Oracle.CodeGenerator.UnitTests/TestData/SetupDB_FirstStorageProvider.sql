@@ -208,7 +208,7 @@ CREATE TABLE "ClassWithBoolean"
   "Timestamp" number (9,0) DEFAULT 1 NOT NULL,
 
   -- ClassWithBoolean columns
-  "Boolean" number (1,0) NOT NULL CONSTRAINT "ClassWithBoolean_Boolean_Range" CHECK ("Boolean" BETWEEN 0 AND 1),
+  "Boolean" number (1,0) NOT NULL CONSTRAINT "C_ClassWithBoolean_0" CHECK ("Boolean" BETWEEN 0 AND 1),
 
   CONSTRAINT "PK_ClassWithBoolean" PRIMARY KEY ("ID")
 );
@@ -225,7 +225,7 @@ CREATE TABLE "TableWithAllDataTypes"
   "Timestamp" number (9,0) DEFAULT 1 NOT NULL,
 
   -- ClassWithAllDataTypes columns
-  "Boolean" number (1,0) NOT NULL CONSTRAINT "TableWithAllDataTypes_Boolean_Range" CHECK ("Boolean" BETWEEN 0 AND 1),
+  "Boolean" number (1,0) NOT NULL CONSTRAINT "C_TableWithAllDataTypes_0" CHECK ("Boolean" BETWEEN 0 AND 1),
   "Byte" number (3,0) NOT NULL,
   "Date" timestamp NOT NULL,
   "DateTime" timestamp NOT NULL,
@@ -237,7 +237,7 @@ CREATE TABLE "TableWithAllDataTypes"
   "Int64" number (19,0) NOT NULL,
   "Single" binary_double NOT NULL,
   "String" nvarchar2 (100) NOT NULL,
-  "NaBoolean" number (1,0) NULL CONSTRAINT "TableWithAllDataTypes_NaBoolean_Range" CHECK ("NaBoolean" BETWEEN 0 AND 1),
+  "NaBoolean" number (1,0) NULL CONSTRAINT "C_TableWithAllDataTypes_12" CHECK ("NaBoolean" BETWEEN 0 AND 1),
   "NaByte" number (3,0) NULL,
   "NaDate" timestamp NULL,
   "NaDateTime" timestamp NULL,
@@ -248,7 +248,7 @@ CREATE TABLE "TableWithAllDataTypes"
   "NaInt64" number (19,0) NULL,
   "NaSingle" binary_double NULL,
   "StringWithNullValue" nvarchar2 (100) NULL,
-  "NaBooleanWithNullValue" number (1,0) NULL CONSTRAINT "TableWithAllDataTypes_NaBooleanWithNullValue_Range" CHECK ("NaBooleanWithNullValue" BETWEEN 0 AND 1),
+  "NaBooleanWithNullValue" number (1,0) NULL CONSTRAINT "C_TableWithAllDataTypes_23" CHECK ("NaBooleanWithNullValue" BETWEEN 0 AND 1),
   "NaByteWithNullValue" number (3,0) NULL,
   "NaDateWithNullValue" timestamp NULL,
   "NaDateTimeWithNullValue" timestamp NULL,
@@ -332,27 +332,20 @@ BEGIN
 END;
 
 -- Create constraints for tables that were created above
-ALTER TABLE "Customer" ADD
-  CONSTRAINT "FK_AddressToCompany" FOREIGN KEY ("AddressID") REFERENCES "Address" ("ID");
+ALTER TABLE "Customer" ADD CONSTRAINT "FK_AddressToCompany" FOREIGN KEY ("AddressID") REFERENCES "Address" ("ID");
 
-ALTER TABLE "DevelopmentPartner" ADD
-  CONSTRAINT "FK_AddressToCompany_1" FOREIGN KEY ("AddressID") REFERENCES "Address" ("ID");
+ALTER TABLE "DevelopmentPartner" ADD CONSTRAINT "FK_AddressToCompany_1" FOREIGN KEY ("AddressID") REFERENCES "Address" ("ID");
 
-ALTER TABLE "Order" ADD
-  CONSTRAINT "FK_CustomerToOrder" FOREIGN KEY ("CustomerID") REFERENCES "Customer" ("ID");
+ALTER TABLE "Order" ADD CONSTRAINT "FK_CustomerToOrder" FOREIGN KEY ("CustomerID") REFERENCES "Customer" ("ID");
 
-ALTER TABLE "OrderItem" ADD
-  CONSTRAINT "FK_OrderToOrderItem" FOREIGN KEY ("OrderID") REFERENCES "Order" ("ID");
+ALTER TABLE "OrderItem" ADD CONSTRAINT "FK_OrderToOrderItem" FOREIGN KEY ("OrderID") REFERENCES "Order" ("ID");
 
-ALTER TABLE "Employee" ADD
-  CONSTRAINT "FK_EmployeeToEmployee" FOREIGN KEY ("SupervisorID") REFERENCES "Employee" ("ID");
+ALTER TABLE "Employee" ADD CONSTRAINT "FK_EmployeeToEmployee" FOREIGN KEY ("SupervisorID") REFERENCES "Employee" ("ID");
 
-ALTER TABLE "ClassWithRelations" ADD
-  CONSTRAINT "FK_DerivedClassToClassWithRelations" FOREIGN KEY ("DerivedClassID") REFERENCES "ConcreteClass" ("ID");
+ALTER TABLE "ClassWithRelations" ADD CONSTRAINT "FK_DerivedClassToClassWithRelations" FOREIGN KEY ("DerivedClassID") REFERENCES "ConcreteClass" ("ID");
 
-ALTER TABLE "ConcreteClass" ADD
-  CONSTRAINT "FK_ClassWithRelationsToDerivedOfDerivedClass" FOREIGN KEY ("ClassWithRelationsInDerivedOfDerivedClassID") REFERENCES "ClassWithRelations" ("ID"),
-  CONSTRAINT "FK_ClassWithRelationsToSecondDerivedClass" FOREIGN KEY ("ClassWithRelationsInSecondDerivedClassID") REFERENCES "ClassWithRelations" ("ID");
+ALTER TABLE "ConcreteClass" ADD CONSTRAINT "FK_ClassWithRelationsToDerivedOfDerivedClass" FOREIGN KEY ("ClassWithRelationsInDerivedOfDerivedClassID") REFERENCES "ClassWithRelations" ("ID");
+ALTER TABLE "ConcreteClass" ADD CONSTRAINT "FK_ClassWithRelationsToSecondDerivedClass" FOREIGN KEY ("ClassWithRelationsInSecondDerivedClassID") REFERENCES "ClassWithRelations" ("ID");
 
 -- Create a view for every class
 CREATE VIEW "CompanyView" ("ID", "ClassID", "Timestamp", "Name", "PhoneNumber", "AddressID", "CustomerType", "CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches", "PrimaryOfficialID", "Description", "PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches", "Competences")
