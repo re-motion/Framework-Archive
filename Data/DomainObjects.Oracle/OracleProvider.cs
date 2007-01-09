@@ -54,10 +54,14 @@ namespace Rubicon.Data.DomainObjects.Oracle
       // Remove any leading or trailing whitespace
       return formattedSortExpression.Trim ();
     }
+
     public override string GetParameterName (string name)
     {
       CheckDisposed ();
-      
+
+      if (name.StartsWith ("@"))
+        name = ":" + name.Remove (0, 1);
+
       if (name.StartsWith (":"))
         return name;
       else

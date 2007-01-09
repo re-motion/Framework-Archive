@@ -92,9 +92,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"Ceo_ts\" BEFORE UPDATE ON \"Ceo\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n";
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
 
       _tableBuilder.AddToCreateTableScript (CeoClass, stringBuilder);
@@ -116,9 +116,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"ClassWithBoolean_ts\" BEFORE UPDATE ON \"ClassWithBoolean\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n";
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n";
       StringBuilder stringBuilder = new StringBuilder ();
 
       _tableBuilder.AddToCreateTableScript (MappingConfiguration.ClassDefinitions.GetMandatory ("ClassWithBoolean"), stringBuilder);
@@ -159,9 +159,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"Entity_ClassWithVeryLongEntityName_ts\" BEFORE UPDATE ON \"Entity_ClassWithVeryLongEntityName\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n";
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n";
 
       Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
 
@@ -199,9 +199,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"Customer_ts\" BEFORE UPDATE ON \"Customer\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n";
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n";
 
       Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
 
@@ -240,9 +240,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"Customer_ts\" BEFORE UPDATE ON \"Customer\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n\r\n"
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n\r\n"
           + "CREATE TABLE \"Order\"\r\n"
           + "(\r\n"
           + "  \"ID\" raw (16) NOT NULL,\r\n"
@@ -258,9 +258,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"Order_ts\" BEFORE UPDATE ON \"Order\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n";
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n";
 
       Assert.AreEqual (expectedCreateTableScript, _tableBuilder.GetCreateTableScript ());
 

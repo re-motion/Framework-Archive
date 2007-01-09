@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests", "DomainObjects.Oracle.CodeGenerator.UnitTests\Rubicon.Data.DomainObjects.Oracle.CodeGenerator.UnitTests.csproj", "{8E53828D-5223-4D16-AF9D-617F3EC4C045}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Oracle.ExecSql", "DomainObjects.Oracle.ExecSql\Rubicon.Data.DomainObjects.Oracle.ExecSql.csproj", "{B0C0A447-36AE-4A1E-B450-520D2FFA2A1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{8E53828D-5223-4D16-AF9D-617F3EC4C045}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E53828D-5223-4D16-AF9D-617F3EC4C045}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E53828D-5223-4D16-AF9D-617F3EC4C045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0C0A447-36AE-4A1E-B450-520D2FFA2A1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C0A447-36AE-4A1E-B450-520D2FFA2A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C0A447-36AE-4A1E-B450-520D2FFA2A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C0A447-36AE-4A1E-B450-520D2FFA2A1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

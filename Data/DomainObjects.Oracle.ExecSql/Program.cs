@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.ExecSql
       OracleConnection conn = new OracleConnection (connstr);
       conn.Open();
 
-      string[] keywords = {"CREATE", "ALTER", "DECLARE", "DROP"};
+      string[] keywords = {"CREATE", "ALTER", "DECLARE", "DROP", "INSERT"};
 
       TextReader reader = new StreamReader (sqlFile);
       StringBuilder sb = new StringBuilder (2048);

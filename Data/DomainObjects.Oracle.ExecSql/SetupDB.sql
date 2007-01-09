@@ -166,9 +166,9 @@ CREATE TABLE "ContentObject"
 );
 -- timestamp trigger
 CREATE TRIGGER "ContentObject_ts" BEFORE UPDATE ON "ContentObject" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "ExcelReport"
 (
@@ -197,9 +197,9 @@ CREATE TABLE "ExcelReport"
 );
 -- timestamp trigger
 CREATE TRIGGER "ExcelReport_ts" BEFORE UPDATE ON "ExcelReport" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "SearchObject"
 (
@@ -231,9 +231,9 @@ CREATE TABLE "SearchObject"
 );
 -- timestamp trigger
 CREATE TRIGGER "SearchObject_ts" BEFORE UPDATE ON "SearchObject" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "SettlementType"
 (
@@ -259,9 +259,9 @@ CREATE TABLE "SettlementType"
 );
 -- timestamp trigger
 CREATE TRIGGER "SettlementType_ts" BEFORE UPDATE ON "SettlementType" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "LegalRemedy"
 (
@@ -325,9 +325,9 @@ CREATE TABLE "LegalRemedy"
 );
 -- timestamp trigger
 CREATE TRIGGER "LegalRemedy_ts" BEFORE UPDATE ON "LegalRemedy" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Client"
 (
@@ -342,9 +342,9 @@ CREATE TABLE "Client"
 );
 -- timestamp trigger
 CREATE TRIGGER "Client_ts" BEFORE UPDATE ON "Client" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Group"
 (
@@ -367,9 +367,9 @@ CREATE TABLE "Group"
 );
 -- timestamp trigger
 CREATE TRIGGER "Group_ts" BEFORE UPDATE ON "Group" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "GroupType"
 (
@@ -384,9 +384,9 @@ CREATE TABLE "GroupType"
 );
 -- timestamp trigger
 CREATE TRIGGER "GroupType_ts" BEFORE UPDATE ON "GroupType" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "GroupTypePosition"
 (
@@ -403,9 +403,9 @@ CREATE TABLE "GroupTypePosition"
 );
 -- timestamp trigger
 CREATE TRIGGER "GroupTypePosition_ts" BEFORE UPDATE ON "GroupTypePosition" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Position"
 (
@@ -421,9 +421,9 @@ CREATE TABLE "Position"
 );
 -- timestamp trigger
 CREATE TRIGGER "Position_ts" BEFORE UPDATE ON "Position" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Role"
 (
@@ -442,9 +442,9 @@ CREATE TABLE "Role"
 );
 -- timestamp trigger
 CREATE TRIGGER "Role_ts" BEFORE UPDATE ON "Role" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "User"
 (
@@ -469,9 +469,9 @@ CREATE TABLE "User"
 );
 -- timestamp trigger
 CREATE TRIGGER "User_ts" BEFORE UPDATE ON "User" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "EnumValueDefinition"
 (
@@ -499,9 +499,9 @@ CREATE TABLE "EnumValueDefinition"
 );
 -- timestamp trigger
 CREATE TRIGGER "EnumValueDefinition_ts" BEFORE UPDATE ON "EnumValueDefinition" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "SecurableClassDefinition"
 (
@@ -523,9 +523,9 @@ CREATE TABLE "SecurableClassDefinition"
 );
 -- timestamp trigger
 CREATE TRIGGER "SecurableClassDefinition_ts" BEFORE UPDATE ON "SecurableClassDefinition" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "StatePropertyReference"
 (
@@ -543,9 +543,9 @@ CREATE TABLE "StatePropertyReference"
 );
 -- timestamp trigger
 CREATE TRIGGER "StatePropertyReference_ts" BEFORE UPDATE ON "StatePropertyReference" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "StatePropertyDefinition"
 (
@@ -564,9 +564,9 @@ CREATE TABLE "StatePropertyDefinition"
 );
 -- timestamp trigger
 CREATE TRIGGER "StatePropertyDefinition_ts" BEFORE UPDATE ON "StatePropertyDefinition" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "AccessTypeReference"
 (
@@ -585,9 +585,9 @@ CREATE TABLE "AccessTypeReference"
 );
 -- timestamp trigger
 CREATE TRIGGER "AccessTypeReference_ts" BEFORE UPDATE ON "AccessTypeReference" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "StateCombination"
 (
@@ -605,9 +605,9 @@ CREATE TABLE "StateCombination"
 );
 -- timestamp trigger
 CREATE TRIGGER "StateCombination_ts" BEFORE UPDATE ON "StateCombination" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "StateUsage"
 (
@@ -624,9 +624,9 @@ CREATE TABLE "StateUsage"
 );
 -- timestamp trigger
 CREATE TRIGGER "StateUsage_ts" BEFORE UPDATE ON "StateUsage" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "AccessControlList"
 (
@@ -644,9 +644,9 @@ CREATE TABLE "AccessControlList"
 );
 -- timestamp trigger
 CREATE TRIGGER "AccessControlList_ts" BEFORE UPDATE ON "AccessControlList" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "AccessControlEntry"
 (
@@ -675,9 +675,9 @@ CREATE TABLE "AccessControlEntry"
 );
 -- timestamp trigger
 CREATE TRIGGER "AccessControlEntry_ts" BEFORE UPDATE ON "AccessControlEntry" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Permission"
 (
@@ -696,9 +696,9 @@ CREATE TABLE "Permission"
 );
 -- timestamp trigger
 CREATE TRIGGER "Permission_ts" BEFORE UPDATE ON "Permission" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Culture"
 (
@@ -713,9 +713,9 @@ CREATE TABLE "Culture"
 );
 -- timestamp trigger
 CREATE TRIGGER "Culture_ts" BEFORE UPDATE ON "Culture" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "LocalizedName"
 (
@@ -733,9 +733,9 @@ CREATE TABLE "LocalizedName"
 );
 -- timestamp trigger
 CREATE TRIGGER "LocalizedName_ts" BEFORE UPDATE ON "LocalizedName" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 -- Create constraints for tables that were created above
 ALTER TABLE "ContentObject" ADD CONSTRAINT "FK_BaseObjectToCreator" FOREIGN KEY ("CreatedByID") REFERENCES "User" ("ID");

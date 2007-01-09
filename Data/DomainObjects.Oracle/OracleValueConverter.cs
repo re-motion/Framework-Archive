@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.Oracle
     private object ConvertDBValue (object value)
     {
       if (value is Guid)
-        return ((Guid)value).ToByteArray();
+        return ((Guid) value).ToByteArray ();
       else if (value is bool)
         return (bool) value ? 1 : 0;
       return value;
@@ -48,6 +48,10 @@ namespace Rubicon.Data.DomainObjects.Oracle
         {
           Int16 boolAsInt = ArgumentUtility.CheckNotNullAndValueType<Int16> ("dataValue", dataValue);
           dataValue = (boolAsInt != 0);
+        }
+        else if (propertyDefinition.PropertyType == typeof (Int32) && dataValue.GetType () == typeof (decimal))
+        {
+          dataValue = Convert.ToInt32 (dataValue);
         }
       }
       return base.GetValue (classDefinition, propertyDefinition, dataValue);

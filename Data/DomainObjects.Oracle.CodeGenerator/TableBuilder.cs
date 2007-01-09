@@ -66,9 +66,9 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
           + ");\r\n"
           + "-- timestamp trigger\r\n"
           + "CREATE TRIGGER \"{0}_ts\" BEFORE UPDATE ON \"{0}\" FOR EACH ROW\r\n"
-          + "BEGIN\r\n"
-          + "  \":NEW\".\"Timestamp\" := \":OLD\".\"Timestamp\" + 1;\r\n"
-          + "END;\r\n",
+          + "  BEGIN\r\n"
+          + "    :NEW.\"Timestamp\" := :OLD.\"Timestamp\" + 1;\r\n"
+          + "  END;\r\n",
           classDefinition.MyEntityName,
           GetColumnList (classDefinition));
     }

@@ -43,9 +43,9 @@ CREATE TABLE "Official"
 );
 -- timestamp trigger
 CREATE TRIGGER "Official_ts" BEFORE UPDATE ON "Official" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 -- Create constraints for tables that were created above
 

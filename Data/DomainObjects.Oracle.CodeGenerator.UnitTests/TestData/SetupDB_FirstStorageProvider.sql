@@ -93,9 +93,9 @@ CREATE TABLE "Customer"
 );
 -- timestamp trigger
 CREATE TRIGGER "Customer_ts" BEFORE UPDATE ON "Customer" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "DevelopmentPartner"
 (
@@ -119,9 +119,9 @@ CREATE TABLE "DevelopmentPartner"
 );
 -- timestamp trigger
 CREATE TRIGGER "DevelopmentPartner_ts" BEFORE UPDATE ON "DevelopmentPartner" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Address"
 (
@@ -138,9 +138,9 @@ CREATE TABLE "Address"
 );
 -- timestamp trigger
 CREATE TRIGGER "Address_ts" BEFORE UPDATE ON "Address" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Order"
 (
@@ -159,9 +159,9 @@ CREATE TABLE "Order"
 );
 -- timestamp trigger
 CREATE TRIGGER "Order_ts" BEFORE UPDATE ON "Order" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "OrderItem"
 (
@@ -178,9 +178,9 @@ CREATE TABLE "OrderItem"
 );
 -- timestamp trigger
 CREATE TRIGGER "OrderItem_ts" BEFORE UPDATE ON "OrderItem" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Ceo"
 (
@@ -197,9 +197,9 @@ CREATE TABLE "Ceo"
 );
 -- timestamp trigger
 CREATE TRIGGER "Ceo_ts" BEFORE UPDATE ON "Ceo" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "ClassWithBoolean"
 (
@@ -214,9 +214,9 @@ CREATE TABLE "ClassWithBoolean"
 );
 -- timestamp trigger
 CREATE TRIGGER "ClassWithBoolean_ts" BEFORE UPDATE ON "ClassWithBoolean" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "TableWithAllDataTypes"
 (
@@ -263,9 +263,9 @@ CREATE TABLE "TableWithAllDataTypes"
 );
 -- timestamp trigger
 CREATE TRIGGER "TableWithAllDataTypes_ts" BEFORE UPDATE ON "TableWithAllDataTypes" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "Employee"
 (
@@ -281,9 +281,9 @@ CREATE TABLE "Employee"
 );
 -- timestamp trigger
 CREATE TRIGGER "Employee_ts" BEFORE UPDATE ON "Employee" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "ClassWithRelations"
 (
@@ -299,9 +299,9 @@ CREATE TABLE "ClassWithRelations"
 );
 -- timestamp trigger
 CREATE TRIGGER "ClassWithRelations_ts" BEFORE UPDATE ON "ClassWithRelations" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 CREATE TABLE "ConcreteClass"
 (
@@ -327,9 +327,9 @@ CREATE TABLE "ConcreteClass"
 );
 -- timestamp trigger
 CREATE TRIGGER "ConcreteClass_ts" BEFORE UPDATE ON "ConcreteClass" FOR EACH ROW
-BEGIN
-  ":NEW"."Timestamp" := ":OLD"."Timestamp" + 1;
-END;
+  BEGIN
+    :NEW."Timestamp" := :OLD."Timestamp" + 1;
+  END;
 
 -- Create constraints for tables that were created above
 ALTER TABLE "Customer" ADD CONSTRAINT "FK_AddressToCompany" FOREIGN KEY ("AddressID") REFERENCES "Address" ("ID");
