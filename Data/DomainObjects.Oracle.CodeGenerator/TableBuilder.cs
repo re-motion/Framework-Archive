@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Oracle.CodeGenerator
     protected override string SqlDataTypeDate { get { return "timestamp"; } }
     protected override string SqlDataTypeDateTime { get { return "timestamp"; } }
     protected override string SqlDataTypeDecimal { get { return null; } }
-    protected override string SqlDataTypeDouble { get { return "binary_float"; } }
+    protected override string SqlDataTypeDouble { get { return "binary_double"; } }
     protected override string SqlDataTypeGuid { get { return "raw (16)"; } }
     protected override string SqlDataTypeInt16 { get { return "number (5,0)"; } }
     protected override string SqlDataTypeInt32 { get { return "number (9,0)"; } }
