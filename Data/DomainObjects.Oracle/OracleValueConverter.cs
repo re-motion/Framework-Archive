@@ -3,6 +3,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.Oracle
 {
@@ -52,6 +53,10 @@ namespace Rubicon.Data.DomainObjects.Oracle
         else if (propertyDefinition.PropertyType == typeof (Int32) && dataValue.GetType () == typeof (decimal))
         {
           dataValue = Convert.ToInt32 (dataValue);
+        }
+        else if (propertyDefinition.PropertyType == typeof (NaBoolean) && dataValue.GetType () == typeof (short))
+        {
+          dataValue = Convert.ToBoolean (dataValue);
         }
       }
       return base.GetValue (classDefinition, propertyDefinition, dataValue);
