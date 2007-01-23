@@ -68,7 +68,6 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _globalAccessTypeCacheProviderTypeProperty;
     private Type _httpContextUserProviderType;
     private Type _securityManagerServiceType;
-    private Type _clientTransactionGlobalAccessTypeCacheProviderType;
 
     private readonly object _lock = new object ();
 
