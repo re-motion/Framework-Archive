@@ -16,8 +16,9 @@
       <sources failonempty="true">
         <include name="*.cs"/>
         <include name="Design/**/*.cs"/>
+        <include name="Properties/**/*.cs" />
         <include name="PropertyTypes/**/*.cs"/>
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>

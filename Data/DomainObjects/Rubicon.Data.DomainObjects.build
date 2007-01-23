@@ -21,9 +21,10 @@
         <include name="Mapping/**/*.cs"/>
         <include name="DataManagement/**/*.cs"/>
         <include name="Persistence/**/*.cs"/>
+        <include name="Properties/**/*.cs" />
         <include name="Queries/**/*.cs"/>
         <include name="Schemas/**/*.cs"/>
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>

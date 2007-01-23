@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Data.DomainObjects.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -99,7 +100,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExecutionEngine\WxeTransactedFunction.cs">
@@ -111,9 +112,7 @@
     <Compile Include="ExecutionEngine\WxeTransactionMode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs">
-      <SubType>Code</SubType>
-    </None>
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Rubicon.Data.DomainObjects.Web.build" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

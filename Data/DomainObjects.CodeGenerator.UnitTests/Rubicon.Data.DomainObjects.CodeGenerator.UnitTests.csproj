@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.build" />
     <EmbeddedResource Include="Sql\SqlServer\TestData\SetupDB_FirstStorageProvider.sql">
     </EmbeddedResource>

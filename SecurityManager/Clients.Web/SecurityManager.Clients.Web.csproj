@@ -41,7 +41,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Clients.Web.build" />
     <Content Include="UI\AccessControl\EditPermissionControl.ascx" />
     <Content Include="UI\AccessControl\EditAccessControlEntryControl.ascx" />
@@ -80,7 +80,6 @@
     <Content Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Classes\SecurableClassDefinitionTreeView.cs" />
     <Compile Include="Classes\BaseControl.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -229,6 +228,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserListFormResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AccessControl\EditPermissionControl.ascx.cs">
       <DependentUpon>EditPermissionControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

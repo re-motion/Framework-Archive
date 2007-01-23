@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.ObjectBinding.Web.UnitTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -127,7 +128,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Domain\TypeWithAllDataTypes.cs">
@@ -265,7 +266,7 @@
     <Compile Include="UI\Controls\Infrastructure\BocList\EditModeControllerWithoutEditModeTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.Web.UnitTests.build" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

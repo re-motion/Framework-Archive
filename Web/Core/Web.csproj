@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -103,7 +104,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\ExecutionEngineConfiguration.cs">
@@ -485,7 +486,7 @@
     <Compile Include="Utilities\WebTypeUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Configuration\WebConfiguration.xsx">
       <DependentUpon>WebConfiguration.xsd</DependentUpon>
     </None>
@@ -504,14 +505,30 @@
     <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\FormGridManager.de.resx" />
-    <EmbeddedResource Include="Globalization\FormGridManager.resx" />
-    <EmbeddedResource Include="Globalization\SmartPageInfo.de.resx" />
-    <EmbeddedResource Include="Globalization\SmartPageInfo.resx" />
-    <EmbeddedResource Include="Globalization\ValidationStateViewer.de.resx" />
-    <EmbeddedResource Include="Globalization\ValidationStateViewer.resx" />
-    <EmbeddedResource Include="Globalization\WxePageInfo.de.resx" />
-    <EmbeddedResource Include="Globalization\WxePageInfo.resx" />
+    <EmbeddedResource Include="Globalization\FormGridManager.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\FormGridManager.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\SmartPageInfo.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\SmartPageInfo.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\WxePageInfo.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\WxePageInfo.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Doc\include\Configuration\ExecutionEngineConfiguration.xml" />
     <Content Include="Doc\include\Configuration\ResourceConfiguration.xml" />
     <Content Include="Doc\include\Configuration\SmartNavigationConfiguration.xml" />

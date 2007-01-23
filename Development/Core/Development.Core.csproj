@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Development</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -88,14 +89,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesting\ThreadRunner.cs" />
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Development.Core.build" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

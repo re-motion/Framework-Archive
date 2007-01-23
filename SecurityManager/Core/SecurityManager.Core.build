@@ -23,7 +23,8 @@
         <include name="Domain/**/*.cs" />
         <include name="Persistence/**/*.cs" />
         <include name="Globalization/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <include name="Properties/**/*.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
     
       <references failonempty="true">

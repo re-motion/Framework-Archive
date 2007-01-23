@@ -2,77 +2,223 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Core\Security.csproj", "{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests", "Core.UnitTests\Security.UnitTests.csproj", "{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "..\Web\Core\Web.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "..\Web\UnitTests\Web.UnitTests.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "..\Core.Test\Core.Test.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects", "..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.UnitTests", "..\Data\DomainObjects.UnitTests\Rubicon.Data.DomainObjects.UnitTests.csproj", "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding", "..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.UnitTests", "..\Data\DomainObjects.ObjectBinding.UnitTests\Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{21EC480E-91C6-4558-963B-796698DBB668}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "..\ObjectBinding\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "..\Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core.Test", "..\Development\Core.Test\Development.Core.Test.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "..\prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B446F93-A4AB-41A8-B2B6-A625CA42A4E1}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		..\build\buildversion.xml = ..\build\buildversion.xml
 		..\Commons.build = ..\Commons.build
 		..\build\Commons.Doc.include.xml = ..\build\Commons.Doc.include.xml
 		..\build\Commons.include.xml = ..\build\Commons.include.xml
-		..\build\properties.include.xml = ..\build\properties.include.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests.TestDomain", "Core.UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj", "{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Metadata.Extractor", "Metadata.Extractor\Security.Metadata.Extractor.csproj", "{E294058B-D4F0-4124-BD22-15E44F57749B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.MSBuild.Tasks", "MSBuild.Tasks\Security.MSBuild.Tasks.csproj", "{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Web", "Web\Security.Web.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Web.UnitTests", "Web.UnitTests\Security.Web.UnitTests.csproj", "{5ED46C3D-6273-4025-8ECF-0550BBFC403A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core", "..\SecurityManager\Core\SecurityManager.Core.csproj", "{990B8638-A08F-4A94-B01A-E7DAEF089F27}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core.UnitTests", "..\SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj", "{65B86B2E-D54D-425B-B681-82449E31BA01}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web", "..\Data\DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "..\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "..\Data\DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Metadata.Importer", "..\SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj", "{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web", "..\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj", "{558839F6-D762-47BA-A26C-1D4AA75D0994}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test.SetupDB", "..\SecurityManager\Clients.Web.Test.SetupDB\SecurityManager.Clients.Web.Test.SetupDB.csproj", "{F9D890F8-EB08-4D58-BDFA-6C6540F15795}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test", "..\SecurityManager\Clients.Web.Test\SecurityManager.Clients.Web.Test.csproj", "{1FF52B13-C212-4ADA-86E0-04E49A808FE0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "..\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects", "Data.DomainObjects\Security.Data.DomainObjects.csproj", "{D4397460-CE03-43E6-87F7-3A4E50B8250E}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects.UnitTests", "Data.DomainObjects.UnitTests\Security.Data.DomainObjects.UnitTests.csproj", "{60F06986-924D-4543-ADB8-239D0E1365A8}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection", "..\ObjectBinding\Reflection\ObjectBinding.Reflection.csproj", "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{B0AA271A-E94B-4328-85AD-7B873447F36F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8373F6F2-B707-4D06-8ECF-7411813CECD5}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\prereq\Assemblies\log4net.dll = ..\prereq\Assemblies\log4net.dll
+		..\prereq\Assemblies\log4net.xml = ..\prereq\Assemblies\log4net.xml
+		..\prereq\Assemblies\nunit.framework.dll = ..\prereq\Assemblies\nunit.framework.dll
+		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
+		..\build\properties.include.xml = ..\build\properties.include.xml
+		..\prereq\Assemblies\Rhino.Mocks.dll = ..\prereq\Assemblies\Rhino.Mocks.dll
+		..\prereq\Assemblies\Rhino.Mocks.xml = ..\prereq\Assemblies\Rhino.Mocks.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -214,16 +360,6 @@ Global
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F5416318-15B4-421E-9B44-03CD4C052D5A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|.NET.ActiveCfg = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -407,5 +543,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0AA271A-E94B-4328-85AD-7B873447F36F} = {2B446F93-A4AB-41A8-B2B6-A625CA42A4E1}
+		{8373F6F2-B707-4D06-8ECF-7411813CECD5} = {B0AA271A-E94B-4328-85AD-7B873447F36F}
 	EndGlobalSection
 EndGlobal

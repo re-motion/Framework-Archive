@@ -69,14 +69,12 @@
   <ItemGroup>
     <Compile Include="AutoPage.aspx.cs">
       <DependentUpon>AutoPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="AutoPage.aspx.designer.cs">
       <DependentUpon>AutoPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="CalledPage.aspx.cs">
       <DependentUpon>CalledPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CalledPage.aspx.designer.cs">
       <DependentUpon>CalledPage.aspx</DependentUpon>
@@ -89,7 +87,6 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Generated.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

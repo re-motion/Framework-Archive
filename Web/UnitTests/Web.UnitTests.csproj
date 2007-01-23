@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Web.UnitTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -123,7 +124,7 @@
     <Compile Include="AspNetFramework\PageMock.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\WebConfigurationFactory.cs">
@@ -276,7 +277,7 @@
     <Compile Include="Utilities\UrlUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Web.UnitTests.build" />
     <Content Include="Res\UrlMapping.xml" />
     <Content Include="Res\UrlMappingWithEmptyFunctionType.xml" />

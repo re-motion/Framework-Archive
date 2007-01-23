@@ -17,8 +17,9 @@
         <include name="Configuration/**/*.cs" />
         <include name="Domain/**/*.cs" />
         <include name="Persistence/**/*.cs" />
+        <include name="Properties/**/*.cs" />
         <include name="TestDomain/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
      
       <references failonempty="true">

@@ -16,7 +16,8 @@
         <include name="*.cs" />
         <include name="Configuration/**/*.cs" />
         <include name="Metadata/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <include name="Properties/**/*.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />

@@ -13,8 +13,9 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="Domain/**/*.cs" />
+        <include name="Properties/**/*.cs" />
         <include name="UI/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />

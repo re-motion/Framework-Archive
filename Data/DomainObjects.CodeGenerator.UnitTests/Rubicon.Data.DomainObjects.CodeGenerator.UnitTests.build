@@ -13,8 +13,9 @@
       <sources failonempty="true">
         <include name="**/*.cs"/>
         <exclude name="IntegrationTests/TestDomain/*.cs" />
+        <include name="Properties/**/*.cs" />
         <exclude name="bin/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>

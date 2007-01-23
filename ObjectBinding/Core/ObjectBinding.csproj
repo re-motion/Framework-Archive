@@ -97,7 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BooleanToEnumPropertyConverter.cs">
@@ -133,7 +133,7 @@
     <Compile Include="IBusinessObjectClassSource.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.build" />
     <EmbeddedResource Include="Design\PropertyPathPickerControl.resx">
       <DependentUpon>PropertyPathPickerControl.cs</DependentUpon>

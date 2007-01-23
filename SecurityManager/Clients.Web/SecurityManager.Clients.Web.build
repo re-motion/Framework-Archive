@@ -16,9 +16,10 @@
         <include name="*.cs" />
         <include name="Classes/**/*.cs" />
         <include name="Globalization/**/*.cs" />
+        <include name="Properties/**/*.cs" />
         <include name="UI/**/*.cs" />
         <include name="WxeFunctions/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />

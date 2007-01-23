@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Data.DomainObjects.CodeGenerator</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -95,7 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CodeFileBuilder.cs">
@@ -127,7 +128,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TypeName.cs" />
-    <None Include="AssemblyInfoTemplate.cs">
+    <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.CodeGenerator.build" />

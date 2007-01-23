@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\SecurityManagerConfigurationTest.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
     <Compile Include="Configuration\TestSecurityManagerConfiguration.cs" />
@@ -91,13 +90,14 @@
     <Compile Include="Domain\Metadata\SecurableClassValidationResultTest.cs" />
     <Compile Include="Domain\RevisionTest.cs" />
     <Compile Include="Persistence\RevisionSqlProviderExtensionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />
     <Compile Include="TestDomain\PremiumOrder.cs" />
     <Compile Include="TestDomain\SecurityStates.cs" />
     <Compile Include="TestDomain\SpecialOrder.cs" />
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Core.UnitTests.build" />
   </ItemGroup>
   <ItemGroup>

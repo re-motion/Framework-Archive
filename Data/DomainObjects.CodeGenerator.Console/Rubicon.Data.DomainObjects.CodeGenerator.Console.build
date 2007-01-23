@@ -13,7 +13,8 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <include name="Properties/**/*.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>

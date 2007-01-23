@@ -18,6 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.ObjectBinding.Web</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
@@ -114,7 +115,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
+    <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ControlFactory.cs">
@@ -289,7 +290,7 @@
     <Compile Include="UI\Design\PropertyPathBindingCollectionEditor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Doc\Bugs and ToDos.xls" />
     <None Include="ObjectBinding.Web.build" />
     <Content Include="Doc\BocList.txt" />
@@ -346,20 +347,48 @@
     <EmbeddedResource Include="Globalization\BocBooleanValue.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\BocCheckBox.de.resx" />
-    <EmbeddedResource Include="Globalization\BocCheckBox.resx" />
-    <EmbeddedResource Include="Globalization\BocDateTimeValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocDateTimeValue.resx" />
-    <EmbeddedResource Include="Globalization\BocEnumValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocEnumValue.resx" />
-    <EmbeddedResource Include="Globalization\BocList.de.resx" />
-    <EmbeddedResource Include="Globalization\BocList.resx" />
-    <EmbeddedResource Include="Globalization\BocMultilineTextValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocMultilineTextValue.resx" />
-    <EmbeddedResource Include="Globalization\BocReferenceValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocReferenceValue.resx" />
-    <EmbeddedResource Include="Globalization\BocTextValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocTextValue.resx" />
+    <EmbeddedResource Include="Globalization\BocCheckBox.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocCheckBox.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocEnumValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocEnumValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocList.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocList.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocReferenceValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocReferenceValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocTextValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocTextValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -16,11 +16,12 @@
         <include name="Configuration/**/*.cs" />
         <include name="Metadata/**/*.cs" />
         <include name="MockConstraints/**/*.cs" />
+        <include name="Properties/**/*.cs" />
         <include name="SampleDomain/**/*.cs" />
         <include name="SecurityClientTests/**/*.cs" />
         <include name="SecurityStrategyTests/**/*.cs" />
         <include name="XmlAsserter/**/*.cs" />
-        <exclude name="AssemblyInfoTemplate.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />
