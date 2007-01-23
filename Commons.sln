@@ -1,36 +1,94 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "Core.Test\Core.Test.csproj", "{C216DEC9-8820-4298-B10F-FB4131466B69}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding", "ObjectBinding\Core\ObjectBinding.csproj", "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection", "ObjectBinding\Reflection\ObjectBinding.Reflection.csproj", "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core.Test", "Development\Core.Test\Development.Core.Test.csproj", "{F5416318-15B4-421E-9B44-03CD4C052D5A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.CodeDom", "Development\CodeDom\Development.CodeDom.csproj", "{AD1A0CD9-C08C-449C-9A7D-2D8BC5439BDC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Core\Web.csproj", "{DF8BA786-9679-4879-8757-16AE2709D83A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection.Test", "ObjectBinding\Reflection.Test\ObjectBinding.Reflection.Test.csproj", "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "Web\UnitTests\Web.UnitTests.csproj", "{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "ObjectBinding\Web.Test\ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "Web\ExecutionEngine\Test\WxeTest.csproj", "{0B5318E7-4878-402A-8CF8-6BFFC47F571D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A26DF385-8556-4278-A6D9-0AD27ECE4D7A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		buildall.cmd = buildall.cmd
 		build\buildversion.xml = build\buildversion.xml
@@ -39,6 +97,26 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build\Commons.include.xml = build\Commons.include.xml
 		localbuild.cmd = localbuild.cmd
 		build\properties.include.xml = build\properties.include.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{B0AA271A-E94B-4328-85AD-7B873447F36F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8373F6F2-B707-4D06-8ECF-7411813CECD5}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\prereq\Assemblies\log4net.dll = ..\prereq\Assemblies\log4net.dll
+		..\prereq\Assemblies\log4net.xml = ..\prereq\Assemblies\log4net.xml
+		..\prereq\Assemblies\nunit.framework.dll = ..\prereq\Assemblies\nunit.framework.dll
+		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
+		..\prereq\Assemblies\Rhino.Mocks.dll = ..\prereq\Assemblies\Rhino.Mocks.dll
+		..\prereq\Assemblies\Rhino.Mocks.xml = ..\prereq\Assemblies\Rhino.Mocks.xml
 	EndProjectSection
 EndProject
 Global
@@ -67,8 +145,6 @@ Global
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -108,5 +184,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0AA271A-E94B-4328-85AD-7B873447F36F} = {A26DF385-8556-4278-A6D9-0AD27ECE4D7A}
+		{8373F6F2-B707-4D06-8ECF-7411813CECD5} = {B0AA271A-E94B-4328-85AD-7B873447F36F}
 	EndGlobalSection
 EndGlobal
