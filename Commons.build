@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--EXTERNAL_PROPERTIES: build.version.noconfig-->
 <project xmlns="nant-schema" name="Rubicon.Commons">
 
   <include buildfile="build/properties.include.xml" verbose="true" />
@@ -147,7 +148,8 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
+  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, 
+      ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web,
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects,
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
@@ -272,6 +274,29 @@
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
+  </target>
+
+  <target name="ObjectBinding.Web.CodeGenerator" depends="Core, Web, ObjectBinding, ObjectBinding.Web,
+          Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+    <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
+    <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
+    <property name="project.output" value="UIGen" />
+    <property name="project.extension" value="exe" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="ObjectBinding.Web.CodeGenerator.Templates">
+    <property name="project.name" value="ObjectBinding.Web.CodeGenerator.Templates" />
+    <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Templates" />
+    <property name="project.output" value="" />
+    <property name="project.extension" value="" />
+    <call target="execute-buildstep" if="${build.step.get-sourcefiles}" />
+    
+    <copy todir="${build.basedir}/UIGenTemplates" flatten="false" overwrite="true" if="${build.step.copy-resources}">
+      <fileset basedir="${project.basedir}">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
   </target>
 
   <target name="Security" depends="Core">

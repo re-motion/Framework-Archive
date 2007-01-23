@@ -37,29 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Core, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Web.dll</HintPath>
+      <HintPath>..\..\..\prereq\Assemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -178,6 +158,20 @@
     <None Include="types.xsd">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

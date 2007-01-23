@@ -37,38 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Rubicon.Core, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.ObjectBinding.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Web, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Web.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -245,9 +213,41 @@
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainSample\DomainSample.csproj">
+    <ProjectReference Include="..\..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj">
+      <Project>{9246E440-009C-44BE-A801-C66D8DE04A8F}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj">
+      <Project>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</Project>
+      <Name>Rubicon.Data.DomainObjects.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Web\Core\Web.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainSample\Objectbinding.Web.CodeGenerator.DomainSample.csproj">
       <Project>{008034F4-F47F-4CAE-B300-1D8629D1BD1D}</Project>
-      <Name>DomainSample</Name>
+      <Name>Objectbinding.Web.CodeGenerator.DomainSample</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

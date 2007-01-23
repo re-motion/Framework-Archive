@@ -41,30 +41,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Rubicon.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Rubicon.Data.DomainObjects, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Rubicon.Data.DomainObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Data.DomainObjects.ObjectBinding, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.Data.DomainObjects.ObjectBinding.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.ObjectBinding, Version=1.4.16.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Rubicon.ObjectBinding.dll</HintPath>
     </Reference>
     <Reference Include="Rubicon.ObjectBinding.Web, Version=1.4.0.0, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Rubicon.ObjectBinding.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationConfiguration.cs" />
@@ -75,10 +62,28 @@
     <Compile Include="Placeholder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="Replacer.cs" />
     <Compile Include="UiGenerator.cs" />
     <Compile Include="UiGeneratorDumpingPlaceholders.cs" />
     <Compile Include="UiGeneratorSmartCopy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ObjectBinding.Web.CodeGenerator.build" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
