@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -24,23 +23,28 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     protected string GetStatement (EnumWrapper[] abstractRoles)
     {
-      StringBuilder whereClauseBuilder = new StringBuilder (abstractRoles.Length * 50);
-
-      for (int i = 0; i < abstractRoles.Length; i++)
+      using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
       {
-        EnumWrapper roleWrapper = abstractRoles[i];
+        RdbmsProvider storageProvider = (RdbmsProvider) storageProviderManager.GetMandatory (GetStorageProviderID ());
 
-        if (whereClauseBuilder.Length > 0)
-          whereClauseBuilder.Append (" OR ");
+        StringBuilder whereClauseBuilder = new StringBuilder (abstractRoles.Length * 50);
+        for (int i = 0; i < abstractRoles.Length; i++)
+        {
+          EnumWrapper roleWrapper = abstractRoles[i];
 
-        string parameterName = "@p" + i.ToString ();
-        whereClauseBuilder.Append ("Name = ");
-        whereClauseBuilder.Append (parameterName);
+          if (whereClauseBuilder.Length > 0)
+            whereClauseBuilder.Append (" OR ");
 
-        Parameters.Add (parameterName, roleWrapper.ToString());
+          string parameterName = storageProvider.GetParameterName ("p" + i);
+          whereClauseBuilder.Append (storageProvider.DelimitIdentifier ("Name"));
+          whereClauseBuilder.Append (" = ");
+          whereClauseBuilder.Append (parameterName);
+
+          Parameters.Add (parameterName, roleWrapper.ToString ());
+        }
+
+        return string.Format ("SELECT * FROM {0} WHERE {1}", storageProvider.DelimitIdentifier ("AbstractRoleDefinitionView"), whereClauseBuilder);
       }
-
-      return "SELECT * FROM [AbstractRoleDefinitionView] WHERE " + whereClauseBuilder.ToString ();
     }
   }
 }

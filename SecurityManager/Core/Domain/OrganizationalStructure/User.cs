@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
     {
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID");
-
+      
       query.Parameters.Add ("@clientID", clientID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
