@@ -107,5 +107,13 @@ namespace Rubicon.Data.DomainObjects.Oracle
     {
       get { return string.Empty; }
     }
+
+    public override IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
+    {
+      command.CommandText = command.CommandText.Replace ("[", "\"");
+      command.CommandText = command.CommandText.Replace ("]", "\"");
+      command.CommandText = command.CommandText.Replace ("@", ":");
+      return base.ExecuteReader (command, behavior);
+    }
   }
 }
