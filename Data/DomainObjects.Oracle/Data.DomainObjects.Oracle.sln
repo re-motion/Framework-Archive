@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Oracle", "Rubicon.Data.DomainObjects.Oracle.csproj", "{44A79CAF-3C82-43B8-9B3B-47C306C29EB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Oracle", "Data.DomainObjects.Oracle.csproj", "{44A79CAF-3C82-43B8-9B3B-47C306C29EB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

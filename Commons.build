@@ -204,7 +204,7 @@
   </target>
 
   <target name="Data.DomainObjects" depends="Core">
-    <property name="project.name" value="Rubicon.Data.DomainObjects" />
+    <property name="project.name" value="Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
     <property name="project.extension" value="dll" />
@@ -212,7 +212,7 @@
   </target>
 
   <target name="Data.DomainObjects.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
-    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator" />
+    <property name="project.name" value="Data.DomainObjects.CodeGenerator" />
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
     <property name="project.extension" value="dll" />
@@ -220,7 +220,7 @@
   </target>
 
   <target name="Data.DomainObjects.CodeGenerator.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.CodeGenerator">
-    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.Console" />
+    <property name="project.name" value="Data.DomainObjects.CodeGenerator.Console" />
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
     <property name="project.extension" value="exe" />
@@ -228,7 +228,7 @@
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding" depends="Core, Data.DomainObjects, ObjectBinding">
-    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding" />
+    <property name="project.name" value="Data.DomainObjects.ObjectBinding" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.extension" value="dll" />
@@ -237,7 +237,7 @@
 
   <target name="Data.DomainObjects.ObjectBinding.Web" 
       depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding, ObjectBinding, ObjectBinding.Web, Web">
-    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.name" value="Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
@@ -245,7 +245,7 @@
   </target>
 
   <target name="Data.DomainObjects.Web" depends="Core, Data.DomainObjects, Web">
-    <property name="project.name" value="Rubicon.Data.DomainObjects.Web" />
+    <property name="project.name" value="Data.DomainObjects.Web" />
     <property name="project.dir" value="Data/DomainObjects.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Web" />
     <property name="project.extension" value="dll" />
@@ -459,7 +459,7 @@
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
 
-    <property name="project.name" value="Rubicon.Data.DomainObjects.UnitTests" />
+    <property name="project.name" value="Data.DomainObjects.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
@@ -495,7 +495,7 @@
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
     <call target="ObjectBinding" cascade="false"/>
 
-    <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
+    <property name="project.name" value="Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
@@ -531,7 +531,7 @@
     <call target="Data.DomainObjects.CodeGenerator" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
 
-    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
+    <property name="project.name" value="Data.DomainObjects.CodeGenerator.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
     <property name="project.extension" value="dll" />

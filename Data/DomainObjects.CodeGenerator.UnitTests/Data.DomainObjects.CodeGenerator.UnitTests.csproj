@@ -41,9 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <None Include="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.build" />
+    <None Include="Data.DomainObjects.CodeGenerator.UnitTests.build" />
     <EmbeddedResource Include="Sql\SqlServer\TestData\SetupDB_FirstStorageProvider.sql">
     </EmbeddedResource>
     <EmbeddedResource Include="Sql\SqlServer\TestData\SetupDB_SecondStorageProvider.sql">
@@ -63,6 +62,7 @@
     <TestDomainFiles Include="IntegrationTests\TestDomain\OrderPriority.cs" />
     <Compile Include="MappingBaseTest.cs" />
     <Compile Include="NonRdbmsStorageProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sql\SqlFileBuilderMock.cs" />
     <Compile Include="Sql\SqlServer\ConstraintBuilderTest.cs" />
     <Compile Include="Sql\SqlFileBuilderBaseTest.cs" />
@@ -78,17 +78,13 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.CodeGenerator\Rubicon.Data.DomainObjects.CodeGenerator.csproj">
+    <ProjectReference Include="..\DomainObjects.CodeGenerator\Data.DomainObjects.CodeGenerator.csproj">
       <Project>{49FE5865-4141-4BB0-AD13-CB42546C87ED}</Project>
-      <Name>Rubicon.Data.DomainObjects.CodeGenerator</Name>
+      <Name>Data.DomainObjects.CodeGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
-      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Rubicon.Data.DomainObjects</Name>
+      <Name>Data.DomainObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +97,6 @@
     <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

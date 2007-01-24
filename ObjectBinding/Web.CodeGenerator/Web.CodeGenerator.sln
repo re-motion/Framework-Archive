@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "..\..\Web\Core\Web.c
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects", "..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects", "..\..\Data\DomainObjects\Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
@@ -49,19 +49,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "..\Web
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding", "..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding", "..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "..\..\Data\DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.Web", "..\..\Data\DomainObjects.ObjectBinding.Web\Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web", "..\..\Data\DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web", "..\..\Data\DomainObjects.Web\Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"

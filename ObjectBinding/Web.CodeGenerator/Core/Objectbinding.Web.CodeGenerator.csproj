@@ -76,9 +76,9 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+    <ProjectReference Include="..\..\..\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
       <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
-      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\ObjectBinding.csproj">
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>

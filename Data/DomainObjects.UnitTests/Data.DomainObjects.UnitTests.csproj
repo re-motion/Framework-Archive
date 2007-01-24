@@ -98,8 +98,8 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Rubicon.Data.DomainObjects.csproj">
-      <Name>Rubicon.Data.DomainObjects</Name>
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
+      <Name>Data.DomainObjects</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
@@ -677,7 +677,7 @@
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <None Include="Data.DomainObjects.UnitTests.build" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithoutColumnElement.xml" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
     <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />

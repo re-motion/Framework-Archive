@@ -416,7 +416,7 @@
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="Rubicon.Data.DomainObjects.build" />
+    <None Include="Data.DomainObjects.build" />
     <EmbeddedResource Include="Schemas\Mapping.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>

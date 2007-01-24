@@ -1,0 +1,232 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.Data.DomainObjects.ObjectBinding</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rubicon.Data.DomainObjects.ObjectBinding</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.ObjectBinding.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;419</NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.ObjectBinding.XML</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;419</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>system.drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>system.windows.forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+      <Name>ObjectBinding</Name>
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
+      <Name>Data.DomainObjects</Name>
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BindableDomainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BindableSearchObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BusinessObjectClassReflector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BusinessObjectReflector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DateTypeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Design\ClassPickerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\ClassPickerEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DomainObjectPropertyFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvalidNullAssignmentException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IsRequiredAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemTypeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\BooleanProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\ByteProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DateProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DateTimeProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DecimalProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\DoubleProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\EnumerationProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\GuidProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\Int16Property.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\Int32Property.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\NullableProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\ReferenceProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\SingleProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyTypes\StringProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReflectionPropertyFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchObjectClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SearchObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SearchObjectProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UndefinedEnumValueAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="Properties\AssemblyInfoTemplate.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Data.DomainObjects.ObjectBinding.build" />
+    <EmbeddedResource Include="Design\ClassPickerControl.resx">
+      <DependentUpon>ClassPickerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

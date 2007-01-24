@@ -3,23 +3,21 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</ProjectGuid>
+    <ProjectGuid>{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>App.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Rubicon.Data.DomainObjects.Web</AssemblyName>
+    <AssemblyName>DOGen</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Flow</DefaultHTMLPageLayout>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Web</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Rubicon.Data.DomainObjects.CodeGenerator.Console</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -36,11 +34,13 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\Rubicon.Data.DomainObjects.Web.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>419</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Optimize>false</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -57,11 +57,13 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Rubicon.Data.DomainObjects.Web.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
-    <NoWarn>419</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Optimize>true</Optimize>
     <RegisterForComInterop>false</RegisterForComInterop>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
@@ -77,43 +79,41 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Web">
-      <Name>system.web</Name>
-    </Reference>
     <Reference Include="System.Xml">
-      <Name>System.XML</Name>
+      <Name>system.xml</Name>
     </Reference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\Core\Web.csproj">
-      <Name>Web</Name>
-      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+    <ProjectReference Include="..\DomainObjects.CodeGenerator\Data.DomainObjects.CodeGenerator.csproj">
+      <Name>Data.DomainObjects.CodeGenerator</Name>
+      <Project>{49FE5865-4141-4BB0-AD13-CB42546C87ED}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Rubicon.Data.DomainObjects.csproj">
-      <Name>Rubicon.Data.DomainObjects</Name>
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
+      <Name>Data.DomainObjects</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App.ico" />
+    <Content Include="Doc\ReadMe_DOGen.txt" />
+    <Compile Include="Arguments.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExecutionEngine\WxeTransactedFunction.cs">
+    <Compile Include="Main.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExecutionEngine\WxeTransaction.cs">
+    <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ExecutionEngine\WxeTransactionMode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <None Include="Properties\AssemblyInfoTemplate.cs" />
-    <None Include="Rubicon.Data.DomainObjects.Web.build" />
+    </None>
+    <None Include="Data.DomainObjects.CodeGenerator.Console.build" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
