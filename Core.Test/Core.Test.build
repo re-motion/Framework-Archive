@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
 <project xmlns="nant-schema" name="Rubicon.CooNet.UnitTests">  
 
   <target name="build" description="perform a build">
@@ -12,6 +13,7 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="Configuration/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
         <include name="ObjectBinding/**/*.cs" />
         <include name="Properties/**/*.cs" />
@@ -25,6 +27,7 @@
         <include name="${build.test.outputdir}/Rubicon.Development.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Core.UnitTests">

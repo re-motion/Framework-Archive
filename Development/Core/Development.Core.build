@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
 <project xmlns="nant-schema" name="Rubicon.Development">  
 
   <target name="build" description="perform a build">
@@ -21,6 +22,7 @@
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
       </references>
     </csc>
         
