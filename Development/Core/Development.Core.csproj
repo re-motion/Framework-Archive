@@ -76,6 +76,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -92,6 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTesting\ConfigurationHelper.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>

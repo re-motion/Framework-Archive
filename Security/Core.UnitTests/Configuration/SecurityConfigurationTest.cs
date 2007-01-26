@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 
 using NUnit.Framework;
-
+using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.Web;
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // member fields
 
-    private SecurityConfigurationMock _configuration;
+    private SecurityConfiguration _configuration;
 
     // construction and disposing
 
@@ -36,14 +36,14 @@ namespace Rubicon.Security.UnitTests.Configuration
     [SetUp]
     public void SetUp ()
     {
-      _configuration = new SecurityConfigurationMock ();
-      SecurityConfigurationMock.SetCurrent (null);
+      _configuration = new SecurityConfiguration ();
+      SetCurrentSecurityConfiguration (null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfigurationMock.SetCurrent (null);
+      SetCurrentSecurityConfiguration (null);
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithNamespace ()
     {
       string xmlFragment = @"<rubicon.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       // Succeeded
     }
 
@@ -68,7 +68,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithDefaultService ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsNull (_configuration.SecurityService);
     }
 
@@ -76,7 +76,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithNoService ()
     {
       string xmlFragment = @"<rubicon.security service=""None"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsNull (_configuration.SecurityService);
     }
 
@@ -86,7 +86,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     {
       string xmlFragment = @"<rubicon.security service=""Invalid"" />";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       ISecurityService service = _configuration.SecurityService;
     }
 
@@ -95,7 +95,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithSecurityManagerService ()
     {
       string xmlFragment = @"<rubicon.security service=""SecurityManagerService"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Type expectedType = TypeUtility.GetType ("Rubicon.SecurityManager::SecurityService", true, false);
       
       Assert.IsInstanceOfType (expectedType, _configuration.SecurityService);
@@ -109,7 +109,7 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customService type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (SecurityServiceMock), _configuration.SecurityService);
     }
@@ -123,7 +123,7 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customService type=""Invalid"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       ISecurityService service = _configuration.SecurityService;
     }
 
@@ -131,7 +131,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithDefaultUserProvider ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), _configuration.UserProvider);
     }
 
@@ -139,7 +139,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithNoUserProvider ()
     {
       string xmlFragment = @"<rubicon.security userProvider=""None"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsNull (_configuration.UserProvider);
     }
 
@@ -147,7 +147,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithThreadUserProvider ()
     {
       string xmlFragment = @"<rubicon.security userProvider=""Thread"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), _configuration.UserProvider);
     }
 
@@ -155,7 +155,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithHttpContextUserProvider ()
     {
       string xmlFragment = @"<rubicon.security userProvider=""HttpContext"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (HttpContextUserProvider), _configuration.UserProvider);
     }
 
@@ -167,7 +167,7 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customUserProvider type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (UserProviderMock), _configuration.UserProvider);
     }
@@ -176,7 +176,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithDefaultPermissionProvider ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (PermissionReflector), _configuration.PermissionProvider);
     }
 
@@ -184,7 +184,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void PermissionProviderIsAlwaysSameInstance ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.AreSame (_configuration.PermissionProvider, _configuration.PermissionProvider);
     }
 
@@ -196,7 +196,7 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customPermissionProvider type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (PermissionProviderMock), _configuration.PermissionProvider);
     }
@@ -205,7 +205,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithDefaultFunctionalSecurityStrategy ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategy), _configuration.FunctionalSecurityStrategy);
     }
 
@@ -213,7 +213,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void FunctionalSecurityStrategyIsAlwaysSameInstance ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.AreSame (_configuration.FunctionalSecurityStrategy, _configuration.FunctionalSecurityStrategy);
     }
 
@@ -225,7 +225,7 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customFunctionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategyMock), _configuration.FunctionalSecurityStrategy);
     }
@@ -234,7 +234,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithDefaultGlobalAccessTypeCacheProvider ()
     {
       string xmlFragment = @"<rubicon.security />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
     }
 
@@ -242,7 +242,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithNoGlobalAccessTypeCacheProvider ()
     {
       string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""None"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
     }
 
@@ -250,7 +250,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     public void DeserializeSecurityConfigurationWithRevisionBasedAccessTypeCacheProvider ()
     {
       string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""RevisionBased"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (RevisionBasedAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
     }
@@ -263,9 +263,14 @@ namespace Rubicon.Security.UnitTests.Configuration
             <customGlobalAccessTypeCacheProvider type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
           </rubicon.security>";
 
-      _configuration.DeserializeSection (xmlFragment);
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (GlobalAccessTypeCacheProviderMock), _configuration.GlobalAccessTypeCacheProvider);
+    }
+
+    private void SetCurrentSecurityConfiguration (SecurityConfiguration configuration)
+    {
+      PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", configuration);
     }
   }
 }

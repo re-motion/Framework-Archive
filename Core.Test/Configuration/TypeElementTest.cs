@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Xml;
-using Rubicon.Configuration;
-using Rubicon.Utilities;
-using NUnit.Framework;
 using System.Configuration;
+using NUnit.Framework;
+using Rubicon.Configuration;
 using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.Configuration
@@ -35,7 +29,7 @@ namespace Rubicon.Core.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
 
       string xmlFragment = @"<theElement type=""Rubicon.Core.UnitTests::Configuration.SampleType"" />";
-      DeserializeElement (typeElement, xmlFragment);
+      ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
 
       Assert.AreEqual (typeof (SampleType), typeElement.Type);
     }
@@ -47,25 +41,9 @@ namespace Rubicon.Core.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
 
       string xmlFragment = @"<theElement type=""System.Object, mscorlib"" />";
-      DeserializeElement (typeElement, xmlFragment);
+      ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
 
       object dummy = typeElement.Type;
-    }
-
-    private void DeserializeElement (ConfigurationElement configurationElement, string xmlFragment)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
-
-      XmlDocument document = new XmlDocument ();
-      document.LoadXml (xmlFragment);
-
-      MemoryStream stream = new MemoryStream ();
-      document.Save (stream);
-      stream.Position = 0;
-      XmlReader reader = XmlReader.Create (stream);
-
-      reader.IsStartElement ();
-      PrivateInvoke.InvokeNonPublicMethod (configurationElement, "DeserializeElement", reader, false);
     }
   }
 }
