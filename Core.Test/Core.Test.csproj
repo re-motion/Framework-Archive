@@ -112,6 +112,14 @@
   <ItemGroup>
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
+    <Compile Include="Logging\Log4NetLogImplementation\FatalTest.cs" />
+    <Compile Include="Logging\LogManagerTest.cs" />
+    <Compile Include="Logging\SampleType.cs" />
+    <Compile Include="Logging\Log4NetLogImplementation\WarningTest.cs" />
+    <Compile Include="Logging\Log4NetLogImplementation\DebugTest.cs" />
+    <Compile Include="Logging\Log4NetLogImplementation\ErrorTest.cs" />
+    <Compile Include="Logging\Log4NetLogImplementation\InfoTest.cs" />
+    <Compile Include="Logging\Log4NetLogManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -259,9 +267,6 @@
     <EmbeddedResource Include="Resources\xy.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logging\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
