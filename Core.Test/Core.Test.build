@@ -14,6 +14,7 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="Configuration/**/*.cs" />
+        <include name="Logging/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
         <include name="ObjectBinding/**/*.cs" />
         <include name="Properties/**/*.cs" />
