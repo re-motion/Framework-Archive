@@ -7,9 +7,9 @@ namespace Rubicon.Core.UnitTests.Logging
   public class LogFactoryTest
   {
     [Test]
-    public void CreateLogger_WithNameAsString ()
+    public void GetLogger_WithNameAsString ()
     {
-      IExtendedLog log = LogFactory.CreateLogger ("The Name");
+      IExtendedLog log = LogFactory.GetLogger ("The Name");
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
@@ -17,9 +17,9 @@ namespace Rubicon.Core.UnitTests.Logging
     }
 
     [Test]
-    public void CreateLogger_WithNameFromType ()
+    public void GetLogger_WithNameFromType ()
     {
-      IExtendedLog log = LogFactory.CreateLogger (typeof (SampleType));
+      IExtendedLog log = LogFactory.GetLogger (typeof (SampleType));
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
