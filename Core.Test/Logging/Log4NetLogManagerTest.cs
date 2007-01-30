@@ -4,12 +4,14 @@ using Rubicon.Logging;
 namespace Rubicon.Core.UnitTests.Logging
 {
   [TestFixture]
-  public class LogFactoryTest
+  public class Log4NetLogManagerTest
   {
     [Test]
     public void GetLogger_WithNameAsString ()
     {
-      IExtendedLog log = LogFactory.GetLogger ("The Name");
+      IExtendedLogManager logManager = new Log4NetLogManager ();
+      
+      IExtendedLog log = logManager.GetLogger ("The Name");
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
@@ -19,12 +21,13 @@ namespace Rubicon.Core.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameFromType ()
     {
-      IExtendedLog log = LogFactory.GetLogger (typeof (SampleType));
+      IExtendedLogManager logManager = new Log4NetLogManager ();
+
+      IExtendedLog log = logManager.GetLogger (typeof (SampleType));
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
       Assert.AreEqual ("Rubicon.Core.UnitTests.Logging.SampleType", log4NetLog.Logger.Name);
     }
-
   }
 }

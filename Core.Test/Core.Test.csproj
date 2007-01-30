@@ -112,14 +112,16 @@
   <ItemGroup>
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
-    <Compile Include="Logging\Log4NetLogFactoryTest.cs" />
-    <Compile Include="Logging\Log4NetLogImplementation\FatalTest.cs" />
-    <Compile Include="Logging\LogFactoryTest.cs" />
+    <Compile Include="Logging\Log4NetLogManagerTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\ConvertTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\DebugTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\ErrorTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\FatalTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\InfoTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\LogTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\WarningTest.cs" />
+    <Compile Include="Logging\LogManagerTest.cs" />
     <Compile Include="Logging\SampleType.cs" />
-    <Compile Include="Logging\Log4NetLogImplementation\WarningTest.cs" />
-    <Compile Include="Logging\Log4NetLogImplementation\DebugTest.cs" />
-    <Compile Include="Logging\Log4NetLogImplementation\ErrorTest.cs" />
-    <Compile Include="Logging\Log4NetLogImplementation\InfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -6,7 +6,7 @@ using log4net.Core;
 using NUnit.Framework;
 using Rubicon.Logging;
 
-namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
+namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
 {
   [TestFixture]
   public class FatalTest
@@ -21,14 +21,35 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
       _memoryAppender = new MemoryAppender ();
       BasicConfigurator.Configure (_memoryAppender);
 
-      _logger = LoggerManager.GetLogger (Assembly.GetCallingAssembly(), "The Name");
+      _logger = LoggerManager.GetLogger (Assembly.GetCallingAssembly (), "The Name");
       _log = new Log4NetLog (_logger);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      LoggerManager.Shutdown();  
+      LoggerManager.Shutdown ();
+    }
+
+    [Test]
+    public void IsEnabled_WithLevelError ()
+    {
+      _logger.Repository.Threshold = Level.Error;
+      Assert.IsTrue (_log.IsFatalEnabled);
+    }
+
+    [Test]
+    public void IsEnabled_WithLevelFatal ()
+    {
+      _logger.Repository.Threshold = Level.Fatal;
+      Assert.IsTrue (_log.IsFatalEnabled);
+    }
+
+    [Test]
+    public void IsEnabled_WithLevelOff ()
+    {
+      _logger.Repository.Threshold = Level.Off;
+      Assert.IsFalse (_log.IsFatalEnabled);
     }
 
     [Test]
@@ -81,6 +102,41 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
     }
 
     [Test]
+    public void Test_WithMessageAndException ()
+    {
+      Exception exception = new Exception ();
+      _logger.Repository.Threshold = Level.Fatal;
+
+      _log.Fatal ((object) "The message.", exception);
+
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Fatal, loggingEvent.Level);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject);
+      Assert.AreSame (exception, loggingEvent.ExceptionObject);
+      Assert.AreSame (_logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (_logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
+    public void Test_WithMessage ()
+    {
+      _logger.Repository.Threshold = Level.Fatal;
+
+      _log.Fatal ((object) "The message.");
+
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Fatal, loggingEvent.Level);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject);
+      Assert.IsNull (loggingEvent.ExceptionObject);
+      Assert.AreSame (_logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (_logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
     public void Test_WithLogLevelNone ()
     {
       _logger.Repository.Threshold = Level.Off;
@@ -91,7 +147,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
     }
 
     [Test]
-    public void Test_FormatWithMessageEventIDAndException ()
+    public void Test_FormatWithMessageAndEventIDAndException ()
     {
       Exception exception = new Exception ();
       _logger.Repository.Threshold = Level.Fatal;
@@ -102,7 +158,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
       Assert.AreEqual (1, events.Length);
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Fatal, loggingEvent.Level);
-      Assert.AreEqual ("The message.", loggingEvent.MessageObject);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
       Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
       Assert.AreSame (exception, loggingEvent.ExceptionObject);
       Assert.AreSame (_logger.Repository, loggingEvent.Repository);
@@ -110,7 +166,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
     }
 
     [Test]
-    public void Test_FormatWithMessageEventID ()
+    public void Test_FormatWithMessageAndEventID ()
     {
       _logger.Repository.Threshold = Level.Fatal;
 
@@ -120,8 +176,43 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogImplementation
       Assert.AreEqual (1, events.Length);
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Fatal, loggingEvent.Level);
-      Assert.AreEqual ("The message.", loggingEvent.MessageObject);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
       Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.IsNull (loggingEvent.ExceptionObject);
+      Assert.AreSame (_logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (_logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
+    public void Test_FormatWithMessageAndException ()
+    {
+      Exception exception = new Exception ();
+      _logger.Repository.Threshold = Level.Fatal;
+
+      _log.FatalFormat (exception, "{0} {1}", "The", "message.");
+
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Fatal, loggingEvent.Level);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
+      Assert.AreSame (exception, loggingEvent.ExceptionObject);
+      Assert.AreSame (_logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (_logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
+    public void Test_FormatWithMessage ()
+    {
+      _logger.Repository.Threshold = Level.Fatal;
+
+      _log.FatalFormat ("{0} {1}", "The", "message.");
+
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Fatal, loggingEvent.Level);
+      Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
       Assert.IsNull (loggingEvent.ExceptionObject);
       Assert.AreSame (_logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (_logger.Name, loggingEvent.LoggerName);

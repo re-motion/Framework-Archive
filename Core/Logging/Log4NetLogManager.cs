@@ -2,13 +2,14 @@ using System;
 using System.Reflection;
 using log4net.Core;
 using Rubicon.Utilities;
+using log4net.Config;
 
 namespace Rubicon.Logging
 {
   /// <summary>
-  /// Implementation of <see cref="IExtendedLogFactory"/> for <b>log4net</b>.
+  /// Implementation of <see cref="IExtendedLogManager"/> for <b>log4net</b>.
   /// </summary>
-  public class Log4NetLogFactory : IExtendedLogFactory
+  public class Log4NetLogManager : IExtendedLogManager
   {
     /// <summary>
     /// Creates a new instance of the <see cref="Log4NetLog"/> type.
@@ -32,6 +33,15 @@ namespace Rubicon.Logging
       ArgumentUtility.CheckNotNull ("type", type);
 
       return new Log4NetLog (LoggerManager.GetLogger (Assembly.GetCallingAssembly (), type));
+    }
+
+    /// <summary>
+    /// Initializes <b>log4net</b> by invoking <see cref="XmlConfigurator.Configure()"/>.
+    /// </summary>
+    public void Initialize ()
+    {
+      //TODO: Check if there is a sensible way for testing log4net startup.
+      XmlConfigurator.Configure ();
     }
   }
 }
