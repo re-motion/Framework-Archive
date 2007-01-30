@@ -11,6 +11,11 @@ namespace Rubicon.Logging
   /// </remarks>
   public interface IExtendedLog
   {
+    /// <overloads>Log a message object with the specified <paramref name="logLevel"/>.</overloads>
+    /// <param name="logLevel"></param>
+    /// <param name="eventID"></param>
+    /// <param name="message"></param>
+    /// <param name="exceptionObject"></param>
     void Log (LogLevel logLevel, int eventID, object message, Exception exceptionObject);
 
     void Log (LogLevel logLevel, int eventID, object message);
