@@ -89,11 +89,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\IExtendedLog.cs" />
-    <Compile Include="Logging\IExtendedLogManager.cs" />
+    <Compile Include="Logging\IExtendedLogFactory.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
-    <Compile Include="Logging\Log4NetLogManager.cs" />
+    <Compile Include="Logging\Log4NetLogFactory.cs" />
+    <Compile Include="Logging\LogFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
