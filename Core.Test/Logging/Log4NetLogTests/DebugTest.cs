@@ -12,7 +12,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
   public class DebugingTest
   {
     private ILogger _logger;
-    private IExtendedLog _log;
+    private Rubicon.Logging.ILog _log;
     private MemoryAppender _memoryAppender;
 
     [SetUp]

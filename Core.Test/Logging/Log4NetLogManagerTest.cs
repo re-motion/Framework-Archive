@@ -9,9 +9,9 @@ namespace Rubicon.Core.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameAsString ()
     {
-      IExtendedLogManager logManager = new Log4NetLogManager ();
+      ILogManager logManager = new Log4NetLogManager ();
       
-      IExtendedLog log = logManager.GetLogger ("The Name");
+      ILog log = logManager.GetLogger ("The Name");
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;
@@ -21,9 +21,9 @@ namespace Rubicon.Core.UnitTests.Logging
     [Test]
     public void GetLogger_WithNameFromType ()
     {
-      IExtendedLogManager logManager = new Log4NetLogManager ();
+      ILogManager logManager = new Log4NetLogManager ();
 
-      IExtendedLog log = logManager.GetLogger (typeof (SampleType));
+      ILog log = logManager.GetLogger (typeof (SampleType));
 
       Assert.IsInstanceOfType (typeof (Log4NetLog), log);
       Log4NetLog log4NetLog = (Log4NetLog) log;

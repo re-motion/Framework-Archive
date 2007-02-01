@@ -7,16 +7,16 @@ using log4net.Config;
 namespace Rubicon.Logging
 {
   /// <summary>
-  /// Implementation of <see cref="IExtendedLogManager"/> for <b>log4net</b>.
+  /// Implementation of <see cref="ILogManager"/> for <b>log4net</b>.
   /// </summary>
-  public class Log4NetLogManager : IExtendedLogManager
+  public class Log4NetLogManager : ILogManager
   {
     /// <summary>
     /// Creates a new instance of the <see cref="Log4NetLog"/> type.
     /// </summary>
     /// <param name="name">The name of the logger to retrieve. Must not be <see langword="null"/> or empty.</param>
     /// <returns>A <see cref="Log4NetLog"/> for the <paramref name="name"/> specified.</returns>
-    public IExtendedLog GetLogger (string name)
+    public ILog GetLogger (string name)
     {
       ArgumentUtility.CheckNotNull ("name", name);
 
@@ -28,7 +28,7 @@ namespace Rubicon.Logging
     /// </summary>
     /// <param name="type">The full name of <paramref name="type"/> will be used as the name of the logger to retrieve. Must not be <see langword="null"/>.</param>
     /// <returns>A <see cref="Log4NetLog"/> for the fully qualified name of the <paramref name="type"/> specified.</returns>
-    public IExtendedLog GetLogger (Type type)
+    public ILog GetLogger (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 

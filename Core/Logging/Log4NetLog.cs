@@ -6,9 +6,9 @@ using log4net.Util;
 namespace Rubicon.Logging
 {
   /// <summary>
-  ///   Implementation of interface <see cref="IExtendedLog"/> for <b>log4net</b>.
+  ///   Implementation of interface <see cref="ILog"/> for <b>log4net</b>.
   /// </summary>
-  public class Log4NetLog : LogImpl, IExtendedLog
+  public class Log4NetLog : LogImpl, ILog
   {
     public static Level Convert (LogLevel logLevel)
     {

@@ -12,7 +12,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
   public class WarningTest
   {
     private ILogger _logger;
-    private IExtendedLog _log;
+    private Rubicon.Logging.ILog _log;
     private MemoryAppender _memoryAppender;
 
     [SetUp]
