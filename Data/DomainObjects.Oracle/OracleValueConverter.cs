@@ -47,7 +47,20 @@ namespace Rubicon.Data.DomainObjects.Oracle
         }
         else if (propertyDefinition.PropertyType == typeof (bool))
         {
-          Int16 boolAsInt = ArgumentUtility.CheckNotNullAndValueType<Int16> ("dataValue", dataValue);
+          // dataValue could be of type short OR decimal, because ORACLE interpretes NUMBER(1,0) columns in views with union, 
+          //    where not all participating tables return this columns,
+          //    as NUMBER without precision, so dataValue would be decimal instead of short in this case
+          //
+          // Example (BooleanColumn2 would be NUMBER (9) in View):
+          // CREATE VIEW "TestView" ("ID", "ClassID", "Timestamp", "StringColumn1", "BooleanColumn2")
+          // AS
+          // SELECT "ID", "ClassID", "Timestamp", "StringColumn1", null
+          //   FROM "TestTable1"
+          // UNION ALL
+          // SELECT "ID", "ClassID", "Timestamp", null, "BooleanColumn2"
+          //   FROM "TestTable2"
+
+          Int16 boolAsInt = Convert.ToInt16(dataValue);
           dataValue = (boolAsInt != 0);
         }
         else if (propertyDefinition.PropertyType == typeof (Int32) && dataValue.GetType () == typeof (decimal))
