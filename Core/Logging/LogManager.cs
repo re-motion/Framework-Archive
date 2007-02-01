@@ -40,7 +40,7 @@ namespace Rubicon.Logging
     /// </summary>
     public static void Initialize ()
     {
-      //TODO: Test once current IExtendedLogManager can be set through configuration.
+      //TODO: Test once current ILogManager can be set through configuration.
       s_current.Initialize ();
     }
   }

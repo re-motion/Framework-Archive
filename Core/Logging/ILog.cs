@@ -3,13 +3,13 @@ using System;
 namespace Rubicon.Logging
 {
   /// <summary>
-  /// The <see cref="IExtendedLog"/> interface declares methods for logging messages.
+  /// The <see cref="ILog"/> interface declares methods for logging messages.
   /// </summary>
   /// <remarks>
-  /// The <see cref="IExtendedLog"/> interface is intended to implement adapters to various logging frameworks.
+  /// The <see cref="ILog"/> interface is intended to implement adapters to various logging frameworks.
   /// Current implementation: <see cref="Log4NetLog"/>.
   /// </remarks>
-  public interface IExtendedLog
+  public interface ILog
   {
     /// <overloads>Log a message object with the specified <paramref name="logLevel"/>.</overloads>
     /// <param name="logLevel"></param>
