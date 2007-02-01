@@ -112,12 +112,17 @@ public abstract class RdbmsProvider : StorageProvider
 
     try
     {
-      _transaction = _connection.BeginTransaction (IsolationLevel.Serializable);
+      _transaction = _connection.BeginTransaction (IsolationLevel);
     }
     catch (Exception e)
     {
       throw CreateRdbmsProviderException (e, "Error while executing BeginTransaction.");
     }
+  }
+
+  public virtual IsolationLevel IsolationLevel
+  {
+    get { return IsolationLevel.Serializable; }
   }
 
   public override void Commit ()
