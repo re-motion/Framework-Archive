@@ -93,6 +93,7 @@
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
     <Compile Include="Logging\Log4NetLogManager.cs" />
+    <Compile Include="Logging\Log4NetTraceListener.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
