@@ -358,6 +358,7 @@
     <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />
     <Content Include="doc\include\include.xml" />
+    <Content Include="doc\include\Logging\ILog.xml" />
     <Content Include="doc\include\MSDN.css" />
     <Content Include="doc\include\MultiLingualResourcesAttribute.xml" />
     <Content Include="doc\include\NamespaceDoc.xml" />

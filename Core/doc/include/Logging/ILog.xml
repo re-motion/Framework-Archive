@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<ILog>
+  <Class>
+    <remarks>
+      <note type="inheritinfo">
+        The <b>Windows Event Log</b>, exposed through the <see cref="EventEntry"/> class, supports only <b>Event IDs</b> within the range of 
+        unsigned 16 bit integers. Implementors must take care to properly truncate the <b>Event ID</b> before writing it to the 
+        <b>Windows Event Log</b>.
+      </note>
+    </remarks>
+  </Class>
+  <Log>
+    <param name="level">The <see cref="LogLevel"/> of the message to be logged.</param>
+    <param name="eventID">The numeric identifier for the event.</param>
+    <param name="message">The message object to log.</param>
+    <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  </Log>
+</ILog>

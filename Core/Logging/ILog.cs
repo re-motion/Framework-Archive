@@ -12,10 +12,7 @@ namespace Rubicon.Logging
   public interface ILog
   {
     /// <overloads>Log a message object with the specified <paramref name="logLevel"/>.</overloads>
-    /// <param name="logLevel"></param>
-    /// <param name="eventID"></param>
-    /// <param name="message"></param>
-    /// <param name="exceptionObject"></param>
+    /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="logLevel" or @name="eventID" or @name="message" or @name="exceptionObject"]' />
     void Log (LogLevel logLevel, int eventID, object message, Exception exceptionObject);
 
     void Log (LogLevel logLevel, int eventID, object message);
