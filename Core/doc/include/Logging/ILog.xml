@@ -10,9 +10,13 @@
     </remarks>
   </Class>
   <Log>
-    <param name="level">The <see cref="LogLevel"/> of the message to be logged.</param>
+    <param name="logLevel">The <see cref="LogLevel"/> of the message to be logged.</param>
     <param name="eventID">The numeric identifier for the event.</param>
     <param name="message">The message object to log.</param>
     <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   </Log>
+  <LogFormat>
+    <param name="format">A String containing zero or more format items.</param>
+    <param name="args">An Object array containing zero or more objects to format.</param>
+  </LogFormat>
 </ILog>

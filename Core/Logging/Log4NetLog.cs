@@ -8,6 +8,7 @@ namespace Rubicon.Logging
   /// <summary>
   ///   Implementation of interface <see cref="ILog"/> for <b>log4net</b>.
   /// </summary>
+  /// <remarks>Use <see cref="LogManager"/> to instantiate <see cref="Log4NetLog"/> via <see cref="LogManager.GetLogger"/>.</remarks>
   public class Log4NetLog : LogImpl, ILog
   {
     public static Level Convert (LogLevel logLevel)

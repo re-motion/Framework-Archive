@@ -4,12 +4,21 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Logging
 {
+  //TODO: #### use Write/WriteLine with Verbose/Debug?
+
+  /// <summary>
+  /// A <see cref="TraceListener"/> that directs tracing or debugging output to <b>log4net</b>.
+  /// </summary>
+  /// <remarks>See <see cref="TraceSource"/> for information on how to configure a <see cref="TraceListener"/>.</remarks>
   public class Log4NetTraceListener : TraceListener
   {
-    // With each method using that param ,possibly param descr: eventCache is ignored.
-    // NOTE: FOR DOCU :eventCache is ignored, as (most of) the information is available in Log4Net anyway.
-    //      hence TraceOptions are not relevant, too.
+    // static members
 
+    /// <summary>
+    /// Converts <see cref="TraceEventType"/> to <see cref="LogLevel"/>.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Convert/param[@name="eventType"]' />
+    /// <returns>Corresponding <see cref="LogLevel"/> needed when logging through the <see cref="ILog"/> interface.</returns>
     public static LogLevel Convert (TraceEventType eventType)
     {
       switch (eventType)
@@ -29,16 +38,27 @@ namespace Rubicon.Logging
       }
     }
 
+    // member fields
     private Log4NetLogManager _logManager = new Log4NetLogManager ();
 
+    // construction and disposing
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class. 
+    /// </summary>
     public Log4NetTraceListener()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class using the specified name. 
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Constructor/param[@name="name"]' />
     public Log4NetTraceListener (string name) : base (name)
     {
     }
 
+    // methods and properties
 
     /*
      * TODO: Note in Docu that no filtering is done!
@@ -47,27 +67,65 @@ namespace Rubicon.Logging
      
       Write/WriteLine end up with EventLogEntryType.Information when using EventLogTraceListener.
      */
+    /// <overloads>Writes a message to the <b>log4net</b> log. </overloads>
+    /// <summary>
+    /// Writes a message to the <b>log4net</b> log. 
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/param[@name="message"]' />
+    /// <remarks>
+    /// <see cref="Write(string)"/> does not use <see cref="TraceFilter"/>, even though the inherited overloads
+    /// use it; this follows the behavior of the standard <see cref="TraceListener"/> implementations like 
+    /// <see cref="EventLogTraceListener"/> and <see cref="TextWriterTraceListener"/>; 
+    /// this behavior is not explicitely documented for the classes of System.Diagnostics.
+    /// </remarks>
     public override void Write (string message)
     {
-      _logManager.GetLogger (string.Empty).Log (LogLevel.Info, 0, message);
+      _logManager.GetLogger (string.Empty).Log (LogLevel.Debug, 0, message);
     }
 
+    /// <overloads>Writes a message to the <b>log4net</b> log. </overloads>
+    /// <summary>
+    /// Writes a message to the <b>log4net</b> log. 
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/param[@name="message"]' />
+    /// <remarks>
+    /// <see cref="WriteLine"/> has identical behavior to <see cref="Write(String)"/>.
+    /// </remarks>
     public override void WriteLine (string message)
     {
       Write (message);
     }
 
-    
+    /// <overloads>Writes trace and event information to the <b>log4net</b> log.</overloads>
+    /// <summary>
+    /// Writes trace and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id)
     {
       TraceEvent (eventCache, source, eventType, id, string.Empty, new object[0]);
     }
 
+    /// <summary>
+    /// Writes trace information, a message, and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id" or @name="message"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
     {
       TraceEvent (eventCache, source, eventType, id, message, new object[0]);
     }
 
+    /// <summary>
+    /// Writes trace information, a formatted array of objects and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceEvent/param[@name="format" or @name="args"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceEvent (
         TraceEventCache eventCache, 
         string source, 
@@ -80,11 +138,26 @@ namespace Rubicon.Logging
     }
 
 
+    /// <overloads>Writes trace data to the <b>log4net</b> log. </overloads>
+    /// <summary>
+    /// Writes trace information, a data object and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceData_Object/param[@name="data"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, Object data)
     {
       TraceData (eventCache, source, eventType, id, new object[] { data } );
     }
 
+    /// <summary>
+    /// Writes trace information, an array of data objects and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceData_Array/param[@name="data"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, params Object[] data)
     {
       if (ShouldTrace (eventCache, source, eventType, id, null, null, null, data)) 
@@ -109,11 +182,18 @@ namespace Rubicon.Logging
 
       Like EventLogTraceListener.CreateEventInstance: treat TraceEventType.Transfer as "Information" level.
     */
+    /// <summary>
+    /// Writes trace information, a message, a related activity identity and event information to the <b>log4net</b> log.
+    /// </summary>
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' 
+    ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="id" or @name="message"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceTransfer/param[@name="relatedActivityId"]' />
+    /// <include file='doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceTransfer (TraceEventCache eventCache, string source, int id, string message, Guid relatedActivityId) 
     {
       TraceEvent (eventCache, source, TraceEventType.Information, id,
-          message + ", relatedActivityId=" + relatedActivityId.ToString (), new object[0]);
-    }
+          message + ", relatedActivityId=" + relatedActivityId, new object[0]); 
+    } 
 
 
     private bool ShouldTrace (

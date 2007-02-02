@@ -65,7 +65,7 @@ namespace Rubicon.Core.UnitTests.Logging
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
-      Assert.AreEqual (Level.Info, events[0].Level);
+      Assert.AreEqual (Level.Debug, events[0].Level);
       Assert.AreEqual ("The message.", events[0].MessageObject.ToString ());
     }
 
@@ -76,7 +76,7 @@ namespace Rubicon.Core.UnitTests.Logging
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
-      Assert.AreEqual (Level.Info, events[0].Level);
+      Assert.AreEqual (Level.Debug, events[0].Level);
       Assert.AreEqual ("The message.", events[0].MessageObject.ToString ());
     }
 
@@ -90,7 +90,7 @@ namespace Rubicon.Core.UnitTests.Logging
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
-      Assert.AreEqual (Level.Info, events[0].Level);
+      Assert.AreEqual (Level.Debug, events[0].Level);
       Assert.AreEqual ("The message.", events[0].MessageObject.ToString ());
     }
 #endif
@@ -105,7 +105,7 @@ namespace Rubicon.Core.UnitTests.Logging
 
       LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
-      Assert.AreEqual (Level.Info, events[0].Level);
+      Assert.AreEqual (Level.Debug, events[0].Level);
       Assert.AreEqual ("The message.", events[0].MessageObject.ToString ());
     }
 #endif
@@ -268,6 +268,21 @@ namespace Rubicon.Core.UnitTests.Logging
       Assert.AreEqual (Level.Info, events[0].Level);
       string expected = "The message., relatedActivityId=" + relatedActivityId;
       Assert.AreEqual (expected, events[0].MessageObject.ToString ());
+    }
+
+
+    [Test]
+    public void Test_TraceTransfer_WithMessageNull ()
+    {
+      Guid relatedActivityId = new Guid ();
+
+      _listener.TraceTransfer (null, "Test", 1, null, relatedActivityId);
+
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreEqual (Level.Info, events[0].Level);
+      string expected = ", relatedActivityId=" + relatedActivityId;
+      Assert.AreEqual (expected, events[0].MessageObject.ToString ()); 
     }
 
 
