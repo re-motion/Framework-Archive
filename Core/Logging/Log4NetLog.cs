@@ -6,9 +6,15 @@ using log4net.Util;
 namespace Rubicon.Logging
 {
   /// <summary>
-  ///   Implementation of interface <see cref="ILog"/> for <b>log4net</b>.
+  /// Implementation of interface <see cref="ILog"/> for <b>log4net</b>.
   /// </summary>
-  /// <remarks>Use <see cref="LogManager"/> to instantiate <see cref="Log4NetLog"/> via <see cref="LogManager.GetLogger"/>.</remarks>
+  /// <remarks>
+  /// Use <see cref="LogManager"/> to instantiate <see cref="Log4NetLog"/> via <see cref="O:LogManager.GetLogger"/>.
+  /// <note type="warning">
+  /// When logging to the <b>EventLogAppender</b>, log4net only supports event ids within the range of unsigned 16-bit integers.       
+  /// Log message with an event id outside this range will not be logged by <b>log4net</b> due to its internal exception handling.
+  /// </note>
+  /// </remarks>
   public class Log4NetLog : LogImpl, ILog
   {
     /// <summary>

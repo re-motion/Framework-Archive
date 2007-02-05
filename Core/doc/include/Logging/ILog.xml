@@ -5,9 +5,9 @@
         The <see cref="ILog"/> interface is intended to implement adapters to various logging frameworks.
         Current implementation: <see cref="Log4NetLog"/>.
       <note type="inheritinfo">
-        The <b>Windows Event Log</b>, exposed through the <see cref="System.Diagnostics.EventLogEntry"/> class, supports only <b>Event IDs</b> within the range of 
-        unsigned 16 bit integers. Implementors must take care to properly truncate the <b>Event ID</b> before writing it to the 
-        <b>Windows Event Log</b>.
+        The <b>Windows Event Log</b>, exposed through the <see cref="System.Diagnostics.EventLogEntry"/> class, supports only <b>Event IDs</b> 
+        within the range of unsigned 16-bit integers. Implementors must take care to properly truncate the <b>Event ID</b> before writing it to the 
+        <b>Windows Event Log</b>. 
       </note>
     </remarks>
   </Class>

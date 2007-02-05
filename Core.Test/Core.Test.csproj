@@ -113,6 +113,7 @@
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
     <Compile Include="Logging\Log4NetLogManagerTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\BaseTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\ConvertTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\DebugTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\ErrorTest.cs" />
