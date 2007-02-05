@@ -119,6 +119,7 @@
     <Compile Include="Logging\Log4NetLogTests\FatalTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\InfoTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\LogTest.cs" />
+    <Compile Include="Logging\Log4NetLogTests\LogToEventLogTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\WarningTest.cs" />
     <Compile Include="Logging\Log4NetTraceListenerTest.cs" />
     <Compile Include="Logging\LogManagerTest.cs" />

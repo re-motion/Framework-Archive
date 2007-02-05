@@ -225,7 +225,7 @@
     </table>
     </div>
     For information on the browser compatibility of the controls, see the 
-    <see href="Rubicon.ObjectBinding.Web.UI.Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace.
+    <see href="N_Rubicon_ObjectBinding_Web_UI_Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace.
   </namespace>
   
   <namespace name="Rubicon.ObjectBinding.Web.UI.Controls">
@@ -525,7 +525,7 @@
     </table>
     </div>
     <para>
-      See the <see href="Rubicon.Web.UI.html#wai">Rubicon.Web.UI</see> namespace documentation for details 
+      See the <see href="N_Rubicon_Web_UI.html#wai">Rubicon.Web.UI</see> namespace documentation for details 
       on enforcing WAI conformance.
     </para>
   </namespace>

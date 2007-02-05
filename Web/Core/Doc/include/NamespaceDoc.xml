@@ -62,8 +62,8 @@ summary
       all checkpoints related to inter-control relationships and the web application's content itself.
     </para><para>
       A list of WCAG conform controls can be found in the 
-      <see href="Rubicon.Web.UI.Controls.html">Rubicon.Web.UI.Controls</see> and
-      <see href="Rubicon.ObjectBinding.Web.UI.Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace 
+      <see href="N_Rubicon_Web_UI_Controls.html">Rubicon.Web.UI.Controls</see> and
+      <see href="N_Rubicon_ObjectBinding_Web_UI_Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace 
       documentation.
     </para>
   </namespace>
@@ -162,7 +162,7 @@ summary
     </table>
     </div>
     <para>
-      See the <see href="Rubicon.Web.UI.html#wai">Rubicon.Web.UI</see> namespace documentation for details 
+      See the <see href="N_Rubicon_Web_UI.html#wai">Rubicon.Web.UI</see> namespace documentation for details 
       on enforcing WCAG conformance.
     </para>
   </namespace>

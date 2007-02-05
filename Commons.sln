@@ -90,12 +90,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
+		Build-CommonsLocal.ps1 = Build-CommonsLocal.ps1
+		Build-CommonsLocalDoc.ps1 = Build-CommonsLocalDoc.ps1
 		buildall.cmd = buildall.cmd
 		build\buildversion.xml = build\buildversion.xml
 		Commons.build = Commons.build
 		build\Commons.Doc.include.xml = build\Commons.Doc.include.xml
 		build\Commons.include.xml = build\Commons.include.xml
-		localbuild.cmd = localbuild.cmd
 		build\properties.include.xml = build\properties.include.xml
 	EndProjectSection
 EndProject

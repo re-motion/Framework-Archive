@@ -28,7 +28,7 @@
       If the object model is defined at compile time but has to be accessed by a generic data access layer, this is 
       also a use case for <b>Business Object Binding</b>. Generic data access is required when data binding is involved, 
       for instance to use the web controls provided by the 
-      <see href="Rubicon.ObjectBinding.Web.html">Rubicon.ObjectBinding.Web</see> namespace.
+      <see href="N_Rubicon_ObjectBinding_Web.html">Rubicon.ObjectBinding.Web</see> namespace.
     </para><para>
       In addition to these obvious problems, an application often requires a greater set of meta data than the CLS 
       types can provide by themselves. For instance, a CLS property can only provide its data type and the implicit 
