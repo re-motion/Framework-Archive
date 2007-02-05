@@ -5,10 +5,7 @@ namespace Rubicon.Logging
   /// <summary>
   /// The <see cref="ILog"/> interface declares methods for logging messages.
   /// </summary>
-  /// <remarks>
-  /// The <see cref="ILog"/> interface is intended to implement adapters to various logging frameworks.
-  /// Current implementation: <see cref="Log4NetLog"/>.
-  /// </remarks>
+  /// <include file='doc\include\Logging\ILog.xml' path='ILog/Class/remarks' />
   public interface ILog
   {
     /// <overloads>Log a message object with the specified <paramref name="logLevel"/>.</overloads>
