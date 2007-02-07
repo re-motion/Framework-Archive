@@ -14,14 +14,14 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       Exception exception = new Exception ();
       SetLoggingThreshold (Level.Info);
 
-      Log.Log (LogLevel.Info, 1, (object) "The message.", exception);
+      Log.Log (LogLevel.Info, 2, (object) "The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents ();
       Assert.AreEqual (1, events.Length);
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Info, loggingEvent.Level);
       Assert.AreEqual ("The message.", loggingEvent.MessageObject);
-      Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.AreEqual (2, loggingEvent.Properties["EventID"]);
       Assert.AreSame (exception, loggingEvent.ExceptionObject);
       Assert.AreSame (Logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
@@ -39,7 +39,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Info, loggingEvent.Level);
       Assert.AreEqual ("The message.", loggingEvent.MessageObject);
-      Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.AreEqual (1, loggingEvent.Properties["EventID"]);
       Assert.IsNull (loggingEvent.ExceptionObject);
       Assert.AreSame (Logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
@@ -75,7 +75,43 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Info, loggingEvent.Level);
       Assert.AreEqual ("The message.", loggingEvent.MessageObject);
-      Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.IsNull (loggingEvent.ExceptionObject);
+      Assert.AreSame (Logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
+    public void Test_FormatWithEnumAndException ()
+    {
+      Exception exception = new Exception ();
+      SetLoggingThreshold (Level.Info);
+
+      Log.LogFormat (LogLevel.Info, LogMessages.TheMessage, exception, "First", "Second");
+
+      LoggingEvent[] events = GetLoggingEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Info, loggingEvent.Level);
+      Assert.AreEqual ("The message with First and Second.", loggingEvent.MessageObject.ToString ());
+      Assert.AreEqual ((int)LogMessages.TheMessage, loggingEvent.Properties["EventID"]);
+      Assert.AreSame (exception, loggingEvent.ExceptionObject);
+      Assert.AreSame (Logger.Repository, loggingEvent.Repository);
+      Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
+    }
+
+    [Test]
+    public void Test_FormatWithEnum ()
+    {
+      SetLoggingThreshold (Level.Info);
+
+      Log.LogFormat (LogLevel.Info, LogMessages.TheMessage, "First", "Second");
+
+      LoggingEvent[] events = GetLoggingEvents ();
+      Assert.AreEqual (1, events.Length);
+      LoggingEvent loggingEvent = events[0];
+      Assert.AreEqual (Level.Info, loggingEvent.Level);
+      Assert.AreEqual ("The message with First and Second.", loggingEvent.MessageObject.ToString ());
+      Assert.AreEqual ((int) LogMessages.TheMessage, loggingEvent.Properties["EventID"]);
       Assert.IsNull (loggingEvent.ExceptionObject);
       Assert.AreSame (Logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
@@ -104,7 +140,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Info, loggingEvent.Level);
       Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
-      Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.AreEqual (1, loggingEvent.Properties["EventID"]);
       Assert.AreSame (exception, loggingEvent.ExceptionObject);
       Assert.AreSame (Logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);
@@ -140,7 +176,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       LoggingEvent loggingEvent = events[0];
       Assert.AreEqual (Level.Info, loggingEvent.Level);
       Assert.AreEqual ("The message.", loggingEvent.MessageObject.ToString ());
-      Assert.AreEqual (1, loggingEvent.Properties["EventID"] = 1);
+      Assert.AreEqual (1, loggingEvent.Properties["EventID"]);
       Assert.IsNull (loggingEvent.ExceptionObject);
       Assert.AreSame (Logger.Repository, loggingEvent.Repository);
       Assert.AreEqual (Logger.Name, loggingEvent.LoggerName);

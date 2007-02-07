@@ -124,6 +124,7 @@
     <Compile Include="Logging\Log4NetLogTests\WarningTest.cs" />
     <Compile Include="Logging\Log4NetTraceListenerTest.cs" />
     <Compile Include="Logging\LogManagerTest.cs" />
+    <Compile Include="Logging\LogMessages.cs" />
     <Compile Include="Logging\SampleType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

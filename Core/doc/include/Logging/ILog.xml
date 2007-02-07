@@ -18,7 +18,14 @@
     <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   </Log>
   <LogFormat>
+    <param name="messageEnum">An <see cref="Enum"/> value that is used to supply the event id and the message or format string.</param>
     <param name="format">A String containing zero or more format items.</param>
     <param name="args">An Object array containing zero or more objects to format.</param>
   </LogFormat>
+  <LogFormatWithEnum>
+    <remarks>
+      The underlying <see cref="Int32"/> value of the <paramref name="messageEnum"/> is used as event id and the <see cref="EnumDescription"/> utility
+      is used to extract the message or format string to be logged.
+    </remarks>
+  </LogFormatWithEnum>
 </ILog>

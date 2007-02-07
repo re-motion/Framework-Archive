@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using log4net.Core;
 using log4net.Util;
+using Rubicon.Utilities;
 
 namespace Rubicon.Logging
 {
@@ -101,6 +102,26 @@ namespace Rubicon.Logging
       LogToLog4NetFormat (Convert (logLevel), null, format, args, exceptionObject);
     }
 
+    /// <inheritdoc />
+    public void LogFormat (LogLevel logLevel, Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+
+      LogToLog4NetFormat (
+          Convert (logLevel),
+          System.Convert.ToInt32 (messageEnum),
+          EnumDescription.GetDescription (messageEnum),
+          args,
+          exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void LogFormat (LogLevel logLevel, Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Convert (logLevel), System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+
     /// <overloads><inheritdoc cref="ILog.Debug(object)"/></overloads>
     /// <inheritdoc />
     public void Debug (int eventID, object message, Exception exceptionObject)
@@ -133,6 +154,20 @@ namespace Rubicon.Logging
       LogToLog4NetFormat (Level.Debug, null, format, args, exceptionObject);
     }
 
+    /// <inheritdoc />
+    public void DebugFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Debug, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void DebugFormat (Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Debug, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+    
     /// <overloads><inheritdoc cref="ILog.Info(object)"/></overloads>
     /// <inheritdoc />
     public void Info (int eventID, object message, Exception exceptionObject)
@@ -164,6 +199,21 @@ namespace Rubicon.Logging
     {
       LogToLog4NetFormat (Level.Info, null, format, args, exceptionObject);
     }
+
+    /// <inheritdoc />
+    public void InfoFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Info, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void InfoFormat (Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Info, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+
 
     /// <overloads><inheritdoc cref="ILog.Warn(object)"/></overloads>
     /// <inheritdoc />
@@ -197,6 +247,21 @@ namespace Rubicon.Logging
       LogToLog4NetFormat (Level.Warn, null, format, args, exceptionObject);
     }
 
+    /// <inheritdoc />
+    public void WarnFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Warn, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void WarnFormat (Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Warn, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+
+
     /// <overloads><inheritdoc cref="ILog.Error(object)"/></overloads>
     /// <inheritdoc />
     public void Error (int eventID, object message, Exception exceptionObject)
@@ -228,6 +293,21 @@ namespace Rubicon.Logging
     {
       LogToLog4NetFormat (Level.Error, null, format, args, exceptionObject);
     }
+
+    /// <inheritdoc />
+    public void ErrorFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Error, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void ErrorFormat (Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Error, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+
 
     /// <overloads><inheritdoc cref="ILog.Fatal(object)"/></overloads>
     /// <inheritdoc />
@@ -261,6 +341,20 @@ namespace Rubicon.Logging
       LogToLog4NetFormat (Level.Fatal, null, format, args, exceptionObject);
     }
 
+    /// <inheritdoc />
+    public void FatalFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Fatal, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, exceptionObject);
+    }
+
+    /// <inheritdoc />
+    public void FatalFormat (Enum messageEnum, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
+      LogToLog4NetFormat (Level.Fatal, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
+    }
+    
 
     private void LogToLog4NetFormat (Level level, int? eventID, string format, object[] args, Exception exceptionObject)
     {
