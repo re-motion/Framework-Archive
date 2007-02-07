@@ -12,8 +12,9 @@ namespace Rubicon.Logging
   /// <remarks>
   /// Use <see cref="LogManager"/> to instantiate <see cref="Log4NetLog"/> via <see cref="O:Rubicon.Logging.LogManager.GetLogger"/>.
   /// <note type="warning">
-  /// When logging to the <b>EventLogAppender</b>, log4net only supports event ids within the range of unsigned 16-bit integers.       
-  /// Log message with an event id outside this range will not be logged by <b>log4net</b> due to its internal exception handling.
+  /// <see cref="Log4NetLog"/> does not allow event ids outside the range of unsigned 16-bit integers (0 - 65535) and will throw an
+  /// <see cref="ArgumentOutOfRangeException"/> if an event id outside this range is encountered. The original message will be logged using a 
+  /// truncated event id before the exception is thrown.
   /// </note>
   /// </remarks>
   public class Log4NetLog : LogImpl, ILog
@@ -54,12 +55,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.Log(LogLevel, object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Log (LogLevel logLevel, int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Convert (logLevel), eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Log (LogLevel logLevel, int eventID, object message)
     {
       LogToLog4Net (Convert (logLevel), eventID, message, null);
@@ -79,12 +82,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.LogFormat(LogLevel, string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void LogFormat (LogLevel logLevel, int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Convert (logLevel), eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void LogFormat (LogLevel logLevel, int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Convert (logLevel), eventID, format, args, null);
@@ -103,6 +108,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void LogFormat (LogLevel logLevel, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -116,6 +122,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void LogFormat (LogLevel logLevel, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -124,12 +131,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.Debug(object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Debug (int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Level.Debug, eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Debug (int eventID, object message)
     {
       LogToLog4Net (Level.Debug, eventID, message, null);
@@ -137,12 +146,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.DebugFormat(string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void DebugFormat (int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Debug, eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void DebugFormat (int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Debug, eventID, format, args, null);
@@ -155,6 +166,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void DebugFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -162,20 +174,23 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void DebugFormat (Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
       LogToLog4NetFormat (Level.Debug, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
     }
-    
+
     /// <overloads><inheritdoc cref="ILog.Info(object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Info (int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Level.Info, eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Info (int eventID, object message)
     {
       LogToLog4Net (Level.Info, eventID, message, null);
@@ -183,12 +198,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.InfoFormat(string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void InfoFormat (int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Info, eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void InfoFormat (int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Info, eventID, format, args, null);
@@ -201,6 +218,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void InfoFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -208,6 +226,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void InfoFormat (Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -217,12 +236,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.Warn(object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Warn (int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Level.Warn, eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Warn (int eventID, object message)
     {
       LogToLog4Net (Level.Warn, eventID, message, null);
@@ -230,12 +251,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.WarnFormat(string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void WarnFormat (int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Warn, eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void WarnFormat (int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Warn, eventID, format, args, null);
@@ -248,6 +271,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void WarnFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -255,6 +279,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void WarnFormat (Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -264,12 +289,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.Error(object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Error (int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Level.Error, eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Error (int eventID, object message)
     {
       LogToLog4Net (Level.Error, eventID, message, null);
@@ -277,12 +304,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.ErrorFormat(string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void ErrorFormat (int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Error, eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void ErrorFormat (int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Error, eventID, format, args, null);
@@ -295,6 +324,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void ErrorFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -302,6 +332,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void ErrorFormat (Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -311,12 +342,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.Fatal(object)"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Fatal (int eventID, object message, Exception exceptionObject)
     {
       LogToLog4Net (Level.Fatal, eventID, message, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Fatal (int eventID, object message)
     {
       LogToLog4Net (Level.Fatal, eventID, message, null);
@@ -324,12 +357,14 @@ namespace Rubicon.Logging
 
     /// <overloads><inheritdoc cref="ILog.FatalFormat(string, object[])"/></overloads>
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void FatalFormat (int eventID, Exception exceptionObject, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Fatal, eventID, format, args, exceptionObject);
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void FatalFormat (int eventID, string format, params object[] args)
     {
       LogToLog4NetFormat (Level.Fatal, eventID, format, args, null);
@@ -342,6 +377,7 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void FatalFormat (Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
@@ -349,12 +385,13 @@ namespace Rubicon.Logging
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
     public void FatalFormat (Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("messageEnum", messageEnum);
       LogToLog4NetFormat (Level.Fatal, System.Convert.ToInt32 (messageEnum), EnumDescription.GetDescription (messageEnum), args, null);
     }
-    
+
 
     private void LogToLog4NetFormat (Level level, int? eventID, string format, object[] args, Exception exceptionObject)
     {
@@ -373,9 +410,37 @@ namespace Rubicon.Logging
       LoggingEvent loggingEvent = new LoggingEvent (typeof (Log4NetLog), null, Logger.Name, level, message, exceptionObject);
 
       if (eventID.HasValue)
+      {
+        if (eventID < 0 || eventID > 0xFFFF)
+        {
+          LogLoggingError (eventID.Value, exceptionObject, message);
+
+          throw new ArgumentOutOfRangeException (
+             "eventID", string.Format ("An event id of value {0} is not supported. Valid event ids must be within a range of 0 and 65535.", eventID));
+        }
+
         loggingEvent.Properties["EventID"] = eventID;
+      }
 
       return loggingEvent;
+    }
+
+    private void LogLoggingError (int eventID, Exception exceptionObject, object message)
+    {
+      int safeEventID;
+      if (eventID < 0)
+        safeEventID  = 0;
+      else if (eventID > 0xFFFF)
+        safeEventID  = 0xFFFF;
+      else
+        safeEventID = eventID;
+          
+      LogToLog4NetFormat (
+          Level.Error,
+          safeEventID,
+          "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
+          new object[] { message.ToString (), eventID },
+          exceptionObject);
     }
   }
 }

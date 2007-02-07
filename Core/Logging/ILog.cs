@@ -69,7 +69,7 @@ namespace Rubicon.Logging
     void LogFormat (LogLevel logLevel, Exception exceptionObject, string format, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>, including the stack 
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>, including the stack 
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="logLevel" or @name="exceptionObject"]' />
@@ -78,7 +78,7 @@ namespace Rubicon.Logging
     void LogFormat (LogLevel logLevel, Enum messageEnum, Exception exceptionObject, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="logLevel"]' />
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormat/param[@name="messageEnum" or @name="args"]' />
@@ -292,7 +292,7 @@ namespace Rubicon.Logging
     void WarnFormat (Exception exceptionObject, string format, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warn"/> level, including the stack 
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warn"/> level, including the stack 
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="exceptionObject"]' />
@@ -301,7 +301,7 @@ namespace Rubicon.Logging
     void WarnFormat (Enum messageEnum, Exception exceptionObject, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warn"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warn"/> level.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormatWithEnum/remarks' />
@@ -366,7 +366,7 @@ namespace Rubicon.Logging
     void ErrorFormat (Exception exceptionObject, string format, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level, including the stack 
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level, including the stack 
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="exceptionObject"]' />
@@ -375,7 +375,7 @@ namespace Rubicon.Logging
     void ErrorFormat (Enum messageEnum, Exception exceptionObject, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormatWithEnum/remarks' />
@@ -440,7 +440,7 @@ namespace Rubicon.Logging
     void FatalFormat (Exception exceptionObject, string format, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Fatal"/> level, including the stack 
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Fatal"/> level, including the stack 
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/Log/param[@name="exceptionObject"]' />
@@ -449,7 +449,7 @@ namespace Rubicon.Logging
     void FatalFormat (Enum messageEnum, Exception exceptionObject, params object[] args);
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Fatal"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Fatal"/> level.
     /// </summary>
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='doc\include\Logging\ILog.xml' path='ILog/LogFormatWithEnum/remarks' />
