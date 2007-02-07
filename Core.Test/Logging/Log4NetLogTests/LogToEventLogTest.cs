@@ -76,23 +76,47 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
+    [ExpectedException(typeof (ArgumentOutOfRangeException), "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDGreaterThan0xFFFF ()
     {
       _logger.Repository.Threshold = Level.Info;
 
-      _log.Log (LogLevel.Info, 0xFFFFF, (object) "The message.");
+      try
+      {
+        _log.Log (LogLevel.Info, 0x10000, (object) "The message.");
+      }
+      catch (Exception)
+      {
+        Assert.AreEqual (1, _testEventLog.Entries.Count);
+        EventLogEntry eventLogEntry = _testEventLog.Entries[0];
+        Assert.AreEqual (EventLogEntryType.Error, eventLogEntry.EntryType);
+        Assert.AreEqual ("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n", eventLogEntry.Message);
+        Assert.AreEqual (0xFFFF, eventLogEntry.EventID);
 
-      Assert.IsEmpty (_testEventLog.Entries);
+        throw;
+      }
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentOutOfRangeException), "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDLessThanZero ()
     {
       _logger.Repository.Threshold = Level.Info;
 
-      _log.Log (LogLevel.Info, -1, (object) "The message.");
+      try
+      {
+        _log.Log (LogLevel.Info, -1, (object) "The message.");
+      }
+      catch (Exception)
+      {
+        Assert.AreEqual (1, _testEventLog.Entries.Count);
+        EventLogEntry eventLogEntry = _testEventLog.Entries[0];
+        Assert.AreEqual (EventLogEntryType.Error, eventLogEntry.EntryType);
+        Assert.AreEqual ("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n", eventLogEntry.Message);
+        Assert.AreEqual (0x0, eventLogEntry.EventID);
 
-      Assert.IsEmpty(_testEventLog.Entries);
+        throw;
+      }
     }
   }
 }
