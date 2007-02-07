@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Data.DomainObjects;
@@ -63,12 +64,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
       StatePropertyDefinition property = _testHelper.CreateTestProperty ();
-      
+      DateTime changedAt = classDefinition.ChangedAt;
+      Thread.Sleep (50);
+   
       combination.AttachState (property["Test1"]);
 
       Assert.AreEqual (1, combination.StateUsages.Count);
       StateUsage stateUsage = (StateUsage) combination.StateUsages[0];
       Assert.AreSame (property["Test1"], stateUsage.StateDefinition);
+      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+    }
+
+    [Test]
+    public void AttachState_WithoutClassDefinition ()
+    {
+      StateCombination combination = new StateCombination (_testHelper.Transaction);
+      StatePropertyDefinition property = _testHelper.CreateTestProperty ();
+
+      combination.AttachState (property["Test1"]);
+
+      Assert.AreEqual (1, combination.StateUsages.Count);
     }
 
     [Test]
@@ -116,34 +131,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
-    public void Commit_TouchClassFromUsage ()
-    {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
-
-      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateDefinition paidState = paymentProperty["Paid"];
-      StateDefinition notPaidState = paymentProperty["None"];
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
-      StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
-      combination2.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
-      combination3.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
-
-      _testHelper.Transaction.Commit ();
-
-      StateUsage stateUsage = (StateUsage) combination2.StateUsages[0];
-      stateUsage.StateDefinition = paidState;
-
-      _testHelper.Transaction.Commit ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (ConstraintViolationException),
-       "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
-    public void Commit_TouchClass ()
+    public void ValidateDuringCommit_ByTouchOnClassForChangedStateUsagesCollection ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
@@ -165,6 +153,28 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       combination2.AttachState (paidState);
 
       _testHelper.Transaction.Commit ();
+    }
+
+    [Test]
+    public void Commit_DeletedStateCombination ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
+
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StateCombination combination = _testHelper.CreateStateCombination (orderClass);
+      combination.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+
+      _testHelper.Transaction.Commit ();
+
+      DateTime creationDate = orderClass.ChangedAt;
+      Thread.Sleep (50);
+      combination.AccessControlList.Delete ();
+      Assert.IsNull (combination.Class);
+      
+      _testHelper.Transaction.Commit ();
+
+      Assert.AreEqual ((decimal) orderClass.ChangedAt.Ticks, (decimal) creationDate.Ticks);
     }
 
     [Test]

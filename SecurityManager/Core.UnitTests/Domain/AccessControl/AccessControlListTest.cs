@@ -221,7 +221,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
       AccessControlList acl = _testHelper.CreateAcl (classDefinition);
-      DateTime changedAt = acl.ChangedAt;
+      DateTime aclChangedAt = acl.ChangedAt;
+      DateTime classDefinitionChangedAt = classDefinition.ChangedAt;
       Thread.Sleep (50);
 
       StateCombination stateCombination = acl.CreateStateCombination ();
@@ -229,7 +230,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.AreSame (acl, stateCombination.AccessControlList);
       Assert.AreEqual (acl.Class, stateCombination.Class);
       Assert.IsEmpty (stateCombination.StateUsages);
-      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) aclChangedAt.Ticks);
+      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) classDefinitionChangedAt.Ticks);
+    }
+
+    [Test]
+    public void CreateStateCombination_WithoutClassDefinition ()
+    {
+      AccessControlList acl = _testHelper.CreateAcl ((SecurableClassDefinition) null);
+      DateTime aclChangedAt = acl.ChangedAt;
+      Thread.Sleep (50);
+
+      acl.StateCombinations.Add (new StateCombination  (acl.ClientTransaction));
+
+      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) aclChangedAt.Ticks);
     }
 
     [Test]

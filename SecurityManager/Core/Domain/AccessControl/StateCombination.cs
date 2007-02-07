@@ -37,6 +37,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public StateCombination (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      Initialize();
     }
 
     protected StateCombination (DataContainer dataContainer)
@@ -47,7 +48,25 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     // methods and properties
-   
+
+    //TODO: Add test for initialize during on load
+    protected override void OnLoaded ()
+    {
+      base.OnLoaded ();
+      Initialize ();
+    }
+
+    private void Initialize ()
+    {
+      StateUsages.Added += StateUsages_Added;
+    }
+
+    private void StateUsages_Added (object sender, DomainObjectCollectionChangeEventArgs args)
+    {
+      if (Class != null)
+        Class.Touch ();
+    }
+
     public int Index
     {
       get { return (int) DataContainer["Index"]; }
@@ -121,12 +140,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       foreach (StateUsage stateUsage in _stateUsagesToBeDeleted)
         stateUsage.Delete ();
       _stateUsagesToBeDeleted = null;
-    }
-
-    protected override void OnCommitting (EventArgs args)
-    {
-      base.OnCommitting (args);
-      Class.Touch ();
     }
   }
 }

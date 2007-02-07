@@ -83,6 +83,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
+    //TODO: Add test for initialize during on load
     protected override void OnLoaded ()
     {
       base.OnLoaded ();

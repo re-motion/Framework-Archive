@@ -51,6 +51,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
+    //TODO: Add test for initialize during on load
     protected override void OnLoaded ()
     {
       base.OnLoaded ();
@@ -72,6 +73,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       else
         stateCombination.Index = ((StateCombination) stateCombinations[stateCombinations.Count - 2]).Index + 1;
       Touch ();
+      if (Class != null)
+        Class.Touch ();
     }
 
     private void AccessControlEntries_Added (object sender, DomainObjectCollectionChangeEventArgs args)
