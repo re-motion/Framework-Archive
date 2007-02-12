@@ -110,6 +110,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DerivedProviderMock.cs" />
+    <Compile Include="Configuration\IProvider.cs" />
+    <Compile Include="Configuration\OtherProviderMock.cs" />
+    <Compile Include="Configuration\ProviderHelperTest.cs" />
+    <Compile Include="Configuration\ProviderMock.cs" />
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
     <Compile Include="Logging\Log4NetLogManagerTest.cs" />

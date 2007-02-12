@@ -1,0 +1,20 @@
+1.7.41
+======
+- Konfiguration:
+  Bisher:
+  <rubicon.security permissionProvider="Custom">
+    <customPermissionProvider type="..." />
+  </rubicon.security>
+  
+  Neu: Das ASP.NET Provider Model liegt der Konfiguration zugrunde, d.h. es können beliebige Provider eingetragen werden, der standard-mäßig 
+  verwendete wird explizit durch seinen Namen festgelegt.
+  Zusätzlich sind bereits vordefinierte Provider hinterlegt:
+  PermissionProvider: "PermissionReflector" (= Standardprovider)
+  <rubicon.security defaultPermissionProvider="Custom1">
+    <permissionProviders>
+      <add name="Custom1" type="..." />
+      <add name="Custom2" type="..." />
+      ...
+    </permissionProviders>
+  </rubicon.security>
+  

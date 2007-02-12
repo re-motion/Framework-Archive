@@ -4,10 +4,11 @@ using System.Reflection;
 using System.Text;
 using Rubicon.Utilities;
 using Rubicon.Collections;
+using System.Configuration.Provider;
 
 namespace Rubicon.Security.Metadata
 {
-  public class PermissionReflector : IPermissionProvider
+  public class PermissionReflector : ProviderBase, IPermissionProvider
   {
     // constants
 

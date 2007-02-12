@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Security.Principal;
 using System.Text;
 
@@ -8,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.UnitTests.Configuration
 {
 
-  public class UserProviderMock : IUserProvider
+  public class UserProviderMock : ProviderBase, IUserProvider
   {
     // types
 

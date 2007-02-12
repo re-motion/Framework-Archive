@@ -47,8 +47,10 @@
     <Compile Include="Configuration\GlobalAccessTypeCacheProviderMock.cs" />
     <Compile Include="Configuration\FunctionalSecurityStrategyMock.cs" />
     <Compile Include="Configuration\PermissionProviderMock.cs" />
+    <Compile Include="Configuration\SecurityConfigurationTests\SecurityConfigurationTest.cs" />
+    <Compile Include="Configuration\SecurityConfigurationTests\TestBase.cs" />
+    <Compile Include="Configuration\SecurityConfigurationTests\DeserializeSecurityConfigurationForPermissionProviderTest.cs" />
     <Compile Include="Configuration\UserProviderMock.cs" />
-    <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
     <Compile Include="FunctionalSecurityContextFactoryTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredMethodPermissionsTest.cs" />
