@@ -3,13 +3,25 @@ using System.Security.Principal;
 
 namespace Rubicon.Security
 {
+  /// <summary>
+  /// Provides an implementation of a nullable object according to the "Null Object Pattern", 
+  /// extending <see cref="ProviderBase"/> and implementing <see cref="ISecurityService"/>.
+  /// </summary>
   public class NullSecurityService : ProviderBase, ISecurityService
   {
+    /// <summary>
+    /// The "Null Object" implementation always returns an empty array.
+    /// </summary>
+    /// <returns>Always returns an empty array.</returns>
     public AccessType[] GetAccess (SecurityContext context, IPrincipal user)
     {
       return new AccessType[0];
     }
 
+    /// <summary>
+    /// The "Null Object" implementation always returns 0.
+    /// </summary>
+    /// <returns>Always returns 0 for the revision.</returns>
     public int GetRevision ()
     {
       return 0;

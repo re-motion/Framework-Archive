@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 
 using Rubicon.Utilities;
@@ -51,8 +52,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _mocks = new MockRepository ();
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
-      _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
+      //_mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockSecurityService = (ISecurityService) _mocks.CreateMultiMock (typeof (ProviderBase), new Type[] { typeof (ISecurityService) });
+      //_mockUserProvider = _mocks.CreateMock<IUserProvider> ();
+      _mockUserProvider = (IUserProvider) _mocks.CreateMultiMock (typeof (ProviderBase), new Type[] { typeof (IUserProvider) });
       _stubFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
@@ -63,7 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
     }
@@ -102,7 +105,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossibleGroups_WithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
@@ -159,7 +162,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossiblePositions_WithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
@@ -180,7 +183,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossiblePositions_WithoutGroupTypeAndWithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
