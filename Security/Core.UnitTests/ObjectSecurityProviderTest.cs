@@ -64,7 +64,7 @@ namespace Rubicon.Security.UnitTests
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
     }

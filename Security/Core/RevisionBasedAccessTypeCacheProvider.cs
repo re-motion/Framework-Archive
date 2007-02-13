@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 
 using Rubicon.Utilities;
@@ -9,7 +10,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace Rubicon.Security
 {
-  public class RevisionBasedAccessTypeCacheProvider : IGlobalAccessTypeCacheProvider
+  public class RevisionBasedAccessTypeCacheProvider : ProviderBase, IGlobalAccessTypeCacheProvider
   {
     // constants
 
@@ -57,7 +58,7 @@ namespace Rubicon.Security
       if (!revision.HasValue)
       {
         ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
-        if (securityService == null)
+        if (securityService is NullSecurityService)
           throw new SecurityConfigurationException ("The security service has not been configured.");
 
         revision = securityService.GetRevision ();

@@ -30,7 +30,7 @@ namespace Rubicon.Security.UnitTests
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision", null);
     }
 
@@ -89,7 +89,7 @@ namespace Rubicon.Security.UnitTests
     public void GetCache_WithoutSecurityService ()
     {
       IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
 
       provider.GetCache ();
     }

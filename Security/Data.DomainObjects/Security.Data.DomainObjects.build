@@ -23,6 +23,7 @@
         <include name="${build.outputdir}/Rubicon.Security.dll" />
         <include name="${build.outputdir}/Rubicon.Data.DomainObjects.dll" />
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
       </references>
     </csc>
 

@@ -40,6 +40,12 @@
     </EmbeddedResource>
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
+    <Compile Include="NullSecurityService.cs" />
+    <Compile Include="Configuration\SecurityServiceHelper.cs" />
+    <Compile Include="Configuration\PermissionProviderHelper.cs" />
+    <Compile Include="Configuration\GlobalAccessTypeCacheProviderHelper.cs" />
+    <Compile Include="Configuration\ProviderHelperBase.cs" />
+    <Compile Include="Configuration\UserProviderHelper.cs" />
     <Compile Include="FunctionalSecurityContextFactory.cs" />
     <Compile Include="GeneralAccessTypes.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProvider.cs" />

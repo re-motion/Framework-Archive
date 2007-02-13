@@ -1,16 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Text;
-using System.Xml;
-
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
-using Rubicon.Security.Web;
-using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
@@ -71,11 +63,12 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), "The provider 'Custom1' specified for the defaultPermissionProvider does not exist in the providers collection.")]
+    [ExpectedException (typeof (ConfigurationErrorsException),
+        "The provider 'Invalid' specified for the defaultPermissionProvider does not exist in the providers collection.")]
     public void Test_WithCustomPermissionProviderAndInvalidName ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultPermissionProvider=""Custom1"">
+          <rubicon.security defaultPermissionProvider=""Invalid"">
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
             </permissionProviders>
@@ -83,7 +76,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (PermissionProviderMock), Configuration.PermissionProvider);
+      object dummy = Configuration.PermissionProvider;
     }
 
     [Test]
@@ -103,7 +96,8 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException(typeof (ConfigurationErrorsException), "The value for the property 'defaultPermissionProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+    [ExpectedException (typeof (ConfigurationErrorsException),
+        "The value for the property 'defaultPermissionProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomPermissionProviderNameEmpty ()
     {
       string xmlFragment = @"
@@ -130,11 +124,12 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Configuration.PermissionProviders.Clear ();
+      Configuration.PermissionProviders.Clear();
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
+        "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       string xmlFragment = @"

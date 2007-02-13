@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 
 using Rubicon.Utilities;
@@ -7,7 +8,7 @@ using Rubicon.Collections;
 
 namespace Rubicon.Security
 {
-  public class NullGlobalAccessTypeCacheProvider : IGlobalAccessTypeCacheProvider
+  public class NullGlobalAccessTypeCacheProvider : ProviderBase, IGlobalAccessTypeCacheProvider
   {
     private NullCache<Tuple<SecurityContext, string>, AccessType[]> _cache = new NullCache<Tuple<SecurityContext, string>, AccessType[]> ();
 

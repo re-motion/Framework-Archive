@@ -20,10 +20,6 @@ namespace Rubicon.Security.Configuration
 
     // static members
 
-    private const string c_permissionReflectorWellKnownName = "Reflection";
-    private const string c_threadUserProviderWellKnownName = "Thread";
-    private const string c_httpContexUserProviderWellKnownName = "HttpContext";
-
     private static SecurityConfiguration s_current;
 
     public static SecurityConfiguration Current
@@ -58,67 +54,30 @@ namespace Rubicon.Security.Configuration
     // member fields
 
     private ISecurityService _securityService;
-    private IUserProvider _userProvider;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
-    private IPermissionProvider _permissionProvider;
-    private IGlobalAccessTypeCacheProvider _globalAccessTypeCacheProvider;
-
-    private ProviderCollection _userProviders;
-    private ProviderCollection _permissionProviders;
 
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
-    private readonly ConfigurationProperty _customSecurityServiceProperty;
-    private readonly ConfigurationProperty _securityServiceTypeProperty;
-    private readonly ConfigurationProperty _defaultUserProviderNameProperty;
-    private readonly ConfigurationProperty _userProviderSettingsProperty;
-    private readonly ConfigurationProperty _defaultPermissionProviderNameProperty;
-    private readonly ConfigurationProperty _permissionProviderSettingsProperty;
     private readonly ConfigurationProperty _customFunctionalSecurityStrategyProperty;
-    private readonly ConfigurationProperty _customGlobalAccessTypeCacheProviderProperty;
-    private readonly ConfigurationProperty _globalAccessTypeCacheProviderTypeProperty;
-    private Type _httpContextUserProviderType;
-    private Type _securityManagerServiceType;
+
 
     private readonly object _lock = new object ();
-    private readonly object _lockUserProviders = new object ();
-    private readonly object _lockUserProvider = new object ();
-    private readonly object _lockPermissionProviders = new object ();
-    private readonly object _lockPermissionProvider = new object ();
+
+    private PermissionProviderHelper _permissionProviderHelper;
+    private SecuritySeviceHelper _securityServiceHelper;
+    private UserProviderHelper _userProviderHelper;
+    private GlobalAccessTypeCacheProviderHelper _globalAccessTypeCacheProviderHelper;
 
     // construction and disposing
 
     public SecurityConfiguration ()
     {
+      _permissionProviderHelper = new PermissionProviderHelper (this);
+      _securityServiceHelper = new SecuritySeviceHelper (this);
+      _userProviderHelper = new UserProviderHelper (this);
+      _globalAccessTypeCacheProviderHelper = new GlobalAccessTypeCacheProviderHelper (this);
+
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-
-      _customSecurityServiceProperty = new ConfigurationProperty (
-          "customService", typeof (TypeElement<ISecurityService>), null, ConfigurationPropertyOptions.None);
-
-      _securityServiceTypeProperty = new ConfigurationProperty (
-          "service", typeof (SecurityServiceType), SecurityServiceType.None, ConfigurationPropertyOptions.None);
-
-      _defaultUserProviderNameProperty = new ConfigurationProperty (
-          "defaultUserProvider",
-          typeof (string),
-          c_threadUserProviderWellKnownName,
-          null,
-          new StringValidator (1),
-          ConfigurationPropertyOptions.None);
-
-      _userProviderSettingsProperty = new ConfigurationProperty (
-          "userProviders", typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
-
-      _defaultPermissionProviderNameProperty = new ConfigurationProperty (
-          "defaultPermissionProvider",
-          typeof (string),
-          c_permissionReflectorWellKnownName,
-          null,
-          new StringValidator (1),
-          ConfigurationPropertyOptions.None);
-
-      _permissionProviderSettingsProperty = new ConfigurationProperty (
-          "permissionProviders", typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
 
       _customFunctionalSecurityStrategyProperty = new ConfigurationProperty (
           "customFunctionalSecurityStrategy",
@@ -126,29 +85,13 @@ namespace Rubicon.Security.Configuration
           null,
           ConfigurationPropertyOptions.None);
 
-      _customGlobalAccessTypeCacheProviderProperty = new ConfigurationProperty (
-          "customGlobalAccessTypeCacheProvider",
-          typeof (TypeElement<IGlobalAccessTypeCacheProvider>),
-          null,
-          ConfigurationPropertyOptions.None);
-
-      _globalAccessTypeCacheProviderTypeProperty = new ConfigurationProperty (
-          "globalAccessTypeCacheProvider",
-          typeof (GlobalAccessTypeCacheProviderType),
-          GlobalAccessTypeCacheProviderType.None,
-          ConfigurationPropertyOptions.None);
-
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_xmlnsProperty);
-      _properties.Add (_customSecurityServiceProperty);
-      _properties.Add (_securityServiceTypeProperty);
-      _properties.Add (_defaultUserProviderNameProperty);
-      _properties.Add (_userProviderSettingsProperty);
-      _properties.Add (_defaultPermissionProviderNameProperty);
-      _properties.Add (_permissionProviderSettingsProperty);
+      _permissionProviderHelper.InitializeProperties (_properties);
+      _securityServiceHelper.InitializeProperties (_properties);
+      _userProviderHelper.InitializeProperties (_properties);
+      _globalAccessTypeCacheProviderHelper.InitializeProperties (_properties);
       _properties.Add (_customFunctionalSecurityStrategyProperty);
-      _properties.Add (_customGlobalAccessTypeCacheProviderProperty);
-      _properties.Add (_globalAccessTypeCacheProviderTypeProperty);
     }
 
     // methods and properties
@@ -157,11 +100,10 @@ namespace Rubicon.Security.Configuration
     {
       base.PostDeserialize ();
 
-      if (SecurityServiceType == SecurityServiceType.SecurityManagerService)
-        EnsureSecurityManagerServiceTypeInitialized ();
-
-      if (DefaultUserProviderName.Equals (c_httpContexUserProviderWellKnownName, StringComparison.Ordinal))
-        EnsureHttpContextUserProviderTypeInitialized ();
+      _permissionProviderHelper.PostDeserialze ();
+      _securityServiceHelper.PostDeserialze ();
+      _userProviderHelper.PostDeserialze ();
+      _globalAccessTypeCacheProviderHelper.PostDeserialze ();
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -169,89 +111,41 @@ namespace Rubicon.Security.Configuration
       get { return _properties; }
     }
 
+    protected internal new object this[ConfigurationProperty property]
+    {
+      get { return base[property]; }
+      set { base[property] = value; }
+    }
 
     public ISecurityService SecurityService
     {
       get
       {
-        if (_securityService == null)
-          _securityService = GetSecurityServiceFromConfiguration ();
-
-        return _securityService;
+        return _securityServiceHelper.Provider;
       }
       set
       {
-        _securityService = value;
+        _securityServiceHelper.Provider = value;
       }
     }
 
-    protected TypeElement<ISecurityService> CustomService
+    public ProviderCollection SecurityServices
     {
-      get { return (TypeElement<ISecurityService>) this[_customSecurityServiceProperty]; }
-      set { this[_customSecurityServiceProperty] = value; }
-    }
-
-    protected SecurityServiceType SecurityServiceType
-    {
-      get { return (SecurityServiceType) this[_securityServiceTypeProperty]; }
-      set { this[_securityServiceTypeProperty] = value; }
-    }
-
-    private ISecurityService GetSecurityServiceFromConfiguration ()
-    {
-      switch (SecurityServiceType)
+      get
       {
-        case SecurityServiceType.None:
-          return null;
-        case SecurityServiceType.SecurityManagerService:
-          EnsureSecurityManagerServiceTypeInitialized ();
-          return (ISecurityService) Activator.CreateInstance (_securityManagerServiceType);
-        case SecurityServiceType.Custom:
-          return (ISecurityService) Activator.CreateInstance (CustomService.Type);
-        default:
-          throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the SecurityService.", SecurityServiceType));
+        return _securityServiceHelper.Providers;
       }
     }
-
-    private void EnsureSecurityManagerServiceTypeInitialized ()
-    {
-      if (_securityManagerServiceType == null)
-      {
-        lock (_lock)
-        {
-          if (_securityManagerServiceType == null)
-          {
-            _securityManagerServiceType = GetType (
-                _securityServiceTypeProperty,
-                new AssemblyName ("Rubicon.SecurityManager"),
-                "Rubicon.SecurityManager.SecurityService");
-          }
-        }
-      }
-    }
-
 
     public IUserProvider UserProvider
     {
       get
       {
-        if (_userProvider == null)
-        {
-          lock (_lockUserProvider)
-          {
-            if (_userProvider == null)
-              _userProvider = GetUserProviderFromConfiguration ();
-          }
-        }
-        return _userProvider;
+        return _userProviderHelper.Provider;
       }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        lock (_lockUserProvider)
-        {
-          _userProvider = value;
-        }
+        _userProviderHelper.Provider = value;
       }
     }
 
@@ -259,83 +153,7 @@ namespace Rubicon.Security.Configuration
     {
       get
       {
-        if (_userProviders == null)
-        {
-          lock (_lockUserProviders)
-          {
-            if (_userProviders == null)
-              _userProviders = GetUserProvidersFromConfiguration ();
-          }
-        }
-
-        return _userProviders;
-      }
-    }
-
-    protected ProviderSettingsCollection UserProviderSettings
-    {
-      get { return (ProviderSettingsCollection) base[_userProviderSettingsProperty]; }
-    }
-
-    protected string DefaultUserProviderName
-    {
-      get { return (string) this[_defaultUserProviderNameProperty]; }
-      set { this[_defaultUserProviderNameProperty] = value; }
-    }
-
-    private IUserProvider GetUserProviderFromConfiguration ()
-    {
-      if (UserProviders[DefaultUserProviderName] == null)
-        throw new ConfigurationErrorsException (string.Format ("The provider '{0}' specified for the defaultUserProvider does not exist in the providers collection.", DefaultUserProviderName), ElementInformation.Properties[_defaultUserProviderNameProperty.Name].Source, ElementInformation.Properties[_defaultUserProviderNameProperty.Name].LineNumber);
-
-      return (IUserProvider) UserProviders[DefaultUserProviderName];
-    }
-
-    private ProviderCollection GetUserProvidersFromConfiguration ()
-    {
-      ProviderCollection collection = new ProviderCollection ();
-      EnsureWellKnownThreadUserProvider (collection);
-      EnsureWellKnownHttpContextUserProvider (collection);
-      ProviderHelper.InstantiateProviders (UserProviderSettings, collection, typeof (ProviderBase), typeof (IUserProvider));
-      collection.SetReadOnly ();
-
-      return collection;
-    }
-
-    private void EnsureWellKnownThreadUserProvider (ProviderCollection collection)
-    {
-      if (UserProviderSettings[c_threadUserProviderWellKnownName] == null)
-      {
-        ThreadUserProvider threadUserProvider = new ThreadUserProvider ();
-        threadUserProvider.Initialize (c_threadUserProviderWellKnownName, new NameValueCollection ());
-        collection.Add (threadUserProvider);
-      }
-    }
-
-    private void EnsureWellKnownHttpContextUserProvider (ProviderCollection collection)
-    {
-      if (UserProviderSettings[c_httpContexUserProviderWellKnownName] == null && _httpContextUserProviderType != null)
-      {
-        ProviderBase httpContextUserProvider = (ProviderBase) Activator.CreateInstance (_httpContextUserProviderType);
-        httpContextUserProvider.Initialize (c_httpContexUserProviderWellKnownName, new NameValueCollection ());
-        collection.Add (httpContextUserProvider);
-      }
-    }
-
-    private void EnsureHttpContextUserProviderTypeInitialized ()
-    {
-      if (_httpContextUserProviderType == null)
-      {
-        lock (_lock)
-        {
-          if (_httpContextUserProviderType == null)
-          {
-            _httpContextUserProviderType = GetTypeWithMatchingVersionNumber (
-                "Rubicon.Security.Web",
-                "Rubicon.Security.Web.HttpContextUserProvider",
-                _defaultUserProviderNameProperty);
-          }
-        }
+        return _userProviderHelper.Providers;
       }
     }
 
@@ -344,23 +162,11 @@ namespace Rubicon.Security.Configuration
     {
       get
       {
-        if (_permissionProvider == null)
-        {
-          lock (_lockPermissionProvider)
-          {
-            if (_permissionProvider == null)
-              _permissionProvider = GetPermissionProviderFromConfiguration ();
-          }
-        }
-        return _permissionProvider;
+        return _permissionProviderHelper.Provider;
       }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        lock (_lockPermissionProvider)
-        {
-          _permissionProvider = value;
-        }
+        _permissionProviderHelper.Provider = value;
       }
     }
 
@@ -368,55 +174,7 @@ namespace Rubicon.Security.Configuration
     {
       get
       {
-        if (_permissionProviders == null)
-        {
-          lock (_lockPermissionProviders)
-          {
-            if (_permissionProviders == null)
-              _permissionProviders = GetPermissionProvidersFromConfiguration ();
-          }
-        }
-
-        return _permissionProviders;
-      }
-    }
-
-    protected ProviderSettingsCollection PermissionProviderSettings
-    {
-      get { return (ProviderSettingsCollection) base[_permissionProviderSettingsProperty]; }
-    }
-
-    protected string DefaultPermissionProviderName
-    {
-      get { return (string) this[_defaultPermissionProviderNameProperty]; }
-      set { this[_defaultPermissionProviderNameProperty] = value; }
-    }
-
-    private IPermissionProvider GetPermissionProviderFromConfiguration ()
-    {
-      if (PermissionProviders[DefaultPermissionProviderName] == null)
-        throw new ConfigurationErrorsException (string.Format ("The provider '{0}' specified for the defaultPermissionProvider does not exist in the providers collection.", DefaultPermissionProviderName), ElementInformation.Properties[_defaultPermissionProviderNameProperty.Name].Source, ElementInformation.Properties[_defaultPermissionProviderNameProperty.Name].LineNumber);
-
-      return (IPermissionProvider) PermissionProviders[DefaultPermissionProviderName];
-    }
-
-    private ProviderCollection GetPermissionProvidersFromConfiguration ()
-    {
-      ProviderCollection collection = new ProviderCollection ();
-      EnsureWellKnownPermissionProvider (collection);
-      ProviderHelper.InstantiateProviders (PermissionProviderSettings, collection, typeof (ProviderBase), typeof (IPermissionProvider));
-      collection.SetReadOnly ();
-
-      return collection;
-    }
-
-    private void EnsureWellKnownPermissionProvider (ProviderCollection collection)
-    {
-      if (PermissionProviderSettings[c_permissionReflectorWellKnownName] == null)
-      {
-        PermissionReflector permissionReflector = new PermissionReflector ();
-        permissionReflector.Initialize (c_permissionReflectorWellKnownName, new NameValueCollection ());
-        collection.Add (permissionReflector);
+        return _permissionProviderHelper.Providers;
       }
     }
 
@@ -457,87 +215,20 @@ namespace Rubicon.Security.Configuration
     {
       get
       {
-        if (_globalAccessTypeCacheProvider == null)
-          _globalAccessTypeCacheProvider = GetGlobalAccessTypeCacheProviderFromConfiguration ();
-
-        return _globalAccessTypeCacheProvider;
+        return _globalAccessTypeCacheProviderHelper.Provider;
       }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _globalAccessTypeCacheProvider = value;
+          _globalAccessTypeCacheProviderHelper.Provider = value;
       }
     }
 
-    protected TypeElement<IGlobalAccessTypeCacheProvider> CustomGlobalAccessTypeCacheProvider
+    public ProviderCollection GlobalAccessTypeCacheProviders
     {
-      get { return (TypeElement<IGlobalAccessTypeCacheProvider>) this[_customGlobalAccessTypeCacheProviderProperty]; }
-      set { this[_customGlobalAccessTypeCacheProviderProperty] = value; }
-    }
-
-    protected GlobalAccessTypeCacheProviderType GlobalAccessTypeCacheProviderType
-    {
-      get { return (GlobalAccessTypeCacheProviderType) this[_globalAccessTypeCacheProviderTypeProperty]; }
-      set { this[_globalAccessTypeCacheProviderTypeProperty] = value; }
-    }
-
-    private IGlobalAccessTypeCacheProvider GetGlobalAccessTypeCacheProviderFromConfiguration ()
-    {
-      switch (GlobalAccessTypeCacheProviderType)
+      get
       {
-        case GlobalAccessTypeCacheProviderType.None:
-          return new NullGlobalAccessTypeCacheProvider ();
-        case GlobalAccessTypeCacheProviderType.RevisionBased:
-          return new RevisionBasedAccessTypeCacheProvider ();
-        case GlobalAccessTypeCacheProviderType.Custom:
-          return (IGlobalAccessTypeCacheProvider) Activator.CreateInstance (CustomGlobalAccessTypeCacheProvider.Type);
-        default:
-          throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the GlobalAccessTypeCacheProvider.", GlobalAccessTypeCacheProviderType));
+        return _globalAccessTypeCacheProviderHelper.Providers;
       }
     }
-
-
-    private Type GetTypeWithMatchingVersionNumber (string assemblyName, string typeName, ConfigurationProperty property)
-    {
-      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
-      AssemblyName realAssemblyName = new AssemblyName (securityAssemblyName.FullName);
-      realAssemblyName.Name = assemblyName;
-
-      return GetType (property, realAssemblyName, typeName);
-    }
-
-    private Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
-    {
-      try
-      {
-        Assembly.Load (assemblyName);
-      }
-      catch (FileNotFoundException e)
-      {
-        PropertyInformation propertyInformation = ElementInformation.Properties[property.Name];
-        throw new ConfigurationErrorsException (string.Format ("The current value of property '{0}' requires that the assembly '{1}' is placed "
-                + "within the CLR's probing path for this application.", property.Name, assemblyName.FullName),
-            e,
-            propertyInformation.Source,
-            propertyInformation.LineNumber);
-      }
-
-      return Type.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), true, false);
-    }
-  }
-
-  public enum SecurityServiceType
-  {
-    None,
-    SecurityManagerService,
-    //SecurityManagerWebService,
-    Custom
-  }
-
-  public enum GlobalAccessTypeCacheProviderType
-  {
-    None,
-    RevisionBased,
-    Custom
   }
 }

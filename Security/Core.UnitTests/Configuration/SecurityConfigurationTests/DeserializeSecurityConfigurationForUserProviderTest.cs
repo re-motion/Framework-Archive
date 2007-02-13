@@ -1,23 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Text;
-using System.Xml;
-
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
 using Rubicon.Security.Web;
-using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
   public class DeserializeSecurityConfigurationForUserProviderTest : TestBase
   {
-
     [Test]
     public void DeserializeSecurityConfiguration_WithDefaultUserProvider ()
     {
@@ -84,11 +75,12 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), "The provider 'Custom1' specified for the defaultUserProvider does not exist in the providers collection.")]
+    [ExpectedException (typeof (ConfigurationErrorsException),
+         "The provider 'Invalid' specified for the defaultUserProvider does not exist in the providers collection.")]
     public void Test_WithCustomUserProviderAndInvalidName ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultUserProvider=""Custom1"">
+          <rubicon.security defaultUserProvider=""Invalid"">
             <userProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
             </userProviders>
@@ -96,7 +88,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
+      object dummy = Configuration.UserProvider;
     }
 
     [Test]
@@ -132,7 +124,8 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), "The value for the property 'defaultUserProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+    [ExpectedException (typeof (ConfigurationErrorsException),
+        "The value for the property 'defaultUserProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomUserProviderNameEmpty ()
     {
       string xmlFragment = @"
@@ -151,7 +144,8 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [ExpectedException (typeof (NotSupportedException))]
     public void Test_WithUserProvidersReadOnly ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <userProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
@@ -166,7 +160,8 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.IUserProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <userProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />

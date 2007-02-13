@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 
 using Rubicon.Utilities;
@@ -7,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.UnitTests.Configuration
 {
 
-  public class SecurityServiceMock : ISecurityService
+  public class SecurityServiceMock : ProviderBase, ISecurityService
   {
     // types
 
