@@ -1,0 +1,181 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Text;
+using System.Xml;
+
+using NUnit.Framework;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
+using Rubicon.Security.Web;
+using Rubicon.Utilities;
+
+namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
+{
+  [TestFixture]
+  public class DeserializeSecurityConfigurationForUserProviderTest : TestBase
+  {
+
+    [Test]
+    public void DeserializeSecurityConfiguration_WithDefaultUserProvider ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
+    }
+
+    [Test]
+    public void Test_UserProviderIsAlwaysSameInstance ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+      Assert.AreSame (Configuration.UserProvider, Configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfiguration_WithThreadUserProvider ()
+    {
+      string xmlFragment = @"<rubicon.security defaultUserProvider=""Thread"" />";
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfiguration_WithHttpContextUserProvider ()
+    {
+      string xmlFragment = @"<rubicon.security defaultUserProvider=""HttpContext"" />";
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+      Assert.IsInstanceOfType (typeof (HttpContextUserProvider), Configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfiguration_WithCustomUserProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security defaultUserProvider=""Custom"">
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
+    }
+
+    [Test]
+    public void Test_WithUserProvidersAndFallbackToDefaultWellKnownDefaultUserProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security>
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      Assert.AreEqual (2, Configuration.UserProviders.Count);
+      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProviders["Custom"]);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
+      Assert.AreSame (Configuration.UserProvider, Configuration.UserProviders["Thread"]);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationErrorsException), "The provider 'Custom1' specified for the defaultUserProvider does not exist in the providers collection.")]
+    public void Test_WithCustomUserProviderAndInvalidName ()
+    {
+      string xmlFragment = @"
+          <rubicon.security defaultUserProvider=""Custom1"">
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
+    }
+
+    [Test]
+    public void Test_NoDuplicateWellKnownUserProviderForThreadUserProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security defaultUserProvider=""Thread"">
+            <userProviders>
+              <add name=""Thread"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
+      Assert.AreSame (Configuration.UserProvider, Configuration.UserProviders["Thread"]);
+    }
+
+    [Test]
+    public void Test_NoDuplicateWellKnownUserProviderForHttpContextUserProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security defaultUserProvider=""HttpContext"">
+            <userProviders>
+              <add name=""HttpContext"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
+      Assert.AreSame (Configuration.UserProvider, Configuration.UserProviders["HttpContext"]);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationErrorsException), "The value for the property 'defaultUserProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+    public void Test_WithCustomUserProviderNameEmpty ()
+    {
+      string xmlFragment = @"
+          <rubicon.security defaultUserProvider="""">
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      object dummy = Configuration.UserProvider;
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException))]
+    public void Test_WithUserProvidersReadOnly ()
+    {
+      string xmlFragment = @"
+          <rubicon.security>
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+      Configuration.UserProviders.Clear ();
+    }
+
+    [Test]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.IUserProvider'.")]
+    public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
+    {
+      string xmlFragment = @"
+          <rubicon.security>
+            <userProviders>
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+            </userProviders>
+          </rubicon.security>";
+
+      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
+
+      object dummy = Configuration.UserProvider;
+    }
+  }
+}

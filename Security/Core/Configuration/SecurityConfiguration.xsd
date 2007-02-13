@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xs:schema 
+<xs:schema
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.rubicon-it.com/Security/Configuration" 
-    targetNamespace="http://www.rubicon-it.com/Security/Configuration" 
-    elementFormDefault="qualified" 
+    xmlns:c="http://www.rubicon-it.com/Security/Configuration"
+    targetNamespace="http://www.rubicon-it.com/Security/Configuration"
+    elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
   <xs:element name="rubicon.security">
@@ -14,16 +14,8 @@
             <xs:attribute name="type" type="c:DotNetType" default="None" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="customUserProvider" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="type" type="c:DotNetType" default="None" />
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="customPermissionProvider" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="type" type="c:DotNetType" default="None" />
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="permissionProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
+        <xs:element name="userProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
         <xs:element name="customFunctionalSecurityStrategy" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="type" type="c:DotNetType" default="None" />
@@ -36,7 +28,8 @@
         </xs:element>
       </xs:all>
       <xs:attribute name="service" type="c:SecurityServiceType" default="None" />
-      <xs:attribute name="userProvider" type="c:UserProviderType" default="Thread" />
+      <xs:attribute name="defaultUserProvider" type="c:UserProviderSelection" default="Thread" />
+      <xs:attribute name="defaultPermissionProvider" type="c:PermissionProviderSelection" default="Reflection" />
       <xs:attribute name="globalAccessTypeCacheProvider" type="c:GlobalAccessTypeCacheProviderType" default="None" />
     </xs:complexType>
   </xs:element>
@@ -49,12 +42,23 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="UserProviderType">
+  <xs:simpleType name="UserProviderSelection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Thread" />
+          <xs:enumeration value="HttpContext" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="PermissionProviderSelection">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="None" />
-      <xs:enumeration value="Thread" />
-      <xs:enumeration value="HttpContext" />
-      <xs:enumeration value="Custom" />
+      <xs:enumeration value="Reflection" />
     </xs:restriction>
   </xs:simpleType>
 
@@ -65,6 +69,28 @@
       <xs:enumeration value="Custom" />
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:complexType name="ProviderCollection">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="add">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+          <xs:attribute name="type" type="c:DotNetType" use="required" />
+          <xs:anyAttribute processContents="skip" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="remove">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clear">
+        <xs:complexType>
+          <!--tag is empty-->
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
 
   <xs:simpleType name="RequiredStringType">
     <xs:restriction base="xs:string">

@@ -2,19 +2,31 @@
 ======
 - Konfiguration:
   Bisher:
-  <rubicon.security permissionProvider="Custom">
+  <rubicon.security userProvider="None|Thread|HttpContext|Custom">
     <customPermissionProvider type="..." />
+    <customUserProvider type="..." />
   </rubicon.security>
   
   Neu: Das ASP.NET Provider Model liegt der Konfiguration zugrunde, d.h. es können beliebige Provider eingetragen werden, der standard-mäßig 
   verwendete wird explizit durch seinen Namen festgelegt.
   Zusätzlich sind bereits vordefinierte Provider hinterlegt:
-  PermissionProvider: "PermissionReflector" (= Standardprovider)
-  <rubicon.security defaultPermissionProvider="Custom1">
+  Permissionprovider: Rubicon.Security.Metadata.PermissionReflector = "Reflection" (= Standardprovider)
+  Userprovider: Rubicon.Security.ThreadUserProvider = "Thread" (= Standardprovider)
+                Rubicon.Security.Web.HttpContextUserProvider = "HttpContext"
+  <rubicon.security 
+      defaultPermissionProvider="Reflection|..."
+      defaultUserProvider="Thread|HttpContext|...">
     <permissionProviders>
       <add name="Custom1" type="..." />
       <add name="Custom2" type="..." />
       ...
     </permissionProviders>
+    <userProviders>
+      <add name="Custom1" type="..." />
+      <add name="Custom2" type="..." />
+      ...
+    </userProviders>
   </rubicon.security>
   
+  Userprovider "None" existiert nicht mehr, da es im Framework keinen Anwendungsfall gibt. 
+    Sollte dieser Anwendungsfall in einem Projekt auftreten, so wird eine projektspezifische Lösung mit dem Null-Object-Pattern empfohlen.

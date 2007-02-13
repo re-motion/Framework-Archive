@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 
 using Rubicon.Utilities;
@@ -9,7 +10,7 @@ using System.Threading;
 namespace Rubicon.Security
 {
 
-  public class ThreadUserProvider : IUserProvider
+  public class ThreadUserProvider : ProviderBase, IUserProvider
   {
     // types
 

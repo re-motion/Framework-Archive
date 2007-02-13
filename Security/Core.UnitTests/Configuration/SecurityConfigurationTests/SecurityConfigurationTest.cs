@@ -99,51 +99,6 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithDefaultUserProvider ()
-    {
-      string xmlFragment = @"<rubicon.security />";
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
-    }
-
-    [Test]
-    public void DeserializeSecurityConfiguration_WithNoUserProvider ()
-    {
-      string xmlFragment = @"<rubicon.security userProvider=""None"" />";
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsNull (Configuration.UserProvider);
-    }
-
-    [Test]
-    public void DeserializeSecurityConfiguration_WithThreadUserProvider ()
-    {
-      string xmlFragment = @"<rubicon.security userProvider=""Thread"" />";
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (ThreadUserProvider), Configuration.UserProvider);
-    }
-
-    [Test]
-    public void DeserializeSecurityConfiguration_WithHttpContextUserProvider ()
-    {
-      string xmlFragment = @"<rubicon.security userProvider=""HttpContext"" />";
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (HttpContextUserProvider), Configuration.UserProvider);
-    }
-
-    [Test]
-    public void DeserializeSecurityConfiguration_WithCustomUserProvider ()
-    {
-      string xmlFragment = @"
-          <rubicon.security userProvider=""Custom"">
-            <customUserProvider type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
-          </rubicon.security>";
-
-      ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
-    }
-
-    [Test]
     public void DeserializeSecurityConfiguration_WithDefaultFunctionalSecurityStrategy ()
     {
       string xmlFragment = @"<rubicon.security />";

@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       Assert.AreEqual (1, Configuration.PermissionProviders.Count);
       Assert.IsInstanceOfType (typeof (PermissionReflector), Configuration.PermissionProvider);
-      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["PermissionReflector"]);
+      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["Reflection"]);
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       Assert.AreEqual (2, Configuration.PermissionProviders.Count);
       Assert.IsInstanceOfType (typeof (PermissionProviderMock), Configuration.PermissionProviders["Custom"]);
       Assert.IsInstanceOfType (typeof (PermissionReflector), Configuration.PermissionProvider);
-      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["PermissionReflector"]);
+      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["Reflection"]);
     }
 
     [Test]
@@ -87,19 +87,19 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_NoDuplicateDefaultWellKnownDefaultPermissionProvider ()
+    public void Test_NoDuplicateWellKnownPermissionProviderForPermissionReflector ()
     {
       string xmlFragment = @"
-          <rubicon.security>
+          <rubicon.security defaultPermissionProvider=""Reflection"">
             <permissionProviders>
-              <add name=""PermissionReflector"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+              <add name=""Reflection"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
             </permissionProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (PermissionProviderMock), Configuration.PermissionProvider);
-      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["PermissionReflector"]);
+      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["Reflection"]);
     }
 
     [Test]

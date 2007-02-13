@@ -22,6 +22,7 @@
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>

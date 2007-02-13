@@ -64,7 +64,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void TearDown ()
     {
       SecurityConfiguration.Current.SecurityService = null;
-      SecurityConfiguration.Current.UserProvider = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
     }
 
@@ -103,7 +103,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetPossibleGroups_WithoutSecurityService ()
     {
       SecurityConfiguration.Current.SecurityService = null;
-      SecurityConfiguration.Current.UserProvider = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
 
@@ -160,7 +160,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetPossiblePositions_WithoutSecurityService ()
     {
       SecurityConfiguration.Current.SecurityService = null;
-      SecurityConfiguration.Current.UserProvider = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       Group parentGroup = Group.GetObject (_expectedParentGroup0ID, transaction);
@@ -181,7 +181,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetPossiblePositions_WithoutGroupTypeAndWithoutSecurityService ()
     {
       SecurityConfiguration.Current.SecurityService = null;
-      SecurityConfiguration.Current.UserProvider = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       Group rootGroup = Group.GetObject (_expectedRootGroupID, transaction);

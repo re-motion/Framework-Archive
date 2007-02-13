@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration.Provider;
 using System.Text;
 using System.Web;
 
@@ -9,7 +10,7 @@ using System.Threading;
 
 namespace Rubicon.Security.Web
 {
-  public class HttpContextUserProvider : IUserProvider
+  public class HttpContextUserProvider : ProviderBase, IUserProvider
   {
     // types
 
