@@ -1,3 +1,7 @@
+1.7.41
+======
+- INullableObject: Interface um das Null-Object-Pattern umzusetzen.
+
 1.7.40
 ======
 - Neuer Namespace Rubicon.Logging, Klassen und Interfaces um Event-IDs in Log-Messages mit zu senden,

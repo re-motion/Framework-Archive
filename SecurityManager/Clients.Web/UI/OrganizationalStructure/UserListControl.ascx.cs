@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         UserList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) UserList.FixedColumns[0], SortingDirection.Ascending));
       UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
 
-      if (SecurityConfiguration.Current.SecurityService != null)
+      if (!SecurityConfiguration.Current.SecurityService.IsNull)
       {
         SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
         NewUserButton.Visible = securityClient.HasConstructorAccess (typeof (User));

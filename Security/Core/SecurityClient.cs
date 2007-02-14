@@ -18,11 +18,8 @@ namespace Rubicon.Security
       IUserProvider userProvider = SecurityConfiguration.Current.UserProvider;
       IFunctionalSecurityStrategy functionalSecurityStrategy = SecurityConfiguration.Current.FunctionalSecurityStrategy;
 
-      if (securityService == null)
+      if (securityService.IsNull)
         throw new SecurityConfigurationException ("The security service has not been configured.");
-
-      if (userProvider == null)
-        throw new SecurityConfigurationException ("The user provider has not been configured.");
 
       return new SecurityClient (securityService, permissionProvider, userProvider, functionalSecurityStrategy);
     }

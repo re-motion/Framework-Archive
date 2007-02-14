@@ -59,6 +59,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _stubFunctionalSecurityStrategy;
+
+      Expect.Call (_mockSecurityService.IsNull).Return (false).Repeat.Any();
     }
 
     [TearDown]

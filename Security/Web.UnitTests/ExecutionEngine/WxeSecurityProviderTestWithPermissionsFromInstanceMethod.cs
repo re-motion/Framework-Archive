@@ -49,6 +49,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       _mocks = new MockRepository ();
 
       _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _userProvider = _mocks.CreateMock<IUserProvider> ();
       SetupResult.For (_userProvider.GetUser ()).Return (_user);

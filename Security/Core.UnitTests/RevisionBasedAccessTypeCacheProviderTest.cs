@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using NUnit.Framework;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
 using Rhino.Mocks;
+using Rubicon.Collections;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -16,83 +12,83 @@ namespace Rubicon.Security.UnitTests
   {
     private MockRepository _mocks;
     private ISecurityService _mockSecurityService;
+    private IGlobalAccessTypeCacheProvider _provider;
 
     [SetUp]
-    public void SetUp ()
+    public void SetUp()
     {
-      _mocks = new MockRepository ();
+      _provider = new RevisionBasedAccessTypeCacheProvider();
 
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mocks = new MockRepository();
 
+      _mockSecurityService = _mocks.CreateMock<ISecurityService>();
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
     }
 
     [TearDown]
-    public void TearDown ()
+    public void TearDown()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
       System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision", null);
     }
 
     [Test]
-    public void GetCache ()
+    public void GetCache()
     {
-      IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      Expect.Call (_mockSecurityService.GetRevision ()).Return (0);
-      _mocks.ReplayAll ();
+      Expect.Call (_mockSecurityService.GetRevision()).Return (0);
+      _mocks.ReplayAll();
 
-      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = _provider.GetCache();
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsNotNull (actual);
     }
 
     [Test]
-    public void GetCache_SameCacheTwice ()
+    public void GetCache_SameCacheTwice()
     {
-      IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      Expect.Call (_mockSecurityService.GetRevision ()).Return (0);
-      _mocks.ReplayAll ();
+      Expect.Call (_mockSecurityService.GetRevision()).Return (0);
+      _mocks.ReplayAll();
 
-      ICache<Tuple<SecurityContext, string>, AccessType[]> expected = provider.GetCache ();
-      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> expected = _provider.GetCache();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> actual = _provider.GetCache();
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.AreSame (expected, actual);
     }
 
     [Test]
-    public void GetCache_InvalidateFromOtherThread ()
+    public void GetCache_InvalidateFromOtherThread()
     {
-      IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      using (_mocks.Ordered ())
+      using (_mocks.Ordered())
       {
-        Expect.Call (_mockSecurityService.GetRevision ()).Return (0);
-        Expect.Call (_mockSecurityService.GetRevision ()).Return (1);
+        Expect.Call (_mockSecurityService.GetRevision()).Return (0);
+        Expect.Call (_mockSecurityService.GetRevision()).Return (1);
       }
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
-      ICache<Tuple<SecurityContext, string>, AccessType[]> expected = provider.GetCache ();
+      ICache<Tuple<SecurityContext, string>, AccessType[]> expected = _provider.GetCache();
       ICache<Tuple<SecurityContext, string>, AccessType[]> actual = null;
 
-      ThreadRunner.Run (delegate ()
-          {
-            actual = provider.GetCache ();
-          });
+      ThreadRunner.Run (delegate() { actual = _provider.GetCache(); });
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.AreNotSame (expected, actual);
     }
 
     [Test]
-    [ExpectedException (typeof (SecurityConfigurationException), "The security service has not been configured.")]
-    public void GetCache_WithoutSecurityService ()
+    public void GetCache_WithNullSecurityService()
     {
-      IGlobalAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ();
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
 
-      provider.GetCache ();
+      Assert.AreSame (_provider.GetCache(), _provider.GetCache());
     }
 
+    [Test]
+    public void GetIsNull()
+    {
+      Assert.IsFalse (_provider.IsNull);
+    }
   }
 }

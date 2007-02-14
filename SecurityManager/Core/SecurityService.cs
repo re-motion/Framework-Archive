@@ -70,5 +70,10 @@ namespace Rubicon.SecurityManager
     {
       return AccessType.Get (EnumWrapper.Parse (accessTypeDefinition.Name));
     }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
+    }
   }
 }

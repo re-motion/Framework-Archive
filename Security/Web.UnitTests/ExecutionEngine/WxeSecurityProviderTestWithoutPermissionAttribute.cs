@@ -26,8 +26,8 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     private IWxeSecurityProvider _securityProvider;
     private MockRepository _mocks;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private ISecurityService _securityService;
-    private IUserProvider _userProvider;
+    private ISecurityService _mockSecurityService;
+    private IUserProvider _mockUserProvider;
 
     // construction and disposing
 
@@ -44,12 +44,13 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
       _mocks = new MockRepository ();
 
-      _securityService = _mocks.CreateMock<ISecurityService> ();
-      _userProvider = _mocks.CreateMock<IUserProvider> ();
+      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
-      SecurityConfiguration.Current.SecurityService = _securityService;
-      SecurityConfiguration.Current.UserProvider = _userProvider;
+      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
     }
 

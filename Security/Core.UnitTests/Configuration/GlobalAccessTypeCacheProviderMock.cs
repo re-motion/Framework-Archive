@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration.Provider;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests.Configuration
@@ -26,7 +22,12 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
+    }
+
+    public bool IsNull
+    {
+      get { return false; }
     }
   }
 }

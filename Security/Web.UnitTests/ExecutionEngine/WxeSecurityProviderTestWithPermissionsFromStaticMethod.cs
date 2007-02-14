@@ -1,17 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-
-using Rhino.Mocks;
 using NUnit.Framework;
-
-using Rubicon.Security;
+using Rhino.Mocks;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
@@ -42,16 +36,17 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new WxeSecurityProvider ();
+      _securityProvider = new WxeSecurityProvider();
 
-      _mocks = new MockRepository ();
+      _mocks = new MockRepository();
 
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockSecurityService = _mocks.CreateMock<ISecurityService>();
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _userProvider = _mocks.CreateMock<IUserProvider> ();
-      SetupResult.For (_userProvider.GetUser ()).Return (_user);
+      _userProvider = _mocks.CreateMock<IUserProvider>();
+      SetupResult.For (_userProvider.GetUser()).Return (_user);
 
-      _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
+      _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy>();
 
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
@@ -62,19 +57,19 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void TearDown ()
     {
       SecurityConfiguration.Current.SecurityService = new NullSecurityService();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider();
+      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy();
     }
 
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, true);
-      _mocks.ReplayAll ();
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
+      _mocks.ReplayAll();
 
-      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod ());
-      
-      _mocks.VerifyAll ();
+      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod());
+
+      _mocks.VerifyAll();
     }
 
     [Test]
@@ -82,48 +77,44 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void CheckAccess_AccessDenied ()
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
-      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod ());
+      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod());
     }
 
     [Test]
     public void CheckAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
-      using (new SecurityFreeSection ())
-      {
-        _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod ());
-      }
+      using (new SecurityFreeSection())
+        _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
     }
 
     [Test]
     public void HasAccess_AccessGranted ()
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
-      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod ());
+      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
       bool hasAccess;
-      using (new SecurityFreeSection ())
-      {
-        hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod ());
-      }
+      using (new SecurityFreeSection())
+        hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsTrue (hasAccess);
     }
 
@@ -131,50 +122,48 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void HasAccess_AccessDenied ()
     {
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
-      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod ());
+      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsFalse (hasAccess);
     }
 
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, true);
-      _mocks.ReplayAll ();
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
+      _mocks.ReplayAll();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasStatelessAccess_WithinSecurityFreeSection_AccessGranted ()
     {
-      _mocks.ReplayAll ();
+      _mocks.ReplayAll();
 
       bool hasAccess;
-      using (new SecurityFreeSection ())
-      {
+      using (new SecurityFreeSection())
         hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
-      }
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasStatelessAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, false);
-      _mocks.ReplayAll ();
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
+      _mocks.ReplayAll();
 
       bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
 
-      _mocks.VerifyAll ();
+      _mocks.VerifyAll();
       Assert.IsFalse (hasAccess);
     }
 

@@ -35,6 +35,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _mocks = new MockRepository ();
       
       _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
       _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();

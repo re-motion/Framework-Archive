@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void Test_GetAccess_ReturnsEmptyList ()
+    public void GetAccess_ReturnsEmptyList ()
     {
       AccessType[] accessTypes = _securityService.GetAccess (null, null);
       Assert.IsNotNull (accessTypes);
@@ -23,9 +23,15 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void Test_GetRevision_ReturnsZero ()
+    public void GetRevision_ReturnsZero ()
     {
       Assert.AreEqual (0, _securityService.GetRevision());
+    }
+
+    [Test]
+    public void GetIsNull ()
+    {
+      Assert.IsTrue (_securityService.IsNull);
     }
   }
 }

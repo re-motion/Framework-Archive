@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using NUnit.Framework;
 using Rubicon.Collections;
 
@@ -15,13 +12,19 @@ namespace Rubicon.Security.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _provider = new NullGlobalAccessTypeCacheProvider ();
+      _provider = new NullGlobalAccessTypeCacheProvider();
     }
 
     [Test]
     public void GetAccessTypeCache ()
     {
-      Assert.IsInstanceOfType (typeof (NullCache<Tuple<SecurityContext, string>, AccessType[]>), _provider.GetCache ());
+      Assert.IsInstanceOfType (typeof (NullCache<Tuple<SecurityContext, string>, AccessType[]>), _provider.GetCache());
+    }
+
+    [Test]
+    public void GetIsNull ()
+    {
+      Assert.IsTrue (_provider.IsNull);
     }
   }
 }

@@ -43,6 +43,8 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
       _mockPermissionReflector = _mocks.CreateMock<IPermissionProvider> ();
       _transaction = new ClientTransaction ();
+
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
     }
 
     // methods and properties

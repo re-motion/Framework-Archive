@@ -1,3 +1,4 @@
+using System;
 using System.Configuration.Provider;
 using System.Security.Principal;
 
@@ -25,6 +26,11 @@ namespace Rubicon.Security
     public int GetRevision ()
     {
       return 0;
+    }
+
+    bool INullableObject.IsNull
+    {
+      get { return true; }
     }
   }
 }

@@ -166,6 +166,12 @@ namespace Rubicon.SecurityManager.UnitTests
       Assert.AreEqual (0, _service.GetRevision ());
     }
 
+    [Test]
+    public void GetIsNull ()
+    {
+      Assert.IsFalse (((ISecurityService) _service).IsNull);
+    }
+    
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)
     {
       AccessControlList acl = new AccessControlList (transaction);

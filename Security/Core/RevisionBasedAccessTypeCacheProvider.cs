@@ -57,15 +57,16 @@ namespace Rubicon.Security
       int? revision = (int?) CallContext.GetData (s_revisionKey);
       if (!revision.HasValue)
       {
-        ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
-        if (securityService is NullSecurityService)
-          throw new SecurityConfigurationException ("The security service has not been configured.");
-
-        revision = securityService.GetRevision ();
+        revision = SecurityConfiguration.Current.SecurityService.GetRevision ();
         CallContext.SetData (s_revisionKey, revision);
       }
 
       return revision.Value;
+    }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
     }
   }
 }

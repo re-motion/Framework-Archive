@@ -26,10 +26,10 @@ namespace Rubicon.Security.UnitTests
     private MockRepository _mocks;
     private SecurableObject _securableObject;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
-    private ISecurityService _securityService;
-    private IUserProvider _userProvider;
+    private ISecurityService _mockSecurityService;
+    private IUserProvider _mockUserProvider;
     private IPrincipal _user;
-    private IPermissionProvider _permissionProvider;
+    private IPermissionProvider _mockPermissionProvider;
 
     // construction and disposing
 
@@ -46,19 +46,21 @@ namespace Rubicon.Security.UnitTests
 
       _mocks = new MockRepository ();
 
-      _securityService = _mocks.CreateMock<ISecurityService> ();
-      _userProvider = _mocks.CreateMock<IUserProvider> ();
-      _permissionProvider = _mocks.CreateMock<IPermissionProvider> ();
+      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
+      _mockPermissionProvider = _mocks.CreateMock<IPermissionProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      SetupResult.For (_userProvider.GetUser ()).Return (_user);
+      SetupResult.For (_mockUserProvider.GetUser ()).Return (_user);
 
-      SecurityConfiguration.Current.SecurityService = _securityService;
-      SecurityConfiguration.Current.UserProvider = _userProvider;
-      SecurityConfiguration.Current.PermissionProvider = _permissionProvider;
+      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.UserProvider = _mockUserProvider;
+      SecurityConfiguration.Current.PermissionProvider = _mockPermissionProvider;
 
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _securableObject = new SecurableObject (_mockObjectSecurityStrategy);
+
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
     }
 
     [TearDown]
@@ -154,17 +156,17 @@ namespace Rubicon.Security.UnitTests
     private void ExpectExpectObjectSecurityStrategyHasAccess (bool accessAllowed)
     {
       AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessTypes.First) };
-      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_securityService, _user, accessTypes)).Return (accessAllowed);
+      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, accessTypes)).Return (accessAllowed);
     }
 
     private void ExpectGetRequiredPropertyReadPermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
+      Expect.Call (_mockPermissionProvider.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
     }
 
     private void ExpectGetRequiredPropertyWritePermissions (string propertyName)
     {
-      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
+      Expect.Call (_mockPermissionProvider.GetRequiredPropertyWritePermissions (typeof (SecurableObject), propertyName)).Return (new Enum[] { TestAccessTypes.First });
     }
   }
 }
