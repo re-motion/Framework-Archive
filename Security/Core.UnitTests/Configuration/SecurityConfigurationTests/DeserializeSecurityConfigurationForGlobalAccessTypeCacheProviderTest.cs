@@ -2,7 +2,6 @@ using System;
 using System.Configuration;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
@@ -93,11 +92,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.GlobalAccessTypeCacheProvider;
+      Dev.Null = Configuration.GlobalAccessTypeCacheProvider;
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownGlobalAccessTypeCacheProviderForGlobalAccessTypeCacheNone ()
+    [ExpectedException (typeof (ConfigurationErrorsException),
+        "The name of the entry 'None' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownGlobalAccessTypeCacheProviderForGlobalAccessTypeCacheNone ()
     {
       string xmlFragment = @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""None"">
@@ -107,13 +108,12 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (GlobalAccessTypeCacheProviderMock), Configuration.GlobalAccessTypeCacheProvider);
-      Assert.AreSame (Configuration.GlobalAccessTypeCacheProvider, Configuration.GlobalAccessTypeCacheProviders["None"]);
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownGlobalAccessTypeCacheProviderForGlobalAccessTypeCacheRevisionBased ()
+    [ExpectedException (typeof (ConfigurationErrorsException),
+       "The name of the entry 'RevisionBased' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownGlobalAccessTypeCacheProviderForGlobalAccessTypeCacheRevisionBased ()
     {
       string xmlFragment = @"
           <rubicon.security defaultGlobalAccessTypeCacheProvider=""RevisionBased"">
@@ -123,9 +123,6 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (GlobalAccessTypeCacheProviderMock), Configuration.GlobalAccessTypeCacheProvider);
-      Assert.AreSame (Configuration.GlobalAccessTypeCacheProvider, Configuration.GlobalAccessTypeCacheProviders["RevisionBased"]);
     }
 
     [Test]
@@ -142,7 +139,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.GlobalAccessTypeCacheProvider;
+      Dev.Null = Configuration.GlobalAccessTypeCacheProvider;
     }
 
     [Test]
@@ -174,7 +171,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.GlobalAccessTypeCacheProvider;
+      Dev.Null = Configuration.GlobalAccessTypeCacheProvider;
     }
   }
 }

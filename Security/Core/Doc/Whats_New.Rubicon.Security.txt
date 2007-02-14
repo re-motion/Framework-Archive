@@ -14,18 +14,18 @@
     <customService type="..." />
   </rubicon.security>
   
-  Neu: Das ASP.NET Provider Model liegt der Konfiguration zugrunde, d.h. es können beliebige Provider eingetragen werden, der standard-mäßig 
+  Neu: Der Konfiguration liegt das ASP.NET Provider Model zugrunde, d.h. es können beliebige Provider eingetragen werden, der standard-mäßig 
   verwendete wird explizit durch seinen Namen festgelegt.
   Zusätzlich sind bereits vordefinierte Provider hinterlegt:
-  Permissionprovider:
+  PermissionProvider:
                 Rubicon.Security.Metadata.PermissionReflector = "Reflection" (= Standardprovider)
-  Userprovider: 
+  UserProvider: 
                 Rubicon.Security.ThreadUserProvider = "Thread" (= Standardprovider)
                 Rubicon.Security.Web.HttpContextUserProvider = "HttpContext"
   GlobalAccessTypeCacheProvider: 
                 Rubicon.Security.NullGlobalAccessTypeCacheProvider = "None" (= Standardprovider)
                 Rubicon.Security.RevisionBasedAccessTypeCacheProvider = "RevisionBased"
-  SecurityService:
+  SecurityProvider:
                 Rubicon.Security.NullSecurityService = "None" (= Standardprovider)
                 Rubicon.SecurityManager.SecurityService = "SecurityManager"
   
@@ -33,7 +33,7 @@
       defaultPermissionProvider="Reflection|..."
       defaultUserProvider="Thread|HttpContext|...">
       defaultGlobalAccessTypeCacheProvider="None|RevisionBased|...">
-      defaultSecurityService="None|SecurityManager|...">
+      defaultSecurityProvider="None|SecurityManager|...">
     <permissionProviders>
       <add name="Custom1" type="..." />
       <add name="Custom2" type="..." />
@@ -49,11 +49,11 @@
       <add name="Custom2" type="..." />
       ...
     </globalAccessTypeCacheProviders>
-    <securityServices>
+    <securityProviders>
       <add name="Custom1" type="..." />
       <add name="Custom2" type="..." />
       ...
-    </securityServices>
+    </securityProviders>
   </rubicon.security>
   
   Userprovider "None" existiert nicht mehr, da es im Framework keinen Anwendungsfall gibt. 

@@ -14,8 +14,8 @@ namespace Rubicon.Security.Configuration
     private SecurityConfiguration _configuration;
     private TProvider _provider;
     private ProviderCollection _providers;
-    private readonly object _lockProviders = new object();
-    private readonly object _lockProvider = new object();
+    private readonly object _lockProviders = new object ();
+    private readonly object _lockProvider = new object ();
     private ConfigurationProperty _providerSettingsProperty;
     private ConfigurationProperty _defaultProviderNameProperty;
 
@@ -36,8 +36,8 @@ namespace Rubicon.Security.Configuration
     {
       ArgumentUtility.CheckNotNull ("properties", properties);
 
-      _providerSettingsProperty = CreateProviderSettingsProperty();
-      _defaultProviderNameProperty = CreateDefaultProviderNameProperty();
+      _providerSettingsProperty = CreateProviderSettingsProperty ();
+      _defaultProviderNameProperty = CreateDefaultProviderNameProperty ();
 
       properties.Add (DefaultProviderNameProperty);
       properties.Add (_providerSettingsProperty);
@@ -56,7 +56,7 @@ namespace Rubicon.Security.Configuration
           lock (_lockProvider)
           {
             if (_provider == null)
-              _provider = GetProviderFromConfiguration();
+              _provider = GetProviderFromConfiguration ();
           }
         }
         return _provider;
@@ -80,7 +80,7 @@ namespace Rubicon.Security.Configuration
           lock (_lockProviders)
           {
             if (_providers == null)
-              _providers = GetProvidersFromConfiguration();
+              _providers = GetProvidersFromConfiguration ();
           }
         }
 
@@ -122,11 +122,13 @@ namespace Rubicon.Security.Configuration
 
     protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string defaultValue)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
       return new ConfigurationProperty (name, typeof (string), defaultValue, null, new StringValidator (1), ConfigurationPropertyOptions.None);
     }
 
     protected ConfigurationProperty CreateProviderSettingsProperty (string name)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
       return new ConfigurationProperty (name, typeof (ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
     }
 
@@ -136,17 +138,36 @@ namespace Rubicon.Security.Configuration
 
     protected void EnsureWellKownProvider (ProviderCollection collection, string wellKnownName, Func<ProviderBase> createMethod)
     {
-      if (ProviderSettings[wellKnownName] == null)
+      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNullOrEmpty ("wellKnownName", wellKnownName);
+      ArgumentUtility.CheckNotNull ("createMethod", createMethod);
+
+      ProviderBase provider = createMethod ();
+      provider.Initialize (wellKnownName, new NameValueCollection ());
+      collection.Add (provider);
+    }
+
+    protected void CheckForDuplicateWellKownProviderName (string wellKnownName)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("wellKnownName", wellKnownName);
+      
+      if (ProviderSettings[wellKnownName] != null)
       {
-        ProviderBase provider = createMethod ();
-        provider.Initialize (wellKnownName, new NameValueCollection ());
-        collection.Add (provider);
+        throw CreateConfigurationErrorsException (
+            null,
+            ProviderSettings[wellKnownName].ElementInformation.Properties["name"],
+            "The name of the entry '{0}' identifies a well known provider and cannot be reused for custom providers.",
+            wellKnownName);
       }
     }
 
-    protected Type GetTypeWithMatchingVersionNumber (string assemblyName, string typeName, ConfigurationProperty property)
+    protected Type GetTypeWithMatchingVersionNumber (ConfigurationProperty property, string assemblyName, string typeName)
     {
-      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName();
+      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      ArgumentUtility.CheckNotNull ("property", property);
+
+      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
       AssemblyName realAssemblyName = new AssemblyName (securityAssemblyName.FullName);
       realAssemblyName.Name = assemblyName;
 
@@ -155,22 +176,22 @@ namespace Rubicon.Security.Configuration
 
     protected Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
     {
+      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+
       try
       {
         Assembly.Load (assemblyName);
       }
       catch (FileNotFoundException e)
       {
-        PropertyInformation propertyInformation = Configuration.ElementInformation.Properties[property.Name];
-        throw new ConfigurationErrorsException (
-            string.Format (
-                "The current value of property '{0}' requires that the assembly '{1}' is placed "
-                    + "within the CLR's probing path for this application.",
-                property.Name,
-                assemblyName.FullName),
+        throw CreateConfigurationErrorsException (
             e,
-            propertyInformation.Source,
-            propertyInformation.LineNumber);
+            Configuration.ElementInformation.Properties[property.Name],
+            "The current value of property '{0}' requires that the assembly '{1}' is placed within the CLR's probing path for this application.", 
+            property.Name,
+            assemblyName.FullName);
       }
 
       return Type.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), true, false);
@@ -180,13 +201,12 @@ namespace Rubicon.Security.Configuration
     {
       if (Providers[DefaultProviderName] == null)
       {
-        throw new ConfigurationErrorsException (
-            string.Format (
-                "The provider '{0}' specified for the {1} does not exist in the providers collection.",
-                DefaultProviderName,
-                DefaultProviderNameProperty.Name),
-            Configuration.ElementInformation.Properties[DefaultProviderNameProperty.Name].Source,
-            Configuration.ElementInformation.Properties[DefaultProviderNameProperty.Name].LineNumber);
+        throw CreateConfigurationErrorsException (
+            null,
+            Configuration.ElementInformation.Properties[DefaultProviderNameProperty.Name],
+            "The provider '{0}' specified for the {1} does not exist in the providers collection.",
+            DefaultProviderName,
+            DefaultProviderNameProperty.Name);
       }
 
       return CastProviderBaseToProviderType (Providers[DefaultProviderName]);
@@ -200,6 +220,11 @@ namespace Rubicon.Security.Configuration
       collection.SetReadOnly ();
 
       return collection;
+    }
+
+    private ConfigurationErrorsException CreateConfigurationErrorsException (FileNotFoundException e, PropertyInformation propertyInformation, string message, params object[] args)
+    {
+      return new ConfigurationErrorsException (string.Format (message, args), e, propertyInformation.Source, propertyInformation.LineNumber);
     }
   }
 }

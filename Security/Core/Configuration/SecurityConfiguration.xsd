@@ -9,37 +9,35 @@
   <xs:element name="rubicon.security">
     <xs:complexType>
       <xs:all>
-        <xs:element name="customService" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="type" type="c:DotNetType" default="None" />
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="securityProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
+        <xs:element name="globalAccessTypeCacheProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
         <xs:element name="permissionProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
         <xs:element name="userProviders" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
-        <xs:element name="customFunctionalSecurityStrategy" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="type" type="c:DotNetType" default="None" />
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="customGlobalAccessTypeCacheProvider" minOccurs="0" maxOccurs="1">
+        <xs:element name="functionalSecurityStrategy" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="type" type="c:DotNetType" default="None" />
           </xs:complexType>
         </xs:element>
       </xs:all>
-      <xs:attribute name="service" type="c:SecurityServiceType" default="None" />
+      <xs:attribute name="defaultSecurityProvider" type="c:SecurityProviderSelection" default="None" />
       <xs:attribute name="defaultUserProvider" type="c:UserProviderSelection" default="Thread" />
       <xs:attribute name="defaultPermissionProvider" type="c:PermissionProviderSelection" default="Reflection" />
-      <xs:attribute name="globalAccessTypeCacheProvider" type="c:GlobalAccessTypeCacheProviderType" default="None" />
+      <xs:attribute name="defaultGlobalAccessTypeCacheProvider" type="c:GlobalAccessTypeCacheProviderSelection" default="None" />
     </xs:complexType>
   </xs:element>
 
-  <xs:simpleType name="SecurityServiceType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="None" />
-      <xs:enumeration value="SecurityManagerService" />
-      <xs:enumeration value="Custom" />
-    </xs:restriction>
+  <xs:simpleType name="SecurityProviderSelection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="SecurityManagerService" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
   </xs:simpleType>
 
   <xs:simpleType name="UserProviderSelection">
@@ -57,17 +55,30 @@
   </xs:simpleType>
 
   <xs:simpleType name="PermissionProviderSelection">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Reflection" />
-    </xs:restriction>
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Reflection" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
   </xs:simpleType>
 
-  <xs:simpleType name="GlobalAccessTypeCacheProviderType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="None" />
-      <xs:enumeration value="RevisionBased" />
-      <xs:enumeration value="Custom" />
-    </xs:restriction>
+  <xs:simpleType name="GlobalAccessTypeCacheProviderSelection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None" />
+          <xs:enumeration value="RevisionBased" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
   </xs:simpleType>
 
   <xs:complexType name="ProviderCollection">

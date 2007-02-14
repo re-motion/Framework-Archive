@@ -76,11 +76,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.PermissionProvider;
+      Dev.Null = Configuration.PermissionProvider;
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownPermissionProviderForPermissionReflector ()
+    [ExpectedException (typeof (ConfigurationErrorsException),
+       "The name of the entry 'Reflection' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownPermissionProviderForPermissionReflector ()
     {
       string xmlFragment = @"
           <rubicon.security defaultPermissionProvider=""Reflection"">
@@ -90,9 +92,6 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (PermissionProviderMock), Configuration.PermissionProvider);
-      Assert.AreSame (Configuration.PermissionProvider, Configuration.PermissionProviders["Reflection"]);
     }
 
     [Test]
@@ -109,7 +108,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.PermissionProvider;
+      Dev.Null = Configuration.PermissionProvider;
     }
 
     [Test]
@@ -141,7 +140,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.PermissionProvider;
+      Dev.Null = Configuration.PermissionProvider;
     }
   }
 }

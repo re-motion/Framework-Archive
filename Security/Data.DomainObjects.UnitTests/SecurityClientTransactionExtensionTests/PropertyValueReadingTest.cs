@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using System.Security.Principal;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
@@ -97,7 +98,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("StringProperty", TestAccessTypes.First);
       HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
-        string dummy = securableObject.OtherStringProperty;
+        Dev.Null = securableObject.OtherStringProperty;
         return true;
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, hasAccess);
@@ -117,7 +118,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      object dummy = securableObject.StringProperty;
+      Dev.Null = securableObject.StringProperty;
 
       _testHelper.VerifyAll ();
     }
@@ -129,7 +130,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      object dummy = securableObject.ID;
+      Dev.Null = securableObject.ID;
 
       _testHelper.VerifyAll ();
     }

@@ -10,7 +10,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
   public class DeserializeSecurityConfigurationForUserProviderTest : TestBase
   {
     [Test]
-    public void DeserializeSecurityConfiguration_WithDefaultUserProvider ()
+    public void Test_WithDefaultUserProvider ()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -26,7 +26,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithThreadUserProvider ()
+    public void Test_WithThreadUserProvider ()
     {
       string xmlFragment = @"<rubicon.security defaultUserProvider=""Thread"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -34,7 +34,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithHttpContextUserProvider ()
+    public void Test_WithHttpContextUserProvider ()
     {
       string xmlFragment = @"<rubicon.security defaultUserProvider=""HttpContext"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -42,7 +42,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithCustomUserProvider ()
+    public void Test_WithCustomUserProvider ()
     {
       string xmlFragment = @"
           <rubicon.security defaultUserProvider=""Custom"">
@@ -88,11 +88,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.UserProvider;
+      Dev.Null = Configuration.UserProvider;
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownUserProviderForThreadUserProvider ()
+    [ExpectedException (typeof (ConfigurationErrorsException), 
+        "The name of the entry 'Thread' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownUserProviderForThreadUserProvider ()
     {
       string xmlFragment = @"
           <rubicon.security defaultUserProvider=""Thread"">
@@ -102,13 +104,12 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
-      Assert.AreSame (Configuration.UserProvider, Configuration.UserProviders["Thread"]);
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownUserProviderForHttpContextUserProvider ()
+    [ExpectedException (typeof (ConfigurationErrorsException), 
+        "The name of the entry 'HttpContext' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownUserProviderForHttpContextUserProvider ()
     {
       string xmlFragment = @"
           <rubicon.security defaultUserProvider=""HttpContext"">
@@ -118,9 +119,6 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (UserProviderMock), Configuration.UserProvider);
-      Assert.AreSame (Configuration.UserProvider, Configuration.UserProviders["HttpContext"]);
     }
 
     [Test]
@@ -137,7 +135,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.UserProvider;
+      Dev.Null = Configuration.UserProvider;
     }
 
     [Test]
@@ -170,7 +168,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.UserProvider;
+      Dev.Null = Configuration.UserProvider;
     }
   }
 }

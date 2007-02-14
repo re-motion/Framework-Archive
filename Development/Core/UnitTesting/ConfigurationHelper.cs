@@ -1,5 +1,4 @@
 using System.Configuration;
-using System.IO;
 using System.Xml;
 using Rubicon.Utilities;
 
@@ -12,15 +11,9 @@ namespace Rubicon.Development.UnitTesting
       ArgumentUtility.CheckNotNull ("configurationElement", configurationElement);
       ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
 
-      XmlDocument document = new XmlDocument ();
-      document.LoadXml (xmlFragment);
-
-      MemoryStream stream = new MemoryStream ();
-      document.Save (stream);
-      stream.Position = 0;
-      XmlReader reader = XmlReader.Create (stream);
-
-      reader.IsStartElement ();
+      XmlTextReader reader = new XmlTextReader (xmlFragment, XmlNodeType.Document, null);
+      reader.WhitespaceHandling = WhitespaceHandling.None;
+      reader.IsStartElement();
       PrivateInvoke.InvokeNonPublicMethod (configurationElement, "DeserializeElement", reader, false);
     }
 
@@ -29,14 +22,8 @@ namespace Rubicon.Development.UnitTesting
       ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
       ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
 
-      XmlDocument document = new XmlDocument ();
-      document.LoadXml (xmlFragment);
-
-      MemoryStream stream = new MemoryStream ();
-      document.Save (stream);
-      stream.Position = 0;
-      XmlReader reader = XmlReader.Create (stream);
-
+      XmlTextReader reader = new XmlTextReader (xmlFragment, XmlNodeType.Document, null);
+      reader.WhitespaceHandling = WhitespaceHandling.None;
       PrivateInvoke.InvokeNonPublicMethod (configurationSection, "DeserializeSection", reader);
     }
   }

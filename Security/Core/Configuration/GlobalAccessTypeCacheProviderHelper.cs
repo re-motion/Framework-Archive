@@ -26,6 +26,12 @@ namespace Rubicon.Security.Configuration
       return CreateProviderSettingsProperty ("globalAccessTypeCacheProviders");
     }
 
+    public override void PostDeserialze ()
+    {
+      CheckForDuplicateWellKownProviderName (c_nullGlobalAccessTypeCacheProviderWellKnownName);
+      CheckForDuplicateWellKownProviderName (c_revisionBasedGlobalAccessTypeCacheProviderWellKnownName);
+    }
+
     protected override IGlobalAccessTypeCacheProvider CastProviderBaseToProviderType (ProviderBase provider)
     {
       return (IGlobalAccessTypeCacheProvider) provider;

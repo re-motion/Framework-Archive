@@ -77,7 +77,7 @@ namespace Rubicon.Core.UnitTests.Configuration
       string xmlFragment = @"<theElement type=""System.Object, mscorlib"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);
 
-      object dummy = typeElement.Type;
+      Dev.Null = typeElement.Type;
     }
   }
 }

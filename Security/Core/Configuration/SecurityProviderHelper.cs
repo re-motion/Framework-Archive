@@ -2,12 +2,11 @@ using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
-using System.Security.Principal;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
-  public class SecuritySeviceHelper : ProviderHelperBase<ISecurityService>
+  public class SecurityProviderHelper : ProviderHelperBase<ISecurityService>
   {
     private const string c_nullSecurityServiceWellKnownName = "None";
     private const string c_securityManagerSecurityServiceWellKnownName = "SecurityManager";
@@ -15,25 +14,28 @@ namespace Rubicon.Security.Configuration
     private readonly object _lock = new object();
     private Type _securityManagerServiceType;
 
-    public SecuritySeviceHelper (SecurityConfiguration configuration)
+    public SecurityProviderHelper (SecurityConfiguration configuration)
         : base (configuration)
     {
     }
 
     protected override ConfigurationProperty CreateDefaultProviderNameProperty ()
     {
-      return CreateDefaultProviderNameProperty ("defaultSecurityService", c_nullSecurityServiceWellKnownName);
+      return CreateDefaultProviderNameProperty ("defaultSecurityProvider", c_nullSecurityServiceWellKnownName);
     }
 
     protected override ConfigurationProperty CreateProviderSettingsProperty ()
     {
-      return CreateProviderSettingsProperty ("securityServices");
+      return CreateProviderSettingsProperty ("securityProviders");
     }
 
     public override void PostDeserialze ()
     {
+      CheckForDuplicateWellKownProviderName (c_nullSecurityServiceWellKnownName);
+      CheckForDuplicateWellKownProviderName (c_securityManagerSecurityServiceWellKnownName);
+      
       if (DefaultProviderName.Equals (c_securityManagerSecurityServiceWellKnownName, StringComparison.Ordinal))
-        EnsureSecurityManagerServiceTypeInitialized ();
+        EnsureSecurityManagerServiceTypeInitialized();
     }
 
     protected override ISecurityService CastProviderBaseToProviderType (ProviderBase provider)
@@ -51,7 +53,7 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownNullSecurityService (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_nullSecurityServiceWellKnownName, delegate { return new NullSecurityService (); });
+      EnsureWellKownProvider (collection, c_nullSecurityServiceWellKnownName, delegate { return new NullSecurityService(); });
     }
 
     private void EnsureWellKnownSecurityManagerSecurityService (ProviderCollection collection)

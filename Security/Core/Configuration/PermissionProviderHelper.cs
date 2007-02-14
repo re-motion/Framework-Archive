@@ -25,6 +25,11 @@ namespace Rubicon.Security.Configuration
       return CreateProviderSettingsProperty ("permissionProviders");
     }
 
+    public override void PostDeserialze ()
+    {
+      CheckForDuplicateWellKownProviderName (c_permissionReflectorWellKnownName);
+    }
+
     protected override IPermissionProvider CastProviderBaseToProviderType (ProviderBase provider)
     {
       return (IPermissionProvider) provider;

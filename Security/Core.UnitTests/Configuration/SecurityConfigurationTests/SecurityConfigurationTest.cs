@@ -1,16 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Text;
-using System.Xml;
-
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
-using Rubicon.Security.Web;
-using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {

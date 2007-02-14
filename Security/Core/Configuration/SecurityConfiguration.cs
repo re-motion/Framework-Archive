@@ -54,7 +54,7 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _functionalSecurityStrategyProperty;
 
     private PermissionProviderHelper _permissionProviderHelper;
-    private SecuritySeviceHelper _securityServiceHelper;
+    private SecurityProviderHelper _securityServiceHelper;
     private UserProviderHelper _userProviderHelper;
     private GlobalAccessTypeCacheProviderHelper _globalAccessTypeCacheProviderHelper;
 
@@ -63,7 +63,7 @@ namespace Rubicon.Security.Configuration
     public SecurityConfiguration ()
     {
       _permissionProviderHelper = new PermissionProviderHelper (this);
-      _securityServiceHelper = new SecuritySeviceHelper (this);
+      _securityServiceHelper = new SecurityProviderHelper (this);
       _userProviderHelper = new UserProviderHelper (this);
       _globalAccessTypeCacheProviderHelper = new GlobalAccessTypeCacheProviderHelper (this);
 

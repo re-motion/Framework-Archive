@@ -2,13 +2,12 @@ using System;
 using System.Configuration;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Web;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
-  public class DeserializeSecurityConfigurationForSecurityServiceTest : TestBase
+  public class DeserializeSecurityConfigurationForSecurityProviderTest : TestBase
   {
     [Test]
     public void Test_WithDefaultService ()
@@ -29,7 +28,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     public void Test_WithNullSecurityService ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityService=""None"" />";
+      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""None"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Assert.IsInstanceOfType (typeof (NullSecurityService), Configuration.SecurityService);
     }
@@ -38,17 +37,17 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [ExpectedException (typeof (ConfigurationErrorsException))]
     public void Test_WithInvalidServiceType ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityService=""Invalid"" />";
+      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""Invalid"" />";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      object dummy = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityService;
     }
 
     [Test]
     [Explicit]
     public void Test_WithSecurityManagerService ()
     {
-      string xmlFragment = @"<rubicon.security defaultSecurityService=""SecurityManagerService"" />";
+      string xmlFragment = @"<rubicon.security defaultSecurityProvider=""SecurityManagerService"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Type expectedType = TypeUtility.GetType ("Rubicon.SecurityManager::SecurityService", true, false);
 
@@ -59,10 +58,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     public void Test_WithCustomService ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityService=""Custom"">
-            <securityServices>
+          <rubicon.security defaultSecurityProvider=""Custom"">
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -75,9 +74,9 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     {
       string xmlFragment = @"
           <rubicon.security>
-            <securityServices>
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -90,69 +89,64 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The provider 'Invalid' specified for the defaultSecurityService does not exist in the providers collection.")]
+        "The provider 'Invalid' specified for the defaultSecurityProvider does not exist in the providers collection.")]
     public void Test_WithCustomSecurityServiceAndInvalidName ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityService=""Invalid"">
-            <securityServices>
+          <rubicon.security defaultSecurityProvider=""Invalid"">
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityService;
     }
 
     [Test]
-    public void Test_NoDuplicateWellKnownSecurityServiceForNullSecurityService ()
+    [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'None' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownSecurityServiceForNullSecurityService ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityService=""None"">
-            <securityServices>
+          <rubicon.security defaultSecurityProvider=""None"">
+            <securityProviders>
               <add name=""None"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (SecurityServiceMock), Configuration.SecurityService);
-      Assert.AreSame (Configuration.SecurityService, Configuration.SecurityServices["None"]);
     }
 
     [Test]
-    [Ignore]
-    public void Test_NoDuplicateWellKnownSecurityServiceForSecurityManagerSecurityService ()
+    [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'SecurityManager' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownSecurityServiceForSecurityManagerSecurityService ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityService=""SecurityManager"">
-            <securityServices>
+          <rubicon.security defaultSecurityProvider=""SecurityManager"">
+            <securityProviders>
               <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-
-      Assert.IsInstanceOfType (typeof (SecurityServiceMock), Configuration.SecurityService);
-      Assert.AreSame (Configuration.SecurityService, Configuration.SecurityServices["SecurityManager"]);
     }
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The value for the property 'defaultSecurityService' is not valid. The error is: The string must be at least 1 characters long.")]
+        "The value for the property 'defaultSecurityProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomSecurityServiceNameEmpty ()
     {
       string xmlFragment = @"
-          <rubicon.security defaultSecurityService="""">
-            <securityServices>
+          <rubicon.security defaultSecurityProvider="""">
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityService;
     }
 
     [Test]
@@ -162,9 +156,9 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment =
           @"
           <rubicon.security>
-            <securityServices>
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -178,14 +172,14 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment =
           @"
           <rubicon.security>
-            <securityServices>
+            <securityProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />
-            </securityServices>
+            </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      object dummy = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityService;
     }
   }
 }

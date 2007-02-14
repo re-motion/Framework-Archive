@@ -30,6 +30,9 @@ namespace Rubicon.Security.Configuration
 
     public override void PostDeserialze ()
     {
+      CheckForDuplicateWellKownProviderName (c_threadUserProviderWellKnownName);
+      CheckForDuplicateWellKownProviderName (c_httpContexUserProviderWellKnownName);
+
       if (DefaultProviderName.Equals (c_httpContexUserProviderWellKnownName, StringComparison.Ordinal))
         EnsureHttpContextUserProviderTypeInitialized();
     }
@@ -72,9 +75,9 @@ namespace Rubicon.Security.Configuration
           if (_httpContextUserProviderType == null)
           {
             _httpContextUserProviderType = GetTypeWithMatchingVersionNumber (
+                DefaultProviderNameProperty,
                 "Rubicon.Security.Web",
-                "Rubicon.Security.Web.HttpContextUserProvider",
-                DefaultProviderNameProperty);
+                "Rubicon.Security.Web.HttpContextUserProvider");
           }
         }
       }
