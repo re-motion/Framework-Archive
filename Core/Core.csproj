@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ProviderHelper.cs" />
+    <Compile Include="INullableObject.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
