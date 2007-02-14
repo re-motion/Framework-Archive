@@ -4,7 +4,7 @@ using System.Text;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-
+using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain;
 
@@ -114,7 +114,9 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("InstanceProperty", TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyReadAccess (new SecurableObject (null), "InstanceProperty");
+      _securityClient.HasPropertyReadAccess (new SecurableObject (null), "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -125,6 +127,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -138,6 +142,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

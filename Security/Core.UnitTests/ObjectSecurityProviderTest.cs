@@ -6,6 +6,7 @@ using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
+using Rubicon.Security.UnitTests.Configuration;
 using Rubicon.Security.UnitTests.SampleDomain;
 using System.Security.Principal;
 using Rubicon.Security.Configuration;
@@ -47,28 +48,26 @@ namespace Rubicon.Security.UnitTests
       _mocks = new MockRepository ();
 
       _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
       _mockPermissionProvider = _mocks.CreateMock<IPermissionProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser ()).Return (_user);
 
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.PermissionProvider = _mockPermissionProvider;
 
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _securableObject = new SecurableObject (_mockObjectSecurityStrategy);
-
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
     }
 
     [Test]

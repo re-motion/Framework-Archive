@@ -50,13 +50,15 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
       _testHelper.ReplayAll ();
-
+      bool hasAccess;
+      
       using (new SecurityFreeSection ())
       {
-        _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+        hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
       }
 
       _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
   }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 using Rhino.Mocks;
 using System.Security.Principal;
@@ -71,6 +71,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public void SetupSecurityConfiguration ()
     {
+      PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", new SecurityConfiguration ());
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _stubUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
@@ -79,10 +80,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public void TearDownSecurityConfiguration ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
-      SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
+      PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", new SecurityConfiguration ());
     }
 
     public void ReplayAll ()

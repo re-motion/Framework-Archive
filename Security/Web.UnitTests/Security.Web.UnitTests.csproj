@@ -50,7 +50,9 @@
     <Compile Include="Domain\DerivedSecurableObject.cs" />
     <Compile Include="Domain\SecurableObject.cs" />
     <Compile Include="ExecutionEngine\WxeDemandCreatePermissionAttributeTest.cs" />
+    <Compile Include="HttpContextUserProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="UI\DemandTargetWxeFunctionPermissionAttributeTest.cs" />
     <Compile Include="UI\DemandTargetMethodPermissionAttributeTest.cs" />
     <Compile Include="ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttributeTest.cs" />

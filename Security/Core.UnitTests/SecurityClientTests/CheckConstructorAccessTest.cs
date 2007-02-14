@@ -41,6 +41,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]

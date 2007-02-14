@@ -43,6 +43,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -65,6 +67,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckAccess (new SecurableObject (null), AccessType.Get (TestAccessTypes.First));
+
+      _testHelper.VerifyAll ();
     }
   }
 }

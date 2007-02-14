@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration.Provider;
 using System.Text;
-
+using Rubicon.SecurityManager.UnitTests.Configuration;
 using Rubicon.Utilities;
 using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
@@ -53,22 +53,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       _mocks = new MockRepository ();
       _mockSecurityService = (ISecurityService) _mocks.CreateMultiMock (typeof (ProviderBase), typeof (ISecurityService));
+      SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _mockUserProvider = (IUserProvider) _mocks.CreateMultiMock (typeof (ProviderBase), typeof (IUserProvider));
       _stubFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _stubFunctionalSecurityStrategy;
 
-      Expect.Call (_mockSecurityService.IsNull).Return (false).Repeat.Any();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
     }
 
     [Test]

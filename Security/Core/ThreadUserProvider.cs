@@ -30,5 +30,10 @@ namespace Rubicon.Security
     {
       return Thread.CurrentPrincipal;
     }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
+    }
   }
 }

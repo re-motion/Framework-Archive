@@ -74,6 +74,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -88,6 +90,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -97,7 +101,9 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), "InstanceMethod");
+      _securityClient.HasMethodAccess (new SecurableObject (null), "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -108,6 +114,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -121,6 +129,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

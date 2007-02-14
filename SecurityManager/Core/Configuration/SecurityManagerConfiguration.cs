@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
-
 using Rubicon.Configuration;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Configuration
 {
@@ -24,7 +22,7 @@ namespace Rubicon.SecurityManager.Configuration
             {
               s_current = (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager");
               if (s_current == null)
-                s_current = new SecurityManagerConfiguration ();
+                s_current = new SecurityManagerConfiguration();
             }
           }
         }
@@ -33,22 +31,25 @@ namespace Rubicon.SecurityManager.Configuration
       }
     }
 
-    private IOrganizationalStructureFactory _organizationalStructureFactory;
-
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
-    private readonly ConfigurationProperty _customOrganizationalStructureFactoryProperty;
+    
+    private readonly object _lockOrganizationalStructureFactory = new object();
+    private readonly ConfigurationProperty _organizationalStructureFactoryProperty;
+    private IOrganizationalStructureFactory _organizationalStructureFactory;
 
-    public SecurityManagerConfiguration ()
+    public SecurityManagerConfiguration()
     {
-      _properties = new ConfigurationPropertyCollection ();
+      _properties = new ConfigurationPropertyCollection();
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      _customOrganizationalStructureFactoryProperty = new ConfigurationProperty (
-          "customOrganizationalStructureFactory",
-          typeof (TypeElement<IOrganizationalStructureFactory>), null, ConfigurationPropertyOptions.None);
+      _organizationalStructureFactoryProperty = new ConfigurationProperty (
+          "organizationalStructureFactory",
+          typeof (TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
+          null,
+          ConfigurationPropertyOptions.None);
 
       _properties.Add (_xmlnsProperty);
-      _properties.Add (_customOrganizationalStructureFactoryProperty);
+      _properties.Add (_organizationalStructureFactoryProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -61,26 +62,28 @@ namespace Rubicon.SecurityManager.Configuration
       get
       {
         if (_organizationalStructureFactory == null)
-          _organizationalStructureFactory = GetOrganizationalStructureFactory ();
-        
+        {
+          lock (_lockOrganizationalStructureFactory)
+          {
+            if (_organizationalStructureFactory == null)
+              _organizationalStructureFactory = OrganizationalStructureFactoryProperty.CreateInstance ();
+          }
+        }
         return _organizationalStructureFactory;
       }
       set
       {
-        _organizationalStructureFactory = value;
+        ArgumentUtility.CheckNotNull ("value", value);
+        lock (_lockOrganizationalStructureFactory)
+        {
+          _organizationalStructureFactory = value;
+        }
       }
     }
 
-    private IOrganizationalStructureFactory GetOrganizationalStructureFactory ()
+    protected TypeElement<IOrganizationalStructureFactory> OrganizationalStructureFactoryProperty
     {
-      TypeElement<IOrganizationalStructureFactory> customOrganizationalStructureFactoryElement =
-          (TypeElement<IOrganizationalStructureFactory>) this[_customOrganizationalStructureFactoryProperty];
-
-      Type customOrganizationalStructureFactoryType = customOrganizationalStructureFactoryElement.Type;
-      if (customOrganizationalStructureFactoryType == null)
-        return new OrganizationalStructureFactory ();
-
-      return (IOrganizationalStructureFactory) Activator.CreateInstance (customOrganizationalStructureFactoryType);
+      get { return (TypeElement<IOrganizationalStructureFactory>) this[_organizationalStructureFactoryProperty]; }
     }
   }
 }

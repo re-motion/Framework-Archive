@@ -69,7 +69,9 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessTypes.First));
+      _securityClient.HasAccess (new SecurableObject (null), AccessType.Get (TestAccessTypes.First));
+
+      _testHelper.VerifyAll ();
     }
   }
 }

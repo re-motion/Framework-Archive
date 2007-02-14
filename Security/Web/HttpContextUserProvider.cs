@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration.Provider;
-using System.Text;
-using System.Web;
-
-using Rubicon.Utilities;
 using System.Security.Principal;
-using System.Threading;
+using System.Web;
 
 namespace Rubicon.Security.Web
 {
@@ -20,18 +15,23 @@ namespace Rubicon.Security.Web
 
     // construction and disposing
 
-    public HttpContextUserProvider ()
+    public HttpContextUserProvider()
     {
     }
 
     // methods and properties
 
-    public IPrincipal GetUser ()
+    public IPrincipal GetUser()
     {
       if (HttpContext.Current == null)
         return null;
       else
         return HttpContext.Current.User;
+    }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
     }
   }
 }

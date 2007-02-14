@@ -4,7 +4,7 @@ using System.Text;
 using System.Security.Principal;
 using NUnit.Framework;
 using Rhino.Mocks;
-
+using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain;
 
@@ -114,7 +114,9 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("InstanceProperty", TestAccessTypes.First);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityClient.HasPropertyWriteAccess (new SecurableObject (null), "InstanceProperty");
+      _securityClient.HasPropertyWriteAccess (new SecurableObject (null), "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -138,6 +140,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, "InstanceProperty");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

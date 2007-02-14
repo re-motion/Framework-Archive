@@ -18,7 +18,7 @@ namespace Rubicon.Security.UnitTests
 
     // member fields
 
-    private ThreadUserProvider _provider;
+    private IUserProvider _userProvider;
 
     // construction and disposing
 
@@ -31,19 +31,19 @@ namespace Rubicon.Security.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _provider = new ThreadUserProvider ();
-    }
-
-    [Test]
-    public void Initialize ()
-    {
-      Assert.IsInstanceOfType (typeof (IUserProvider), _provider);
+      _userProvider = new ThreadUserProvider ();
     }
 
     [Test]
     public void GetUser ()
     {
-      Assert.AreSame (Thread.CurrentPrincipal, _provider.GetUser ());
+      Assert.AreSame (Thread.CurrentPrincipal, _userProvider.GetUser ());
+    }
+    
+    [Test]
+    public void GetIsNull ()
+    {
+      Assert.IsFalse (_userProvider.IsNull);
     }
   }
 }

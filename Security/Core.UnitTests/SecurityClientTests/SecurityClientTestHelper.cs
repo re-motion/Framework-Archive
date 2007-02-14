@@ -118,11 +118,6 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _mocks.VerifyAll ();
     }
-
-    private SecurityContext CreateStatelessSecurityContext ()
-    {
-      return new SecurityContext (typeof (SecurableObject));
-    }
  
     private AccessType[] ConvertAccessTypeEnums (Enum[] accessTypeEnums)
     {

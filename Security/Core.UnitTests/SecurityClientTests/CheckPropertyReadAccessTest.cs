@@ -44,6 +44,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -56,6 +58,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
       }
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -79,6 +83,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -91,6 +97,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
       }
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -101,6 +109,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyReadAccess (new SecurableObject (null), "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -111,6 +121,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -124,6 +136,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckPropertyReadAccess (_testHelper.SecurableObject, "InstanceProperty");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     {
       string xmlFragment = @"
           <rubicon.securityManager xmlns=""http://www.rubicon-it.com/SecurityManager/Configuration"">
-            <customOrganizationalStructureFactory type=""Rubicon.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
+            <organizationalStructureFactory type=""Rubicon.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
           </rubicon.securityManager>";
       _configuration.DeserializeSection (xmlFragment);
 
@@ -59,7 +59,7 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
     {
       string xmlFragment = @"
           <rubicon.securityManager>
-            <customOrganizationalStructureFactory type=""Invalid"" />
+            <organizationalStructureFactory type=""Invalid"" />
           </rubicon.securityManager>";
       _configuration.DeserializeSection (xmlFragment);
       IOrganizationalStructureFactory factory = _configuration.OrganizationalStructureFactory;

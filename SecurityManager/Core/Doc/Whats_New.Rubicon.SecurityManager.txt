@@ -1,0 +1,12 @@
+1.7.41
+======
+- Konfiguration:
+  Bisher:
+  <rubicon.securityManager>
+    <customOrganizationalStructureFactory type="..." />
+  </rubicon.securityManager>
+  
+  Neu:
+  <rubicon.securityManager>
+    <organizationalStructureFactory type="..." />
+  </rubicon.securityManager>

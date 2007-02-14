@@ -70,6 +70,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -84,6 +86,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -94,6 +98,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckMethodAccess (new SecurableObject (null), "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -104,6 +110,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -117,6 +125,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "InstanceMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

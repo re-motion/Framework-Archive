@@ -50,11 +50,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         PositionList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
       PositionList.LoadUnboundValue (Position.FindAll (CurrentFunction.CurrentTransaction), false);
 
-      if (!SecurityConfiguration.Current.SecurityService.IsNull)
-      {
-        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-        NewPositionButton.Visible = securityClient.HasConstructorAccess (typeof (Position));
-      }
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+      NewPositionButton.Visible = securityClient.HasConstructorAccess (typeof (Position));
     }
 
     protected void PositionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

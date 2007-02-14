@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Web.ExecutionEngine;
+using Rubicon.Security.Web.UnitTests.Configuration;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.ExecutionEngine;
@@ -53,6 +54,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       SetupResult.For (_userProvider.GetUser ()).Return (_user);
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
@@ -61,9 +63,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration());
     }
 
     [Test]

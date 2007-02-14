@@ -47,11 +47,12 @@ namespace Rubicon.Security.Configuration
 
     // member fields
 
-    private IFunctionalSecurityStrategy _functionalSecurityStrategy;
-
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
+
+    private readonly object _lockFunctionSecurityStrategy = new object();
     private readonly ConfigurationProperty _functionalSecurityStrategyProperty;
+    private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     private PermissionProviderHelper _permissionProviderHelper;
     private SecurityProviderHelper _securityServiceHelper;
@@ -60,7 +61,7 @@ namespace Rubicon.Security.Configuration
 
     // construction and disposing
 
-    public SecurityConfiguration ()
+    public SecurityConfiguration()
     {
       _permissionProviderHelper = new PermissionProviderHelper (this);
       _securityServiceHelper = new SecurityProviderHelper (this);
@@ -86,7 +87,7 @@ namespace Rubicon.Security.Configuration
 
     // methods and properties
 
-    protected override void PostDeserialize ()
+    protected override void PostDeserialize()
     {
       base.PostDeserialize();
 
@@ -147,14 +148,22 @@ namespace Rubicon.Security.Configuration
       get
       {
         if (_functionalSecurityStrategy == null)
-          _functionalSecurityStrategy = FunctionalSecurityStrategyProperty.CreateInstance();
-
+        {
+          lock (_lockFunctionSecurityStrategy)
+          {
+            if (_functionalSecurityStrategy == null)
+              _functionalSecurityStrategy = FunctionalSecurityStrategyProperty.CreateInstance();
+          }
+        }
         return _functionalSecurityStrategy;
       }
       set
       {
         ArgumentUtility.CheckNotNull ("value", value);
-        _functionalSecurityStrategy = value;
+        lock (_lockFunctionSecurityStrategy)
+        {
+          _functionalSecurityStrategy = value;
+        }
       }
     }
 

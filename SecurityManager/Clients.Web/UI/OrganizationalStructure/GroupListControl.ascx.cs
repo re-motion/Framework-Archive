@@ -51,11 +51,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         GroupList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupList.FixedColumns[0], SortingDirection.Ascending));
       GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
 
-      if (!SecurityConfiguration.Current.SecurityService.IsNull)
-      {
-        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-        NewGroupButton.Visible = securityClient.HasConstructorAccess (typeof (Group));
-      }
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+      NewGroupButton.Visible = securityClient.HasConstructorAccess (typeof (Group));
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

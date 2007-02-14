@@ -41,6 +41,9 @@
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityProviderHelper.cs" />
+    <Compile Include="NullIdentity.cs" />
+    <Compile Include="NullPrincipal.cs" />
+    <Compile Include="NullSecurityClient.cs" />
     <Compile Include="NullSecurityService.cs" />
     <Compile Include="Configuration\PermissionProviderHelper.cs" />
     <Compile Include="Configuration\GlobalAccessTypeCacheProviderHelper.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Metadata\SecurityMetadataSchema.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
+    <Compile Include="NullUserProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RevisionBasedAccessTypeCacheProvider.cs" />
     <Compile Include="SecurityClient.cs" />

@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 
 namespace Rubicon.Security
 {
-  public interface IUserProvider
+  public interface IUserProvider : INullableObject
   {
-    IPrincipal GetUser ();
+    IPrincipal GetUser();
   }
 }

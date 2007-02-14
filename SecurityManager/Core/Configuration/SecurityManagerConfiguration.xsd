@@ -9,7 +9,7 @@
   <xs:element name="rubicon.securityManager">
     <xs:complexType>
       <xs:all>
-        <xs:element name="customOrganizationalStructureFactory" minOccurs="0" maxOccurs="1">
+        <xs:element name="organizationalStructureFactory" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="type" type="c:DotNetType" default="None" />
           </xs:complexType>

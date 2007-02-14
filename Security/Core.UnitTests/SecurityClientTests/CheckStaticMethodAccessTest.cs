@@ -68,6 +68,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -82,6 +84,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -92,6 +96,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.ReplayAll ();
 
       _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
+
+      _testHelper.VerifyAll ();
     }
 
     [Test]
@@ -105,6 +111,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       {
         _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "StaticMethod");
       }
+
+      _testHelper.VerifyAll ();
     }
   }
 }

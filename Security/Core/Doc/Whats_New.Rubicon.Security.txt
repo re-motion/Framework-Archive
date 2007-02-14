@@ -12,6 +12,7 @@
     <customUserProvider type="..." />
     <customGlobalAccessTypeCacheProvider type="..." />
     <customService type="..." />
+    <customFunctionSecurityStrategy type="..." />
   </rubicon.security>
   
   Neu: Der Konfiguration liegt das ASP.NET Provider Model zugrunde, d.h. es können beliebige Provider eingetragen werden, der standard-mäßig 
@@ -54,7 +55,11 @@
       <add name="Custom2" type="..." />
       ...
     </securityProviders>
+    <functionSecurityStrategy type="..." />
   </rubicon.security>
   
   Userprovider "None" existiert nicht mehr, da es im Framework keinen Anwendungsfall gibt. 
-    Sollte dieser Anwendungsfall in einem Projekt auftreten, so wird eine projektspezifische Lösung mit dem Null-Object-Pattern empfohlen.
+    Sollte dieser Anwendungsfall in einem Projekt auftreten, kann Rubicon.Security.NullUserProvider in die Konfiguration eingetragen werden.
+    
+  SecurityClient.CreateSecurityClientFromConfiguration() ist liefert eine Null-Object Implementierung des SecurityClient zurück, wenn das
+  NullSecurityService konfiguriert ist. Bisher: Exception.

@@ -1,27 +1,26 @@
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.Principal;
-using System.Text;
-using Rubicon.Utilities;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
-using System.ComponentModel;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public class SecurityClient
+  public class SecurityClient:INullableObject
   {
-    public static SecurityClient CreateSecurityClientFromConfiguration ()
+    public static SecurityClient CreateSecurityClientFromConfiguration()
     {
       ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
-      IPermissionProvider permissionProvider = SecurityConfiguration.Current.PermissionProvider;
-      IUserProvider userProvider = SecurityConfiguration.Current.UserProvider;
-      IFunctionalSecurityStrategy functionalSecurityStrategy = SecurityConfiguration.Current.FunctionalSecurityStrategy;
 
       if (securityService.IsNull)
-        throw new SecurityConfigurationException ("The security service has not been configured.");
+        return new NullSecurityClient();
 
-      return new SecurityClient (securityService, permissionProvider, userProvider, functionalSecurityStrategy);
+      return new SecurityClient (
+          securityService,
+          SecurityConfiguration.Current.PermissionProvider,
+          SecurityConfiguration.Current.UserProvider,
+          SecurityConfiguration.Current.FunctionalSecurityStrategy);
     }
 
     private ISecurityService _securityService;
@@ -31,17 +30,17 @@ namespace Rubicon.Security
 
     public SecurityClient (
         ISecurityService securityService,
-        IPermissionProvider permissionReflector,
+        IPermissionProvider permissionProvider,
         IUserProvider userProvider,
         IFunctionalSecurityStrategy functionalSecurityStrategy)
     {
       ArgumentUtility.CheckNotNull ("securityService", securityService);
-      ArgumentUtility.CheckNotNull ("permissionReflector", permissionReflector);
+      ArgumentUtility.CheckNotNull ("permissionProvider", permissionProvider);
       ArgumentUtility.CheckNotNull ("userProvider", userProvider);
       ArgumentUtility.CheckNotNull ("functionalSecurityStrategy", functionalSecurityStrategy);
 
       _securityService = securityService;
-      _permissionProvider = permissionReflector;
+      _permissionProvider = permissionProvider;
       _userProvider = userProvider;
       _functionalSecurityStrategy = functionalSecurityStrategy;
     }
@@ -49,10 +48,10 @@ namespace Rubicon.Security
 
     public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {
-      return HasAccess (securableObject, _userProvider.GetUser (), requiredAccessTypes);
+      return HasAccess (securableObject, _userProvider.GetUser(), requiredAccessTypes);
     }
 
-    public bool HasAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public virtual bool HasAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNull ("user", user);
@@ -61,7 +60,7 @@ namespace Rubicon.Security
       if (SecurityFreeSection.IsActive)
         return true;
 
-      IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
+      IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
       if (objectSecurityStrategy == null)
         throw new InvalidOperationException ("The securableObject did not return an IObjectSecurityStrategy.");
 
@@ -70,7 +69,7 @@ namespace Rubicon.Security
 
     public void CheckAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {
-      CheckAccess (securableObject, _userProvider.GetUser (), requiredAccessTypes);
+      CheckAccess (securableObject, _userProvider.GetUser(), requiredAccessTypes);
     }
 
     public void CheckAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -86,10 +85,10 @@ namespace Rubicon.Security
 
     public bool HasStatelessAccess (Type securableClass, params AccessType[] requiredAccessTypes)
     {
-      return HasStatelessAccess (securableClass, _userProvider.GetUser (), requiredAccessTypes);
+      return HasStatelessAccess (securableClass, _userProvider.GetUser(), requiredAccessTypes);
     }
 
-    public bool HasStatelessAccess (Type securableClass, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public virtual bool HasStatelessAccess (Type securableClass, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
       ArgumentUtility.CheckNotNull ("user", user);
@@ -103,7 +102,7 @@ namespace Rubicon.Security
 
     public void CheckStatelessAccess (Type securableClass, params AccessType[] requiredAccessTypes)
     {
-      CheckStatelessAccess (securableClass, _userProvider.GetUser (), requiredAccessTypes);
+      CheckStatelessAccess (securableClass, _userProvider.GetUser(), requiredAccessTypes);
     }
 
     public void CheckStatelessAccess (Type securableClass, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -119,16 +118,16 @@ namespace Rubicon.Security
 
     public bool HasMethodAccess (ISecurableObject securableObject, string methodName)
     {
-      return HasMethodAccess (securableObject, methodName, _userProvider.GetUser ());
+      return HasMethodAccess (securableObject, methodName, _userProvider.GetUser());
     }
 
-    public bool HasMethodAccess (ISecurableObject securableObject, string methodName, IPrincipal user)
+    public virtual bool HasMethodAccess (ISecurableObject securableObject, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType(), methodName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
 
@@ -137,7 +136,7 @@ namespace Rubicon.Security
 
     public void CheckMethodAccess (ISecurableObject securableObject, string methodName)
     {
-      CheckMethodAccess (securableObject, methodName, _userProvider.GetUser ());
+      CheckMethodAccess (securableObject, methodName, _userProvider.GetUser());
     }
 
     public void CheckMethodAccess (ISecurableObject securableObject, string methodName, IPrincipal user)
@@ -147,34 +146,37 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       if (!HasMethodAccess (securableObject, methodName, user))
-        throw CreatePermissionDeniedException ("Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetType ().FullName);
+      {
+        throw CreatePermissionDeniedException (
+            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetType().FullName);
+      }
     }
 
 
     public bool HasPropertyReadAccess (ISecurableObject securableObject, string propertyName)
     {
-      return HasPropertyReadAccess (securableObject, propertyName, _userProvider.GetUser ());
+      return HasPropertyReadAccess (securableObject, propertyName, _userProvider.GetUser());
     }
 
-    public bool HasPropertyReadAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
+    public virtual bool HasPropertyReadAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType (), propertyName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType(), propertyName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.");
-      
+
       if (requiredAccessTypeEnums.Length == 0)
-        requiredAccessTypeEnums = new Enum[] { GeneralAccessTypes.Read };
+        requiredAccessTypeEnums = new Enum[] {GeneralAccessTypes.Read};
 
       return HasAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
 
     public void CheckPropertyReadAccess (ISecurableObject securableObject, string propertyName)
     {
-      CheckPropertyReadAccess (securableObject, propertyName, _userProvider.GetUser ());
+      CheckPropertyReadAccess (securableObject, propertyName, _userProvider.GetUser());
     }
 
     public void CheckPropertyReadAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
@@ -184,34 +186,37 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       if (!HasPropertyReadAccess (securableObject, propertyName, user))
-        throw CreatePermissionDeniedException ("Access to get-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType ().FullName);
+      {
+        throw CreatePermissionDeniedException (
+            "Access to get-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType().FullName);
+      }
     }
 
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName)
     {
-      return HasPropertyWriteAccess (securableObject, propertyName, _userProvider.GetUser ());
+      return HasPropertyWriteAccess (securableObject, propertyName, _userProvider.GetUser());
     }
 
-    public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
+    public virtual bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType (), propertyName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType(), propertyName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyWritePermissions evaluated and returned null.");
-      
+
       if (requiredAccessTypeEnums.Length == 0)
-        requiredAccessTypeEnums = new Enum[] { GeneralAccessTypes.Edit };
+        requiredAccessTypeEnums = new Enum[] {GeneralAccessTypes.Edit};
 
       return HasAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, string propertyName)
     {
-      CheckPropertyWriteAccess (securableObject, propertyName, _userProvider.GetUser ());
+      CheckPropertyWriteAccess (securableObject, propertyName, _userProvider.GetUser());
     }
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
@@ -221,16 +226,19 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       if (!HasPropertyWriteAccess (securableObject, propertyName, user))
-        throw CreatePermissionDeniedException ("Access to set-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType ().FullName);
+      {
+        throw CreatePermissionDeniedException (
+            "Access to set-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType().FullName);
+      }
     }
 
 
     public bool HasConstructorAccess (Type securableClass)
     {
-      return HasConstructorAccess (securableClass, _userProvider.GetUser ());
+      return HasConstructorAccess (securableClass, _userProvider.GetUser());
     }
 
-    public bool HasConstructorAccess (Type securableClass, IPrincipal user)
+    public virtual bool HasConstructorAccess (Type securableClass, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
       ArgumentUtility.CheckNotNull ("user", user);
@@ -238,14 +246,14 @@ namespace Rubicon.Security
       if (SecurityFreeSection.IsActive)
         return true;
 
-      AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessTypes.Create) };
+      AccessType[] requiredAccessTypes = new AccessType[] {AccessType.Get (GeneralAccessTypes.Create)};
 
       return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, requiredAccessTypes);
     }
 
     public void CheckConstructorAccess (Type securableClass)
     {
-      CheckConstructorAccess (securableClass, _userProvider.GetUser ());
+      CheckConstructorAccess (securableClass, _userProvider.GetUser());
     }
 
     public void CheckConstructorAccess (Type securableClass, IPrincipal user)
@@ -260,10 +268,10 @@ namespace Rubicon.Security
 
     public bool HasStaticMethodAccess (Type securableClass, string methodName)
     {
-      return HasStaticMethodAccess (securableClass, methodName, _userProvider.GetUser ());
+      return HasStaticMethodAccess (securableClass, methodName, _userProvider.GetUser());
     }
 
-    public bool HasStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
+    public virtual bool HasStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
@@ -272,13 +280,13 @@ namespace Rubicon.Security
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.");
-      
+
       return HasStatelessAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 
     public void CheckStaticMethodAccess (Type securableClass, string methodName)
     {
-      CheckStaticMethodAccess (securableClass, methodName, _userProvider.GetUser ());
+      CheckStaticMethodAccess (securableClass, methodName, _userProvider.GetUser());
     }
 
     public void CheckStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
@@ -295,11 +303,11 @@ namespace Rubicon.Security
     [EditorBrowsable (EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, string methodName)
     {
-      return HasStatelessMethodAccess (securableClass, methodName, _userProvider.GetUser ());
+      return HasStatelessMethodAccess (securableClass, methodName, _userProvider.GetUser());
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public bool HasStatelessMethodAccess (Type securableClass, string methodName, IPrincipal user)
+    public virtual bool HasStatelessMethodAccess (Type securableClass, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
@@ -308,7 +316,7 @@ namespace Rubicon.Security
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableClass, methodName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
-      
+
       return HasStatelessAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 
@@ -338,6 +346,11 @@ namespace Rubicon.Security
     private PermissionDeniedException CreatePermissionDeniedException (string message, params object[] args)
     {
       return new PermissionDeniedException (string.Format (message, args));
+    }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
     }
   }
 }
