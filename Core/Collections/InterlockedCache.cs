@@ -118,5 +118,10 @@ namespace Rubicon.Collections
         _cache.Clear();
       }
     }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
+    }
   }
 }

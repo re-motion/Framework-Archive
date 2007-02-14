@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rubicon.Collections;
 
@@ -9,44 +7,46 @@ namespace Rubicon.Core.UnitTests.Collections
   [TestFixture]
   public class InterlockedCacheTest
   {
-    [Test]
-    public void TestCreateAndTryGet ()
+    private ICache<string, string> _cache;
+
+    [SetUp]
+    public void SetUp ()
     {
-      InterlockedCache<string,string> cache = new InterlockedCache<string,string> ();
-      string value = cache.GetOrCreateValue ("key", delegate() {
-        return "value"; });
+      _cache = new InterlockedCache<string, string> ();
+    }
+
+    [Test]
+    public void CreateAndTryGet()
+    {
+      string value = _cache.GetOrCreateValue ("key", delegate () { return "value"; });
 
       Assert.AreEqual ("value", value);
 
-      bool hasValue = cache.TryGetValue ("key", out value);
+      bool hasValue = _cache.TryGetValue ("key", out value);
 
       Assert.IsTrue (hasValue);
       Assert.AreEqual ("value", value);
     }
 
     [Test]
-    public void TestCreateTwice()
+    public void CreateTwice()
     {
-      InterlockedCache<string,string> cache = new InterlockedCache<string,string> ();
-      string value = cache.GetOrCreateValue ("key", delegate() {
-        return "value 1"; });
+      string value = _cache.GetOrCreateValue ("key", delegate() { return "value 1"; });
 
       Assert.AreEqual ("value 1", value);
 
-      value = cache.GetOrCreateValue ("key", delegate() {
-        return "value 2"; });
+      value = _cache.GetOrCreateValue ("key", delegate() { return "value 2"; });
 
       Assert.AreEqual ("value 1", value);
     }
 
     [Test]
-    public void TestAddAndTryGet()
+    public void AddAndTryGet()
     {
-      InterlockedCache<string,string> cache = new InterlockedCache<string,string> ();
-      cache.Add ("key", "value");
+      _cache.Add ("key", "value");
 
       string value;
-      bool hasValue = cache.TryGetValue ("key", out value);
+      bool hasValue = _cache.TryGetValue ("key", out value);
 
       Assert.IsTrue (hasValue);
       Assert.AreEqual ("value", value);
@@ -54,11 +54,16 @@ namespace Rubicon.Core.UnitTests.Collections
 
     [Test]
     [ExpectedException (typeof (ArgumentException))]
-    public void TestAddTwice()
+    public void AddTwice()
     {
-      InterlockedCache<string,string> cache = new InterlockedCache<string,string> ();
-      cache.Add ("key", "value 1");
-      cache.Add ("key", "value 2");
+      _cache.Add ("key", "value 1");
+      _cache.Add ("key", "value 2");
+    }
+
+    [Test]
+    public void GetIsNull()
+    {
+      Assert.IsFalse (_cache.IsNull);
     }
   }
 }

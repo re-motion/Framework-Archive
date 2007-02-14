@@ -48,5 +48,11 @@ namespace Rubicon.Core.UnitTests.Collections
       // Succeed
     }
 
+    [Test]
+    public void GetIsNull()
+    {
+      Assert.IsTrue (_cache.IsNull);
+    }
+
   }
 }

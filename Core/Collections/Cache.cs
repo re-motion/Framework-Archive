@@ -58,5 +58,10 @@ namespace Rubicon.Collections
 
       return value;
     }
+
+    bool INullableObject.IsNull
+    {
+      get { return false; }
+    }
   }
 }

@@ -87,5 +87,11 @@ namespace Rubicon.Core.UnitTests.Collections
       Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.IsNull (actual);
     }
+
+    [Test]
+    public void GetIsNull()
+    {
+      Assert.IsFalse (_cache.IsNull);
+    }
   }
 }

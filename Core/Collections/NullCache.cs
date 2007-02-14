@@ -32,5 +32,10 @@ namespace Rubicon.Collections
     public void Clear ()
     {
     }
+
+    bool INullableObject.IsNull
+    {
+      get { return true; }
+    }
   }
 }
