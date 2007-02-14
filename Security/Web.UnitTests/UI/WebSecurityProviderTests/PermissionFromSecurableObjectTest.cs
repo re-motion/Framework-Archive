@@ -33,7 +33,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy();
     }

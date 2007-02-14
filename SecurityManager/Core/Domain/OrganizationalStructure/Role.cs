@@ -102,8 +102,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     private List<T> FilterByAccess<T> (List<T> securableObjects, params Enum[] requiredAccessTypeEnums) where T : ISecurableObject
     {
-      if(typeof(NullSecurityService).IsInstanceOfType (SecurityConfiguration.Current.SecurityService))
-      //if (SecurityConfiguration.Current.SecurityService == null)
+      if(SecurityConfiguration.Current.SecurityService is NullSecurityService)
         return securableObjects;
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();

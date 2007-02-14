@@ -54,7 +54,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public SecurableObject CreateSecurableObject ()
     {
-      return new SecurableObject (_transaction, CreateObjectSecurityStrategy());
+      return new SecurableObject (_transaction, CreateObjectSecurityStrategy ());
     }
 
     public NonSecurableObject CreateNonSecurableObject ()
@@ -77,7 +77,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public void TearDownSecurityConfiguration ()
     {
-      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
       SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
