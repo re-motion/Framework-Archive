@@ -24,6 +24,40 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
+    public void GetAndSetType()
+    {
+      TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
+
+      typeElement.Type = typeof (DerivedSampleType);
+      Assert.AreEqual (typeof (DerivedSampleType), typeElement.Type);
+    }
+
+    [Test]
+    public void GetType_WithTypeNull ()
+    {
+      TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
+
+      Assert.IsNull (typeElement.Type);
+    }
+
+    [Test]
+    public void CreateInstance_WithType ()
+    {
+      TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
+      typeElement.Type = typeof (DerivedSampleType);
+
+      Assert.IsInstanceOfType (typeof (DerivedSampleType), typeElement.CreateInstance());
+    }
+
+    [Test]
+    public void CreateInstance_WithoutType ()
+    {
+      TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();
+
+      Assert.IsNull (typeElement.CreateInstance ());
+    }
+    
+    [Test]
     public void Deserialize_WithValidType ()
     {
       TypeElement<SampleType> typeElement = new TypeElement<SampleType> ();

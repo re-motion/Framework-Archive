@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
-using System.IO;
-using System.Text;
-using System.Reflection;
-
 using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
@@ -34,7 +28,7 @@ namespace Rubicon.Security.Configuration
             {
               s_current = (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security");
               if (s_current == null)
-                s_current = new SecurityConfiguration ();
+                s_current = new SecurityConfiguration();
             }
           }
         }
@@ -53,15 +47,11 @@ namespace Rubicon.Security.Configuration
 
     // member fields
 
-    private ISecurityService _securityService;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
-    private readonly ConfigurationProperty _customFunctionalSecurityStrategyProperty;
-
-
-    private readonly object _lock = new object ();
+    private readonly ConfigurationProperty _functionalSecurityStrategyProperty;
 
     private PermissionProviderHelper _permissionProviderHelper;
     private SecuritySeviceHelper _securityServiceHelper;
@@ -79,31 +69,31 @@ namespace Rubicon.Security.Configuration
 
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
 
-      _customFunctionalSecurityStrategyProperty = new ConfigurationProperty (
-          "customFunctionalSecurityStrategy",
-          typeof (TypeElement<IFunctionalSecurityStrategy>),
+      _functionalSecurityStrategyProperty = new ConfigurationProperty (
+          "functionalSecurityStrategy",
+          typeof (TypeElement<IFunctionalSecurityStrategy, FunctionalSecurityStrategy>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties = new ConfigurationPropertyCollection ();
+      _properties = new ConfigurationPropertyCollection();
       _properties.Add (_xmlnsProperty);
       _permissionProviderHelper.InitializeProperties (_properties);
       _securityServiceHelper.InitializeProperties (_properties);
       _userProviderHelper.InitializeProperties (_properties);
       _globalAccessTypeCacheProviderHelper.InitializeProperties (_properties);
-      _properties.Add (_customFunctionalSecurityStrategyProperty);
+      _properties.Add (_functionalSecurityStrategyProperty);
     }
 
     // methods and properties
 
     protected override void PostDeserialize ()
     {
-      base.PostDeserialize ();
+      base.PostDeserialize();
 
-      _permissionProviderHelper.PostDeserialze ();
-      _securityServiceHelper.PostDeserialze ();
-      _userProviderHelper.PostDeserialze ();
-      _globalAccessTypeCacheProviderHelper.PostDeserialze ();
+      _permissionProviderHelper.PostDeserialze();
+      _securityServiceHelper.PostDeserialze();
+      _userProviderHelper.PostDeserialze();
+      _globalAccessTypeCacheProviderHelper.PostDeserialze();
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -111,7 +101,7 @@ namespace Rubicon.Security.Configuration
       get { return _properties; }
     }
 
-    protected internal new object this[ConfigurationProperty property]
+    protected internal new object this [ConfigurationProperty property]
     {
       get { return base[property]; }
       set { base[property] = value; }
@@ -119,63 +109,36 @@ namespace Rubicon.Security.Configuration
 
     public ISecurityService SecurityService
     {
-      get
-      {
-        return _securityServiceHelper.Provider;
-      }
-      set
-      {
-        _securityServiceHelper.Provider = value;
-      }
+      get { return _securityServiceHelper.Provider; }
+      set { _securityServiceHelper.Provider = value; }
     }
 
     public ProviderCollection SecurityServices
     {
-      get
-      {
-        return _securityServiceHelper.Providers;
-      }
+      get { return _securityServiceHelper.Providers; }
     }
 
     public IUserProvider UserProvider
     {
-      get
-      {
-        return _userProviderHelper.Provider;
-      }
-      set
-      {
-        _userProviderHelper.Provider = value;
-      }
+      get { return _userProviderHelper.Provider; }
+      set { _userProviderHelper.Provider = value; }
     }
 
     public ProviderCollection UserProviders
     {
-      get
-      {
-        return _userProviderHelper.Providers;
-      }
+      get { return _userProviderHelper.Providers; }
     }
 
 
     public IPermissionProvider PermissionProvider
     {
-      get
-      {
-        return _permissionProviderHelper.Provider;
-      }
-      set
-      {
-        _permissionProviderHelper.Provider = value;
-      }
+      get { return _permissionProviderHelper.Provider; }
+      set { _permissionProviderHelper.Provider = value; }
     }
 
     public ProviderCollection PermissionProviders
     {
-      get
-      {
-        return _permissionProviderHelper.Providers;
-      }
+      get { return _permissionProviderHelper.Providers; }
     }
 
 
@@ -184,7 +147,7 @@ namespace Rubicon.Security.Configuration
       get
       {
         if (_functionalSecurityStrategy == null)
-          _functionalSecurityStrategy = GetFunctionalSecurityStrategyFromConfiguration ();
+          _functionalSecurityStrategy = FunctionalSecurityStrategyProperty.CreateInstance();
 
         return _functionalSecurityStrategy;
       }
@@ -195,40 +158,22 @@ namespace Rubicon.Security.Configuration
       }
     }
 
-    protected TypeElement<IFunctionalSecurityStrategy> CustomFunctionalSecurityStrategy
+    protected TypeElement<IFunctionalSecurityStrategy> FunctionalSecurityStrategyProperty
     {
-      get { return (TypeElement<IFunctionalSecurityStrategy>) this[_customFunctionalSecurityStrategyProperty]; }
-      set { this[_customFunctionalSecurityStrategyProperty] = value; }
-    }
-
-    private IFunctionalSecurityStrategy GetFunctionalSecurityStrategyFromConfiguration ()
-    {
-      Type customFunctionalSecurityStrategyType = CustomFunctionalSecurityStrategy.Type;
-      if (customFunctionalSecurityStrategyType == null)
-        return new FunctionalSecurityStrategy ();
-
-      return (IFunctionalSecurityStrategy) Activator.CreateInstance (customFunctionalSecurityStrategyType);
+      get { return (TypeElement<IFunctionalSecurityStrategy>) this[_functionalSecurityStrategyProperty]; }
+      set { this[_functionalSecurityStrategyProperty] = value; }
     }
 
 
     public IGlobalAccessTypeCacheProvider GlobalAccessTypeCacheProvider
     {
-      get
-      {
-        return _globalAccessTypeCacheProviderHelper.Provider;
-      }
-      set
-      {
-          _globalAccessTypeCacheProviderHelper.Provider = value;
-      }
+      get { return _globalAccessTypeCacheProviderHelper.Provider; }
+      set { _globalAccessTypeCacheProviderHelper.Provider = value; }
     }
 
     public ProviderCollection GlobalAccessTypeCacheProviders
     {
-      get
-      {
-        return _globalAccessTypeCacheProviderHelper.Providers;
-      }
+      get { return _globalAccessTypeCacheProviderHelper.Providers; }
     }
   }
 }

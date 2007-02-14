@@ -56,7 +56,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     {
       string xmlFragment = @"
           <rubicon.security>
-            <customFunctionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
+            <functionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
