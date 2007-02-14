@@ -216,9 +216,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IClientTransactionExtension.cs" />
-    <Compile Include="INullableObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="InvalidEnumDefinitionException.cs">
       <SubType>Code</SubType>
     </Compile>
