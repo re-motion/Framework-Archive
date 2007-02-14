@@ -98,6 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTesting\DevNullTest.cs" />
     <Compile Include="UnitTesting\TestCreateInstance.cs">
       <SubType>Code</SubType>
     </Compile>

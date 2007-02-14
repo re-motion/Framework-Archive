@@ -94,6 +94,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnitTesting\ConfigurationHelper.cs" />
+    <Compile Include="UnitTesting\Dev.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>
