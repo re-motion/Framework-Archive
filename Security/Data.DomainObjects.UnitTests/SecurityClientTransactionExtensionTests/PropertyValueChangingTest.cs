@@ -92,7 +92,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       DataContainer dataContainer = securableObject.GetDataContainer ();
       _testHelper.AddExtension (_extension);
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyWritePermissions ("StringProperty", TestAccessTypes.First);
-      HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasAccessDelegate hasAccess = delegate (ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         securableObject.OtherStringProperty = "dummy";
         return true;

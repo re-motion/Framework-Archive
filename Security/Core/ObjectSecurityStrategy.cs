@@ -38,13 +38,13 @@ namespace Rubicon.Security
       _securityStrategy.InvalidateLocalCache ();
     }
 
-    public virtual bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public virtual bool HasAccess (ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("securityService", securityService);
+      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      return _securityStrategy.HasAccess (_securityContextFactory, securityService, user, requiredAccessTypes);
+      return _securityStrategy.HasAccess (_securityContextFactory, securityProvider, user, requiredAccessTypes);
     }
   }
 }

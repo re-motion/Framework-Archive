@@ -4,20 +4,20 @@ using NUnit.Framework;
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
-  public class NullSecurityServiceTest
+  public class NullSecurityProviderTest
   {
-    private ISecurityService _securityService;
+    private ISecurityProvider _securityProvider;
 
     [SetUp]
     public void SetUp ()
     {
-      _securityService = new NullSecurityService();
+      _securityProvider = new NullSecurityProvider();
     }
 
     [Test]
     public void GetAccess_ReturnsEmptyList ()
     {
-      AccessType[] accessTypes = _securityService.GetAccess (null, null);
+      AccessType[] accessTypes = _securityProvider.GetAccess (null, null);
       Assert.IsNotNull (accessTypes);
       Assert.AreEqual (0, accessTypes.Length);
     }
@@ -25,13 +25,13 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetRevision_ReturnsZero ()
     {
-      Assert.AreEqual (0, _securityService.GetRevision());
+      Assert.AreEqual (0, _securityProvider.GetRevision());
     }
 
     [Test]
     public void GetIsNull ()
     {
-      Assert.IsTrue (_securityService.IsNull);
+      Assert.IsTrue (_securityProvider.IsNull);
     }
   }
 }

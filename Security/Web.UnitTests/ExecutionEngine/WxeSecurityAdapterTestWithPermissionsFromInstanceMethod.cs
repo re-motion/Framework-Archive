@@ -24,7 +24,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     private MockRepository _mocks;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IUserProvider _userProvider;
     private IPrincipal _user;
 
@@ -43,8 +43,8 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
       _mocks = new MockRepository ();
 
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _userProvider = _mocks.CreateMock<IUserProvider> ();
       SetupResult.For (_userProvider.GetUser ()).Return (_user);
@@ -53,7 +53,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
-      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.UserProvider = _userProvider;
       SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
@@ -198,14 +198,14 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     private void ExpectObjectSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
       Expect
-          .Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, AccessType.Get (accessTypeEnum)))
+          .Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, AccessType.Get (accessTypeEnum)))
           .Return (returnValue);
     }
 
     private void ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
       Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityService, _user, AccessType.Get (accessTypeEnum)))
+          .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityProvider, _user, AccessType.Get (accessTypeEnum)))
           .Return (returnValue);
     }
   }

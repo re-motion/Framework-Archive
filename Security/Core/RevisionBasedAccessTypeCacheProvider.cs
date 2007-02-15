@@ -53,7 +53,7 @@ namespace Rubicon.Security
       int? revision = (int?) CallContext.GetData (s_revisionKey);
       if (!revision.HasValue)
       {
-        revision = SecurityConfiguration.Current.SecurityService.GetRevision ();
+        revision = SecurityConfiguration.Current.SecurityProvider.GetRevision ();
         CallContext.SetData (s_revisionKey, revision);
       }
 

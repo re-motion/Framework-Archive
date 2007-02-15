@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private ObjectID _expectedParentGroup0ID;
     private ObjectID _expectedGroup0ID;
     private MockRepository _mocks;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IUserProvider _mockUserProvider;
     private IFunctionalSecurityStrategy _stubFunctionalSecurityStrategy;
 
@@ -50,13 +50,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _mocks = new MockRepository ();
-      _mockSecurityService = (ISecurityService) _mocks.CreateMultiMock (typeof (ProviderBase), typeof (ISecurityService));
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockSecurityProvider = (ISecurityProvider) _mocks.CreateMultiMock (typeof (ProviderBase), typeof (ISecurityProvider));
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
       _mockUserProvider = (IUserProvider) _mocks.CreateMultiMock (typeof (ProviderBase), typeof (IUserProvider));
       _stubFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
-      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _stubFunctionalSecurityStrategy;
 
@@ -102,7 +102,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossibleGroups_WithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
@@ -159,7 +159,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossiblePositions_WithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
@@ -180,7 +180,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPossiblePositions_WithoutGroupTypeAndWithoutSecurityService ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService ();
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
@@ -202,7 +202,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 
-      Expect.Call (_mockSecurityService.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
+      Expect.Call (_mockSecurityProvider.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
     }
 
     private void SetupResultSecurityServiceGetAccessForPosition (Delegation delegation, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
@@ -218,7 +218,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 
-      SetupResult.For (_mockSecurityService.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
+      SetupResult.For (_mockSecurityProvider.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
     }
   }
 }

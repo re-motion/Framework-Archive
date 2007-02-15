@@ -40,14 +40,14 @@ namespace Rubicon.Security
       _localCache.Clear ();
     }
 
-    public bool HasAccess (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      ArgumentUtility.CheckNotNull ("securityService", securityService);
+      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      AccessType[] actualAccessTypes = GetAccessFromLocalCache (factory, securityService, user);
+      AccessType[] actualAccessTypes = GetAccessFromLocalCache (factory, securityProvider, user);
 
       foreach (AccessType requiredAccessType in requiredAccessTypes)
       {
@@ -58,12 +58,12 @@ namespace Rubicon.Security
       return true;
     }
 
-    private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
+    private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user)
     {
-      return _localCache.GetOrCreateValue (user.Identity.Name, delegate { return GetAccessFromGlobalCache (factory, securityService, user); });
+      return _localCache.GetOrCreateValue (user.Identity.Name, delegate { return GetAccessFromGlobalCache (factory, securityProvider, user); });
     }
 
-    private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
+    private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user)
     {
       ICache<Tuple<SecurityContext, string>, AccessType[]> globalAccessTypeCache = _globalCacheProvider.GetCache ();
       if (globalAccessTypeCache == null)
@@ -74,12 +74,12 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
       Tuple<SecurityContext, string> key = new Tuple<SecurityContext, string> (context, user.Identity.Name);
-      return globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityService (securityService, context, user); });
+      return globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityService (securityProvider, context, user); });
     }
 
-    private AccessType[] GetAccessFromSecurityService (ISecurityService securityService, SecurityContext context, IPrincipal user)
+    private AccessType[] GetAccessFromSecurityService (ISecurityProvider securityProvider, SecurityContext context, IPrincipal user)
     {
-      AccessType[] actualAccessTypes = securityService.GetAccess (context, user);
+      AccessType[] actualAccessTypes = securityProvider.GetAccess (context, user);
       if (actualAccessTypes == null)
         actualAccessTypes = new AccessType[0];
       return actualAccessTypes;

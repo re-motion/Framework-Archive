@@ -27,14 +27,14 @@ namespace Rubicon.Security
       get { return _securityStrategy; }
     }
 
-    public bool HasAccess (Type type, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (Type type, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
-      ArgumentUtility.CheckNotNull ("securityService", securityService);
+      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      return _securityStrategy.HasAccess (new FunctionalSecurityContextFactory (type), securityService, user, requiredAccessTypes);
+      return _securityStrategy.HasAccess (new FunctionalSecurityContextFactory (type), securityProvider, user, requiredAccessTypes);
     }
   }
 }

@@ -90,7 +90,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       SecurableObject otherObject = _testHelper.CreateSecurableObject ();
       _testHelper.Transaction.Commit ();
       _testHelper.AddExtension (_extension);
-      HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasAccessDelegate hasAccess = delegate (ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         otherObject.Delete ();
         return true;

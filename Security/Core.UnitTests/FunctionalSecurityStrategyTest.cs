@@ -16,7 +16,7 @@ namespace Rubicon.Security.UnitTests
   {
     private MockRepository _mocks;
     private ISecurityStrategy _mockSecurityStrategy;
-    private ISecurityService _stubSecurityService;
+    private ISecurityProvider _stubSecurityProvider;
     private IPrincipal _user;
     private AccessType[] _accessTypeResult;
     private FunctionalSecurityStrategy _strategy;
@@ -26,7 +26,7 @@ namespace Rubicon.Security.UnitTests
     {
       _mocks = new MockRepository ();
       _mockSecurityStrategy = _mocks.CreateMock<ISecurityStrategy> ();
-      _stubSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _stubSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
@@ -65,12 +65,12 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (true).Constraints (
           new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
-          Is.Same (_stubSecurityService),
+          Is.Same (_stubSecurityProvider),
           Is.Same (_user),
           List.Equal (_accessTypeResult));
       _mocks.ReplayAll();
 
-      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -81,12 +81,12 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (false).Constraints (
           new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
-          Is.Same (_stubSecurityService),
+          Is.Same (_stubSecurityProvider),
           Is.Same (_user),
           List.Equal (_accessTypeResult));
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);

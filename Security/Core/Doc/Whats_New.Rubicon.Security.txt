@@ -26,8 +26,8 @@
   GlobalAccessTypeCacheProvider: 
                 Rubicon.Security.NullGlobalAccessTypeCacheProvider = "None" (= Standardprovider)
                 Rubicon.Security.RevisionBasedAccessTypeCacheProvider = "RevisionBased"
-  SecurityProvider:
-                Rubicon.Security.NullSecurityService = "None" (= Standardprovider)
+  SecurityProvider (vormals SecurityService):
+                Rubicon.Security.NullProviderService = "None" (= Standardprovider)
                 Rubicon.SecurityManager.SecurityService = "SecurityManager"
   
   <rubicon.security 

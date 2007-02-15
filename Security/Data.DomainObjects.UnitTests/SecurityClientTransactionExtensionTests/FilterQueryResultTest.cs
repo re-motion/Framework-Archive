@@ -147,7 +147,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       collection.Add (securableObject);
       IQuery query = new Query ("Dummy");
       _testHelper.AddExtension (_extension);
-      HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasAccessDelegate hasAccess = delegate (ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         _testHelper.Transaction.QueryManager.GetCollection (new Query ("GetSecurableObjects"));
         return true;

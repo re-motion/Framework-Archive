@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager
 {
-  public class SecurityService : ISecurityService
+  public class SecurityService : ISecurityProvider
   {
     private static ILog s_log = LogManager.GetLogger (typeof (SecurityService));
 

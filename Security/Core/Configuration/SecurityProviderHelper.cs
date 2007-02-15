@@ -2,12 +2,13 @@ using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
+using Rubicon.Security;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
-  /// <summary>Helper class that loads implementations of <see cref="ISecurityService"/> from the <see cref="SecurityConfiguration"/> section.</summary>
-  public class SecurityProviderHelper : ProviderHelperBase<ISecurityService>
+  /// <summary>Helper class that loads implementations of <see cref="ISecurityProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
+  public class SecurityProviderHelper : ProviderHelperBase<ISecurityProvider>
   {
     private const string c_nullSecurityServiceWellKnownName = "None";
     private const string c_securityManagerSecurityServiceWellKnownName = "SecurityManager";
@@ -39,9 +40,9 @@ namespace Rubicon.Security.Configuration
         EnsureSecurityManagerServiceTypeInitialized();
     }
 
-    protected override ISecurityService CastProviderBaseToProviderType (ProviderBase provider)
+    protected override ISecurityProvider CastProviderBaseToProviderType (ProviderBase provider)
     {
-      return (ISecurityService) provider;
+      return (ISecurityProvider) provider;
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)
@@ -54,7 +55,7 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownNullSecurityService (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_nullSecurityServiceWellKnownName, delegate { return new NullSecurityService(); });
+      EnsureWellKownProvider (collection, c_nullSecurityServiceWellKnownName, delegate { return new NullSecurityProvider(); });
     }
 
     private void EnsureWellKnownSecurityManagerSecurityService (ProviderCollection collection)

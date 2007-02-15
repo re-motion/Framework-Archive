@@ -14,7 +14,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       SecurityConfiguration configuration = SecurityConfiguration.Current;
 
       Assert.IsNotNull (configuration);
-      Assert.IsInstanceOfType (typeof (NullSecurityService), Configuration.SecurityService);
+      Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), configuration.UserProvider);
     }
 

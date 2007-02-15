@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 
       base.OnTransactionCreated (transaction);
 
-      if (!SecurityConfiguration.Current.SecurityService.IsNull)
+      if (!SecurityConfiguration.Current.SecurityProvider.IsNull)
         transaction.Extensions.Add (typeof (SecurityClientTransactionExtension).FullName, new SecurityClientTransactionExtension ());
     }
   }

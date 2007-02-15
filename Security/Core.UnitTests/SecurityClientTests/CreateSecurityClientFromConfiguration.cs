@@ -11,7 +11,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   {
     private MockRepository _mocks;
     private SecurityConfiguration _configuration;
-    private ISecurityService _service;
+    private ISecurityProvider _provider;
 
     [SetUp]
     public void SetUp()
@@ -19,8 +19,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _mocks = new MockRepository();
       _configuration = new SecurityConfiguration ();
       SecurityConfigurationMock.SetCurrent (_configuration);
-      _service = _mocks.CreateMock<ISecurityService>();
-      _configuration.SecurityService = _service;
+      _provider = _mocks.CreateMock<ISecurityProvider>();
+      _configuration.SecurityProvider = _provider;
     }
 
     [TearDown]
@@ -32,7 +32,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void CreateNormal()
     {
-      Expect.Call (_service.IsNull).Return (false);
+      Expect.Call (_provider.IsNull).Return (false);
       _mocks.ReplayAll();
       
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
@@ -45,7 +45,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void CreateNull ()
     {
-      Expect.Call (_service.IsNull).Return (true);
+      Expect.Call (_provider.IsNull).Return (true);
       _mocks.ReplayAll ();
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();

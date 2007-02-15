@@ -6,9 +6,9 @@ namespace Rubicon.Security
 {
   /// <summary>
   /// Provides an implementation of a nullable object according to the "Null Object Pattern", 
-  /// extending <see cref="ProviderBase"/> and implementing <see cref="ISecurityService"/>.
+  /// extending <see cref="ProviderBase"/> and implementing <see cref="ISecurityProvider"/>.
   /// </summary>
-  public class NullSecurityService : ProviderBase, ISecurityService
+  public class NullSecurityProvider : ProviderBase, ISecurityProvider
   {
     /// <summary>
     /// The "Null Object" implementation always returns an empty array.

@@ -44,7 +44,7 @@
     <Compile Include="NullIdentity.cs" />
     <Compile Include="NullPrincipal.cs" />
     <Compile Include="NullSecurityClient.cs" />
-    <Compile Include="NullSecurityService.cs" />
+    <Compile Include="NullSecurityProvider.cs" />
     <Compile Include="Configuration\PermissionProviderHelper.cs" />
     <Compile Include="Configuration\GlobalAccessTypeCacheProviderHelper.cs" />
     <Compile Include="Configuration\ProviderHelperBase.cs" />

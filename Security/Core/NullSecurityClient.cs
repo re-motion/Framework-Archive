@@ -13,7 +13,7 @@ namespace Rubicon.Security
   {
     public NullSecurityClient ()
         : base (
-            new NullSecurityService(), 
+            new NullSecurityProvider(), 
             new PermissionReflector(), 
             new NullUserProvider(), 
             new FunctionalSecurityStrategy (new SecurityStrategy (new NullCache<string, AccessType[]>(), new NullGlobalAccessTypeCacheProvider())))

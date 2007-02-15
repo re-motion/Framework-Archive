@@ -16,7 +16,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 
     private MockRepository _mocks;
     private IPrincipal _user;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IUserProvider _mockUserProvider;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
@@ -28,8 +28,8 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
     {
       _mocks = new MockRepository ();
       
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
       _mockWxeSecurityAdapter = _mocks.CreateMock<IWxeSecurityAdapter> ();
@@ -44,14 +44,14 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
     public void ExpectHasAccess (Enum[] accessTypeEnums, bool returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
-      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, accessTypes)).Return (returnValue);
+      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, accessTypes)).Return (returnValue);
     }
 
     public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypeEnums, bool returnValue)
     {
         AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (accessTypeEnums, AccessType.Get);
         Expect
-            .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityService, _user, accessTypes))
+            .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityProvider, _user, accessTypes))
             .Return (returnValue);
     }
 
@@ -70,9 +70,9 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
       _mocks.VerifyAll ();
     }
 
-    public ISecurityService SecurityService
+    public ISecurityProvider SecurityProvider
     {
-      get { return _mockSecurityService; }
+      get { return _mockSecurityProvider; }
     }
 
     public IUserProvider UserProvider

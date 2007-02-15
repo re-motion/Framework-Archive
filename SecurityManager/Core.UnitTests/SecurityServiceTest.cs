@@ -167,7 +167,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetIsNull ()
     {
-      Assert.IsFalse (((ISecurityService) _service).IsNull);
+      Assert.IsFalse (((ISecurityProvider) _service).IsNull);
     }
     
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)

@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests
   public class RevisionBasedAccessTypeCacheProviderTest
   {
     private MockRepository _mocks;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IGlobalAccessTypeCacheProvider _provider;
 
     [SetUp]
@@ -23,9 +23,9 @@ namespace Rubicon.Security.UnitTests
       _mocks = new MockRepository();
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
-      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
+      SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
     }
 
     [TearDown]
@@ -38,7 +38,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetCache()
     {
-      Expect.Call (_mockSecurityService.GetRevision()).Return (0);
+      Expect.Call (_mockSecurityProvider.GetRevision()).Return (0);
       _mocks.ReplayAll();
 
       ICache<Tuple<SecurityContext, string>, AccessType[]> actual = _provider.GetCache();
@@ -50,7 +50,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetCache_SameCacheTwice()
     {
-      Expect.Call (_mockSecurityService.GetRevision()).Return (0);
+      Expect.Call (_mockSecurityProvider.GetRevision()).Return (0);
       _mocks.ReplayAll();
 
       ICache<Tuple<SecurityContext, string>, AccessType[]> expected = _provider.GetCache();
@@ -65,8 +65,8 @@ namespace Rubicon.Security.UnitTests
     {
       using (_mocks.Ordered())
       {
-        Expect.Call (_mockSecurityService.GetRevision()).Return (0);
-        Expect.Call (_mockSecurityService.GetRevision()).Return (1);
+        Expect.Call (_mockSecurityProvider.GetRevision()).Return (0);
+        Expect.Call (_mockSecurityProvider.GetRevision()).Return (1);
       }
       _mocks.ReplayAll();
 
@@ -82,7 +82,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetCache_WithNullSecurityService()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
+      SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider();
 
       Assert.AreSame (_provider.GetCache(), _provider.GetCache());
     }

@@ -21,7 +21,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       _testHelper = new WebPermissionProviderTestHelper ();
-      SecurityConfiguration.Current.SecurityService = _testHelper.SecurityService;
+      SecurityConfiguration.Current.SecurityProvider = _testHelper.SecurityProvider;
       SecurityConfiguration.Current.UserProvider = _testHelper.UserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _testHelper.FunctionalSecurityStrategy;
     }

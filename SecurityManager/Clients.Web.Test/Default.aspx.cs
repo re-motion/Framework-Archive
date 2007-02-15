@@ -26,10 +26,10 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
 
     protected void EvaluateSecurity_Click (object sender, EventArgs e)
     {
-      ISecurityService service = SecurityConfiguration.Current.SecurityService;
+      ISecurityProvider provider = SecurityConfiguration.Current.SecurityProvider;
       SecurityContext context = new SecurityContext (typeof (File), "1A", "{00000004-1000-0000-0000-000000000007}", "", new Dictionary<string, Enum> (), new Enum[] { DomainAbstractRoles.Creator });
       GenericPrincipal user = new GenericPrincipal (new GenericIdentity ("1A"), new string[0]);
-      AccessType[] accessTypes = service.GetAccess (context, user);
+      AccessType[] accessTypes = provider.GetAccess (context, user);
     }
 
     protected void UsersField_SelectionChanged (object sender, EventArgs e)

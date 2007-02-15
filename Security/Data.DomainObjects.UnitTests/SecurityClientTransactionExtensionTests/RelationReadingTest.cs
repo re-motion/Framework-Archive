@@ -89,7 +89,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       securableObject.OtherParent = _testHelper.CreateSecurableObject ();
       _testHelper.AddExtension (_extension);
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("Parent", TestAccessTypes.First);
-      HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasAccessDelegate hasAccess = delegate (ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         Dev.Null = securableObject.OtherParent;
         return true;
@@ -109,7 +109,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       securableObject.OtherChildren.Add (_testHelper.CreateSecurableObject ());
       _testHelper.AddExtension (_extension);
       _testHelper.ExpectPermissionReflectorGetRequiredPropertyReadPermissions ("Children", TestAccessTypes.First);
-      HasAccessDelegate hasAccess = delegate (ISecurityService securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasAccessDelegate hasAccess = delegate (ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         Dev.Null = securableObject.OtherChildren[0];
         return true;

@@ -11,35 +11,35 @@ namespace Rubicon.Security
   {
     public static SecurityClient CreateSecurityClientFromConfiguration()
     {
-      ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
+      ISecurityProvider securityProvider = SecurityConfiguration.Current.SecurityProvider;
 
-      if (securityService.IsNull)
+      if (securityProvider.IsNull)
         return new NullSecurityClient();
 
       return new SecurityClient (
-          securityService,
+          securityProvider,
           SecurityConfiguration.Current.PermissionProvider,
           SecurityConfiguration.Current.UserProvider,
           SecurityConfiguration.Current.FunctionalSecurityStrategy);
     }
 
-    private ISecurityService _securityService;
+    private ISecurityProvider _securityProvider;
     private IPermissionProvider _permissionProvider;
     private IUserProvider _userProvider;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     public SecurityClient (
-        ISecurityService securityService,
+        ISecurityProvider securityProvider,
         IPermissionProvider permissionProvider,
         IUserProvider userProvider,
         IFunctionalSecurityStrategy functionalSecurityStrategy)
     {
-      ArgumentUtility.CheckNotNull ("securityService", securityService);
+      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
       ArgumentUtility.CheckNotNull ("permissionProvider", permissionProvider);
       ArgumentUtility.CheckNotNull ("userProvider", userProvider);
       ArgumentUtility.CheckNotNull ("functionalSecurityStrategy", functionalSecurityStrategy);
 
-      _securityService = securityService;
+      _securityProvider = securityProvider;
       _permissionProvider = permissionProvider;
       _userProvider = userProvider;
       _functionalSecurityStrategy = functionalSecurityStrategy;
@@ -64,7 +64,7 @@ namespace Rubicon.Security
       if (objectSecurityStrategy == null)
         throw new InvalidOperationException ("The securableObject did not return an IObjectSecurityStrategy.");
 
-      return objectSecurityStrategy.HasAccess (_securityService, user, requiredAccessTypes);
+      return objectSecurityStrategy.HasAccess (_securityProvider, user, requiredAccessTypes);
     }
 
     public void CheckAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
@@ -97,7 +97,7 @@ namespace Rubicon.Security
       if (SecurityFreeSection.IsActive)
         return true;
 
-      return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, requiredAccessTypes);
+      return _functionalSecurityStrategy.HasAccess (securableClass, _securityProvider, user, requiredAccessTypes);
     }
 
     public void CheckStatelessAccess (Type securableClass, params AccessType[] requiredAccessTypes)
@@ -248,7 +248,7 @@ namespace Rubicon.Security
 
       AccessType[] requiredAccessTypes = new AccessType[] {AccessType.Get (GeneralAccessTypes.Create)};
 
-      return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, requiredAccessTypes);
+      return _functionalSecurityStrategy.HasAccess (securableClass, _securityProvider, user, requiredAccessTypes);
     }
 
     public void CheckConstructorAccess (Type securableClass)

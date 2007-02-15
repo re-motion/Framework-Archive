@@ -5,6 +5,6 @@ namespace Rubicon.Security
 {
   public interface IFunctionalSecurityStrategy
   {
-    bool HasAccess (Type type, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes);
+    bool HasAccess (Type type, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
   }
 }

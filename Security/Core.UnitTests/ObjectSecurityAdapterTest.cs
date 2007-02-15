@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests
     private MockRepository _mocks;
     private SecurableObject _securableObject;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IUserProvider _mockUserProvider;
     private IPrincipal _user;
     private IPermissionProvider _mockPermissionProvider;
@@ -42,8 +42,8 @@ namespace Rubicon.Security.UnitTests
 
       _mocks = new MockRepository ();
 
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
       _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
       _mockPermissionProvider = _mocks.CreateMock<IPermissionProvider> ();
 
@@ -51,7 +51,7 @@ namespace Rubicon.Security.UnitTests
       SetupResult.For (_mockUserProvider.GetUser ()).Return (_user);
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
-      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.UserProvider = _mockUserProvider;
       SecurityConfiguration.Current.PermissionProvider = _mockPermissionProvider;
 
@@ -150,7 +150,7 @@ namespace Rubicon.Security.UnitTests
     private void ExpectExpectObjectSecurityStrategyHasAccess (bool accessAllowed)
     {
       AccessType[] accessTypes = new AccessType[] { AccessType.Get (TestAccessTypes.First) };
-      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, accessTypes)).Return (accessAllowed);
+      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, accessTypes)).Return (accessAllowed);
     }
 
     private void ExpectGetRequiredPropertyReadPermissions (string propertyName)

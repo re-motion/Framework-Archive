@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     private MockRepository _mocks;
     private IPrincipal _user;
     private SecurityContext _context;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IPermissionProvider _mockPermissionReflector;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
@@ -36,7 +36,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
 
       _mocks = new MockRepository ();
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
       _mockPermissionReflector = _mocks.CreateMock<IPermissionProvider> ();
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     public SecurityClient CreateSecurityClient ()
     {
-      return new SecurityClient (_mockSecurityService, _mockPermissionReflector, _stubUserProvider, _mockFunctionalSecurityStrategy);
+      return new SecurityClient (_mockSecurityProvider, _mockPermissionReflector, _stubUserProvider, _mockFunctionalSecurityStrategy);
     }
 
     public SecurableObject SecurableObject
@@ -84,7 +84,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void ExpectObjectSecurityStrategyHasAccess (Enum[] requiredAccessTypes, bool returnValue)
     {
       Expect
-          .Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityService, _user, ConvertAccessTypeEnums (requiredAccessTypes)))
+          .Call (_mockObjectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, ConvertAccessTypeEnums (requiredAccessTypes)))
           .Return (returnValue);
     }
 
@@ -96,14 +96,14 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     public void ExpectFunctionalSecurityStrategyHasAccess (Enum[] requiredAccessTypes, bool returnValue)
     {
       Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityService, _user, ConvertAccessTypeEnums (requiredAccessTypes)))
+          .Call (_mockFunctionalSecurityStrategy.HasAccess (typeof (SecurableObject), _mockSecurityProvider, _user, ConvertAccessTypeEnums (requiredAccessTypes)))
           .Return (returnValue);
     }
 
     public void ExpectSecurityServiceGetAccess (params Enum[] returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (returnValue, new Converter<Enum, AccessType> (AccessType.Get));
-      Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (accessTypes);
+      Expect.Call (_mockSecurityProvider.GetAccess (_context, _user)).Return (accessTypes);
     }
 
     public void ReplayAll ()

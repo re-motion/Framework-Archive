@@ -10,8 +10,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
-  public delegate bool HasAccessDelegate (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes);
-  public delegate bool HasStatelessAccessDelegate (Type type, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes);
+  public delegate bool HasAccessDelegate (ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
+  public delegate bool HasStatelessAccessDelegate (Type type, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
 
   public class SecurityClientTransactionExtensionTestHelper
   {
@@ -23,7 +23,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     private MockRepository _mocks;
     private IPrincipal _user;
-    private ISecurityService _mockSecurityService;
+    private ISecurityProvider _mockSecurityProvider;
     private IUserProvider _stubUserProvider;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
     private IPermissionProvider _mockPermissionReflector;
@@ -34,7 +34,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public SecurityClientTransactionExtensionTestHelper ()
     {
       _mocks = new MockRepository ();
-      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _stubUserProvider = _mocks.CreateMock<IUserProvider> ();
       SetupResult.For (_stubUserProvider.GetUser ()).Return (_user);
@@ -42,7 +42,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _mockPermissionReflector = _mocks.CreateMock<IPermissionProvider> ();
       _transaction = new ClientTransaction ();
 
-      SetupResult.For (_mockSecurityService.IsNull).Return (false);
+      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
     }
 
     // methods and properties
@@ -70,7 +70,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public void SetupSecurityConfiguration ()
     {
       PrivateInvoke.InvokeNonPublicStaticMethod (typeof (SecurityConfiguration), "SetCurrent", new SecurityConfiguration ());
-      SecurityConfiguration.Current.SecurityService = _mockSecurityService;
+      SecurityConfiguration.Current.SecurityProvider = _mockSecurityProvider;
       SecurityConfiguration.Current.UserProvider = _stubUserProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
       SecurityConfiguration.Current.PermissionProvider = _mockPermissionReflector;
@@ -106,26 +106,26 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     public void ExpectObjectSecurityStrategyHasAccess (SecurableObject securableObject, Enum accessTypeEnum, HasAccessDelegate doDelegate)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
-      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityService, _user, AccessType.Get (accessTypeEnum))).Do (doDelegate);
+      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, AccessType.Get (accessTypeEnum))).Do (doDelegate);
     }
 
     public void ExpectObjectSecurityStrategyHasAccess (SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
-      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityService, _user, AccessType.Get (accessTypeEnum))).Return (returnValue);
+      Expect.Call (objectSecurityStrategy.HasAccess (_mockSecurityProvider, _user, AccessType.Get (accessTypeEnum))).Return (returnValue);
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
     {
       Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityService, _user, AccessType.Get (accessTypeEnum)))
+          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _user, AccessType.Get (accessTypeEnum)))
           .Do (doDelegate);
     }
 
     public void ExpectFunctionalSecurityStrategyHasAccess (Type securableObjectType, Enum accessTypeEnum, bool returnValue)
     {
       Expect
-          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityService, _user, AccessType.Get (accessTypeEnum)))
+          .Call (_mockFunctionalSecurityStrategy.HasAccess (securableObjectType, _mockSecurityProvider, _user, AccessType.Get (accessTypeEnum)))
           .Return (returnValue);
     }
 
@@ -141,7 +141,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public void ExpectSecurityServiceGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)
     {
-      Expect.Call (_mockSecurityService.GetAccess (context, _user)).Return (Array.ConvertAll<Enum, AccessType> (returnedAccessTypes, AccessType.Get));
+      Expect.Call (_mockSecurityProvider.GetAccess (context, _user)).Return (Array.ConvertAll<Enum, AccessType> (returnedAccessTypes, AccessType.Get));
     }
   }
 }

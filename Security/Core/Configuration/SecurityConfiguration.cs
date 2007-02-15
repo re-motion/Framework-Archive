@@ -55,7 +55,7 @@ namespace Rubicon.Security.Configuration
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     private PermissionProviderHelper _permissionProviderHelper;
-    private SecurityProviderHelper _securityServiceHelper;
+    private SecurityProviderHelper _securityProviderHelper;
     private UserProviderHelper _userProviderHelper;
     private GlobalAccessTypeCacheProviderHelper _globalAccessTypeCacheProviderHelper;
 
@@ -64,7 +64,7 @@ namespace Rubicon.Security.Configuration
     public SecurityConfiguration()
     {
       _permissionProviderHelper = new PermissionProviderHelper (this);
-      _securityServiceHelper = new SecurityProviderHelper (this);
+      _securityProviderHelper = new SecurityProviderHelper (this);
       _userProviderHelper = new UserProviderHelper (this);
       _globalAccessTypeCacheProviderHelper = new GlobalAccessTypeCacheProviderHelper (this);
 
@@ -79,7 +79,7 @@ namespace Rubicon.Security.Configuration
       _properties = new ConfigurationPropertyCollection();
       _properties.Add (_xmlnsProperty);
       _permissionProviderHelper.InitializeProperties (_properties);
-      _securityServiceHelper.InitializeProperties (_properties);
+      _securityProviderHelper.InitializeProperties (_properties);
       _userProviderHelper.InitializeProperties (_properties);
       _globalAccessTypeCacheProviderHelper.InitializeProperties (_properties);
       _properties.Add (_functionalSecurityStrategyProperty);
@@ -92,7 +92,7 @@ namespace Rubicon.Security.Configuration
       base.PostDeserialize();
 
       _permissionProviderHelper.PostDeserialze();
-      _securityServiceHelper.PostDeserialze();
+      _securityProviderHelper.PostDeserialze();
       _userProviderHelper.PostDeserialze();
       _globalAccessTypeCacheProviderHelper.PostDeserialze();
     }
@@ -108,15 +108,22 @@ namespace Rubicon.Security.Configuration
       set { base[property] = value; }
     }
 
-    public ISecurityService SecurityService
+    [Obsolete ("Use SecurityProvider instead. (Version: 1.7.41)")]
+    public ISecurityProvider SecurityService
     {
-      get { return _securityServiceHelper.Provider; }
-      set { _securityServiceHelper.Provider = value; }
+      get { return SecurityProvider; }
+      set { SecurityProvider = value; }
     }
 
-    public ProviderCollection SecurityServices
+    public ISecurityProvider SecurityProvider
     {
-      get { return _securityServiceHelper.Providers; }
+      get { return _securityProviderHelper.Provider; }
+      set { _securityProviderHelper.Provider = value; }
+    }
+
+    public ProviderCollection SecurityProviders
+    {
+      get { return _securityProviderHelper.Providers; }
     }
 
     public IUserProvider UserProvider

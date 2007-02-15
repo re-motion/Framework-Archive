@@ -2,7 +2,7 @@
 namespace Rubicon.Security
 {
   [Obsolete ("Use IObjectSecurityAdapter instead. (Version: 1.7.41)", true)]
-  public interface IObjectSecurityProvider : IObjectSecurityAdapter, ISecurityProvider
+  public interface IObjectSecurityProvider : IObjectSecurityAdapter, ISecurityProviderObsolete
   {
   }
 

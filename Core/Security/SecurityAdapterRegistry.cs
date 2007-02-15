@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
   [Obsolete ("Use SecurityAdapterRegistry instead. (Version: 1.7.41)", true)]
   public abstract class SecurityProviderRegistry
   {
-    public static SecurityProviderRegistry Instance { get { throw new NotImplementedException ("Use SecurityAdapterRegistry.Instance instead."); }}
+    public static SecurityProviderRegistry Instance
+    {
+      get { throw new NotImplementedException ("Use SecurityAdapterRegistry.Instance instead."); }
+    }
 
     [Obsolete ("Use SetAdapter<T>(...) instead. (Version: 1.7.41)", true)]
-    public abstract void SetProvider<T> (T value) where T : class, ISecurityProvider;
+    public abstract void SetProvider<T> (T value) where T : class, ISecurityProviderObsolete;
 
     [Obsolete ("Use GetAdapter<T>() instead. (Version: 1.7.41)", true)]
-    public abstract T GetProvider<T> () where T : class, ISecurityProvider;
+    public abstract T GetProvider<T>() where T : class, ISecurityProviderObsolete;
   }
 
   public class SecurityAdapterRegistry
@@ -24,7 +24,7 @@ namespace Rubicon.Security
 
     // static members
 
-    private static SecurityAdapterRegistry s_instance = new SecurityAdapterRegistry ();
+    private static SecurityAdapterRegistry s_instance = new SecurityAdapterRegistry();
 
     public static SecurityAdapterRegistry Instance
     {
@@ -33,11 +33,11 @@ namespace Rubicon.Security
 
     // member fields
 
-    private Dictionary<Type, ISecurityAdapter> _registry = new Dictionary<Type, ISecurityAdapter> ();
+    private Dictionary<Type, ISecurityAdapter> _registry = new Dictionary<Type, ISecurityAdapter>();
 
     // construction and disposing
 
-    protected SecurityAdapterRegistry ()
+    protected SecurityAdapterRegistry()
     {
     }
 
@@ -48,7 +48,7 @@ namespace Rubicon.Security
       _registry[typeof (T)] = value;
     }
 
-    public T GetAdapter<T> () where T : class, ISecurityAdapter
+    public T GetAdapter<T>() where T : class, ISecurityAdapter
     {
       if (_registry.ContainsKey (typeof (T)))
         return (T) _registry[typeof (T)];

@@ -55,7 +55,7 @@
     <Compile Include="Configuration\SecurityConfigurationTests\TestBase.cs" />
     <Compile Include="Configuration\SecurityConfigurationTests\DeserializeSecurityConfigurationForPermissionProviderTest.cs" />
     <Compile Include="Configuration\UserProviderMock.cs" />
-    <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="Configuration\SecurityProviderMock.cs" />
     <Compile Include="FunctionalSecurityContextFactoryTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredMethodPermissionsTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredPropertyReadPermissionsTest.cs" />
@@ -106,7 +106,7 @@
     <Compile Include="NullSecurityClientTests\HasStatelessMethodAccessTest.cs" />
     <Compile Include="NullSecurityClientTests\HasStaticMethodAccessTest.cs" />
     <Compile Include="NullSecurityClientTests\NullSecurityClientTestHelper.cs" />
-    <Compile Include="NullSecurityServiceTest.cs" />
+    <Compile Include="NullSecurityProviderTest.cs" />
     <Compile Include="NullUserProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RevisionBasedAccessTypeCacheProviderTest.cs" />

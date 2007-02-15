@@ -14,7 +14,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (NullSecurityService), Configuration.SecurityService);
+      Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
     }
 
     [Test]
@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.AreSame (Configuration.SecurityService, Configuration.SecurityService);
+      Assert.AreSame (Configuration.SecurityProvider, Configuration.SecurityProvider);
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     {
       string xmlFragment = @"<rubicon.security defaultSecurityProvider=""None"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Assert.IsInstanceOfType (typeof (NullSecurityService), Configuration.SecurityService);
+      Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
     }
 
     [Test]
@@ -40,7 +40,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"<rubicon.security defaultSecurityProvider=""Invalid"" />";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Dev.Null = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityProvider;
     }
 
     [Test]
@@ -51,7 +51,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
       Type expectedType = TypeUtility.GetType ("Rubicon.SecurityManager::SecurityService", true, false);
 
-      Assert.IsInstanceOfType (expectedType, Configuration.SecurityService);
+      Assert.IsInstanceOfType (expectedType, Configuration.SecurityProvider);
     }
 
     [Test]
@@ -60,13 +60,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""Custom"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (SecurityServiceMock), Configuration.SecurityService);
+      Assert.IsInstanceOfType (typeof (SecurityProviderMock), Configuration.SecurityProvider);
     }
 
     [Test]
@@ -75,16 +75,16 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Assert.AreEqual (2, Configuration.SecurityServices.Count);
-      Assert.IsInstanceOfType (typeof (SecurityServiceMock), Configuration.SecurityServices["Custom"]);
-      Assert.IsInstanceOfType (typeof (NullSecurityService), Configuration.SecurityService);
-      Assert.AreSame (Configuration.SecurityService, Configuration.SecurityServices["None"]);
+      Assert.AreEqual (2, Configuration.SecurityProviders.Count);
+      Assert.IsInstanceOfType (typeof (SecurityProviderMock), Configuration.SecurityProviders["Custom"]);
+      Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
+      Assert.AreSame (Configuration.SecurityProvider, Configuration.SecurityProviders["None"]);
     }
 
     [Test]
@@ -95,13 +95,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""Invalid"">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Dev.Null = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityProvider;
     }
 
     [Test]
@@ -111,7 +111,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""None"">
             <securityProviders>
-              <add name=""None"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""None"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -125,7 +125,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""SecurityManager"">
             <securityProviders>
-              <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""SecurityManager"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
@@ -140,13 +140,13 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider="""">
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Dev.Null = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityProvider;
     }
 
     [Test]
@@ -157,16 +157,16 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
           @"
           <rubicon.security>
             <securityProviders>
-              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityServiceMock"" />
+              <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.SecurityProviderMock"" />
             </securityProviders>
           </rubicon.security>";
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
-      Configuration.SecurityServices.Clear ();
+      Configuration.SecurityProviders.Clear ();
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.ISecurityService'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.ISecurityProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       string xmlFragment =
@@ -179,7 +179,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
 
-      Dev.Null = Configuration.SecurityService;
+      Dev.Null = Configuration.SecurityProvider;
     }
   }
 }

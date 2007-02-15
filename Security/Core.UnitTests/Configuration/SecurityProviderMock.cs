@@ -3,7 +3,7 @@ using System.Configuration.Provider;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
-  public class SecurityServiceMock : ProviderBase, ISecurityService
+  public class SecurityProviderMock : ProviderBase, ISecurityProvider
   {
     // types
 
@@ -13,7 +13,7 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // construction and disposing
 
-    public SecurityServiceMock ()
+    public SecurityProviderMock ()
     {
     }
 
