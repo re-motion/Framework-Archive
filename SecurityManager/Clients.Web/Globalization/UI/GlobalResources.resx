@@ -118,51 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="User" xml:space="preserve">
-    <value>Benutzer</value>
+    <value>User</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
+    <value>Save</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
+    <value>Cancel</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Übernehmen</value>
+    <value>Apply</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Bearbeiten</value>
+    <value>Edit</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Diese Seite enthält ungültige Eingaben (markiert durch rote Rufzeichen).</value>
+    <value>This site contains invalid entries (marked with red exclamation mark).</value>
   </data>
   <data name="GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
+    <value>Group type</value>
   </data>
   <data name="Group" xml:space="preserve">
-    <value>Gruppe</value>
+    <value>Group</value>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Stelle</value>
+    <value>Position</value>
   </data>
   <data name="New" xml:space="preserve">
-    <value>Neu</value>
+    <value>New</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Delete</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>Add</value>
   </data>
   <data name="Remove" xml:space="preserve">
-    <value>Entfernen</value>
+    <value>Remove</value>
   </data>
   <data name="AccessControl" xml:space="preserve">
-    <value>Berechtigungen</value>
+    <value>Access control</value>
   </data>
   <data name="OrganizationalStructure" xml:space="preserve">
-    <value>Aufbauorganisation</value>
+    <value>Organizational structure</value>
   </data>
   <data name="SecurableClassDefinition" xml:space="preserve">
-    <value>Klassen</value>
+    <value>Classes</value>
   </data>
 </root>

@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Berechtigungen.
+        ///   Looks up a localized string similar to Access control.
         /// </summary>
         internal static string AccessControl {
             get {
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hinzufügen.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
         internal static string Add {
             get {
@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Übernehmen.
+        ///   Looks up a localized string similar to Apply.
         /// </summary>
         internal static string Apply {
             get {
@@ -88,7 +88,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abbrechen.
+        ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
             get {
@@ -97,7 +97,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Löschen.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string Delete {
             get {
@@ -106,7 +106,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearbeiten.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
             get {
@@ -115,7 +115,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diese Seite enthält ungültige Eingaben (markiert durch rote Rufzeichen)..
+        ///   Looks up a localized string similar to This site contains invalid entries (marked with red exclamation mark)..
         /// </summary>
         internal static string ErrorMessage {
             get {
@@ -124,7 +124,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
+        ///   Looks up a localized string similar to Group.
         /// </summary>
         internal static string Group {
             get {
@@ -133,7 +133,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Struktureinheit.
+        ///   Looks up a localized string similar to Group type.
         /// </summary>
         internal static string GroupType {
             get {
@@ -142,7 +142,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Neu.
+        ///   Looks up a localized string similar to New.
         /// </summary>
         internal static string New {
             get {
@@ -151,7 +151,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aufbauorganisation.
+        ///   Looks up a localized string similar to Organizational structure.
         /// </summary>
         internal static string OrganizationalStructure {
             get {
@@ -160,7 +160,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stelle.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         internal static string Position {
             get {
@@ -169,7 +169,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entfernen.
+        ///   Looks up a localized string similar to Remove.
         /// </summary>
         internal static string Remove {
             get {
@@ -178,7 +178,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speichern.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {
             get {
@@ -187,7 +187,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Klassen.
+        ///   Looks up a localized string similar to Classes.
         /// </summary>
         internal static string SecurableClassDefinition {
             get {
@@ -196,7 +196,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Benutzer.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         internal static string User {
             get {

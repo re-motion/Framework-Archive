@@ -121,10 +121,10 @@
     <value>Name</value>
   </data>
   <data name="property:Groups" xml:space="preserve">
-    <value>Gruppen</value>
+    <value>Groupes</value>
   </data>
   <data name="property:Positions" xml:space="preserve">
-    <value>M&ouml;gliche Stellen</value>
+    <value>Possible positions</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>

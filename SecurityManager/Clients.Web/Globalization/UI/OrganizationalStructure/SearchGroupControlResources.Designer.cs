@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppe suchen.
+        ///   Looks up a localized string similar to Search group.
         /// </summary>
         internal static string auto_GroupListLabel_Text {
             get {

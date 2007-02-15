@@ -102,21 +102,21 @@
     <value>Name</value>
   </data>
   <data name="property:UserName" xml:space="preserve">
-    <value>Benutzername</value>
+    <value>Username</value>
   </data>
   <data name="property:Title" xml:space="preserve">
-    <value>Titel</value>
+    <value>Title</value>
   </data>
   <data name="property:FirstName" xml:space="preserve">
-    <value>Vorname</value>
+    <value>Firstname</value>
   </data>
   <data name="property:LastName" xml:space="preserve">
-    <value>Nachname</value>
+    <value>Lastname</value>
   </data>
   <data name="property:Group" xml:space="preserve">
-    <value>Gruppe</value>
+    <value>Group</value>
   </data>
   <data name="property:Roles" xml:space="preserve">
-    <value>Rollen</value>
+    <value>Roles</value>
   </data>
 </root>

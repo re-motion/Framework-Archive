@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rolle bearbeiten.
+        ///   Looks up a localized string similar to Edit role.
         /// </summary>
         internal static string auto_RoleLabel_Text {
             get {

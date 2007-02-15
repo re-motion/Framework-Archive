@@ -121,10 +121,10 @@
     <value>Name</value>
   </data>
   <data name="property:GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
+    <value>Group type</value>
   </data>
   <data name="property:Position" xml:space="preserve">
-    <value>Stelle</value>
+    <value>Position</value>
   </data>
   <data name="property:DisplayName" xml:space="preserve">
     <value>Name</value>

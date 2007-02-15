@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppen verwalten.
+        ///   Looks up a localized string similar to Administrate groups.
         /// </summary>
         internal static string auto_GroupListLabel_Text {
             get {
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Neue Gruppe anlegen.
+        ///   Looks up a localized string similar to Create new group.
         /// </summary>
         internal static string auto_NewGroupButton_Text {
             get {

@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
+        ///   Looks up a localized string similar to Group.
         /// </summary>
         internal static string auto_ChildrenField_FixedColumns_GroupNameItem_ColumnTitle {
             get {
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppe bearbeiten.
+        ///   Looks up a localized string similar to Edit group.
         /// </summary>
         internal static string auto_GroupLabel_Text {
             get {
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stelle.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         internal static string auto_RolesField_FixedColumns_PositionNameItem_ColumnTitle {
             get {
@@ -89,7 +89,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Benutzer.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         internal static string auto_RolesField_FixedColumns_UserNameItem_ColumnTitle {
             get {

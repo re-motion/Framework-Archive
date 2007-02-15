@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Konkrete Stelle bearbeiten.
+        ///   Looks up a localized string similar to Edit concrete position.
         /// </summary>
         internal static string auto_GroupTypePositionLabel_Text {
             get {

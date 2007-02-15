@@ -99,7 +99,7 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="property:ShortName" xml:space="preserve">
-    <value>Kurzbezeichnung</value>
+    <value>Shortname</value>
   </data>
   <data name="property:Name" xml:space="preserve">
     <value>Name</value>
@@ -108,15 +108,15 @@
     <value>Name</value>
   </data>
   <data name="property:GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
+    <value>Group type</value>
   </data>
   <data name="property:Parent" xml:space="preserve">
-    <value>Übergeordnete Gruppe</value>
+    <value>Parent group</value>
   </data>
   <data name="property:Children" xml:space="preserve">
-    <value>Untergeordnete Gruppen</value>
+    <value>Child groups</value>
   </data>
   <data name="property:Roles" xml:space="preserve">
-    <value>Rollen</value>
+    <value>Roles</value>
   </data>
 </root>

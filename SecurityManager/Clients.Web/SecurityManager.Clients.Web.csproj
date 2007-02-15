@@ -98,10 +98,30 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.de.Designer.cs">
+      <DependentUpon>SecurableClassDefinitionTreeViewResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurableClassDefinitionTreeViewResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\AccessControlResources.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccessControlResources.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecurableClassDefinitionListFormResources.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\GlobalResources.de.Designer.cs">
+      <DependentUpon>GlobalResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Globalization\UI\AccessControl\AccessControlResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -112,6 +132,116 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurableClassDefinitionListFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\UserListFormResources.de.Designer.cs">
+      <DependentUpon>UserListFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\UserListControlResources.de.Designer.cs">
+      <DependentUpon>UserListControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\SearchGroupFormResources.de.Designer.cs">
+      <DependentUpon>SearchGroupFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\SearchGroupControlResources.de.Designer.cs">
+      <DependentUpon>SearchGroupControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\PositionListFormResources.de.Designer.cs">
+      <DependentUpon>PositionListFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\PositionListControlResources.de.Designer.cs">
+      <DependentUpon>PositionListControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\GroupTypeListFormResources.de.Designer.cs">
+      <DependentUpon>GroupTypeListFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\GroupTypeListControlResources.de.Designer.cs">
+      <DependentUpon>GroupTypeListControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\GroupListFormResources.de.Designer.cs">
+      <DependentUpon>GroupListFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\GroupListControlResources.de.Designer.cs">
+      <DependentUpon>GroupListControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditUserFormResources.de.Designer.cs">
+      <DependentUpon>EditUserFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditUserControlResources.de.Designer.cs">
+      <DependentUpon>EditUserControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditRoleFormResources.de.Designer.cs">
+      <DependentUpon>EditRoleFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditRoleControlResources.de.Designer.cs">
+      <DependentUpon>EditRoleControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditPositionFormResources.de.Designer.cs">
+      <DependentUpon>EditPositionFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditPositionControlResources.de.Designer.cs">
+      <DependentUpon>EditPositionControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionFormResources.de.Designer.cs">
+      <DependentUpon>EditGroupTypePositionFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.de.Designer.cs">
+      <DependentUpon>EditGroupTypePositionControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypeFormResources.de.Designer.cs">
+      <DependentUpon>EditGroupTypeFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypeControlResources.de.Designer.cs">
+      <DependentUpon>EditGroupTypeControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupFormResources.de.Designer.cs">
+      <DependentUpon>EditGroupFormResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupControlResources.de.Designer.cs">
+      <DependentUpon>EditGroupControlResources.de.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.Designer.cs">
       <DependentUpon>EditGroupTypePositionControlResources.resx</DependentUpon>
@@ -513,13 +643,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SecurableClassDefinitionTreeViewResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SecurableClassDefinitionTreeViewResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\GlobalResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.de.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccessControlResources.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.resx">
       <SubType>Designer</SubType>
@@ -528,11 +670,123 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.de.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SecurableClassDefinitionListFormResources.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SecurableClassDefinitionListFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\UserListFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserListFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\UserListControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserListControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\SearchGroupFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\SearchGroupControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\PositionListFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PositionListFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\PositionListControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PositionListControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\GroupTypeListFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroupTypeListFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\GroupTypeListControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroupTypeListControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\GroupListFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroupListFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\GroupListControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroupListControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditUserFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditUserFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditUserControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditUserControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditRoleFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditRoleFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditRoleControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditRoleControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditPositionFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPositionFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditPositionControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPositionControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypePositionFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypePositionControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypeFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypeFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypeControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypeControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupFormResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupFormResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupControlResources.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupControlResources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditGroupTypePositionControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
