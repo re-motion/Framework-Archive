@@ -20,8 +20,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       base.TearDown ();
 
       WebConfigurationMock.Current = null;
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
     }
   }
 }

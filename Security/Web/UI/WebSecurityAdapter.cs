@@ -11,7 +11,12 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UI
 {
-  public class WebSecurityProvider : IWebSecurityProvider
+  [Obsolete ("Use WebSecurityAdapter instead. (Version: 1.7.41)", true)]
+  public class WebSecurityProvider : WebSecurityAdapter, IWebSecurityProvider
+  {
+  }
+  
+  public class WebSecurityAdapter : IWebSecurityAdapter
   {
     // types
 
@@ -21,7 +26,7 @@ namespace Rubicon.Security.Web.UI
 
     // construction and disposing
 
-    public WebSecurityProvider ()
+    public WebSecurityAdapter ()
     {
     }
 

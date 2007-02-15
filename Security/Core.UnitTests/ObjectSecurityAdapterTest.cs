@@ -15,7 +15,7 @@ using Rubicon.Security.Metadata;
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
-  public class ObjectSecurityProviderTest
+  public class ObjectSecurityAdapterTest
   {
     // types
 
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
 
     // member fields
 
-    private IObjectSecurityProvider _securityProvider;
+    private IObjectSecurityAdapter _securityAdapter;
     private MockRepository _mocks;
     private SecurableObject _securableObject;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
@@ -34,7 +34,7 @@ namespace Rubicon.Security.UnitTests
 
     // construction and disposing
 
-    public ObjectSecurityProviderTest ()
+    public ObjectSecurityAdapterTest ()
     {
     }
 
@@ -43,7 +43,7 @@ namespace Rubicon.Security.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new ObjectSecurityProvider ();
+      _securityAdapter = new ObjectSecurityAdapter ();
 
       _mocks = new MockRepository ();
 
@@ -77,7 +77,7 @@ namespace Rubicon.Security.UnitTests
       ExpectExpectObjectSecurityStrategyHasAccess (true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
+      bool hasAccess = _securityAdapter.HasAccessOnGetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -90,7 +90,7 @@ namespace Rubicon.Security.UnitTests
       ExpectExpectObjectSecurityStrategyHasAccess (false);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
+      bool hasAccess = _securityAdapter.HasAccessOnGetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -104,7 +104,7 @@ namespace Rubicon.Security.UnitTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityProvider.HasAccessOnGetAccessor (_securableObject, "Name");
+        hasAccess = _securityAdapter.HasAccessOnGetAccessor (_securableObject, "Name");
       }
 
       _mocks.VerifyAll ();
@@ -118,7 +118,7 @@ namespace Rubicon.Security.UnitTests
       ExpectExpectObjectSecurityStrategyHasAccess (true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
+      bool hasAccess = _securityAdapter.HasAccessOnSetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -131,7 +131,7 @@ namespace Rubicon.Security.UnitTests
       ExpectExpectObjectSecurityStrategyHasAccess (false);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
+      bool hasAccess = _securityAdapter.HasAccessOnSetAccessor (_securableObject, "Name");
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -145,7 +145,7 @@ namespace Rubicon.Security.UnitTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityProvider.HasAccessOnSetAccessor (_securableObject, "Name");
+        hasAccess = _securityAdapter.HasAccessOnSetAccessor (_securableObject, "Name");
       }
 
       _mocks.VerifyAll ();

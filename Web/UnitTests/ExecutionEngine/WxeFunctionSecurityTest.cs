@@ -15,7 +15,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   public class WxeFunctionSecurityTest : WxeTest
   {
     private MockRepository _mocks;
-    private IWxeSecurityProvider _mockWxeSecurityProvider;
+    private IWxeSecurityAdapter _mockWxeSecurityAdapter;
 
     [SetUp]
     public override void SetUp ()
@@ -23,16 +23,16 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       base.SetUp ();
 
       _mocks = new MockRepository ();
-      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
+      _mockWxeSecurityAdapter = _mocks.CreateMock<IWxeSecurityAdapter> ();
 
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_mockWxeSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (_mockWxeSecurityAdapter);
     }
 
     [Test]
     public void ExecuteFunctionWithAccessGranted ()
     {
       TestFunction function = new TestFunction ();
-      _mockWxeSecurityProvider.CheckAccess (function);
+      _mockWxeSecurityAdapter.CheckAccess (function);
       _mocks.ReplayAll ();
 
       function.Execute ();
@@ -44,7 +44,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void ExecuteFunctionWithAccessDenied ()
     {
       TestFunction function = new TestFunction ();
-      _mockWxeSecurityProvider.CheckAccess (function);
+      _mockWxeSecurityAdapter.CheckAccess (function);
       LastCall.Throw (new PermissionDeniedException ("Test Exception"));
       _mocks.ReplayAll ();
 
@@ -65,7 +65,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     [Test]
     public void ExecuteFunctionWithoutWxeSecurityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
 
       TestFunction function = new TestFunction ();
       _mocks.ReplayAll ();
@@ -78,7 +78,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccessGranted ()
     {
-      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (typeof (TestFunction))).Return (true);
+      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (typeof (TestFunction))).Return (true);
       _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
@@ -90,7 +90,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccessDenied ()
     {
-      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (typeof (TestFunction))).Return (false);
+      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (typeof (TestFunction))).Return (false);
       _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
@@ -102,7 +102,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     [Test]
     public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
       _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));

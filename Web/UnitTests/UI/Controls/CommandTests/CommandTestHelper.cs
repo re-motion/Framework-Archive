@@ -23,8 +23,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     // member fields
 
     private MockRepository _mocks;
-    private IWebSecurityProvider _mockWebSecurityProvider;
-    private IWxeSecurityProvider _mockWxeSecurityProvider;
+    private IWebSecurityAdapter _mockWebSecurityAdapter;
+    private IWxeSecurityAdapter _mockWxeSecurityAdapter;
     private ISecurableObject _mockSecurableObject;
 
     private HttpContext _httpContext;
@@ -47,8 +47,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
 
       _mocks = new MockRepository ();
-      _mockWebSecurityProvider = _mocks.CreateMock<IWebSecurityProvider> ();
-      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
+      _mockWebSecurityAdapter = _mocks.CreateMock<IWebSecurityAdapter> ();
+      _mockWxeSecurityAdapter = _mocks.CreateMock<IWxeSecurityAdapter> ();
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
 
       _httpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
@@ -69,14 +69,14 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       get { return _htmlWriter; }
     }
 
-    public IWebSecurityProvider WebSecurityProvider
+    public IWebSecurityAdapter WebSecurityAdapter
     {
-      get { return _mockWebSecurityProvider; }
+      get { return _mockWebSecurityAdapter; }
     }
 
-    public IWxeSecurityProvider WxeSecurityProvider
+    public IWxeSecurityAdapter WxeSecurityAdapter
     {
-      get { return _mockWxeSecurityProvider; }
+      get { return _mockWxeSecurityAdapter; }
     }
 
     public ISecurableObject SecurableObject
@@ -96,12 +96,12 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
     public void ExpectWebSecurityProviderHasAccess (ISecurableObject securableObject, Delegate handler, bool returnValue)
     {
-      Expect.Call (_mockWebSecurityProvider.HasAccess (securableObject, handler)).Return (returnValue).Repeat.Once ();
+      Expect.Call (_mockWebSecurityAdapter.HasAccess (securableObject, handler)).Return (returnValue).Repeat.Once ();
     }
 
     public void ExpectWxeSecurityProviderHasStatelessAccess (Type functionType, bool returnValue)
     {
-      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (functionType)).Return (returnValue).Repeat.Once ();
+      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (functionType)).Return (returnValue).Repeat.Once ();
     }
 
 

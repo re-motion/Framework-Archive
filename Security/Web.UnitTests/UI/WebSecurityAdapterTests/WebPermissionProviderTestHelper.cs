@@ -10,7 +10,7 @@ using Rubicon.Security.Metadata;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
+namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 {
   public class WebPermissionProviderTestHelper
   {
@@ -26,7 +26,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     private IUserProvider _mockUserProvider;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
-    private IWxeSecurityProvider _mockWxeSecurityProvider;
+    private IWxeSecurityAdapter _mockWxeSecurityAdapter;
 
     // construction and disposing
 
@@ -38,7 +38,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       SetupResult.For (_mockSecurityService.IsNull).Return (false);
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
       _mockFunctionalSecurityStrategy = _mocks.CreateMock<IFunctionalSecurityStrategy> ();
-      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
+      _mockWxeSecurityAdapter = _mocks.CreateMock<IWxeSecurityAdapter> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _mockUserProvider = _mocks.CreateMock<IUserProvider> ();
@@ -63,7 +63,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
 
     public void ExpectHasStatelessAccessForWxeFunction (Type functionType, bool returnValue)
     {
-      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (functionType)).Return (returnValue);
+      Expect.Call (_mockWxeSecurityAdapter.HasStatelessAccess (functionType)).Return (returnValue);
     }
 
     public void ReplayAll ()
@@ -91,9 +91,9 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       get { return _mockFunctionalSecurityStrategy; }
     }
 
-    public IWxeSecurityProvider WxeSecurityProvider
+    public IWxeSecurityAdapter WxeSecurityAdapter
     {
-      get { return _mockWxeSecurityProvider; }
+      get { return _mockWxeSecurityAdapter; }
     }
 
     public SecurableObject CreateSecurableObject ()

@@ -94,7 +94,7 @@
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityConfigurationException.cs" />
     <Compile Include="SecurityException.cs" />
-    <Compile Include="ObjectSecurityProvider.cs" />
+    <Compile Include="ObjectSecurityAdapter.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
     <Compile Include="SecurityFreeSection.cs" />
     <Compile Include="SecurityStrategy.cs" />

@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
   public class BasePropertySecurityTest
   {
     private MockRepository _mocks;
-    private IObjectSecurityProvider _mockObjectSecurityProvider;
+    private IObjectSecurityAdapter _mockObjectSecurityAdapter;
     private StringProperty _securableProperty;
     private StringProperty _nonSecurableProperty;
     private StringProperty _nonSecurablePropertyReadOnly;
@@ -29,9 +29,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     public void SetUp ()
     {
       _mocks = new MockRepository ();
-      _mockObjectSecurityProvider = _mocks.CreateMock<IObjectSecurityProvider> ();
+      _mockObjectSecurityAdapter = _mocks.CreateMock<IObjectSecurityAdapter> ();
 
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (_mockObjectSecurityAdapter);
       _securableObject = new SecurableSearchObject (_mocks.CreateMock<IObjectSecurityStrategy> ());
 
       Type securableType = typeof (SecurableSearchObject);
@@ -46,13 +46,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [TearDown]
     public void TearDown ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
     }
 
     [Test]
     public void IsAccessibleWithoutObjectSecurityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
       _mocks.ReplayAll ();
 
       bool isAccessible = _securableProperty.IsAccessible (_securableObject);
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void IsNotReadOnlyWithoutObjectSecurityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
       _mocks.ReplayAll ();
 
       bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
@@ -156,12 +156,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 
     private void ExpectHasAccessOnGetAccessor (bool returnValue)
     {
-      Expect.Call (_mockObjectSecurityProvider.HasAccessOnGetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
+      Expect.Call (_mockObjectSecurityAdapter.HasAccessOnGetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
     }
 
     private void ExpectHasAccessOnSetAccessor (bool returnValue)
     {
-      Expect.Call (_mockObjectSecurityProvider.HasAccessOnSetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
+      Expect.Call (_mockObjectSecurityAdapter.HasAccessOnSetAccessor (_securableObject, _securableProperty.PropertyInfo.Name)).Return (returnValue);
     }
   }
 }

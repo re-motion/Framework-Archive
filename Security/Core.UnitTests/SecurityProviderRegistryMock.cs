@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests
 {
-  public class SecurityProviderRegistryMock : SecurityProviderRegistry
+  public class SecurityProviderRegistryMock : SecurityAdapterRegistry
   {
     // types
 

@@ -43,13 +43,13 @@
     <Compile Include="ExecutionEngine\WxeDemandTargetMethodPermissionAttribute.cs" />
     <Compile Include="ExecutionEngine\WxeDemandTargetPermissionAttribute.cs" />
     <Compile Include="ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttribute.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProvider.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityAdapter.cs" />
     <Compile Include="HttpContextUserProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\DemandTargetMethodPermissionAttribute.cs" />
     <Compile Include="UI\DemandTargetPermissionAttribute.cs" />
     <Compile Include="UI\DemandTargetWxeFunctionPermissionAttribute.cs" />
-    <Compile Include="UI\WebSecurityProvider.cs" />
+    <Compile Include="UI\WebSecurityAdapter.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.build" />
   </ItemGroup>

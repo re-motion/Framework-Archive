@@ -1,7 +1,12 @@
 ﻿using System;
 namespace Rubicon.Security
 {
-  public interface IObjectSecurityProvider : ISecurityProvider
+  [Obsolete ("Use IObjectSecurityAdapter instead. (Version: 1.7.41)", true)]
+  public interface IObjectSecurityProvider : IObjectSecurityAdapter, ISecurityProvider
+  {
+  }
+
+  public interface IObjectSecurityAdapter : ISecurityAdapter
   {
     bool HasAccessOnGetAccessor (ISecurableObject securableObject, string propertyName);
     bool HasAccessOnSetAccessor (ISecurableObject securableObject, string propertyName);

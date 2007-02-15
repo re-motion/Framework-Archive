@@ -63,3 +63,7 @@
     
   SecurityClient.CreateSecurityClientFromConfiguration() ist liefert eine Null-Object Implementierung des SecurityClient zurück, wenn das
   NullSecurityService konfiguriert ist. Bisher: Exception.
+
+- ObjectSecurityProvider zu ObjectSecurityAdapter umbenannt.
+- Web.UI.WebSecurityProvider zu Web.UI.WebSecurityAdapter umbenannt.
+- Web.ExecutionEngine.WxeSecurityProvider zu Web.ExecutionEngine.WxeSecurityAdapter umbenannt.

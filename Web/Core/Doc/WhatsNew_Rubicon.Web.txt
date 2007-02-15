@@ -1,3 +1,9 @@
+1.7.41
+======
+- Security:
+  IWebSecurityProvider zu IWebSecurityAdapter umbenannt.
+  IWxeSecurityProvider zu IWxeSecurityAdapter umbenannt.
+
 1.7.37
 ======
 - ExecutionEngine

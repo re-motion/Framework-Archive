@@ -63,17 +63,17 @@
     <Compile Include="ExecutionEngine\TestFunctionWithoutParameters.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObject.cs" />
     <Compile Include="ExecutionEngine\WxeDemandTargetMethodPermissionAttributeTest.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromStaticMethod.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromInstanceMethod.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromConstructor.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityAdapterTestWithPermissionsFromConstructor.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithoutPermissions.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithoutPermissionAttribute.cs" />
-    <Compile Include="UI\WebSecurityProviderTests\PermissionFromSecurableObjectTest.cs" />
-    <Compile Include="UI\WebSecurityProviderTests\PermissionFromWxeFunctionTest.cs" />
-    <Compile Include="UI\WebSecurityProviderTests\WebPermissionProviderTestHelper.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityAdapterTestWithoutPermissionAttribute.cs" />
+    <Compile Include="UI\WebSecurityAdapterTests\PermissionFromSecurableObjectTest.cs" />
+    <Compile Include="UI\WebSecurityAdapterTests\PermissionFromWxeFunctionTest.cs" />
+    <Compile Include="UI\WebSecurityAdapterTests\WebPermissionProviderTestHelper.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.UnitTests.build" />
   </ItemGroup>

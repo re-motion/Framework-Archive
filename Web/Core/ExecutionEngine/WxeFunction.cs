@@ -207,11 +207,11 @@ namespace Rubicon.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
 
-      IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
-      if (wxeSecurityProvider == null)
+      IWxeSecurityAdapter wxeSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWxeSecurityAdapter> ();
+      if (wxeSecurityAdapter == null)
         return true;
 
-      return wxeSecurityProvider.HasStatelessAccess (functionType);
+      return wxeSecurityAdapter.HasStatelessAccess (functionType);
     }
 
     /// <summary> Hashtable&lt;Type, WxeParameterDeclaration[]&gt; </summary>
@@ -583,11 +583,11 @@ namespace Rubicon.Web.ExecutionEngine
 
     protected virtual void CheckPermissions (WxeContext context)
     {
-      IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
-      if (wxeSecurityProvider == null)
+      IWxeSecurityAdapter wxeSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWxeSecurityAdapter> ();
+      if (wxeSecurityAdapter == null)
         return;
 
-      wxeSecurityProvider.CheckAccess (this);
+      wxeSecurityAdapter.CheckAccess (this);
     }
   }
 

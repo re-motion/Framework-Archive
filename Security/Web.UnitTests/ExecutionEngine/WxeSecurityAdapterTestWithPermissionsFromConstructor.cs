@@ -17,7 +17,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
-  public class WxeSecurityProviderTestWithPermissionsFromConstructor
+  public class WxeSecurityAdapterTestWithPermissionsFromConstructor
   {
     // types
 
@@ -25,7 +25,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // member fields
 
-    private IWxeSecurityProvider _securityProvider;
+    private IWxeSecurityAdapter _securityAdapter;
     private MockRepository _mocks;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
     private ISecurityService _mockSecurityService;
@@ -34,7 +34,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public WxeSecurityProviderTestWithPermissionsFromConstructor ()
+    public WxeSecurityAdapterTestWithPermissionsFromConstructor ()
     {
     }
 
@@ -43,7 +43,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new WxeSecurityProvider ();
+      _securityAdapter = new WxeSecurityAdapter ();
 
       _mocks = new MockRepository ();
 
@@ -72,7 +72,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
-      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
+      _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
 
       _mocks.VerifyAll ();
     }
@@ -84,7 +84,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
-      _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
+      _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
       using (new SecurityFreeSection ())
       {
-        _securityProvider.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
+        _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromConstructor ());
       }
 
       _mocks.VerifyAll ();
@@ -106,7 +106,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
+      bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -118,7 +118,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
+      bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -132,7 +132,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityProvider.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
+        hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromConstructor ());
       }
 
       _mocks.VerifyAll ();
@@ -145,7 +145,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, true);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -157,7 +157,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Create, false);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
 
       _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -171,7 +171,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
+        hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromConstructor));
       }
 
       _mocks.VerifyAll ();

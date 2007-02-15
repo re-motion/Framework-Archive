@@ -13,27 +13,27 @@ using Rubicon.Web.UI;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Security.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
+namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 {
   [TestFixture]
   public class PermissionFromWxeFunctionTest
   {
-    private IWebSecurityProvider _securityProvider;
+    private IWebSecurityAdapter _securityAdapter;
     private WebPermissionProviderTestHelper _testHelper;
   
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new WebSecurityProvider ();
+      _securityAdapter = new WebSecurityAdapter ();
 
       _testHelper = new WebPermissionProviderTestHelper ();
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (_testHelper.WxeSecurityAdapter);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -54,7 +54,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);

@@ -12,18 +12,18 @@ using Rubicon.Security.Web.UnitTests.Configuration;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.UI;
 
-namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
+namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 {
   [TestFixture]
   public class PermissionFromSecurableObjectTest
   {
-    private IWebSecurityProvider _securityProvider;
+    private IWebSecurityAdapter _securityAdapter;
     private WebPermissionProviderTestHelper _testHelper;
 
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new WebSecurityProvider ();
+      _securityAdapter = new WebSecurityAdapter ();
 
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       _testHelper = new WebPermissionProviderTestHelper ();
@@ -43,7 +43,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     {
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), null);
+      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), null);
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -57,7 +57,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       bool hasAccess;
       using (new SecurityFreeSection ())
       {
-        hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+        hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
       }
 
       _testHelper.VerifyAll ();
@@ -70,7 +70,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -82,7 +82,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -94,7 +94,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -106,7 +106,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);

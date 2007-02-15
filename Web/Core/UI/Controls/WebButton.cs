@@ -393,15 +393,15 @@ namespace Rubicon.Web.UI.Controls
 
     protected bool HasAccess ()
     {
-      IWebSecurityProvider securityProvider = SecurityProviderRegistry.Instance.GetProvider<IWebSecurityProvider> ();
-      if (securityProvider == null)
+      IWebSecurityAdapter securityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter> ();
+      if (securityAdapter == null)
         return true;
 
       EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
       if (clickHandler == null)
         return true;
 
-      return securityProvider.HasAccess (_securableObject, (EventHandler) Events[s_clickEvent]);
+      return securityAdapter.HasAccess (_securableObject, (EventHandler) Events[s_clickEvent]);
     }
 
     public override bool Visible

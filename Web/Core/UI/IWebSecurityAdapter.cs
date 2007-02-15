@@ -4,7 +4,12 @@ using System.Web.UI;
 
 namespace Rubicon.Web.UI
 {
-  public interface IWebSecurityProvider : ISecurityProvider
+  [Obsolete ("Use IWebSecurityAdapter instead. (Version: 1.7.41)", true)]
+  public interface IWebSecurityProvider : IWebSecurityAdapter, ISecurityProvider
+  {
+  }
+  
+  public interface IWebSecurityAdapter : ISecurityAdapter
   {
     bool HasAccess (ISecurableObject securableObject, Delegate handler);
     //bool HasStatelessAccess (Type functionType);

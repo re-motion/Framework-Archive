@@ -126,7 +126,7 @@
     <Compile Include="ExecutionEngine\WxeTransactedFunctionEventArgs.cs" />
     <Compile Include="ExecutionEngine\WxeTransactionEventArgs.cs" />
     <Compile Include="ExecutionEngine\WxeUnhandledException.cs" />
-    <Compile Include="ExecutionEngine\IWxeSecurityProvider.cs" />
+    <Compile Include="ExecutionEngine\IWxeSecurityAdapter.cs" />
     <Compile Include="ExecutionEngine\NumberedMemberFinder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -311,7 +311,7 @@
     <Compile Include="UI\Controls\IValidatableControl.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\IWebSecurityProvider.cs" />
+    <Compile Include="UI\IWebSecurityAdapter.cs" />
     <Compile Include="UI\Controls\LazyContainer.cs">
       <SubType>Code</SubType>
     </Compile>

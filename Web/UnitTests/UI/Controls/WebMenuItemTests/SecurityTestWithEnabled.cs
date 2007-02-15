@@ -15,7 +15,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebMenuItemTests
   public class SecurityTestWithEnabled : BaseTest
   {
     private MockRepository _mocks;
-    private IWebSecurityProvider _mockWebSecurityProvider;
+    private IWebSecurityAdapter _mockWebSecurityAdapter;
     private ISecurableObject _mockSecurableObject;
     private Command _mockCommand;
 
@@ -23,11 +23,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebMenuItemTests
     public void Setup ()
     {
       _mocks = new MockRepository ();
-      _mockWebSecurityProvider = _mocks.CreateMock<IWebSecurityProvider> ();
+      _mockWebSecurityAdapter = _mocks.CreateMock<IWebSecurityAdapter> ();
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
       _mockCommand = _mocks.CreateMock<Command> ();
 
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_mockWebSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_mockWebSecurityAdapter);
     }
 
     [Test]

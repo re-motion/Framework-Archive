@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       public override bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
       {
         //TODO: if (!_group.IsDiscarded && _group.State == StateType.New)
-        // Move ObjectSecurityProvider into RPA and add IsDiscarded check.
+        // Move ObjectSecurityAdapter into RPA and add IsDiscarded check.
         if (_group.IsDiscarded || _group.State == StateType.New)
           return true;
 

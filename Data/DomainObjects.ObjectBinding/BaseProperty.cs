@@ -123,11 +123,11 @@ public class BaseProperty : IBusinessObjectProperty
     if (securableObject == null)
       return true;
 
-    IObjectSecurityProvider objectSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IObjectSecurityProvider> ();
-    if (objectSecurityProvider == null)
+    IObjectSecurityAdapter objectSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IObjectSecurityAdapter> ();
+    if (objectSecurityAdapter == null)
       return true;
     
-    return objectSecurityProvider.HasAccessOnGetAccessor (securableObject, _propertyInfo.Name);
+    return objectSecurityAdapter.HasAccessOnGetAccessor (securableObject, _propertyInfo.Name);
   }
 
   /// <summary> Indicates whether this property can be accessed by the user. </summary>
@@ -152,11 +152,11 @@ public class BaseProperty : IBusinessObjectProperty
     if (securableObject == null)
       return false;
 
-    IObjectSecurityProvider objectSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IObjectSecurityProvider> ();
-    if (objectSecurityProvider == null)
+    IObjectSecurityAdapter objectSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IObjectSecurityAdapter> ();
+    if (objectSecurityAdapter == null)
       return false;
 
-    return !objectSecurityProvider.HasAccessOnSetAccessor (securableObject, _propertyInfo.Name);
+    return !objectSecurityAdapter.HasAccessOnSetAccessor (securableObject, _propertyInfo.Name);
   }
 
   /// <summary>

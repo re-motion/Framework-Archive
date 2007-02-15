@@ -6,7 +6,12 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public class ObjectSecurityProvider : IObjectSecurityProvider
+  [Obsolete ("Use ObjectSecurityProvider instead. (Version: 1.7.41)", true)]
+  public class ObjectSecurityProvider : ObjectSecurityAdapter, IObjectSecurityProvider
+  {  
+  }
+  
+  public class ObjectSecurityAdapter : IObjectSecurityAdapter
   {
     // types
 
@@ -16,7 +21,7 @@ namespace Rubicon.Security
 
     // construction and disposing
 
-    public ObjectSecurityProvider ()
+    public ObjectSecurityAdapter ()
     {
     }
 

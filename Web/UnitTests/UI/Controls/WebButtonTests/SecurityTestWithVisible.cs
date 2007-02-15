@@ -15,17 +15,17 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
   public class SecurityTestWithVisible : BaseTest
   {
     private MockRepository _mocks;
-    private IWebSecurityProvider _mockWebSecurityProvider;
+    private IWebSecurityAdapter _mockWebSecurityAdapter;
     private ISecurableObject _mockSecurableObject;
 
     [SetUp]
     public void Setup ()
     {
       _mocks = new MockRepository ();
-      _mockWebSecurityProvider = _mocks.CreateMock<IWebSecurityProvider> ();
+      _mockWebSecurityAdapter = _mocks.CreateMock<IWebSecurityAdapter> ();
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
 
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_mockWebSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_mockWebSecurityAdapter);
     }
 
     [Test]
@@ -59,7 +59,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutWebSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = true;
       _mocks.ReplayAll ();
@@ -73,7 +73,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutWebSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = false;
       _mocks.ReplayAll ();
@@ -113,7 +113,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndAccessGranted ()
     {
-      Expect.Call (_mockWebSecurityProvider.HasAccess (_mockSecurableObject, new EventHandler (TestHandler))).Return (true);
+      Expect.Call (_mockWebSecurityAdapter.HasAccess (_mockSecurableObject, new EventHandler (TestHandler))).Return (true);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = true;
       _mocks.ReplayAll ();
@@ -127,7 +127,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateFalse_FromTrueAndAccessDenied ()
     {
-      Expect.Call (_mockWebSecurityProvider.HasAccess(_mockSecurableObject, new EventHandler (TestHandler))).Return (false);
+      Expect.Call (_mockWebSecurityAdapter.HasAccess(_mockSecurableObject, new EventHandler (TestHandler))).Return (false);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = true;
       _mocks.ReplayAll ();

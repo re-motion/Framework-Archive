@@ -1,6 +1,9 @@
 1.7.41
 ======
 - INullableObject: Interface um das Null-Object-Pattern umzusetzen.
+- Security:
+  ISecurityProvider zu ISecurityAdapter umbenannt.
+  IObjectSecurityProvider zu IObjectSecurityAdapter umbenannt.
 
 1.7.40
 ======

@@ -16,7 +16,7 @@ using Rubicon.Security.Web.ExecutionEngine;
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
-  public class WxeSecurityProviderTestWithoutPermissionAttribute
+  public class WxeSecurityAdapterTestWithoutPermissionAttribute
   {
     // types
 
@@ -24,7 +24,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // member fields
 
-    private IWxeSecurityProvider _securityProvider;
+    private IWxeSecurityAdapter _securityAdapter;
     private MockRepository _mocks;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
     private ISecurityService _mockSecurityService;
@@ -32,7 +32,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public WxeSecurityProviderTestWithoutPermissionAttribute ()
+    public WxeSecurityAdapterTestWithoutPermissionAttribute ()
     {
     }
 
@@ -41,7 +41,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [SetUp]
     public void SetUp ()
     {
-      _securityProvider = new WxeSecurityProvider ();
+      _securityAdapter = new WxeSecurityAdapter ();
 
       _mocks = new MockRepository ();
 
@@ -67,7 +67,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _mocks.ReplayAll ();
 
-      _securityProvider.CheckAccess (new TestFunctionWithoutPermissions ());
+      _securityAdapter.CheckAccess (new TestFunctionWithoutPermissions ());
 
       _mocks.VerifyAll ();
     }
@@ -77,7 +77,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccess (new TestFunctionWithoutPermissions ());
+      bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithoutPermissions ());
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -88,7 +88,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _mocks.ReplayAll ();
       
-      bool hasAccess = _securityProvider.HasStatelessAccess (typeof (TestFunctionWithoutPermissions));
+      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithoutPermissions));
 
       _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);

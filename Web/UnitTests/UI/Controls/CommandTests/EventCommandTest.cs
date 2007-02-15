@@ -44,8 +44,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     [Test]
     public void HasAccess_WithAccessGranted ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_testHelper.WebSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (_testHelper.WxeSecurityAdapter);
       Command command = _testHelper.CreateEventCommand ();
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), true);
@@ -60,8 +60,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     [Test]
     public void HasAccess_WithAccessDenied ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_testHelper.WebSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (_testHelper.WxeSecurityAdapter);
       Command command = _testHelper.CreateEventCommand ();
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), false);

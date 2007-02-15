@@ -9,7 +9,12 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Security.Web.ExecutionEngine
 {
-  public class WxeSecurityProvider : IWxeSecurityProvider
+  [Obsolete ("Use WxeSecurityAdapter instead. (Version: 1.7.41)", true)]
+  public class WxeSecurityProvider : WxeSecurityAdapter, IWxeSecurityProvider
+  {
+  }
+
+  public class WxeSecurityAdapter : IWxeSecurityAdapter
   {
     // types
 
@@ -19,7 +24,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // construction and disposing
 
-    public WxeSecurityProvider ()
+    public WxeSecurityAdapter ()
     {
     }
 

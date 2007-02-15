@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
   public class BindableDomainObjectTest
   {
     private MockRepository _mocks;
-    private IObjectSecurityProvider _mockObjectSecurityProvider;
+    private IObjectSecurityAdapter _mockObjectSecurityAdapter;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private ClientTransaction _transaction;
     private SecurableOrder _securableOder;
@@ -24,13 +24,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     public void SetUp ()
     {
       _mocks = new MockRepository ();
-      _mockObjectSecurityProvider = _mocks.CreateMock<IObjectSecurityProvider> ();
+      _mockObjectSecurityAdapter = _mocks.CreateMock<IObjectSecurityAdapter> ();
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
 
       _transaction = new ClientTransaction ();
       _securableOder = new SecurableOrder (_transaction, _mockObjectSecurityStrategy);
       _securableOder.SetDisplayName ("Value");
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (_mockObjectSecurityAdapter);
 
       
       //_securableObject = new SecurableSearchObject (_mocks.CreateMock<IObjectSecurityStrategy> ());
@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     [TearDown]
     public void TearDown ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
     }
 
     [Test]
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
 
     private void ExpectHasAccessOnGetAccessor (bool returnValue)
     {
-      Expect.Call (_mockObjectSecurityProvider.HasAccessOnGetAccessor (_securableOder, "DisplayName")).Return (returnValue);
+      Expect.Call (_mockObjectSecurityAdapter.HasAccessOnGetAccessor (_securableOder, "DisplayName")).Return (returnValue);
     }
   }
 }

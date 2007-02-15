@@ -832,18 +832,18 @@ namespace Rubicon.Web.UI.Controls
 
     private bool HasAccessForEventCommand (ISecurableObject securableObject)
     {
-      IWebSecurityProvider webSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWebSecurityProvider> ();
-      if (webSecurityProvider == null)
+      IWebSecurityAdapter webSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWebSecurityAdapter> ();
+      if (webSecurityAdapter == null)
         return true;
-      return webSecurityProvider.HasAccess (securableObject, Click);
+      return webSecurityAdapter.HasAccess (securableObject, Click);
     }
 
     private bool HasAccessForWxeFunctionCommand ()
     {
-      IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
-      if (wxeSecurityProvider == null)
+      IWxeSecurityAdapter wxeSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IWxeSecurityAdapter> ();
+      if (wxeSecurityAdapter == null)
         return true;
-      return wxeSecurityProvider.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType ());
+      return wxeSecurityAdapter.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType ());
     }
   }
 
