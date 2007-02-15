@@ -9,6 +9,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
+  /// <summary>Base for helper classes that load specific providers from the <see cref="SecurityConfiguration"/> section.</summary>
   public abstract class ProviderHelperBase<TProvider>
   {
     private SecurityConfiguration _configuration;
@@ -19,7 +20,14 @@ namespace Rubicon.Security.Configuration
     private ConfigurationProperty _providerSettingsProperty;
     private ConfigurationProperty _defaultProviderNameProperty;
 
-    public ProviderHelperBase (SecurityConfiguration configuration)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProviderHelperBase{TProvider}"/> class. 
+    /// </summary>
+    /// <param name="configuration">
+    /// The <see cref="SecurityConfiguration"/> holding the <see cref="ProviderSettings"/> 
+    /// loaded from the security configuration section for <see cref="Rubicon.Security"/>
+    /// </param>
+    protected ProviderHelperBase (SecurityConfiguration configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
@@ -32,6 +40,9 @@ namespace Rubicon.Security.Configuration
 
     protected abstract TProvider CastProviderBaseToProviderType (ProviderBase provider);
 
+    /// <summary>
+    /// Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>. 
+    /// </summary>
     public void InitializeProperties (ConfigurationPropertyCollection properties)
     {
       ArgumentUtility.CheckNotNull ("properties", properties);
@@ -47,6 +58,9 @@ namespace Rubicon.Security.Configuration
     {
     }
 
+    /// <summary>
+    /// Get and set the provider.
+    /// </summary>
     public TProvider Provider
     {
       get

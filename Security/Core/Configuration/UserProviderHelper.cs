@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
+  /// <summary>Helper class that loads implementations of <see cref="IUserProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class UserProviderHelper : ProviderHelperBase<IUserProvider>
   {
     private const string c_threadUserProviderWellKnownName = "Thread";

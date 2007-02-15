@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
+  /// <summary>Helper class that loads implementations of <see cref="ISecurityService"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class SecurityProviderHelper : ProviderHelperBase<ISecurityService>
   {
     private const string c_nullSecurityServiceWellKnownName = "None";

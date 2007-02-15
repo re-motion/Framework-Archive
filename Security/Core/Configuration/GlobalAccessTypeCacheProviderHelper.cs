@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
+  /// <summary>Helper class that loads implementations of <see cref="IGlobalAccessTypeCacheProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class GlobalAccessTypeCacheProviderHelper : ProviderHelperBase<IGlobalAccessTypeCacheProvider>
   {
     private const string c_nullGlobalAccessTypeCacheProviderWellKnownName = "None";

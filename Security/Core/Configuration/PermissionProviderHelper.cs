@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
+  /// <summary>Helper class that loads implementations of <see cref="IPermissionProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class PermissionProviderHelper : ProviderHelperBase<IPermissionProvider>
   {
     private const string c_permissionReflectorWellKnownName = "Reflection";
