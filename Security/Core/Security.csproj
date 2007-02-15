@@ -57,8 +57,6 @@
     <Compile Include="DemandPropertyReadPermissionAttribute.cs" />
     <Compile Include="DemandPropertyWritePermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
-    <Compile Include="IGlobalAccessTypeCacheProvider.cs" />
-    <Compile Include="ISecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
     <Compile Include="Metadata\IMetadataLocalizationConverter.cs" />
