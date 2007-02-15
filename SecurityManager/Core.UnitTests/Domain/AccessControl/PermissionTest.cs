@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.NullableValueTypes;
+using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {

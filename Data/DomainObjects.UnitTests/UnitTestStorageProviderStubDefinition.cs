@@ -1,6 +1,5 @@
 using System;
 using System.Xml;
-
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 

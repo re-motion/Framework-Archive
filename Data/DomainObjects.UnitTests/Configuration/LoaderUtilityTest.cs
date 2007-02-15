@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
 using System.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using System.IO;
+using NUnit.Framework;
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {

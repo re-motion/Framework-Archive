@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.SecurityManager.Domain
 {

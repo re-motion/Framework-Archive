@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
-using NUnit.Framework;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {

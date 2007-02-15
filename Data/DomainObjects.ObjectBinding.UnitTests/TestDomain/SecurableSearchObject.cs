@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Security;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain

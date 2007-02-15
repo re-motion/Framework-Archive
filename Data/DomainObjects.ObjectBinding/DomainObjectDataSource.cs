@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-
-using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
+using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {

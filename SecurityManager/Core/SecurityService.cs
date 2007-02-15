@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.Metadata;
 using log4net;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Security;
 using Rubicon.SecurityManager.Domain;
+using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager
 {

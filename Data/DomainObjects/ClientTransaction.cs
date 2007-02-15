@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
-
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
-using System.ComponentModel;
-
 
 namespace Rubicon.Data.DomainObjects
 {

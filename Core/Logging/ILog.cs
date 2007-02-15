@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Utilities;
 
 namespace Rubicon.Logging
 {

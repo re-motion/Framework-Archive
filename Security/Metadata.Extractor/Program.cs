@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-
-using Rubicon.Security;
-using Rubicon.Text.CommandLine;
 using System.Globalization;
+using Rubicon.Text.CommandLine;
 
 namespace Rubicon.Security.Metadata.Extractor
 {

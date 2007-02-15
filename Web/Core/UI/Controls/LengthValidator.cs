@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
-
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Web.UI.Controls

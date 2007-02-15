@@ -1,15 +1,8 @@
 using System;
-
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.NullableValueTypes;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Security;
 using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
-using System.Text;
+using Rubicon.Security;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {

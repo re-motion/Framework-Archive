@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.Security.Configuration;
 using Rubicon.Collections;
+using Rubicon.Security.Configuration;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {

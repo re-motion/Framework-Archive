@@ -1,10 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Text.RegularExpressions;
-using Rubicon.Utilities;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Web.UI.Controls
 {

@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain
 {

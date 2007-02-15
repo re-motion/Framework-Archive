@@ -1,9 +1,8 @@
 using System;
-using System.Threading;
 using System.Globalization;
-using Rubicon.Utilities;
+using System.Threading;
 using NUnit.Framework;
-
+using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities
 {

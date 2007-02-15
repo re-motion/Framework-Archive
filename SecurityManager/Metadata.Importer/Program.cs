@@ -1,12 +1,9 @@
 using System;
-using System.Xml;
-
 using Rubicon.Data.DomainObjects;
-using Rubicon.Security;
+using Rubicon.Security.Metadata;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Text.CommandLine;
 using Rubicon.Utilities;
-using Rubicon.Security.Metadata;
 
 namespace Rubicon.SecurityManager.Metadata.Importer
 {

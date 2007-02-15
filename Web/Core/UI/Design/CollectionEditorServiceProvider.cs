@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 
 namespace Rubicon.Web.UI.Design
 {

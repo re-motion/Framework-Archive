@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Web.UnitTests.UI.Controls
 {

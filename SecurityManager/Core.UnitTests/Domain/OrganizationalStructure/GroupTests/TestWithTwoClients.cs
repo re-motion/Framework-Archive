@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.GroupTests
 {

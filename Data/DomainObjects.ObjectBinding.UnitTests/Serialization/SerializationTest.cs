@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;
 

@@ -1,7 +1,5 @@
 using System;
 using System.Data;
-using System.Text;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 

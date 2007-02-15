@@ -1,9 +1,8 @@
 using System;
-using System.Text;
 using System.Collections;
 using System.Diagnostics;
-using System.Configuration;
 using System.Globalization;
+using System.Text;
 
 namespace Rubicon.Utilities
 {

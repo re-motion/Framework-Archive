@@ -1,14 +1,11 @@
 using System;
 using System.IO;
+using System.Reflection;
+using System.Web;
 using System.Xml;
-using System.Xml.Serialization;
 using System.Xml.Schema;
-
 using Rubicon.Utilities;
 using Rubicon.Xml;
-using Rubicon.Web.Configuration;
-using System.Web;
-using System.Reflection;
 
 namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {

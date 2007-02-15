@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
-
-using Rubicon.Security;
+using Rubicon.Collections;
+using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Configuration;
 using Rubicon.Security.UnitTests.SampleDomain;
-using Rubicon.Security.Configuration;
-using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {

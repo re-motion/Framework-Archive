@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI;
-using Rubicon.Web.UI;
 
 namespace Rubicon.Web.UI.Controls
 {

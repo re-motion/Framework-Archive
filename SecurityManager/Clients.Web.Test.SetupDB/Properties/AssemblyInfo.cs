@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("rubicon informations gmbh")]
 [assembly: AssemblyProduct ("SecurityManager.Domain.Data.SetupDB")]
-[assembly: AssemblyCopyright ("Copyright © rubicon informations gmbh 2006")]
+[assembly: AssemblyCopyright ("Copyright � rubicon informations gmbh 2006")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

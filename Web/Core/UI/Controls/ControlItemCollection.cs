@@ -1,11 +1,9 @@
 using System;
-using System.ComponentModel;
 using System.Collections;
-using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Web.UI;
-using log4net;
-using Rubicon.Utilities;
 using Rubicon.Globalization;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls

@@ -1,17 +1,13 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Xml;
 using NUnit.Framework;
-
-using IOFile = System.IO.File;
-using Directory = System.IO.Directory;
-using Path = System.IO.Path;
-
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Security.UnitTests.XmlAsserter;
+using File=Rubicon.Security.UnitTests.TestDomain.File;
+using IOFile = System.IO.File;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {

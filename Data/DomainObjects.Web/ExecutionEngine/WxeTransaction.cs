@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Data;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine

@@ -1,11 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
-
-using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {

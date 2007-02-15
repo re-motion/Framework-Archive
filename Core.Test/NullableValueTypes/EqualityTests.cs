@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Core.UnitTests.NullableValueTypes

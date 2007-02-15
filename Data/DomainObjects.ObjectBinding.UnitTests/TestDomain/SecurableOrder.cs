@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rubicon.Security;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain

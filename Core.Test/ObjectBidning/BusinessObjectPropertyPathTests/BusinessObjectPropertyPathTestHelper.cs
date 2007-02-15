@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Rhino.Mocks;
-
-using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
-using Rubicon.Security;
 
 namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
 {

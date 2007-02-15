@@ -1,8 +1,8 @@
 using System;
-using System.Text;
 using System.Collections;
-using System.Xml.Serialization;
 using System.Globalization;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace Rubicon.ObjectBinding
 {

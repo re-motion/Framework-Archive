@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

@@ -1,7 +1,5 @@
 using System;
 using NUnit.Framework;
-
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders

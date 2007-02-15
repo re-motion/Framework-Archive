@@ -1,7 +1,6 @@
 using System;
-using System.ComponentModel;
-using System.Threading;
 using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 

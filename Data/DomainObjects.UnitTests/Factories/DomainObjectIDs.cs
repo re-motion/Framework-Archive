@@ -1,7 +1,5 @@
 using System;
 
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
   public class DomainObjectIDs

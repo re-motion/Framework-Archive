@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Reflection;
-
-using Rubicon.Utilities;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities
 {

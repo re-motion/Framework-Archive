@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Utilities;
 using Rhino.Mocks;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {

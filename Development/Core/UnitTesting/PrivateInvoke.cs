@@ -1,9 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Diagnostics;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Development.UnitTesting

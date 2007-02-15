@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests

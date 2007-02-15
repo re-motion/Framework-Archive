@@ -1,7 +1,6 @@
 using System;
-using Rubicon.Utilities;
 using NUnit.Framework;
-using System.Text;
+using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities
 {

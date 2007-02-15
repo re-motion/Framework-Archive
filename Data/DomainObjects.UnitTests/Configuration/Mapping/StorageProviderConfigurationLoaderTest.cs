@@ -1,9 +1,8 @@
 using System;
+using System.IO;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using System.IO;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {

@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
-
-using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList

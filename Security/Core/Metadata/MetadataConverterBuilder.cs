@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Rubicon.Utilities;
 using System.Globalization;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
 {

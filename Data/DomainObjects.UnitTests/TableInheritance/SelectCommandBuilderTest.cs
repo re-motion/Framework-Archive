@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using System.Data;
-using System.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {

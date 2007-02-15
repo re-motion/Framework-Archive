@@ -1,7 +1,6 @@
 using System;
 using System.Xml;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;

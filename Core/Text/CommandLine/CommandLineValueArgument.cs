@@ -1,6 +1,6 @@
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Text.CommandLine

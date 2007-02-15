@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
+using System.Configuration.Provider;
 using NUnit.Framework;
 using Rubicon.Configuration;
-using Rubicon.Utilities;
-using System.Configuration.Provider;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {

@@ -1,11 +1,7 @@
 using System;
 using System.Data.SqlClient;
-using System.Data;
 using System.IO;
 using System.Text;
-
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Database

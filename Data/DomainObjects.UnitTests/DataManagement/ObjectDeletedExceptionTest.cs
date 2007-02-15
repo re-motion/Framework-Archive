@@ -2,9 +2,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {

@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
-using Rubicon.Utilities;
-
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.NullableValueTypes;
 using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {

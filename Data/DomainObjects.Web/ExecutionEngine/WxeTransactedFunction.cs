@@ -1,8 +1,6 @@
 using System;
-using System.Runtime.Serialization;
-using Rubicon.Web.ExecutionEngine;
-
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 {

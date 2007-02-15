@@ -1,7 +1,5 @@
 using System;
 
-using Rubicon.Data.DomainObjects.DataManagement;
-
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]

@@ -1,8 +1,7 @@
 using System;
 using NUnit.Framework;
-
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {

@@ -1,9 +1,8 @@
 using System;
+using System.CodeDom;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
-using System.Collections;
-using System.CodeDom;
-using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Design
 {

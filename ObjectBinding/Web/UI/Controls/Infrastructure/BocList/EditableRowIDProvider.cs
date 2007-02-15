@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList

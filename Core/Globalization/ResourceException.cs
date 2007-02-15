@@ -1,10 +1,4 @@
 using System;
-using System.Globalization;
-using System.Resources;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Threading;
-using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace Rubicon.Globalization

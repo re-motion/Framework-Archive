@@ -1,8 +1,6 @@
 using System;
 using NUnit.Framework;
 
-using Rubicon.Data.DomainObjects.DataManagement;
-
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
   public class DataContainerChecker

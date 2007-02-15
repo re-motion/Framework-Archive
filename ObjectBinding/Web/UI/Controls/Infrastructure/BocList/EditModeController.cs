@@ -1,18 +1,12 @@
 using System;
-using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
-using Rubicon.Web;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {

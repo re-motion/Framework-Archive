@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Data.DomainObjects.Mapping;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Text;
 using Rubicon.Utilities;
-using Rubicon.Security;
 
 namespace Rubicon.ObjectBinding
 {

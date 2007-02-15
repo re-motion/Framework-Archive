@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.Security.Metadata;
-using Rubicon.Collections;
 using System.Reflection;
+using Rubicon.Collections;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
 {

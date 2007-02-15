@@ -1,14 +1,10 @@
 using System;
-using System.Text;
-using System.Collections;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Globalization;
-using Rubicon.Utilities;
-using Rubicon.Text;
-using Rubicon.Collections;
 using log4net;
+using Rubicon.Text;
+using Rubicon.Utilities;
 
 namespace Rubicon.Globalization
 {

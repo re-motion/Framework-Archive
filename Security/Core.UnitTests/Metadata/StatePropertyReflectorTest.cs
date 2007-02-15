@@ -1,14 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Rhino.Mocks;
 using NUnit.Framework;
-
+using Rhino.Mocks;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
-using Rubicon.Utilities;
-using System.Reflection;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {

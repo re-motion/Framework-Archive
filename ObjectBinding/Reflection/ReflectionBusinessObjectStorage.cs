@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using System.Xml.Serialization;
 using System.IO;
+using System.Xml.Serialization;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Reflection

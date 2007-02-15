@@ -1,11 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Utilities;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using System.Collections;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {

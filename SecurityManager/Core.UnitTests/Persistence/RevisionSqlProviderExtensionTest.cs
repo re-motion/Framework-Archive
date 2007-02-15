@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using NUnit.Framework;
-using Rubicon.SecurityManager.UnitTests.Domain;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.SecurityManager.Domain;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.SecurityManager.UnitTests.Domain;
 
 namespace Rubicon.SecurityManager.UnitTests.Persistence
 {

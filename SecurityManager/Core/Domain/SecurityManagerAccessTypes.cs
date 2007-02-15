@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rubicon.Security;
-using Rubicon;
 
 namespace Rubicon.SecurityManager.Domain
 {

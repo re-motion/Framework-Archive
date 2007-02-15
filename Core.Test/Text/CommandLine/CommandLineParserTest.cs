@@ -1,11 +1,7 @@
 using System;
-using System.Runtime.Serialization;
-using System.Globalization;
-using System.Reflection;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Development.UnitTesting;
-
+using Rubicon.NullableValueTypes;
 using Rubicon.Text.CommandLine;
 
 namespace Rubicon.Core.UnitTests.Text.CommandLine

@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain;
-using Rubicon.Data.DomainObjects.DataManagement;
 using System.Data;
-using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.SecurityManager.Domain;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Persistence
 {

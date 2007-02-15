@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Principal;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.SecurityClientTests

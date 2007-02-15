@@ -1,15 +1,9 @@
 using System;
-
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.NullableValueTypes;
-using Rubicon.Globalization;
-using Rubicon.Utilities;
 using System.Collections.Generic;
-using System.Security.Principal;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Globalization;
 using Rubicon.Security;
-using Rubicon.Collections;
-using Rubicon.Security.Configuration;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {

@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration.Provider;
-using System.Text;
-using Rubicon.SecurityManager.UnitTests.Configuration;
-using Rubicon.Utilities;
-using NUnit.Framework;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using System.Security.Principal;
-using Rubicon.Data.DomainObjects;
+using NUnit.Framework;
 using Rhino.Mocks;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Domain;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.SecurityManager.UnitTests.Configuration;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

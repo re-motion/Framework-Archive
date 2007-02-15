@@ -1,6 +1,4 @@
 using System;
-
-using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 

@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel;
-using Rubicon.Web.UI;
 using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UnitTests.UI;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {

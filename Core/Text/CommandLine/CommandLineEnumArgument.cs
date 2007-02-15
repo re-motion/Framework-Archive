@@ -1,7 +1,7 @@
 using System;
-using System.Text;
-using System.Reflection;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 
 namespace Rubicon.Text.CommandLine
 {

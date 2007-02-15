@@ -1,8 +1,7 @@
 using System;
-using System.Reflection;
 using System.Collections;
+using System.Reflection;
 using Rubicon.Utilities;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Text.CommandLine
 {

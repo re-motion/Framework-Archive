@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.SecurityManager.Persistence
 {

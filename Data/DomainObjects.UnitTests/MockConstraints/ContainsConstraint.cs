@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rhino.Mocks.Constraints;
 using System.Collections;
+using System.Collections.Generic;
+using Rhino.Mocks.Constraints;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MockConstraints

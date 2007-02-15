@@ -1,20 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using Rhino.Mocks;
-using Rubicon.Security;
-
-using Rubicon.SecurityManager.UnitTests.TestDomain;
-using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Data.DomainObjects;
 using System.Security.Principal;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using log4net;
 using log4net.Appender;
 using log4net.Config;
-using log4net;
+using NUnit.Framework;
+using Rhino.Mocks;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.UnitTests.Domain;
+using Rubicon.SecurityManager.UnitTests.TestDomain;
 
 namespace Rubicon.SecurityManager.UnitTests
 {

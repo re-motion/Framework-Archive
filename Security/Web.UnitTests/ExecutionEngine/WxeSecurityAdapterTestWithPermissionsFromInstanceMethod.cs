@@ -1,19 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-
-using Rhino.Mocks;
 using NUnit.Framework;
-
-using Rubicon.Security;
+using Rhino.Mocks;
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
 using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Security.Web.UnitTests.Configuration;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.UnitTests.ExecutionEngine;
-using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {

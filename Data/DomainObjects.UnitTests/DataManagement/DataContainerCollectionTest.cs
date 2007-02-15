@@ -1,10 +1,6 @@
 using System;
 using NUnit.Framework;
-
-using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {

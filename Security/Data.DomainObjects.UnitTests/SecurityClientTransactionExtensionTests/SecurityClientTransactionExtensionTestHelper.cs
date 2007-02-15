@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Development.UnitTesting;
-using Rubicon.Utilities;
-using Rhino.Mocks;
 using System.Security.Principal;
-using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Security.Configuration;
-using Rubicon.Security.Metadata;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Development.UnitTesting;
+using Rubicon.Security.Configuration;
+using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Security.Metadata;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {

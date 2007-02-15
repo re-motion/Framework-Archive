@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-
 using NUnit.Framework;
-
-using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests
 {

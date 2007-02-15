@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding;
 using System.Collections;
+using Rubicon.ObjectBinding;
 
 namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
 {

@@ -1,9 +1,8 @@
 using System;
+using System.Data;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.UnitTests.Database;
 using Rubicon.Utilities;
-using System.Data;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {

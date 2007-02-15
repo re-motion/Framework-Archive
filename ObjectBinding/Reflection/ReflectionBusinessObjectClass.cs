@@ -1,7 +1,7 @@
 using System;
-using System.Reflection;
-using System.ComponentModel;
 using System.Collections;
+using System.ComponentModel;
+using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Reflection

@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
 

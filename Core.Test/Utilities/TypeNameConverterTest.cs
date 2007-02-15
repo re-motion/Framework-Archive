@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 using NUnit.Framework;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities

@@ -2,9 +2,6 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Text;
-
-using Rubicon;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls

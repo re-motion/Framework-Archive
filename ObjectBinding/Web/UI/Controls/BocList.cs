@@ -1,23 +1,15 @@
 using System;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
-using System.ComponentModel.Design;
-using System.Reflection;
+using System.ComponentModel;
 using System.Text;
-using System.Drawing.Design;
-
-using log4net;
-
-using Rubicon.Collections;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 using Rubicon.ObjectBinding.Web.UI.Design;
+using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.ExecutionEngine;
@@ -25,7 +17,6 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
-using Rubicon.Security;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {

@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
 using NUnit.Framework;
-
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
-using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Data.DomainObjects.UnitTests.Transaction;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests

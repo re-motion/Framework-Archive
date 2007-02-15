@@ -1,8 +1,6 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests

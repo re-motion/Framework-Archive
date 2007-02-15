@@ -1,7 +1,6 @@
 using System;
-
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {

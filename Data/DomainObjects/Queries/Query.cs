@@ -1,5 +1,4 @@
 using System;
-
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;
 

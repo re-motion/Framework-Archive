@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {

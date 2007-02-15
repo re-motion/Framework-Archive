@@ -1,9 +1,9 @@
 using System.Text;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {

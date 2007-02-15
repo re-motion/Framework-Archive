@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Text;
+using System.Xml;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
-using System.Xml;
 using Rubicon.Security.UnitTests.XmlAsserter;
-using System.Globalization;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {

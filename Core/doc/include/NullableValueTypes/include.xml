@@ -44,8 +44,8 @@ public T Value {get;}
           If the basic type is serializable, so must be the nullable type by apply the 
           <see cref="SerializableAttribute"/> to the nullable type's definition.
         </para><para>
-          You may optionally implement the <see cref="ISerializable"/> interface to provide your own serialization 
-          constructor and an <see cref="ISerializable.GetObjectData"/> method, but this is usually not necessary.
+          You may optionally implement the <see cref="System.Runtime.Serialization.ISerializable"/> interface to provide your own serialization 
+          constructor and an <see cref="System.Runtime.Serialization.ISerializable.GetObjectData"/> method, but this is usually not necessary.
         <code>
           public void GetObjectData (SerializationInfo info, StreamingContext context);
           private NaT (SerializationInfo info, StreamingContext context);

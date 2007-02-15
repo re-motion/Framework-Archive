@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-using Rubicon.Security;
-using Rubicon.SecurityManager.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.SecurityManager.UnitTests.TestDomain;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 {

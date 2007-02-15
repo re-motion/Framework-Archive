@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
-
-using Rubicon.Utilities;
-
 using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests
 {

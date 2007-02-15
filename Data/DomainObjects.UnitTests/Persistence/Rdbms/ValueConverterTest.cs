@@ -1,11 +1,9 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {

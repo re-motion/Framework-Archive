@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Rubicon.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.SecurityManager.Configuration;
-using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain
 {

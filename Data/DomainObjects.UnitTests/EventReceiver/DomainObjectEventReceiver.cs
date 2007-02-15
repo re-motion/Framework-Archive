@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-
-using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {

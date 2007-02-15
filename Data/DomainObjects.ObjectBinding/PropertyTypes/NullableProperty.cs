@@ -1,9 +1,6 @@
 using System;
 using System.Reflection;
 
-using Rubicon.ObjectBinding;
-using Rubicon.NullableValueTypes;
-
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class NullableProperty : BaseProperty

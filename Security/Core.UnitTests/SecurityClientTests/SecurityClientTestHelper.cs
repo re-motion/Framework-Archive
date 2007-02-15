@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-
 using Rhino.Mocks;
-
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain;
 

@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.Serialization;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;

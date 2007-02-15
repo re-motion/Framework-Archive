@@ -1,11 +1,11 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using System.IO;
-using System.Text;
-using Rubicon.Utilities;
 using log4net;
+using Rubicon.Utilities;
 
 namespace Rubicon.Xml
 {

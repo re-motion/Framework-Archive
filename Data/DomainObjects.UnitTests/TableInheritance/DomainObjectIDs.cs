@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance

@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Security.Principal;
-
 using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
 

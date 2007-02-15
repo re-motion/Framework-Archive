@@ -1,9 +1,5 @@
 using System;
-using System.Configuration;
-using System.Xml;
 using System.Xml.Serialization;
-using System.Reflection;
-using Rubicon.Xml;
 
 namespace Rubicon.Web.Configuration
 {

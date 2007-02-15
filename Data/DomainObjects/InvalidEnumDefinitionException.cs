@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects

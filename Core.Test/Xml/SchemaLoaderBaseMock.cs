@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Xml;
 using System.Xml.Schema;
 using Rubicon.Utilities;
-using System.Xml;
+using Rubicon.Xml;
 
 namespace Rubicon.Core.UnitTests.Xml
 {

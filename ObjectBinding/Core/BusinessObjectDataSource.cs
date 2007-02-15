@@ -2,10 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
-using Rubicon.NullableValueTypes;
-using Rubicon.Collections;
-using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding
 {

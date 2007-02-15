@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-
 using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding

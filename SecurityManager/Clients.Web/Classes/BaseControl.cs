@@ -1,17 +1,9 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.SecurityManager.Clients.Web.Classes
 {

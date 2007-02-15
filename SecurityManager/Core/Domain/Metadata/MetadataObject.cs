@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Queries;
 using System.Globalization;
-using System.Threading;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata

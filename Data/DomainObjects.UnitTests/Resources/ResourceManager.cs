@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-
 using NUnit.Framework;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Resources

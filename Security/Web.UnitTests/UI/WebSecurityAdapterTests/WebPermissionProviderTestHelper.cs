@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rhino.Mocks;
-
-using Rubicon.Utilities;
 using System.Security.Principal;
-using Rubicon.Security.Metadata;
+using Rhino.Mocks;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
 

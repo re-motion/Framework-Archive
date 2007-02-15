@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {

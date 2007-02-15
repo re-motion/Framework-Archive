@@ -1,8 +1,6 @@
 using System;
 using System.Reflection;
-
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;

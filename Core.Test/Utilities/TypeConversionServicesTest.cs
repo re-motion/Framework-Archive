@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel;
-using System.Collections;
 using NUnit.Framework;
-using Rubicon.Utilities;
 using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities
 {

@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Xml;
-using Rubicon.Utilities;
 using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Utilities;
+using Rubicon.Xml;
 
 namespace Rubicon.Data.DomainObjects.Schemas
 {

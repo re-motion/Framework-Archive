@@ -1,12 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Text;
-
 using NUnit.Framework;
-
-using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.NullSecurityClientTests

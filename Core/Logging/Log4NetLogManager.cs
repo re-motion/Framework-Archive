@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
+using log4net.Config;
 using log4net.Core;
 using Rubicon.Utilities;
-using log4net.Config;
 
 namespace Rubicon.Logging
 {

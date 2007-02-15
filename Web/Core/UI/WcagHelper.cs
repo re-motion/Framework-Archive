@@ -3,7 +3,6 @@ using System.Web.UI;
 using log4net;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
-using Rubicon.Web.UI;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI

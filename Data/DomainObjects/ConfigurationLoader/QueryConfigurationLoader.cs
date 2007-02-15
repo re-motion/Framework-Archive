@@ -1,11 +1,9 @@
 using System;
+using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-
-using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.Schemas;
-using System.IO;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {

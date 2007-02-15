@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Xml.Schema;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Xml;
-using System.Xml;
-using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.Schemas;
+using Rubicon.Xml;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
 {

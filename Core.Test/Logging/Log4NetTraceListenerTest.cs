@@ -1,13 +1,13 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
-using NUnit.Framework;
-using Rubicon.Logging;
+using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
-using log4net.Appender;
 using log4net.Repository;
-using System.Diagnostics;
+using NUnit.Framework;
 using Rhino.Mocks;
+using Rubicon.Logging;
 
 namespace Rubicon.Core.UnitTests.Logging
 {

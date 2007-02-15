@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Design
 {

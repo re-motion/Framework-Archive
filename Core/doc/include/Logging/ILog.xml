@@ -28,8 +28,9 @@
   </LogFormat>
   <LogFormatWithEnum>
     <remarks>
-      The underlying <see cref="Int32"/> value of the <paramref name="messageEnum"/> is used as event id. Use <see cref="EnumDescriptionAttribute" /> 
-      or <see cref="EnumDescriptionResourceAttribute"/> to associate messages with the enum values.
+      The underlying <see cref="Int32"/> value of the <paramref name="messageEnum"/> is used as event id. 
+      Use <see cref="Rubicon.Utilities.EnumDescriptionAttribute" /> or <see cref="Rubicon.Utilities.EnumDescriptionResourceAttribute"/> 
+      to associate messages with the enum values.
     </remarks>
   </LogFormatWithEnum>
 </ILog>

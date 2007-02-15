@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Rubicon.SecurityManager.Domain.Metadata;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl

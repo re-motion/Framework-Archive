@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Database;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests

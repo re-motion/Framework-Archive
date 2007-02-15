@@ -1,7 +1,5 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   public class Client : DomainObject

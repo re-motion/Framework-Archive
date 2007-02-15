@@ -2,11 +2,8 @@ using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
-
 using NUnit.Framework;
-
 using Rubicon.Web.Utilities;
-using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.Utilities
 {

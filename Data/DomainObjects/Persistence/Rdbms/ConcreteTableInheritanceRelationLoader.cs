@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Data;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.DataManagement;
-using System.Data;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {

@@ -1,12 +1,9 @@
 using System;
-using System.Globalization;
-using System.Text;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
-using Rubicon.Utilities;
-using Rubicon.Text;
 using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Text.CommandLine
 {

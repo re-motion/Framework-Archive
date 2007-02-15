@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using System.Reflection;
-using System.Collections.ObjectModel;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
 {

@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-
 using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
 using Rubicon.Security.Metadata;
-using Rubicon.Security;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {

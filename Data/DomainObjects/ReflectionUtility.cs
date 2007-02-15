@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects

@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
-using System.Globalization;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {

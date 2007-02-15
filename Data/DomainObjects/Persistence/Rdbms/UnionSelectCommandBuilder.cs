@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 

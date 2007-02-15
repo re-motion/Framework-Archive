@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Web;
 using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
-using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {

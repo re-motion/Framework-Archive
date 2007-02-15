@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using System.Data;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {

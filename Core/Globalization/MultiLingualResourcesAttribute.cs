@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Collections.Specialized;
-using System.Text;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Globalization

@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.ObjectBinding;
 

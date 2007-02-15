@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.SecurityManager.Domain.Metadata;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects;
 using System.Collections;
+using System.Collections.Generic;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {

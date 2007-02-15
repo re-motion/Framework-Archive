@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping

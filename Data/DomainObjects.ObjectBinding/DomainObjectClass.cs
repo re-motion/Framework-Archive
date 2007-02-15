@@ -1,9 +1,8 @@
 using System;
-
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.Mapping;
 using System.Collections.Generic;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.ObjectBinding;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {

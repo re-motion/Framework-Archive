@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;

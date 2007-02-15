@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.UI;
-
 using NUnit.Framework;
-
 using Rubicon.Security.Web.UI;
 using Rubicon.Security.Web.UnitTests.ExecutionEngine;
-using Rubicon.Security.Configuration;
-using System.Security.Principal;
-using Rubicon.Web.UI;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Security.Web.ExecutionEngine;
+using Rubicon.Web.UI;
 
 namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
 {

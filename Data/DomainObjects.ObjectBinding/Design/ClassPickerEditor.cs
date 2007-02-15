@@ -1,8 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
-using System.ComponentModel;
-
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Design
 {

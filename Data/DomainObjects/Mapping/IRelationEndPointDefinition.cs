@@ -1,7 +1,5 @@
 using System;
 
-using Rubicon.NullableValueTypes;
-
 namespace Rubicon.Data.DomainObjects.Mapping
 {
 public interface IRelationEndPointDefinition : INullableObject

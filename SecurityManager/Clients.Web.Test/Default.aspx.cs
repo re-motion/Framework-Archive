@@ -1,14 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Principal;
+using System.Web;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
-using System.Security.Principal;
-
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
 using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Clients.Web.Test.Domain;
-using System.Collections.Generic;
-using System.Web;
 using Rubicon.Utilities;
+using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test
 {

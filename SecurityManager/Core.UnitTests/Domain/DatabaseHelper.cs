@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 

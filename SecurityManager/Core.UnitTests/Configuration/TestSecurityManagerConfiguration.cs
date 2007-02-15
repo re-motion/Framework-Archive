@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
-
-using Rubicon.Utilities;
-
 using Rubicon.SecurityManager.Configuration;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.UnitTests.Configuration
 {

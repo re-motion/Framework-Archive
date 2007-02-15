@@ -2,12 +2,9 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-using System.Configuration;
-
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Schemas;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {

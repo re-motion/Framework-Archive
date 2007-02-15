@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver

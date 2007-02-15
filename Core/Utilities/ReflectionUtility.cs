@@ -1,7 +1,5 @@
 using System;
 using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Rubicon.Utilities
 {

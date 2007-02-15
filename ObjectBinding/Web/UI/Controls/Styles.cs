@@ -1,11 +1,12 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Utilities;
-using Rubicon.Web.UI;
 using Rubicon.Web;
+using Rubicon.Web.UI;
+using Rubicon.Web.Utilities;
+
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 public enum ListControlType

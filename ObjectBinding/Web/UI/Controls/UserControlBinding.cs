@@ -1,8 +1,7 @@
 using System;
-using System.Web.UI;
 using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.Web;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls

@@ -1,8 +1,5 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
-
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   public class Folder : FileSystemItem

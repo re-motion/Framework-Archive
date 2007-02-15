@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;

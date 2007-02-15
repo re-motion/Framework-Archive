@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rhino.Mocks.Constraints;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.MockConstraints
 {

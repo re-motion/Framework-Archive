@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Data;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.NullableValueTypes;

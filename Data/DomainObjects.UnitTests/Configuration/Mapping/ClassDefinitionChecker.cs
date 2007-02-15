@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping

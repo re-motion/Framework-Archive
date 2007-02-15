@@ -1,11 +1,7 @@
 using System;
-using System.Security.Principal;
-
-using Rhino.Mocks;
 using NUnit.Framework;
-
+using Rhino.Mocks;
 using Rubicon.Security;
-using Rubicon.Web.UnitTests.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine

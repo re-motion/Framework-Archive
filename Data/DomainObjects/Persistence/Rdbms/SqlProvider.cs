@@ -1,9 +1,6 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
 using System.Text.RegularExpressions;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms

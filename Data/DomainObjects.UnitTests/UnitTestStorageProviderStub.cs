@@ -1,11 +1,9 @@
 using System;
-
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {

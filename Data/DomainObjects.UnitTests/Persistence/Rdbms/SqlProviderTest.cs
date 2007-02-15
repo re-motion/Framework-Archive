@@ -1,12 +1,8 @@
 using System;
+using System.Data.SqlClient;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
-using System.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {

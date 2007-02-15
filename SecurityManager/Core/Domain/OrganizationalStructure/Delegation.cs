@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Rubicon.Utilities;
 using Rubicon.Security;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {

@@ -1,11 +1,7 @@
 using System;
 using System.Data;
-using System.Text;
-
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Utilities;

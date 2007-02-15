@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-using System.Reflection;
 using System.ComponentModel;
-
-using Rubicon.Utilities;
+using System.Reflection;
 using Rubicon.ObjectBinding;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {

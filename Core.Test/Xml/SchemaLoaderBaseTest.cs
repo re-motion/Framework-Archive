@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
 using System.Xml.Schema;
-using System.Xml;
+using NUnit.Framework;
 using Rubicon.Xml;
 
 namespace Rubicon.Core.UnitTests.Xml

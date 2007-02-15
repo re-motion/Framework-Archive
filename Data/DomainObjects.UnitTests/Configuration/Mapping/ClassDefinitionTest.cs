@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;

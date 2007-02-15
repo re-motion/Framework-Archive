@@ -1,15 +1,13 @@
 using System;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
-using System.Web.UI;
 using System.Collections.Specialized;
-using System.Reflection;
+using System.ComponentModel;
+using System.Drawing.Design;
 using System.Globalization;
+using System.Reflection;
+using System.Web.UI;
+using Rubicon.ObjectBinding.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
-using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Design;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {

@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Specialized;
-
-using Rubicon.Utilities;
 using System.Collections.Generic;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {

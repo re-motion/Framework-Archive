@@ -1,12 +1,8 @@
 using System;
 using System.Reflection;
-
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.ObjectBinding;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {

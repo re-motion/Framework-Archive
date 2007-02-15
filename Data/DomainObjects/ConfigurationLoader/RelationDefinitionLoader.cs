@@ -1,8 +1,6 @@
 using System;
 using System.Xml;
-
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader

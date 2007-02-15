@@ -1,12 +1,11 @@
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.SetupDB
 {

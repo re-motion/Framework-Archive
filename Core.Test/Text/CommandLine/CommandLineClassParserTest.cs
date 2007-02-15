@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Text.CommandLine;
 
 namespace Rubicon.Core.UnitTests.Text.CommandLine

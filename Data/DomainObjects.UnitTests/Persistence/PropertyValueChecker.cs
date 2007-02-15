@@ -1,7 +1,5 @@
 using System;
 using NUnit.Framework;
-
-using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence

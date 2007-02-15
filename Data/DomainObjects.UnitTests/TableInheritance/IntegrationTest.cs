@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
-using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Utilities;
 

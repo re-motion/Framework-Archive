@@ -1,5 +1,4 @@
 using System;
-using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Reflection

@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-
 using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries

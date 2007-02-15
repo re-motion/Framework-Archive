@@ -1,5 +1,4 @@
 using System;
-
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain

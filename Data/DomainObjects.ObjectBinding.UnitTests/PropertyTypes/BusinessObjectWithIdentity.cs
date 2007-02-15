@@ -1,5 +1,4 @@
 using System;
-
 using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes

@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Runtime.Serialization;
-
-using Rubicon.Utilities;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {

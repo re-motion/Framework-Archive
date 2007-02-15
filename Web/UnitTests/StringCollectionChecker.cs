@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-
 using NUnit.Framework;
 
 namespace Rubicon.Web.UnitTests

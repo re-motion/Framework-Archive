@@ -1,9 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
 using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
