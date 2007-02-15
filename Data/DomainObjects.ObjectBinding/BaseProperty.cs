@@ -135,7 +135,6 @@ public class BaseProperty : IBusinessObjectProperty
   }
 
   /// <summary>Indicates whether this property can be modified by the user.</summary>
-  /// <param name="obj">This parameter is not used in the current implementation.</param>
   /// <returns><see langword="true"/> if the user can set this property; otherwise <see langword="false"/>.</returns>
   public bool IsReadOnly (IBusinessObject obj)
   {

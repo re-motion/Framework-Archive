@@ -6,6 +6,7 @@ namespace Rubicon.Security
   {
   }
 
+//marker interface, verwendet in typeparam von secadaapterregistry.
   public interface ISecurityAdapter
   {
   }
