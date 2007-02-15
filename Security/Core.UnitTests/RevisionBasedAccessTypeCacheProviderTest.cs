@@ -4,6 +4,7 @@ using Rhino.Mocks;
 using Rubicon.Collections;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
+using Rubicon.Security.UnitTests.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -21,7 +22,8 @@ namespace Rubicon.Security.UnitTests
 
       _mocks = new MockRepository();
 
-      _mockSecurityService = _mocks.CreateMock<ISecurityService>();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
+      _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
       SecurityConfiguration.Current.SecurityService = _mockSecurityService;
       SetupResult.For (_mockSecurityService.IsNull).Return (false);
     }
@@ -29,7 +31,7 @@ namespace Rubicon.Security.UnitTests
     [TearDown]
     public void TearDown()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision", null);
     }
 

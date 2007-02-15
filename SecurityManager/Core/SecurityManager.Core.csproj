@@ -200,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\SecurityManagerSetupConstraints.sql" />
+    <Content Include="Doc\Whats_New.Rubicon.SecurityManager.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

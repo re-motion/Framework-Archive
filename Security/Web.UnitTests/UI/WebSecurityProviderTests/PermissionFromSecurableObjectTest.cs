@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Web.UI;
+using Rubicon.Security.Web.UnitTests.Configuration;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.UI;
 
@@ -24,6 +25,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     {
       _securityProvider = new WebSecurityProvider ();
 
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       _testHelper = new WebPermissionProviderTestHelper ();
       SecurityConfiguration.Current.SecurityService = _testHelper.SecurityService;
       SecurityConfiguration.Current.UserProvider = _testHelper.UserProvider;
@@ -33,9 +35,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.SecurityService = new NullSecurityService();
-      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
     }
 
     [Test]

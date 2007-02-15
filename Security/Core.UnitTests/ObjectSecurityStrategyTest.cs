@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 
 using Rubicon.Security;
+using Rubicon.Security.UnitTests.Configuration;
 using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Configuration;
 using Rubicon.Collections;
@@ -35,12 +36,14 @@ namespace Rubicon.Security.UnitTests
       _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessTypes.Read), AccessType.Get (GeneralAccessTypes.Edit) };
 
       _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
+
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = new NullGlobalAccessTypeCacheProvider ();
+      SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
     }
 
     [Test]
