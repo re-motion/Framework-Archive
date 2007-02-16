@@ -3,13 +3,26 @@ using System.Security.Principal;
 
 namespace Rubicon.Security
 {
-  //TODO: SD: kapselt die security abfrage. implementierung kann caching bereitstellen. 
+  /// <summary>Encapsulates the security checks.</summary>
+  /// <remarks>Implementations are free to decide whether they provide caching.</remarks>
   public interface ISecurityStrategy
   {
-    // macht security abfrage, 
-    // factory.createseccontext soll erst aufgerufen werden, wenn lokaler cache kein ergebnis liefert.
+    /// <summary>Determines whether the requested access is granted.</summary>
+    /// <param name="factory">The <see cref="ISecurityContextFactory"/> to be used.</param>
+    /// <param name="securityProvider">The <see cref="ISecurityProvider"/> used to determine the permissions.</param>
+    /// <param name="user">The <see cref="IPrincipal"/> on whose behalf the permissions are evaluated.</param>
+    /// <param name="requiredAccessTypes">The access rights required for the access to be granted.</param>
+    /// <returns><see langword="true"/> if the <paramref name="requiredAccessTypes"/> are granted.</returns>
+    /// <remarks>
+    /// <note type="implementnotes">
+    /// When caching is provided by the implementation, <paramref name="factory"/>.<see cref="ISecurityContextFactory.CreateSecurityContext"/>
+    /// shall only be called when the local cache does not already have a reference to a <see cref="SecurityContext"/>.
+    /// </note>note>
+    /// </remarks>
     bool HasAccess (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
-    //loescht cache der zu dieser instanz gehoert. von anwendungsprogger aufgerufen wenn sich seccontext relevante eigenschaften des obj aendern.
+    
+    /// <summary>Clears the cached access types of the <see cref="ISecurableObject"/> associated with this <see cref="ISecurityStrategy"/>.</summary>
+    /// <remarks>Called by application code when <see cref="ISecurableObject"/> properties that are relevant for the <see cref="SecurityContext"/> change.</remarks>
     void InvalidateLocalCache ();
   }
 }
