@@ -87,9 +87,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\build\buildversion.xml = ..\build\buildversion.xml
 		..\Commons.build = ..\Commons.build
-		..\build\properties.include.xml = ..\build\properties.include.xml
 		..\build\Commons.Doc.include.xml = ..\build\Commons.Doc.include.xml
 		..\build\Commons.include.xml = ..\build\Commons.include.xml
+		..\build\properties.include.xml = ..\build\properties.include.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests.TestDomain", "Core.UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj", "{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}"
@@ -547,5 +547,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B0AA271A-E94B-4328-85AD-7B873447F36F} = {2B446F93-A4AB-41A8-B2B6-A625CA42A4E1}
 		{8373F6F2-B707-4D06-8ECF-7411813CECD5} = {B0AA271A-E94B-4328-85AD-7B873447F36F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = ..
 	EndGlobalSection
 EndGlobal
