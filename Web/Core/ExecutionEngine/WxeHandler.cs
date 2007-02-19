@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;

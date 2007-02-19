@@ -1,6 +1,6 @@
 using System;
 using System.Xml.Schema;
-using log4net;
+using Rubicon.Logging;
 
 namespace Rubicon.Xml
 {

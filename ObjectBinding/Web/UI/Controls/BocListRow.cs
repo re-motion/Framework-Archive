@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
@@ -13,7 +13,6 @@ public interface IBocListSortingOrderProvider
 
 public class BocListRow: IComparable
 {
-  /// <summary> The log4net logger. </summary>
   private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   private IBocListSortingOrderProvider _provider;

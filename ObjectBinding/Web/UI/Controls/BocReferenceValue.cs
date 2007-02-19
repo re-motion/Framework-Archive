@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
+using Rubicon.Logging;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
@@ -72,8 +73,7 @@ public class BocReferenceValue:
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectReferenceProperty) };
   
-  /// <summary> The log4net logger. </summary>
-  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   private static readonly object s_selectionChangedEvent = new object();
   private static readonly object s_menuItemClickEvent = new object();

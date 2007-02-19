@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.Text;
 using Rubicon.Utilities;
 

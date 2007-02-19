@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.Globalization;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
 
@@ -27,8 +28,7 @@ public interface IControlItem
 /// </summary>
 public class ControlItemCollection: CollectionBase
 {
-  /// <summary> The log4net logger. </summary>
-  private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
   private Control _ownerControl;
   private Type[] _supportedTypes;

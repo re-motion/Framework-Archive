@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.Utilities;

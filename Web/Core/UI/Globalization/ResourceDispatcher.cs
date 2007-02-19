@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Resources;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using log4net;
 using Rubicon.Globalization;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 

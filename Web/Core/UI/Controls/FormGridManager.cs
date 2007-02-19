@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using log4net;
 using Rubicon.Globalization;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
@@ -948,7 +948,6 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
 
   // static members
 
-  /// <summary> The log4net logger. </summary>
   private static readonly ILog s_log = LogManager.GetLogger (typeof (FormGridManager));
 
   // member fields

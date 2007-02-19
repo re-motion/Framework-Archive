@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Resources;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 
 namespace Rubicon.Globalization

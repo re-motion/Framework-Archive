@@ -1,6 +1,6 @@
 using System;
-using log4net;
 using Rubicon.Data;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine

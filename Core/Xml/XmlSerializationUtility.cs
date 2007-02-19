@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using log4net;
+using Rubicon.Logging;
 using Rubicon.Utilities;
 
 namespace Rubicon.Xml

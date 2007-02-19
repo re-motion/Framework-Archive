@@ -1,7 +1,7 @@
 using System;
 using System.Security.Principal;
-using log4net;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Logging;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.AccessControl;
