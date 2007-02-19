@@ -139,7 +139,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       Expect.Call (_mockPermissionReflector.GetRequiredPropertyReadPermissions (typeof (SecurableObject), propertyName)).Return (returnedAccessTypes);
     }
 
-    public void ExpectSecurityServiceGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)
+    public void ExpectSecurityProviderGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)
     {
       Expect.Call (_mockSecurityProvider.GetAccess (context, _user)).Return (Array.ConvertAll<Enum, AccessType> (returnedAccessTypes, AccessType.Get));
     }

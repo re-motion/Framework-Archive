@@ -100,7 +100,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
           .Return (returnValue);
     }
 
-    public void ExpectSecurityServiceGetAccess (params Enum[] returnValue)
+    public void ExpectSecurityProviderGetAccess (params Enum[] returnValue)
     {
       AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (returnValue, new Converter<Enum, AccessType> (AccessType.Get));
       Expect.Call (_mockSecurityProvider.GetAccess (_context, _user)).Return (accessTypes);

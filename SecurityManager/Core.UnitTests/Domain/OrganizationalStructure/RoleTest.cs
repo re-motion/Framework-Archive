@@ -73,15 +73,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser ()).Return (principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: rootGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: parentGroup0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityServiceGetAccessForGroup ("UID: group0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityServiceGetAccessForGroup ("UID: parentGroup1", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: group1", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testRootGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testParentOfOwnerGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testOwnerGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group0", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group1", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwnerGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testOwnerGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       _mocks.ReplayAll ();
@@ -100,7 +100,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void GetPossibleGroups_WithoutSecurityService ()
+    public void GetPossibleGroups_WithoutSecurityProvider ()
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
@@ -117,8 +117,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser ()).Return (principal);
-      SetupResultSecurityServiceGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
-      SetupResultSecurityServiceGetAccessForPosition (Delegation.Disabled, principal);
+      SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
+      SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       Group parentGroup = Group.GetObject (_expectedParentGroup0ID, transaction);
@@ -136,8 +136,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser ()).Return (principal);
-      SetupResultSecurityServiceGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
-      SetupResultSecurityServiceGetAccessForPosition (Delegation.Disabled, principal);
+      SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
+      SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       Group rootGroup = Group.GetObject (_expectedRootGroupID, transaction);
@@ -157,7 +157,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void GetPossiblePositions_WithoutSecurityService ()
+    public void GetPossiblePositions_WithoutSecurityProvider ()
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
@@ -178,7 +178,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void GetPossiblePositions_WithoutGroupTypeAndWithoutSecurityService ()
+    public void GetPossiblePositions_WithoutGroupTypeAndWithoutSecurityProvider ()
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
@@ -191,7 +191,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (3, positions.Count);
     }
 
-    private void ExpectSecurityServiceGetAccessForGroup (string ownerGroup, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
+    private void ExpectSecurityProviderGetAccessForGroup (string ownerGroup, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
       Type classType = typeof (Group);
       string owner = string.Empty;
@@ -205,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Expect.Call (_mockSecurityProvider.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
     }
 
-    private void SetupResultSecurityServiceGetAccessForPosition (Delegation delegation, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
+    private void SetupResultSecurityProviderGetAccessForPosition (Delegation delegation, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
       Type classType = typeof (Position);
       string owner = string.Empty;

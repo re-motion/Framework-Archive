@@ -80,7 +80,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     {
       IObjectSecurityStrategy objectSecurityStrategy = _testHelper.CreateObjectSecurityStrategy ();
       _testHelper.AddExtension (_extension);
-      HasStatelessAccessDelegate hasAccess = delegate (Type type, ISecurityProvider securityService, IPrincipal user, AccessType[] requiredAccessTypes)
+      HasStatelessAccessDelegate hasAccess = delegate (Type type, ISecurityProvider securityProvider, IPrincipal user, AccessType[] requiredAccessTypes)
       {
         new SecurableObject (_testHelper.Transaction, objectSecurityStrategy);
         return true;

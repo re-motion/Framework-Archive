@@ -80,7 +80,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void GetCache_WithNullSecurityService()
+    public void GetCache_WithNullSecurityProvider()
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider();
 

@@ -18,7 +18,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_SecurityServiceIsAlwaysSameInstance ()
+    public void Test_SecurityProviderIsAlwaysSameInstance ()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -26,7 +26,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_WithNullSecurityService ()
+    public void Test_WithNullSecurityProvider ()
     {
       string xmlFragment = @"<rubicon.security defaultSecurityProvider=""None"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -70,7 +70,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_WithSecurityServicesAndFallbackToDefaultWellKnownDefaultSecurityService ()
+    public void Test_WithSecurityProvidersAndFallbackToDefaultWellKnownDefaultSecurityProvider ()
     {
       string xmlFragment = @"
           <rubicon.security>
@@ -90,7 +90,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
         "The provider 'Invalid' specified for the defaultSecurityProvider does not exist in the providers collection.")]
-    public void Test_WithCustomSecurityServiceAndInvalidName ()
+    public void Test_WithCustomSecurityProviderAndInvalidName ()
     {
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""Invalid"">
@@ -106,7 +106,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'None' identifies a well known provider and cannot be reused for custom providers.")]
-    public void Test_DuplicateWellKnownSecurityServiceForNullSecurityService ()
+    public void Test_DuplicateWellKnownSecurityProviderForNullSecurityProvider ()
     {
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""None"">
@@ -120,7 +120,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'SecurityManager' identifies a well known provider and cannot be reused for custom providers.")]
-    public void Test_DuplicateWellKnownSecurityServiceForSecurityManagerSecurityService ()
+    public void Test_DuplicateWellKnownSecurityProviderForSecurityManagerSecurityService ()
     {
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider=""SecurityManager"">
@@ -135,7 +135,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
         "The value for the property 'defaultSecurityProvider' is not valid. The error is: The string must be at least 1 characters long.")]
-    public void Test_WithCustomSecurityServiceNameEmpty ()
+    public void Test_WithCustomSecurityProviderNameEmpty ()
     {
       string xmlFragment = @"
           <rubicon.security defaultSecurityProvider="""">
@@ -151,7 +151,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
-    public void Test_WithSecurityServicesReadOnly ()
+    public void Test_WithSecurityProvidersReadOnly ()
     {
       string xmlFragment =
           @"

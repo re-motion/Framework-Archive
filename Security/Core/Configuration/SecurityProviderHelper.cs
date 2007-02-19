@@ -10,11 +10,11 @@ namespace Rubicon.Security.Configuration
   /// <summary>Helper class that loads implementations of <see cref="ISecurityProvider"/> from the <see cref="SecurityConfiguration"/> section.</summary>
   public class SecurityProviderHelper : ProviderHelperBase<ISecurityProvider>
   {
-    private const string c_nullSecurityServiceWellKnownName = "None";
-    private const string c_securityManagerSecurityServiceWellKnownName = "SecurityManager";
+    private const string c_nullSecurityProviderWellKnownName = "None";
+    private const string c_securityManagerSecurityProviderWellKnownName = "SecurityManager";
 
     private readonly object _lock = new object();
-    private Type _securityManagerServiceType;
+    private Type _securityManagerSecurityServiceType;
 
     public SecurityProviderHelper (SecurityConfiguration configuration)
         : base (configuration)
@@ -23,7 +23,7 @@ namespace Rubicon.Security.Configuration
 
     protected override ConfigurationProperty CreateDefaultProviderNameProperty ()
     {
-      return CreateDefaultProviderNameProperty ("defaultSecurityProvider", c_nullSecurityServiceWellKnownName);
+      return CreateDefaultProviderNameProperty ("defaultSecurityProvider", c_nullSecurityProviderWellKnownName);
     }
 
     protected override ConfigurationProperty CreateProviderSettingsProperty ()
@@ -33,10 +33,10 @@ namespace Rubicon.Security.Configuration
 
     public override void PostDeserialze ()
     {
-      CheckForDuplicateWellKownProviderName (c_nullSecurityServiceWellKnownName);
-      CheckForDuplicateWellKownProviderName (c_securityManagerSecurityServiceWellKnownName);
+      CheckForDuplicateWellKownProviderName (c_nullSecurityProviderWellKnownName);
+      CheckForDuplicateWellKownProviderName (c_securityManagerSecurityProviderWellKnownName);
       
-      if (DefaultProviderName.Equals (c_securityManagerSecurityServiceWellKnownName, StringComparison.Ordinal))
+      if (DefaultProviderName.Equals (c_securityManagerSecurityProviderWellKnownName, StringComparison.Ordinal))
         EnsureSecurityManagerServiceTypeInitialized();
     }
 
@@ -49,35 +49,35 @@ namespace Rubicon.Security.Configuration
     {
       ArgumentUtility.CheckNotNull ("collection", collection);
 
-      EnsureWellKnownNullSecurityService (collection);
-      EnsureWellKnownSecurityManagerSecurityService (collection);
+      EnsureWellKnownNullSecurityProvider (collection);
+      EnsureWellKnownSecurityManagerSecurityProvider (collection);
     }
 
-    private void EnsureWellKnownNullSecurityService (ProviderCollection collection)
+    private void EnsureWellKnownNullSecurityProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_nullSecurityServiceWellKnownName, delegate { return new NullSecurityProvider(); });
+      EnsureWellKownProvider (collection, c_nullSecurityProviderWellKnownName, delegate { return new NullSecurityProvider(); });
     }
 
-    private void EnsureWellKnownSecurityManagerSecurityService (ProviderCollection collection)
+    private void EnsureWellKnownSecurityManagerSecurityProvider (ProviderCollection collection)
     {
-      if (_securityManagerServiceType != null)
+      if (_securityManagerSecurityServiceType != null)
       {
         EnsureWellKownProvider (
             collection,
-            c_securityManagerSecurityServiceWellKnownName,
-            delegate { return (ProviderBase) Activator.CreateInstance (_securityManagerServiceType); });
+            c_securityManagerSecurityProviderWellKnownName,
+            delegate { return (ProviderBase) Activator.CreateInstance (_securityManagerSecurityServiceType); });
       }
     }
 
     private void EnsureSecurityManagerServiceTypeInitialized ()
     {
-      if (_securityManagerServiceType == null)
+      if (_securityManagerSecurityServiceType == null)
       {
         lock (_lock)
         {
-          if (_securityManagerServiceType == null)
+          if (_securityManagerSecurityServiceType == null)
           {
-            _securityManagerServiceType = GetType (
+            _securityManagerSecurityServiceType = GetType (
                 DefaultProviderNameProperty,
                 new AssemblyName ("Rubicon.SecurityManager"),
                 "Rubicon.SecurityManager.SecurityService");

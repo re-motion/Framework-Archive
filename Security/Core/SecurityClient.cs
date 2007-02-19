@@ -34,7 +34,7 @@ namespace Rubicon.Security
         IUserProvider userProvider,
         IFunctionalSecurityStrategy functionalSecurityStrategy)
     {
-      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
+      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("permissionProvider", permissionProvider);
       ArgumentUtility.CheckNotNull ("userProvider", userProvider);
       ArgumentUtility.CheckNotNull ("functionalSecurityStrategy", functionalSecurityStrategy);

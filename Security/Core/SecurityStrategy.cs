@@ -43,7 +43,7 @@ namespace Rubicon.Security
     public bool HasAccess (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("factory", factory);
-      ArgumentUtility.CheckNotNull ("securityService", securityProvider);
+      ArgumentUtility.CheckNotNull ("securityProvider", securityProvider);
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
@@ -74,10 +74,10 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
       Tuple<SecurityContext, string> key = new Tuple<SecurityContext, string> (context, user.Identity.Name);
-      return globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityService (securityProvider, context, user); });
+      return globalAccessTypeCache.GetOrCreateValue (key, delegate { return GetAccessFromSecurityProvider (securityProvider, context, user); });
     }
 
-    private AccessType[] GetAccessFromSecurityService (ISecurityProvider securityProvider, SecurityContext context, IPrincipal user)
+    private AccessType[] GetAccessFromSecurityProvider (ISecurityProvider securityProvider, SecurityContext context, IPrincipal user)
     {
       AccessType[] actualAccessTypes = securityProvider.GetAccess (context, user);
       if (actualAccessTypes == null)
