@@ -2,46 +2,36 @@ using System;
 using System.Configuration;
 using Rubicon.Configuration;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Configuration
 {
   public class SecurityManagerConfiguration : ConfigurationSection
   {
-    private static SecurityManagerConfiguration s_current;
+    private static DoubleCheckedLockingContainer<SecurityManagerConfiguration> s_current;
+
+    static SecurityManagerConfiguration()
+    {
+      s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration> (
+          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager") ?? new SecurityManagerConfiguration(); });
+    }
 
     public static SecurityManagerConfiguration Current
     {
-      get
-      {
-        if (s_current == null)
-        {
-          lock (typeof (SecurityManagerConfiguration))
-          {
-            if (s_current == null)
-            {
-              s_current = (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager");
-              if (s_current == null)
-                s_current = new SecurityManagerConfiguration();
-            }
-          }
-        }
-
-        return s_current;
-      }
+      get { return s_current.Value; }
     }
 
-    private ConfigurationPropertyCollection _properties;
+    private ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _xmlnsProperty;
-    
-    private readonly object _lockOrganizationalStructureFactory = new object();
+
     private readonly ConfigurationProperty _organizationalStructureFactoryProperty;
-    private IOrganizationalStructureFactory _organizationalStructureFactory;
+    private DoubleCheckedLockingContainer<IOrganizationalStructureFactory> _organizationalStructureFactory;
 
     public SecurityManagerConfiguration()
     {
-      _properties = new ConfigurationPropertyCollection();
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+
+      _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory> (
+          delegate { return OrganizationalStructureFactoryElement.CreateInstance(); });
       _organizationalStructureFactoryProperty = new ConfigurationProperty (
           "organizationalStructureFactory",
           typeof (TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
@@ -59,29 +49,11 @@ namespace Rubicon.SecurityManager.Configuration
 
     public IOrganizationalStructureFactory OrganizationalStructureFactory
     {
-      get
-      {
-        if (_organizationalStructureFactory == null)
-        {
-          lock (_lockOrganizationalStructureFactory)
-          {
-            if (_organizationalStructureFactory == null)
-              _organizationalStructureFactory = OrganizationalStructureFactoryProperty.CreateInstance ();
-          }
-        }
-        return _organizationalStructureFactory;
-      }
-      set
-      {
-        ArgumentUtility.CheckNotNull ("value", value);
-        lock (_lockOrganizationalStructureFactory)
-        {
-          _organizationalStructureFactory = value;
-        }
-      }
+      get { return _organizationalStructureFactory.Value; }
+      set { _organizationalStructureFactory.Value = value; }
     }
 
-    protected TypeElement<IOrganizationalStructureFactory> OrganizationalStructureFactoryProperty
+    protected TypeElement<IOrganizationalStructureFactory> OrganizationalStructureFactoryElement
     {
       get { return (TypeElement<IOrganizationalStructureFactory>) this[_organizationalStructureFactoryProperty]; }
     }

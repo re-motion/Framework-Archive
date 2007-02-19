@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
@@ -14,8 +15,11 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
       SecurityConfiguration configuration = SecurityConfiguration.Current;
 
       Assert.IsNotNull (configuration);
-      Assert.IsInstanceOfType (typeof (NullSecurityProvider), Configuration.SecurityProvider);
+      Assert.IsInstanceOfType (typeof (NullSecurityProvider), configuration.SecurityProvider);
       Assert.IsInstanceOfType (typeof (ThreadUserProvider), configuration.UserProvider);
+      Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategy), configuration.FunctionalSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (PermissionReflector), configuration.PermissionProvider);
+      Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), configuration.GlobalAccessTypeCacheProvider);
     }
 
     [Test]

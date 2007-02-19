@@ -13,7 +13,7 @@ namespace Rubicon.Security.Configuration
     private const string c_nullSecurityProviderWellKnownName = "None";
     private const string c_securityManagerSecurityProviderWellKnownName = "SecurityManager";
 
-    private readonly object _lock = new object();
+    private readonly object _sync = new object();
     private Type _securityManagerSecurityServiceType;
 
     public SecurityProviderHelper (SecurityConfiguration configuration)
@@ -73,7 +73,7 @@ namespace Rubicon.Security.Configuration
     {
       if (_securityManagerSecurityServiceType == null)
       {
-        lock (_lock)
+        lock (_sync)
         {
           if (_securityManagerSecurityServiceType == null)
           {

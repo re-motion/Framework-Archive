@@ -9,14 +9,21 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
-  /// <summary>Base for helper classes that load specific providers from the <see cref="SecurityConfiguration"/> section.</summary>
-  public abstract class ProviderHelperBase<TProvider>
+  /// <summary>Abstract base class for <see cref="ProviderHelperBase{T}"/>.</summary>
+  public abstract class ProviderHelperBase
   {
-    private SecurityConfiguration _configuration;
-    private TProvider _provider;
-    private ProviderCollection _providers;
-    private readonly object _lockProviders = new object ();
-    private readonly object _lockProvider = new object ();
+    /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
+    public abstract void InitializeProperties (ConfigurationPropertyCollection properties);
+
+    public abstract void PostDeserialze ();
+  }
+
+  /// <summary>Base for helper classes that load specific providers from the <see cref="SecurityConfiguration"/> section.</summary>
+  public abstract class ProviderHelperBase<TProvider> : ProviderHelperBase where TProvider : class
+  {
+    private readonly SecurityConfiguration _configuration;
+    private readonly DoubleCheckedLockingContainer<TProvider> _provider;
+    private readonly DoubleCheckedLockingContainer<ProviderCollection> _providers;
     private ConfigurationProperty _providerSettingsProperty;
     private ConfigurationProperty _defaultProviderNameProperty;
 
@@ -32,106 +39,62 @@ namespace Rubicon.Security.Configuration
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
       _configuration = configuration;
+      _provider = new DoubleCheckedLockingContainer<TProvider> (delegate { return GetProviderFromConfiguration(); });
+      _providers = new DoubleCheckedLockingContainer<ProviderCollection> (delegate { return GetProvidersFromConfiguration(); });
     }
 
-    protected abstract ConfigurationProperty CreateDefaultProviderNameProperty ();
+    protected abstract ConfigurationProperty CreateDefaultProviderNameProperty();
 
-    protected abstract ConfigurationProperty CreateProviderSettingsProperty ();
+    protected abstract ConfigurationProperty CreateProviderSettingsProperty();
 
     protected abstract TProvider CastProviderBaseToProviderType (ProviderBase provider);
 
-    /// <summary>
-    /// Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>. 
-    /// </summary>
-    public void InitializeProperties (ConfigurationPropertyCollection properties)
+    /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
+    public override void InitializeProperties (ConfigurationPropertyCollection properties)
     {
       ArgumentUtility.CheckNotNull ("properties", properties);
 
-      _providerSettingsProperty = CreateProviderSettingsProperty ();
-      _defaultProviderNameProperty = CreateDefaultProviderNameProperty ();
+      _providerSettingsProperty = CreateProviderSettingsProperty();
+      _defaultProviderNameProperty = CreateDefaultProviderNameProperty();
 
       properties.Add (DefaultProviderNameProperty);
       properties.Add (_providerSettingsProperty);
     }
 
-    public virtual void PostDeserialze ()
+    public override void PostDeserialze()
     {
     }
 
-    /// <summary>
-    /// Get and set the provider.
-    /// </summary>
+    /// <summary>Get and set the provider.</summary>
     public TProvider Provider
     {
-      get
-      {
-        if (_provider == null)
-        {
-          lock (_lockProvider)
-          {
-            if (_provider == null)
-              _provider = GetProviderFromConfiguration ();
-          }
-        }
-        return _provider;
-      }
-      set
-      {
-        ArgumentUtility.CheckNotNull ("value", value);
-        lock (_lockProvider)
-        {
-          _provider = value;
-        }
-      }
+      get { return _provider.Value; }
+      set { _provider.Value = value; }
     }
 
     public ProviderCollection Providers
     {
-      get
-      {
-        if (_providers == null)
-        {
-          lock (_lockProviders)
-          {
-            if (_providers == null)
-              _providers = GetProvidersFromConfiguration ();
-          }
-        }
-
-        return _providers;
-      }
+      get { return _providers.Value; }
     }
 
     protected SecurityConfiguration Configuration
     {
-      get
-      {
-        return _configuration;
-      }
+      get { return _configuration; }
     }
 
     protected ProviderSettingsCollection ProviderSettings
     {
-      get
-      {
-        return (ProviderSettingsCollection) Configuration[_providerSettingsProperty];
-      }
+      get { return (ProviderSettingsCollection) Configuration[_providerSettingsProperty]; }
     }
 
     protected string DefaultProviderName
     {
-      get
-      {
-        return (string) Configuration[DefaultProviderNameProperty];
-      }
+      get { return (string) Configuration[DefaultProviderNameProperty]; }
     }
 
     protected ConfigurationProperty DefaultProviderNameProperty
     {
-      get
-      {
-        return _defaultProviderNameProperty;
-      }
+      get { return _defaultProviderNameProperty; }
     }
 
     protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string defaultValue)
@@ -156,15 +119,15 @@ namespace Rubicon.Security.Configuration
       ArgumentUtility.CheckNotNullOrEmpty ("wellKnownName", wellKnownName);
       ArgumentUtility.CheckNotNull ("createMethod", createMethod);
 
-      ProviderBase provider = createMethod ();
-      provider.Initialize (wellKnownName, new NameValueCollection ());
+      ProviderBase provider = createMethod();
+      provider.Initialize (wellKnownName, new NameValueCollection());
       collection.Add (provider);
     }
 
     protected void CheckForDuplicateWellKownProviderName (string wellKnownName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("wellKnownName", wellKnownName);
-      
+
       if (ProviderSettings[wellKnownName] != null)
       {
         throw CreateConfigurationErrorsException (
@@ -181,7 +144,7 @@ namespace Rubicon.Security.Configuration
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNull ("property", property);
 
-      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
+      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName();
       AssemblyName realAssemblyName = new AssemblyName (securityAssemblyName.FullName);
       realAssemblyName.Name = assemblyName;
 
@@ -203,7 +166,7 @@ namespace Rubicon.Security.Configuration
         throw CreateConfigurationErrorsException (
             e,
             Configuration.ElementInformation.Properties[property.Name],
-            "The current value of property '{0}' requires that the assembly '{1}' is placed within the CLR's probing path for this application.", 
+            "The current value of property '{0}' requires that the assembly '{1}' is placed within the CLR's probing path for this application.",
             property.Name,
             assemblyName.FullName);
       }
@@ -211,7 +174,7 @@ namespace Rubicon.Security.Configuration
       return Type.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), true, false);
     }
 
-    private TProvider GetProviderFromConfiguration ()
+    private TProvider GetProviderFromConfiguration()
     {
       if (Providers[DefaultProviderName] == null)
       {
@@ -226,17 +189,18 @@ namespace Rubicon.Security.Configuration
       return CastProviderBaseToProviderType (Providers[DefaultProviderName]);
     }
 
-    private ProviderCollection GetProvidersFromConfiguration ()
+    private ProviderCollection GetProvidersFromConfiguration()
     {
-      ProviderCollection collection = new ProviderCollection ();
+      ProviderCollection collection = new ProviderCollection();
       EnsureWellKownProviders (collection);
       ProviderHelper.InstantiateProviders (ProviderSettings, collection, typeof (ProviderBase), typeof (TProvider));
-      collection.SetReadOnly ();
+      collection.SetReadOnly();
 
       return collection;
     }
 
-    private ConfigurationErrorsException CreateConfigurationErrorsException (FileNotFoundException e, PropertyInformation propertyInformation, string message, params object[] args)
+    private ConfigurationErrorsException CreateConfigurationErrorsException (
+        FileNotFoundException e, PropertyInformation propertyInformation, string message, params object[] args)
     {
       return new ConfigurationErrorsException (string.Format (message, args), e, propertyInformation.Source, propertyInformation.LineNumber);
     }

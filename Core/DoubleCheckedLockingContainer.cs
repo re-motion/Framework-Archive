@@ -6,7 +6,7 @@ namespace Rubicon
   /// <summary>Provides a standard implementation of the double checked locking pattern.</summary>
   /// <typeparam name="T">The type encapsulated by the <see cref="DoubleCheckedLockingContainer{T}"/>.</typeparam>
   /// <remarks>Initialize the container during the construction of the parent object and assign the value using the <see cref="Value"/> property.</remarks>
-  /// <threadsafety static="true" instance="true">
+  /// <threadsafety static="true" instance="true" />
   public class DoubleCheckedLockingContainer<T>
       where T : class
   {
@@ -24,7 +24,7 @@ namespace Rubicon
 
     /// <summary>Gets or sets the object encapsulated by the <see cref="DoubleCheckedLockingContainer{T}"/>.</summary>
     /// <value>
-    /// The object assigned via the set accessor<para>or,</para>
+    /// The object assigned via the set accessor<br />or,<br />
     /// if the value is null, the object created by the <b>defaultFactory</b> assigned during the initialization of the container.
     /// </value>
     public T Value

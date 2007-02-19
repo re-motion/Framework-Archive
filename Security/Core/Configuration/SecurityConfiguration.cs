@@ -1,87 +1,80 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Configuration.Provider;
 using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
-using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
   /// <summary> The configuration section for <see cref="Rubicon.Security"/>. </summary>
+  /// <threadsafety static="true" instance="true">
   public class SecurityConfiguration : ConfigurationSection
   {
     // types
 
     // static members
 
-    private static SecurityConfiguration s_current;
+    private static readonly DoubleCheckedLockingContainer<SecurityConfiguration> s_current;
+
+    static SecurityConfiguration()
+    {
+      s_current = new DoubleCheckedLockingContainer<SecurityConfiguration> (
+          delegate { return (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security") ?? new SecurityConfiguration(); });
+    }
 
     public static SecurityConfiguration Current
     {
-      get
-      {
-        if (s_current == null)
-        {
-          lock (typeof (SecurityConfiguration))
-          {
-            if (s_current == null)
-            {
-              s_current = (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security");
-              if (s_current == null)
-                s_current = new SecurityConfiguration();
-            }
-          }
-        }
-
-        return s_current;
-      }
+      get { return s_current.Value; }
     }
 
     protected static void SetCurrent (SecurityConfiguration configuration)
     {
-      lock (typeof (SecurityConfiguration))
-      {
-        s_current = configuration;
-      }
+      s_current.Value = configuration;
     }
 
     // member fields
 
-    private ConfigurationPropertyCollection _properties;
+    private ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection ();
     private readonly ConfigurationProperty _xmlnsProperty;
 
-    private readonly object _lockFunctionSecurityStrategy = new object();
     private readonly ConfigurationProperty _functionalSecurityStrategyProperty;
-    private IFunctionalSecurityStrategy _functionalSecurityStrategy;
+    private DoubleCheckedLockingContainer<IFunctionalSecurityStrategy> _functionalSecurityStrategy;
 
     private PermissionProviderHelper _permissionProviderHelper;
     private SecurityProviderHelper _securityProviderHelper;
     private UserProviderHelper _userProviderHelper;
     private GlobalAccessTypeCacheProviderHelper _globalAccessTypeCacheProviderHelper;
+    private List<ProviderHelperBase> _providerHelpers = new List<ProviderHelperBase>();
 
     // construction and disposing
 
     public SecurityConfiguration()
     {
       _permissionProviderHelper = new PermissionProviderHelper (this);
+      _providerHelpers.Add (_permissionProviderHelper);
+      
       _securityProviderHelper = new SecurityProviderHelper (this);
+      _providerHelpers.Add (_securityProviderHelper);
+      
       _userProviderHelper = new UserProviderHelper (this);
+      _providerHelpers.Add (_userProviderHelper);
+      
       _globalAccessTypeCacheProviderHelper = new GlobalAccessTypeCacheProviderHelper (this);
+      _providerHelpers.Add (_globalAccessTypeCacheProviderHelper);
 
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
 
+      _functionalSecurityStrategy =
+          new DoubleCheckedLockingContainer<IFunctionalSecurityStrategy> (delegate { return FunctionalSecurityStrategyElement.CreateInstance(); });
       _functionalSecurityStrategyProperty = new ConfigurationProperty (
           "functionalSecurityStrategy",
           typeof (TypeElement<IFunctionalSecurityStrategy, FunctionalSecurityStrategy>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties = new ConfigurationPropertyCollection();
       _properties.Add (_xmlnsProperty);
-      _permissionProviderHelper.InitializeProperties (_properties);
-      _securityProviderHelper.InitializeProperties (_properties);
-      _userProviderHelper.InitializeProperties (_properties);
-      _globalAccessTypeCacheProviderHelper.InitializeProperties (_properties);
+      _providerHelpers.ForEach (delegate (ProviderHelperBase current) { current.InitializeProperties (_properties); });
       _properties.Add (_functionalSecurityStrategyProperty);
     }
 
@@ -91,10 +84,7 @@ namespace Rubicon.Security.Configuration
     {
       base.PostDeserialize();
 
-      _permissionProviderHelper.PostDeserialze();
-      _securityProviderHelper.PostDeserialze();
-      _userProviderHelper.PostDeserialze();
-      _globalAccessTypeCacheProviderHelper.PostDeserialze();
+      _providerHelpers.ForEach (delegate (ProviderHelperBase current) { current.PostDeserialze(); });
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -152,29 +142,11 @@ namespace Rubicon.Security.Configuration
 
     public IFunctionalSecurityStrategy FunctionalSecurityStrategy
     {
-      get
-      {
-        if (_functionalSecurityStrategy == null)
-        {
-          lock (_lockFunctionSecurityStrategy)
-          {
-            if (_functionalSecurityStrategy == null)
-              _functionalSecurityStrategy = FunctionalSecurityStrategyProperty.CreateInstance();
-          }
-        }
-        return _functionalSecurityStrategy;
-      }
-      set
-      {
-        ArgumentUtility.CheckNotNull ("value", value);
-        lock (_lockFunctionSecurityStrategy)
-        {
-          _functionalSecurityStrategy = value;
-        }
-      }
+      get { return _functionalSecurityStrategy.Value; }
+      set { _functionalSecurityStrategy.Value = value; }
     }
 
-    protected TypeElement<IFunctionalSecurityStrategy> FunctionalSecurityStrategyProperty
+    protected TypeElement<IFunctionalSecurityStrategy> FunctionalSecurityStrategyElement
     {
       get { return (TypeElement<IFunctionalSecurityStrategy>) this[_functionalSecurityStrategyProperty]; }
       set { this[_functionalSecurityStrategyProperty] = value; }
