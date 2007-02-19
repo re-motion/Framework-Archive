@@ -4,7 +4,7 @@ using System.Security.Principal;
 namespace Rubicon.Security
 {
   /// <summary>Encapsulates the security checks.</summary>
-  /// <remarks>Implementations are free to decide whether they provide caching.</remarks>
+  /// <remarks><note type="implementnotes">Implementations are free to decide whether they provide caching.</note></remarks>
   public interface ISecurityStrategy
   {
     /// <summary>Determines whether the requested access is granted.</summary>
@@ -15,9 +15,9 @@ namespace Rubicon.Security
     /// <returns><see langword="true"/> if the <paramref name="requiredAccessTypes"/> are granted.</returns>
     /// <remarks>
     /// <note type="implementnotes">
-    /// When caching is provided by the implementation, <paramref name="factory"/>.<see cref="ISecurityContextFactory.CreateSecurityContext"/>
+    /// When caching is provided by the implementation, <see cref="ISecurityContextFactory.CreateSecurityContext"/> of the <paramref name="factory"/>
     /// shall only be called when the local cache does not already have a reference to a <see cref="SecurityContext"/>.
-    /// </note>note>
+    /// </note>
     /// </remarks>
     bool HasAccess (ISecurityContextFactory factory, ISecurityProvider securityProvider, IPrincipal user, params AccessType[] requiredAccessTypes);
     

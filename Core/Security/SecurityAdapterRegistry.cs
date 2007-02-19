@@ -18,6 +18,8 @@ namespace Rubicon.Security
     public abstract T GetProvider<T>() where T : class, ISecurityProviderObsolete;
   }
 
+  /// <summary>Used to register <see cref="ISecurityAdapter"/> instances.</summary>
+  /// <remarks>Used by those modules of the framework that do not have binary depedencies on the security module to access security information.</remarks>
   public class SecurityAdapterRegistry
   {
     // types

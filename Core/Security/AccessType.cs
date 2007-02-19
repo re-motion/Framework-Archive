@@ -4,7 +4,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-
+  /// <summary>Represents an access type enum value.</summary>
+  /// <remarks>
+  /// Use the static <see cref="Get"/> methods to convert an enum to an access type.
+  /// <note>For the set of generic access types see <see cref="T:Rubicon.Security.GeneralAccessTypes"/>.</note>
+  /// </remarks>
   public sealed class AccessType
   {
     // types

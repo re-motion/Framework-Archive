@@ -3,6 +3,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
+  /// <summary>Wraps an enum and exposes the enum information as string.</summary>
+  /// <remarks>Used for example to cross web service boundaries, when the client is unaware of a given enum type.</remarks>
   public struct EnumWrapper : IEquatable<EnumWrapper>
   {
     /// <summary> Parses strings in the format <c>Name|TypeName</c>. </summary>

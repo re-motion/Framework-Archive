@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Security
 {
+  /// <summary>Exception thrown by the <see cref="T:Rubicon.Security.SecurityClient"/> if access is denied.</summary>
   [Serializable]
   public class PermissionDeniedException : Exception
   {

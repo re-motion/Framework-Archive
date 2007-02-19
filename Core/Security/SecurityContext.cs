@@ -4,6 +4,10 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
+  /// <summary>
+  /// Collects all object-specific security information (or type-specific, when instance is 
+  /// not created by now) and acts as security context during a permission check.
+  /// </summary>
   public sealed class SecurityContext : IEquatable<SecurityContext>
   {
     private readonly string _class;
