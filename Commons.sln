@@ -95,9 +95,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		buildall.cmd = buildall.cmd
 		build\buildversion.xml = build\buildversion.xml
 		Commons.build = Commons.build
-		build\Commons.Doc.include.xml = build\Commons.Doc.include.xml
-		build\Commons.include.xml = build\Commons.include.xml
-		build\properties.include.xml = build\properties.include.xml
+		build\Commons.Doc.include.build = build\Commons.Doc.include.build
+		build\Commons.include.build = build\Commons.include.build
+		build\properties.include.build = build\properties.include.build
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{B0AA271A-E94B-4328-85AD-7B873447F36F}"

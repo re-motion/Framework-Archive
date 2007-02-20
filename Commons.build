@@ -2,9 +2,9 @@
 <!--EXTERNAL_PROPERTIES: build.version.noconfig-->
 <project xmlns="nant-schema" name="Rubicon.Commons">
 
-  <include buildfile="build/properties.include.xml" verbose="true" />
-  <include buildfile="build/Commons.include.xml" verbose="true" />
-  <include buildfile="build/Commons.Doc.include.xml" verbose="true" />
+  <include buildfile="build/properties.include.build" verbose="true" />
+  <include buildfile="build/Commons.include.build" verbose="true" />
+  <include buildfile="build/Commons.Doc.include.build" verbose="true" />
 
   <property name="solution.basedir" value="${project::get-base-directory()}" />
   <property name="solution.global-dir" value="/development/global" overwrite="false"/>
@@ -276,8 +276,8 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding.Web.CodeGenerator" depends="Core, Web, ObjectBinding, ObjectBinding.Web,
-          Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+  <target name="ObjectBinding.Web.CodeGenerator" 
+      depends="Core, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
     <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
     <property name="project.output" value="UIGen" />
