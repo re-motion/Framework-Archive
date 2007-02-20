@@ -18,9 +18,9 @@ namespace Rubicon.Security
     /// <returns></returns>
     AccessType[] GetAccess (SecurityContext context, IPrincipal user);
 
-    /// <summary>Get the actual revison number.</summary>
-    /// <returns>The actual revison number.</returns>
-    /// <remarks>The revison number is incremented when any cached permission becomes outdated; an incremented revision number indicates that the cache must be discared.</remarks>
+    /// <summary>Gets the current revison number.</summary>
+    /// <returns>The current revison number.</returns>
+    /// <remarks>The revison number is incremented when any permission-related information becomes outdated; an incremented revision number indicates that the cache must be discared.</remarks>
     int GetRevision ();
   }
 }

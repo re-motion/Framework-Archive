@@ -19,7 +19,7 @@ namespace Rubicon.Security
   }
 
   /// <summary>Used to register <see cref="ISecurityAdapter"/> instances.</summary>
-  /// <remarks>Used by those modules of the framework that do not have binary depedencies on the security module to access security information.</remarks>
+  /// <remarks>Used by those modules of the framework that do not have binary depedencies to the security module to access security information.</remarks>
   public class SecurityAdapterRegistry
   {
     // types

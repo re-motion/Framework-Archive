@@ -4,12 +4,13 @@ using Rubicon.Utilities;
 namespace Rubicon.Security
 {
   /// <summary>Wraps an enum and exposes the enum information as string.</summary>
-  /// <remarks>Used for example to cross web service boundaries, when the client is unaware of a given enum type.</remarks>
+  /// <remarks>Used for example to cross web service boundaries, when the server is unaware of a given enum type.</remarks>
   public struct EnumWrapper : IEquatable<EnumWrapper>
   {
     /// <summary> Parses strings in the format <c>Name|TypeName</c>. </summary>
     /// <param name="value"> A <see cref="String"/> in the format <c>Name|TypeName</c>. Must not be <see langword="null"/> or emtpy. </param>
     /// <returns> A new instance of the <see cref="EnumWrapper"/> type initalized with the specified <b>Name</b> and <b>TypeName</b>. </returns>
+    /// <exception cref="ArgumentException">The <paramref name="value"/> is not in the format <c>Name|TypeName</c>.</exception>
     public static EnumWrapper Parse (string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
