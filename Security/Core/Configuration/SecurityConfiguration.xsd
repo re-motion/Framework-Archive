@@ -31,7 +31,7 @@
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="None" />
-          <xs:enumeration value="SecurityManagerService" />
+          <xs:enumeration value="SecurityManager" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType>

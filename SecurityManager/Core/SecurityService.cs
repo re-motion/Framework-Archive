@@ -1,4 +1,5 @@
 using System;
+using System.Configuration.Provider;
 using System.Security.Principal;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Logging;
@@ -10,7 +11,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager
 {
-  public class SecurityService : ISecurityProvider
+  public class SecurityService : ProviderBase, ISecurityProvider
   {
     private static ILog s_log = LogManager.GetLogger (typeof (SecurityService));
 
