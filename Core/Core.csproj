@@ -349,6 +349,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Xml\SchemaLoaderBase.cs" />
+    <Compile Include="Xml\XmlSchemaValidationErrorInfo.cs" />
     <Compile Include="Xml\XmlSchemaValidationHandler.cs">
       <SubType>Code</SubType>
     </Compile>

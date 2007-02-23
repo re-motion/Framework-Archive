@@ -1,71 +1,87 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml;
 using System.Xml.Schema;
-using Rubicon.Logging;
+using log4net;
 
 namespace Rubicon.Xml
 {
-public class XmlSchemaValidationHandler
-{
-  private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSchemaValidationHandler));
-
-  private string _context;
-  private int _warnings = 0;
-  private int _errors = 0;
-  private string _firstError;
-
-  public XmlSchemaValidationHandler (string context)
+  public class XmlSchemaValidationHandler
   {
-    _context = context;
-  }
+    private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSchemaValidationHandler));
 
-  public int Warnings
-  {
-    get { return _warnings; }
-  }
+    private string _context;
+    private IXmlLineInfo _lineInfo;
+    private List<XmlSchemaValidationErrorInfo> _messages = new List<XmlSchemaValidationErrorInfo>();
+    private int _warnings = 0;
+    private int _errors = 0;
+    private XmlSchemaValidationErrorInfo _firstError = null;
 
-  public int Errors
-  {
-    get { return _errors; }
-  }
-
-  public ValidationEventHandler Handler
-  {
-    get { return new ValidationEventHandler (this.HandleValidation); }
-  }
-
-  private void HandleValidation (object sender, ValidationEventArgs args)
-  {
-    // WORKAROUND: known bug in .NET framework
-    if (args.Message.IndexOf ("http://www.w3.org/XML/1998/namespace:base") >= 0)
+    public XmlSchemaValidationHandler (string context)
     {
-      s_log.Debug (string.Format ("Ignoring the following schema validation error in {0}, because it is considered a known .NET framework bug: {1}", _context, args.Message));
-      return; 
+      _context = context;
     }
 
-    if (args.Severity == XmlSeverityType.Error)
+    public int Warnings
     {
-      s_log.Error (string.Format ("Schema validation error in {0}: {1}", _context, args.Message));
-      if (_firstError == null)
-        _firstError = args.Message;
-      ++ _errors;
+      get { return _warnings; }
     }
-    else
+
+    public int Errors
     {
-      s_log.Warn (string.Format ("Schema validation warning in {0}: {1}", _context, args.Message));
-      ++ _warnings;
+      get { return _errors; }
+    }
+
+    public ValidationEventHandler Handler
+    {
+      get { return new ValidationEventHandler (HandleValidation); }
+    }
+
+    private void HandleValidation (object sender, ValidationEventArgs args)
+    {
+      // WORKAROUND: known bug in .NET framework
+      if (args.Message.IndexOf ("http://www.w3.org/XML/1998/namespace:base") >= 0)
+      {
+        s_log.DebugFormat (
+            "Ignoring the following schema validation error in {0}, because it is considered a known .NET framework bug: {1}",
+            _context,
+            args.Message);
+        return;
+      }
+
+      XmlSchemaValidationErrorInfo errorInfo = new XmlSchemaValidationErrorInfo (args.Message, _context, _lineInfo, args.Severity);
+      _messages.Add (errorInfo);
+
+      if (args.Severity == XmlSeverityType.Error)
+      {
+        s_log.Error (errorInfo);
+        if (_firstError == null)
+          _firstError = errorInfo;
+        ++ _errors;
+      }
+      else
+      {
+        s_log.Warn (errorInfo);
+        ++ _warnings;
+      }
+    }
+
+    public void EnsureNoErrors()
+    {
+      if (_errors > 0)
+      {
+        throw new XmlSchemaValidationException (
+          string.Format (
+              "Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}", 
+              _errors, 
+              _warnings, 
+              _context, 
+              _firstError.ErrorMessage), 
+          null,
+          _firstError.LineNumber, 
+          _firstError.LinePosition);
+      }
     }
   }
-
-  public void EnsureNoErrors ()
-  {
-    if (_errors > 0)
-    {
-      throw new XmlSchemaException (
-          string.Format ("Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}", 
-              _errors, _warnings, _context, _firstError),
-          null);
-    }
-  }
-}
-
 }

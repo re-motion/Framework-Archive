@@ -5,6 +5,13 @@
   IObjectSecurityProvider zu IObjectSecurityAdapter umbenannt.
   ISecurityService zu ISecurityProvider umbenannt.
 - DoubleCheckedLockingContainer: Klasse, welche das Double-Checked-Locking-Patter kapselt.
+- XmlSerializationUtility
+  * Obsolete Overload DeserializeUsingSchema (XmlTextReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+    entfernt. Stattdessen: DeserializeUsingSchema (XmlTextReader, String, Type, String, XmlSchemaSet)
+  * Obsolete Overload DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+    entfernt. Stattdessen: DeserializeUsingSchema (XmlReader, String, Type, String, XmlSchemaSet)
+  * Obsolete Overload DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaCollection schemas)
+    entfernt. Stattdessen: DeserializeUsingSchema (XmlReader, String, Type, XmlSchemaSet)
 
 1.7.40
 ======
