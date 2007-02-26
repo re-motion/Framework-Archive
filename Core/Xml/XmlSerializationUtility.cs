@@ -36,11 +36,6 @@ namespace Rubicon.Xml
 
         return result;
       }
-      catch (XmlSchemaException e)
-      {
-        s_log.Error (string.Format ("Error reading \"{0}\": {1}", context, e.Message));
-        throw;
-      }
       catch (InvalidOperationException e)
       {
         Exception actualException = e;

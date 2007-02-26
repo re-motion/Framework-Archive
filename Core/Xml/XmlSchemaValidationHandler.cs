@@ -40,6 +40,8 @@ namespace Rubicon.Xml
 
     private void HandleValidation (object sender, ValidationEventArgs args)
     {
+      _lineInfo = sender as IXmlLineInfo;
+    
       // WORKAROUND: known bug in .NET framework
       if (args.Message.IndexOf ("http://www.w3.org/XML/1998/namespace:base") >= 0)
       {
@@ -71,13 +73,18 @@ namespace Rubicon.Xml
     {
       if (_errors > 0)
       {
+        string lineInfoMessage = string.Empty;
+        if (_firstError.HasLineInfo())
+          lineInfoMessage = string.Format (" Line {0}, position {1}.", _firstError.LineNumber, _firstError.LinePosition);
+        
         throw new XmlSchemaValidationException (
           string.Format (
-              "Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}", 
+              "Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}{4}", 
               _errors, 
               _warnings, 
               _context, 
-              _firstError.ErrorMessage), 
+              _firstError.ErrorMessage,
+              lineInfoMessage), 
           null,
           _firstError.LineNumber, 
           _firstError.LinePosition);

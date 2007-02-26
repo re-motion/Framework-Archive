@@ -1,4 +1,5 @@
 using System;
+using System.Xml;
 using System.Xml.Schema;
 using NUnit.Framework;
 using Rubicon.Web.ExecutionEngine.UrlMapping;
@@ -20,35 +21,35 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaException))]
+  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithMissingPath()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
   }
 
   [Test]
-  [ExpectedException (typeof (Exception))]
+  [ExpectedException (typeof (XmlException))]
   public void LoadMappingWithEmptyPath()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaException))]
+  [ExpectedException (typeof (XmlSchemaValidationException))]
   public void LoadMappingWithMissingFunctionType()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
   }
 
   [Test]
-  [ExpectedException (typeof (Exception))]
+  [ExpectedException (typeof (XmlException))]
   public void LoadMappingWithEmptyFunctionType()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
   }
 
   [Test]
-  [ExpectedException (typeof (Exception))]
+  [ExpectedException (typeof (XmlException))]
   public void LoadMappingWithFunctionTypeHavingNoAssembly()
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");

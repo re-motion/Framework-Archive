@@ -145,9 +145,10 @@ namespace WxeFunctionGenerator
 									settings.LineNumberOffset = firstLineNumber - 1;
 									settings.Schemas = schemas;
 									settings.ValidationType = ValidationType.Schema;
+								  XmlReader xmlReader = XmlReader.Create (stringReader, settings);
 									FunctionDeclaration declaration = (FunctionDeclaration) XmlSerializationUtility.DeserializeUsingSchema (
-											stringReader, file.Name, 
-											typeof (FunctionDeclaration), settings);
+                      xmlReader, file.Name, 
+											typeof (FunctionDeclaration), "http://www.rubicon-it.com/commons/web/wxefunctiongenerator", settings);
 
 									// XmlTextReader xmlReader = new XmlTextReader (stringReader);
 									// XmlSerializer serializer = new XmlSerializer (typeof (FunctionDeclaration), FunctionDeclaration.SchemaUri);
