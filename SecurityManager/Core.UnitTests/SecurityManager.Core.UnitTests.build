@@ -26,6 +26,7 @@
       <references failonempty="true">
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />
         <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll" />
         <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
         <include name="${build.test.outputdir}/Rubicon.SecurityManager.dll" />

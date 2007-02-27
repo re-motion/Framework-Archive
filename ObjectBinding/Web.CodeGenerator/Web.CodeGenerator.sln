@@ -94,6 +94,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\..\prereq\Assemblies\Rhino.Mocks.xml = ..\..\prereq\Assemblies\Rhino.Mocks.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy", "..\..\Data\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj", "{E6A8B6CE-2E19-4C01-9D41-63899FE52020}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +150,10 @@ Global
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

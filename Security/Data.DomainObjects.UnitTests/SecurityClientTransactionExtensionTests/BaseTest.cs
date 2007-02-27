@@ -11,8 +11,8 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     [TestFixtureSetUp]
     public virtual void TestFixtureSetUp ()
     {
-      MappingConfiguration.SetCurrent (new MappingConfiguration (@"Rubicon.Security.Data.DomainObjects.UnitTests.Mapping.xml"));
-      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"Rubicon.Security.Data.DomainObjects.UnitTests.StorageProviders.xml"));
+      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Rubicon.Security.Data.DomainObjects.UnitTests.Mapping.xml"));
+      StorageProviderConfiguration.SetCurrent (StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader (@"Rubicon.Security.Data.DomainObjects.UnitTests.StorageProviders.xml"));
       QueryConfiguration.SetCurrent (new QueryConfiguration (@"Rubicon.Security.Data.DomainObjects.UnitTests.Queries.xml"));
     }
   }
