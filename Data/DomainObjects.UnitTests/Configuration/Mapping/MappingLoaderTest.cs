@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -48,9 +49,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    public void IMappingLoader_InitializeWithResolveTypes ()
+    {
+      Assert.IsTrue (((IMappingLoader) _loader).ResolveTypes);
+    }
+
+    [Test]
     public void LoadingOfClassDefinitions ()
     {
       ClassDefinitionCollection actualClassDefinitions = _loader.GetClassDefinitions ();
+
+      ClassDefinitionChecker checker = new ClassDefinitionChecker ();
+      checker.Check (TestMappingConfiguration.Current.ClassDefinitions, actualClassDefinitions, false);
+    }
+
+    [Test]
+    public void IMappingLoader_LoadingOfClassDefinitions ()
+    {
+      IMappingLoader iMappingLoader = _loader;
+      ClassDefinitionCollection actualClassDefinitions = iMappingLoader.GetClassDefinitions ();
 
       ClassDefinitionChecker checker = new ClassDefinitionChecker ();
       checker.Check (TestMappingConfiguration.Current.ClassDefinitions, actualClassDefinitions, false);
@@ -70,6 +87,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinitionCollection actualClassDefinitions = _loader.GetClassDefinitions ();
       RelationDefinitionCollection actualRelationDefinitions = _loader.GetRelationDefinitions (actualClassDefinitions);
+
+      ClassDefinitionChecker classDefinitionChecker = new ClassDefinitionChecker ();
+      classDefinitionChecker.Check (TestMappingConfiguration.Current.ClassDefinitions, actualClassDefinitions, true);
+
+      RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
+      relationDefinitionChecker.Check (TestMappingConfiguration.Current.RelationDefinitions, actualRelationDefinitions);
+    }
+
+    [Test]
+    public void IMappingLoader_LoadingOfRelations ()
+    {
+      IMappingLoader iMappingLoader = _loader;
+      ClassDefinitionCollection actualClassDefinitions = iMappingLoader.GetClassDefinitions ();
+      RelationDefinitionCollection actualRelationDefinitions = iMappingLoader.GetRelationDefinitions (actualClassDefinitions);
 
       ClassDefinitionChecker classDefinitionChecker = new ClassDefinitionChecker ();
       classDefinitionChecker.Check (TestMappingConfiguration.Current.ClassDefinitions, actualClassDefinitions, true);

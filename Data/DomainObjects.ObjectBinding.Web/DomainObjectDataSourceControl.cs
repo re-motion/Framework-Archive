@@ -57,8 +57,7 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     try
     {
       mappingFile = GetMappingFilePath (projectPath);
-      MappingLoader mappingLoader = new MappingLoader (mappingFile, true);
-      MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
+      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (mappingFile, true));
     }
     catch (Exception e)
     {
@@ -89,8 +88,8 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     //TODO: use MappingLoader.DefaultConfigurationFile here
     return GetFilePathFromWebConfig (
         projectPath,
-        MappingLoader.ConfigurationAppSettingKey,
-        projectPath + @"\bin\" + MappingLoader.DefaultConfigurationFile);
+        MappingConfiguration.ConfigurationAppSettingKey,
+        projectPath + @"\bin\" + MappingConfiguration.DefaultConfigurationFile);
   }
 
   private string GetFilePathFromWebConfig (string projectPath, string configurationKey, string defaultPath)

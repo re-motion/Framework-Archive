@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
@@ -475,7 +476,9 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return (_baseClass != null || _derivedClasses.Count > 0); }
   }
 
-  internal void SetBaseClass (ClassDefinition baseClass)
+  [Obsolete ("Check after Refactoring. (Version 1.7.42")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public void SetBaseClass (ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 

@@ -88,6 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
+    <Compile Include="ConfigurationLoader\IStorageProviderConfigurationLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -104,31 +106,19 @@
     <Compile Include="ConfigurationException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\BaseFileLoader.cs">
+    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\BaseFileLoader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\ClassDefinitionLoader.cs">
+    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\ConfigurationNamespaceManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\ConfigurationNamespaceManager.cs">
+    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\LoaderUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\LoaderUtility.cs">
+    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\PrefixNamespace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\MappingLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationLoader\PrefixNamespace.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationLoader\QueryConfigurationLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationLoader\RelationDefinitionLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationLoader\StorageProviderConfigurationLoader.cs">
+    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\QueryConfigurationLoader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataContainer.cs">

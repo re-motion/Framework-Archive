@@ -1,15 +1,23 @@
 using System;
 using System.Collections;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-  public class MappingConfiguration : ConfigurationBase
+  public class MappingConfiguration
   {
     // types
 
     // static members and constants
+
+    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
+    public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
+
+    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
+    public const string DefaultConfigurationFile = "Mapping.xml";
+
 
     private static MappingConfiguration s_mappingConfiguration;
 
@@ -22,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           lock (typeof (MappingConfiguration))
           {
             if (s_mappingConfiguration == null)
-              s_mappingConfiguration = new MappingConfiguration (MappingLoader.Create ());
+              s_mappingConfiguration = CreateConfigurationFromFileBasedLoader();
           }
         }
 
@@ -34,12 +42,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       if (mappingConfiguration != null)
       {
-        if (!mappingConfiguration.ResolveTypes)
+        if (!mappingConfiguration.Loader.ResolveTypes)
           throw CreateArgumentException ("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
 
         try
         {
-          mappingConfiguration.Validate ();
+          mappingConfiguration.Validate();
         }
         catch (Exception ex)
         {
@@ -52,6 +60,28 @@ namespace Rubicon.Data.DomainObjects.Mapping
       {
         s_mappingConfiguration = mappingConfiguration;
       }
+    }
+
+    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
+    public static MappingConfiguration CreateConfigurationFromFileBasedLoader ()
+    {
+      return CreateConfigurationFromFileBasedLoader (
+          LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
+          true);
+    }
+
+    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
+    public static MappingConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile)
+    {
+      return CreateConfigurationFromFileBasedLoader (configurationFile, true);
+    }
+
+    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
+    public static MappingConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile, bool resolveTypes)
+    {
+      Type mappingLoaderType = Type.GetType ("Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader.MappingLoader, Rubicon.Data.DomainObjects.Legacy", true, false);
+      IMappingLoader mappingLoader = (IMappingLoader) Activator.CreateInstance (mappingLoaderType, configurationFile, resolveTypes);
+      return new MappingConfiguration (mappingLoader);
     }
 
     private static ArgumentException CreateArgumentException (Exception innerException, string argumentName, string message, params object[] args)
@@ -68,35 +98,69 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     private ClassDefinitionCollection _classDefinitions;
     private RelationDefinitionCollection _relationDefinitions;
+    private IMappingLoader _loader;
 
     // construction and disposing
 
+    [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile)
-      : this (configurationFile, true)
     {
+      throw new InvalidOperationException ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string).");
     }
 
+    [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string, bool). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile, bool resolveTypes)
-      : this (new MappingLoader (configurationFile, resolveTypes))
     {
+      throw new InvalidOperationException ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string, bool).");
     }
 
-    public MappingConfiguration (MappingLoader loader)
-      : base (loader)
+    public MappingConfiguration (IMappingLoader loader)
     {
       ArgumentUtility.CheckNotNull ("loader", loader);
 
-      _classDefinitions = loader.GetClassDefinitions ();
-      _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
+      _loader = loader;
+      _classDefinitions = _loader.GetClassDefinitions();
+      _relationDefinitions = _loader.GetRelationDefinitions (_classDefinitions);
 
-      Validate ();
+      Validate();
     }
 
     // methods and properties
 
-    public void Validate ()
+    public void Validate()
     {
-      _classDefinitions.Validate ();
+      _classDefinitions.Validate();
+    }
+
+    public IMappingLoader Loader
+    {
+      get { return _loader; }
+    }
+
+    /// <summary>
+    /// Gets the application name that is specified in the XML configuration file. 
+    /// </summary>
+    [Obsolete ("Use Loader.GetApplicationName() instead. (Version 1.7.42)", true)]
+    public string ApplicationName
+    {
+      get { throw new NotImplementedException ("Use Loader.GetApplicationName() instead."); }
+    }
+
+    /// <summary>
+    /// Gets the XML configuration file.
+    /// </summary>
+    [Obsolete ("Use Loader.ConfigurationFile instead. (Version 1.7.42)", true)]
+    public string ConfigurationFile
+    {
+      get { throw new NotImplementedException ("Use Loader.ConfigurationFile instead."); }
+    }
+
+    /// <summary>
+    /// Gets a flag whether type names in the configuration file should be resolved to their corresponding .NET <see cref="Type"/>.
+    /// </summary>
+    public bool ResolveTypes
+    {
+      get { return _loader.ResolveTypes; }
     }
 
     public ClassDefinitionCollection ClassDefinitions

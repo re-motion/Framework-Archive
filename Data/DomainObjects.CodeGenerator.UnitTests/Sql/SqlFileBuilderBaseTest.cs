@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     [Test]
     public void BuildWithMappingConfigurationWithOneStorageProviderDefinition ()
     {
-      StorageProviderConfiguration storageProviderConfiguration = new StorageProviderConfiguration ("emptyStorageProviders.xml");
+      StorageProviderConfiguration storageProviderConfiguration = StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader("emptyStorageProviders.xml");
       storageProviderConfiguration.StorageProviderDefinitions.Add (_firstStorageProviderDefinition);
 
       SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, storageProviderConfiguration, "TestDirectory");

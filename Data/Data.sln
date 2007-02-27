@@ -89,6 +89,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\build\buildversion.xml = ..\build\buildversion.xml
+		..\Commons.build = ..\Commons.build
+		..\build\Commons.Doc.include.build = ..\build\Commons.Doc.include.build
+		..\build\Commons.include.build = ..\build\Commons.include.build
+		..\build\properties.include.build = ..\build\properties.include.build
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.CodeGenerator.UnitTests", "DomainObjects.CodeGenerator.UnitTests\Data.DomainObjects.CodeGenerator.UnitTests.csproj", "{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -112,8 +119,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\prereq\Assemblies\log4net.xml = ..\prereq\Assemblies\log4net.xml
 		..\prereq\Assemblies\nunit.framework.dll = ..\prereq\Assemblies\nunit.framework.dll
 		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
-		..\prereq\Assemblies\Rhino.Mocks.dll = ..\prereq\Assemblies\Rhino.Mocks.dll
-		..\prereq\Assemblies\Rhino.Mocks.xml = ..\prereq\Assemblies\Rhino.Mocks.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy", "DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj", "{E6A8B6CE-2E19-4C01-9D41-63899FE52020}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Global
@@ -182,6 +193,10 @@ Global
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,5 +204,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B0AA271A-E94B-4328-85AD-7B873447F36F} = {D6EE53F7-7F63-46D0-9057-0FA0001EF46A}
 		{8373F6F2-B707-4D06-8ECF-7411813CECD5} = {B0AA271A-E94B-4328-85AD-7B873447F36F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = ..
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects

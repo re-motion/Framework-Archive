@@ -1,3 +1,14 @@
+1.7.42.0
+========
+
+- Klassen ClassDefinitionLoader, MappingLoader, RelationDefinitionLoader StorageProviderConfigurationLoader vom Namespace 
+  Rubicon.Data.DomainObjects.ConfigurationLoader in Assembly Rubicon.Data.DomainObjects in den Namespace 
+  Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader in Assembly Rubicon.Data.DomainObjects.Legacy verschoben.
+
+- Klassen BaseFileLoader, ConfigurationNamespaceManager, LoaderUtility, PrefixNamespace, QueryConfigurationLoader vom Namespace 
+  Rubicon.Data.DomainObjects.ConfigurationLoader in Assembly Rubicon.Data.DomainObjects in den Namespace 
+  Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader verschoben.
+
 1.7.37.0
 ========
 

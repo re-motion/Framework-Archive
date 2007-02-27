@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 

@@ -32,11 +32,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 
       try
       {
-        StorageProviderConfiguration storageProviderConfiguration = new StorageProviderConfiguration (
-            Path.Combine (arguments.ConfigDirectory, arguments.StorageProviderFileName));
+        StorageProviderConfiguration storageProviderConfiguration = StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader(Path.Combine (arguments.ConfigDirectory, arguments.StorageProviderFileName));
 
-        MappingConfiguration mappingConfiguration = new MappingConfiguration (
-            Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
+        MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
         {

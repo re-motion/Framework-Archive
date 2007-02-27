@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -37,14 +38,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     }
 
     [Test]
+    public void IStorageProviderConfigurationLoader_Loading ()
+    {
+      IStorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
+
+      StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
+      StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
+
+      StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
+      checker.Check (expectedProviders, actualProviders);
+    }
+
+    [Test]
     public void InitializeWithFileNames ()
     {
       try
       {
-        StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"StorageProvidersForLoaderTest.xml"));
+        StorageProviderConfiguration.SetCurrent (StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader(@"StorageProvidersForLoaderTest.xml"));
         string configurationFile = Path.GetFullPath (@"StorageProvidersForLoaderTest.xml");
 
-        Assert.AreEqual (configurationFile, StorageProviderConfiguration.Current.ConfigurationFile);
+        Assert.IsNotNull (StorageProviderConfiguration.Current.Loader);
+        Assert.AreEqual (configurationFile, ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).ConfigurationFile);
       }
       finally
       {
@@ -55,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     [Test]
     public void ApplicationName ()
     {
-      Assert.AreEqual ("UnitTests", StorageProviderConfiguration.Current.ApplicationName);
+      Assert.AreEqual ("UnitTests", ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).GetApplicationName ());
     }
 
     [Test]

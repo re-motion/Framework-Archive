@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 

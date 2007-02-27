@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration ("MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration ("MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void TableInheritanceMapping ()
     {
-      MappingConfiguration mappingConfiguration = new MappingConfiguration ("TableInheritanceMapping.xml");
+      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("TableInheritanceMapping.xml");
       ClassDefinition domainBaseClass = mappingConfiguration.ClassDefinitions.GetMandatory (typeof (DomainBase));
       Assert.IsNull (domainBaseClass.MyEntityName);
     }
@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [ExpectedException (typeof (MappingException))]
     public void ConstructorValidates ()
     {
-      new MappingConfiguration ("TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
+      MappingConfiguration.CreateConfigurationFromFileBasedLoader("TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
     }
   }
 }

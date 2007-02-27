@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     private const string c_createTestDataFileName = "CreateTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"Mapping.xml");
+    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"Mapping.xml");
 
     // member fields
 

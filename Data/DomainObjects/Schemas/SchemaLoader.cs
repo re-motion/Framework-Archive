@@ -1,6 +1,7 @@
 using System;
 using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Utilities;
 using Rubicon.Xml;
 

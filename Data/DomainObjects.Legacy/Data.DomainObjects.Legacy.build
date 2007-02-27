@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.CodeGenerator.Console">
-  
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy">
+
   <target name="build" description="perform a build">
-    <csc  target="exe"
+    <csc  target="library"
           output="${build.outputdir}/${project.output}.${project.extension}"
           doc="${project.doc}"
           debug="${build.debug}"
@@ -11,22 +11,27 @@
       <nowarn>
         <!-- missing XML comment -->
         <warning number="1591" />
-      </nowarn> 
+        <!-- Ambiguous reference in cref attribute -->
+        <warning number="0419" />
+        <!-- obsolete warning -->
+        <warning number="0618" />
+      </nowarn>
       <sources failonempty="true">
         <include name="*.cs"/>
-        <include name="Properties/**/*.cs" />
+        <include name="ConfigurationLoader/**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.outputdir}/Rubicon.Data.DomainObjects.CodeGenerator.dll"/>
+        <include asis="true" name="${build.outputdir}/Rubicon.Data.dll"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.Legacy">
+        <include name="Schemas/*.xsd" />
+      </resources>
     </csc>
   </target>
-  
+
 </project>
