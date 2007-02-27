@@ -13,42 +13,25 @@ namespace Rubicon.Data.DomainObjects.Schemas
 
     // static members and constants
 
+    public readonly static SchemaLoader Queries = new SchemaLoader ("Queries.xsd", PrefixNamespace.QueryConfigurationNamespace.Uri);
+
     // member fields
 
-    private SchemaType _type;
-    private string _schemaFile;
-    private string _schemaUri;
+    private readonly string _schemaFile;
+    private readonly string _schemaUri;
 
     // construction and disposing
 
-    public SchemaLoader (SchemaType type)
+    protected SchemaLoader (string schemaFile, string schemaUri)
     {
-      ArgumentUtility.CheckValidEnumValue ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty ("schemaFile", schemaFile);
+      ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
 
-      _type = type;
-      switch (type)
-      {
-        case SchemaType.Mapping:
-          _schemaFile = "Mapping.xsd";
-          _schemaUri =  PrefixNamespace.MappingNamespace.Uri;
-          break;
-        case SchemaType.Queries:
-          _schemaFile = "Queries.xsd";
-          _schemaUri = PrefixNamespace.QueryConfigurationNamespace.Uri;
-          break;
-        case SchemaType.StorageProviders:
-          _schemaFile = "StorageProviders.xsd";
-          _schemaUri = PrefixNamespace.StorageProviderConfigurationNamespace.Uri;
-          break;
-      }
+      _schemaFile = schemaFile;
+      _schemaUri = schemaUri;
     }
 
     // methods and properties
-
-    public SchemaType Type
-    {
-      get { return _type; }
-    }
 
     public override string SchemaUri
     {
@@ -58,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Schemas
     public override XmlSchemaSet LoadSchemaSet ()
     {
       XmlSchemaSet schemaSet = base.LoadSchemaSet ();
-      schemaSet.Add (LoadSchema ("Types.xsd"));
+      schemaSet.Add (TypesSchemaLoader.Instance.LoadSchemaSet());
 
       return schemaSet;
     }

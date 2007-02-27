@@ -9,6 +9,9 @@
   Rubicon.Data.DomainObjects.ConfigurationLoader in Assembly Rubicon.Data.DomainObjects in den Namespace 
   Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader verschoben.
 
+- Contructor Interface der Klasse SchemaLoader wurde verändert: Statt dem Constructor mit SchemaType sind nun die well-known Instanzen
+  SchemaLoader.Queries, LegacySchemaLoader.Mapping, und LegacySchemaLoader.StorageProviders zu verwenden.
+
 1.7.37.0
 ========
 

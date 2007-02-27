@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
       {
         base.Initialize (
             configurationFile, 
-            SchemaType.Queries, 
+            SchemaLoader.Queries, 
             true,
             PrefixNamespace.QueryConfigurationNamespace);
       }

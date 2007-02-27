@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Schemas;
 
@@ -34,8 +35,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
       try
       {
         base.Initialize (
-            configurationFile, 
-            SchemaType.StorageProviders, 
+            configurationFile,
+            LegacySchemaLoader.StorageProviders, 
             true,
             PrefixNamespace.StorageProviderConfigurationNamespace);
 

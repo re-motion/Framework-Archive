@@ -3,6 +3,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Schemas;
 using Rubicon.Xml;
 
@@ -11,63 +12,34 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
   [TestFixture]
   public class SchemaLoaderTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private SchemaLoader _schemaLoaderWithMapping;
-    private SchemaLoader _schemaLoaderWithQueries;
-    private SchemaLoader _schemaLoaderWithStorageProviders;
-
-    // construction and disposing
-
-    public SchemaLoaderTest ()
-    {
-    }
-
-    // methods and properties
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _schemaLoaderWithMapping = new SchemaLoader (SchemaType.Mapping);
-      _schemaLoaderWithQueries = new SchemaLoader (SchemaType.Queries);
-      _schemaLoaderWithStorageProviders = new SchemaLoader (SchemaType.StorageProviders);
-    }
-
     [Test]
     public void InitializeWithMapping ()
     {
-      Assert.AreEqual (SchemaType.Mapping, _schemaLoaderWithMapping.Type);
-      Assert.AreEqual (PrefixNamespace.MappingNamespace.Uri, _schemaLoaderWithMapping.SchemaUri);
+      Assert.AreEqual (PrefixNamespace.MappingNamespace.Uri, LegacySchemaLoader.Mapping.SchemaUri);
     }
 
     [Test]
     public void InitializeWithQueries ()
     {
-      Assert.AreEqual (SchemaType.Queries, _schemaLoaderWithQueries.Type);
-      Assert.AreEqual (PrefixNamespace.QueryConfigurationNamespace.Uri, _schemaLoaderWithQueries.SchemaUri);
+      Assert.AreEqual (PrefixNamespace.QueryConfigurationNamespace.Uri, SchemaLoader.Queries.SchemaUri);
     }
 
     [Test]
     public void InitializeWithStorageProviders ()
     {
-      Assert.AreEqual (SchemaType.StorageProviders, _schemaLoaderWithStorageProviders.Type);
-      Assert.AreEqual (PrefixNamespace.StorageProviderConfigurationNamespace.Uri, _schemaLoaderWithStorageProviders.SchemaUri);
+      Assert.AreEqual (PrefixNamespace.StorageProviderConfigurationNamespace.Uri, LegacySchemaLoader.StorageProviders.SchemaUri);
     }
 
     [Test]
     public void IsDerivedFromSchemaBase ()
     {
-      Assert.IsNotNull (_schemaLoaderWithMapping as SchemaLoaderBase);
+      Assert.IsNotNull (SchemaLoader.Queries as SchemaLoaderBase);
     }
 
     [Test]
     public void LoadSchemaSetWithMapping ()
     {
-      XmlSchemaSet schemaSet = _schemaLoaderWithMapping.LoadSchemaSet ();
+      XmlSchemaSet schemaSet = LegacySchemaLoader.Mapping.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
@@ -78,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     [Test]
     public void LoadSchemaSetWithQueries ()
     {
-      XmlSchemaSet schemaSet = _schemaLoaderWithQueries.LoadSchemaSet ();
+      XmlSchemaSet schemaSet = SchemaLoader.Queries.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
@@ -89,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     [Test]
     public void LoadSchemaSetWithStorageProviders ()
     {
-      XmlSchemaSet schemaSet = _schemaLoaderWithStorageProviders.LoadSchemaSet ();
+      XmlSchemaSet schemaSet = LegacySchemaLoader.StorageProviders.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);

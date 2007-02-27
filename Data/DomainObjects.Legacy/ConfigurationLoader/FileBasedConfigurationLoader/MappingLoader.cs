@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Schemas;
 using Rubicon.Utilities;
@@ -36,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
       {
         base.Initialize (
             configurationFile,
-            SchemaType.Mapping,
+            LegacySchemaLoader.Mapping,
             resolveTypes,
             PrefixNamespace.MappingNamespace);
       }

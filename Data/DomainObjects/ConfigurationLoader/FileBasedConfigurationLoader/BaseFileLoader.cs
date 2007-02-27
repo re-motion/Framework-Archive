@@ -28,12 +28,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
 
     protected void Initialize (
         string configurationFile,
-        SchemaType schemaType,
+        SchemaLoader schemaLoader,
         bool resolveTypes,
         PrefixNamespace schemaNamespace)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-      ArgumentUtility.CheckValidEnumValue ("schemaType", schemaType);
+      ArgumentUtility.CheckNotNull ("schemaLoader", schemaLoader);
       ArgumentUtility.CheckNotNull ("schemaNamespace", schemaNamespace);
 
       if (!File.Exists (configurationFile))
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
       _configurationFile = Path.GetFullPath (configurationFile);
       _resolveTypes = resolveTypes;
 
-      _document = LoadConfigurationFile (_configurationFile, new SchemaLoader (schemaType), schemaNamespace.Uri);
+      _document = LoadConfigurationFile (_configurationFile, schemaLoader, schemaNamespace.Uri);
       _namespaceManager = new ConfigurationNamespaceManager (_document, new PrefixNamespace[] { schemaNamespace });
     }
 

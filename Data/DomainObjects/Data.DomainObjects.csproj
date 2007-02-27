@@ -391,8 +391,8 @@
     <Compile Include="ReflectionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Schemas\TypesSchemaLoader.cs" />
     <Compile Include="Schemas\SchemaLoader.cs" />
-    <Compile Include="Schemas\SchemaType.cs" />
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -404,13 +404,7 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Data.DomainObjects.build" />
-    <EmbeddedResource Include="Schemas\Mapping.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Schemas\Queries.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Schemas\StorageProviders.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Schemas\Types.xsd">

@@ -38,10 +38,17 @@
     <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\RelationDefinitionLoader.cs" />
     <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\StorageProviderConfigurationLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\LegacySchemaLoader.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data.DomainObjects.Legacy.build" />
+    <EmbeddedResource Include="Schemas\Mapping.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\StorageProviders.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
