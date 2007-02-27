@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Schemas;
@@ -39,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
             configurationFile,
             LegacySchemaLoader.Mapping,
             resolveTypes,
-            PrefixNamespace.MappingNamespace);
+            LegacyPrefixNamespace.MappingNamespace);
       }
       catch (ConfigurationException e)
       {

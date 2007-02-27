@@ -3,6 +3,7 @@ using System.Xml;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -36,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       XmlDocument mappingDocument = new XmlDocument ();
       mappingDocument.Load ("MappingWithResolvedTypes.xml");
 
-      PrefixNamespace[] namespaces = new PrefixNamespace[] { PrefixNamespace.MappingNamespace };
+      PrefixNamespace[] namespaces = new PrefixNamespace[] { LegacyPrefixNamespace.MappingNamespace };
       ConfigurationNamespaceManager namespaceManager = new ConfigurationNamespaceManager (mappingDocument, namespaces);
 
       ClassDefinitionLoader classLoader = new ClassDefinitionLoader (mappingDocument, namespaceManager, true);

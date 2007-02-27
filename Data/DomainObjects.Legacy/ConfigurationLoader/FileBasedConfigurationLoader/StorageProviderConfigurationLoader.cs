@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Schemas;
@@ -38,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
             configurationFile,
             LegacySchemaLoader.StorageProviders, 
             true,
-            PrefixNamespace.StorageProviderConfigurationNamespace);
+            LegacyPrefixNamespace.StorageProviderConfigurationNamespace);
 
       }
       catch (ConfigurationException e)
@@ -109,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
 
     private string FormatXPath (string xPath)
     {
-      return NamespaceManager.FormatXPath (xPath, PrefixNamespace.StorageProviderConfigurationNamespace.Uri);
+      return NamespaceManager.FormatXPath (xPath, LegacyPrefixNamespace.StorageProviderConfigurationNamespace.Uri);
     }
 
     private StorageProviderConfigurationException CreateStorageProviderConfigurationException (

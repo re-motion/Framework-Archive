@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -56,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
 
     private string FormatXPath (string xPath)
     {
-      return _namespaceManager.FormatXPath (xPath, PrefixNamespace.MappingNamespace.Uri);
+      return _namespaceManager.FormatXPath (xPath, LegacyPrefixNamespace.MappingNamespace.Uri);
     }
 
     private void CheckEndPoints ()

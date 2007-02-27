@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</ProjectGuid>
+    <ProjectGuid>{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Data.DomainObjects.Legacy</RootNamespace>
-    <AssemblyName>Rubicon.Data.DomainObjects.Legacy</AssemblyName>
+    <RootNamespace>Rubicon.Data.DomainObjects.Legacy.UnitTests</RootNamespace>
+    <AssemblyName>Rubicon.Data.DomainObjects.Legacy.UnitTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,38 +28,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\ClassDefinitionLoader.cs" />
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\MappingLoader.cs" />
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\LegacyPrefixNamespace.cs" />
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\RelationDefinitionLoader.cs" />
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\StorageProviderConfigurationLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schemas\LegacySchemaLoader.cs" />
+    <Compile Include="Schemas\LegacySchemaLoaderTest.cs" />
+    <None Include="Data.DomainObjects.Legacy.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data.DomainObjects.Legacy.build" />
-    <EmbeddedResource Include="Schemas\Mapping.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Schemas\StorageProviders.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
+      <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
+      <Name>Data.DomainObjects.Legacy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Data.DomainObjects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\Mapping\TestMappings\" />
+    <Folder Include="Configuration\StorageProviders\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

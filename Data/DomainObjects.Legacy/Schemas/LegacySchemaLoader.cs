@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.Legacy.Schemas
@@ -9,10 +10,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.Schemas
     // types
 
     // static members and constants
-    public static readonly SchemaLoader Mapping = new LegacySchemaLoader ("Mapping.xsd", PrefixNamespace.MappingNamespace.Uri);
+    public static readonly SchemaLoader Mapping = new LegacySchemaLoader ("Mapping.xsd", LegacyPrefixNamespace.MappingNamespace.Uri);
 
     public static readonly SchemaLoader StorageProviders =
-        new LegacySchemaLoader ("StorageProviders.xsd", PrefixNamespace.StorageProviderConfigurationNamespace.Uri);
+        new LegacySchemaLoader ("StorageProviders.xsd", LegacyPrefixNamespace.StorageProviderConfigurationNamespace.Uri);
 
     // member fields
 

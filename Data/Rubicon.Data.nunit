@@ -1,0 +1,7 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="DomainObjects.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.UnitTests.dll" />
+    <assembly path="DomainObjects.Legacy.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.Legacy.UnitTests.dll" />
+  </Config>
+</NUnitProject>

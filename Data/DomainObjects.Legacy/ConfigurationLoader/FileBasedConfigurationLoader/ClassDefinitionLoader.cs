@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -27,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
       ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
 
       string xPath = namespaceManager.FormatXPath (
-          "{0}:mapping/{0}:classes/{0}:class", PrefixNamespace.MappingNamespace.Uri);
+          "{0}:mapping/{0}:classes/{0}:class", LegacyPrefixNamespace.MappingNamespace.Uri);
     
       XmlNodeList classNodeList = document.SelectNodes (xPath, namespaceManager);
       if (classNodeList == null) throw CreateMappingException ("No class nodes were found in provided document.");
@@ -47,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationL
 
     private string FormatXPath (string xPath)
     {
-      return _namespaceManager.FormatXPath (xPath, PrefixNamespace.MappingNamespace.Uri);
+      return _namespaceManager.FormatXPath (xPath, LegacyPrefixNamespace.MappingNamespace.Uri);
     }
 
     public ClassDefinitionCollection GetClassDefinitions ()
