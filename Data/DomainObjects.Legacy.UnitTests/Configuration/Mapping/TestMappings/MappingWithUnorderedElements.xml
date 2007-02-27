@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\..\..\DomainObjects\Schemas\Mapping.xsd">
+  <classes>
+    <!-- Note: The subelements of class are unordered. -->
+    <class id="Customer">
+      <properties>
+        <!-- Note: The subelements of property are unordered. -->
+        <property name="CustomerSince">
+          <type>dateTime</type>
+          <column>CustomerSince</column>
+          <nullable>true</nullable>
+        </property>
+        <property name="Type">
+          <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+          <column>CustomerType</column>
+        </property>
+        <relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
+          <collectionType>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.Legacy.UnitTests</collectionType>
+          <sortExpression>OrderNo asc</sortExpression>
+        </relationProperty>
+      </properties>
+      <storageProviderID>TestDomain</storageProviderID>
+      <entity name="Company"/>
+      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+    </class>
+    <class id="Order">
+      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <entity name="Order"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="OrderNumber">
+          <type>int32</type>
+          <column>OrderNo</column>
+        </property>
+        <property name="DeliveryDate">
+          <type>dateTime</type>
+          <column>DeliveryDate</column>
+        </property>
+        <relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
+          <column>CustomerID</column>
+        </relationProperty>
+        <relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true"/>
+        <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true"/>
+        <relationProperty name="Official" relationID="OfficialToOrder" cardinality="one" isMandatory="true">
+          <column>OfficialID</column>
+          <oppositeClass>Official</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="Official">
+      <type>Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.Legacy.UnitTests</type>
+      <entity name="Official"/>
+      <storageProviderID>UnitTestStorageProviderStub</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+      </properties>
+    </class>
+  </classes>
+</mapping>

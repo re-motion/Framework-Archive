@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
+  [Ignore]
   public class ClassDefinitionTest : TableInheritanceMappingTest
   {
     // types

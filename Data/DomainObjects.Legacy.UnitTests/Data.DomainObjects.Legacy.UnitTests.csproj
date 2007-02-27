@@ -37,8 +37,119 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Mapping\ClassDefinitionChecker.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionCollectionTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypesTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionFactory.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypesTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypesTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassDefinitionWithNullEndPointTest.cs" />
+    <Compile Include="Configuration\Mapping\ConstructionOfRelationDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\ConstructionOfRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\ConstructionOfVirtualRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs" />
+    <Compile Include="Configuration\Mapping\MappingLoaderTest.cs" />
+    <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs" />
+    <Compile Include="Configuration\Mapping\PropertyDefinitionFactory.cs" />
+    <Compile Include="Configuration\Mapping\PropertyDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionChecker.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionCollectionTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypesTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypesTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs" />
+    <Compile Include="Configuration\Mapping\TypeInfoTest.cs" />
+    <Compile Include="Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
+    <Compile Include="Configuration\StorageProviders\StorageProviderDefinitionChecker.cs" />
+    <Compile Include="DatabaseTest.cs" />
+    <Compile Include="Database\StandardMappingTestDataLoader.cs" />
+    <Compile Include="Database\TestDataLoader.cs" />
+    <Compile Include="EventReceiver\EventReceiverBase.cs" />
+    <Compile Include="EventReceiver\EventReceiverCancelException.cs" />
+    <Compile Include="EventReceiver\PropertyDefinitionCollectionEventReceiver.cs" />
+    <Compile Include="Factories\DomainObjectIDs.cs" />
+    <Compile Include="Factories\StorageProviderDefinitionFactory.cs" />
+    <Compile Include="Factories\TestMappingConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Schemas\LegacySchemaLoaderTest.cs" />
+    <Compile Include="StandardMappingTest.cs" />
+    <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs" />
+    <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
+    <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs" />
+    <Compile Include="TableInheritance\DataContainerFactoryTest.cs" />
+    <Compile Include="TableInheritance\DomainObjectIDs.cs" />
+    <Compile Include="TableInheritance\DomainObjectTest.cs" />
+    <Compile Include="TableInheritance\IntegrationTest.cs" />
+    <Compile Include="TableInheritance\MappingConfigurationTest.cs" />
+    <Compile Include="TableInheritance\ObjectIDTest.cs" />
+    <Compile Include="TableInheritance\SelectCommandBuilderTest.cs" />
+    <Compile Include="TableInheritance\SqlProviderBaseTest.cs" />
+    <Compile Include="TableInheritance\SqlProviderTest.cs" />
+    <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\AbstractBaseClassWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\AbstractClassWithoutDerivations.cs" />
+    <Compile Include="TableInheritance\TestDomain\Address.cs" />
+    <Compile Include="TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs" />
+    <Compile Include="TableInheritance\TestDomain\Client.cs" />
+    <Compile Include="TableInheritance\TestDomain\Customer.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityFromBaseClassWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs" />
+    <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />
+    <Compile Include="TableInheritance\TestDomain\File.cs" />
+    <Compile Include="TableInheritance\TestDomain\FileSystemItem.cs" />
+    <Compile Include="TableInheritance\TestDomain\Folder.cs" />
+    <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs" />
+    <Compile Include="TableInheritance\TestDomain\Order.cs" />
+    <Compile Include="TableInheritance\TestDomain\OrganizationalUnit.cs" />
+    <Compile Include="TableInheritance\TestDomain\Person.cs" />
+    <Compile Include="TableInheritance\TestDomain\Region.cs" />
+    <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs" />
+    <Compile Include="TableInheritance\ValueConverterTest.cs" />
+    <Compile Include="TestDomain\Ceo.cs" />
+    <Compile Include="TestDomain\ClassNotDerivedFromDomainObject.cs" />
+    <Compile Include="TestDomain\ClassNotInMapping.cs" />
+    <Compile Include="TestDomain\ClassWithAllDataTypes.cs" />
+    <Compile Include="TestDomain\ClassWithGuidKey.cs" />
+    <Compile Include="TestDomain\ClassWithInvalidRelation.cs" />
+    <Compile Include="TestDomain\ClassWithKeyOfInvalidType.cs" />
+    <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
+    <Compile Include="TestDomain\ClassWithoutClassIDColumn.cs" />
+    <Compile Include="TestDomain\ClassWithoutIDColumn.cs" />
+    <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumn.cs" />
+    <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumnAndDerivation.cs" />
+    <Compile Include="TestDomain\ClassWithoutTimestampColumn.cs" />
+    <Compile Include="TestDomain\ClassWithRelatedClassIDColumnAndNoInheritance.cs" />
+    <Compile Include="TestDomain\ClassWithValidRelations.cs" />
+    <Compile Include="TestDomain\Client.cs" />
+    <Compile Include="TestDomain\Company.cs" />
+    <Compile Include="TestDomain\Computer.cs" />
+    <Compile Include="TestDomain\Customer.cs" />
+    <Compile Include="TestDomain\Distributor.cs" />
+    <Compile Include="TestDomain\Employee.cs" />
+    <Compile Include="TestDomain\File.cs" />
+    <Compile Include="TestDomain\FileSystemItem.cs" />
+    <Compile Include="TestDomain\Folder.cs" />
+    <Compile Include="TestDomain\IndustrialSector.cs" />
+    <Compile Include="TestDomain\Location.cs" />
+    <Compile Include="TestDomain\Official.cs" />
+    <Compile Include="TestDomain\Order.cs" />
+    <Compile Include="TestDomain\OrderCollection.cs" />
+    <Compile Include="TestDomain\OrderItem.cs" />
+    <Compile Include="TestDomain\OrderTicket.cs" />
+    <Compile Include="TestDomain\Partner.cs" />
+    <Compile Include="TestDomain\Person.cs" />
+    <Compile Include="TestDomain\SpecialOfficial.cs" />
+    <Compile Include="TestDomain\Supplier.cs" />
+    <Compile Include="TestDomain\TestDomainBase.cs" />
+    <Compile Include="UnitTestStorageProviderStub.cs" />
+    <Compile Include="UnitTestStorageProviderStubDefinition.cs" />
     <None Include="Data.DomainObjects.Legacy.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>
@@ -57,8 +168,62 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\Mapping\TestMappings\" />
-    <Folder Include="Configuration\StorageProviders\" />
+    <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithCollectionTypeAndOneToOneRelation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithColumnAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnNameAndRelationProperty.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivationAcrossStorageProviders.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidNamespace.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithMoreThanTwoEndPoints.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithNonExistingBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOnlyOneEndPoint.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndTwoRelationProperties.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassReferringToItself.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithoutColumnElement.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInTwoBaseClasses.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithRelationAndIdenticalPropertyNames.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithResolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithSchemaException.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithXmlException.xml" />
+    <Content Include="Database\CreateDB.sql" />
+    <Content Include="Database\CreateTableInheritanceTestData.sql" />
+    <Content Include="Database\CreateTestData.sql" />
+    <Content Include="Database\SetupDB.sql" />
+    <Content Include="Mapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MappingWithMinimumData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProviders.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersForLoaderTest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersWithInvalidNamespace.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersWithSchemaException.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersWithXmlException.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
+    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
+    <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
+    <EmbeddedResource Include="Resources\Image2.png" />
+    <EmbeddedResource Include="Resources\Image1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -68,4 +233,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
+copy "$(ProjectDir)TableInheritance\*.xml" "$(TargetDir)"
+copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

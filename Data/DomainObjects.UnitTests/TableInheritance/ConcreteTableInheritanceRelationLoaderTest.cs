@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
+  [Ignore]
   public class ConcreteTableInheritanceRelationLoaderTest : SqlProviderBaseTest
   {
     // types

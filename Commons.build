@@ -158,7 +158,8 @@
   </target>
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
-      Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, Data.DomainObjects.CodeGenerator.UnitTests, 
+      Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
+      Data.DomainObjects.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests,
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
@@ -472,6 +473,41 @@
     <property name="project.name" value="Data.DomainObjects.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+
+    <if test="${build.step.run-tests}">
+
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\CreateDB.sql" />
+      </exec>
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\SetupDB.sql" />
+      </exec>
+
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+
+    </if>
+  </target>
+
+  <target name="Data.DomainObjects.Legacy.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Data.DomainObjects" cascade="false"/>
+    <call target="Data.DomainObjects.Legacy" cascade="false"/>
+
+    <property name="project.name" value="Data.DomainObjects.Legacy.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
 

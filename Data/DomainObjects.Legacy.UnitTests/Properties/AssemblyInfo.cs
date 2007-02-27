@@ -7,7 +7,7 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Unit Tests for Rubicon DomainObjects Library")]
+[assembly: AssemblyTitle ("Unit Tests for Rubicon DomainObjects Library (Legacy implementations)")]
 [assembly: AssemblyDescription("Unit Tests for Rubicon DomainObjects Library")]
 [assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]

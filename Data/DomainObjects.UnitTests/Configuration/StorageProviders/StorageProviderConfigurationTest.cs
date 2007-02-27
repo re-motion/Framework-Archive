@@ -26,39 +26,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     // methods and properties
 
     [Test]
+    [Ignore]
     public void Loading ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
+      //StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
 
-      StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
-      StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
+      //StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
+      //StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
 
-      StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
-      checker.Check (expectedProviders, actualProviders);
+      //StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
+      //checker.Check (expectedProviders, actualProviders);
     }
 
     [Test]
+    [Ignore]
     public void IStorageProviderConfigurationLoader_Loading ()
     {
-      IStorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
+      //IStorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
 
-      StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
-      StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
+      //StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
+      //StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
 
-      StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
-      checker.Check (expectedProviders, actualProviders);
+      //StorageProviderDefinitionChecker checker = new StorageProviderDefinitionChecker ();
+      //checker.Check (expectedProviders, actualProviders);
     }
 
     [Test]
+    [Ignore]
     public void InitializeWithFileNames ()
     {
       try
       {
-        StorageProviderConfiguration.SetCurrent (StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader(@"StorageProvidersForLoaderTest.xml"));
-        string configurationFile = Path.GetFullPath (@"StorageProvidersForLoaderTest.xml");
+        //StorageProviderConfiguration.SetCurrent (StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader(@"StorageProvidersForLoaderTest.xml"));
+        //string configurationFile = Path.GetFullPath (@"StorageProvidersForLoaderTest.xml");
 
-        Assert.IsNotNull (StorageProviderConfiguration.Current.Loader);
-        Assert.AreEqual (configurationFile, ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).ConfigurationFile);
+        //Assert.IsNotNull (StorageProviderConfiguration.Current.Loader);
+        //Assert.AreEqual (configurationFile, ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).ConfigurationFile);
       }
       finally
       {
@@ -67,9 +70,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     }
 
     [Test]
+    [Ignore]
     public void ApplicationName ()
     {
-      Assert.AreEqual ("UnitTests", ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).GetApplicationName ());
+      //Assert.AreEqual ("UnitTests", ((StorageProviderConfigurationLoader) StorageProviderConfiguration.Current.Loader).GetApplicationName ());
     }
 
     [Test]

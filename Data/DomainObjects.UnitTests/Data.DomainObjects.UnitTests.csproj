@@ -137,12 +137,6 @@
     <Compile Include="Configuration\Mapping\ClassDefinitionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\Mapping\ClassDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -159,9 +153,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\Mapping\MappingLoaderTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs">
@@ -182,12 +173,6 @@
     <Compile Include="Configuration\Mapping\RelationDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\Mapping\RelationDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -195,9 +180,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\RelationEndPointDefinitionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\TypeInfoTest.cs">
@@ -683,32 +665,6 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Data.DomainObjects.UnitTests.build" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithoutColumnElement.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithCollectionTypeAndOneToOneRelation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithColumnAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnNameAndRelationProperty.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivationAcrossStorageProviders.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidNamespace.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithMoreThanTwoEndPoints.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithNonExistingBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOnlyOneEndPoint.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndTwoRelationProperties.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassReferringToItself.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInTwoBaseClasses.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithRelationAndIdenticalPropertyNames.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithResolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithSchemaException.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithXmlException.xml" />
     <Content Include="Database\CreateTableInheritanceTestData.sql" />
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql">
@@ -735,21 +691,6 @@
     <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="StorageProvidersForLoaderTest.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithInvalidNamespace.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithSchemaException.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithXmlException.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
-    <Content Include="TableInheritance\TableInheritanceMapping.xml">
-    </Content>
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
@@ -758,9 +699,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
-copy "$(ProjectDir)TableInheritance\*.xml" "$(TargetDir)"
-copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
+    <PostBuildEvent>copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

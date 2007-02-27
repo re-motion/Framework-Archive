@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
+  [Ignore]
   public class SelectCommandBuilderTest : SqlProviderBaseTest
   {
     // types
