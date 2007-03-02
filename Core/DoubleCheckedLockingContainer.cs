@@ -25,7 +25,7 @@ namespace Rubicon
     /// <summary>Gets or sets the object encapsulated by the <see cref="DoubleCheckedLockingContainer{T}"/>.</summary>
     /// <value>
     /// The object assigned via the set accessor<br />or,<br />
-    /// if the value is null, the object created by the <b>defaultFactory</b> assigned during the initialization of the container.
+    /// if the value is <see langword="null" />, the object created by the <b>defaultFactory</b> assigned during the initialization of the container.
     /// </value>
     public T Value
     {
