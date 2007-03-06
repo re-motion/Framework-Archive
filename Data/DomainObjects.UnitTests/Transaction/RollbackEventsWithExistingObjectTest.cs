@@ -4,6 +4,9 @@ using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -60,13 +63,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 0));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 0));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock);
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 0));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 0));
       }
 
       _mockRepository.ReplayAll ();
@@ -86,20 +89,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _order1);
 
         _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock, _order1);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
       }
 
       _mockRepository.ReplayAll ();
@@ -119,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
         LastCall.Do (new EventHandler (ChangeCustomerNameCallback));
 
         _clientTransactionExtensionMock.PropertyValueChanging (null, null, null, null);
@@ -132,23 +135,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.IgnoreArguments ();
 
         _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1 ));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _order1, _customer1);
 
         _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _customer1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock, _order1, _customer1);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
       }
 
       _mockRepository.ReplayAll ();
@@ -168,10 +171,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _order1);
         LastCall.Do (new ClientTransactionEventHandler (ChangeCustomerNameCallback));
@@ -186,23 +189,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.IgnoreArguments ();
 
         _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_customer1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_customer1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _customer1);
 
         _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _customer1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock, _order1, _customer1);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
       }
 
       _mockRepository.ReplayAll ();
@@ -224,7 +227,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
         LastCall.Do (new EventHandler (ChangeCustomerNameBackToOriginalCallback));
 
         _clientTransactionExtensionMock.PropertyValueChanging (null, null, null, null);
@@ -239,22 +242,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         // Note: Because .NET's event order is not deterministic, Customer1 should raise a RollingBack event.
         //       For further details see comment in ClientTransaction.BeginCommit.
         _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _order1);
 
         _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         // Note: Customer1 must not raise a RolledBack event, because its Name has been set back to the OriginalValue.
 
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock, _order1);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
       }
 
       _mockRepository.ReplayAll ();
@@ -276,13 +279,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_customer1), Mocks_Is.NotNull ());
 
         _clientTransactionExtensionMock.RollingBack (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
 
         _clientTransactionMockEventReceiver.RollingBack (ClientTransactionMock, _order1, _customer1);
         LastCall.Do (new ClientTransactionEventHandler (ChangeCustomerNameBackToOriginalCallback));
@@ -297,14 +300,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.IgnoreArguments ();
 
         _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.NotNull ());
 
         // Note: Customer1 must not raise a RolledBack event, because its Name has been set back to the OriginalValue.
 
         _clientTransactionMockEventReceiver.RolledBack (ClientTransactionMock, _order1);
 
         _clientTransactionExtensionMock.RolledBack (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (_order1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (_order1));
       }
 
       _mockRepository.ReplayAll ();

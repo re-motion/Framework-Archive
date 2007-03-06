@@ -7,6 +7,9 @@ using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Configuration;
 using Rubicon.Security.UnitTests.MockConstraints;
 using Rubicon.Security.UnitTests.SampleDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -65,9 +68,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (true).Constraints (
           new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
-          Is.Same (_stubSecurityProvider),
-          Is.Same (_user),
-          List.Equal (_accessTypeResult));
+          Mocks_Is.Same (_stubSecurityProvider),
+          Mocks_Is.Same (_user),
+          Mocks_List.Equal (_accessTypeResult));
       _mocks.ReplayAll();
 
       bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityProvider, _user, _accessTypeResult);
@@ -81,9 +84,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (false).Constraints (
           new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
-          Is.Same (_stubSecurityProvider),
-          Is.Same (_user),
-          List.Equal (_accessTypeResult));
+          Mocks_Is.Same (_stubSecurityProvider),
+          Mocks_Is.Same (_user),
+          Mocks_List.Equal (_accessTypeResult));
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _stubSecurityProvider, _user, _accessTypeResult);

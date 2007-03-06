@@ -53,7 +53,7 @@ public class StorageProviderConfiguration
   [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
   public static StorageProviderConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile)
   {
-    Type loaderType = Type.GetType ("Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader.StorageProviderConfigurationLoader, Rubicon.Data.DomainObjects.Legacy", true, false);
+    Type loaderType = TypeUtility.GetType ("Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.FileBasedConfigurationLoader.StorageProviderConfigurationLoader", true, false);
     IStorageProviderConfigurationLoader loader = (IStorageProviderConfigurationLoader) Activator.CreateInstance (loaderType, configurationFile);
     return new StorageProviderConfiguration (loader);
   }

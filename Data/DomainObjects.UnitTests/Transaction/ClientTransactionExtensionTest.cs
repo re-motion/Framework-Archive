@@ -7,6 +7,9 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -68,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ObjectsLoaded ()
     {
       _extension.ObjectsLoaded (null);
-      LastCall.Constraints (Property.Value ("Count", 1));
+      LastCall.Constraints (Mocks_Property.Value ("Count", 1));
 
       _mockRepository.ReplayAll ();
 
@@ -81,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ObjectsLoadedWithRelations ()
     {
       _extension.ObjectsLoaded (null);
-      LastCall.Constraints (Property.Value ("Count", 1));
+      LastCall.Constraints (Mocks_Property.Value ("Count", 1));
 
       _mockRepository.ReplayAll ();
 
@@ -99,10 +102,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1));
 
         clientTransactionEventReceiver.Loaded (null, null);
-        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
       }
 
       _mockRepository.ReplayAll ();
@@ -185,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           orderItem2MockEventReceiver.RelationChanging (orderItem2, "Order", _order1, null);
           officialMockEventReceiver.RelationChanging (official, "Orders", _order1, null);
           officialOrdersMockEventReceiver.Removing (officialOrders, _order1);
-          LastCall.Constraints (Is.Same (officialOrders), Property.Value ("DomainObject", _order1));
+          LastCall.Constraints (Mocks_Is.Same (officialOrders), Mocks_Property.Value ("DomainObject", _order1));
         }
 
         using (_mockRepository.Unordered ())
@@ -493,10 +496,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
 
         LastCall.Constraints (
-            Is.Same (_order1),
-            Is.Equal ("OrderItems"),
-            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (orderItems[0]) & List.IsIn (orderItems[1]),
-            Is.Equal (ValueAccess.Current));
+            Mocks_Is.Same (_order1),
+            Mocks_Is.Equal ("OrderItems"),
+            Mocks_Property.Value ("IsReadOnly", true) & Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (orderItems[0]) & Mocks_List.IsIn (orderItems[1]),
+            Mocks_Is.Equal (ValueAccess.Current));
       }
 
       _mockRepository.ReplayAll ();
@@ -518,10 +521,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Original);
 
         LastCall.Constraints (
-            Is.Same (_order1),
-            Is.Equal ("OrderItems"),
-            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (originalOrderItems[0]) & List.IsIn (originalOrderItems[1]),
-            Is.Equal (ValueAccess.Original));
+            Mocks_Is.Same (_order1),
+            Mocks_Is.Equal ("OrderItems"),
+            Mocks_Property.Value ("IsReadOnly", true) & Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (originalOrderItems[0]) & Mocks_List.IsIn (originalOrderItems[1]),
+            Mocks_Is.Equal (ValueAccess.Original));
       }
 
       _mockRepository.ReplayAll ();
@@ -538,9 +541,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Current);
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1));
         _extension.RelationRead (null, null, (DomainObject) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderTicket"), Is.NotNull (), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderTicket"), Mocks_Is.NotNull (), Mocks_Is.Equal (ValueAccess.Current));
       }
       _mockRepository.ReplayAll ();
 
@@ -556,9 +559,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Is.NotNull (), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Is.NotNull (), Mocks_Is.Equal (ValueAccess.Current));
       }
       _mockRepository.ReplayAll ();
 
@@ -574,9 +577,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Original);
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 1));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1));
         _extension.RelationRead (null, null, (DomainObject) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderTicket"), Is.NotNull (), Is.Equal (ValueAccess.Original));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderTicket"), Mocks_Is.NotNull (), Mocks_Is.Equal (ValueAccess.Original));
       }
       _mockRepository.ReplayAll ();
 
@@ -592,9 +595,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Original);
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Is.NotNull (), Is.Equal (ValueAccess.Original));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Is.NotNull (), Mocks_Is.Equal (ValueAccess.Original));
       }
       _mockRepository.ReplayAll ();
 
@@ -613,7 +616,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.BackToRecord (_extension);
 
       _extension.FilterQueryResult (null, null);
-      LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+      LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
 
       _mockRepository.ReplayAll ();
 
@@ -631,9 +634,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
         _extension.FilterQueryResult (null, null);
-        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
       }
 
       _mockRepository.ReplayAll ();
@@ -657,18 +660,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
         filteringExtension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
         lastExtension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2));
 
         _extension.FilterQueryResult (null, null);
-        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
         filteringExtension.FilterQueryResult (null, null);
-        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query)).CallOriginalMethod ();
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query)).CallOriginalMethod ();
         lastExtension.FilterQueryResult (null, null);
-        LastCall.Constraints (Property.Value ("Count", 1), Is.Same (query));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1), Mocks_Is.Same (query));
       }
 
       _mockRepository.ReplayAll ();
@@ -689,9 +692,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
         _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
       }
 
       _mockRepository.ReplayAll ();
@@ -712,9 +715,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (computer) & Mocks_List.IsIn (employee));
         _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (computer) & Mocks_List.IsIn (employee));
       }
 
       _mockRepository.ReplayAll ();
@@ -735,9 +738,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 3) & Mocks_List.IsIn (_order1) & Mocks_List.IsIn (newCustomer) & Mocks_List.IsIn (oldCustomer));
         _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 3) & Mocks_List.IsIn (_order1) & Mocks_List.IsIn (newCustomer) & Mocks_List.IsIn (oldCustomer));
       }
 
       _mockRepository.ReplayAll ();
@@ -764,18 +767,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         computerEventReveiver.Committing (computer, EventArgs.Empty);
 
         _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
 
         clientTransactionMockEventReceiver.Committing (null, null);
-        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
 
         computerEventReveiver.Committed (computer, EventArgs.Empty);
 
         clientTransactionMockEventReceiver.Committed (null, null);
-        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
 
         _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
       }
 
       _mockRepository.ReplayAll ();
@@ -818,10 +821,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RollingBack (null);
-        LastCall.Constraints (List.IsIn (computer));
+        LastCall.Constraints (Mocks_List.IsIn (computer));
 
         _extension.RolledBack (null);
-        LastCall.Constraints (List.IsIn (computer));
+        LastCall.Constraints (Mocks_List.IsIn (computer));
       }
 
       _mockRepository.ReplayAll ();

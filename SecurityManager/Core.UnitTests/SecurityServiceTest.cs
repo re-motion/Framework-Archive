@@ -13,6 +13,9 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.UnitTests.Domain;
 using Rubicon.SecurityManager.UnitTests.TestDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -99,12 +102,12 @@ namespace Rubicon.SecurityManager.UnitTests
       SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
 
       Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_transaction, _ace)).Constraints (
-          Is.NotNull(), 
-          Is.Same (_context));
+          Mocks_Is.NotNull (),
+          Mocks_Is.Same (_context));
       Expect.Call (_mockTokenBuilder.CreateToken (null, null, null)).Return (token).Constraints (
-          Is.NotNull(), 
-          Is.Same (_principal), 
-          Is.Same (_context));
+          Mocks_Is.NotNull (),
+          Mocks_Is.Same (_principal),
+          Mocks_Is.Same (_context));
 
       _mocks.ReplayAll ();
 

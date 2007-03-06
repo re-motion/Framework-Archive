@@ -1,6 +1,9 @@
 using System;
 using Rhino.Mocks;
 using Rubicon.Utilities;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -56,10 +59,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       RelationChanging (null, null);
 
       LastCall.Constraints (
-          Is.Same (sender),
-          Property.Value ("PropertyName", propertyName)
-          & Property.Value ("OldRelatedObject", oldRelatedObject)
-          & Property.Value ("NewRelatedObject", newRelatedObject));
+          Mocks_Is.Same (sender),
+          Mocks_Property.Value ("PropertyName", propertyName)
+          & Mocks_Property.Value ("OldRelatedObject", oldRelatedObject)
+          & Mocks_Property.Value ("NewRelatedObject", newRelatedObject));
     }
 
     public void RelationChanged (object sender, string propertyName)
@@ -67,8 +70,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       RelationChanged (null, (RelationChangedEventArgs) null);
 
       LastCall.Constraints (
-          Is.Same (sender),
-          Property.Value ("PropertyName", propertyName));
+          Mocks_Is.Same (sender),
+          Mocks_Property.Value ("PropertyName", propertyName));
     }
   }
 }

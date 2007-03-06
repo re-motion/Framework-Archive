@@ -5,6 +5,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data;
 using Rubicon.Web.ExecutionEngine;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -94,8 +97,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _mockWxeTransaction.Execute (CurrentWxeContext);
       _mockEventSink.Handler (null, (WxeTransactedFunctionEventArgs<ITransaction>) null);
       LastCall.Constraints (
-          Is.Same (_wxeTransactedFunction), 
-          Is.NotNull () & Property.Value ("Transaction", _mockTransaction));
+          Mocks_Is.Same (_wxeTransactedFunction),
+          Mocks_Is.NotNull () & Mocks_Property.Value ("Transaction", _mockTransaction));
       _mocks.ReplayAll ();
       _wxeTransactedFunction.Execute (CurrentWxeContext);
 

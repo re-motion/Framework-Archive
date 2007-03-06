@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
     public static MappingConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile, bool resolveTypes)
     {
-      Type mappingLoaderType = Type.GetType ("Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader.MappingLoader, Rubicon.Data.DomainObjects.Legacy", true, false);
+      Type mappingLoaderType = TypeUtility.GetType ("Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.FileBasedConfigurationLoader.MappingLoader", true, false);
       IMappingLoader mappingLoader = (IMappingLoader) Activator.CreateInstance (mappingLoaderType, configurationFile, resolveTypes);
       return new MappingConfiguration (mappingLoader);
     }

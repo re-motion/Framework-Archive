@@ -2,6 +2,9 @@ using System;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Utilities;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -41,9 +44,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       RollingBack (null, (ClientTransactionEventArgs) null);
 
       LastCall.Constraints (
-          Is.Same (sender), 
-          Property.ValueConstraint ("DomainObjects", 
-              Property.Value ("Count", domainObjects.Length)
+          Mocks_Is.Same (sender),
+          Mocks_Property.ValueConstraint ("DomainObjects",
+              Mocks_Property.Value ("Count", domainObjects.Length)
               & new ContainsConstraint (domainObjects)));
     }
 
@@ -52,9 +55,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       RolledBack (null, (ClientTransactionEventArgs) null);
 
       LastCall.Constraints (
-          Is.Same (sender),
-          Property.ValueConstraint ("DomainObjects",
-              Property.Value ("Count", domainObjects.Length)
+          Mocks_Is.Same (sender),
+          Mocks_Property.ValueConstraint ("DomainObjects",
+              Mocks_Property.Value ("Count", domainObjects.Length)
               & new ContainsConstraint (domainObjects)));
     }
   }

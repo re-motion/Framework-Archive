@@ -4,6 +4,9 @@ using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -335,7 +338,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (orderItem, "Order", _order1, null);
         _extension.RelationChanging (_order1, "OrderItems", orderItem, null);
@@ -372,7 +375,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (orderItem, "Order", null, _order1);
         _extension.RelationChanging (_order1, "OrderItems", null, orderItem);
@@ -412,7 +415,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
         _extension.RelationChanging (_order1, "OrderItems", null, newOrderItem);
@@ -476,7 +479,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
         _extension.RelationChanging (newOrderItem, "Order", null, _order1);
@@ -526,7 +529,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
         _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);

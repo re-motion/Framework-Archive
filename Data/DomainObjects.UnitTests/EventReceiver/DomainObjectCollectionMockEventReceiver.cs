@@ -1,6 +1,9 @@
 using System;
 using Rhino.Mocks;
 using Rubicon.Utilities;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -34,25 +37,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     public void Adding (object sender, DomainObject domainObject)
     {
       Adding (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Is.Same (sender), Property.Value ("DomainObject", domainObject));
+      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
     }
 
     public void Added (object sender, DomainObject domainObject)
     {
       Added (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Is.Same (sender), Property.Value ("DomainObject", domainObject));
+      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
     }
 
     public void Removing (object sender, DomainObject domainObject)
     {
       Removing (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Is.Same (sender), Property.Value ("DomainObject", domainObject));
+      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
     }
 
     public void Removed (object sender, DomainObject domainObject)
     {
       Removed (null, (DomainObjectCollectionChangeEventArgs) null);
-      LastCall.Constraints (Is.Same (sender), Property.Value ("DomainObject", domainObject));
+      LastCall.Constraints (Mocks_Is.Same (sender), Mocks_Property.Value ("DomainObject", domainObject));
     }
   }
 }

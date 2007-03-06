@@ -7,6 +7,9 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Mocks_Is = Rhino.Mocks.Is;
+using Mocks_List = Rhino.Mocks.List;
+using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -165,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         //newCustomer1.Orders.Add (newOrder1);
         extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
         extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 0), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 0), Mocks_Is.Equal (ValueAccess.Current));
 
         extension.RelationChanging (newOrder1, "Customer", null, newCustomer1);
         extension.RelationChanging (newCustomer1, "Orders", null, newOrder1);
@@ -190,7 +193,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         //newCustomer1.Orders.Add (newOrder2);
         extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
         extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 1) & List.IsIn (newOrder1), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (newOrder1), Mocks_Is.Equal (ValueAccess.Current));
 
         extension.RelationChanging (newOrder2, "Customer", null, newCustomer1);
         extension.RelationChanging (newCustomer1, "Orders", null, newOrder2);
@@ -215,7 +218,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         //newCustomer1.Orders.Remove (newOrder2);
         extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
         extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 2) & List.IsIn (newOrder1) & List.IsIn (newOrder2), Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Equal ("Orders"), Mocks_Property.Value ("Count", 2) & Mocks_List.IsIn (newOrder1) & Mocks_List.IsIn (newOrder2), Mocks_Is.Equal (ValueAccess.Current));
 
         extension.RelationChanging (newOrder2, "Customer", newCustomer1, null);
         extension.RelationChanging (newCustomer1, "Orders", newOrder2, null);
@@ -264,7 +267,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
         newOrderItem2EventReceiver.RelationChanged (newOrderItem2, "Order");
         newOrder1OrderItemsEventReceiver.Added (newOrder1OrderItems, newOrderItem2);
-        LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem2));
+        LastCall.Constraints (Mocks_Is.Same (newOrder1OrderItems), Mocks_Property.Value ("DomainObject", newOrderItem2));
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderItems");
 
 
@@ -325,15 +328,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         extension.NewObjectCreating (typeof (OrderTicket));
 
         extension.RelationChanging (null, null, null, null);
-        LastCall.Constraints (Is.TypeOf<OrderTicket> (), Is.Equal ("Order"), Is.Null (), Is.Same (newOrder1));
+        LastCall.Constraints (Mocks_Is.TypeOf<OrderTicket> (), Mocks_Is.Equal ("Order"), Mocks_Is.Null (), Mocks_Is.Same (newOrder1));
         extension.RelationChanging (null, null, null, null);
-        LastCall.Constraints (Is.Same (newOrder1), Is.Equal ("OrderTicket"), Is.Null (), Is.TypeOf<OrderTicket> ());
+        LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Is.Equal ("OrderTicket"), Mocks_Is.Null (), Mocks_Is.TypeOf<OrderTicket> ());
 
         newOrder1EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.ValueConstraint ("NewRelatedObject", Is.TypeOf<OrderTicket> ()));
+        LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Property.Value ("PropertyName", "OrderTicket") & Mocks_Property.Value ("OldRelatedObject", null) & Mocks_Property.ValueConstraint ("NewRelatedObject", Mocks_Is.TypeOf<OrderTicket> ()));
 
         extension.RelationChanged (null, null);
-        LastCall.Constraints (Is.TypeOf<OrderTicket> (), Is.Equal ("Order"));
+        LastCall.Constraints (Mocks_Is.TypeOf<OrderTicket> (), Mocks_Is.Equal ("Order"));
         extension.RelationChanged (newOrder1, "OrderTicket");
 
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderTicket");
@@ -451,7 +454,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         }
 
         newOrder2EventReceiver.Deleting (null, null);
-        LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newOrder2), Mocks_Is.NotNull ());
 
         using (mockRepository.Unordered ())
         {
@@ -479,7 +482,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         }
 
         newOrder2EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newOrder2), Mocks_Is.NotNull ());
 
         //17
         //newOrderTicket1.Order = newOrder1;
@@ -502,12 +505,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         extension.ObjectDeleting (newCustomer2);
 
         newCustomer2EventReceiver.Deleting (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newCustomer2), Mocks_Is.NotNull ());
 
         extension.ObjectDeleted (newCustomer2);
         
         newCustomer2EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newCustomer2), Mocks_Is.NotNull ());
 
 
         //19
@@ -515,12 +518,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         extension.ObjectDeleting (newCeo1);
 
         newCeo1EventReceiver.Deleting (null, null);
-        LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newCeo1), Mocks_Is.NotNull ());
 
         extension.ObjectDeleted (newCeo1);
 
         newCeo1EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newCeo1), Mocks_Is.NotNull ());
 
 
         //20
@@ -528,12 +531,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         extension.ObjectDeleting (newOrderItem1);
 
         newOrderItem1EventReceiver.Deleting (null, null);
-        LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newOrderItem1), Mocks_Is.NotNull ());
 
         extension.ObjectDeleted (newOrderItem1);
 
         newOrderItem1EventReceiver.Deleted (null, null);
-        LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
+        LastCall.Constraints (Mocks_Is.Same (newOrderItem1), Mocks_Is.NotNull ());
 
 
         //21
@@ -541,22 +544,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         using (mockRepository.Unordered ())
         {
           newCustomer1EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (newCustomer1), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.NotNull ());
 
           official2EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (official2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (official2), Mocks_Is.NotNull ());
 
           newCeo2EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (newCeo2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newCeo2), Mocks_Is.NotNull ());
 
           newOrder1EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (newOrder1), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Is.NotNull ());
 
           newOrderItem2EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (newOrderItem2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrderItem2), Mocks_Is.NotNull ());
 
           newOrderTicket1EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrderTicket1), Mocks_Is.NotNull ());
         }
         extension.Committing (null);
         LastCall.Constraints (new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 ));
@@ -564,25 +567,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         using (mockRepository.Unordered ())
         {
           newCustomer1EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (newCustomer1), Is.Anything ());
+          LastCall.Constraints (Mocks_Is.Same (newCustomer1), Mocks_Is.Anything ());
 
           official2EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (official2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (official2), Mocks_Is.NotNull ());
 
           newCeo2EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (newCeo2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newCeo2), Mocks_Is.NotNull ());
 
           newOrder1EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (newOrder1), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrder1), Mocks_Is.NotNull ());
 
           newOrderItem2EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (newOrderItem2), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrderItem2), Mocks_Is.NotNull ());
 
           newOrderTicket1EventReceiver.Committed (null, null);
-          LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
+          LastCall.Constraints (Mocks_Is.Same (newOrderTicket1), Mocks_Is.NotNull ());
         }
         extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 6) & new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 ));
+        LastCall.Constraints (Mocks_Property.Value ("Count", 6) & new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1));
       }
 
       mockRepository.ReplayAll ();

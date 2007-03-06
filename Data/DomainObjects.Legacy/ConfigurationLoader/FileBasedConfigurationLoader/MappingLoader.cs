@@ -2,13 +2,15 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Schemas;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader
+namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader
 {
   public class MappingLoader : BaseFileLoader, IMappingLoader
   {
