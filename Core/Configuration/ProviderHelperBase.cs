@@ -4,10 +4,9 @@ using System.Configuration;
 using System.Configuration.Provider;
 using System.IO;
 using System.Reflection;
-using Rubicon.Configuration;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.Configuration
+namespace Rubicon.Configuration
 {
   /// <summary>Abstract base class for <see cref="ProviderHelperBase{T}"/>.</summary>
   public abstract class ProviderHelperBase
@@ -15,13 +14,13 @@ namespace Rubicon.Security.Configuration
     /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
     public abstract void InitializeProperties (ConfigurationPropertyCollection properties);
 
-    public abstract void PostDeserialze ();
+    public abstract void PostDeserialze();
   }
 
-  /// <summary>Base for helper classes that load specific providers from the <see cref="SecurityConfiguration"/> section.</summary>
-  public abstract class ProviderHelperBase<TProvider> : ProviderHelperBase where TProvider : class
+  /// <summary>Base for helper classes that load specific providers from the <see cref="System.Configuration.ConfigurationSection"/> section.</summary>
+  public abstract class ProviderHelperBase<TProvider>: ProviderHelperBase where TProvider: class
   {
-    private readonly SecurityConfiguration _configuration;
+    private readonly ExtendedConfigurationSection _configurationSection;
     private readonly DoubleCheckedLockingContainer<TProvider> _provider;
     private readonly DoubleCheckedLockingContainer<ProviderCollection> _providers;
     private ConfigurationProperty _providerSettingsProperty;
@@ -30,15 +29,15 @@ namespace Rubicon.Security.Configuration
     /// <summary>
     /// Initializes a new instance of the <see cref="ProviderHelperBase{TProvider}"/> class. 
     /// </summary>
-    /// <param name="configuration">
-    /// The <see cref="SecurityConfiguration"/> holding the <see cref="ProviderSettings"/> 
+    /// <param name="configurationSection">
+    /// The <see cref="System.Configuration.ConfigurationSection"/> holding the <see cref="ProviderSettings"/> 
     /// loaded from the security configuration section for <see cref="Rubicon.Security"/>
     /// </param>
-    protected ProviderHelperBase (SecurityConfiguration configuration)
+    protected ProviderHelperBase (ExtendedConfigurationSection configurationSection)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
 
-      _configuration = configuration;
+      _configurationSection = configurationSection;
       _provider = new DoubleCheckedLockingContainer<TProvider> (delegate { return GetProviderFromConfiguration(); });
       _providers = new DoubleCheckedLockingContainer<ProviderCollection> (delegate { return GetProvidersFromConfiguration(); });
     }
@@ -46,8 +45,6 @@ namespace Rubicon.Security.Configuration
     protected abstract ConfigurationProperty CreateDefaultProviderNameProperty();
 
     protected abstract ConfigurationProperty CreateProviderSettingsProperty();
-
-    protected abstract TProvider CastProviderBaseToProviderType (ProviderBase provider);
 
     /// <summary>Initializes properties and adds them to the given <see cref="ConfigurationPropertyCollection"/>.</summary>
     public override void InitializeProperties (ConfigurationPropertyCollection properties)
@@ -57,8 +54,8 @@ namespace Rubicon.Security.Configuration
       _providerSettingsProperty = CreateProviderSettingsProperty();
       _defaultProviderNameProperty = CreateDefaultProviderNameProperty();
 
-      properties.Add (DefaultProviderNameProperty);
       properties.Add (_providerSettingsProperty);
+      properties.Add (_defaultProviderNameProperty);
     }
 
     public override void PostDeserialze()
@@ -77,19 +74,19 @@ namespace Rubicon.Security.Configuration
       get { return _providers.Value; }
     }
 
-    protected SecurityConfiguration Configuration
+    protected ExtendedConfigurationSection ConfigurationSection
     {
-      get { return _configuration; }
+      get { return _configurationSection; }
     }
 
     protected ProviderSettingsCollection ProviderSettings
     {
-      get { return (ProviderSettingsCollection) Configuration[_providerSettingsProperty]; }
+      get { return (ProviderSettingsCollection) _configurationSection[_providerSettingsProperty]; }
     }
 
     protected string DefaultProviderName
     {
-      get { return (string) Configuration[DefaultProviderNameProperty]; }
+      get { return (string) _configurationSection[DefaultProviderNameProperty]; }
     }
 
     protected ConfigurationProperty DefaultProviderNameProperty
@@ -144,8 +141,8 @@ namespace Rubicon.Security.Configuration
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNull ("property", property);
 
-      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName();
-      AssemblyName realAssemblyName = new AssemblyName (securityAssemblyName.FullName);
+      AssemblyName frameworkAssemblyName = typeof (ExtendedConfigurationSection).Assembly.GetName();
+      AssemblyName realAssemblyName = new AssemblyName (frameworkAssemblyName.FullName);
       realAssemblyName.Name = assemblyName;
 
       return GetType (property, realAssemblyName, typeName);
@@ -165,7 +162,7 @@ namespace Rubicon.Security.Configuration
       {
         throw CreateConfigurationErrorsException (
             e,
-            Configuration.ElementInformation.Properties[property.Name],
+            _configurationSection.ElementInformation.Properties[property.Name],
             "The current value of property '{0}' requires that the assembly '{1}' is placed within the CLR's probing path for this application.",
             property.Name,
             assemblyName.FullName);
@@ -180,13 +177,13 @@ namespace Rubicon.Security.Configuration
       {
         throw CreateConfigurationErrorsException (
             null,
-            Configuration.ElementInformation.Properties[DefaultProviderNameProperty.Name],
+            _configurationSection.ElementInformation.Properties[DefaultProviderNameProperty.Name],
             "The provider '{0}' specified for the {1} does not exist in the providers collection.",
             DefaultProviderName,
             DefaultProviderNameProperty.Name);
       }
 
-      return CastProviderBaseToProviderType (Providers[DefaultProviderName]);
+      return (TProvider) (object) Providers[DefaultProviderName];
     }
 
     private ProviderCollection GetProvidersFromConfiguration()

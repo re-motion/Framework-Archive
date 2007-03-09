@@ -52,6 +52,6 @@ using System.Reflection;
 //
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
-//[assembly: AssemblyKeyFile(@"@keyfile@")]
+[assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699

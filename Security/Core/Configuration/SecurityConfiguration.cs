@@ -9,7 +9,7 @@ namespace Rubicon.Security.Configuration
 {
   /// <summary> The configuration section for <see cref="Rubicon.Security"/>. </summary>
   /// <threadsafety static="true" instance="true">
-  public class SecurityConfiguration : ConfigurationSection
+  public class SecurityConfiguration : ExtendedConfigurationSection
   {
     // types
 
@@ -90,12 +90,6 @@ namespace Rubicon.Security.Configuration
     protected override ConfigurationPropertyCollection Properties
     {
       get { return _properties; }
-    }
-
-    protected internal new object this [ConfigurationProperty property]
-    {
-      get { return base[property]; }
-      set { base[property] = value; }
     }
 
     [Obsolete ("Use SecurityProvider instead. (Version: 1.7.41)")]

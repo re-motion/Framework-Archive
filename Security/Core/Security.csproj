@@ -47,7 +47,6 @@
     <Compile Include="NullSecurityProvider.cs" />
     <Compile Include="Configuration\PermissionProviderHelper.cs" />
     <Compile Include="Configuration\GlobalAccessTypeCacheProviderHelper.cs" />
-    <Compile Include="Configuration\ProviderHelperBase.cs" />
     <Compile Include="Configuration\UserProviderHelper.cs" />
     <Compile Include="FunctionalSecurityContextFactory.cs" />
     <Compile Include="GeneralAccessTypes.cs" />

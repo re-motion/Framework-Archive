@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Configuration.Provider;
+using Rubicon.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
@@ -30,11 +31,6 @@ namespace Rubicon.Security.Configuration
     {
       CheckForDuplicateWellKownProviderName (c_nullGlobalAccessTypeCacheProviderWellKnownName);
       CheckForDuplicateWellKownProviderName (c_revisionBasedGlobalAccessTypeCacheProviderWellKnownName);
-    }
-
-    protected override IGlobalAccessTypeCacheProvider CastProviderBaseToProviderType (ProviderBase provider)
-    {
-      return (IGlobalAccessTypeCacheProvider) provider;
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)

@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
+using Rubicon.Configuration;
 using Rubicon.Security;
 using Rubicon.Utilities;
 
@@ -38,11 +39,6 @@ namespace Rubicon.Security.Configuration
       
       if (DefaultProviderName.Equals (c_securityManagerSecurityProviderWellKnownName, StringComparison.Ordinal))
         EnsureSecurityManagerServiceTypeInitialized();
-    }
-
-    protected override ISecurityProvider CastProviderBaseToProviderType (ProviderBase provider)
-    {
-      return (ISecurityProvider) provider;
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)

@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Configuration.Provider;
+using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
 
@@ -29,11 +30,6 @@ namespace Rubicon.Security.Configuration
     public override void PostDeserialze ()
     {
       CheckForDuplicateWellKownProviderName (c_permissionReflectorWellKnownName);
-    }
-
-    protected override IPermissionProvider CastProviderBaseToProviderType (ProviderBase provider)
-    {
-      return (IPermissionProvider) provider;
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)

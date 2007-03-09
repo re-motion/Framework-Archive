@@ -110,7 +110,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\FakeWellKnownProvider.cs" />
+    <Compile Include="Configuration\IFakeProvider.cs" />
     <Compile Include="Configuration\DerivedSampleType.cs" />
+    <Compile Include="Configuration\FakeProvider.cs" />
+    <Compile Include="Configuration\ProviderHelperBase1Test.cs" />
+    <Compile Include="Configuration\StubExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\StubProviderHelper.cs" />
     <Compile Include="Configuration\TypeElement2Test.cs" />
     <Compile Include="Configuration\DerivedProviderMock.cs" />
     <Compile Include="Configuration\IProvider.cs" />

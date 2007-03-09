@@ -89,7 +89,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\ExtendedProviderBase.cs" />
     <Compile Include="Configuration\ProviderHelper.cs" />
+    <Compile Include="Configuration\ProviderHelperBase.cs" />
     <Compile Include="DoubleCheckedLockingContainer.cs" />
     <Compile Include="INullableObject.cs" />
     <Compile Include="Logging\ILog.cs" />

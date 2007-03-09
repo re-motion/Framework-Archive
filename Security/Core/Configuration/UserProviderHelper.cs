@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Configuration.Provider;
+using Rubicon.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
@@ -36,11 +37,6 @@ namespace Rubicon.Security.Configuration
 
       if (DefaultProviderName.Equals (c_httpContexUserProviderWellKnownName, StringComparison.Ordinal))
         EnsureHttpContextUserProviderTypeInitialized();
-    }
-
-    protected override IUserProvider CastProviderBaseToProviderType (ProviderBase provider)
-    {
-      return (IUserProvider) provider;
     }
 
     protected override void EnsureWellKownProviders (ProviderCollection collection)
