@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ActiveDirectory
+namespace Rubicon
 {
   /// <summary>
   /// This class can be used as a base class for any class that needs to implement <see cref="IDisposable"/>, but does not want to 
