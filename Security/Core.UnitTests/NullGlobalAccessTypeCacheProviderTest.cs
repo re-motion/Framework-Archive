@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
 using Rubicon.Collections;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -22,7 +23,7 @@ namespace Rubicon.Security.UnitTests
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
 
-      NullGlobalAccessTypeCacheProvider provider = new NullGlobalAccessTypeCacheProvider ("Provider", config);
+      ExtendedProviderBase provider = new NullGlobalAccessTypeCacheProvider ("Provider", config);
 
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);

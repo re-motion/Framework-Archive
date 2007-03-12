@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
+using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain;
 
@@ -29,7 +30,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
 
-      PermissionReflector provider = new PermissionReflector ("Provider", config);
+      ExtendedProviderBase provider = new PermissionReflector ("Provider", config);
 
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);

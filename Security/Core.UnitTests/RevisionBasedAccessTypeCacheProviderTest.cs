@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
+using Rubicon.Configuration;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Configuration;
@@ -42,7 +43,7 @@ namespace Rubicon.Security.UnitTests
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
 
-      RevisionBasedAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ("Provider", config);
+      ExtendedProviderBase provider = new RevisionBasedAccessTypeCacheProvider ("Provider", config);
 
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);

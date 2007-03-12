@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Threading;
 using NUnit.Framework;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -36,7 +37,7 @@ namespace Rubicon.Security.UnitTests
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
 
-      ThreadUserProvider provider = new ThreadUserProvider ("Provider", config);
+      ExtendedProviderBase provider = new ThreadUserProvider ("Provider", config);
 
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);

@@ -115,7 +115,7 @@
     <Compile Include="Configuration\IFakeProvider.cs" />
     <Compile Include="Configuration\DerivedSampleType.cs" />
     <Compile Include="Configuration\FakeProvider.cs" />
-    <Compile Include="Configuration\ProviderHelperBase1Test.cs" />
+    <Compile Include="Configuration\ProviderHelperBaseTest.cs" />
     <Compile Include="Configuration\StubExtendedConfigurationSection.cs" />
     <Compile Include="Configuration\StubExtendedProvider.cs" />
     <Compile Include="Configuration\StubProviderHelper.cs" />

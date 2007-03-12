@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
+using Rubicon.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
@@ -13,9 +14,9 @@ namespace Rubicon.Core.UnitTests.Configuration
       NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");
 
-      StubExtendedProvider provider = new StubExtendedProvider ("Stub", config);
+      ExtendedProviderBase provider = new StubExtendedProvider ("Provider", config);
 
-      Assert.AreEqual ("Stub", provider.Name);
+      Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);
     }
   }

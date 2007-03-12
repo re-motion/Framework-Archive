@@ -8,7 +8,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Core.UnitTests.Configuration
 {
   [TestFixture]
-  public class ProviderHelperBase1Test
+  public class ProviderHelperBaseTest
   {
     private StubProviderHelper _providerHelper;
     private ConfigurationPropertyCollection _propertyCollection;
