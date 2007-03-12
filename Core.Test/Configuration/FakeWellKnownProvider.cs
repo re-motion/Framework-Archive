@@ -6,10 +6,6 @@ namespace Rubicon.Core.UnitTests.Configuration
 {
   public class FakeWellKnownProvider: ExtendedProviderBase, IFakeProvider
   {
-    public FakeWellKnownProvider()
-    {
-    }
-
     public FakeWellKnownProvider (string name, NameValueCollection config)
         : base (name, config)
     {

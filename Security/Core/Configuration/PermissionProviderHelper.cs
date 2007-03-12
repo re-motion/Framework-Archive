@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
 using Rubicon.Configuration;
@@ -41,7 +42,7 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownReflectionPermissionProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_permissionReflectorWellKnownName, delegate { return new PermissionReflector(); });
+      collection.Add (new PermissionReflector(c_permissionReflectorWellKnownName, new NameValueCollection()));
     }
   }
 }

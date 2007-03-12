@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
+using System.Configuration.Provider;
 using System.Reflection;
 using Rubicon.Configuration;
 
@@ -26,6 +28,8 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     public override void PostDeserialze()
     {
+      base.PostDeserialze();
+      
       CheckForDuplicateWellKownProviderName ("WellKnown");
     }
 
@@ -39,11 +43,25 @@ namespace Rubicon.Core.UnitTests.Configuration
       return base.GetType (property, assemblyName, typeName);
     }
 
+    public new void InstantiateProviders (
+        ProviderSettingsCollection providerSettingsCollection,
+        ProviderCollection providerCollection,
+        Type providerType,
+        params Type[] providerInterfaces)
+    {
+      base.InstantiateProviders (providerSettingsCollection, providerCollection, providerType, providerInterfaces);
+    }
+
+    public new ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
+    {
+      return base.InstantiateProvider (providerSettings, providerType, providerInterfaces);
+    }
+
     protected override void EnsureWellKownProviders (System.Configuration.Provider.ProviderCollection collection)
     {
       base.EnsureWellKownProviders (collection);
 
-      EnsureWellKownProvider (collection, "WellKnown", delegate { return new FakeWellKnownProvider(); });
+      collection.Add (new FakeWellKnownProvider ("WellKnown", new NameValueCollection()));
     }
 
     protected override ConfigurationProperty CreateDefaultProviderNameProperty()

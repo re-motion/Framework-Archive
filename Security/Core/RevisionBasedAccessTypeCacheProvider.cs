@@ -1,12 +1,13 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
 using System.Runtime.Remoting.Messaging;
 using Rubicon.Collections;
+using Rubicon.Configuration;
 using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security
 {
-  public class RevisionBasedAccessTypeCacheProvider : ProviderBase, IGlobalAccessTypeCacheProvider
+  public class RevisionBasedAccessTypeCacheProvider: ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {
     // constants
 
@@ -18,21 +19,30 @@ namespace Rubicon.Security
 
     // member fields
 
-    private InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> _cache = new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> ();
+    private InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> _cache =
+        new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>();
+
     private int _revision = 0;
-    private object _syncRoot = new object ();
+    private object _syncRoot = new object();
 
     // construction and disposing
 
-    public RevisionBasedAccessTypeCacheProvider ()
+    public RevisionBasedAccessTypeCacheProvider()
+        : this ("Revision", new NameValueCollection())
+    {
+    }
+
+
+    public RevisionBasedAccessTypeCacheProvider (string name, NameValueCollection config)
+        : base (name, config)
     {
     }
 
     // methods and properties
 
-    public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache ()
+    public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache()
     {
-      int currentRevision = GetCurrentRevision ();
+      int currentRevision = GetCurrentRevision();
       if (_revision < currentRevision)
       {
         lock (_syncRoot)
@@ -40,7 +50,7 @@ namespace Rubicon.Security
           if (_revision < currentRevision)
           {
             _revision = currentRevision;
-            _cache = new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]> ();
+            _cache = new InterlockedCache<Tuple<SecurityContext, string>, AccessType[]>();
           }
         }
       }
@@ -53,7 +63,7 @@ namespace Rubicon.Security
       int? revision = (int?) CallContext.GetData (s_revisionKey);
       if (!revision.HasValue)
       {
-        revision = SecurityConfiguration.Current.SecurityProvider.GetRevision ();
+        revision = SecurityConfiguration.Current.SecurityProvider.GetRevision();
         CallContext.SetData (s_revisionKey, revision);
       }
 

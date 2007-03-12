@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
@@ -51,17 +52,16 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownNullSecurityProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_nullSecurityProviderWellKnownName, delegate { return new NullSecurityProvider(); });
+      collection.Add (new NullSecurityProvider(c_nullSecurityProviderWellKnownName, new NameValueCollection()));
     }
 
     private void EnsureWellKnownSecurityManagerSecurityProvider (ProviderCollection collection)
     {
       if (_securityManagerSecurityServiceType != null)
       {
-        EnsureWellKownProvider (
-            collection,
-            c_securityManagerSecurityProviderWellKnownName,
-            delegate { return (ProviderBase) Activator.CreateInstance (_securityManagerSecurityServiceType); });
+        collection.Add ((ExtendedProviderBase) Activator.CreateInstance (
+            _securityManagerSecurityServiceType, 
+            new object[] {c_securityManagerSecurityProviderWellKnownName, new NameValueCollection()}));
       }
     }
 

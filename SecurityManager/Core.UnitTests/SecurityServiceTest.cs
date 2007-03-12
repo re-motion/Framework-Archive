@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Security.Principal;
 using log4net;
 using log4net.Appender;
@@ -57,6 +58,18 @@ namespace Rubicon.SecurityManager.UnitTests
     public void TearDown()
     {
       LogManager.ResetConfiguration();
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      SecurityService provider = new SecurityService ("Provider", config);
+
+      Assert.AreEqual ("Provider", provider.Name);
+      Assert.AreEqual ("The Description", provider.Description);
     }
 
     [Test]

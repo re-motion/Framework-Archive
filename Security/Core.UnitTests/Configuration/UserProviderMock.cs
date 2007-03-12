@@ -1,10 +1,11 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
 using System.Security.Principal;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
-  public class UserProviderMock : ProviderBase, IUserProvider
+  public class UserProviderMock : ExtendedProviderBase, IUserProvider
   {
     // types
 
@@ -14,12 +15,13 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // construction and disposing
 
-    public UserProviderMock()
+
+    public UserProviderMock (string name, NameValueCollection config)
+        : base (name, config)
     {
     }
-
-
-    // methods and properties
+    
+     // methods and properties
 
     public IPrincipal GetUser()
     {

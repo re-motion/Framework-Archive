@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
 using Rubicon.Configuration;
@@ -43,12 +44,12 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownNullGlobalAccessTypeCacheProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_nullGlobalAccessTypeCacheProviderWellKnownName, delegate { return new NullGlobalAccessTypeCacheProvider (); });
+      collection.Add (new NullGlobalAccessTypeCacheProvider (c_nullGlobalAccessTypeCacheProviderWellKnownName, new NameValueCollection()));
     }
 
     private void EnsureWellKnownRevisionBasedGlobalAccessTypeCacheProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_revisionBasedGlobalAccessTypeCacheProviderWellKnownName, delegate { return new RevisionBasedAccessTypeCacheProvider (); });
+      collection.Add (new RevisionBasedAccessTypeCacheProvider (c_revisionBasedGlobalAccessTypeCacheProviderWellKnownName, new NameValueCollection()));
     }
   }
 }

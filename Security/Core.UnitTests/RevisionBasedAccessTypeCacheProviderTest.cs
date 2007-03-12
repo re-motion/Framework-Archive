@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Collections;
@@ -33,6 +34,18 @@ namespace Rubicon.Security.UnitTests
     {
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
       System.Runtime.Remoting.Messaging.CallContext.SetData (typeof (RevisionBasedAccessTypeCacheProvider).AssemblyQualifiedName + "_Revision", null);
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      RevisionBasedAccessTypeCacheProvider provider = new RevisionBasedAccessTypeCacheProvider ("Provider", config);
+
+      Assert.AreEqual ("Provider", provider.Name);
+      Assert.AreEqual ("The Description", provider.Description);
     }
 
     [Test]

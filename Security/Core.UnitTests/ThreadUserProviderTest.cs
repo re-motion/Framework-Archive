@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Threading;
 using NUnit.Framework;
 
@@ -27,6 +28,18 @@ namespace Rubicon.Security.UnitTests
     public void SetUp ()
     {
       _userProvider = new ThreadUserProvider ();
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      ThreadUserProvider provider = new ThreadUserProvider ("Provider", config);
+
+      Assert.AreEqual ("Provider", provider.Name);
+      Assert.AreEqual ("The Description", provider.Description);
     }
 
     [Test]

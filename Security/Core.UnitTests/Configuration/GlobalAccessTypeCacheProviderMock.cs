@@ -1,10 +1,11 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
 using Rubicon.Collections;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
-  public class GlobalAccessTypeCacheProviderMock : ProviderBase, IGlobalAccessTypeCacheProvider
+  public class GlobalAccessTypeCacheProviderMock : ExtendedProviderBase, IGlobalAccessTypeCacheProvider
   {
     // types
 
@@ -14,11 +15,12 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // construction and disposing
 
-    public GlobalAccessTypeCacheProviderMock ()
+    public GlobalAccessTypeCacheProviderMock (string name, NameValueCollection config)
+        : base (name, config)
     {
     }
-
-    // methods and properties
+    
+     // methods and properties
 
     public ICache<Tuple<SecurityContext, string>, AccessType[]> GetCache ()
     {

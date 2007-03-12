@@ -1,6 +1,7 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
 using System.Security.Principal;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Logging;
 using Rubicon.Security;
@@ -11,19 +12,32 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager
 {
-  public class SecurityService : ProviderBase, ISecurityProvider
+  public class SecurityService: ExtendedProviderBase, ISecurityProvider
   {
     private static ILog s_log = LogManager.GetLogger (typeof (SecurityService));
 
     private IAccessControlListFinder _accessControlListFinder;
     private ISecurityTokenBuilder _securityTokenBuilder;
 
-    public SecurityService ()
-      : this (new AccessControlListFinder (), new SecurityTokenBuilder ())
+    public SecurityService()
+        : this (new AccessControlListFinder(), new SecurityTokenBuilder())
     {
     }
 
     public SecurityService (IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
+        : this ("SecurityManager", new NameValueCollection(), accessControlListFinder, securityTokenBuilder)
+    {
+    }
+
+
+    public SecurityService (string name, NameValueCollection config)
+        : this (name, config, new AccessControlListFinder(), new SecurityTokenBuilder())
+    {
+    }
+
+    public SecurityService (
+        string name, NameValueCollection config, IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
+        : base (name, config)
     {
       ArgumentUtility.CheckNotNull ("accessControlListFinder", accessControlListFinder);
       ArgumentUtility.CheckNotNull ("securityTokenBuilder", securityTokenBuilder);
@@ -34,7 +48,7 @@ namespace Rubicon.SecurityManager
 
     public AccessType[] GetAccess (SecurityContext context, IPrincipal user)
     {
-      return GetAccess (new ClientTransaction (), context, user);
+      return GetAccess (new ClientTransaction(), context, user);
     }
 
     public AccessType[] GetAccess (ClientTransaction transaction, SecurityContext context, IPrincipal user)
@@ -57,10 +71,10 @@ namespace Rubicon.SecurityManager
       }
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
-      return Array.ConvertAll <AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition,AccessType> (ConvertToAccessType));
+      return Array.ConvertAll<AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition, AccessType> (ConvertToAccessType));
     }
 
-    public int GetRevision ()
+    public int GetRevision()
     {
       return Revision.GetRevision (new ClientTransaction());
     }

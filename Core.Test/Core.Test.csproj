@@ -110,19 +110,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
     <Compile Include="Configuration\FakeWellKnownProvider.cs" />
     <Compile Include="Configuration\IFakeProvider.cs" />
     <Compile Include="Configuration\DerivedSampleType.cs" />
     <Compile Include="Configuration\FakeProvider.cs" />
     <Compile Include="Configuration\ProviderHelperBase1Test.cs" />
     <Compile Include="Configuration\StubExtendedConfigurationSection.cs" />
+    <Compile Include="Configuration\StubExtendedProvider.cs" />
     <Compile Include="Configuration\StubProviderHelper.cs" />
     <Compile Include="Configuration\TypeElement2Test.cs" />
-    <Compile Include="Configuration\DerivedProviderMock.cs" />
-    <Compile Include="Configuration\IProvider.cs" />
-    <Compile Include="Configuration\OtherProviderMock.cs" />
-    <Compile Include="Configuration\ProviderHelperTest.cs" />
-    <Compile Include="Configuration\ProviderMock.cs" />
+    <Compile Include="Configuration\FakeOtherProvider.cs" />
+    <Compile Include="Configuration\FakeProviderBase.cs" />
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
     <Compile Include="DoubleCheckedLockingContainerTest.cs" />

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using NUnit.Framework;
 
 namespace Rubicon.Security.UnitTests
@@ -12,6 +13,18 @@ namespace Rubicon.Security.UnitTests
     public void SetUp ()
     {
       _securityProvider = new NullSecurityProvider();
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      NameValueCollection config = new NameValueCollection ();
+      config.Add ("description", "The Description");
+
+      NullSecurityProvider provider = new NullSecurityProvider ("Provider", config);
+
+      Assert.AreEqual ("Provider", provider.Name);
+      Assert.AreEqual ("The Description", provider.Description);
     }
 
     [Test]

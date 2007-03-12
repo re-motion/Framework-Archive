@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Security.Principal;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security
 {
@@ -8,8 +10,18 @@ namespace Rubicon.Security
   /// Provides an implementation of a nullable object according to the "Null Object Pattern", 
   /// extending <see cref="ProviderBase"/> and implementing <see cref="ISecurityProvider"/>.
   /// </summary>
-  public class NullSecurityProvider : ProviderBase, ISecurityProvider
+  public class NullSecurityProvider : ExtendedProviderBase, ISecurityProvider
   {
+    public NullSecurityProvider ()
+      : this ("Null", new NameValueCollection ())
+    {
+    }
+
+    public NullSecurityProvider (string name, NameValueCollection config)
+        : base (name, config)
+    {
+    }
+
     /// <summary>
     /// The "Null Object" implementation always returns an empty array.
     /// </summary>

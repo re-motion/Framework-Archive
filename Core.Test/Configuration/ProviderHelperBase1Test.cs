@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Configuration.Provider;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
@@ -155,6 +156,58 @@ namespace Rubicon.Core.UnitTests.Configuration
          _propertyCollection["defaultProvider"],
          "Invalid",
          "Rubicon.Core.UnitTests.Configuration.FakeProvider");
+    }
+
+    [Test]
+    public void InstantiateProvider ()
+    {
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProvider");
+      providerSettings.Parameters.Add ("description", "The Description");
+
+      ProviderBase providerBase = _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
+
+      Assert.IsNotNull (providerBase);
+      Assert.IsInstanceOfType (typeof (FakeProvider), providerBase);
+      Assert.AreEqual ("Custom", providerBase.Name);
+      Assert.AreEqual ("The Description", providerBase.Description);
+    }
+
+    [Test]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Type name must be specified for this provider.")]
+    public void InstantiateProvider_WithMissingTypeName ()
+    {
+      _providerHelper.InstantiateProvider (new ProviderSettings (), typeof (FakeProviderBase));
+    }
+
+    [Test]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
+    public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
+    {
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.OtherProviderMock");
+      _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase));
+    }
+
+    [Test]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Core.UnitTests.Configuration.IFakeProvider'.")]
+    public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
+    {
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProviderBase");
+      _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase), typeof (IFakeProvider));
+    }
+
+    [Test]
+    public void InstantiateProviders ()
+    {
+      ProviderSettingsCollection providerSettingsCollection = new ProviderSettingsCollection ();
+      providerSettingsCollection.Add (new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProvider"));
+      ProviderCollection providerCollection = new ProviderCollection ();
+
+      _providerHelper.InstantiateProviders (providerSettingsCollection, providerCollection, typeof (FakeProviderBase), typeof (IFakeProvider));
+
+      Assert.AreEqual (1, providerCollection.Count);
+      ProviderBase providerBase = providerCollection["Custom"];
+      Assert.IsInstanceOfType (typeof (FakeProvider), providerBase);
+      Assert.AreEqual ("Custom", providerBase.Name);
     }
   }
 }

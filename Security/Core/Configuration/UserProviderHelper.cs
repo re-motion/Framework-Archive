@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Provider;
 using Rubicon.Configuration;
@@ -49,17 +50,16 @@ namespace Rubicon.Security.Configuration
 
     private void EnsureWellKnownThreadUserProvider (ProviderCollection collection)
     {
-      EnsureWellKownProvider (collection, c_threadUserProviderWellKnownName, delegate { return new ThreadUserProvider(); });
+      collection.Add (new ThreadUserProvider(c_threadUserProviderWellKnownName, new NameValueCollection()));
     }
 
     private void EnsureWellKnownHttpContextUserProvider (ProviderCollection collection)
     {
       if (_httpContextUserProviderType != null)
       {
-        EnsureWellKownProvider (
-            collection,
-            c_httpContexUserProviderWellKnownName,
-            delegate { return (ProviderBase) Activator.CreateInstance (_httpContextUserProviderType); });
+       collection.Add ((ExtendedProviderBase) Activator.CreateInstance (
+          _httpContextUserProviderType, 
+          new object[] { c_httpContexUserProviderWellKnownName, new NameValueCollection()}));
       }
     }
 

@@ -3,23 +3,12 @@ using System.Configuration;
 
 namespace Rubicon.Configuration
 {
+  /// <summary>Base class for all configuration sections using the <see cref="ProviderHelperBase"/> to manage their provider sections.</summary>
   public abstract class ExtendedConfigurationSection: ConfigurationSection
   {
-    // constants
-
-    // types
-
-    // static members
-
-    // member fields
-
-    // construction and disposing
-
     protected ExtendedConfigurationSection()
     {
     }
-
-    // methods and properties
 
     protected internal new object this [ConfigurationProperty property]
     {

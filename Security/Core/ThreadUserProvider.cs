@@ -1,12 +1,12 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
 using System.Security.Principal;
 using System.Threading;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security
 {
-
-  public class ThreadUserProvider : ProviderBase, IUserProvider
+  public class ThreadUserProvider: ExtendedProviderBase, IUserProvider
   {
     // types
 
@@ -16,13 +16,19 @@ namespace Rubicon.Security
 
     // construction and disposing
 
-    public ThreadUserProvider ()
+    public ThreadUserProvider()
+        : this ("Thread", new NameValueCollection())
+    {
+    }
+
+    public ThreadUserProvider (string name, NameValueCollection config)
+        : base (name, config)
     {
     }
 
     // methods and properties
 
-    public IPrincipal GetUser ()
+    public IPrincipal GetUser()
     {
       return Thread.CurrentPrincipal;
     }

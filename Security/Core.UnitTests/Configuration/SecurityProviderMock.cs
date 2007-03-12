@@ -1,9 +1,10 @@
 using System;
-using System.Configuration.Provider;
+using System.Collections.Specialized;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
-  public class SecurityProviderMock : ProviderBase, ISecurityProvider
+  public class SecurityProviderMock : ExtendedProviderBase, ISecurityProvider
   {
     // types
 
@@ -13,11 +14,13 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // construction and disposing
 
-    public SecurityProviderMock ()
+
+    public SecurityProviderMock (string name, NameValueCollection config)
+        : base (name, config)
     {
     }
-
-    // methods and properties
+    
+     // methods and properties
 
     public AccessType[] GetAccess (SecurityContext context, System.Security.Principal.IPrincipal user)
     {

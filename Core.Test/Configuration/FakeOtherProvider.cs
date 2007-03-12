@@ -4,9 +4,9 @@ using Rubicon.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
-  public class FakeProvider : FakeProviderBase, IFakeProvider
+  public class FakeOtherProvider : ExtendedProviderBase
   {
-    public FakeProvider (string name, NameValueCollection config)
+    public FakeOtherProvider (string name, NameValueCollection config)
         : base (name, config)
     {
     }

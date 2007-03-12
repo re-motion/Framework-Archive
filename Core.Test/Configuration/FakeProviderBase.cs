@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Specialized;
+using System.Configuration.Provider;
 using Rubicon.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
-  public class FakeProvider : FakeProviderBase, IFakeProvider
+  public abstract class FakeProviderBase : ExtendedProviderBase
   {
-    public FakeProvider (string name, NameValueCollection config)
+    protected FakeProviderBase (string name, NameValueCollection config)
         : base (name, config)
     {
     }

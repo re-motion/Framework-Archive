@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration.Provider;
 using System.Security.Principal;
 using System.Web;
+using Rubicon.Configuration;
 
 namespace Rubicon.Security.Web
 {
-  public class HttpContextUserProvider : ProviderBase, IUserProvider
+  public class HttpContextUserProvider : ExtendedProviderBase, IUserProvider
   {
     // types
 
@@ -16,10 +18,16 @@ namespace Rubicon.Security.Web
     // construction and disposing
 
     public HttpContextUserProvider()
+        : this ("HttpContext", new NameValueCollection())
     {
     }
 
-    // methods and properties
+    public HttpContextUserProvider (string name, NameValueCollection config)
+        : base (name, config)
+    {
+    }
+    
+     // methods and properties
 
     public IPrincipal GetUser()
     {
