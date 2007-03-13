@@ -1,70 +1,80 @@
 using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Xml;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class RdbmsProviderDefinition : StorageProviderDefinition
-{
-  // types
-
-  // static members and constants
-
-  private static string c_rdbmsConfigurationNamespace = "http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms";
-
-  // member fields
-
-  private string _connectionString;
-
-  // construction and disposing
-
-  public RdbmsProviderDefinition (
-      string storageProviderID, 
-      Type storageProviderType, 
-      string connectionString)
-      : base (storageProviderID, storageProviderType)
+  public class RdbmsProviderDefinition: StorageProviderDefinition
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
-    _connectionString = connectionString;
-  }
+    // types
 
-  public RdbmsProviderDefinition (
-      string storageProviderID, 
-      Type storageProviderType, 
-      XmlNode configurationNode)
-      : base (storageProviderID, storageProviderType)
-  {
-    ArgumentUtility.CheckNotNull ("configurationNode", configurationNode);
+    // static members and constants
 
-    XmlNamespaceManager namespaceManager = new XmlNamespaceManager (configurationNode.OwnerDocument.NameTable);
-    namespaceManager.AddNamespace ("r", c_rdbmsConfigurationNamespace);
+    private static string c_rdbmsConfigurationNamespace = "http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms";
 
-    XmlNode connectionStringNode = configurationNode.SelectSingleNode ("r:connectionString", namespaceManager);
-    if (connectionStringNode != null)        
+    // member fields
+
+    private string _connectionString;
+
+    // construction and disposing
+
+    public RdbmsProviderDefinition (
+        string name,
+        Type storageProviderType,
+        string connectionString)
+        : base (name, storageProviderType)
     {
-      _connectionString = connectionStringNode.InnerText;
+      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
+      _connectionString = connectionString;
     }
-    else
+
+    public RdbmsProviderDefinition (
+        string name,
+        Type storageProviderType,
+        XmlNode configurationNode)
+      : base (name, storageProviderType)
     {
-      throw new StorageProviderConfigurationException (string.Format (
-          "Configuration node must contain a 'connectionString' element from namespace '{0}'.",
-          c_rdbmsConfigurationNamespace));
+      ArgumentUtility.CheckNotNull ("configurationNode", configurationNode);
+
+      XmlNamespaceManager namespaceManager = new XmlNamespaceManager (configurationNode.OwnerDocument.NameTable);
+      namespaceManager.AddNamespace ("r", c_rdbmsConfigurationNamespace);
+
+      XmlNode connectionStringNode = configurationNode.SelectSingleNode ("r:connectionString", namespaceManager);
+      if (connectionStringNode != null)
+        _connectionString = connectionStringNode.InnerText;
+      else
+      {
+        throw new StorageProviderConfigurationException (
+            string.Format (
+                "Configuration node must contain a 'connectionString' element from namespace '{0}'.",
+                c_rdbmsConfigurationNamespace));
+      }
+    }
+
+    public RdbmsProviderDefinition (string name, NameValueCollection config)
+        : base (name, config)
+    {
+      ArgumentUtility.CheckNotNull ("config", config);
+
+      string connectionStringName = GetAndRemoveNonEmptyStringAttribute (config, "connectionString", name, true);
+      _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+    }
+
+    // methods and properties
+
+    public string ConnectionString
+    {
+      get { return _connectionString; }
+    }
+
+    public override bool IsIdentityTypeSupported (Type identityType)
+    {
+      ArgumentUtility.CheckNotNull ("identityType", identityType);
+
+      return (identityType == typeof (Guid));
     }
   }
-
-  // methods and properties
-
-  public string ConnectionString
-  {
-    get { return _connectionString; }
-  }
-
-  public override bool IsIdentityTypeSupported (Type identityType)
-  {
-    ArgumentUtility.CheckNotNull ("identityType", identityType);
-
-    return (identityType == typeof (Guid));
-  }
-}
 }

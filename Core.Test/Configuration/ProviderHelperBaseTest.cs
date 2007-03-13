@@ -183,7 +183,7 @@ namespace Rubicon.Core.UnitTests.Configuration
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
     public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
     {
-      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.OtherProviderMock");
+      ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeOtherProvider");
       _providerHelper.InstantiateProvider (providerSettings, typeof (FakeProviderBase));
     }
 

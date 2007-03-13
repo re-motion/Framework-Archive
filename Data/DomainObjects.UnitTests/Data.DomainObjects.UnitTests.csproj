@@ -98,6 +98,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
       <Name>Data.DomainObjects.Legacy</Name>
@@ -109,6 +113,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationSection\DomainObjectsConfigurationTest.cs" />
+    <Compile Include="ConfigurationSection\PersistenceConfigurationTest.cs" />
+    <Compile Include="ConfigurationSection\StubDomainObjectsConfiguration.cs" />
+    <Compile Include="Configuration\ConfigSystemHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

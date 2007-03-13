@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
 using System.Configuration.Provider;
+using Rubicon.Utilities;
 
 namespace Rubicon.Configuration
 {
@@ -27,6 +29,23 @@ namespace Rubicon.Configuration
     public override sealed void Initialize (string name, NameValueCollection config)
     {
       base.Initialize (name, config);
+    }
+
+    protected string GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
+    {
+      ArgumentUtility.CheckNotNull ("config", config);
+      ArgumentUtility.CheckNotNullOrEmpty ("attribute", attribute);
+      ArgumentUtility.CheckNotNullOrEmpty ("providerName", providerName);
+
+      string value = config.Get (attribute);
+      if ((value == null && required) || (value != null && value.Length == 0))
+      {
+        throw new ConfigurationErrorsException (
+            string.Format ("The attribute '{0}' is missing in the configuration of the '{1}' provider.", attribute, providerName));
+      }
+      config.Remove (attribute);
+      
+      return value;
     }
   }
 }

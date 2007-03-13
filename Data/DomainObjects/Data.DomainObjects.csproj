@@ -90,6 +90,9 @@
   <ItemGroup>
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\IStorageProviderConfigurationLoader.cs" />
+    <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
+    <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
+    <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

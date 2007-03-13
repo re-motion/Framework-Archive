@@ -12,6 +12,8 @@
 - Contructor Interface der Klasse SchemaLoader wurde verändert: Statt dem Constructor mit SchemaType sind nun die well-known Instanzen
   SchemaLoader.Queries, LegacySchemaLoader.Mapping, und LegacySchemaLoader.StorageProviders zu verwenden.
 
+- Klasse StorageProviderdefinition: Obsolete Property StorageProviderID wurde entfernt. Stattdessen zu verwenden: Property Name
+
 1.7.37.0
 ========
 

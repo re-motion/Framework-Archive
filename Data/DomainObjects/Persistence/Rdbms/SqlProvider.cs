@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Specialized;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
+
 public class SqlProvider : RdbmsProvider
 {
   // types

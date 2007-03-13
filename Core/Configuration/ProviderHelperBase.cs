@@ -238,7 +238,7 @@ namespace Rubicon.Configuration
       if (string.IsNullOrEmpty (providerSettings.Type))
         throw new ArgumentException ("Type name must be specified for this provider.");
 
-      Type actualType = TypeUtility.GetType (providerSettings.Type);
+      Type actualType = TypeUtility.GetType (providerSettings.Type, true, false);
 
       if (!providerType.IsAssignableFrom (actualType))
         throw new ArgumentException (string.Format ("Provider must implement the class '{0}'.", providerType.FullName));

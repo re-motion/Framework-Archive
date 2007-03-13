@@ -23,5 +23,10 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
     
      // methods and properties
+
+    public new string GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
+    {
+     return base.GetAndRemoveNonEmptyStringAttribute (config, attribute, providerName, required);
+    }
   }
 }

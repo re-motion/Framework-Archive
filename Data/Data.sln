@@ -133,6 +133,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.U
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "..\Development\Core\Development.Core.csproj", "{B719A305-0493-4C72-88FE-9A2FC6964578}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +213,10 @@ Global
 		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
