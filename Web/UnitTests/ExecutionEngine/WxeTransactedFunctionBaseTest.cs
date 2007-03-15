@@ -174,12 +174,14 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       wxeTransactedFunction.RollingBack += _mockEventSink.Handler;
       wxeTransactedFunction.RolledBack += _mockEventSink.Handler;
 
-      BinaryFormatter formatter = new BinaryFormatter ();
-      Stream stream = new MemoryStream ();
-      formatter.Serialize (stream, wxeTransactedFunction);
-      stream.Position = 0;
-      WxeTransactedFunctionMock deserialized = (WxeTransactedFunctionMock) formatter.Deserialize (stream);
-
+      WxeTransactedFunctionMock deserialized;
+      using (Stream stream = new MemoryStream ())
+      {
+        BinaryFormatter formatter = new BinaryFormatter ();
+        formatter.Serialize (stream, wxeTransactedFunction);
+        stream.Position = 0;
+        deserialized = (WxeTransactedFunctionMock) formatter.Deserialize (stream);
+      }
       Assert.IsNotNull (deserialized);
     }
 

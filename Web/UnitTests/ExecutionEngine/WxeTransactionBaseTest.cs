@@ -299,11 +299,14 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _childWxeTransaction.Transaction = (TestTransaction) _parentWxeTransaction.Transaction.CreateChild ();
       _childWxeTransaction.PreviousCurrentTransaction = _parentWxeTransaction.Transaction;
 
-      BinaryFormatter formatter = new BinaryFormatter ();
-      Stream stream = new MemoryStream ();
-      formatter.Serialize (stream, _parentWxeTransaction);
-      stream.Position = 0;
-      WxeTransactionMock parentWxeTransaction = (WxeTransactionMock) formatter.Deserialize (stream);
+      WxeTransactionMock parentWxeTransaction;
+      using (Stream stream = new MemoryStream ())
+      {
+        BinaryFormatter formatter = new BinaryFormatter ();
+        formatter.Serialize (stream, _parentWxeTransaction);
+        stream.Position = 0;
+        parentWxeTransaction = (WxeTransactionMock) formatter.Deserialize (stream);
+      }
       WxeTransactionMock childWxeTransaction = (WxeTransactionMock) parentWxeTransaction.Steps[0];
 
       Assert.IsNotNull (parentWxeTransaction);

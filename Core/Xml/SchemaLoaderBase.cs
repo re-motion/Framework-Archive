@@ -23,7 +23,15 @@ namespace Rubicon.Xml
       if (schemaStream == null)
         throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", SchemaFile, assembly.FullName));
 
-      return new XmlTextReader (schemaStream);
+      try
+      {
+        return new XmlTextReader (schemaStream);
+      }
+      catch
+      {
+        schemaStream.Close();
+        throw;
+      }
     }
 
     /// <summary> Gets an <see cref="XmlSchemaSet"/> for the schema specified with property <see cref="SchemaFile"/> that is embedded in the assembly. </summary>
@@ -43,13 +51,15 @@ namespace Rubicon.Xml
       Type type = GetType ();
       Assembly assembly = type.Assembly;
 
-      Stream schemaStream = assembly.GetManifestResourceStream (type, schemaFileName);
-      if (schemaStream == null)
-        throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.FullName));
-
-      using (XmlReader xmlReader = XmlReader.Create (schemaStream))
+      using (Stream schemaStream = assembly.GetManifestResourceStream (type, schemaFileName))
       {
-        return XmlSchema.Read (xmlReader, null);
+        if (schemaStream == null)
+          throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.FullName));
+
+        using (XmlReader xmlReader = XmlReader.Create (schemaStream))
+        {
+          return XmlSchema.Read (xmlReader, null);
+        }
       }
     }
   }

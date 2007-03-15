@@ -102,11 +102,13 @@ public class SerializationTests
 
   private object SerializeAndDeserialize (object obj)
   {
-    MemoryStream stream = new MemoryStream ();
-    BinaryFormatter formatter = new BinaryFormatter ();
-    formatter.Serialize (stream, obj);
-    stream.Position = 0;
-    return formatter.Deserialize (stream);
+    using (MemoryStream stream = new MemoryStream ())
+    {
+      BinaryFormatter formatter = new BinaryFormatter();
+      formatter.Serialize (stream, obj);
+      stream.Position = 0;
+      return formatter.Deserialize (stream);
+    }
   }
 
   private void CheckSerialization (object obj)

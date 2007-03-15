@@ -15,12 +15,15 @@ namespace Rubicon.SecurityManager.UnitTests.Configuration
       XmlDocument document = new XmlDocument ();
       document.LoadXml (xmlFragment);
 
-      MemoryStream stream = new MemoryStream ();
-      document.Save (stream);
-      stream.Position = 0;
-      XmlReader reader = XmlReader.Create (stream);
-
-      DeserializeSection (reader);
+      using (MemoryStream stream = new MemoryStream ())
+      {
+        document.Save (stream);
+        stream.Position = 0;
+        using (XmlReader reader = XmlReader.Create (stream))
+        {
+          DeserializeSection (reader);
+        }
+      }
     }
   }
 }

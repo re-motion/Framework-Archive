@@ -65,17 +65,10 @@ namespace Rubicon.Web.ExecutionEngine.UrlMapping
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("schemas", schemas);
 
-      XmlTextReader reader = new XmlTextReader (_configurationFile);
-      object configuration = null;
-      try
+      using (XmlTextReader reader = new XmlTextReader (_configurationFile))
       {
-        configuration = XmlSerializationUtility.DeserializeUsingSchema (reader, _configurationFile, _type, _schemas);
+        return XmlSerializationUtility.DeserializeUsingSchema (reader, _configurationFile, _type, _schemas);
       }
-      finally
-      {
-        reader.Close ();
-      }
-      return configuration;
       //    try
       //    {
       //    return XmlSerializationUtility.DeserializeUsingSchema (reader, _configurationFile, _type, _schemas);
