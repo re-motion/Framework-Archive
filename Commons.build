@@ -17,6 +17,7 @@
   <property name="build.temp.basedir" value="${build.basedir}/temp" dynamic="true" />
   <property name="build.temp.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/${project.config}" dynamic="true" />
   <property name="build.test.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/tests/${project.config}" dynamic="true" />
+  <property name="build.update.assembly-info" value="true" />
   <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" dynamic="true" />
 
   <property name="sql.exe" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn\osql.exe" overwrite="false" />
