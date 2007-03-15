@@ -26,7 +26,7 @@ namespace Rubicon.Configuration
   {
     private readonly ExtendedConfigurationSection _configurationSection;
     private readonly DoubleCheckedLockingContainer<TProvider> _provider;
-    private readonly DoubleCheckedLockingContainer<ProviderCollection> _providers;
+    private readonly DoubleCheckedLockingContainer<ProviderCollection<TProvider>> _providers;
     private ConfigurationProperty _providerSettingsProperty;
     private ConfigurationProperty _defaultProviderNameProperty;
 
@@ -43,7 +43,7 @@ namespace Rubicon.Configuration
 
       _configurationSection = configurationSection;
       _provider = new DoubleCheckedLockingContainer<TProvider> (delegate { return GetProviderFromConfiguration(); });
-      _providers = new DoubleCheckedLockingContainer<ProviderCollection> (delegate { return GetProvidersFromConfiguration(); });
+      _providers = new DoubleCheckedLockingContainer<ProviderCollection<TProvider>> (delegate { return GetProvidersFromConfiguration(); });
     }
 
     protected abstract ConfigurationProperty CreateDefaultProviderNameProperty();
@@ -73,9 +73,10 @@ namespace Rubicon.Configuration
       set { _provider.Value = value; }
     }
 
-    public ProviderCollection Providers
+    public ProviderCollection<TProvider> Providers
     {
       get { return _providers.Value; }
+      set { _providers.Value = value; }
     }
 
     protected ExtendedConfigurationSection ConfigurationSection
@@ -134,7 +135,7 @@ namespace Rubicon.Configuration
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNull ("property", property);
 
-      AssemblyName frameworkAssemblyName = typeof (ExtendedConfigurationSection).Assembly.GetName();
+      AssemblyName frameworkAssemblyName = GetType().Assembly.GetName();
       AssemblyName realAssemblyName = new AssemblyName (frameworkAssemblyName.FullName);
       realAssemblyName.Name = assemblyName;
 
@@ -267,9 +268,9 @@ namespace Rubicon.Configuration
       return (TProvider) (object) Providers[DefaultProviderName];
     }
 
-    private ProviderCollection GetProvidersFromConfiguration()
+    private ProviderCollection<TProvider> GetProvidersFromConfiguration()
     {
-      ProviderCollection collection = new ProviderCollection();
+      ProviderCollection<TProvider> collection = new ProviderCollection<TProvider>();
       EnsureWellKownProviders (collection);
       InstantiateProviders (ProviderSettings, collection, typeof (ExtendedProviderBase), typeof (TProvider));
       collection.SetReadOnly();

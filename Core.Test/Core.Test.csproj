@@ -139,6 +139,7 @@
     <Compile Include="Logging\LogManagerTest.cs" />
     <Compile Include="Logging\LogMessages.cs" />
     <Compile Include="Logging\SampleType.cs" />
+    <Compile Include="NullableValueTypes\NaBooleanTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
