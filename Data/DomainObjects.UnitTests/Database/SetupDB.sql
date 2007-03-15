@@ -49,6 +49,14 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order')
 DROP TABLE [Order]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderItemWithNewPropertyAccess') 
+DROP TABLE [OrderItemWithNewPropertyAccess]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderWithNewPropertyAccess') 
+DROP TABLE [OrderWithNewPropertyAccess]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Company') 
 DROP TABLE [Company]
 GO
@@ -257,6 +265,39 @@ CREATE TABLE [OrderItem] (
   -- CONSTRAINT [UN_OrderItem_Position] UNIQUE ([OrderID], [Position]),
   
   CONSTRAINT [FK_OrderItem_Order] FOREIGN KEY ([OrderID]) REFERENCES [Order] ([ID])
+) 
+GO
+
+CREATE TABLE [OrderWithNewPropertyAccess] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [OrderNo] int NOT NULL,
+  [DeliveryDate] datetime NOT NULL,
+  [CustomerID] uniqueidentifier NULL,
+  [CustomerIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_OrderWithNewPropertyAccess] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_OrderWithNewPropertyAccess_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [Company] ([ID])
+) 
+GO
+
+CREATE TABLE [OrderItemWithNewPropertyAccess] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [OrderID] uniqueidentifier NULL,
+  [Position] int NOT NULL,
+  [Product] varchar (100) NOT NULL DEFAULT (''),
+  
+  CONSTRAINT [PK_OrderItemWithNewPropertyAccess] PRIMARY KEY CLUSTERED ([ID]),
+  
+  -- A foreign key cannot be part of a unique constraint:
+  -- CONSTRAINT [UN_OrderItem_Position] UNIQUE ([OrderID], [Position]),
+  
+  CONSTRAINT [FK_OrderItemWithNewPropertyAccess_OrderWithNewPropertyAccess] FOREIGN KEY ([OrderID]) REFERENCES [OrderWithNewPropertyAccess] ([ID])
 ) 
 GO
 

@@ -21,6 +21,7 @@
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.CodeGenerator.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>

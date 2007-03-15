@@ -158,6 +158,11 @@ public class ClassDefinition : ISerializable, IObjectReference
     return false;
   }
 
+  public bool ShouldUseFactoryForInstantiation
+  {
+    get { return DomainObject.ShouldUseFactoryForInstantiation (ClassType); }
+  }
+
   public string[] GetAllConcreteEntityNames ()
   {
     if (GetEntityName () != null)

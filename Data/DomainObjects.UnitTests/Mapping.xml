@@ -151,6 +151,45 @@
 				</relationProperty>
 			</properties>
 		</class>
+    <class id="OrderWithNewPropertyAccess">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="OrderWithNewPropertyAccess"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="OrderNumber">
+          <type>int32</type>
+          <column>OrderNo</column>
+        </property>
+        <property name="DeliveryDate">
+          <type>dateTime</type>
+          <column>DeliveryDate</column>
+        </property>
+        <relationProperty name="Customer" relationID="CustomerToOrderWithNewPropertyAccess" cardinality="one" isMandatory="true">
+          <column>CustomerID</column>
+          <oppositeClass>Customer</oppositeClass>
+        </relationProperty>
+        <relationProperty name="OrderItems" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="many" isMandatory="true"/>
+      </properties>
+    </class>
+    <class id="OrderItemWithNewPropertyAccess">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="OrderItemWithNewPropertyAccess"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Position">
+          <type>int32</type>
+          <column>Position</column>
+        </property>
+        <property name="Product">
+          <type>string</type>
+          <column>Product</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="Order" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="one" isMandatory="true">
+          <column>OrderID</column>
+        </relationProperty>
+      </properties>
+    </class>
 		<class id="OrderTicket">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="OrderTicket"/>

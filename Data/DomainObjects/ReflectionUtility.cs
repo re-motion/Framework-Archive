@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using Rubicon.Utilities;
+using System.Diagnostics;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -63,18 +64,124 @@ public sealed class ReflectionUtility
     }
   }
   
-  private static string GetTypeListAsString (Type[] types)
+  internal static string GetTypeListAsString (Type[] types)
   {
+    ArgumentUtility.CheckNotNull ("types", types);
     string result = string.Empty;
     foreach (Type type in types)
     {
       if (result != string.Empty)
         result += ", ";
 
-      result += type.ToString ();
+      if (type != null)
+      {
+        result += type.ToString ();
+      }
+      else
+      {
+        result += "<any reference type>";
+      }
     }
 
     return result;
+  }
+
+  /// <summary>
+  /// Checks whether a given member is a property accessor method.
+  /// </summary>
+  /// <param name="memberInfo">The member to be checked.</param>
+  /// <returns>True if the given member is either a getter or a setter method, false otherwise.</returns>
+  /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
+  public static bool IsPropertyAccessor (MethodBase memberInfo)
+  {
+    ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+    return IsPropertyGetter (memberInfo) || IsPropertySetter (memberInfo);
+  }
+
+  /// <summary>
+  /// Checks whether a given member is a property getter method.
+  /// </summary>
+  /// <param name="memberInfo">The member to be checked.</param>
+  /// <returns>True if the given member is a property's getter method, false otherwise.</returns>
+  /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
+  public static bool IsPropertyGetter (MethodBase memberInfo)
+  {
+    ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+    return memberInfo.MemberType == MemberTypes.Method
+        && memberInfo.IsSpecialName
+        && memberInfo.Name.StartsWith ("get_");
+  }
+
+  /// <summary>
+  /// Checks whether a given member is a property setter method.
+  /// </summary>
+  /// <param name="memberInfo">The member to be checked.</param>
+  /// <returns>True if the given member is a property's setter method, false otherwise.</returns>
+  /// <exception cref="ArgumentNullException">The argument <paramref name="memberInfo"/> is null.</exception>
+  public static bool IsPropertySetter (MethodBase memberInfo)
+  {
+    ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+    return memberInfo.MemberType == MemberTypes.Method
+        && memberInfo.IsSpecialName
+        && memberInfo.Name.StartsWith ("set_");
+  }
+
+  /// <summary>
+  /// Returns the property name for a given property accessor method name, or null if the method name is not the name of a property accessor method.
+  /// </summary>
+  /// <param name="methodName">The name of the presumed property accessor method.</param>
+  /// <returns>The property name for the given method name, or null if it is not the name of a property accessor method.</returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="methodName"/> parameter is null.</exception>
+  public static string GetPropertyNameForMethodName (string methodName)
+  {
+    ArgumentUtility.CheckNotNull ("methodName", methodName);
+    if (methodName.Length <= 4 || (!methodName.StartsWith ("get_") && !methodName.StartsWith ("set_")))
+    {
+      return null;
+    }
+    else
+    {
+      return methodName.Substring (4);
+    }
+  }
+
+  /// <summary>
+  /// Retrieves the <see cref="PropertyInfo"/> object for the given property accessor method, or null if the method is not a property accessor method.
+  /// </summary>
+  /// <param name="method">The presumed accessor method whose property should be retrieved</param>
+  /// <returns>The corresponing <see cref="PropertyInfo"/>, or null if the method is not a property accessor or no corresponding property could be
+  /// found.</returns>
+  /// <exception cref="ArgumentNullException">The <paramref name="method"/> parameter was null.</exception>
+  public static PropertyInfo GetPropertyForMethod (MethodInfo method)
+  {
+    ArgumentUtility.CheckNotNull ("method", method);
+    string propertyName = GetPropertyNameForMethodName (method.Name);
+    if (propertyName == null || !method.IsSpecialName)
+    {
+      return null;
+    }
+    else
+    {
+      BindingFlags bindingFlags;
+      if (method.IsStatic)
+      {
+        bindingFlags = BindingFlags.Static;
+      }
+      else
+      {
+        bindingFlags = BindingFlags.Instance;
+      }
+      if (method.IsPublic)
+      {
+        bindingFlags |= BindingFlags.Public;
+      }
+      else
+      {
+        bindingFlags |= BindingFlags.NonPublic;
+      }
+
+      return method.DeclaringType.GetProperty (propertyName, bindingFlags);
+    }
   }
 
   // member fields

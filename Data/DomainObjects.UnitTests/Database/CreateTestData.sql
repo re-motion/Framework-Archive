@@ -12,6 +12,8 @@ delete from [Ceo]
 delete from [OrderTicket]
 delete from [OrderItem]
 delete from [Order]
+delete from [OrderItemWithNewPropertyAccess]
+delete from [OrderWithNewPropertyAccess]
 delete from [Company]
 delete from [IndustrialSector]
 delete from [Person]
@@ -237,6 +239,19 @@ insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product])
     values ('{EA505094-770A-4505-82C1-5A4F94F56FE2}', 'OrderItem', 
     '{90E26C86-611F-4735-8D1B-E1D0918515C2}', 1, 'Blumentopf')
 
+-- OrderWithNewPropertyAccess
+insert into [OrderWithNewPropertyAccess] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID) 
+    values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'OrderWithNewPropertyAccess', 1, '2005/01/01', 
+    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer')
+
+-- OrderItemWithNewPropertyAccess
+insert into [OrderItemWithNewPropertyAccess] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}', 'OrderItemWithNewPropertyAccess', 
+    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 1, 'Mainboard')
+
+insert into [OrderItemWithNewPropertyAccess] (ID, ClassID, OrderID, [Position], [Product]) 
+    values ('{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}', 'OrderItemWithNewPropertyAccess', 
+    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 2, 'CPU Fan')
 
 -- OrderTicket
 insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 

@@ -535,5 +535,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
       Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);
     }
+
+    [Test]
+    public void GetDomainObjectType ()
+    {
+      Customer customer = new Customer ();
+      Assert.AreEqual (typeof (Customer), customer.DataContainer.DomainObjectType);
+    }
   }
 }

@@ -71,6 +71,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy, Version=2.0.0.1, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -88,8 +96,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\IStorageProviderConfigurationLoader.cs" />
+    <Compile Include="CurrentPropertyManager.cs" />
+    <Compile Include="DomainObjectFactory.cs" />
+    <Compile Include="FactoryInstantiatedAttribute.cs" />
+    <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
@@ -352,6 +365,7 @@
     <Compile Include="Persistence\ValueConverterBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PropertyInterceptor.cs" />
     <Compile Include="PropertyValue.cs">
       <SubType>Code</SubType>
     </Compile>

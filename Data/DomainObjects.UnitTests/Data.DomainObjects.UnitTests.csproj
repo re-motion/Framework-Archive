@@ -113,6 +113,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
+    <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="ConfigurationSection\DomainObjectsConfigurationTest.cs" />
     <Compile Include="ConfigurationSection\PersistenceConfigurationTest.cs" />
     <Compile Include="ConfigurationSection\StubDomainObjectsConfiguration.cs" />
@@ -593,6 +595,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
+    <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />
+    <Compile Include="TestDomain\OrderWithNewPropertyAccess.cs" />
     <Compile Include="TestDomain\Customer.cs">
       <SubType>Code</SubType>
     </Compile>

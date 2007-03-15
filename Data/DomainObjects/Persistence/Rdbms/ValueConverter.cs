@@ -128,7 +128,7 @@ public class ValueConverter : ValueConverterBase
     if (classDefinition == null)
       throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
 
-    if (classDefinition.ClassType.IsAbstract)
+    if (classDefinition.ClassType.IsAbstract && !classDefinition.ShouldUseFactoryForInstantiation)
     {
       throw CreateRdbmsProviderException (
           "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class '{1}'.",

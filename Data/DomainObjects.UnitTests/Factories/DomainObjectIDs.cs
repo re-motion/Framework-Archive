@@ -248,6 +248,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     #endregion
 
+    #region OrderWithNewPropertyAccess
+
+    // OrderItems: OrderItemWithNewPropertyAccess1, OrderItemWithNewPropertyAccess2
+    // Customer: Customer1
+    public readonly ObjectID OrderWithNewPropertyAccess1 = new ObjectID ("OrderWithNewPropertyAccess", new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+
+    #endregion
+
+    #region OrderItemWithNewPropertyAccess
+
+    // Order: OrderWithNewPropertyAccess1
+    public readonly ObjectID OrderItemWithNewPropertyAccess1 = new ObjectID ("OrderItemWithNewPropertyAccess", new Guid ("{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}"));
+
+    // Order: OrderWithNewPropertyAccess1
+    public readonly ObjectID OrderItemWithNewPropertyAccess2 = new ObjectID ("OrderItemWithNewPropertyAccess", new Guid ("{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}"));
+
+    #endregion
+
     #region OrderTicket
 
     // Order: Order1
