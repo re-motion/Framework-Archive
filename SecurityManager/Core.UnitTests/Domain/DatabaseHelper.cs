@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
@@ -64,7 +65,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     private IDbConnection GetConnection ()
     {
-      RdbmsProviderDefinition providerDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.Current.StorageProviderDefinitions["SecurityManager"];
+      RdbmsProviderDefinition providerDefinition = 
+          (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"];
       IDbConnection connection = new SqlConnection (providerDefinition.ConnectionString);
       connection.Open ();
 

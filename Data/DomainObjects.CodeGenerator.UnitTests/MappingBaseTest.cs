@@ -1,13 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Mapping;
 using NUnit.Framework;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 {
-  public class MappingBaseTest 
+  public class MappingBaseTest
   {
     // types
 
@@ -15,8 +15,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     // member fields
 
-    private StorageProviderConfiguration _storageProviderConfiguration;
     private MappingConfiguration _mappingConfiguration;
+    private PersistenceConfiguration _persistenceConfiguration;
 
     private ClassDefinition _orderItemClass;
     private ClassDefinition _orderClass;
@@ -33,22 +33,39 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     // construction and disposing
 
-    public MappingBaseTest ()
+    public MappingBaseTest()
     {
     }
 
     // methods and properties
 
     [TestFixtureSetUp]
-    public virtual void TextFixtureSetUp ()
+    public virtual void TextFixtureSetUp()
     {
+      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      storageProviderDefinitionCollection.Add (
+          new RdbmsProviderDefinition (
+              "FirstStorageProvider",
+              typeof (SqlProvider),
+              "Integrated Security=SSPI;Initial Catalog=CodeGeneratorUnitTests1;Data Source=localhost"));
+      storageProviderDefinitionCollection.Add (
+          new RdbmsProviderDefinition (
+              "SecondStorageProvider",
+              typeof (SqlProvider),
+              "Integrated Security=SSPI;Initial Catalog=CodeGeneratorUnitTests2;Data Source=localhost"));
+      storageProviderDefinitionCollection.Add (
+          new NonRdbmsStorageProviderDefinition (
+              "NonRdbmsStorageProvider",
+              typeof (NonRdbmsStorageProvider)));
+
+      _persistenceConfiguration = 
+          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["FirstStorageProvider"]);
     }
 
     [SetUp]
-    public virtual void SetUp ()
+    public virtual void SetUp()
     {
-      _storageProviderConfiguration = StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader("StorageProviders.xml");
-      _mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("Mapping.xml", false);
+      _mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader ("Mapping.xml", false);
 
       _orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
       _orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");
@@ -65,13 +82,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     }
 
     [TearDown]
-    public virtual void TearDown ()
+    public virtual void TearDown()
     {
     }
 
-    protected StorageProviderConfiguration StorageProviderConfiguration
+    protected PersistenceConfiguration StorageConfiguration
     {
-      get { return _storageProviderConfiguration; }
+      get { return _persistenceConfiguration; }
     }
 
     protected MappingConfiguration MappingConfiguration

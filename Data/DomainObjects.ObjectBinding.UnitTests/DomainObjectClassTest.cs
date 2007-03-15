@@ -6,7 +6,7 @@ using Rubicon.ObjectBinding;
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class DomainObjectClassTest
+  public class DomainObjectClassTest : DatabaseTest
   {
     // types
 
@@ -24,9 +24,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
       _domainObjectClass = new DomainObjectClass (typeof (Order));
     }
 

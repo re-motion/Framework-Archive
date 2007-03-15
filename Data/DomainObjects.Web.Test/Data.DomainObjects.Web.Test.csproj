@@ -78,6 +78,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -252,9 +253,6 @@
     </Content>
     <Content Include="SearchObject.aspx">
       <SubType>Form</SubType>
-    </Content>
-    <Content Include="StorageProviders.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="UndefinedEnumTest.aspx">
       <SubType>Form</SubType>

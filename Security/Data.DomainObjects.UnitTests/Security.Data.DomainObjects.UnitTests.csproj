@@ -90,7 +90,6 @@
   <ItemGroup>
     <MappingFiles Include="Rubicon.Security.Data.DomainObjects.UnitTests.Mapping.xml" />
     <MappingFiles Include="Rubicon.Security.Data.DomainObjects.UnitTests.Queries.xml" />
-    <MappingFiles Include="Rubicon.Security.Data.DomainObjects.UnitTests.StorageProviders.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

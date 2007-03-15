@@ -1,38 +1,40 @@
 using System;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
-public sealed class StorageProviderDefinitionFactory
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  private StorageProviderDefinitionFactory ()
+  public sealed class StorageProviderDefinitionFactory
   {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    // construction and disposing
+
+    private StorageProviderDefinitionFactory()
+    {
+    }
+
+    // methods and properties
+
+    public static ProviderCollection<StorageProviderDefinition> Create()
+    {
+      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      storageProviderDefinitionCollection.Add (
+          new RdbmsProviderDefinition (
+              "TestDomain",
+              typeof (SqlProvider),
+              "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost"));
+      storageProviderDefinitionCollection.Add (
+          new UnitTestStorageProviderStubDefinition (
+              "UnitTestStorageProviderStub",
+              typeof (UnitTestStorageProviderStub)));
+
+      return storageProviderDefinitionCollection;
+    }
   }
-
-  // methods and properties
-
-  public static StorageProviderDefinitionCollection Create ()
-  {
-    StorageProviderDefinitionCollection storageProviders = new StorageProviderDefinitionCollection ();
-
-    storageProviders.Add (new RdbmsProviderDefinition (
-        DatabaseTest.c_testDomainProviderID, 
-        typeof (SqlProvider), 
-        "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost"));
-
-    storageProviders.Add (new UnitTestStorageProviderStubDefinition (
-        DatabaseTest.c_unitTestStorageProviderStubID, typeof (UnitTestStorageProviderStub)));
-
-    return storageProviders;
-  }
-}
 }

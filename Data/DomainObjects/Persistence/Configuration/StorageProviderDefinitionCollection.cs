@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
+[Obsolete("(Version (1.7.42)", true)]
 public class StorageProviderDefinitionCollection : CommonCollection
 {
   // types
@@ -60,7 +61,7 @@ public class StorageProviderDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
 
-    return BaseContains (storageProviderDefinition.ID, storageProviderDefinition);
+    return BaseContains (storageProviderDefinition.Name, storageProviderDefinition);
   }
 
   public bool Contains (string storageProviderID)
@@ -87,13 +88,10 @@ public class StorageProviderDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
-    if (Contains (value.ID))
-    {
-      throw CreateArgumentException (
-          "StorageProviderDefinition '{0}' already exists in collection.", "value", value.ID);
-    }
+    if (Contains (value.Name))
+      throw CreateArgumentException ("StorageProviderDefinition '{0}' already exists in collection.", "value", value.Name);
 
-    return BaseAdd (value.ID, value);
+    return BaseAdd (value.Name, value);
   }
 
   #endregion

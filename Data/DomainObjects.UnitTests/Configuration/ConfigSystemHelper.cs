@@ -1,17 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Configuration.Internal;
-using Rhino.Mocks;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {
   public class ConfigSystemHelper
   {
-    private MockRepository _mocks;
     private Enum _notStarted;
     private Enum _usable;
-    private IInternalConfigSystem _mockConfigSystem;
+    private FakeInternalConfigSystem _fakeConfigSystem;
 
     public void SetUpConfigSystem ()
     {
@@ -19,9 +19,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
       _notStarted = (Enum) Enum.Parse (initStateType, "NotStarted");
       _usable = (Enum) Enum.Parse (initStateType, "Usable");
 
-      _mocks = new MockRepository ();
-      _mockConfigSystem = _mocks.CreateMock<IInternalConfigSystem> ();
-      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", _mockConfigSystem);
+      _fakeConfigSystem = new FakeInternalConfigSystem();
+      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", _fakeConfigSystem);
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _usable);
     }
 
@@ -31,23 +30,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
       ConnectionStringsSection connectionStringsSection = new ConnectionStringsSection ();
       connectionStringsSection.ConnectionStrings.Add (connectionStringSettings);
 
-      SetupResult.For (_mockConfigSystem.GetSection ("connectionStrings")).Return (connectionStringsSection);
+      _fakeConfigSystem.AddSection ("connectionStrings", connectionStringsSection);
     }
 
     public void TearDownConfigSystem ()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _notStarted);
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", null);
-    }
-
-    public void ReplayConfigSystem ()
-    {
-      _mocks.ReplayAll();
-    }
-
-    public void VerifyConfigSystem ()
-    {
-      _mocks.VerifyAll();
     }
   }
 }

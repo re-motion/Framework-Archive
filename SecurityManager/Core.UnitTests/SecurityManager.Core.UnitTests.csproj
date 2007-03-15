@@ -142,8 +142,6 @@
     </MappingFiles>
     <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml">
     </MappingFiles>
-    <MappingFiles Include="..\Core\Domain\SecurityManagerStorageProviders.xml">
-    </MappingFiles>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

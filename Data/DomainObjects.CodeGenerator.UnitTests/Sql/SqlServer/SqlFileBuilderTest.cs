@@ -50,8 +50,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       base.SetUp ();
 
-      _firstStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("FirstStorageProvider");
-      _secondStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("SecondStorageProvider");
+      _firstStorageProviderDefinition = (RdbmsProviderDefinition) StorageConfiguration.StorageProviderDefinitions.GetMandatory ("FirstStorageProvider");
+      _secondStorageProviderDefinition = (RdbmsProviderDefinition) StorageConfiguration.StorageProviderDefinitions.GetMandatory ("SecondStorageProvider");
       _fileBuilder = new SqlFileBuilder (MappingConfiguration, _firstStorageProviderDefinition);
       _firstStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_FirstStorageProvider.sql");
       _secondStorageProviderSetupDBScript = GetEmbeddedStringResource ("TestData.SetupDB_SecondStorageProvider.sql");
@@ -95,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void BuildWithMappingConfiguration ()
     {
-      SqlFileBuilderBase.Build (typeof (SqlFileBuilder), MappingConfiguration, StorageProviderConfiguration, "TestDirectory");
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilder), MappingConfiguration, StorageConfiguration, "TestDirectory");
 
       Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
       Assert.AreEqual (_firstStorageProviderSetupDBScript, File.ReadAllText (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));

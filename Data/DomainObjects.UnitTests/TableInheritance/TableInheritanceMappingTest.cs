@@ -1,7 +1,12 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
@@ -18,7 +23,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     // member fields
 
     private DomainObjectIDs _domainObjectIDs;
-	
+    private FakeDomainObjectsConfiguration _domainObjectsConfiguration;
+
     // construction and disposing
 
     public TableInheritanceMappingTest () : base (new TestDataLoader (c_connectionString), c_createTestDataFileName)
@@ -35,6 +41,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [TestFixtureSetUp]
     public void TestFixtureSetUp ()
     {
+      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create ();
+      PersistenceConfiguration persistenceConfiguration =
+          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
+
+      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration (persistenceConfiguration);
+      DomainObjectsConfiguration.SetCurrent (_domainObjectsConfiguration);
+
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
       _domainObjectIDs = new DomainObjectIDs ();
     }

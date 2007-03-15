@@ -83,9 +83,9 @@ public class QueryConfiguration : ConfigurationBase
   }
 
   /// <summary>
-  /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/>.
+  /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="QueryConfigurationLoader"/>.
   /// </summary>
-  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>. Must not be <see langword="null"/>.</param>
+  /// <param name="loader">The <see cref="QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="loader"/> is <see langword="null"/>.</exception>
   /// <exception cref="QueryConfigurationException">The query configuration could not be read from the configuration file.</exception>
   public QueryConfiguration (QueryConfigurationLoader loader) : base (loader)

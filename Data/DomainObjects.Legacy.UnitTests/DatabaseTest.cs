@@ -41,6 +41,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       _loader.Load (_createTestDataFileName);
     }
 
+    [TearDown]
+    public virtual void TearDown ()
+    {
+    }
+
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
     {
       IDbCommand command = connection.CreateCommand ();

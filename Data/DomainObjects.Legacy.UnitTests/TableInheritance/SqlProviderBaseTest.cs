@@ -33,9 +33,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
       _provider.Connect ();
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       _storageProviderManager.Dispose ();
     }
 

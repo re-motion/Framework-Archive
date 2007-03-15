@@ -18,19 +18,19 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     public static void Build (
         Type sqlFileBuilderType,
         MappingConfiguration mappingConfiguration,
-        StorageProviderConfiguration storageProviderConfiguration, 
+        PersistenceConfiguration persistenceConfiguration, 
         string outputPath)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("sqlFileBuilderType", sqlFileBuilderType, typeof (SqlFileBuilderBase));
       ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
-      ArgumentUtility.CheckNotNull ("storageProviderConfiguration", storageProviderConfiguration);
+      ArgumentUtility.CheckNotNull ("persistenceConfiguration", persistenceConfiguration);
       ArgumentUtility.CheckNotNull ("outputPath", outputPath);
 
       if (outputPath != string.Empty && !Directory.Exists (outputPath))
         Directory.CreateDirectory (outputPath);
 
-      bool createMultipleFiles = storageProviderConfiguration.StorageProviderDefinitions.Count > 1;
-      foreach (StorageProviderDefinition storageProviderDefinition in storageProviderConfiguration.StorageProviderDefinitions)
+      bool createMultipleFiles = persistenceConfiguration.StorageProviderDefinitions.Count > 1;
+      foreach (StorageProviderDefinition storageProviderDefinition in persistenceConfiguration.StorageProviderDefinitions)
       {
         RdbmsProviderDefinition rdbmsProviderDefinition = storageProviderDefinition as RdbmsProviderDefinition;
         if (rdbmsProviderDefinition != null)
@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
       string fileName;
       if (multipleStorageProviders)
-        fileName = string.Format ("SetupDB_{0}.sql", storageProviderDefinition.ID);
+        fileName = string.Format ("SetupDB_{0}.sql", storageProviderDefinition.Name);
       else
         fileName = "SetupDB.sql";
 
@@ -82,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
       _mappingConfiguration = mappingConfiguration;
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
-      _classes = GetClassesInStorageProvider (mappingConfiguration.ClassDefinitions, _rdbmsProviderDefinition.ID);
+      _classes = GetClassesInStorageProvider (mappingConfiguration.ClassDefinitions, _rdbmsProviderDefinition.Name);
     }
 
     private ClassDefinitionCollection GetClassesInStorageProvider (ClassDefinitionCollection classDefinitions, string storageProviderID)
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
       foreach (ClassDefinition currentClass in classDefinitions)
       {
-        if (currentClass.StorageProviderID == _rdbmsProviderDefinition.ID)
+        if (currentClass.StorageProviderID == _rdbmsProviderDefinition.Name)
           classes.Add (currentClass);
       }
 

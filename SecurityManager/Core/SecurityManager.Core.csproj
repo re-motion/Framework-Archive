@@ -330,8 +330,6 @@
     </None>
     <None Include="Domain\SecurityManagerQueries.xml">
     </None>
-    <None Include="Domain\SecurityManagerStorageProviders.xml">
-    </None>
     <None Include="GenerateSetupDBScript.ps1" />
   </ItemGroup>
   <ItemGroup>

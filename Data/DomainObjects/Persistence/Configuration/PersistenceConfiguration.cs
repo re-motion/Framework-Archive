@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
-using System.Configuration.Provider;
 using Rubicon.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
@@ -19,6 +19,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 
     private ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private StorageProviderDefinitionHelper _storageProviderDefinitionHelper;
+
     private List<ProviderHelperBase> _providerHelpers = new List<ProviderHelperBase>();
 
     // construction and disposing
@@ -31,13 +32,35 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
       _providerHelpers.ForEach (delegate (ProviderHelperBase current) { current.InitializeProperties (_properties); });
     }
 
+    public PersistenceConfiguration (ProviderCollection<StorageProviderDefinition> providers, StorageProviderDefinition provider)
+      : this()
+    {
+      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull ("provider", provider);
+
+      _storageProviderDefinitionHelper.Provider = provider;
+
+      ProviderCollection<StorageProviderDefinition> providersCopy = CopyProvidersAsReadOnly (providers);
+      _storageProviderDefinitionHelper.Providers = providersCopy;
+    }
+
     // methods and properties
 
-    protected override void PostDeserialize()
+    public StorageProviderDefinition StorageProviderDefinition
     {
-      base.PostDeserialize();
+      get { return _storageProviderDefinitionHelper.Provider; }
+    }
 
-      _providerHelpers.ForEach (delegate (ProviderHelperBase current) { current.PostDeserialze(); });
+    public ProviderCollection<StorageProviderDefinition> StorageProviderDefinitions
+    {
+      get { return _storageProviderDefinitionHelper.Providers; }
+    }
+
+    protected override void PostDeserialize ()
+    {
+      base.PostDeserialize ();
+
+      _providerHelpers.ForEach (delegate (ProviderHelperBase current) { current.PostDeserialze (); });
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -45,14 +68,14 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
       get { return _properties; }
     }
 
-    public StorageProviderDefinition StorageProviderDefinition
+    private ProviderCollection<StorageProviderDefinition> CopyProvidersAsReadOnly (ProviderCollection<StorageProviderDefinition> providers)
     {
-      get { return _storageProviderDefinitionHelper.Provider; }
-    }
+      ProviderCollection<StorageProviderDefinition> providersCopy = new ProviderCollection<StorageProviderDefinition> ();
+      foreach (StorageProviderDefinition provider in providers)
+        providersCopy.Add (provider);
 
-    public ProviderCollection StorageProviderDefinitions
-    {
-      get { return _storageProviderDefinitionHelper.Providers; }
+      providersCopy.SetReadOnly ();
+      return providersCopy;
     }
   }
 }

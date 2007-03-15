@@ -27,9 +27,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _configSystemHelper.SetUpConnectionString ("SqlProvider", "ConnectionString", null);
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown ();
       _configSystemHelper.TearDownConfigSystem ();
     }
 
@@ -50,11 +50,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       config.Add ("description", "The Description");
       config.Add ("providerType", "Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider");
       config.Add ("connectionString", "SqlProvider");
-      _configSystemHelper.ReplayConfigSystem ();
 
       RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", config);
 
-      _configSystemHelper.VerifyConfigSystem ();
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreEqual ("The Description", provider.Description);
       Assert.AreSame (typeof (SqlProvider), provider.StorageProviderType);
@@ -70,7 +68,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       NameValueCollection config = new NameValueCollection ();
       config.Add ("description", "The Description");
       config.Add ("connectionString", "SqlProvider");
-      _configSystemHelper.ReplayConfigSystem ();
 
       Dev.Null = new RdbmsProviderDefinition ("Provider", config);
     }

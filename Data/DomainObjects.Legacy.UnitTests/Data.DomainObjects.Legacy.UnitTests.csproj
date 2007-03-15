@@ -62,11 +62,8 @@
     <Compile Include="Configuration\Mapping\RelationDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointDefinitionTest.cs" />
-    <Compile Include="Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs" />
     <Compile Include="Configuration\Mapping\TypeInfoTest.cs" />
     <Compile Include="Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs" />
-    <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
-    <Compile Include="Configuration\StorageProviders\StorageProviderDefinitionChecker.cs" />
     <Compile Include="DatabaseTest.cs" />
     <Compile Include="Database\StandardMappingTestDataLoader.cs" />
     <Compile Include="Database\TestDataLoader.cs" />
@@ -203,21 +200,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="MappingWithMinimumData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProviders.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersForLoaderTest.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithInvalidNamespace.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithSchemaException.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="StorageProvidersWithXmlException.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TableInheritance\TableInheritanceMapping.xml" />

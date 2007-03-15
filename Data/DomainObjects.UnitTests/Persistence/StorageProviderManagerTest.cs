@@ -31,9 +31,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       _storageProviderManager = new StorageProviderManager ();
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       _storageProviderManager.Dispose ();
     }
 

@@ -47,11 +47,6 @@ public class Arguments
       Placeholder = "filename")]
   public string MappingFileName = MappingLoader.DefaultConfigurationFile;
 
-  [CommandLineStringArgument ("storageProvidersFile", true,
-      Description = "Load this mapping file name (default: StorageProviders.xml).",
-      Placeholder = "filename")]
-  public string StorageProviderFileName = StorageProviderConfigurationLoader.DefaultConfigurationFile;
-
   [CommandLineStringArgument ("dobase", true, 
       Description = "Create domain object classes derived from this class (default: " + DomainObjectBuilder.DefaultBaseClass + ")",
       Placeholder = "classname")]

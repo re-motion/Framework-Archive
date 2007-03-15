@@ -12,8 +12,8 @@ public class LoadObjectsTest : DatabaseTest
 
   // static members and constants
 
-  private static ObjectID s_clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
-  private static ObjectID s_fileID = new ObjectID ("File", Guid.NewGuid ());
+  private ObjectID _clientID;
+  private ObjectID _fileID;
 
   // member fields
 
@@ -25,6 +25,14 @@ public class LoadObjectsTest : DatabaseTest
 
   // methods and properties
 
+  public override void TestFixtureSetUp ()
+  {
+    base.TestFixtureSetUp ();
+   
+   _clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
+   _fileID = new ObjectID ("File", Guid.NewGuid ());
+ }
+  
   [Test]
   public void LoadObjectsOverRelationTest ()
   {
@@ -36,7 +44,7 @@ public class LoadObjectsTest : DatabaseTest
     for (int i = 0; i < numberOfTests; i++)
     {
       ClientTransaction.SetCurrent (null);
-      Client client = Client.GetObject (s_clientID);
+      Client client = Client.GetObject (_clientID);
 
       DateTime startTime = DateTime.Now;
 
@@ -63,7 +71,7 @@ public class LoadObjectsTest : DatabaseTest
     for (int i = 0; i < numberOfTests; i++)
     {
       ClientTransaction.SetCurrent (null);
-      Client client = Client.GetObject (s_clientID);
+      Client client = Client.GetObject (_clientID);
 
       DateTime startTime = DateTime.Now;
 

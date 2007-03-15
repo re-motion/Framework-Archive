@@ -32,9 +32,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       ReInitializeTransaction ();
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       _testDataContainerFactory = null;
       _clientTransactionMock = null;
       ClientTransaction.SetCurrent (null);

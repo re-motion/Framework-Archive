@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using NUnit.Framework;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration;
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
+namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {
   [TestFixture]
   public class PersistenceConfigurationTest
@@ -31,9 +32,39 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
     }
 
     [Test]
+    public void Initialize_WithProviderCollectionAndProvider()
+    {
+      StorageProviderDefinition providerDefinition1 = new RdbmsProviderDefinition ("ProviderDefinition1", typeof (SqlProvider), "ConnectionString");
+      StorageProviderDefinition providerDefinition2 = new RdbmsProviderDefinition ("ProviderDefinition2", typeof (SqlProvider), "ConnectionString");
+      StorageProviderDefinition providerDefinition3 = new RdbmsProviderDefinition ("ProviderDefinition3", typeof (SqlProvider), "ConnectionString");
+      ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition> ();
+      providers.Add (providerDefinition1);
+      providers.Add (providerDefinition2);
+
+      PersistenceConfiguration configuration = new PersistenceConfiguration (providers, providerDefinition3);
+      Assert.AreSame (providerDefinition3, configuration.StorageProviderDefinition);
+      Assert.AreNotSame (providers, configuration.StorageProviderDefinitions);
+      Assert.AreEqual (2, configuration.StorageProviderDefinitions.Count);
+      Assert.AreSame (providerDefinition1, providers["ProviderDefinition1"]);
+      Assert.AreSame (providerDefinition2, providers["ProviderDefinition2"]);
+    }
+
+    [Test]
+    [ExpectedException( typeof(NotSupportedException), "Collection is read-only.")]
+    public void Initialize_WithProviderCollectionAndProvider_Expect ()
+    {
+      StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition ("ProviderDefinition", typeof (SqlProvider), "ConnectionString");
+      ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition> ();
+
+      PersistenceConfiguration configuration = new PersistenceConfiguration (providers, providerDefinition);
+      configuration.StorageProviderDefinitions.Add (providerDefinition);
+    }
+
+    [Test]
     public void Deserialize_WithRdbmsProviderDefinition()
     {
-      string xmlFragment = @" 
+      string xmlFragment =
+          @" 
           <storage defaultProviderDefinition=""Rdbms"">
             <providerDefinitions>
               <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
@@ -42,7 +73,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
-      _configSystemHelper.ReplayConfigSystem();
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
@@ -51,7 +81,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
       Assert.AreSame (_configuration.StorageProviderDefinition, _configuration.StorageProviderDefinitions["Rdbms"]);
       Assert.AreSame (typeof (SqlProvider), _configuration.StorageProviderDefinition.StorageProviderType);
       Assert.AreEqual ("ConnectionString", ((RdbmsProviderDefinition) _configuration.StorageProviderDefinition).ConnectionString);
-      _configSystemHelper.VerifyConfigSystem ();
     }
 
     [Test]
@@ -59,7 +88,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
         "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection.")]
     public void Test_WithRdbmsProviderDefinitionAndInvalidName()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <storage defaultProviderDefinition=""Invalid"">
             <providerDefinitions>
               <add type=""Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
@@ -68,12 +98,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ConfigurationSection
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
-      _configSystemHelper.ReplayConfigSystem();
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Dev.Null = _configuration.StorageProviderDefinition;
-      _configSystemHelper.VerifyConfigSystem();
     }
   }
 }

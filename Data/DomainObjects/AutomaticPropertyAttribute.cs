@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects
   /// <code>
   /// get
   /// {
-  ///   return GetPropertyValue<...> ();
+  ///   return GetPropertyValue&lt;...&gt; ();
   /// }
   /// set
   /// {

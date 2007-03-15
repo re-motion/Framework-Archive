@@ -1,110 +1,73 @@
 using System;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
-public class StorageProviderConfiguration
-{
-  // types
-
-  // static members and constants
-
-  [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-  public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile";
-  [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-  public const string DefaultConfigurationFile = "StorageProviders.xml";
-
-  private static StorageProviderConfiguration s_storageProviderConfiguration;
-
-  public static StorageProviderConfiguration Current
+  [Obsolete ("Use PersistenceConfiguration to access the StorageProviderDefinitions. (Version 1.7.42)")]
+  public class StorageProviderConfiguration
   {
-    get 
+    // types
+
+    // static members and constants
+
+    public static StorageProviderConfiguration Current
     {
-      if (s_storageProviderConfiguration == null)
+      get { return new StorageProviderConfiguration (DomainObjectsConfiguration.Current.Storage);}
+    }
+
+    [Obsolete ("Use DomainObjectsConfiguration to set the current StorageProviderDefinitions. (Version 1.7.42)", true)]
+    public static void SetCurrent (StorageProviderConfiguration storageProviderConfiguration)
+    {
+      throw new InvalidOperationException ("Use DomainObjectsConfiguration to set the current StorageProviderDefinitions.");
+    }
+
+    // member fields
+
+    private PersistenceConfiguration _persistenceConfiguration;
+
+    // construction and disposing
+
+    [Obsolete ("Use StorageProviderConfiguration (PersistenceConfiguration) (Version 1.7.42)", true)]
+    public StorageProviderConfiguration (string configurationFile)
+    {
+      throw new InvalidOperationException ("Use StorageProviderConfiguration (PersistenceConfiguration).");
+    }
+
+    [Obsolete ("Use Use StorageProviderConfiguration (PersistenceConfiguration). (Version 1.7.42)", true)]
+    public StorageProviderConfiguration (object loader)
+    {
+      throw new InvalidOperationException ("Use StorageProviderConfiguration (PersistenceConfiguration).");
+    }
+
+    public StorageProviderConfiguration (PersistenceConfiguration persistenceConfiguration)
+    {
+      ArgumentUtility.CheckNotNull ("persistenceConfiguration", persistenceConfiguration);
+      _persistenceConfiguration = persistenceConfiguration;
+    }
+
+    // methods and properties
+
+    public StorageProviderDefinition this [string storageProviderID]
+    {
+      get
       {
-        lock (typeof (StorageProviderConfiguration))
-        {
-          if (s_storageProviderConfiguration == null)
-            s_storageProviderConfiguration = CreateConfigurationFromFileBasedLoader ();
-        }
+        ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+        return _persistenceConfiguration.StorageProviderDefinitions[storageProviderID];
       }
-
-      return s_storageProviderConfiguration;
     }
-  }
 
-  public static void SetCurrent (StorageProviderConfiguration storageProviderConfiguration)
-  {
-    lock (typeof (StorageProviderConfiguration))
+    public ProviderCollection<StorageProviderDefinition> StorageProviderDefinitions
     {
-      s_storageProviderConfiguration = storageProviderConfiguration;
+      get { return _persistenceConfiguration.StorageProviderDefinitions; }
     }
-  }
 
-  [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-  public static StorageProviderConfiguration CreateConfigurationFromFileBasedLoader ()
-  {
-    return CreateConfigurationFromFileBasedLoader (
-        LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
-  }
-
-  [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-  public static StorageProviderConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile)
-  {
-    Type loaderType = TypeUtility.GetType ("Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.FileBasedConfigurationLoader.StorageProviderConfigurationLoader", true, false);
-    IStorageProviderConfigurationLoader loader = (IStorageProviderConfigurationLoader) Activator.CreateInstance (loaderType, configurationFile);
-    return new StorageProviderConfiguration (loader);
-  }
-
-  // member fields
-
-  private StorageProviderDefinitionCollection _storageProviderDefinitions;
-  private IStorageProviderConfigurationLoader _loader;
-
-  // construction and disposing
-
-  [Obsolete ("Use StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader (string). (Version 1.7.42)", true)]
-  public StorageProviderConfiguration (string configurationFile) 
-  {
-    throw new InvalidOperationException ("Use StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader (string).");
-  }
-
-  public StorageProviderConfiguration (IStorageProviderConfigurationLoader loader)
-  {
-    ArgumentUtility.CheckNotNull ("loader", loader);
-    _loader = loader;
-
-    _storageProviderDefinitions = _loader.GetStorageProviderDefinitions ();
-  }
-
-  // methods and properties
-
-  public IStorageProviderConfigurationLoader Loader
-  {
-    get { return _loader; }
-  }
-
-  public StorageProviderDefinition this [string storageProviderID]
-  {
-    get 
+    [Obsolete ("Contains (string) is no longer supported. (Version 1.7.42)", true)]
+    public bool Contains (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      return _storageProviderDefinitions[storageProviderID]; 
+      throw new InvalidOperationException ("Contains is no longer supported (string).");
     }
   }
-
-  public StorageProviderDefinitionCollection StorageProviderDefinitions
-  {
-    get { return _storageProviderDefinitions; }
-  }
-
-  public bool Contains (StorageProviderDefinition storageProviderDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-
-    return _storageProviderDefinitions.Contains (storageProviderDefinition);
-  }
-}
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:c="http://www.rubicon-it.com/Data/DomainObjects/Configuration"
+    targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Configuration"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+  <xs:element name="rubicon.data.domainObjects">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="storage" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="providerDefinitions" type="c:ProviderCollection" minOccurs="0" maxOccurs="1" />
+              <xs:element name="groups" minOccurs="0" maxOccurs="1" />
+            </xs:all>
+            <xs:attribute name="defaultProviderDefinition" type="c:ProviderDefinitionSelection" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="mapping" minOccurs="0" maxOccurs="1" />
+        <xs:element name="query" minOccurs="0" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="ProviderDefinitionSelection">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="SqlProvider" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="c:RequiredStringType" />
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:complexType name="ProviderCollection">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="add">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+          <xs:attribute name="type" type="c:DotNetType" use="required" />
+          <xs:attribute name="providerType" type="c:DotNetType" use="required" />
+          <xs:anyAttribute processContents="skip" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="remove">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="clear">
+        <xs:complexType>
+          <!--tag is empty-->
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="RequiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DotNetType">
+    <xs:restriction base="c:RequiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+
+      <!--  Class; Namespace.Class; Namespace.Namespace.Class; 
+            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+
+      <!--  Namespace::Class; Namespace.Namespace::Class; 
+            Namespace::Class+Class; Namespace::Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

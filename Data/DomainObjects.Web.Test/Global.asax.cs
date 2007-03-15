@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Configuration;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.SessionState;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Web.Test 
 {
@@ -23,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{
-
+	
 		}
  
 		protected void Session_Start(Object sender, EventArgs e)
@@ -33,7 +37,9 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
 		protected void Application_BeginRequest(Object sender, EventArgs e)
 		{
-
+      PersistenceConfiguration storage = (PersistenceConfiguration) ConfigurationManager.GetSection ("rubicon.data.domainObjects/storage");
+		  IDomainObjectsConfiguration group = DomainObjectsConfiguration.Current;
+		  PersistenceConfiguration s2 = group.Storage;
 		}
 
 		protected void Application_EndRequest(Object sender, EventArgs e)

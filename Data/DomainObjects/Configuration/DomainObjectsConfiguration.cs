@@ -1,24 +1,42 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Configuration
 {
-  public class DomainObjectsConfiguration: ConfigurationSectionGroup
+  /// <summary>
+  /// <see cref="ConfigurationSectionGroup"/> for grouping the <see cref="ConfigurationSection"/> in the <b>Rubicon.Data.DomainObjects</b> namespace.
+  /// </summary>
+  public sealed class DomainObjectsConfiguration: ConfigurationSectionGroup, IDomainObjectsConfiguration
   {
-    protected const string StoragePropertyName = "storage";
+    private const string StoragePropertyName = "storage";
 
-    public DomainObjectsConfiguration()
+    private static readonly DoubleCheckedLockingContainer<IDomainObjectsConfiguration> s_current =
+        new DoubleCheckedLockingContainer<IDomainObjectsConfiguration> (delegate { return new DomainObjectsConfiguration(); });
+
+    public static IDomainObjectsConfiguration Current
+    {
+      get { return s_current.Value; }
+    }
+
+    public static void SetCurrent (IDomainObjectsConfiguration configuration)
+    {
+      s_current.Value = configuration;
+    }
+
+    private DomainObjectsConfiguration()
     {
     }
 
     [ConfigurationProperty (StoragePropertyName)]
     public PersistenceConfiguration Storage
     {
-      get { return (PersistenceConfiguration) Sections[StoragePropertyName]; }
+      get { return (PersistenceConfiguration) ConfigurationManager.GetSection (ConfigKey + "/" + StoragePropertyName); }
+    }
+
+    private string ConfigKey
+    {
+      get { return string.IsNullOrEmpty (SectionGroupName) ? "rubicon.data.domainObjects" : SectionGroupName; }
     }
   }
 }

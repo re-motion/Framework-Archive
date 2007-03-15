@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -32,14 +33,14 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 
       try
       {
-        StorageProviderConfiguration storageProviderConfiguration = StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader(Path.Combine (arguments.ConfigDirectory, arguments.StorageProviderFileName));
+        PersistenceConfiguration persistenceConfiguration = DomainObjectsConfiguration.Current.Storage;
 
         MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
         {
           Type sqlFileBuilderType = TypeUtility.GetType (arguments.SqlBuilderTypeName, true, false);
-          SqlFileBuilderBase.Build (sqlFileBuilderType, mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);
+          SqlFileBuilderBase.Build (sqlFileBuilderType, mappingConfiguration, persistenceConfiguration, arguments.SqlOutput);
         }
 
         if ((arguments.Mode & OperationMode.DomainModel) != 0)

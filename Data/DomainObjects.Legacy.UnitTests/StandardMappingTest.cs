@@ -1,12 +1,17 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 {
-  public class StandardMappingTest : DatabaseTest
+  public class StandardMappingTest: DatabaseTest
   {
     // types
 
@@ -14,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     private const string c_createTestDataFileName = "CreateTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"Mapping.xml");
+    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Mapping.xml");
 
     // member fields
 
@@ -22,20 +27,42 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     // construction and disposing
 
-    protected StandardMappingTest ()
-      : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
+    protected StandardMappingTest()
+        : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
     {
     }
 
     // methods and properties
 
     [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
+    public void TestFixtureSetUp()
     {
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      TestMappingConfiguration.Reset ();
+      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      storageProviderDefinitionCollection.Add (
+          new RdbmsProviderDefinition (
+              "TestDomain",
+              typeof (SqlProvider),
+              "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost"));
+      storageProviderDefinitionCollection.Add (
+          new UnitTestStorageProviderStubDefinition (
+              "UnitTestStorageProviderStub",
+              typeof (UnitTestStorageProviderStub)));
 
-      _domainObjectIDs = new DomainObjectIDs ();
+      PersistenceConfiguration persistenceConfiguration =
+          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
+
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (persistenceConfiguration));
+
+      MappingConfiguration.SetCurrent (s_mappingConfiguration);
+      TestMappingConfiguration.Reset();
+
+      _domainObjectIDs = new DomainObjectIDs();
+    }
+
+    [TestFixtureTearDown]
+    public void TestFixtureTearDown ()
+    {
+      DomainObjectsConfiguration.SetCurrent (null);
     }
 
     protected DomainObjectIDs DomainObjectIDs

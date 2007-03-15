@@ -1,21 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
 using System.IO;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using NUnit.Framework;
 using Rhino.Mocks;
+using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 {
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION
   [TestFixture]
-  public class SqlFileBuilderBaseTest : MappingBaseTest
+  public class SqlFileBuilderBaseTest: MappingBaseTest
   {
     // types
 
@@ -24,53 +23,52 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     // member fields
 
     private RdbmsProviderDefinition _firstStorageProviderDefinition;
-    private RdbmsProviderDefinition _secondStorageProviderDefinition;
     private SqlFileBuilderBase _mockSqlFileBuilder;
     private MockRepository _mocks;
     private string _setupDBFileName;
 
     // construction and disposing
 
-    public SqlFileBuilderBaseTest ()
+    public SqlFileBuilderBaseTest()
     {
     }
 
     // methods and properties
 
-    public override void TextFixtureSetUp ()
+    public override void TextFixtureSetUp()
     {
-      base.TextFixtureSetUp ();
+      base.TextFixtureSetUp();
 
-      CleanUpTestData ();
+      CleanUpTestData();
     }
 
-    public override void SetUp ()
+    public override void SetUp()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mocks = new MockRepository ();
-      _firstStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("FirstStorageProvider");
-      _secondStorageProviderDefinition = (RdbmsProviderDefinition) StorageProviderConfiguration.StorageProviderDefinitions.GetMandatory ("SecondStorageProvider");
+      _mocks = new MockRepository();
+      _firstStorageProviderDefinition = 
+          (RdbmsProviderDefinition) StorageConfiguration.StorageProviderDefinitions.GetMandatory ("FirstStorageProvider");
       _mockSqlFileBuilder = _mocks.DynamicMock<SqlFileBuilderBase> (MappingConfiguration, _firstStorageProviderDefinition);
       _setupDBFileName = @"TestDirectory\SetupDB_FirstStorageProvider.sql";
     }
 
-    public override void TearDown ()
+    public override void TearDown()
     {
-      base.TearDown ();
+      base.TearDown();
 
-      CleanUpTestData ();
+      CleanUpTestData();
     }
 
     [Test]
-    public void Initialize ()
+    public void Initialize()
     {
       Assert.AreSame (MappingConfiguration, _mockSqlFileBuilder.MappingConfiguration);
       Assert.AreSame (_firstStorageProviderDefinition, _mockSqlFileBuilder.RdbmsProviderDefinition);
     }
 
     [Test]
-    public void Classes ()
+    public void Classes()
     {
       ClassDefinitionCollection classes = _mockSqlFileBuilder.Classes;
 
@@ -95,21 +93,21 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     }
 
     [Test]
-    public void GetFileName ()
+    public void GetFileName()
     {
       string actualFileName = SqlFileBuilderBase.GetFileName (_firstStorageProviderDefinition, @"c:\SomeDirectory", false);
       Assert.AreEqual (@"c:\SomeDirectory\SetupDB.sql", actualFileName);
     }
 
     [Test]
-    public void GetFileNameWithMultipleStorageProviderTrue ()
+    public void GetFileNameWithMultipleStorageProviderTrue()
     {
       string actualFileName = SqlFileBuilderBase.GetFileName (_firstStorageProviderDefinition, @"c:\SomeDirectory", true);
       Assert.AreEqual (@"c:\SomeDirectory\SetupDB_FirstStorageProvider.sql", actualFileName);
     }
 
     [Test]
-    public void BuildWithStorageProviderDefinition ()
+    public void BuildWithStorageProviderDefinition()
     {
       Directory.CreateDirectory ("TestDirectory");
 
@@ -120,17 +118,17 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     }
 
     [Test]
-    public void BuildWithMappingConfigurationCreatesOutputDirectory ()
+    public void BuildWithMappingConfigurationCreatesOutputDirectory()
     {
-      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageProviderConfiguration, "TestDirectory");
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageConfiguration, "TestDirectory");
 
       Assert.IsTrue (Directory.Exists (@"TestDirectory"));
     }
 
     [Test]
-    public void BuildWithMappingConfigurationWithEmptyOutputDirectory ()
+    public void BuildWithMappingConfigurationWithEmptyOutputDirectory()
     {
-      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageProviderConfiguration, string.Empty);
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageConfiguration, string.Empty);
 
       Assert.IsTrue (File.Exists (@"SetupDB_FirstStorageProvider.sql"));
       Assert.AreEqual ("Contents of SetupDB for StorageProvider\r\n  FirstStorageProvider", File.ReadAllText (@"SetupDB_FirstStorageProvider.sql"));
@@ -139,30 +137,35 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     }
 
     [Test]
-    public void BuildWithMappingConfigurationWithOneStorageProviderDefinition ()
+    public void BuildWithMappingConfigurationWithOneStorageProviderDefinition()
     {
-      StorageProviderConfiguration storageProviderConfiguration = StorageProviderConfiguration.CreateConfigurationFromFileBasedLoader("emptyStorageProviders.xml");
-      storageProviderConfiguration.StorageProviderDefinitions.Add (_firstStorageProviderDefinition);
+      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      storageProviderDefinitionCollection.Add (_firstStorageProviderDefinition);
 
-      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, storageProviderConfiguration, "TestDirectory");
+      PersistenceConfiguration persistenceConfiguration =
+          new PersistenceConfiguration (storageProviderDefinitionCollection, _firstStorageProviderDefinition);
+
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, persistenceConfiguration, "TestDirectory");
 
       Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB.sql"));
       Assert.AreEqual ("Contents of SetupDB for StorageProvider\r\n  FirstStorageProvider", File.ReadAllText (@"TestDirectory\SetupDB.sql"));
     }
 
     [Test]
-    public void BuildWithMappingConfiguration ()
+    public void BuildWithMappingConfiguration()
     {
-      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageProviderConfiguration, "TestDirectory");
+      SqlFileBuilderBase.Build (typeof (SqlFileBuilderMock), MappingConfiguration, StorageConfiguration, "TestDirectory");
 
       Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
-      Assert.AreEqual ("Contents of SetupDB for StorageProvider\r\n  FirstStorageProvider", File.ReadAllText (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
+      Assert.AreEqual (
+          "Contents of SetupDB for StorageProvider\r\n  FirstStorageProvider", File.ReadAllText (@"TestDirectory\SetupDB_FirstStorageProvider.sql"));
       Assert.IsTrue (File.Exists (@"TestDirectory\SetupDB_SecondStorageProvider.sql"));
-      Assert.AreEqual ("Contents of SetupDB for StorageProvider\r\n  SecondStorageProvider", File.ReadAllText (@"TestDirectory\SetupDB_SecondStorageProvider.sql"));
+      Assert.AreEqual (
+          "Contents of SetupDB for StorageProvider\r\n  SecondStorageProvider", File.ReadAllText (@"TestDirectory\SetupDB_SecondStorageProvider.sql"));
       Assert.IsFalse (File.Exists (@"TestDirectory\SetupDB_NonRdbmsStorageProvider.sql"));
     }
 
-    private void CleanUpTestData ()
+    private void CleanUpTestData()
     {
       if (Directory.Exists ("TestDirectory"))
         Directory.Delete ("TestDirectory", true);

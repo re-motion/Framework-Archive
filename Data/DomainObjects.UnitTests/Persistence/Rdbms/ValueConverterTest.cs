@@ -43,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _connection = provider.Connection;
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown ();
       _storageProviderManager.Dispose ();
     }
 

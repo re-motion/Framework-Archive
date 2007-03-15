@@ -71,7 +71,7 @@ public abstract class StorageProvider : IDisposable
     get 
     {
       CheckDisposed ();
-      return _definition.ID; 
+      return _definition.Name; 
     }
   }
 

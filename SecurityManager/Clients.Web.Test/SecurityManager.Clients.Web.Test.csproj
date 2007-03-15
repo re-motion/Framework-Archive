@@ -68,8 +68,6 @@
     </MappingFiles>
     <MappingFiles Include="Queries.xml">
     </MappingFiles>
-    <MappingFiles Include="StorageProviders.xml">
-    </MappingFiles>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

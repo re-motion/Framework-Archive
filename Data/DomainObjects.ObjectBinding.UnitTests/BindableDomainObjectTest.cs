@@ -8,7 +8,7 @@ using Rubicon.Security;
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
-  public class BindableDomainObjectTest
+  public class BindableDomainObjectTest : DatabaseTest
   {
     private MockRepository _mocks;
     private IObjectSecurityAdapter _mockObjectSecurityAdapter;
@@ -16,9 +16,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     private ClientTransaction _transaction;
     private SecurableOrder _securableOder;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
       _mocks = new MockRepository ();
       _mockObjectSecurityAdapter = _mocks.CreateMock<IObjectSecurityAdapter> ();
       _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
@@ -40,9 +40,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       //_nonSecurableObject = new TestSearchObject ();
     }
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown();
       SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
     }
 

@@ -98,12 +98,14 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
-    <Compile Include="ConfigurationLoader\IStorageProviderConfigurationLoader.cs" />
+    <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
+    <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
     <Compile Include="DomainObjectFactory.cs" />
     <Compile Include="FactoryInstantiatedAttribute.cs" />
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
+    <Compile Include="DomainObjectCollection1.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -417,6 +419,9 @@
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Configuration\DomainObjectsConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

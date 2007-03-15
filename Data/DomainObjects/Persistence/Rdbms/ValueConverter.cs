@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.NullableValueTypes;
@@ -249,7 +250,7 @@ public class ValueConverter : ValueConverterBase
   private int GetClassIDColumnHashKey (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
   {
     StorageProviderDefinition storageProviderDefinition = 
-        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
+        DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
 
     return storageProviderDefinition.GetHashCode ()
         ^ classDefinition.GetEntityName ().GetHashCode ()

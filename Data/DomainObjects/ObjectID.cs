@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
@@ -242,8 +243,8 @@ public sealed class ObjectID
 
     CheckValue ("value", value);
 
-    StorageProviderDefinition storageProviderDefinition = 
-        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
+    StorageProviderDefinition storageProviderDefinition =
+        DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
 
     storageProviderDefinition.CheckIdentityType (value.GetType ());
 
