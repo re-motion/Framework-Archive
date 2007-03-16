@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       if (mappingConfiguration != null)
       {
-        if (!mappingConfiguration.Loader.ResolveTypes)
+        if (!mappingConfiguration.ResolveTypes)
           throw CreateArgumentException ("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
 
         try
@@ -99,8 +99,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     private ClassDefinitionCollection _classDefinitions;
     private RelationDefinitionCollection _relationDefinitions;
-    private IMappingLoader _loader;
-
+    private bool _resolveTypes;
+    
     // construction and disposing
 
     [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string). (Version 1.7.42)", true)]
@@ -119,10 +119,10 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("loader", loader);
 
-      _loader = loader;
-      _classDefinitions = _loader.GetClassDefinitions();
-      _relationDefinitions = _loader.GetRelationDefinitions (_classDefinitions);
-
+      _classDefinitions = loader.GetClassDefinitions();
+      _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
+      _resolveTypes = loader.ResolveTypes;
+      
       Validate();
     }
 
@@ -131,11 +131,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public void Validate()
     {
       _classDefinitions.Validate();
-    }
-
-    public IMappingLoader Loader
-    {
-      get { return _loader; }
     }
 
     /// <summary>
@@ -161,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     /// </summary>
     public bool ResolveTypes
     {
-      get { return _loader.ResolveTypes; }
+      get { return _resolveTypes; }
     }
 
     public ClassDefinitionCollection ClassDefinitions

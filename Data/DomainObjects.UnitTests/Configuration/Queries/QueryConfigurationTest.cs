@@ -71,23 +71,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     {
       try
       {
-        QueryConfiguration.SetCurrent (
-            new QueryConfiguration (@"QueriesForLoaderTest.xml"));
+        QueryConfiguration.SetCurrent (new QueryConfiguration (@"QueriesForLoaderTest.xml"));
 
-        string configurationFile = Path.GetFullPath (@"QueriesForLoaderTest.xml");
-
-        Assert.AreEqual (configurationFile, QueryConfiguration.Current.ConfigurationFile);
+        Assert.AreEqual (3, QueryConfiguration.Current.QueryDefinitions.Count);
+        Assert.IsNotNull (QueryConfiguration.Current.QueryDefinitions["OrderQuery"]);
       }
       finally
       {
         QueryConfiguration.SetCurrent (null);
       }
-    }
-
-    [Test]
-    public void ApplicationName ()
-    {
-      Assert.AreEqual ("UnitTests", QueryConfiguration.Current.ApplicationName);
     }
 
     [Test]

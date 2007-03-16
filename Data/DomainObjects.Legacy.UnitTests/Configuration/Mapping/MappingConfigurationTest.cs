@@ -32,10 +32,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml");
 
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
-
-      Assert.IsNotNull (configuration.Loader);
-      Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
+      Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
@@ -44,10 +41,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", true);
 
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
-
-      Assert.IsNotNull (configuration.Loader);
-      Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
+      Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
@@ -56,10 +50,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithMinimumData.xml", true));
 
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
-
-      Assert.IsNotNull (configuration.Loader);
-      Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
+      Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
@@ -86,12 +77,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", false);
       MappingConfiguration.SetCurrent (configuration);
-    }
-
-    [Test]
-    public void ApplicationName ()
-    {
-      Assert.AreEqual ("UnitTests", ((MappingLoader)MappingConfiguration.Current.Loader).GetApplicationName());
     }
 
     [Test]
@@ -168,8 +153,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       MappingConfiguration configuration = new MappingConfiguration (
           new MappingLoader (@"EntireMappingWithUnresolvedTypes.xml", false));
 
-      Assert.IsNotNull (configuration.Loader);
-      Assert.IsFalse (configuration.Loader.ResolveTypes);
+      Assert.IsFalse (configuration.ResolveTypes);
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
 
       foreach (ClassDefinition classDefinition in configuration.ClassDefinitions)
