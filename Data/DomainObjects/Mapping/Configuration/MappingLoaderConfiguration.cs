@@ -21,6 +21,9 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
     private readonly ConfigurationProperty _mappingLoaderProperty;
     private readonly DoubleCheckedLockingContainer<IMappingLoader> _mappingLoader;
 
+    private readonly ConfigurationProperty _domainObjectFactoryProperty;
+    private readonly DoubleCheckedLockingContainer<IDomainObjectFactory> _domainObjectFactory;
+
     // construction and disposing
 
     public MappingLoaderConfiguration()
@@ -33,7 +36,16 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
           null,
           ConfigurationPropertyOptions.None);
 
+      _domainObjectFactory = new DoubleCheckedLockingContainer<IDomainObjectFactory> (
+          delegate { return DomainObjectFactoryElement.CreateInstance (); });
+      _domainObjectFactoryProperty = new ConfigurationProperty (
+          "domainObjectFactory",
+          typeof (TypeElement<IDomainObjectFactory, DomainObjectFactory>),
+          null,
+          ConfigurationPropertyOptions.None);
+
       _properties.Add (_mappingLoaderProperty);
+      _properties.Add (_domainObjectFactoryProperty);
     }
 
     // methods and properties
@@ -52,6 +64,17 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
     protected TypeElement<IMappingLoader> MappingLoaderElement
     {
       get { return (TypeElement<IMappingLoader>) this[_mappingLoaderProperty]; }
+    }
+
+    public IDomainObjectFactory DomainObjectFactory
+    {
+      get { return _domainObjectFactory.Value; }
+      set { _domainObjectFactory.Value = value; }
+    }
+
+    protected TypeElement<IDomainObjectFactory> DomainObjectFactoryElement
+    {
+      get { return (TypeElement<IDomainObjectFactory>) this[_domainObjectFactoryProperty]; }
     }
   }
 }

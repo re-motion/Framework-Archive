@@ -184,6 +184,29 @@ public sealed class ReflectionUtility
     }
   }
 
+  public static string GetSignatureForArguments (object[] args)
+  {
+    Type[] argumentTypes = GetTypesForArgs (args);
+    return ReflectionUtility.GetTypeListAsString (argumentTypes);
+  }
+
+  public static Type[] GetTypesForArgs (object[] args)
+  {
+    Type[] types = new Type[args.Length];
+    for (int i = 0; i < args.Length; i++)
+    {
+      if (args[i] == null)
+      {
+        types[i] = null;
+      }
+      else
+      {
+        types[i] = args[i].GetType ();
+      }
+    }
+    return types;
+  }
+
   // member fields
 
   // construction and disposing

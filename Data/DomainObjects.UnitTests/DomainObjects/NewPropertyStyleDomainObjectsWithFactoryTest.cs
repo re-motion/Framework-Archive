@@ -7,6 +7,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -34,6 +35,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
     }
 
+    public class Throws : DomainObject
+    {
+      public Throws ()
+        : base (((int) (object) "this always throws before entering base constructor!") == 5 ? ClientTransaction.Current : ClientTransaction.Current)
+      {
+      }
+    }
+
+    public class ClassWithWrongConstructor : DomainObject
+    {
+      public ClassWithWrongConstructor (string s)
+      {
+        Assert.Fail ("Shouldn't be executed.");
+      }
+    }
+
     // static members and constants
 
     // member fields
@@ -46,6 +63,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     // methods and properties
 
+    [SetUp]
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
+    }
+
+    [TearDown]
+    public override void TearDown ()
+    {
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
+      base.TearDown ();
+    }
+
     [Test]
     public void LoadOfSimpleObjectWorks ()
     {
@@ -56,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ConstructionOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = DomainObjectFactory.Create<OrderWithNewPropertyAccess> ();
+      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
       Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (order));
     }
 
@@ -150,36 +181,97 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ArgumentException))]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
-      DomainObjectFactory.Create<NonInstantiableAbstractClass> ();
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<NonInstantiableAbstractClass> ();
+      }
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException))]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
-      DomainObjectFactory.Create<NonInstantiableAbstractClass> ();
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<NonInstantiableAbstractClass> ();
+      }
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException))]
     public void SealedCannotBeInstantiated ()
     {
-      DomainObjectFactory.Create<NonInstantiableSealedClass> ();
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<NonInstantiableSealedClass> ();
+      }
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException))]
     public void NonDomainCannotBeInstantiated ()
     {
-      DomainObjectFactory.Create (typeof(NonInstantiableNonDomainClass));
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create (typeof (NonInstantiableNonDomainClass),
+          new object[0]);
     }
 
     [Test]
     [ExpectedException (typeof (MissingMethodException))]
     public void WrongConstructorCannotBeInstantiated ()
     {
-      PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObjectFactory), "Create", typeof(OrderWithNewPropertyAccess),
-        new object[] { "foo", "bar", "foobar", null });
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create(typeof(OrderWithNewPropertyAccess),
+          new object[] { "foo", "bar", "foobar", null });
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidCastException))]
+    public void OldConstructorThrowIsPropagated ()
+    {
+      DomainObject.Create<Throws> ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidCastException))]
+    public void NewConstructorThrowIsPropagated ()
+    {
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<Throws> ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException))]
+    public void OldConstructorMismatch1 ()
+    {
+      DomainObject.Create<ClassWithWrongConstructor> ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException))]
+    public void NewConstructorMismatch1 ()
+    {
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<ClassWithWrongConstructor> ();
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException))]
+    public void OldConstructorMismatch2 ()
+    {
+      DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException))]
+    public void NewConstructorMismatch2 ()
+    {
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
+      }
     }
   }
 }

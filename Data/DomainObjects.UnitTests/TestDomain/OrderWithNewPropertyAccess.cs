@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public static new OrderWithNewPropertyAccess GetObject (ObjectID id)
     {
-      return (OrderWithNewPropertyAccess) DomainObject.GetObject (id);
+      return DomainObject.GetObject <OrderWithNewPropertyAccess> (id);
     }
 
     // member fields

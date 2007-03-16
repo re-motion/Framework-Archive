@@ -9,7 +9,10 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
-  public static class DomainObjectFactory
+  /// <summary>
+  /// Default implementation of <see cref="IDomainObjectFactory"/>.
+  /// </summary>
+  public class DomainObjectFactory : IDomainObjectFactory
   {
     class GenerationHook : IProxyGenerationHook
     {
@@ -63,10 +66,10 @@ namespace Rubicon.Data.DomainObjects
 
     public interface IProxyMarker { }
 
-    private readonly static ProxyGenerator _generator = new ProxyGenerator ();
-    private readonly static GenerationHook _hook = new GenerationHook ();
-    private readonly static MainInterceptor _interceptor = new MainInterceptor (new PropertyInterceptor ());
-    private readonly static Type[] _markerInterfaces = new Type[] { typeof (IProxyMarker) };
+    private readonly ProxyGenerator _generator = new ProxyGenerator ();
+    private readonly GenerationHook _hook = new GenerationHook ();
+    private readonly MainInterceptor _interceptor = new MainInterceptor (new PropertyInterceptor ());
+    private readonly Type[] _markerInterfaces = new Type[] { typeof (IProxyMarker) };
 
     /// <summary>
     /// Creates a new instance of a domain object.
@@ -79,13 +82,17 @@ namespace Rubicon.Data.DomainObjects
     /// <para>This method ensures that the created domain object supports the new property syntax.</para>
     /// <para>The given <paramref name="type"/> must implement a constructor whose signature matches the arguments passed via <paramref name="args"/>.
     /// Avoid passing ambiguous argument arrays to this method. Or better: Avoid writing domain objects with such construcors.
-    /// If you need to call a constructor with exactly one <c>null</c> argument, you can either pass <c>null</c> or <c>new object[] { null }</c>
+    /// If you need to call a constructor with exactly one <see langword="null"/> argument, you can either pass <c>null</c> or <c>new object[] { null }</c>
     /// to this method. If you need to call a constructor which takes a single argument of array type, wrap it in a dedicated
     /// <c>object[]</c> (e.g. <c>new object[] { new int[] { 1, 2, 3 } }</c>).</para></remarks>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
     /// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
     /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
-    internal static object Create (Type type, params object[] args)
+    /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
+    /// </exception>
+    /// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
+    /// <see cref="Exception.InnerException"/>.</exception>
+    public object Create (Type type, params object[] args)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (!typeof (DomainObject).IsAssignableFrom (type))
@@ -113,98 +120,115 @@ namespace Rubicon.Data.DomainObjects
       catch (MissingMethodException ex)
       {
         throw new MissingMethodException ("Type " + type.FullName + " dows not support the requested constructor with signature ("
-            + GetSignatureForArguments (args) + ").", ex);
+            + ReflectionUtility.GetSignatureForArguments (args) + ").", ex);
       }
     }
 
-    /// <summary>
-    /// Creates a new instance of a domain object.
-    /// </summary>
-    /// <param name="type">The type which the object must support.</param>
-    /// <returns>A new domain object instance.</returns>
-    /// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
-    /// intercepts certain method calls in order to perform management tasks.</para>
-    /// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    /// <para>The given <paramref name="type"/> must implement a default constructor.</para>
-    /// </remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
-    /// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
-    /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
-    public static object Create (Type type)
-    {
-      return Create (type, new object[0]);
-    }
+    ///// <summary>
+    ///// Creates a new instance of a domain object.
+    ///// </summary>
+    ///// <param name="type">The type which the object must support.</param>
+    ///// <returns>A new domain object instance.</returns>
+    ///// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
+    ///// intercepts certain method calls in order to perform management tasks.</para>
+    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
+    ///// <para>The given <paramref name="type"/> must implement a default constructor.</para>
+    ///// </remarks>
+    ///// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
+    ///// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
+    ///// properties), or is not derived from <see cref="DomainObject"/>.</exception>
+    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a (public or protected) default constructor.
+    ///// </exception>
+    ///// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See the respective
+    ///// <see cref="Exception.InnerException"/>.</exception>
+    //public object Create (Type type)
+    //{
+    //  return Create (type, new object[0]);
+    //}
 
-    /// <summary>
-    /// Creates a new instance of a domain object.
-    /// </summary>
-    /// <param name="type">The type which the object must support.</param>
-    /// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
-    /// <returns>A new domain object instance.</returns>
-    /// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
-    /// intercepts certain method calls in order to perform management tasks.</para>
-    /// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    /// <para>The given <paramref name="type"/> must implement a constructor taking exactly one <see cref="ClientTransaction"/> argument.</para>
-    /// </remarks>
-    /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
-    /// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
-    /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
-    public static object Create (Type type, ClientTransaction clientTransaction)
-    {
-      return Create (type, new object[] { clientTransaction });
-    }
+    ///// <summary>
+    ///// Creates a new instance of a domain object.
+    ///// </summary>
+    ///// <param name="type">The type which the object must support.</param>
+    ///// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
+    ///// <returns>A new domain object instance.</returns>
+    ///// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
+    ///// intercepts certain method calls in order to perform management tasks.</para>
+    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
+    ///// <para>The given <paramref name="type"/> must implement a constructor taking exactly one <see cref="ClientTransaction"/> argument.</para>
+    ///// </remarks>
+    ///// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
+    ///// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
+    ///// properties), or is not derived from <see cref="DomainObject"/>.</exception>
+    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
+    ///// </exception>
+    ///// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See the respective
+    ///// <see cref="Exception.InnerException"/>.</exception>
+    //public object Create (Type type, ClientTransaction clientTransaction)
+    //{
+    //  return Create (type, new object[] { clientTransaction });
+    //}
 
-    /// <summary>
-    /// Creates a new instance of a domain object.
-    /// </summary>
-    /// <typeparam name="T">The type which the object must support.</typeparam>
-    /// <returns>A new domain object instance.</returns>
-    /// <remarks>
-    /// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-    /// intercepts certain method calls in order to perform management tasks.</para>
-    /// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    /// <para>The given <paramref name="type"/> must implement a default constructor. This is not enforced by a <c>new()</c> constraint
-    /// in order to support abstract classes with automatic properties.</para>
-    /// </remarks>
-    /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-    /// properties).</exception>
-    public static T Create<T> () where T : DomainObject
-    {
-      try
-      {
-        return (T) Create (typeof (T));
-      }
-      catch (ArgumentException ex)
-      {
-        throw new ArgumentException (ex.Message, "T", ex);
-      }
-    }
+    ///// <summary>
+    ///// Creates a new instance of a domain object.
+    ///// </summary>
+    ///// <typeparam name="T">The type which the object must support.</typeparam>
+    ///// <returns>A new domain object instance.</returns>
+    ///// <remarks>
+    ///// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
+    ///// intercepts certain method calls in order to perform management tasks.</para>
+    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
+    ///// <para>The given <paramref name="type"/> must implement a default constructor. This is not enforced by a <c>new()</c> constraint
+    ///// in order to support abstract classes with automatic properties.</para>
+    ///// </remarks>
+    ///// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
+    ///// properties).</exception>
+    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a public or protected default constructor.
+    ///// </exception>
+    ///// <exception cref="TargetInvocationException">The constructor of the given type <typeparamref name="T"/> threw an exception. See the respective
+    ///// <see cref="Exception.InnerException"/>.</exception>
+    //public T Create<T> () where T : DomainObject
+    //{
+    //  try
+    //  {
+    //    return (T) Create (typeof (T));
+    //  }
+    //  catch (ArgumentException ex)
+    //  {
+    //    throw new ArgumentException (ex.Message, "T", ex);
+    //  }
+    //}
 
-    /// <summary>
-    /// Creates a new instance of a domain object.
-    /// </summary>
-    /// <typeparam name="T">The type which the object must support.</typeparam>
-    /// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
-    /// <returns>A new domain object instance.</returns>
-    /// <remarks>
-    /// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-    /// intercepts certain method calls in order to perform management tasks.</para>
-    /// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    /// <para>The given type <typeparamref name="T"/> must implement a constructor taking a single <see cref="ClientTransaction"/> argument.</para>
-    /// </remarks>
-    /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-    /// properties).</exception>
-    public static T Create<T> (ClientTransaction clientTransaction) where T : DomainObject
-    {
-      try
-      {
-        return (T) Create (typeof (T), new object[] { clientTransaction });
-      }
-      catch (ArgumentException ex)
-      {
-        throw new ArgumentException (ex.Message, "T", ex);
-      }
-    }
+    ///// <summary>
+    ///// Creates a new instance of a domain object.
+    ///// </summary>
+    ///// <typeparam name="T">The type which the object must support.</typeparam>
+    ///// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
+    ///// <returns>A new domain object instance.</returns>
+    ///// <remarks>
+    ///// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
+    ///// intercepts certain method calls in order to perform management tasks.</para>
+    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
+    ///// <para>The given type <typeparamref name="T"/> must implement a constructor taking a single <see cref="ClientTransaction"/> argument.</para>
+    ///// </remarks>
+    ///// <exception cref="ArgumentNullException">The <paramref name="clientTransaction"/> parameter is null.</exception>
+    ///// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
+    ///// properties).</exception>
+    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
+    ///// </exception>
+    ///// <exception cref="TargetInvocationException">The constructor of the given type <typeparamref name="T"/> threw an exception. See the respective 
+    ///// <see cref="Exception.InnerException"/>.</exception>
+    //public T Create<T> (ClientTransaction clientTransaction) where T : DomainObject
+    //{
+    //  try
+    //  {
+    //    return (T) Create (typeof (T), new object[] { clientTransaction });
+    //  }
+    //  catch (ArgumentException ex)
+    //  {
+    //    throw new ArgumentException (ex.Message, "T", ex);
+    //  }
+    //}
 
     /// <summary>
     /// Checkes whether a given object instance was created by the factory or not.
@@ -216,29 +240,6 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("o", o);
       return o is IProxyMarker;
-    }
-
-    private static string GetSignatureForArguments (object[] args)
-    {
-      Type[] argumentTypes = GetTypesForArgs (args);
-      return ReflectionUtility.GetTypeListAsString (argumentTypes);
-    }
-
-    private static Type[] GetTypesForArgs (object[] args)
-    {
-      Type[] types = new Type[args.Length];
-      for (int i = 0; i < args.Length; i++)
-      {
-        if (args[i] == null)
-        {
-          types[i] = null;
-        }
-        else
-        {
-          types[i] = args[i].GetType ();
-        }
-      }
-      return types;
     }
   }
 }

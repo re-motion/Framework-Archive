@@ -23,13 +23,13 @@ namespace Rubicon.Data.DomainObjects
   public class FactoryInstantiationScope : IDisposable
   {
     [ThreadStatic]
-    private static int _scopeCount;
+    private static int s_scopeCount;
 
     private bool _disposed;
 
     public FactoryInstantiationScope ()
     {
-      ++_scopeCount;
+      ++s_scopeCount;
     }
 
     public void Dispose ()
@@ -37,8 +37,8 @@ namespace Rubicon.Data.DomainObjects
       if (!_disposed)
       {
         _disposed = true;
-        --FactoryInstantiationScope._scopeCount;
-        Debug.Assert (_scopeCount >= 0);
+        --FactoryInstantiationScope.s_scopeCount;
+        Debug.Assert (s_scopeCount >= 0);
       }
     }
 
@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects
     {
       get
       {
-        return _scopeCount > 0;
+        return s_scopeCount > 0;
       }
     }
   }

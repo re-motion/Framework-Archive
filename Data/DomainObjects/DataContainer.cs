@@ -250,7 +250,7 @@ public class DataContainer
       CheckDiscarded ();
 
       if (_domainObject == null)
-        _domainObject = DomainObject.Create (this);
+        _domainObject = DomainObject.CreateWithDataContainer (this);
 
       return _domainObject; 
     }

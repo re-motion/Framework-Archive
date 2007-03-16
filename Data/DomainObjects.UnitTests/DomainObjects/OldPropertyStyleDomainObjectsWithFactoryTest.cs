@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Data.DomainObjects.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -15,7 +16,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     // types
     [FactoryInstantiated]
     private class ClassToBeConstructedByFactory : ClassWithAllDataTypes { }
-
 
     // static members and constants
 
@@ -29,20 +29,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     // methods and properties
 
+    [SetUp]
+    public override void SetUp ()
+    {
+      base.SetUp();
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
+    }
+
+    [TearDown]
+    public override void TearDown ()
+    {
+      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
+      base.TearDown ();
+    }
+
     [Test]
     public void ConstructionOfSimpleObjectWorks ()
     {
-      ClassWithAllDataTypes classWithAllDataTypes = DomainObjectFactory.Create<ClassWithAllDataTypes> ();
-      Assert.IsNotNull (classWithAllDataTypes);
-      Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
+      using (new FactoryInstantiationScope ())
+      {
+        ClassWithAllDataTypes classWithAllDataTypes = DomainObject.Create<ClassWithAllDataTypes> ();
+        Assert.IsNotNull (classWithAllDataTypes);
+        Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
+      }
     }
 
     [Test]
     public void ConstructedObjectIsDerived ()
     {
-      ClassWithAllDataTypes classWithAllDataTypes = DomainObjectFactory.Create<ClassWithAllDataTypes> ();
-      Assert.IsTrue (classWithAllDataTypes is ClassWithAllDataTypes);
-      Assert.IsFalse (classWithAllDataTypes.GetType ().Equals (typeof (ClassWithAllDataTypes)));
+      using (new FactoryInstantiationScope ())
+      {
+        ClassWithAllDataTypes classWithAllDataTypes = DomainObject.Create<ClassWithAllDataTypes> ();
+        Assert.IsTrue (classWithAllDataTypes is ClassWithAllDataTypes);
+        Assert.IsFalse (classWithAllDataTypes.GetType ().Equals (typeof (ClassWithAllDataTypes)));
+      }
     }
 
     [Test]
@@ -54,41 +74,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
           "GetPublicDomainObjectType"));
 
 
-      classWithAllDataTypes = DomainObjectFactory.Create<ClassWithAllDataTypes> ();
-      Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
-      Assert.AreEqual (typeof (ClassWithAllDataTypes), PrivateInvoke.InvokeNonPublicMethod (classWithAllDataTypes,
-          "GetPublicDomainObjectType"));
+      using (new FactoryInstantiationScope ())
+      {
+        classWithAllDataTypes = DomainObject.Create<ClassWithAllDataTypes> ();
+        Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
+        Assert.AreEqual (typeof (ClassWithAllDataTypes), PrivateInvoke.InvokeNonPublicMethod (classWithAllDataTypes,
+            "GetPublicDomainObjectType"));
+      }
     }
 
     [Test]
     public void ShouldUseFactoryForInstantiation ()
     {
-      Assert.IsFalse (
-          (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-          "ShouldUseFactoryForInstantiation", typeof (ClassWithAllDataTypes)));
-
-      Assert.IsTrue (
-          (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-          "ShouldUseFactoryForInstantiation", typeof (ClassToBeConstructedByFactory)));
+      Assert.IsFalse (DomainObject.ShouldUseFactoryForInstantiation(typeof (ClassWithAllDataTypes)));
+      Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassToBeConstructedByFactory)));
 
       using (new FactoryInstantiationScope ())
       {
-        Assert.IsTrue (
-            (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-            "ShouldUseFactoryForInstantiation", typeof (ClassWithAllDataTypes)));
+        Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
         using (new FactoryInstantiationScope ())
         {
-          Assert.IsTrue (
-            (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-            "ShouldUseFactoryForInstantiation", typeof (ClassWithAllDataTypes)));
+          Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
         }
-        Assert.IsTrue (
-            (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-            "ShouldUseFactoryForInstantiation", typeof (ClassWithAllDataTypes)));
+        Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
       }
-      Assert.IsFalse (
-            (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject),
-            "ShouldUseFactoryForInstantiation", typeof (ClassWithAllDataTypes)));
+      Assert.IsFalse (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
     }
 
     [Test]
@@ -97,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClassWithAllDataTypes classWithAllDataTypes;
       using (new FactoryInstantiationScope ())
       {
-        classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+        classWithAllDataTypes = DomainObject.GetObject<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
       }
       Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
 
@@ -153,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Company company = Company.GetObject (DomainObjectIDs.Partner2);
+        Company company = DomainObject.GetObject<Company> (DomainObjectIDs.Partner2);
         Assert.IsNotNull (company);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (company));
 
@@ -172,7 +182,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Company company = Company.GetObject (DomainObjectIDs.Supplier1);
+        Company company = DomainObject.GetObject<Company> (DomainObjectIDs.Supplier1);
         Assert.IsNotNull (company);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (company));
 
@@ -193,7 +203,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
 
-        ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+        ClassWithAllDataTypes classWithAllDataTypes = DomainObject.GetObject<ClassWithAllDataTypes> (id);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (classWithAllDataTypes));
 
         Assert.IsTrue (classWithAllDataTypes.OnLoadedHasBeenCalled);
@@ -205,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Order order = Order.GetObject (DomainObjectIDs.Order1);
+        Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (order));
 
         Assert.IsNotNull (order.OrderTicket);
@@ -220,7 +230,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Customer customer;
       using (new FactoryInstantiationScope ())
       {
-        customer = Customer.GetObject (DomainObjectIDs.Customer4);
+        customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer4);
       }
       Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (customer));
 
@@ -237,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo10);
+        Ceo ceo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo10);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (ceo));
 
         Company company = ceo.Company;
@@ -255,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
         Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (customer));
 
         Assert.IsNotNull (customer.Orders);
@@ -274,7 +284,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector2);
+        IndustrialSector industrialSector = DomainObject.GetObject<IndustrialSector> (DomainObjectIDs.IndustrialSector2);
         DomainObjectCollection collection = industrialSector.Companies;
 
         Assert.AreEqual (7, collection.Count);
@@ -298,7 +308,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         DomainObjectEventReceiver eventReceiver = new DomainObjectEventReceiver (customer, false);
         customer.Name = "New name";
@@ -318,7 +328,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         DomainObjectEventReceiver eventReceiver = new DomainObjectEventReceiver (customer, true);
 
@@ -343,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         Assert.AreEqual (StateType.Unchanged, customer.State);
         customer.Name = "New name";
@@ -356,7 +366,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
       }
     }
 
@@ -365,7 +375,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Company company = Company.GetObject (DomainObjectIDs.Company1);
+        Company company = DomainObject.GetObject<Company> (DomainObjectIDs.Company1);
       }
     }
 
@@ -374,7 +384,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
       }
     }
 
@@ -383,7 +393,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+        Ceo ceo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
       }
     }
 
@@ -393,7 +403,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         string tooLongName = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901";
         customer.Name = tooLongName;
@@ -406,7 +416,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         int invalidName = 123;
         customer.NamePropertyOfInvalidType = invalidName;
@@ -418,11 +428,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Order order1 = Order.GetObject (DomainObjectIDs.Order1);
-        Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+        Order order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+        Order order2 = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
 
         Customer customer1 = order1.Customer;
-        Customer customer4 = Customer.GetObject (DomainObjectIDs.Customer4);
+        Customer customer4 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer4);
 
         Order order3 = customer4.Orders[DomainObjectIDs.Order3];
         Order order4 = customer4.Orders[DomainObjectIDs.Order4];
@@ -442,7 +452,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
         order3.OrderNumber = 7;
 
-        Order newOrder = DomainObjectFactory.Create<Order> ();
+        Order newOrder = DomainObject.Create<Order> ();
         ObjectID newOrderID = newOrder.ID;
         newOrder.DeliveryDate = DateTime.Now;
         newOrder.Official = official1;
@@ -451,18 +461,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         newOrder.OrderTicket = orderTicket1;
         orderTicket1.FileName = @"C:\NewFile.tif";
 
-        OrderItem newOrderItem1 = DomainObjectFactory.Create<OrderItem> ();
+        OrderItem newOrderItem1 = DomainObject.Create<OrderItem> ();
         ObjectID newOrderItem1ID = newOrderItem1.ID;
 
         newOrderItem1.Position = 1;
         newOrder.OrderItems.Add (newOrderItem1);
 
-        OrderItem newOrderItem2 = DomainObjectFactory.Create<OrderItem> ();
+        OrderItem newOrderItem2 = DomainObject.Create<OrderItem> ();
         ObjectID newOrderItem2ID = newOrderItem2.ID;
         newOrderItem2.Position = 2;
         order3.OrderItems.Add (newOrderItem2);
 
-        Customer newCustomer = DomainObjectFactory.Create<Customer> ();
+        Customer newCustomer = DomainObject.Create<Customer> ();
         ObjectID newCustomerID = newCustomer.ID;
 
         Ceo newCeo = new Ceo (); // on purpose, Ceo's constructor cannot be used outside of this assembly
@@ -472,7 +482,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
         orderTicket3.FileName = @"C:\NewFile.gif";
 
-        Order deletedNewOrder = DomainObjectFactory.Create<Order> ();
+        Order deletedNewOrder = DomainObject.Create<Order> ();
         deletedNewOrder.Delete ();
 
         ClientTransactionMock.Commit ();
@@ -482,43 +492,43 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         CheckIfObjectIsDeleted (DomainObjectIDs.OrderItem1);
         CheckIfObjectIsDeleted (DomainObjectIDs.OrderItem2);
 
-        order3 = Order.GetObject (DomainObjectIDs.Order3);
+        order3 = DomainObject.GetObject<Order> (DomainObjectIDs.Order3);
         Assert.AreEqual (7, order3.OrderNumber);
 
-        newOrder = Order.GetObject (newOrderID);
+        newOrder = DomainObject.GetObject<Order> (newOrderID);
         Assert.IsNotNull (newOrder);
 
-        official1 = Official.GetObject (DomainObjectIDs.Official1);
+        official1 = DomainObject.GetObject<Official> (DomainObjectIDs.Official1);
         Assert.IsNotNull (official1.Orders[newOrderID]);
         Assert.AreSame (official1, newOrder.Official);
         Assert.IsNull (official1.Orders[DomainObjectIDs.Order1]);
 
-        orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        orderTicket1 = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
         Assert.AreEqual (@"C:\NewFile.tif", orderTicket1.FileName);
         Assert.AreSame (newOrder, orderTicket1.Order);
         Assert.AreSame (orderTicket1, newOrder.OrderTicket);
 
-        newOrderItem1 = OrderItem.GetObject (newOrderItem1ID);
+        newOrderItem1 = DomainObject.GetObject<OrderItem> (newOrderItem1ID);
         Assert.IsNotNull (newOrderItem1);
         Assert.AreEqual (1, newOrderItem1.Position);
         Assert.AreSame (newOrder, newOrderItem1.Order);
         Assert.IsNotNull (newOrder.OrderItems[newOrderItem1ID]);
 
-        newOrderItem2 = OrderItem.GetObject (newOrderItem2ID);
+        newOrderItem2 = DomainObject.GetObject<OrderItem> (newOrderItem2ID);
         Assert.IsNotNull (newOrderItem2);
         Assert.AreEqual (2, newOrderItem2.Position);
         Assert.AreSame (order3, newOrderItem2.Order);
         Assert.IsNotNull (order3.OrderItems[newOrderItem2ID]);
 
-        newCustomer = Customer.GetObject (newCustomerID);
-        newCeo = Ceo.GetObject (newCeoID);
+        newCustomer = DomainObject.GetObject<Customer> (newCustomerID);
+        newCeo = DomainObject.GetObject<Ceo> (newCeoID);
 
         Assert.AreSame (newCustomer, newCeo.Company);
         Assert.AreSame (newCeo, newCustomer.Ceo);
         Assert.IsTrue (newCustomer.Orders.Contains (DomainObjectIDs.Order2));
         Assert.AreSame (newCustomer, ((Order) newCustomer.Orders[DomainObjectIDs.Order2]).Customer);
 
-        orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
+        orderTicket3 = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket3);
         Assert.AreEqual (@"C:\NewFile.gif", orderTicket3.FileName);
       }
     }
@@ -528,28 +538,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Employee newSupervisor1 = DomainObjectFactory.Create<Employee> ();
+        Employee newSupervisor1 = DomainObject.Create<Employee> ();
         ObjectID newSupervisor1ID = newSupervisor1.ID;
 
-        Employee newSubordinate1 = DomainObjectFactory.Create<Employee> ();
+        Employee newSubordinate1 = DomainObject.Create<Employee> ();
         ObjectID newSubordinate1ID = newSubordinate1.ID;
         newSubordinate1.Supervisor = newSupervisor1;
 
-        Employee supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
-        Employee subordinate4 = Employee.GetObject (DomainObjectIDs.Employee4);
+        Employee supervisor1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+        Employee subordinate4 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
 
-        Employee supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
-        Employee subordinate3 = Employee.GetObject (DomainObjectIDs.Employee3);
+        Employee supervisor2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
+        Employee subordinate3 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
         supervisor2.Supervisor = supervisor1;
         supervisor2.Name = "New name of supervisor";
         subordinate3.Name = "New name of subordinate";
 
-        Employee supervisor6 = Employee.GetObject (DomainObjectIDs.Employee6);
-        Employee subordinate7 = Employee.GetObject (DomainObjectIDs.Employee7);
+        Employee supervisor6 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee6);
+        Employee subordinate7 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee7);
 
-        Employee newSubordinate2 = DomainObjectFactory.Create<Employee> ();
+        Employee newSubordinate2 = DomainObject.Create<Employee> ();
         ObjectID newSubordinate2ID = newSubordinate2.ID;
-        Employee newSubordinate3 = DomainObjectFactory.Create<Employee> ();
+        Employee newSubordinate3 = DomainObject.Create<Employee> ();
         ObjectID newSubordinate3ID = newSubordinate3.ID;
 
         newSupervisor1.Supervisor = supervisor2;
@@ -562,18 +572,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ClientTransactionMock.Commit ();
         ReInitializeTransaction ();
 
-        newSupervisor1 = Employee.GetObject (newSupervisor1ID);
-        newSubordinate1 = Employee.GetObject (newSubordinate1ID);
+        newSupervisor1 = DomainObject.GetObject<Employee> (newSupervisor1ID);
+        newSubordinate1 = DomainObject.GetObject<Employee> (newSubordinate1ID);
 
         Assert.AreSame (newSupervisor1, newSubordinate1.Supervisor);
         Assert.IsTrue (newSupervisor1.Subordinates.Contains (newSubordinate1ID));
 
-        supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
+        supervisor2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
 
         Assert.IsNull (supervisor2.Supervisor);
         Assert.AreEqual ("New name of supervisor", supervisor2.Name);
 
-        subordinate3 = Employee.GetObject (DomainObjectIDs.Employee3);
+        subordinate3 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
 
         Assert.AreSame (supervisor2, subordinate3.Supervisor);
         Assert.IsTrue (supervisor2.Subordinates.Contains (DomainObjectIDs.Employee3));
@@ -582,12 +592,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.AreSame (supervisor2, newSupervisor1.Supervisor);
         Assert.IsTrue (supervisor2.Subordinates.Contains (newSupervisor1ID));
 
-        newSubordinate2 = Employee.GetObject (newSubordinate2ID);
+        newSubordinate2 = DomainObject.GetObject<Employee> (newSubordinate2ID);
 
         Assert.IsNull (newSubordinate2.Supervisor);
 
-        supervisor6 = Employee.GetObject (DomainObjectIDs.Employee6);
-        newSubordinate3 = Employee.GetObject (newSubordinate3ID);
+        supervisor6 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee6);
+        newSubordinate3 = DomainObject.GetObject<Employee> (newSubordinate3ID);
 
         Assert.AreSame (supervisor6, newSubordinate3.Supervisor);
         Assert.IsTrue (supervisor6.Subordinates.Contains (newSubordinate3ID));
@@ -602,9 +612,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Computer computer4 = Computer.GetObject (DomainObjectIDs.Computer4);
+        Computer computer4 = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
 
-        Employee newDeletedEmployee = DomainObjectFactory.Create<Employee> ();
+        Employee newDeletedEmployee = DomainObject.Create<Employee> ();
         computer4.Employee = newDeletedEmployee;
 
         newDeletedEmployee.Delete ();
@@ -612,7 +622,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ClientTransactionMock.Commit ();
         ReInitializeTransaction ();
 
-        computer4 = Computer.GetObject (DomainObjectIDs.Computer4);
+        computer4 = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
         Assert.IsNull (computer4.Employee);
       }
     }
@@ -622,16 +632,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Partner partner = Partner.GetObject (DomainObjectIDs.Partner2);
+        Partner partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner2);
 
-        Person newPerson = DomainObjectFactory.Create<Person> ();
+        Person newPerson = DomainObject.Create<Person> ();
         partner.ContactPerson = newPerson;
         partner.IndustrialSector.Delete ();
 
         ClientTransactionMock.Commit ();
         ReInitializeTransaction ();
 
-        partner = Partner.GetObject (DomainObjectIDs.Partner2);
+        partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner2);
         Assert.AreEqual (newPerson.ID, partner.ContactPerson.ID);
         Assert.IsNull (partner.IndustrialSector);
       }
@@ -643,7 +653,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       using (new FactoryInstantiationScope ())
       {
         ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+        Order order = (Order) DomainObject.GetObject<TestDomainBase> (DomainObjectIDs.Order1, clientTransactionMock);
 
         Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
         Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
@@ -656,11 +666,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       using (new FactoryInstantiationScope ())
       {
         ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+        Order order = (Order) DomainObject.GetObject<TestDomainBase> (DomainObjectIDs.Order1, clientTransactionMock);
 
         order.Delete ();
 
-        order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock, true);
+        order = (Order) DomainObject.GetObject<TestDomainBase> (DomainObjectIDs.Order1, clientTransactionMock, true);
 
         Assert.AreEqual (StateType.Deleted, order.State);
         Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
@@ -674,7 +684,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       using (new FactoryInstantiationScope ())
       {
         ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = DomainObjectFactory.Create<Order> (clientTransactionMock);
+        Order order = DomainObject.Create<Order> (clientTransactionMock);
 
         Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
         Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
@@ -686,7 +696,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
         Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
         Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);
@@ -698,9 +708,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+        Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
-        Order orderWithoutOrderItem = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
+        Order orderWithoutOrderItem = DomainObject.GetObject<Order> (DomainObjectIDs.OrderWithoutOrderItem);
 
         Assert.AreEqual (DomainObjectIDs.Order1, customer.Orders[0].ID);
         Assert.AreEqual (DomainObjectIDs.OrderWithoutOrderItem, customer.Orders[1].ID);

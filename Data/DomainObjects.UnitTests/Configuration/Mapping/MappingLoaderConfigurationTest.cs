@@ -31,13 +31,36 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void Deserialize_WithDefaultMappingLoader()
+    public void Deserialize_WithDefaultMappingLoader ()
     {
       string xmlFragment = @"<mapping />";
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
       Assert.IsInstanceOfType (typeof (MappingReflector), _configuration.MappingLoader);
+    }
+
+    [Test]
+    public void Deserialize_WithCustomDomainObjectFactory ()
+    {
+      string xmlFragment =
+          @"<mapping>
+            <domainObjectFactory type=""Rubicon.Data.DomainObjects.UnitTests::Configuration.Mapping.FakeDomainObjectFactory""/>
+          </mapping>";
+
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (FakeDomainObjectFactory), _configuration.DomainObjectFactory);
+    }
+
+    [Test]
+    public void Deserialize_WithDefaultDomainObjectFactory()
+    {
+      string xmlFragment = @"<mapping />";
+
+      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (DomainObjectFactory), _configuration.DomainObjectFactory);
     }
   }
 }

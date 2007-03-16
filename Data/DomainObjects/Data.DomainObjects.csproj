@@ -107,6 +107,7 @@
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="DomainObjectCollection1.cs" />
+    <Compile Include="IDomainObjectFactory.cs" />
     <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
