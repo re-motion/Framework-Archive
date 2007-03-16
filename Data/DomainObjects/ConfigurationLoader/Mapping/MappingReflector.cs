@@ -20,6 +20,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
     }
 
     // methods and properties
+    
     public ClassDefinitionCollection GetClassDefinitions()
     {
       throw new NotImplementedException();
@@ -32,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
 
     public bool ResolveTypes
     {
-      get { throw new NotImplementedException(); }
+      get { return true; }
     }
   }
 }

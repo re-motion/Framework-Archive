@@ -14,7 +14,8 @@
       <sources failonempty="true">
         <include name="**/*.cs"/>
         <include name="Properties/**/*.cs" />
-        <exclude name="Properties/AssemblyInfoTemplate.cs" />
+        <exclude name="bin/**" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />   
       </sources>
       <references failonempty="true">
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
@@ -32,6 +33,7 @@
         <exclude name="Resources/*.cs" />
       </resources>
     </csc>
+    
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset>
         <include name="Database/*.sql" />
@@ -40,6 +42,13 @@
         <exclude name="obj/**/*.xml" />
       </fileset>
     </copy>
+
+    <copy todir="${build.test.outputdir}" overwrite="true">
+      <fileset>
+        <include name="Configuration/Mapping/TestDomain/*.cs" />
+      </fileset>
+    </copy>
+    
   </target>
   
 </project>

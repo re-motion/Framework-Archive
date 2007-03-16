@@ -118,10 +118,14 @@
     <Compile Include="Configuration\Mapping\FakeDomainObjectFactory.cs" />
     <Compile Include="Configuration\Mapping\FakeMappingLoader.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
+    <Compile Include="Configuration\Mapping\MappingReflectorTest.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Client.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\TestDomainBase.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
+    <Compile Include="Factories\TestDomainFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -699,6 +703,9 @@
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
+    <Compile Include="@(TestDomain->'%(Identity)')">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -707,4 +714,13 @@
     <PostBuildEvent>copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Target Name="AfterBuild">
+    <Delete Files="@(TestDomain->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Directory)')" />
+    <Copy SourceFiles="@(TestDomain->'%(Fullpath)')" DestinationFiles="@(TestDomain->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+  </Target>
 </Project>
