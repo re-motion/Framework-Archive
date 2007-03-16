@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\MappingReflector.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="DomainObjectCollection1.cs" />
+    <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

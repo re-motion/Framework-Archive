@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests

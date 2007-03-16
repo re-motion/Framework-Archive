@@ -50,6 +50,7 @@
     <Compile Include="Configuration\Mapping\ConstructionOfRelationEndPointDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\ConstructionOfVirtualRelationEndPointDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs" />
+    <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderTest.cs" />
     <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs" />
@@ -155,6 +156,10 @@
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>

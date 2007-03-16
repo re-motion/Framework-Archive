@@ -17,12 +17,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Schemas
     }
 
     [Test]
-    public void InitializeWithStorageProviders ()
-    {
-      Assert.AreEqual (LegacyPrefixNamespace.StorageProviderConfigurationNamespace.Uri, LegacySchemaLoader.StorageProviders.SchemaUri);
-    }
-
-    [Test]
     public void LoadSchemaSetWithMapping ()
     {
       XmlSchemaSet schemaSet = LegacySchemaLoader.Mapping.LoadSchemaSet ();
@@ -30,17 +24,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Schemas
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
       Assert.IsTrue (schemaSet.Contains (LegacyPrefixNamespace.MappingNamespace.Uri));
-      Assert.IsTrue (schemaSet.Contains ("http://www.rubicon-it.com/Data/DomainObjects/Types"));
-    }
-
-    [Test]
-    public void LoadSchemaSetWithStorageProviders ()
-    {
-      XmlSchemaSet schemaSet = LegacySchemaLoader.StorageProviders.LoadSchemaSet ();
-
-      Assert.IsNotNull (schemaSet);
-      Assert.AreEqual (2, schemaSet.Count);
-      Assert.IsTrue (schemaSet.Contains (LegacyPrefixNamespace.StorageProviderConfigurationNamespace.Uri));
       Assert.IsTrue (schemaSet.Contains ("http://www.rubicon-it.com/Data/DomainObjects/Types"));
     }
   }

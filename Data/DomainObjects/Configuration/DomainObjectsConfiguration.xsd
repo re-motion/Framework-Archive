@@ -18,7 +18,17 @@
             <xs:attribute name="defaultProviderDefinition" type="c:ProviderDefinitionSelection" use="required" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="mapping" minOccurs="0" maxOccurs="1" />
+        <xs:element name="mapping" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="loader" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="type" type="c:DotNetType" default="None" />
+                </xs:complexType>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="query" minOccurs="0" maxOccurs="1" />
       </xs:all>
     </xs:complexType>

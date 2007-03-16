@@ -2,7 +2,7 @@ using System.Configuration;
 using System.Xml;
 using Rubicon.Utilities;
 
-namespace Rubicon.Development.UnitTesting
+namespace Rubicon.Development.UnitTesting.Configuration
 {
   public static class ConfigurationHelper
   {

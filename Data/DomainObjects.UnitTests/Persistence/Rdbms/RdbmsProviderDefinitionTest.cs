@@ -2,39 +2,38 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using NUnit.Framework;
-using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class RdbmsProviderDefinitionTest : StandardMappingTest
+  public class RdbmsProviderDefinitionTest: StandardMappingTest
   {
     private StorageProviderDefinition _definition;
     private ConfigSystemHelper _configSystemHelper;
 
-    public override void SetUp ()
+    public override void SetUp()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _definition = new RdbmsProviderDefinition ("StorageProviderID", typeof (SqlProvider), "ConnectionString");
-      
-      _configSystemHelper = new ConfigSystemHelper ();
-      _configSystemHelper.SetUpConfigSystem ();
+
+      _configSystemHelper = new ConfigSystemHelper();
+      _configSystemHelper.SetUpConfigSystem();
       _configSystemHelper.SetUpConnectionString ("SqlProvider", "ConnectionString", null);
     }
 
-    public override void TearDown ()
+    public override void TearDown()
     {
-      base.TearDown ();
-      _configSystemHelper.TearDownConfigSystem ();
+      base.TearDown();
+      _configSystemHelper.TearDownConfigSystem();
     }
 
     [Test]
-    public void Initialize_FromArguments ()
+    public void Initialize_FromArguments()
     {
       RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", typeof (SqlProvider), "ConnectionString");
 
@@ -44,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void Initialize_FromConfig ()
+    public void Initialize_FromConfig()
     {
-      NameValueCollection config = new NameValueCollection ();
+      NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");
       config.Add ("providerType", "Rubicon.Data.DomainObjects::Persistence.Rdbms.SqlProvider");
       config.Add ("connectionString", "SqlProvider");
@@ -62,10 +61,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-         "The attribute 'providerType' is missing in the configuration of the 'Provider' provider.")]
-    public void Initialize_FromConfig_WithMissingProviderType ()
+        "The attribute 'providerType' is missing in the configuration of the 'Provider' provider.")]
+    public void Initialize_FromConfig_WithMissingProviderType()
     {
-      NameValueCollection config = new NameValueCollection ();
+      NameValueCollection config = new NameValueCollection();
       config.Add ("description", "The Description");
       config.Add ("connectionString", "SqlProvider");
 
@@ -73,26 +72,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void IsIdentityTypeSupportedFalse ()
+    public void IsIdentityTypeSupportedFalse()
     {
       Assert.IsFalse (_definition.IsIdentityTypeSupported (typeof (int)));
     }
 
     [Test]
-    public void IsIdentityTypeSupportedTrue ()
+    public void IsIdentityTypeSupportedTrue()
     {
       Assert.IsTrue (_definition.IsIdentityTypeSupported (typeof (Guid)));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentNullException))]
-    public void IsIdentityTypeSupportedNull ()
+    public void IsIdentityTypeSupportedNull()
     {
       _definition.IsIdentityTypeSupported (null);
     }
 
     [Test]
-    public void CheckValidIdentityType ()
+    public void CheckValidIdentityType()
     {
       _definition.CheckIdentityType (typeof (Guid));
     }
@@ -100,13 +99,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     [ExpectedException (typeof (IdentityTypeNotSupportedException),
         "The StorageProvider 'Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider' does not support identity values of type 'System.String'.")]
-    public void CheckInvalidIdentityType ()
+    public void CheckInvalidIdentityType()
     {
       _definition.CheckIdentityType (typeof (string));
     }
 
     [Test]
-    public void CheckDetailsOfInvalidIdentityType ()
+    public void CheckDetailsOfInvalidIdentityType()
     {
       try
       {

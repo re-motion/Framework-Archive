@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
@@ -12,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetAndSet()
     {
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration (new PersistenceConfiguration());
+      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), new PersistenceConfiguration ());
       DomainObjectsConfiguration.SetCurrent (configuration);
       
       Assert.AreSame (configuration, DomainObjectsConfiguration.Current);

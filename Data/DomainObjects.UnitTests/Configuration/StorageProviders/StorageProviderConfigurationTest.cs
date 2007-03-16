@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
@@ -28,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     public void GetCurrent()
     {
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration();
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
 
       Assert.AreSame (persistenceConfiguration.StorageProviderDefinitions, DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions);
       Assert.AreSame (

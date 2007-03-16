@@ -115,12 +115,12 @@
   <ItemGroup>
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
-    <Compile Include="Configuration\FakeInternalConfigSystem.cs" />
-    <Compile Include="Configuration\PersistenceConfigurationTest.cs" />
+    <Compile Include="Configuration\Mapping\FakeMappingLoader.cs" />
+    <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
+    <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />
-    <Compile Include="Configuration\ConfigSystemHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -693,6 +693,8 @@
     <Content Include="ScalarQueryWithCollectionType.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
+    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />

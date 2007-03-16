@@ -12,9 +12,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.Schemas
     // static members and constants
     public static readonly SchemaLoader Mapping = new LegacySchemaLoader ("Mapping.xsd", LegacyPrefixNamespace.MappingNamespace.Uri);
 
-    public static readonly SchemaLoader StorageProviders =
-        new LegacySchemaLoader ("StorageProviders.xsd", LegacyPrefixNamespace.StorageProviderConfigurationNamespace.Uri);
-
     // member fields
 
     // construction and disposing

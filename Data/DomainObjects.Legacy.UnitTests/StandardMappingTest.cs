@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
@@ -51,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       PersistenceConfiguration persistenceConfiguration =
           new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
 
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
       TestMappingConfiguration.Reset();
@@ -65,6 +66,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       DomainObjectsConfiguration.SetCurrent (null);
     }
 
+    public override void SetUp ()
+    {
+      MappingConfiguration.SetCurrent (s_mappingConfiguration);
+      base.SetUp ();
+    }
+    
     protected DomainObjectIDs DomainObjectIDs
     {
       get { return _domainObjectIDs; }

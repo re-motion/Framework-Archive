@@ -93,8 +93,10 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UnitTesting\ConfigurationHelper.cs" />
+    <Compile Include="UnitTesting\Configuration\ConfigSystemHelper.cs" />
+    <Compile Include="UnitTesting\Configuration\ConfigurationHelper.cs" />
     <Compile Include="UnitTesting\Dev.cs" />
+    <Compile Include="UnitTesting\Configuration\FakeInternalConfigSystem.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -3,6 +3,7 @@ using System.Configuration;
 using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
@@ -10,9 +11,9 @@ namespace Rubicon.Core.UnitTests.Configuration
   public class TypeElement2Test
   {
     [Test]
-    public void Initialize ()
+    public void Initialize()
     {
-      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType> ();
+      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType>();
 
       ConfigurationPropertyCollection properties = (ConfigurationPropertyCollection) PrivateInvoke.GetNonPublicProperty (typeElement, "Properties");
       Assert.IsNotNull (properties);
@@ -25,25 +26,25 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    public void GetType_WithDefaultValue ()
+    public void GetType_WithDefaultValue()
     {
-      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType> ();
+      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType>();
 
       Assert.AreEqual (typeof (DerivedSampleType), typeElement.Type);
     }
 
     [Test]
-    public void CreateInstance_WithoutType ()
+    public void CreateInstance_WithoutType()
     {
-      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType> ();
+      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType>();
 
-      Assert.IsInstanceOfType (typeof (DerivedSampleType), typeElement.CreateInstance ());
+      Assert.IsInstanceOfType (typeof (DerivedSampleType), typeElement.CreateInstance());
     }
 
     [Test]
-    public void Deserialize_WithValidType ()
+    public void Deserialize_WithValidType()
     {
-      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType> ();
+      TypeElement<SampleType, DerivedSampleType> typeElement = new TypeElement<SampleType, DerivedSampleType>();
 
       string xmlFragment = @"<theElement type=""Rubicon.Core.UnitTests::Configuration.SampleType"" />";
       ConfigurationHelper.DeserializeElement (typeElement, xmlFragment);

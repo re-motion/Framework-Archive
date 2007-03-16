@@ -1,19 +1,19 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
-using System.Configuration.Internal;
-using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
+namespace Rubicon.Development.UnitTesting.Configuration
 {
   public class ConfigSystemHelper
   {
     private Enum _notStarted;
     private Enum _usable;
     private FakeInternalConfigSystem _fakeConfigSystem;
+    private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection ();
+    private NameValueCollection _appSettings = new NameValueCollection();
 
-    public void SetUpConfigSystem ()
+    public void SetUpConfigSystem()
     {
       Type initStateType = typeof (ConfigurationElement).Assembly.GetType ("System.Configuration.ConfigurationManager+InitState", true, false);
       _notStarted = (Enum) Enum.Parse (initStateType, "NotStarted");
@@ -22,18 +22,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
       _fakeConfigSystem = new FakeInternalConfigSystem();
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", _fakeConfigSystem);
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _usable);
+
+      _fakeConfigSystem.AddSection ("connectionStrings", _connectionStringsSection);
+      _fakeConfigSystem.AddSection ("appSettings", _appSettings);
     }
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ConnectionStringSettings connectionStringSettings = new ConnectionStringSettings (name, connectionString, providerName);
-      ConnectionStringsSection connectionStringsSection = new ConnectionStringsSection ();
-      connectionStringsSection.ConnectionStrings.Add (connectionStringSettings);
-
-      _fakeConfigSystem.AddSection ("connectionStrings", connectionStringsSection);
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
+      
+      _connectionStringsSection.ConnectionStrings.Add (new ConnectionStringSettings (name, connectionString, providerName));
     }
 
-    public void TearDownConfigSystem ()
+    public void SetUpAppSetting (string name, string key)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNull ("name", name);
+
+      _appSettings.Add (name, key);
+    }
+    
+    public void TearDownConfigSystem()
     {
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _notStarted);
       PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", null);

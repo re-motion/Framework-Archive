@@ -1,28 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Configuration.Internal;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
+namespace Rubicon.Development.UnitTesting.Configuration
 {
-  public class FakeInternalConfigSystem : IInternalConfigSystem
+  public class FakeInternalConfigSystem: IInternalConfigSystem
   {
-    private Dictionary<string, ConfigurationSection> _sections = new Dictionary<string, ConfigurationSection>();
-    
+    private Dictionary<string, object> _sections = new Dictionary<string, object>();
+
     public FakeInternalConfigSystem()
     {
     }
 
     public object GetSection (string configKey)
     {
-      ConfigurationSection value;
-      if  (_sections.TryGetValue (configKey, out value))
+      object value;
+      if (_sections.TryGetValue (configKey, out value))
         return value;
       return null;
     }
 
-    public void AddSection (string configKey, ConfigurationSection section)
+    public void AddSection (string configKey, object section)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("configKey", configKey);
       ArgumentUtility.CheckNotNull ("section", section);

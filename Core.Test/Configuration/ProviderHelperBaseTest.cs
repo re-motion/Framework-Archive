@@ -4,6 +4,7 @@ using System.Configuration.Provider;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {

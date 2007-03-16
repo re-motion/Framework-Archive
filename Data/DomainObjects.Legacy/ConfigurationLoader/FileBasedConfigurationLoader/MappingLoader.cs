@@ -34,6 +34,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigu
 
     // construction and disposing
 
+    public MappingLoader ()
+      : this (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile), true)
+    {
+    }
+
     public MappingLoader (string configurationFile, bool resolveTypes)
     {
       try

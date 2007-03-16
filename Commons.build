@@ -17,7 +17,7 @@
   <property name="build.temp.basedir" value="${build.basedir}/temp" dynamic="true" />
   <property name="build.temp.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/${project.config}" dynamic="true" />
   <property name="build.test.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/tests/${project.config}" dynamic="true" />
-  <property name="build.update.assembly-info" value="true" />
+  <property name="build.update.assembly-info" value="true" overwrite="false" />
   <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" dynamic="true" />
 
   <property name="sql.exe" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn\osql.exe" overwrite="false" />
@@ -152,8 +152,8 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.Web, 
-      Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Legacy
-      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects,
+      Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Legacy, 
+      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
   </target>
@@ -161,7 +161,7 @@
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
       Data.DomainObjects.CodeGenerator.UnitTests, 
-      Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests,
+      Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests, 
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
   </target>
@@ -470,6 +470,7 @@
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.Legacy" cascade="false"/>
+    <call target="Development.Core" cascade="false"/>
 
     <property name="project.name" value="Data.DomainObjects.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.UnitTests" />

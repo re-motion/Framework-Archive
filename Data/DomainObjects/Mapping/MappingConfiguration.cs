@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Utilities;
@@ -30,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           lock (typeof (MappingConfiguration))
           {
             if (s_mappingConfiguration == null)
-              s_mappingConfiguration = CreateConfigurationFromFileBasedLoader();
+              s_mappingConfiguration = new MappingConfiguration(DomainObjectsConfiguration.Current.MappingLoader.MappingLoader);
           }
         }
 

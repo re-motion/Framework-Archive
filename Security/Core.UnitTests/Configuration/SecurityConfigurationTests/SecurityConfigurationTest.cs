@@ -1,16 +1,16 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
-  public class SecurityConfigurationTest : TestBase
+  public class SecurityConfigurationTest: TestBase
   {
     [Test]
-    public void GetSecurityConfigurationWithoutConfigurationSection ()
+    public void GetSecurityConfigurationWithoutConfigurationSection()
     {
       SecurityConfiguration configuration = SecurityConfiguration.Current;
 
@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithNamespace ()
+    public void DeserializeSecurityConfiguration_WithNamespace()
     {
       string xmlFragment = @"<rubicon.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -31,7 +31,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithDefaultFunctionalSecurityStrategy ()
+    public void DeserializeSecurityConfiguration_WithDefaultFunctionalSecurityStrategy()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -39,7 +39,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void FunctionalSecurityStrategyIsAlwaysSameInstance ()
+    public void FunctionalSecurityStrategyIsAlwaysSameInstance()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -47,9 +47,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void DeserializeSecurityConfiguration_WithCustomFunctionalSecurityStrategy ()
+    public void DeserializeSecurityConfiguration_WithCustomFunctionalSecurityStrategy()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <functionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
           </rubicon.security>";

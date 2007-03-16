@@ -2,15 +2,16 @@ using System;
 using System.Configuration;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Development.UnitTesting.Configuration;
 using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 {
   [TestFixture]
-  public class DeserializeSecurityConfigurationForPermissionProviderTest : TestBase
+  public class DeserializeSecurityConfigurationForPermissionProviderTest: TestBase
   {
     [Test]
-    public void Test_FallbackToDefaultWellKnownDefaultPermissionProvider ()
+    public void Test_FallbackToDefaultWellKnownDefaultPermissionProvider()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -21,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_PermissionProviderIsAlwaysSameInstance ()
+    public void Test_PermissionProviderIsAlwaysSameInstance()
     {
       string xmlFragment = @"<rubicon.security />";
       ConfigurationHelper.DeserializeSection (Configuration, xmlFragment);
@@ -29,9 +30,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_CustomPermissionProvider ()
+    public void Test_CustomPermissionProvider()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security defaultPermissionProvider=""Custom"">
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -45,9 +47,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    public void Test_WithPermissionProvidersAndFallbackToDefaultWellKnownDefaultPermissionProvider ()
+    public void Test_WithPermissionProvidersAndFallbackToDefaultWellKnownDefaultPermissionProvider()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -65,9 +68,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
         "The provider 'Invalid' specified for the defaultPermissionProvider does not exist in the providers collection.")]
-    public void Test_WithCustomPermissionProviderAndInvalidName ()
+    public void Test_WithCustomPermissionProviderAndInvalidName()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security defaultPermissionProvider=""Invalid"">
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -81,10 +85,11 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-       "The name of the entry 'Reflection' identifies a well known provider and cannot be reused for custom providers.")]
-    public void Test_DuplicateWellKnownPermissionProviderForPermissionReflector ()
+        "The name of the entry 'Reflection' identifies a well known provider and cannot be reused for custom providers.")]
+    public void Test_DuplicateWellKnownPermissionProviderForPermissionReflector()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security defaultPermissionProvider=""Reflection"">
             <permissionProviders>
               <add name=""Reflection"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -97,9 +102,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
         "The value for the property 'defaultPermissionProvider' is not valid. The error is: The string must be at least 1 characters long.")]
-    public void Test_WithCustomPermissionProviderNameEmpty ()
+    public void Test_WithCustomPermissionProviderNameEmpty()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security defaultPermissionProvider="""">
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -113,9 +119,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
-    public void Test_WithPermissionProvidersReadOnly ()
+    public void Test_WithPermissionProvidersReadOnly()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
@@ -129,9 +136,10 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
         "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
-    public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
+    public void InstantiateProvider_WithTypeNotImplementingRequiredInterface()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <rubicon.security>
             <permissionProviders>
               <add name=""Custom"" type=""Rubicon.Security.UnitTests::Configuration.UserProviderMock"" />

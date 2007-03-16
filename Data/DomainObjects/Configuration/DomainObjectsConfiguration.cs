@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 namespace Rubicon.Data.DomainObjects.Configuration
@@ -9,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.Configuration
   /// </summary>
   public sealed class DomainObjectsConfiguration: ConfigurationSectionGroup, IDomainObjectsConfiguration
   {
+    private const string MappingLoaderPropertyName = "mapping";
     private const string StoragePropertyName = "storage";
 
     private static readonly DoubleCheckedLockingContainer<IDomainObjectsConfiguration> s_current =
@@ -26,6 +28,12 @@ namespace Rubicon.Data.DomainObjects.Configuration
 
     private DomainObjectsConfiguration()
     {
+    }
+
+    [ConfigurationProperty (MappingLoaderPropertyName)]
+    public MappingLoaderConfiguration MappingLoader
+    {
+      get { return (MappingLoaderConfiguration) ConfigurationManager.GetSection (ConfigKey + "/" + MappingLoaderPropertyName); }
     }
 
     [ConfigurationProperty (StoragePropertyName)]
