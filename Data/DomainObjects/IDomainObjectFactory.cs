@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
@@ -6,10 +7,11 @@ namespace Rubicon.Data.DomainObjects
   /// </summary>
   /// <remarks>
   /// This interface is used internally by <see cref="DomainObject.Create"/> and should likely not be used directly. If a factory needs to be
-  /// accessed directly, <see cref="DomainObjectsConfiguration"/> can be used to access the current factory.
+  /// accessed directly, <see cref="Rubicon.Data.DomainObjects.Configuration.DomainObjectsConfiguration"/> can be used to access the current factory.
   /// </remarks>
   public interface IDomainObjectFactory
   {
     object Create (Type type, params object[] args);
+    bool WasCreatedByFactory (object o);
   }
 }

@@ -58,15 +58,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       }
     }
 
-    public Customer Customer
+    public virtual Customer Customer
     {
-      get { return (Customer) GetRelatedObject ("Customer"); }
-      set { SetRelatedObject ("Customer", value); }
+      get { return (Customer) GetRelatedObject (); }
+      set { SetRelatedObject (value); }
     }
 
-    public DomainObjectCollection OrderItems
+    public virtual Customer OriginalCustomer
     {
-      get { return GetRelatedObjects ("OrderItems"); }
+      get { return (Customer) GetOriginalRelatedObject ("Customer"); }
+    }
+
+    public virtual DomainObjectCollection OrderItems
+    {
+      get { return GetRelatedObjects (); }
     }
   }
 }

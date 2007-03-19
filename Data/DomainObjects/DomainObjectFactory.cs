@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Castle.DynamicProxy;
-using System.Reflection;
-using Castle.Core.Interceptor;
 using System.Diagnostics;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Interception;
+using Rubicon.Data.DomainObjects.Interception.Castle;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -14,65 +13,11 @@ namespace Rubicon.Data.DomainObjects
   /// </summary>
   public class DomainObjectFactory : IDomainObjectFactory
   {
-    class GenerationHook : IProxyGenerationHook
-    {
-      public void MethodsInspected ()
-      {
-        // nothing to do
-      }
-
-      public void NonVirtualMemberNotification (Type type, MemberInfo memberInfo)
-      {
-        // nothing to do
-      }
-
-      public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
-      {
-        if (memberInfo.IsAbstract) {
-          // only allow abstract members for property accessors of automatic properties
-          PropertyInfo property = ReflectionUtility.GetPropertyForMethod(memberInfo);
-          if (property == null || !property.IsDefined (typeof (AutomaticPropertyAttribute), true))
-          {
-            throw new InvalidOperationException("Cannot instantiate type, the method " + type.FullName + "." + memberInfo.Name
-                + " is abstract and not part of an automatic property.");
-          }
-        }
-        return memberInfo.Name == "GetPublicDomainObjectType" || ReflectionUtility.IsPropertyAccessor (memberInfo);
-      }
-    }
-
-    // TODO: Instead of MainInterceptor use IInterceptorSelector as soon as implemented by DynamicProxy 2
-    class MainInterceptor : IInterceptor
-    {
-      private IInterceptor _propertyInterceptor;
-
-      public MainInterceptor (IInterceptor propertyInterceptor)
-      {
-        _propertyInterceptor = propertyInterceptor;
-      }
-
-      public void Intercept (IInvocation invocation)
-      {
-        if (invocation.Method.Name == "GetPublicDomainObjectType")
-        {
-          invocation.ReturnValue = invocation.TargetType;
-        }
-        else
-        {
-          _propertyInterceptor.Intercept (invocation);
-        }
-      }
-    }
-
-    public interface IProxyMarker { }
-
-    private readonly ProxyGenerator _generator = new ProxyGenerator ();
-    private readonly GenerationHook _hook = new GenerationHook ();
-    private readonly MainInterceptor _interceptor = new MainInterceptor (new PropertyInterceptor ());
-    private readonly Type[] _markerInterfaces = new Type[] { typeof (IProxyMarker) };
+    private readonly IInterceptableObjectGenerator<DomainObject> _generator =
+        new CastleInterceptableObjectGenerator<DomainObject>(new DomainObjectInterceptorSelector());
 
     /// <summary>
-    /// Creates a new instance of a domain object.
+    /// Creates a new interceptable instance of a domain object.
     /// </summary>
     /// <param name="type">The type which the object must support.</param>
     /// <param name="args">The arguments to be passed to the domain object's constructor.</param>
@@ -90,7 +35,7 @@ namespace Rubicon.Data.DomainObjects
     /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
     /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
     /// </exception>
-    /// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
+    /// <exception cref="System.Reflection.TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
     /// <see cref="Exception.InnerException"/>.</exception>
     public object Create (Type type, params object[] args)
     {
@@ -108,127 +53,8 @@ namespace Rubicon.Data.DomainObjects
         args = new object[] { null };
       }
 
-      ProxyGenerationOptions options = new ProxyGenerationOptions (_hook);
-      try
-      {
-        return _generator.CreateClassProxy (type, _markerInterfaces, options, args, _interceptor);
-      }
-      catch (InvalidOperationException ex)
-      {
-        throw new ArgumentException (ex.Message, "type", ex);
-      }
-      catch (MissingMethodException ex)
-      {
-        throw new MissingMethodException ("Type " + type.FullName + " dows not support the requested constructor with signature ("
-            + ReflectionUtility.GetSignatureForArguments (args) + ").", ex);
-      }
+      return _generator.CreateInterceptableObject (type, args);
     }
-
-    ///// <summary>
-    ///// Creates a new instance of a domain object.
-    ///// </summary>
-    ///// <param name="type">The type which the object must support.</param>
-    ///// <returns>A new domain object instance.</returns>
-    ///// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
-    ///// intercepts certain method calls in order to perform management tasks.</para>
-    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    ///// <para>The given <paramref name="type"/> must implement a default constructor.</para>
-    ///// </remarks>
-    ///// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
-    ///// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
-    ///// properties), or is not derived from <see cref="DomainObject"/>.</exception>
-    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a (public or protected) default constructor.
-    ///// </exception>
-    ///// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See the respective
-    ///// <see cref="Exception.InnerException"/>.</exception>
-    //public object Create (Type type)
-    //{
-    //  return Create (type, new object[0]);
-    //}
-
-    ///// <summary>
-    ///// Creates a new instance of a domain object.
-    ///// </summary>
-    ///// <param name="type">The type which the object must support.</param>
-    ///// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
-    ///// <returns>A new domain object instance.</returns>
-    ///// <remarks><para>This method does not directly instantiate the given <paramref name="type"/>, but instead dynamically creates a subclass that
-    ///// intercepts certain method calls in order to perform management tasks.</para>
-    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    ///// <para>The given <paramref name="type"/> must implement a constructor taking exactly one <see cref="ClientTransaction"/> argument.</para>
-    ///// </remarks>
-    ///// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
-    ///// <exception cref="ArgumentException">The <paramref name="type"/> argument is sealed, contains abstract methods (apart from automatic
-    ///// properties), or is not derived from <see cref="DomainObject"/>.</exception>
-    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
-    ///// </exception>
-    ///// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See the respective
-    ///// <see cref="Exception.InnerException"/>.</exception>
-    //public object Create (Type type, ClientTransaction clientTransaction)
-    //{
-    //  return Create (type, new object[] { clientTransaction });
-    //}
-
-    ///// <summary>
-    ///// Creates a new instance of a domain object.
-    ///// </summary>
-    ///// <typeparam name="T">The type which the object must support.</typeparam>
-    ///// <returns>A new domain object instance.</returns>
-    ///// <remarks>
-    ///// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-    ///// intercepts certain method calls in order to perform management tasks.</para>
-    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    ///// <para>The given <paramref name="type"/> must implement a default constructor. This is not enforced by a <c>new()</c> constraint
-    ///// in order to support abstract classes with automatic properties.</para>
-    ///// </remarks>
-    ///// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-    ///// properties).</exception>
-    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a public or protected default constructor.
-    ///// </exception>
-    ///// <exception cref="TargetInvocationException">The constructor of the given type <typeparamref name="T"/> threw an exception. See the respective
-    ///// <see cref="Exception.InnerException"/>.</exception>
-    //public T Create<T> () where T : DomainObject
-    //{
-    //  try
-    //  {
-    //    return (T) Create (typeof (T));
-    //  }
-    //  catch (ArgumentException ex)
-    //  {
-    //    throw new ArgumentException (ex.Message, "T", ex);
-    //  }
-    //}
-
-    ///// <summary>
-    ///// Creates a new instance of a domain object.
-    ///// </summary>
-    ///// <typeparam name="T">The type which the object must support.</typeparam>
-    ///// <param name="clientTransaction">The client transaction to be passed to the domain object's constructor.</param>
-    ///// <returns>A new domain object instance.</returns>
-    ///// <remarks>
-    ///// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-    ///// intercepts certain method calls in order to perform management tasks.</para>
-    ///// <para>This method ensures that the created domain object supports the new property syntax.</para>
-    ///// <para>The given type <typeparamref name="T"/> must implement a constructor taking a single <see cref="ClientTransaction"/> argument.</para>
-    ///// </remarks>
-    ///// <exception cref="ArgumentNullException">The <paramref name="clientTransaction"/> parameter is null.</exception>
-    ///// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-    ///// properties).</exception>
-    ///// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
-    ///// </exception>
-    ///// <exception cref="TargetInvocationException">The constructor of the given type <typeparamref name="T"/> threw an exception. See the respective 
-    ///// <see cref="Exception.InnerException"/>.</exception>
-    //public T Create<T> (ClientTransaction clientTransaction) where T : DomainObject
-    //{
-    //  try
-    //  {
-    //    return (T) Create (typeof (T), new object[] { clientTransaction });
-    //  }
-    //  catch (ArgumentException ex)
-    //  {
-    //    throw new ArgumentException (ex.Message, "T", ex);
-    //  }
-    //}
 
     /// <summary>
     /// Checkes whether a given object instance was created by the factory or not.
@@ -236,10 +62,10 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="o">The object instance to be checked.</param>
     /// <returns>True if <paramref name="o"/> was created by the factory, else false.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="o"/> parameter was null.</exception>
-    public static bool WasCreatedByFactory (object o)
+    public bool WasCreatedByFactory (object o)
     {
       ArgumentUtility.CheckNotNull ("o", o);
-      return o is IProxyMarker;
+      return _generator.WasCreatedByGenerator (o);
     }
   }
 }

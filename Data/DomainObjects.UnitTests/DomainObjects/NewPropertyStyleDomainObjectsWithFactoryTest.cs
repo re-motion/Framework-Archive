@@ -77,18 +77,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       base.TearDown ();
     }
 
+    private bool WasCreatedByFactory (object o)
+    {
+      return DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.WasCreatedByFactory (o);
+    }
+
     [Test]
     public void LoadOfSimpleObjectWorks ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
-      Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (order));
+      Assert.IsTrue (WasCreatedByFactory (order));
     }
 
     [Test]
     public void ConstructionOfSimpleObjectWorks ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
-      Assert.IsTrue (DomainObjectFactory.WasCreatedByFactory (order));
+      Assert.IsTrue (WasCreatedByFactory (order));
     }
 
     [Test]
@@ -272,6 +277,39 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
       }
+    }
+
+    [Test]
+    public void GetSetRelatedObjectAndOriginal ()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Customer customer = order.Customer;
+      Assert.IsNotNull (customer);
+      Assert.AreSame (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1), customer);
+      
+      Customer newCustomer = DomainObject.Create<Customer> ();
+      Assert.IsNotNull (newCustomer);
+      order.Customer = newCustomer;
+      Assert.AreSame (newCustomer, order.Customer);
+
+      Assert.AreSame (customer, order.OriginalCustomer);
+    }
+
+    [Test]
+    public void GetRelatedObjects()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      DomainObjectCollection orderItems = order.OrderItems;
+      Assert.IsNotNull (orderItems);
+      Assert.AreEqual (2, orderItems.Count);
+
+      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess1));
+      Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess2));
+      
+      OrderItemWithNewPropertyAccess newItem = DomainObject.Create<OrderItemWithNewPropertyAccess> ();
+      order.OrderItems.Add (newItem);
+
+      Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
     }
   }
 }

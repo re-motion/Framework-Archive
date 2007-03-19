@@ -37,7 +37,7 @@ public class DomainObject
   /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement a public or protected default constructor.
   /// </exception>
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
-  /// <see cref="DomainObjectFactory.Create{T}"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
+  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
   public static T Create<T> () where T : DomainObject
   {
@@ -63,7 +63,7 @@ public class DomainObject
   /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
   /// </exception>
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
-  /// <see cref="DomainObjectFactory.Create{T}(ClientTransaction)"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
+  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
   public static T Create<T> (ClientTransaction tx) where T : DomainObject
   {
@@ -509,6 +509,26 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Retrieves the current property name and throws an exception if there is no current property.
+  /// </summary>
+  /// <returns>The current property name.</returns>
+  /// <remarks>Retrieves the current property name previously initialized via <see cref="PreparePropertyAccess"/>. Domain objects created with the
+  /// <see cref="DomainObjectFactory"/> automatically initialize their virtual properties without needing any further work.</remarks>
+  /// <exception cref="InvalidOperationException">There is no current property or it hasn't been properly initialized.</exception>
+  protected internal virtual string GetAndCheckCurrentPropertyName ()
+  {
+    string propertyName = CurrentPropertyManager.CurrentPropertyName;
+    if (propertyName == null)
+    {
+      throw new InvalidOperationException ("There is no current property or it hasn't been properly initialized.");
+    }
+    else
+    {
+      return propertyName;
+    }
+  }
+
+  /// <summary>
   /// Gets the value of the current <see cref="PropertyValue"/>.
   /// </summary>
   /// <typeparam name="T">The expected type of the property value.</typeparam>
@@ -518,27 +538,15 @@ public class DomainObject
   /// automatically initialize and de-initialize their virtual properties without needing any further work.</remarks>
   /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
   /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
+  /// <exception cref="ArgumentException">The current property was initialized with an invalid name. This will only occur if the current property
+  /// has been explicitly initialized with <see cref="PreparePropertyAccess"/>; it should not occur if the initialization was performed automatically.
+  /// </exception>
   /// <exception cref="InvalidTypeException">The current property's value does not match the requested type.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected internal virtual T GetPropertyValue<T> ()
   {
-    string currentPropertyName = CurrentPropertyManager.CurrentPropertyName;
-    if (currentPropertyName == null)
-    {
-      throw new InvalidOperationException ("The current property hasn't been initialized or there is no current property.");
-    }
-    else
-    {
-      object value = DataContainer[currentPropertyName];
-      if (!(value is T))
-      {
-        throw new InvalidTypeException (currentPropertyName, typeof (T), value.GetType ());
-      }
-      else
-      {
-        return (T) value;
-      }
-    }
+    string currentPropertyName = GetAndCheckCurrentPropertyName ();
+    return GetPropertyValue<T> (currentPropertyName);
   }
 
   /// <summary>
@@ -550,18 +558,54 @@ public class DomainObject
   /// automatically initialize and de-initialize their virtual properties without needing any further work.</remarks>
   /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
   /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
+  /// <exception cref="ArgumentException">The current property was initialized with an invalid name. This will only occur if the current property
+  /// has been explicitly initialized with <see cref="PreparePropertyAccess"/>; it should not occur if the initialization was performed automatically.
+  /// </exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected internal virtual void SetPropertyValue (object value)
   {
-    string currentPropertyName = CurrentPropertyManager.CurrentPropertyName;
-    if (currentPropertyName == null)
+    string currentPropertyName = GetAndCheckCurrentPropertyName ();
+    SetPropertyValue (currentPropertyName, value);
+  }
+
+  /// <summary>
+  /// Gets the value of the given <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <typeparam name="T">The expected type of the property value.</typeparam>
+  /// <param name="propertyName">The name of the property to get.</param>
+  /// <returns>The value of the given property.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
+  /// <exception cref="InvalidTypeException">The current property's value does not match the requested type.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  protected internal virtual T GetPropertyValue<T> (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    object value = DataContainer.GetValue(propertyName);
+    if (!(value is T))
     {
-      throw new InvalidOperationException ("The current property hasn't been initialized or there is no current property.");
+      throw new InvalidTypeException (propertyName, typeof (T), value.GetType ());
     }
     else
     {
-      DataContainer[currentPropertyName] = value;
+      return (T) value;
     }
+  }
+
+  /// <summary>
+  /// Sets the value of the given <see cref="PropertyValue"/>.
+  /// </summary>
+  /// <param name="propertyName">The name of the property whose value is to be set.</param>
+  /// <param name="value">The value the property is to be set to.</param>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  protected internal virtual void SetPropertyValue (string propertyName, object value)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    DataContainer.SetValue(propertyName, value);
   }
 
   /// <summary>
@@ -582,10 +626,32 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Gets the related object for the current property.
+  /// </summary>
+  /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
+  /// <remarks>The current property must previously have been initialized with <see cref="PreparePropertyAccess" /> and should be de-initialized
+  /// with <see cref="PropertyAccessFinished"/> when its value has been retrieved. Domain objects created with the <see cref="DomainObjectFactory"/>
+  /// automatically initialize and de-initialize their virtual properties without needing any further work.</remarks>
+  /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
+  /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
+  /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
+  /// <exception cref="ArgumentException">The current property does not refer to a one-to-one or many-to-one relation.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  protected virtual DomainObject GetRelatedObject ()
+  {
+    string currentPropertyName = GetAndCheckCurrentPropertyName ();
+    return GetRelatedObject (currentPropertyName);
+  }
+
+  /// <summary>
   /// Gets the original related object of a given <paramref name="propertyName"/> at the point of instantiation, loading, commit or rollback.
   /// </summary>
   /// <param name="propertyName">The name of the property referring to the relation. <paramref name="propertyName"/> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
+  /// <remarks>There is no overload for this method that uses the current property initialized via <see cref="PreparePropertyAccess"/>. The reason
+  /// for this is that code accessing original related objects will not typically be called from within a property called like the internal property
+  /// name. Making an automatic mechanism for this method would thus only lead to confusion or subtle errors and is therefore not implemented.
+  /// </remarks>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
@@ -615,6 +681,24 @@ public class DomainObject
     CheckIfObjectIsDiscarded ();
 
     return ClientTransaction.GetRelatedObjects (new RelationEndPointID (ID, propertyName));
+  }
+
+  /// <summary>
+  /// Gets the related objects of the current given property.
+  /// </summary>
+  /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
+  /// <remarks>The current property must previously have been initialized with <see cref="PreparePropertyAccess" /> and should be de-initialized
+  /// with <see cref="PropertyAccessFinished"/> when its value has been retrieved. Domain objects created with the <see cref="DomainObjectFactory"/>
+  /// automatically initialize and de-initialize their virtual properties without needing any further work.</remarks>
+  /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
+  /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The current property does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
+  /// <exception cref="System.ArgumentException">The current property does not refer to an one-to-many relation.</exception>
+  protected virtual DomainObjectCollection GetRelatedObjects ()
+  {
+    string currentPropertyName = GetAndCheckCurrentPropertyName ();
+    return GetRelatedObjects (currentPropertyName);
   }
 
   /// <summary>
@@ -648,6 +732,23 @@ public class DomainObject
     CheckIfObjectIsDiscarded ();
 
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
+  }
+
+  /// <summary>
+  /// Sets the current property's relation to another object.
+  /// </summary>
+  /// <param name="newRelatedObject">The new <see cref="DomainObject"/> that should be related; <see langword="null"/> indicates that no object should be referenced.</param>
+  /// <remarks>The current property must previously have been initialized with <see cref="PreparePropertyAccess" /> and should be de-initialized
+  /// with <see cref="PropertyAccessFinished"/> when its value has been retrieved. Domain objects created with the <see cref="DomainObjectFactory"/>
+  /// automatically initialize and de-initialize their virtual properties without needing any further work.</remarks>
+  /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
+  /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
+  /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  protected void SetRelatedObject (DomainObject newRelatedObject)
+  {
+    string currentPropertyName = GetAndCheckCurrentPropertyName ();
+    SetRelatedObject (currentPropertyName, newRelatedObject);
   }
 
   /// <summary>

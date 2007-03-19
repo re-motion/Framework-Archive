@@ -108,6 +108,18 @@
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="DomainObjectCollection1.cs" />
     <Compile Include="IDomainObjectFactory.cs" />
+    <Compile Include="Interception\Castle\CastleInterceptableObjectGenerator.cs" />
+    <Compile Include="Interception\Castle\GenerationHook.cs" />
+    <Compile Include="Interception\Castle\InvocationWrapper.cs" />
+    <Compile Include="Interception\Castle\InterceptorWrapper.cs" />
+    <Compile Include="Interception\Castle\MainInterceptor.cs" />
+    <Compile Include="Interception\DomainObjectInterceptorSelector.cs" />
+    <Compile Include="Interception\DomainObjectTypeInterceptor.cs" />
+    <Compile Include="Interception\IInterceptableObjectGenerator.cs" />
+    <Compile Include="Interception\IInterceptor.cs" />
+    <Compile Include="Interception\IInterceptorSelector.cs" />
+    <Compile Include="Interception\IInvocation.cs" />
+    <Compile Include="Interception\PropertyInterceptor.cs" />
     <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
@@ -370,7 +382,6 @@
     <Compile Include="Persistence\ValueConverterBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PropertyInterceptor.cs" />
     <Compile Include="PropertyValue.cs">
       <SubType>Code</SubType>
     </Compile>
