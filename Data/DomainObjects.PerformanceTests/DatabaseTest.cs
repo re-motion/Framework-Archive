@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.PerformanceTests.Database;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -36,6 +37,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration (providers, providers["PerformanceTestDomain"]);
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), persistenceConfiguration));
+      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader());
     }
 
     [TestFixtureTearDown]
