@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Text;
+using System.ComponentModel;
+using Rubicon.Utilities;
 
 namespace Rubicon.Collections
 {
@@ -15,7 +18,8 @@ namespace Rubicon.Collections
   /// </remarks>
   /// <typeparam name="TKey"> Type of the cache key. </typeparam>
   /// <typeparam name="TValue"> Type of the cache value. </typeparam>
-  public class InterlockedCache<TKey, TValue>: ICache<TKey, TValue>
+  [Obsolete ("Experimental code. Stability and performance advantages questionable. Use SimpleInterlockedCache for production code. Both implement ICache")] 
+  public class LazyInterlockedCache<TKey, TValue>: ICache<TKey, TValue>
   {
     private class ValueContainer
     {
@@ -42,7 +46,17 @@ namespace Rubicon.Collections
       }
     }
 
-    private Dictionary<TKey, ValueContainer> _cache = new Dictionary<TKey, ValueContainer> ();
+    private Dictionary<TKey, ValueContainer> _cache;
+
+    public LazyInterlockedCache ()
+      : this (null)
+    {
+    }
+
+    public LazyInterlockedCache (IEqualityComparer<TKey> comparer)
+    {
+      _cache = new Dictionary<TKey, ValueContainer> (comparer);
+    }
 
     public bool TryGetValue (TKey key, out TValue value)
     {
@@ -61,7 +75,7 @@ namespace Rubicon.Collections
       return true;
     }
 
-    public TValue GetOrCreateValue (TKey key, Func<TValue> valueFactory)
+    public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
       TValue value;
       if (TryGetValue (key, out value))
@@ -82,7 +96,7 @@ namespace Rubicon.Collections
 
         try
         {
-          valueContainer.Value = valueFactory();
+          valueContainer.Value = valueFactory (key);
         }
         catch
         {
