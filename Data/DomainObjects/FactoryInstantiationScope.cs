@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -38,7 +39,7 @@ namespace Rubicon.Data.DomainObjects
       {
         _disposed = true;
         --FactoryInstantiationScope.s_scopeCount;
-        Debug.Assert (s_scopeCount >= 0);
+        Assertion.Assert (s_scopeCount >= 0);
       }
     }
 

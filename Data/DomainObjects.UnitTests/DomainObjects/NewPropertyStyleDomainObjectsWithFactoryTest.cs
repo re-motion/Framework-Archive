@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Interception;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -312,12 +313,52 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
     }
 
-    /*[Test]
+    [Test]
     [ExpectedException(typeof(InvalidOperationException))]
-    public void AccessWithoutBeingInMappingThrows ()
+    public void PropertyAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
       int i = order.NotInMapping;
-    }*/
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void RelatedAccessWithoutBeingInMappingThrows ()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      DomainObject o = order.NotInMappingRelated;
+    }
+
+    [Test]
+    public void DefaultRelatedObject ()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderItemWithNewPropertyAccess item = (OrderItemWithNewPropertyAccess) order.OrderItems[0];
+      Assert.AreSame (order, item.Order);
+      
+      OrderWithNewPropertyAccess newOrder = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      Assert.IsNotNull (newOrder);
+      item.Order = newOrder;
+      Assert.AreNotSame (order, item.Order);
+      Assert.AreSame (newOrder, item.Order);
+    }
+
+    [Test]
+    public void IsRelatedObject ()
+    {
+      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), "Customer"));
+      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), "OrderItems"));
+      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), "OrderNumber"));
+      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), "DeliveryDate"));
+    }
+
+    [Test]
+    public void IsPropertyValue ()
+    {
+      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), "Customer"));
+      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), "OrderItems"));
+      Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), "OrderNumber"));
+      Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), "DeliveryDate"));
+    }
   }
 }

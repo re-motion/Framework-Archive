@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Diagnostics;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Interception
 {
@@ -24,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Interception
 
       public IInterceptor<DomainObject> SelectInterceptor (Type type, MethodInfo memberInfo)
       {
-        Debug.Assert (ShouldInterceptMethod (type, memberInfo));
+        Assertion.DebugAssert (ShouldInterceptMethod (type, memberInfo));
         return _interceptor;
       }
     }

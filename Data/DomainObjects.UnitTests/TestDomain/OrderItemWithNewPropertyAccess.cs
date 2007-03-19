@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [FactoryInstantiated]
-  public class OrderItemWithNewPropertyAccess : TestDomainBase
+  public abstract class OrderItemWithNewPropertyAccess : TestDomainBase
   {
     // types
 
@@ -55,10 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["Product"] = value; }
     }
 
-    public OrderWithNewPropertyAccess Order
-    {
-      get { return (OrderWithNewPropertyAccess) GetRelatedObject ("Order"); }
-      set { SetRelatedObject ("Order", value); }
-    }
+    [AutomaticProperty]
+    public abstract OrderWithNewPropertyAccess Order { get; set; }
   }
 }

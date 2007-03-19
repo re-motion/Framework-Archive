@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.Interception
   class DomainObjectInterceptorSelector : IInterceptorSelector<DomainObject>
   {
     private DomainObjectTypeInterceptor _typeInterceptor = new DomainObjectTypeInterceptor ();
-    private PropertyInterceptor _propertyInterceptor = new PropertyInterceptor ();
+    private DomainObjectPropertyInterceptor _propertyInterceptor = new DomainObjectPropertyInterceptor ();
 
     public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
     {
@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Interception
       else if (memberInfo.IsAbstract)
       {
         throw new InvalidOperationException ("Cannot instantiate type " + type.FullName + ", the method " + memberInfo.Name
-              + " is abstract.");
+              + " is abstract (and not part of an automatic property).");
       }
       else
       {

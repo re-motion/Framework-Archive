@@ -617,7 +617,7 @@ public class DomainObject
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
-  protected virtual DomainObject GetRelatedObject (string propertyName)
+  protected internal virtual DomainObject GetRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded ();
@@ -637,7 +637,7 @@ public class DomainObject
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
   /// <exception cref="ArgumentException">The current property does not refer to a one-to-one or many-to-one relation.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected virtual DomainObject GetRelatedObject ()
+  protected internal virtual DomainObject GetRelatedObject ()
   {
     string currentPropertyName = GetAndCheckCurrentPropertyName ();
     return GetRelatedObject (currentPropertyName);
@@ -657,7 +657,7 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
-  protected virtual DomainObject GetOriginalRelatedObject (string propertyName)
+  protected internal virtual DomainObject GetOriginalRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded ();
@@ -675,7 +675,7 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
-  protected virtual DomainObjectCollection GetRelatedObjects (string propertyName)
+  protected internal virtual DomainObjectCollection GetRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded ();
@@ -695,7 +695,7 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The current property does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException">The current property does not refer to an one-to-many relation.</exception>
-  protected virtual DomainObjectCollection GetRelatedObjects ()
+  protected internal virtual DomainObjectCollection GetRelatedObjects ()
   {
     string currentPropertyName = GetAndCheckCurrentPropertyName ();
     return GetRelatedObjects (currentPropertyName);
@@ -710,7 +710,7 @@ public class DomainObject
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
-  protected virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
+  protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded ();
@@ -726,7 +726,7 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
+  protected internal void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded ();
@@ -745,7 +745,7 @@ public class DomainObject
   /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected void SetRelatedObject (DomainObject newRelatedObject)
+  protected internal void SetRelatedObject (DomainObject newRelatedObject)
   {
     string currentPropertyName = GetAndCheckCurrentPropertyName ();
     SetRelatedObject (currentPropertyName, newRelatedObject);
