@@ -93,6 +93,7 @@
     <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
     <Compile Include="Configuration\ExtendedProviderBase.cs" />
     <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="INullableObject.cs" />
     <Compile Include="Collections\ArrayComparer.cs" />
     <Compile Include="Collections\LazyInterlockedCache.cs" />
-    <Compile Include="Collections\SimpleInterlockedCache.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />

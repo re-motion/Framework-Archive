@@ -5,6 +5,7 @@
 - Neuer Namespace Rubicon.Reflection mit einer Reihe neuer Klassen.
 - Neue Klasse Rubicon.Utilities.EnumerableUtility nimmt einige der Methoden von System.Linq.Enumerable vorweg.
 - Rubicon.Collections.ICache und implementierende Klassen: Signatur des factory-delegates geändert, damit für key keine closures notwendig sind.
+- Neue Klasse Rubicon.Collections.ArrayComparer
 
 1.7.41
 ======
