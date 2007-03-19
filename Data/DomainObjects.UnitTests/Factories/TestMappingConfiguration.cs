@@ -275,6 +275,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition fileSystemItem = new ClassDefinition (
           "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
 
+      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
       fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
 
       return fileSystemItem;

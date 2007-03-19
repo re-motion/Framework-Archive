@@ -115,6 +115,8 @@
   <ItemGroup>
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\FakeDomainObjectFactory.cs" />
     <Compile Include="Configuration\Mapping\FakeMappingLoader.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />

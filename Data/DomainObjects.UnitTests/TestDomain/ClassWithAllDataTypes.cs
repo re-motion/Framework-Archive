@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
@@ -126,6 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("SingleProperty", value); }
     }
 
+    [StringProperty (MaximumLength = 100)]
     public string StringProperty
     {
       get { return DataContainer.GetString ("StringProperty"); }
@@ -210,6 +212,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleProperty", value); }
     }
 
+    [StringProperty (IsNullable = true)]
     public string StringWithNullValueProperty
     {
       get { return DataContainer.GetString ("StringWithNullValueProperty"); }
@@ -282,6 +285,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleWithNullValueProperty", value); }
     }
 
+    [BinaryProperty (IsNullable = true, MaximumLength = 1000000)]
     public byte[] NullableBinaryProperty
     {
       get { return DataContainer.GetBytes ("NullableBinaryProperty"); }

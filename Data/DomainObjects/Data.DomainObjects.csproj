@@ -98,7 +98,15 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\ClassReflector.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\BinaryPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\NullableLengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\ILengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\INullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\NullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\PropertyReflector.cs" />
     <Compile Include="ConfigurationLoader\Mapping\MappingReflector.cs" />
+    <Compile Include="ConfigurationLoader\Mapping\StringPropertyAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />

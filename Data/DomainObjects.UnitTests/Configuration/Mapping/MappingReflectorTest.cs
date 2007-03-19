@@ -16,11 +16,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsTrue (mappingReflector.ResolveTypes);
     }
 
-    [Test]
-    public void name()
-    {
-      Assembly testDomain = TestDomainFactory.ConfigurationMappingTestDomain;
-      Assert.AreEqual (2, testDomain.GetTypes().Length);
-    }
+    //[Test]
+    //public void GetClassDefinitions()
+    //{
+    //  Assembly testDomain = TestDomainFactory.ConfigurationMappingTestDomain;
+    //  Assert.AreEqual (2, testDomain.GetTypes().Length);
+
+    //  MappingReflector mappingReflector = new MappingReflector();
+    //  mappingReflector.GetClassDefinitions();
+    //}
   }
 }

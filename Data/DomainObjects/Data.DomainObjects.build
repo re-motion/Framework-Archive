@@ -21,6 +21,7 @@
         <include name="Configuration/**/*.cs"/>
         <include name="ConfigurationLoader/**/*.cs"/>
         <include name="Development/**/*.cs"/>
+        <include name="Interception/**/*.cs"/>
         <include name="Mapping/**/*.cs"/>
         <include name="DataManagement/**/*.cs"/>
         <include name="Persistence/**/*.cs"/>

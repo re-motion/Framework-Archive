@@ -48,6 +48,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    public string Name
+    {
+      get { return (string) DataContainer["Name"]; }
+      set { DataContainer["Name"] = value; }
+    }
+
     public Folder ParentFolder
     {
       get { return (Folder) GetRelatedObject ("ParentFolder"); }

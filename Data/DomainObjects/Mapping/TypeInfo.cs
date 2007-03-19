@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
@@ -13,7 +15,8 @@ public class TypeInfo
 
   public const string ObjectIDMappingTypeName = "objectID";
 
-  private static readonly Hashtable s_mappingTypes;
+  private static readonly Dictionary<Tuple<string, bool>, TypeInfo> s_mappingTypes = new Dictionary<Tuple<string, bool>, TypeInfo> ();
+  private static readonly Dictionary<Tuple<Type, bool>, TypeInfo> s_types = new Dictionary<Tuple<Type, bool>, TypeInfo> ();
 
   public static void AddInstance (TypeInfo typeInfo)
   {
@@ -22,6 +25,8 @@ public class TypeInfo
     lock (typeof (TypeInfo))
     {
       s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
+      if (typeInfo.MappingType != "date")
+        s_types.Add (GetTypeKey (typeInfo), typeInfo);
     }
   }
 
@@ -29,7 +34,20 @@ public class TypeInfo
   {
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
-    return (TypeInfo) s_mappingTypes[GetMappingTypeKey (mappingType, isNullable)];
+    TypeInfo value;
+    if (s_mappingTypes.TryGetValue (GetMappingTypeKey (mappingType, isNullable), out value))
+      return value;
+    return null;
+  }
+
+  public static TypeInfo GetInstance (Type type, bool isNullable)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeInfo value;
+    if (s_types.TryGetValue (GetTypeKey (type, isNullable), out value))
+      return value;
+    return null;
   }
 
   public static TypeInfo GetMandatory (string mappingType, bool isNullable)
@@ -52,6 +70,26 @@ public class TypeInfo
     return typeInfo;
   }
 
+  public static TypeInfo GetMandatory (Type type, bool isNullable)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeInfo typeInfo = GetInstance (type, isNullable);
+
+    if (typeInfo == null)
+    {
+      string message;
+      if (isNullable)
+        message = string.Format ("The nullable mapping type '{0}' could not be found.", type.FullName);
+      else
+        message = string.Format ("The not-nullable mapping type '{0}' could not be found.", type.FullName);
+
+      throw new MandatoryMappingTypeNotFoundException (message, type.FullName, isNullable);
+    }
+
+    return typeInfo;
+  }
+
   public static object GetDefaultEnumValue (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -64,14 +102,24 @@ public class TypeInfo
     throw new InvalidEnumDefinitionException (type);
   }
 
-  private static int GetMappingTypeKey (TypeInfo typeInfo)
+  private static Tuple<string, bool> GetMappingTypeKey (TypeInfo typeInfo)
   {
     return GetMappingTypeKey (typeInfo.MappingType, typeInfo.IsNullable); 
   }
 
-  private static int GetMappingTypeKey (string mappingType, bool isNullable)
+  private static Tuple<string, bool> GetMappingTypeKey (string mappingType, bool isNullable)
   {
-    return mappingType.GetHashCode () ^ isNullable.GetHashCode (); 
+    return new Tuple<string, bool> (mappingType, isNullable); 
+  }
+
+  private static Tuple<Type, bool> GetTypeKey (TypeInfo typeInfo)
+  {
+    return GetTypeKey (typeInfo.Type, typeInfo.IsNullable);
+  }
+
+  private static Tuple<Type, bool> GetTypeKey (Type type, bool isNullable)
+  {
+    return new Tuple<Type, bool> (type, isNullable);
   }
 
   // member fields
@@ -85,10 +133,8 @@ public class TypeInfo
 
   static TypeInfo ()
   {
-    s_mappingTypes = new Hashtable ();
-
     foreach (TypeInfo typeInfo in GetAllKnownTypeInfos ())
-      s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
+      AddInstance (typeInfo);
   }
 
   private static TypeInfo[] GetAllKnownTypeInfos ()

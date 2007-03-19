@@ -42,7 +42,7 @@ public class ClassDefinition : ISerializable, IObjectReference
       string entityName, 
       string storageProviderID, 
       string classTypeName, 
-      bool resolveClassType, 
+      bool resolveClassTypeName, 
       ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
@@ -50,7 +50,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNullOrEmpty ("classTypeName", classTypeName);
 
-    Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassType, baseClass);
+    Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassTypeName, baseClass);
   }
 
   public ClassDefinition (string id, string entityName, string storageProviderID, Type classType)
@@ -79,10 +79,10 @@ public class ClassDefinition : ISerializable, IObjectReference
       string storageProviderID, 
       Type classType, 
       string classTypeName, 
-      bool resolveClassType, 
+      bool resolveClassTypeName, 
       ClassDefinition baseClass)
   {
-    if (resolveClassType)
+    if (resolveClassTypeName)
       classType = Type.GetType (classTypeName, true);
 
     if (classType != null)
@@ -97,7 +97,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     _classTypeName = classTypeName;
     _storageProviderID = storageProviderID;
 
-    _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (resolveClassType), true);
+    _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (resolveClassTypeName), true);
     _propertyDefinitions = new PropertyDefinitionCollection (this);
     _relationDefinitions = new RelationDefinitionCollection ();
 
