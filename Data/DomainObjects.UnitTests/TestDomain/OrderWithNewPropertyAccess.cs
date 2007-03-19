@@ -73,5 +73,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       get { return GetRelatedObjects (); }
     }
+
+    public virtual int NotInMapping
+    {
+      get { return GetPropertyValue<int> (); }
+    }
   }
 }

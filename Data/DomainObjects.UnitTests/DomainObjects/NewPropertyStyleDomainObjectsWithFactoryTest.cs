@@ -311,5 +311,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
     }
+
+    /*[Test]
+    [ExpectedException(typeof(InvalidOperationException))]
+    public void AccessWithoutBeingInMappingThrows ()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      int i = order.NotInMapping;
+    }*/
   }
 }
