@@ -77,6 +77,8 @@
       <Name>log4net</Name>
       <HintPath>..\prereq\Assemblies\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86" />
+    <Reference Include="PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -87,6 +89,8 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <Reference Include="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
@@ -95,6 +99,9 @@
     <Compile Include="Configuration\ProviderHelperBase.cs" />
     <Compile Include="DoubleCheckedLockingContainer.cs" />
     <Compile Include="INullableObject.cs" />
+    <Compile Include="Collections\ArrayComparer.cs" />
+    <Compile Include="Collections\LazyInterlockedCache.cs" />
+    <Compile Include="Collections\SimpleInterlockedCache.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogManager.cs" />
     <Compile Include="Logging\Log4NetLog.cs" />
@@ -110,7 +117,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Collections\ICache.cs" />
-    <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Collections\NullCache.cs" />
     <Compile Include="Collections\NameObjectCollection.cs">
       <SubType>Code</SubType>
@@ -252,6 +258,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PermanentGuidAttribute.cs" />
+    <None Include="Reflection\Copy of TypesafeActivator.cs" />
+    <Compile Include="Reflection\ConstructorWrapper.cs" />
+    <Compile Include="Reflection\EmitUtility.cs" />
+    <Compile Include="Reflection\GetDelegateWith.cs" />
+    <Compile Include="Reflection\InvokeWith.cs" />
+    <Compile Include="Reflection\TypesafeActivator.cs" />
     <Compile Include="Security\AbstractRoleAttribute.cs" />
     <Compile Include="Security\AccessType.cs" />
     <Compile Include="Security\AccessTypeAttribute.cs" />
@@ -310,6 +322,8 @@
     <Compile Include="Text\SeparatedStringBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\Assertion.cs" />
+    <Compile Include="Utilities\EnumerableUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\TypeNameConverter.cs" />
     <Compile Include="Utilities\AdvancedEnumConverter.cs">

@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Rubicon.Text
 {
@@ -9,6 +10,17 @@ namespace Rubicon.Text
 /// </summary>
 public class SeparatedStringBuilder
 {
+  /// <summary>
+  /// Appends the result of selector(item) for each item in the specified list.
+  /// </summary>
+  public static string Build<T> (string separator, IEnumerable<T> list, Func<T, string> selector)
+  {
+    SeparatedStringBuilder sb = new SeparatedStringBuilder (separator);
+    foreach (T item in list)
+      sb.Append (selector (item));
+    return sb.ToString ();
+  }
+
   private string _separator;
   private StringBuilder _stringBuilder;
 

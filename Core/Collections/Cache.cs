@@ -42,7 +42,7 @@ namespace Rubicon.Collections
       _cache.Clear ();
     }
 
-    public TValue GetOrCreateValue (TKey key, Func<TValue> valueFactory)
+    public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
@@ -50,7 +50,7 @@ namespace Rubicon.Collections
       TValue value;
       if (!_cache.TryGetValue (key, out value))
       {
-        value = valueFactory ();
+        value = valueFactory (key);
         _cache[key] = value;
       }
 

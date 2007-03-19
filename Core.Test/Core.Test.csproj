@@ -122,6 +122,7 @@
     <Compile Include="Configuration\TypeElement2Test.cs" />
     <Compile Include="Configuration\FakeOtherProvider.cs" />
     <Compile Include="Configuration\FakeProviderBase.cs" />
+    <Compile Include="Collections\LazyInterlockedCacheTest.cs" />
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
     <Compile Include="DoubleCheckedLockingContainerTest.cs" />
@@ -144,7 +145,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Collections\CacheTest.cs" />
-    <Compile Include="Collections\InterlockedCacheTest.cs" />
     <Compile Include="Collections\NullCacheTest.cs" />
     <Compile Include="Collections\TupleAbcdTest.cs" />
     <Compile Include="Collections\TupleAbcTest.cs" />
@@ -197,6 +197,7 @@
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
+    <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -230,6 +231,7 @@
     <Compile Include="Utilities\ArrayUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\AssertionTest.cs" />
     <Compile Include="Utilities\BidirectionalStringConverterTest.cs">
       <SubType>Code</SubType>
     </Compile>

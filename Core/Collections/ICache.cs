@@ -6,8 +6,7 @@ namespace Rubicon.Collections
   public interface ICache<TKey, TValue> : INullableObject
   {
     void Add (TKey key, TValue value);
-
-    TValue GetOrCreateValue (TKey key, Func<TValue> valueFactory);
+    TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory);
 
     bool TryGetValue (TKey key, out TValue value);
 

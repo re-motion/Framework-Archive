@@ -1,3 +1,11 @@
+1.7.42
+======
+- InterlockedCache umbenannt auf LazyInterlockedCache, bis auf weiteres auf [Obsolete] gesetzt da Stabilität und Performance-Vorteil fraglich sind.
+- Neue Klasse InterlockedCache, die simples locking benutzt und an Stelle des alten InterlockedCache treten soll.
+- Neuer Namespace Rubicon.Reflection mit einer Reihe neuer Klassen.
+- Neue Klasse Rubicon.Utilities.EnumerableUtility nimmt einige der Methoden von System.Linq.Enumerable vorweg.
+- Rubicon.Collections.ICache und implementierende Klassen: Signatur des factory-delegates geändert, damit für key keine closures notwendig sind.
+
 1.7.41
 ======
 - INullableObject: Interface um das Null-Object-Pattern umzusetzen.

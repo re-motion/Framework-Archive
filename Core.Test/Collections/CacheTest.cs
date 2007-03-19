@@ -27,7 +27,7 @@ namespace Rubicon.Core.UnitTests.Collections
     public void GetOrCreateValue ()
     {
       object expected = new object ();
-      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate () { return expected; }));
+      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate (string key) { return expected; }));
     }
 
     [Test]
@@ -35,7 +35,7 @@ namespace Rubicon.Core.UnitTests.Collections
     {
       object expected = new object ();
 
-      _cache.GetOrCreateValue ("key1", delegate () { return expected; });
+      _cache.GetOrCreateValue ("key1", delegate (string key) { return expected; });
       object actual;
       Assert.IsTrue (_cache.TryGetValue ("key1", out actual));
       Assert.AreSame (expected, actual);
@@ -47,7 +47,7 @@ namespace Rubicon.Core.UnitTests.Collections
       object expected = new object ();
 
       _cache.Add ("key1", expected);
-      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate () { throw new InvalidOperationException ("The valueFactory must not be invoked."); }));
+      Assert.AreSame (expected, _cache.GetOrCreateValue ("key1", delegate (string key) { throw new InvalidOperationException ("The valueFactory must not be invoked."); }));
     }
 
     [Test]
