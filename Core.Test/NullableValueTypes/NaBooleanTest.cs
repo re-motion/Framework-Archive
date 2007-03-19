@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Rubicon.NullableValueTypes;
 using System.Data.SqlTypes;
 
-namespace Rubicon.UnitTests.NullableValueTypes
+namespace Rubicon.Core.UnitTests.NullableValueTypes
 {
 
 [TestFixture]
