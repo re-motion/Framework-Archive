@@ -232,25 +232,34 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.VerifyAll();
     }
 
-    private Func<string, Func<AccessType[]>, AccessType[]> GetOrCreateValueFromFixedResultForLocalCache (AccessType[] accessTypeResult)
+    private Delegate GetOrCreateValueFromFixedResultForLocalCache (AccessType[] accessTypeResult)
     {
-      return delegate { return accessTypeResult; };
+      return GetOrCreateValueFromFixedResult<string, AccessType[]> (accessTypeResult);
     }
 
-    private Func<Tuple<SecurityContext, string>, Func<AccessType[]>, AccessType[]> GetOrCreateValueFromFixedResultForGlobalCache (
-        AccessType[] accessTypeResult)
+    private Delegate GetOrCreateValueFromFixedResultForGlobalCache (AccessType[] accessTypeResult)
     {
-      return delegate { return accessTypeResult; };
+      return GetOrCreateValueFromFixedResult<Tuple<SecurityContext, string>, AccessType[]> (accessTypeResult);
     }
 
-    private Func<string, Func<AccessType[]>, AccessType[]> GetOrCreateValueFromValueFactoryForLocalCache()
+    private Func<TKey, Func<TKey, TValue>, TValue> GetOrCreateValueFromFixedResult<TKey, TValue> (TValue result)
     {
-      return delegate (string key, Func<AccessType[]> valueFactory) { return valueFactory(); };
+      return delegate { return result; };
     }
 
-    private Func<Tuple<SecurityContext, string>, Func<AccessType[]>, AccessType[]> GetOrCreateValueFromValueFactoryForGlobalCache()
+    private Func<string, Func<string, AccessType[]>, AccessType[]> GetOrCreateValueFromValueFactoryForLocalCache()
     {
-      return delegate (Tuple<SecurityContext, string> key, Func<AccessType[]> valueFactory) { return valueFactory(); };
+      return GetOrCreateValueFromValueFactory<string, AccessType[]>();
+    }
+
+    private Delegate GetOrCreateValueFromValueFactoryForGlobalCache()
+    {
+      return GetOrCreateValueFromValueFactory<Tuple<SecurityContext, string>, AccessType[]>();
+    }
+
+    private Func<TKey, Func<TKey, TValue>, TValue> GetOrCreateValueFromValueFactory<TKey, TValue> ()
+    {
+      return delegate (TKey key, Func<TKey, TValue> valueFactory) { return valueFactory (key); };
     }
   }
 }
