@@ -322,6 +322,7 @@
     <Compile Include="Text\SeparatedStringBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\EnumerableUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
