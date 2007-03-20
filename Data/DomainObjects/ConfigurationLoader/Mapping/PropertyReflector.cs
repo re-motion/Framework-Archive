@@ -59,8 +59,18 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
       return TypeInfo.GetMandatory (propertyInfo.PropertyType, isNullable);
     }
 
-    private string GetPropertyName (PropertyInfo propertyInfo)
+    // TODO: consider moving this somewhere else
+    /// <summary>
+    /// Returns the RPF property identifier for a given property member.
+    /// </summary>
+    /// <param name="propertyInfo">The property whose identifier should be returned.</param>
+    /// <returns>The property identifier for the given property.</returns>
+    /// <remarks>Currently, the identifier is defined to be the full name of the property's declaring type, suffixed with a dot (".") and the
+    /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
+    /// identifier must be retrieved programmatically.</remarks>
+    public static string GetPropertyName (PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       return propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
     }
 

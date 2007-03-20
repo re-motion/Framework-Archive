@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public virtual Customer OriginalCustomer
     {
-      get { return (Customer) GetOriginalRelatedObject ("Customer"); }
+      get { return (Customer) GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"); }
     }
 
     public virtual DomainObjectCollection OrderItems

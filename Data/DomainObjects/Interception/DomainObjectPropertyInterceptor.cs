@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Interception
 {
@@ -33,9 +34,16 @@ namespace Rubicon.Data.DomainObjects.Interception
           }
 
           // this interceptor only intercepts properties which are defined in the mapping either as a property definition or as a related object
-          string id = DomainObjectPropertyInterceptor.GetIdentifierFromPropertyName (property.Name);
+          string id = DomainObjectPropertyInterceptor.GetIdentifierFromProperty (property);
           ClassDefinition classDefinition = Mapping.MappingConfiguration.Current.ClassDefinitions[type];
-          return DomainObjectPropertyInterceptor.IsPropertyValue (type, id) || DomainObjectPropertyInterceptor.IsRelatedObject (type, id);
+          bool isDefined = DomainObjectPropertyInterceptor.IsPropertyValue (type, id) || DomainObjectPropertyInterceptor.IsRelatedObject (type, id);
+          
+          if (!isDefined && Attribute.IsDefined(property, typeof(AutomaticPropertyAttribute), true))
+          {
+            throw new InvalidOperationException ("Property " + property.DeclaringType.FullName + "." + property.Name + " is tagged as an automatic "
+                + "property but is not defined in the mapping (assumed id: " + id + ").");
+          }
+          return isDefined;
         }
         else
         {
@@ -50,9 +58,9 @@ namespace Rubicon.Data.DomainObjects.Interception
       }
     }
 
-    private static string GetIdentifierFromPropertyName (string propertyName)
+    private static string GetIdentifierFromProperty (PropertyInfo property)
     {
-      return propertyName;
+      return PropertyReflector.GetPropertyName (property);
     }
 
     public static bool IsRelatedObject (Type type, string propertyID)
@@ -81,8 +89,8 @@ namespace Rubicon.Data.DomainObjects.Interception
       Assertion.DebugAssert (ReflectionUtility.IsPropertyAccessor (invocation.Method));
       Assertion.Assert (target != null);
 
-      string propertyName = ReflectionUtility.GetPropertyNameForMethodName (invocation.Method.Name);
-      string id = DomainObjectPropertyInterceptor.GetIdentifierFromPropertyName (propertyName);
+      PropertyInfo property = ReflectionUtility.GetPropertyForMethod (invocation.Method);
+      string id = DomainObjectPropertyInterceptor.GetIdentifierFromProperty (property);
       
       target.PreparePropertyAccess (id);
       try

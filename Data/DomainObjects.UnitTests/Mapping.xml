@@ -156,19 +156,19 @@
       <entity name="OrderWithNewPropertyAccess"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
-        <property name="OrderNumber">
+        <property name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderNumber">
           <type>int32</type>
           <column>OrderNo</column>
         </property>
-        <property name="DeliveryDate">
+        <property name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.DeliveryDate">
           <type>dateTime</type>
           <column>DeliveryDate</column>
         </property>
-        <relationProperty name="Customer" relationID="CustomerToOrderWithNewPropertyAccess" cardinality="one" isMandatory="true">
+        <relationProperty name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer" relationID="CustomerToOrderWithNewPropertyAccess" cardinality="one" isMandatory="true">
           <column>CustomerID</column>
           <oppositeClass>Customer</oppositeClass>
         </relationProperty>
-        <relationProperty name="OrderItems" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="many" isMandatory="true"/>
+        <relationProperty name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderItems" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="many" isMandatory="true"/>
       </properties>
     </class>
     <class id="OrderItemWithNewPropertyAccess">
@@ -176,16 +176,16 @@
       <entity name="OrderItemWithNewPropertyAccess"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
-        <property name="Position">
+        <property name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Position">
           <type>int32</type>
           <column>Position</column>
         </property>
-        <property name="Product">
+        <property name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Product">
           <type>string</type>
           <column>Product</column>
           <maxLength>100</maxLength>
         </property>
-        <relationProperty name="Order" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="one" isMandatory="true">
+        <relationProperty name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="one" isMandatory="true">
           <column>OrderID</column>
         </relationProperty>
       </properties>

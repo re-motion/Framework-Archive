@@ -210,5 +210,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       get { throw new NotImplementedException (); }
     }
+
+    [Test]
+    public void GetPropertyName ()
+    {
+      Assert.AreEqual ("System.DateTime.Year", PropertyReflector.GetPropertyName (typeof (DateTime).GetProperty ("Year")));
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty",
+          PropertyReflector.GetPropertyName (typeof (ClassWithAllDataTypes).GetProperty ("DateTimeProperty")));
+    }
   }
 }
