@@ -13,18 +13,20 @@ using Mocks_Property = Rhino.Mocks.Property;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {
+  using GlobalCacheKey = Tuple<SecurityContext, string>;
+
   [TestFixture]
   public class CachingTest
   {
     private MockRepository _mocks;
     private ISecurityProvider _mockSecurityProvider;
     private IGlobalAccessTypeCacheProvider _mockGlobalAccessTypeCacheProvider;
-    private ICache<Tuple<SecurityContext, string>, AccessType[]> _mockGlobalAccessTypeCache;
+    private ICache<GlobalCacheKey, AccessType[]> _mockGlobalAccessTypeCache;
     private ICache<string, AccessType[]> _mockLocalAccessTypeCache;
     private ISecurityContextFactory _mockContextFactory;
     private IPrincipal _user;
     private SecurityContext _context;
-    private Tuple<SecurityContext, string> _globalAccessTypeCacheKey;
+    private GlobalCacheKey _globalAccessTypeCacheKey;
     private SecurityStrategy _strategy;
 
     [SetUp]
@@ -33,13 +35,13 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks = new MockRepository();
       _mockSecurityProvider = _mocks.CreateMock<ISecurityProvider>();
       _mockGlobalAccessTypeCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider>();
-      _mockGlobalAccessTypeCache = _mocks.CreateMock<ICache<Tuple<SecurityContext, string>, AccessType[]>>();
+      _mockGlobalAccessTypeCache = _mocks.CreateMock<ICache<GlobalCacheKey, AccessType[]>>();
       _mockLocalAccessTypeCache = _mocks.CreateMock<ICache<string, AccessType[]>>();
       _mockContextFactory = _mocks.CreateMock<ISecurityContextFactory>();
 
       _user = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum>(), new Enum[0]);
-      _globalAccessTypeCacheKey = new Tuple<SecurityContext, string> (_context, _user.Identity.Name);
+      _globalAccessTypeCacheKey = new GlobalCacheKey (_context, _user.Identity.Name);
 
       _strategy = new SecurityStrategy (_mockLocalAccessTypeCache, _mockGlobalAccessTypeCacheProvider);
 
@@ -78,12 +80,12 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+            .Do (GetOrCreateValueFromValueFactory<string>());
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForGlobalCache());
+            .Do (GetOrCreateValueFromValueFactory<GlobalCacheKey>());
         Expect.Call (_mockSecurityProvider.GetAccess (_context, _user)).Return (accessTypeResult);
       }
       _mocks.ReplayAll();
@@ -98,16 +100,15 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     public void HasAccess_WithResultNotInLocalCacheAndNotInGlobalCacheAndAccessDenied()
     {
       AccessType[] accessTypeResult = new AccessType[0];
-      using (_mocks.Ordered())
-      {
+      using (_mocks.Ordered()){
         Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+            .Do (GetOrCreateValueFromValueFactory<string>());
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForGlobalCache());
+            .Do (GetOrCreateValueFromValueFactory<GlobalCacheKey>());
         Expect.Call (_mockSecurityProvider.GetAccess (_context, _user)).Return (accessTypeResult);
       }
       _mocks.ReplayAll();
@@ -126,12 +127,12 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+            .Do (GetOrCreateValueFromValueFactory<string>());
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
             .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromFixedResultForGlobalCache (accessTypeResult));
+            .Do (GetOrCreateValueFromFixedResult<GlobalCacheKey> (accessTypeResult));
       }
       _mocks.ReplayAll();
 
@@ -144,17 +145,16 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     [Test]
     public void HasAccess_WithResultNotInLocalCacheButInGlobalCacheAndAccessDenied()
     {
-      AccessType[] accessTypeResult = new AccessType[0];
       using (_mocks.Ordered())
       {
         Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
-            .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+            .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull ())
+            .Do (GetOrCreateValueFromValueFactory<string>());
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
         Expect.Call (_mockContextFactory.CreateSecurityContext()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.GetOrCreateValue (null, null))
-            .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull())
-            .Do (GetOrCreateValueFromFixedResultForGlobalCache (accessTypeResult));
+            .Constraints (Mocks_Is.Equal (_globalAccessTypeCacheKey), Mocks_Is.NotNull ())
+            .Do (GetOrCreateValueFromFixedResult<GlobalCacheKey> (new AccessType[0]));
       }
       _mocks.ReplayAll();
 
@@ -163,14 +163,14 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.VerifyAll();
       Assert.AreEqual (false, hasAccess);
     }
-
+   
     [Test]
     public void HasAccess_WithResultInLocalCacheAndAccessGranted()
     {
       AccessType[] accessTypeResult = new AccessType[] {AccessType.Get (GeneralAccessTypes.Edit)};
       Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
           .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-          .Do (GetOrCreateValueFromFixedResultForLocalCache (accessTypeResult));
+          .Do (GetOrCreateValueFromFixedResult<string> (accessTypeResult));
       _mocks.ReplayAll();
 
       bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityProvider, _user, AccessType.Get (GeneralAccessTypes.Edit));
@@ -185,7 +185,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       AccessType[] accessTypeResult = new AccessType[0];
       Expect.Call (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
           .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-          .Do (GetOrCreateValueFromFixedResultForLocalCache (accessTypeResult));
+          .Do (GetOrCreateValueFromFixedResult<string> (accessTypeResult));
       _mocks.ReplayAll();
 
       bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityProvider, _user, AccessType.Get (GeneralAccessTypes.Edit));
@@ -200,7 +200,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     {
       SetupResult.For (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
           .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-          .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+          .Do (GetOrCreateValueFromValueFactory<string>());
       SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (null);
       _mocks.ReplayAll();
 
@@ -213,7 +213,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     {
       SetupResult.For (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
           .Constraints (Mocks_Is.Equal ("user"), Mocks_Is.NotNull())
-          .Do (GetOrCreateValueFromValueFactoryForLocalCache());
+          .Do (GetOrCreateValueFromValueFactory<string>());
       SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetCache()).Return (_mockGlobalAccessTypeCache);
       SetupResult.For (_mockContextFactory.CreateSecurityContext()).Return (null);
       _mocks.ReplayAll();
@@ -232,34 +232,20 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.VerifyAll();
     }
 
-    private Delegate GetOrCreateValueFromFixedResultForLocalCache (AccessType[] accessTypeResult)
-    {
-      return GetOrCreateValueFromFixedResult<string, AccessType[]> (accessTypeResult);
-    }
-
-    private Delegate GetOrCreateValueFromFixedResultForGlobalCache (AccessType[] accessTypeResult)
-    {
-      return GetOrCreateValueFromFixedResult<Tuple<SecurityContext, string>, AccessType[]> (accessTypeResult);
-    }
-
-    private Func<TKey, Func<TKey, TValue>, TValue> GetOrCreateValueFromFixedResult<TKey, TValue> (TValue result)
+    /// <summary>
+    /// Creates a delegate that simply returns the access types passed to this method.
+    /// </summary>
+    private Func<TKey, Func<TKey, AccessType[]>, AccessType[]> GetOrCreateValueFromFixedResult<TKey> (AccessType[] result)
     {
       return delegate { return result; };
     }
 
-    private Func<string, Func<string, AccessType[]>, AccessType[]> GetOrCreateValueFromValueFactoryForLocalCache()
+    /// <summary>
+    /// Creates a delegate for ICache.GetOrCreateValue that calls the valueFactory and returns its result.
+    /// </summary>
+    private Func<TKey, Func<TKey, AccessType[]>, AccessType[]> GetOrCreateValueFromValueFactory<TKey> ()
     {
-      return GetOrCreateValueFromValueFactory<string, AccessType[]>();
-    }
-
-    private Delegate GetOrCreateValueFromValueFactoryForGlobalCache()
-    {
-      return GetOrCreateValueFromValueFactory<Tuple<SecurityContext, string>, AccessType[]>();
-    }
-
-    private Func<TKey, Func<TKey, TValue>, TValue> GetOrCreateValueFromValueFactory<TKey, TValue> ()
-    {
-      return delegate (TKey key, Func<TKey, TValue> valueFactory) { return valueFactory (key); };
+      return delegate (TKey key, Func<TKey, AccessType[]> valueFactory) { return valueFactory (key); };
     }
   }
 }
