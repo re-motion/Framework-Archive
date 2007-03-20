@@ -296,11 +296,6 @@
 		  <entity name="FileSystemItem"/>
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
-        <property name="Name">
-          <type>string</type>
-          <column>String</column>
-          <maxLength>100</maxLength>
-        </property>
         <relationProperty name="ParentFolder" relationID="FolderToFileSystemItem" isMandatory="false" cardinality="one">
 		      <column>ParentFolderID</column>
 		    </relationProperty>
