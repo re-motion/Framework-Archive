@@ -26,6 +26,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    public IndustrialSector (ClientTransaction clientTransaction, ObjectID objectID)
+      : base(clientTransaction, objectID)
+    {
+    }
+
     protected IndustrialSector (DataContainer dataContainer)
       : base (dataContainer)
     {

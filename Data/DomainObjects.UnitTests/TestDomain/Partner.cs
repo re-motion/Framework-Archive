@@ -26,6 +26,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    public Partner (ClientTransaction clientTransaction, ObjectID objectID)
+      : base(clientTransaction, objectID)
+    {
+    }
+
     protected Partner (DataContainer dataContainer)
       : base (dataContainer)
     {

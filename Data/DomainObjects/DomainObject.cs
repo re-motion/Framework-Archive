@@ -17,31 +17,30 @@ public class DomainObject
 
   // static members and constants
 
-  private static ILog s_log = LogManager.GetLogger (typeof (DomainObject));
-
+  #region Creation factory methods
   /// <summary>
-  /// Creates a new instance of a domain object.
+  /// Creates a new instance of a domain object for the current transaction.
   /// </summary>
   /// <typeparam name="T">The type to be supported by the object.</typeparam>
   /// <returns>A new domain object instance.</returns>
   /// <remarks>
-  /// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-  /// intercepts certain method calls in order to perform management tasks.</para>
-  /// <para>This method ensures that the created domain object supports the new property syntax if the object's class is configured correspondingly
-  /// (see <see cref="FactoryInstantiatedAttribute"/> and <see cref="FactoryInstantiationScope"/>).</para>
-  /// <para>The given <paramref name="type"/> must implement a default constructor. This is not enforced by a <c>new()</c> constraint
-  /// in order to support abstract classes with automatic properties.</para>
+  /// <para>This method supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
+  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their default constructor.
+  /// Objects created by the factory are not directly instantiated; instead a proxy is dynamically created that 
+  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
+  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they automatically support the new property syntax.</para>
   /// </remarks>
   /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
   /// properties).</exception>
-  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement a public or protected default constructor.
+  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required public or protected constructor
+  /// (see Remarks section).
   /// </exception>
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
   /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
   public static T Create<T> () where T : DomainObject
   {
-    return (T) CreateInternal (typeof (T), new object[0]);
+    return (T) GetCreator (typeof (T)).CreateWithCurrentTransaction (typeof (T));
   }
 
   /// <summary>
@@ -51,76 +50,54 @@ public class DomainObject
   /// <param name="tx">The client transaction to be passed to the domain object's constructor.</param>
   /// <returns>A new domain object instance.</returns>
   /// <remarks>
-  /// <para>This method does not directly instantiate the given type <typeparamref name="T"/>, but instead dynamically creates a subclass that
-  /// intercepts certain method calls in order to perform management tasks.</para>
-  /// <para>This method ensures that the created domain object supports the new property syntax if the object's class is configured correspondingly
-  /// (see <see cref="FactoryInstantiatedAttribute"/> and <see cref="FactoryInstantiationScope"/>).</para>
-  /// <para>The given type <typeparamref name="T"/> must implement a constructor taking a single <see cref="ClientTransaction"/> argument.</para>
+  /// <para>This method supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
+  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their constructor taking a single
+  /// <see cref="ClientTransaction"/> parameter. Objects created by the factory are not directly instantiated; instead a subclass is dynamically created that 
+  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
+  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they  and automatically support the new property syntax.</para>
   /// </remarks>
-  /// <exception cref="ArgumentNullException">The <paramref name="clientTransaction"/> parameter is null.</exception>
+  /// <exception cref="ArgumentNullException">The <paramref name="clientTransaction"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
   /// properties).</exception>
-  /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
-  /// </exception>
+  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required public or protected constructor
+  /// (see Remarks section).</exception>
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
   /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
   public static T Create<T> (ClientTransaction tx) where T : DomainObject
   {
     ArgumentUtility.CheckNotNull ("tx", tx);
-    return (T) CreateInternal (typeof (T), new object[] { tx });
+    return (T) GetCreator (typeof (T)).CreateWithTransaction (typeof(T), tx);
   }
 
-  private static DomainObject CreateInternal (Type type, object[] args)
-  {
-    try
-    {
-      if (ShouldUseFactoryForInstantiation (type))
-      {
-        return CreateInternalWithFactory (type, args);
-      }
-      else
-      {
-        return CreateInternalWithoutFactory (type, args);
-      }
-    }
-    catch (TargetInvocationException ex)
-    {
-      s_log.Error ("TargetInvocationException in constructor call, rethrowing inner exception.", ex);
-      throw ex.InnerException;
-    }
-  }
-
-  private static DomainObject CreateInternalWithoutFactory (Type type, object[] args)
-  {
-    try
-    {
-      return (DomainObject) ReflectionUtility.CreateObject (type, args);
-    }
-    catch (ArgumentException ex)
-    {
-      throw new MissingMethodException ("The given type " + type.FullName + " does not implement a corresponding constructor.", ex);
-    }
-  }
-
-  private static DomainObject CreateInternalWithFactory (Type type, object[] args)
-  {
-    return (DomainObject) DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create (type, args);
-  }
-
+  /// <summary>
+  /// Creates a <see cref="DomainObject"/> from a given data container.
+  /// </summary>
+  /// <param name="dataContainer">The data container for the new domain object.</param>
+  /// <returns>A new <see cref="DomainObject"/> for the given data container.</returns>
+  /// <remarks>
+  /// <para>This method is used by the <see cref="DataContainer"/> class when it is asked to load an object.</para>
+  /// <para>It supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
+  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their constructor taking a single
+  /// <see cref="DataContainer"/> parameter. Objects created by the factory are not directly instantiated; instead a subclass is dynamically created that 
+  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
+  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they automatically support the new property syntax.</para>
+  /// </remarks>
+  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is <see langword="null"/>.</exception>
+  /// <exception cref="MissingMethodException">The instantiated type does not implement the required public or protected constructor
+  /// (see Remarks section).</exception>
+  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
+  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
+  /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
   internal static DomainObject CreateWithDataContainer (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    return CreateInternal (dataContainer.DomainObjectType, new object[] { dataContainer });
+    return GetCreator (dataContainer.DomainObjectType).CreateWithDataContainer (dataContainer, dataContainer.ID);
   }
 
-  // TODO: Change to use mapping instead of attribute later.
-  public static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
-  {
-    return FactoryInstantiationScope.WithinScope || domainObjectType.IsDefined (typeof (FactoryInstantiatedAttribute), true);
-  }
+  #endregion
 
+  #region GetObject factory methods
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -137,25 +114,7 @@ public class DomainObject
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
   public static T GetObject<T> (ObjectID id) where T : DomainObject
   {
-    return (T) GetObject (id);
-  }
-
-
-  /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-  /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
-  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  protected static DomainObject GetObject (ObjectID id)
-  {
-    return GetObject (id, false);
+    return GetObject<T> (id, false);
   }
 
   /// <summary>
@@ -175,25 +134,7 @@ public class DomainObject
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
   public static T GetObject<T> (ObjectID id, bool includeDeleted) where T : DomainObject
   {
-    return (T) GetObject (id, includeDeleted);
-  }
-
-  /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-  /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
-  /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
-  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
-  {
-    return GetObject (id, ClientTransaction.Current, includeDeleted);
+    return GetObject<T> (id, ClientTransaction.Current, includeDeleted);
   }
 
   /// <summary>
@@ -213,25 +154,7 @@ public class DomainObject
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
   public static T GetObject<T> (ObjectID id, ClientTransaction clientTransaction) where T : DomainObject
   {
-    return (T) GetObject (id, clientTransaction);
-  }
-
-  /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-  /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
-  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
-  {
-    return GetObject (id, clientTransaction, false);
+    return GetObject<T> (id, clientTransaction, false);
   }
 
   /// <summary>
@@ -252,9 +175,72 @@ public class DomainObject
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
   public static T GetObject<T> (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted) where T : DomainObject
   {
-    return (T) GetObject (id, clientTransaction, includeDeleted);
+    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+    return (T) clientTransaction.GetObject (id, includeDeleted);
   }
- 
+
+  #endregion
+
+  #region Obsolete GetObject legacy methods
+
+  /// <summary>
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
+  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  protected static DomainObject GetObject (ObjectID id)
+  {
+    return GetObject<DomainObject> (id);
+  }
+
+  /// <summary>
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
+  /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
+  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
+  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
+  {
+    return GetObject<DomainObject> (id, includeDeleted);
+  }
+
+  /// <summary>
+  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
+  /// </summary>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
+  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
+  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return GetObject<DomainObject> (id, clientTransaction);
+  }
+
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -269,12 +255,30 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
+  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
-    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    return GetObject<DomainObject> (id, clientTransaction, includeDeleted);
+  }
 
-    return clientTransaction.GetObject (id, includeDeleted);
+  #endregion
+
+  // TODO: Change to use mapping instead of attribute later.
+  public static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
+  {
+    return FactoryInstantiationScope.WithinScope || domainObjectType.IsDefined (typeof (FactoryInstantiatedAttribute), true);
+  }
+
+  private static IDomainObjectCreator GetCreator (Type domainObjectType)
+  {
+    if (ShouldUseFactoryForInstantiation (domainObjectType))
+    {
+      return NewStyleDomainObjectCreator.Instance;
+    }
+    else
+    {
+      return LegacyDomainObjectCreator.Instance;
+    }
   }
 
   // member fields
@@ -352,6 +356,39 @@ public class DomainObject
   /// <summary>
   /// Initializes a new <see cref="DomainObject"/>.
   /// </summary>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of.
+  /// Must not be <see langword="null"/>, unless an <paramref name="id"/> is given.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
+  /// If it has a value, the constructor assumes that it is invoked as part of a loading process.</param>
+  /// <remarks>Implement a protected constructor with the same signature on concrete domain objects, delegate to this base constructor, and only use
+  /// the <see cref="Create"/> and <see cref="GetObject"/> factory methods to invoke it. Domain objects generally should not be constructed via the
+  /// <c>new</c> operator.</remarks>
+  /// <exception cref="ArgumentNullException">Both the <paramref name="clientTransaction"/> and <paramref name="id"/> arguments are <see langword="null"/>.</exception>
+  protected DomainObject (ClientTransaction clientTransaction, ObjectID id)
+  {
+    if (clientTransaction == null && id == null)
+    {
+      throw new ArgumentNullException ("clientTransaction, id", "One of the arguments must be non-null.");
+    }
+    if (id != null)
+    {
+      // assume loading, _dataContainer is set by the NewStyleDomainObjectCreator
+    }
+    else
+    {
+      // assume creation
+      clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
+
+      _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
+      _dataContainer.SetDomainObject (this);
+    }
+  }
+
+  #region Obsolete legacy constructors
+  /// <summary>
+  /// Initializes a new <see cref="DomainObject"/>.
+  /// </summary>
+  // TODO: [Obsolete("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
   protected DomainObject () : this (ClientTransaction.Current)
   {
   }
@@ -361,6 +398,7 @@ public class DomainObject
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
+  // TODO: [Obsolete ("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
   protected DomainObject (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -370,6 +408,27 @@ public class DomainObject
     _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     _dataContainer.SetDomainObject (this);
   }
+
+
+  /// <summary>
+  /// Infrastructure constructor necessary to load a <see cref="DomainObject"/> from a datasource.
+  /// </summary>
+  /// <remarks>
+  /// All derived classes have to implement an (empty) constructor with this signature.
+  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
+  /// </remarks>
+  /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
+  // TODO: [Obsolete ("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
+  protected DomainObject (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    _dataContainer = dataContainer;
+  }
+
+  #endregion
+
+  // methods and properties
 
   /// <summary>
   /// Returns the public type representation of this domain object, i.e. the type object visible to mappings, database, etc.
@@ -381,23 +440,6 @@ public class DomainObject
   {
     return this.GetType ();
   }
-
-  /// <summary>
-  /// Infrastructure constructor necessary to load a <see cref="DomainObject"/> from a datasource.
-  /// </summary>
-  /// <remarks>
-  /// All derived classes have to implement an (empty) constructor with this signature.
-  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
-  /// </remarks>
-  /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
-  protected DomainObject (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    _dataContainer = dataContainer;
-  }
-
-  // methods and properties
 
   /// <summary>
   /// Gets the <see cref="ObjectID"/> of the <see cref="DomainObject"/>.
@@ -463,6 +505,14 @@ public class DomainObject
       CheckIfObjectIsDiscarded ();
       return _dataContainer; 
     }
+    internal set
+    {
+      if (_dataContainer != null)
+      {
+        throw new InvalidOperationException ("The data container can only be set once.");
+      }
+      _dataContainer = value;
+    }
   }
 
   /// <summary>
@@ -476,6 +526,8 @@ public class DomainObject
 
     ClientTransaction.Delete (this);
   }
+
+  #region New-style property access implementation
 
   /// <summary>
   /// Prepares access to the <see cref="PropertyValue"/> of the given name.
@@ -528,6 +580,9 @@ public class DomainObject
     }
   }
 
+  #endregion
+
+  #region Get/SetPropertyValue
   /// <summary>
   /// Gets the value of the current <see cref="PropertyValue"/>.
   /// </summary>
@@ -607,6 +662,10 @@ public class DomainObject
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     DataContainer.SetValue(propertyName, value);
   }
+
+  #endregion
+
+  #region Related objects
 
   /// <summary>
   /// Gets the related object of a given <paramref name="propertyName"/>.
@@ -750,6 +809,8 @@ public class DomainObject
     string currentPropertyName = GetAndCheckCurrentPropertyName ();
     SetRelatedObject (currentPropertyName, newRelatedObject);
   }
+
+  #endregion
 
   /// <summary>
   /// Method is invoked after the loading process of the object is completed.

@@ -18,8 +18,8 @@ namespace Rubicon.Data.DomainObjects.Interception
       }
       else if (memberInfo.IsAbstract)
       {
-        throw new InvalidOperationException ("Cannot instantiate type " + type.FullName + ", the method " + memberInfo.Name
-              + " is abstract (and not part of an automatic property).");
+        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, the method {1} is abstract (and not part of an "
+            + "automatic property).", type.FullName, memberInfo.Name), type);
       }
       else
       {

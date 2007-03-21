@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.Interception.Castle
     /// properties) or it's not at least of type <typeparamref name="TInterceptorTarget"/>.</exception>
     /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
     /// </exception>
-    /// <exception cref="TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
+    /// <exception cref="System.Reflection.TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
     /// <see cref="Exception.InnerException"/>.</exception>
     // TODO: change selector handling as soon as DynamicProxy 2 implements it
     public object CreateInterceptableObject (Type type, object[] args)
@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Interception.Castle
       {
         return _generator.CreateClassProxy (type, _markerInterfaces, options, args, _mainInterceptor);
       }
-      catch (InvalidOperationException ex)
+      catch (NonInterceptableTypeException ex)
       {
         throw new ArgumentException (ex.Message, "type", ex);
       }

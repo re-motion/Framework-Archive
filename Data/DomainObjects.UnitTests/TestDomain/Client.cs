@@ -22,6 +22,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    public Client (ClientTransaction clientTransaction, ObjectID objectID)
+      : base(clientTransaction, objectID)
+    {
+    }
+
     public Client (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

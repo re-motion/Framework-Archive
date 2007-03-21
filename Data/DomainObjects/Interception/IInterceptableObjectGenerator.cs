@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Interception
     /// <typeparamref name="TInterceptorTarget"/>.</exception>
     /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
     /// </exception>
-    /// <exception cref="System.TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
+    /// <exception cref="System.Reflection.TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See
     /// <see cref="Exception.InnerException"/>.</exception>
     object CreateInterceptableObject(Type type, object[] args);
 

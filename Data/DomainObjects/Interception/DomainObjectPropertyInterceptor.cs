@@ -35,10 +35,8 @@ namespace Rubicon.Data.DomainObjects.Interception
 
           if (!isDefined && Attribute.IsDefined (property, typeof (AutomaticPropertyAttribute), true))
           {
-            throw new InvalidOperationException (string.Format (
-                "Property {0}.{1} is tagged as an automatic property but is not defined in the mapping (assumed id: {2}).", 
-                property.DeclaringType.FullName, 
-                property.Name, id));
+            throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, property {1} is tagged as an automatic property "
+                + "but is not defined in the mapping (assumed property id: {2}).", property.DeclaringType.FullName, property.Name, id), type);
           }
           return isDefined;
         }

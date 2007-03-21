@@ -29,6 +29,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    protected Ceo (ClientTransaction clientTransaction, ObjectID objectID)
+      : base(clientTransaction, objectID)
+    {
+    }
+    
     protected Ceo (DataContainer dataContainer)
       : base (dataContainer)
     {

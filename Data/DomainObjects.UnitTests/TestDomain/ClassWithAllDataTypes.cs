@@ -31,7 +31,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    public ClassWithAllDataTypes (ClientTransaction clientTransaction)
+    public ClassWithAllDataTypes (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
+    {
+    }
+    
+      public ClassWithAllDataTypes (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }

@@ -45,6 +45,46 @@
 
   </configuration>
 
+- Neue Factory-Methoden für DomainObjects: Generell diese benutzen, DomainObjects nicht mehr via "new" anlegen. (Alter Mechanismus funktioniert für
+  Legacy-Objekte weiterhin.)
+  DomainObject.GetObject<T> (ObjectID) - "Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource."
+  DomainObject.Create<T> (ClientTransaction) - "Creates a new instance of a domain object."
+  DomainObject.Create<T> () - "Creates a new instance of a domain object for the current transaction."
+  
+  Factory-Methoden bieten wahlweise Factory-basierte Instanziierung und Legacy-Instanziierung. Konfiguration per FactoryInstantiatedAttribute und
+  (v.a. zum Testen) FactoryInstantiationScope. Zukunft: Mapping entscheidet statt FactoryInstantiatedAttribute.
+
+- Neue Konstruktoren für DomainObjects: In Zukunft sollte jedes DomainObject von der Factory erzeugt werden; diese braucht dazu genau einen public
+  oder protected constructor:
+  MyDomainObject (ClientTransaction clientTransaction, ObjectID objectID)
+    : base (clientTransaction, objectID)
+  {
+  }
+  
+  Andere Konstruktoren sind für Factory-erzeugte Domain-Objekte nicht mehr nötig. (Für Domain-Objekte, die nicht von der Factory erzeugt werden,
+  werden weiterhin die bisherigen "Legacy"-Konstruktoren benutzt.)
+
+- Neuer Property-Zugriff (für DomainObjects, die von der Factory erzeugt werden; alter Mechanismus funktioniert weiterhin unverändert):
+
+  Bisher:
+  public int IntProperty
+  {
+    get { return (int) DataContainer["Namespace.Type.IntProperty"]; }
+    set { DataContainer["Namespace.Type.IntProperty"] = value; }
+  }
+  
+  Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein:
+  public virtual int IntProperty
+  {
+    get { return GetPropertyValue<int> (); }
+    set { SetPropertyValue (value); }
+  }
+  
+  Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt:
+  [AutomaticProperty]
+  public abstract int IntProperty { get; set; }
+
+
 1.7.37.0
 ========
 

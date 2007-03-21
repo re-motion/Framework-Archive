@@ -10,26 +10,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // static members and constants
 
-    public static new OrderWithNewPropertyAccess GetObject (ObjectID id)
-    {
-      return DomainObject.GetObject <OrderWithNewPropertyAccess> (id);
-    }
-
     // member fields
 
     // construction and disposing
 
-    public OrderWithNewPropertyAccess ()
-    {
-    }
-
-    public OrderWithNewPropertyAccess (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected OrderWithNewPropertyAccess (DataContainer dataContainer)
-      : base (dataContainer)
+    public OrderWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
     {
     }
 

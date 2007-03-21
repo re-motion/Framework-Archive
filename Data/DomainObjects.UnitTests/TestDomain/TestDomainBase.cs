@@ -28,15 +28,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
+    // TODO: [Obsolete ("Use ctor(ClientTransaction, objectID) instead.")]
     protected TestDomainBase ()
     {
     }
 
+    // TODO: [Obsolete ("Use ctor(ClientTransaction, objectID) instead.")]
     protected TestDomainBase (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }
 
+    protected TestDomainBase (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
+    {
+    }
+
+    // TODO: [Obsolete("Use ctor(ClientTransaction, objectID) instead.")]
     protected TestDomainBase (DataContainer dataContainer)
       : base (dataContainer)
     {

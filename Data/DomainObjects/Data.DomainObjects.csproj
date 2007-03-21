@@ -112,6 +112,8 @@
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StringPropertyAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
+    <Compile Include="Interception\NonInterceptableTypeException.cs" />
+    <Compile Include="LegacyDomainObjectCreator.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
     <Compile Include="DomainObjectFactory.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="ObjectList.cs" />
+    <Compile Include="IDomainObjectCreator.cs" />
     <Compile Include="IDomainObjectFactory.cs" />
     <Compile Include="Interception\Castle\CastleInterceptableObjectGenerator.cs" />
     <Compile Include="Interception\Castle\GenerationHook.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Interception\IInterceptorSelector.cs" />
     <Compile Include="Interception\IInvocation.cs" />
     <Compile Include="Mapping\Configuration\MappingLoaderConfiguration.cs" />
+    <Compile Include="NewStyleDomainObjectCreator.cs" />
     <Compile Include="Persistence\Configuration\PersistenceConfiguration.cs" />
     <Compile Include="Persistence\Configuration\StorageProviderDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

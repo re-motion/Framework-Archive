@@ -30,6 +30,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="System.InvalidCastException">
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
+  // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id)
   {
     return (BindableDomainObject) DomainObject.GetObject (id);
@@ -50,6 +51,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="System.InvalidCastException">
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
+  // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     return (BindableDomainObject) DomainObject.GetObject (id, includeDeleted);
@@ -70,6 +72,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="System.InvalidCastException">
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
+  // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction);
@@ -91,6 +94,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="System.InvalidCastException">
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
+  // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -105,10 +109,28 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   private BusinessObjectReflector _objectReflector;
 
   // construction and disposing
+  
+  /// <summary>
+  /// Initializes a new <see cref="BindableDomainObject"/>.
+  /// </summary>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/> should be part of.
+  /// Must not be <see langword="null"/>, unless an <param name="objectID"/> is given.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
+  /// If it has a value, the constructor assumes that it is invoked as part of a loading process.</param>
+  /// <remarks>Implement a protected constructor with the same signature on concrete domain objects, delegate to this base constructor, and only use
+  /// the <see cref="Create"/> and <see cref="GetObject"/> factory methods to invoke it. Domain objects generally should not be constructed via the
+  /// <c>new</c> operator.</remarks>
+  /// <exception cref="ArgumentNullException">Both the <paramref name="clientTransaction"/> and <paramref name="objectID"/> arguments are <see langword="null"/>.</exception>
+  protected BindableDomainObject (ClientTransaction clientTransaction, ObjectID objectID)
+    : base (clientTransaction, objectID)
+  {
+    Initialize ();
+  }
 
   /// <summary>
   /// Initializes a new <b>BindableDomainObject</b>.
   /// </summary>
+  // TODO: [Obsolete ("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
   protected BindableDomainObject ()
   {
     Initialize ();
@@ -119,6 +141,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>BindableDomainObject</b> should be part of.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
+  // TODO: [Obsolete("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
   protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
     Initialize ();
@@ -132,6 +155,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
   /// </remarks>
   /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
+  // TODO: [Obsolete ("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
     Initialize ();

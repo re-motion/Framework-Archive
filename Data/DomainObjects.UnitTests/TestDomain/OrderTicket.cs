@@ -38,6 +38,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       Order = order;
     }
 
+    public OrderTicket (ClientTransaction clientTransaction, ObjectID objectID)
+      : base(clientTransaction, objectID)
+    {
+    }
+
     protected OrderTicket (DataContainer dataContainer)
       : base (dataContainer)
     {

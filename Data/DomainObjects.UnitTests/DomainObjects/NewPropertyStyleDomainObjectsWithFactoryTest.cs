@@ -19,17 +19,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
-      public NonInstantiableAbstractClass () { }
+      public NonInstantiableAbstractClass () : base (null, null) { }
       public abstract void Foo ();
     }
 
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
+      public NonInstantiableAbstractClassWithProps () : base (null, null) { }
       public abstract int Foo { get; }
     }
 
     public sealed class NonInstantiableSealedClass : DomainObject
     {
+      public NonInstantiableSealedClass () : base (null, null) { }
     }
 
     public class NonInstantiableNonDomainClass
@@ -39,7 +41,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public class Throws : DomainObject
     {
       public Throws ()
-        : base (((int) (object) "this always throws before entering base constructor!") == 5 ? ClientTransaction.Current : ClientTransaction.Current)
+        : this (null, null)
+      {
+      }
+
+      public Throws (ClientTransaction tx, ObjectID id)
+        : base (((int) (object) "this always throws before entering base constructor!") == 5 ? ClientTransaction.Current : ClientTransaction.Current, null)
       {
       }
     }
@@ -86,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void LoadOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Assert.IsTrue (WasCreatedByFactory (order));
     }
 
@@ -100,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Assert.AreEqual (1, order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 01, 01), order.DeliveryDate);
       Assert.AreEqual (1, order.OrderNumber);
@@ -109,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
       
       order.OrderNumber = 15;
       Assert.AreEqual (15, order.OrderNumber);
