@@ -15,6 +15,7 @@
         <include name="**/*.cs"/>
         <include name="Properties/**/*.cs" />
         <exclude name="bin/**" />
+        <exclude name="Configuration/Mapping/TestDomain/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />   
       </sources>
       <references failonempty="true">

@@ -1,4 +1,4 @@
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public interface ILengthConstrainedPropertyAttribute
   {

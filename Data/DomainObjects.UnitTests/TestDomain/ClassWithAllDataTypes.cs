@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
@@ -53,6 +52,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       base.OnLoaded ();
       _onLoadedHasBeenCalled = true;
+    }
+
+    public object ObjectProperty
+    {
+      get { return null; }
+      set { }
     }
 
     public bool BooleanProperty
@@ -127,19 +132,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("SingleProperty", value); }
     }
 
-    [StringProperty (MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public string StringProperty
     {
       get { return DataContainer.GetString ("StringProperty"); }
       set { DataContainer.SetValue ("StringProperty", value); }
     }
 
+    [StringProperty (IsNullable = false)]
     public string StringPropertyWithoutMaxLength
     {
       get { return DataContainer.GetString ("StringPropertyWithoutMaxLength"); }
       set { DataContainer.SetValue ("StringPropertyWithoutMaxLength", value); }
     }
 
+    [BinaryProperty (IsNullable = false)]
     public byte[] BinaryProperty
     {
       get { return DataContainer.GetBytes ("BinaryProperty"); }
@@ -212,7 +219,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleProperty", value); }
     }
 
-    [StringProperty (IsNullable = true)]
     public string StringWithNullValueProperty
     {
       get { return DataContainer.GetString ("StringWithNullValueProperty"); }
@@ -285,7 +291,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleWithNullValueProperty", value); }
     }
 
-    [BinaryProperty (IsNullable = true, MaximumLength = 1000000)]
+    [BinaryProperty (MaximumLength = 1000000)]
     public byte[] NullableBinaryProperty
     {
       get { return DataContainer.GetBytes ("NullableBinaryProperty"); }

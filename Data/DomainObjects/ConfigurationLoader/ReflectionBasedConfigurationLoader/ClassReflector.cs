@@ -3,7 +3,7 @@ using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public class ClassReflector
   {

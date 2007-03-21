@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Development.UnitTesting.Configuration;
 

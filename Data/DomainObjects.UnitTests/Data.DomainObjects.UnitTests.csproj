@@ -116,13 +116,17 @@
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
-    <Compile Include="Configuration\Mapping\PropertyReflectorTest.cs" />
+    <Compile Include="Configuration\Mapping\LengthConstrainedPropertyAttributeTest.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\BinaryProperty.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\StringProperty.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\PropertyReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\FakeDomainObjectFactory.cs" />
     <Compile Include="Configuration\Mapping\FakeMappingLoader.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\MappingReflectorTest.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomain\Client.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\ClassWithAllPropertyVariations.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\TestDomainBase.cs" />
+    <Compile Include="Configuration\Mapping\NullablePropertyAttributeTest.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
@@ -642,6 +646,10 @@
     <Compile Include="TestDomain\Person.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBinaryProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithNSideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStringProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -705,9 +713,6 @@
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
-    <Compile Include="@(TestDomain->'%(Identity)')">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

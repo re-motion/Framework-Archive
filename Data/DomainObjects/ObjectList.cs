@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects
 {
-  public class DomainObjectCollection<T>: DomainObjectCollection where T: DomainObject
+  public class ObjectList<T>: DomainObjectCollection where T: DomainObject
   {
-    public DomainObjectCollection()
+    public ObjectList()
         : base (typeof (T))
     {
     }

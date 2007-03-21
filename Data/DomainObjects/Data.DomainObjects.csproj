@@ -98,15 +98,19 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\ClassReflector.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\BinaryPropertyAttribute.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\NullableLengthConstrainedPropertyAttribute.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\ILengthConstrainedPropertyAttribute.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\INullablePropertyAttribute.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\NullablePropertyAttribute.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\PropertyReflector.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\MappingReflector.cs" />
-    <Compile Include="ConfigurationLoader\Mapping\StringPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
+    <Compile Include="BinaryPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ILengthConstrainedPropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\INullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullablePropertyAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClass.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
+    <Compile Include="StorageClassNoneAttribute.cs" />
+    <Compile Include="StorageClassTransactionAttribute.cs" />
+    <Compile Include="StringPropertyAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
@@ -114,7 +118,7 @@
     <Compile Include="FactoryInstantiatedAttribute.cs" />
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
-    <Compile Include="DomainObjectCollection1.cs" />
+    <Compile Include="ObjectList.cs" />
     <Compile Include="IDomainObjectFactory.cs" />
     <Compile Include="Interception\Castle\CastleInterceptableObjectGenerator.cs" />
     <Compile Include="Interception\Castle\GenerationHook.cs" />

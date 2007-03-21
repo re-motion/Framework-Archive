@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public class MappingReflector: IMappingLoader
   {

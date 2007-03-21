@@ -1,10 +1,10 @@
 using System;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public abstract class NullablePropertyAttribute: Attribute, INullablePropertyAttribute
   {
-    private bool _isNullable = false;
+    private bool _isNullable = true;
 
     protected NullablePropertyAttribute()
     {

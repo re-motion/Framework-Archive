@@ -1,10 +1,11 @@
 using System;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   public abstract class NullableLengthConstrainedPropertyAttribute: NullablePropertyAttribute, ILengthConstrainedPropertyAttribute
   {
-    private int? _maximumLength;
+    private int? _maximumLength = null;
 
     protected NullableLengthConstrainedPropertyAttribute ()
     {
@@ -12,8 +13,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.Mapping
 
     public int MaximumLength
     {
-      get { return _maximumLength ?? -1; }
+      get { return _maximumLength.Value; }
       set { _maximumLength = value; }
+    }
+
+    public bool HasMaximumLength
+    {
+      get { return _maximumLength.HasValue; }
     }
 
     int? ILengthConstrainedPropertyAttribute.MaximumLength
