@@ -2,7 +2,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 
 namespace Rubicon.Data.DomainObjects
 {
-  public class StorageClassTransactionAttribute: StorageClassAttribute
+  internal class StorageClassTransactionAttribute: StorageClassAttribute
   {
     public StorageClassTransactionAttribute()
         : base (StorageClass.Transaction)

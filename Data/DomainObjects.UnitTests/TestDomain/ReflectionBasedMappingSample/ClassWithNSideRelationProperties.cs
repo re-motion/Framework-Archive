@@ -10,5 +10,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 
     [AutomaticProperty]
     public abstract ClassWithOneSideRelationProperties NoAttribute { get; set; }
+
+    [AutomaticProperty]
+    [Mandatory]
+    public abstract ClassWithOneSideRelationProperties NotNullable { get; set; }
   }
 }

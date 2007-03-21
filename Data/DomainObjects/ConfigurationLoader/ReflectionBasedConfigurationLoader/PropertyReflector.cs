@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -12,6 +13,65 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// </summary>
   public class PropertyReflector
   {
+    private sealed class AttributeConstraint
+    {
+      public readonly Type[] PropertyTypes;
+      public readonly string Message;
+
+      public AttributeConstraint (string message, params Type[] propertyTypes)
+      {
+        PropertyTypes = propertyTypes;
+        Message = message;
+      }
+    }
+
+    private static Dictionary<Type, AttributeConstraint> s_attributeConstraints = new Dictionary<Type, AttributeConstraint>();
+
+    static PropertyReflector()
+    {
+      s_attributeConstraints.Add (typeof (StringAttribute), CreateAttributeConstraintForValueTypeProperty<StringAttribute, string>());
+      s_attributeConstraints.Add (typeof (BinaryAttribute), CreateAttributeConstraintForValueTypeProperty<BinaryAttribute, byte[]>());
+      s_attributeConstraints.Add (typeof (MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
+    }
+
+    // TODO: consider moving this somewhere else
+    /// <summary>
+    /// Returns the RPF property identifier for a given property member.
+    /// </summary>
+    /// <param name="propertyInfo">The property whose identifier should be returned.</param>
+    /// <returns>The property identifier for the given property.</returns>
+    /// <remarks>
+    /// Currently, the identifier is defined to be the full name of the property's declaring type, suffixed with a dot (".") and the
+    /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
+    /// identifier must be retrieved programmatically.
+    /// </remarks>
+    public static string GetPropertyName (PropertyInfo propertyInfo)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      return propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
+    }
+
+    private static AttributeConstraint CreateAttributeConstraintForValueTypeProperty<TAttribute, TProperty>()
+        where TAttribute: Attribute
+    {
+      return new AttributeConstraint (
+          string.Format ("The {0} may be only applied to properties of type {1}.", typeof (TAttribute).FullName, typeof (TProperty).FullName),
+          typeof (TProperty));
+    }
+
+    private static AttributeConstraint CreateAttributeConstraintForRelationProperty<TAttribute>()
+        where TAttribute: Attribute
+    {
+      return new AttributeConstraint (
+          string.Format (
+              "The {0} may be only applied to properties assignable to types {1} or {2}.",
+              typeof (TAttribute).FullName,
+              typeof (DomainObject).FullName,
+              typeof (DomainObjectCollection).FullName),
+          typeof (DomainObject),
+          typeof (DomainObjectCollection));
+    }
+
     public PropertyReflector()
     {
     }
@@ -20,8 +80,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      TypeInfo typeInfo = GetTypeInfo (propertyInfo);
       Validate (propertyInfo);
+      TypeInfo typeInfo = GetTypeInfo (propertyInfo);
 
       return new PropertyDefinition (
           GetPropertyName (propertyInfo),
@@ -29,35 +89,43 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           typeInfo.MappingType,
           true,
           typeInfo.IsNullable,
-          GetMaxLength (propertyInfo));
+          GetMaxLength (propertyInfo),
+          true);
     }
 
     private void Validate (PropertyInfo propertyInfo)
     {
-      CheckAttributePropertyTypeCombination<string, StringPropertyAttribute> (propertyInfo);
-      CheckAttributePropertyTypeCombination<byte[], BinaryPropertyAttribute> (propertyInfo);
+      CheckStorageClass (propertyInfo);
+      CheckSupportedPropertyAttributes (propertyInfo);
     }
 
-    private void CheckAttributePropertyTypeCombination<TProperty, TAttribute> (PropertyInfo propertyInfo)
+    private void CheckStorageClass (PropertyInfo propertyInfo)
     {
-      Attribute[] attributes = AttributeUtility.GetCustomAttributes<Attribute> (propertyInfo, true);
+      StorageClassAttribute attribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, true);
+      if (attribute != null && attribute.StorageClass != StorageClass.Persistent)
+        throw CreateMappingException (null, propertyInfo, "Only StorageClass.Persistent is supported.");
+    }
 
-      if (propertyInfo.PropertyType != typeof (TProperty)
-          && Array.Exists (attributes, delegate (Attribute attribute) { return attribute is TAttribute; }))
+    private void CheckSupportedPropertyAttributes (PropertyInfo propertyInfo)
+    {
+      foreach (Attribute attribute in AttributeUtility.GetCustomAttributes<Attribute> (propertyInfo, true))
       {
-        throw CreateMappingException (
-            null,
-            propertyInfo,
-            "The {0} may be only applied to properties of type {1}.",
-            typeof (TAttribute).FullName,
-            typeof (TProperty).FullName);
+        AttributeConstraint constraint;
+        if (s_attributeConstraints.TryGetValue (attribute.GetType(), out constraint))
+        {
+          if (!Array.Exists (constraint.PropertyTypes, delegate (Type type) { return type.IsAssignableFrom (propertyInfo.PropertyType); }))
+            throw CreateMappingException (null, propertyInfo, constraint.Message);
+        }
       }
     }
 
     private TypeInfo GetTypeInfo (PropertyInfo propertyInfo)
     {
+      Type nativePropertyType = IsRelationProperty (propertyInfo) ? typeof (ObjectID) : propertyInfo.PropertyType;
       bool isNullable = GetIsNullability (propertyInfo);
-      Type nativePropertyType = IsRelationProperty(propertyInfo) ? typeof (ObjectID) : propertyInfo.PropertyType;
+
+      if (nativePropertyType.IsEnum)
+        return GetEnumTypeInfo (nativePropertyType, isNullable);
 
       try
       {
@@ -69,7 +137,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    private static bool IsRelationProperty(PropertyInfo propertyInfo)
+    private TypeInfo GetEnumTypeInfo (Type type, bool isNullable)
+    {
+      return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
+    }
+
+    private bool IsRelationProperty (PropertyInfo propertyInfo)
     {
       return (typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType));
     }
@@ -92,21 +165,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (attribute != null)
         return attribute.IsNullable;
       return true;
-    }
-
-    // TODO: consider moving this somewhere else
-    /// <summary>
-    /// Returns the RPF property identifier for a given property member.
-    /// </summary>
-    /// <param name="propertyInfo">The property whose identifier should be returned.</param>
-    /// <returns>The property identifier for the given property.</returns>
-    /// <remarks>Currently, the identifier is defined to be the full name of the property's declaring type, suffixed with a dot (".") and the
-    /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
-    /// identifier must be retrieved programmatically.</remarks>
-    public static string GetPropertyName (PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);    
-      return propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
     }
 
     private string GetColumnName (PropertyInfo propertyInfo)

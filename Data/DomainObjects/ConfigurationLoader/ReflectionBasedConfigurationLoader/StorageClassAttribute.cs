@@ -4,8 +4,16 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 {
   public class StorageClassAttribute: Attribute
   {
+    private StorageClass _storageClass;
+
     public StorageClassAttribute (StorageClass storageClass)
     {
+      _storageClass = storageClass;
+    }
+
+    public StorageClass StorageClass
+    {
+      get { return _storageClass; }
     }
   }
 }

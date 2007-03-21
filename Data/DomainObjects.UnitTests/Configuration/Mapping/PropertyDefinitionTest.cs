@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -25,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithResolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.ColumnName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
@@ -35,12 +36,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
     }
 
     [Test]
     public void InitializeWithUnresolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.ColumnName);
       Assert.IsNull (actual.DefaultValue);
@@ -50,12 +52,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
     }
 
     [Test]
     public void InitializeWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", false, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.ColumnName);
       Assert.IsNull (actual.DefaultValue);
@@ -65,6 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
     }
 
     [Test]
@@ -75,8 +79,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
+    [ExpectedException( typeof (InvalidOperationException), "Cannot access property 'ColumnName' for non-persistent property definitions.")]
+    public void NonPersistentProperty ()
+    {
+      PropertyDefinition actual = new PropertyDefinition ("ThePropertyName", "TheColumnName", "int32", true, true, NaInt32.Null, false);
+      Assert.IsFalse (actual.IsPersistent);
+      Dev.Null = actual.ColumnName;
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
     public void IntPropertyWithMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", new NaInt32 (10));

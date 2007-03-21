@@ -99,7 +99,7 @@
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
-    <Compile Include="BinaryPropertyAttribute.cs" />
+    <Compile Include="BinaryAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ILengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\INullablePropertyAttribute.cs" />
@@ -108,9 +108,10 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClass.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
+    <Compile Include="MandatoryAttribute.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
-    <Compile Include="StringPropertyAttribute.cs" />
+    <Compile Include="StringAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="Interception\NonInterceptableTypeException.cs" />
     <Compile Include="LegacyDomainObjectCreator.cs" />

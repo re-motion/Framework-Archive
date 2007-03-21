@@ -9,7 +9,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class StringProperty: StandardMappingTest
+  public class StringProperty : ReflectionBasedMappingTest
   {
     private PropertyReflector _propertyReflector;
 
@@ -26,13 +26,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute",
           actual.PropertyName);
-      Assert.AreEqual ("NoAttribute", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (string), actual.PropertyType);
       Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
@@ -47,13 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute",
           actual.PropertyName);
-      Assert.AreEqual ("NullableFromAttribute", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (string), actual.PropertyType);
       Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
@@ -68,13 +60,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullable",
           actual.PropertyName);
-      Assert.AreEqual ("NotNullable", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (string), actual.PropertyType);
       Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
@@ -89,13 +77,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength",
           actual.PropertyName);
-      Assert.AreEqual ("MaximumLength", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (string), actual.PropertyType);
       Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
@@ -110,13 +94,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength",
           actual.PropertyName);
-      Assert.AreEqual ("NotNullableAndMaximumLength", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (string), actual.PropertyType);
       Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
@@ -126,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n  "
+        "The Rubicon.Data.DomainObjects.StringAttribute may be only applied to properties of type System.String.\r\n  "
             + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.StringProperty, property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
@@ -135,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       _propertyReflector.GetMetadata (propertyInfo);
     }
 
-    [StringProperty]
+    [String]
     private int Int32Property
     {
       get { throw new NotImplementedException(); }

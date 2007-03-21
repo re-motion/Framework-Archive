@@ -4,12 +4,12 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Apply the <see cref="BinaryPropertyAttribute"/> to properties of type <see cref="byte"/> array.
+  /// Apply the <see cref="BinaryAttribute"/> to properties of type <see cref="byte"/> array.
   /// </summary>
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public class BinaryPropertyAttribute : NullableLengthConstrainedPropertyAttribute
+  public class BinaryAttribute : NullableLengthConstrainedPropertyAttribute
   {
-    public BinaryPropertyAttribute ()
+    public BinaryAttribute ()
     {
     }
   }

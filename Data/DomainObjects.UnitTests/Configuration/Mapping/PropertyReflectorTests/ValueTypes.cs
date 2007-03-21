@@ -9,7 +9,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class PropertyReflectorTest: StandardMappingTest
+  public class ValueTypes : ReflectionBasedMappingTest
   {
     private PropertyReflector _propertyReflector;
 
@@ -29,17 +29,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_FromSingleProperty_WithBasicType()
+    public void GetMetadata_WithBasicType()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("BooleanProperty");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
-      Assert.AreEqual ("BooleanProperty", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (bool), actual.PropertyType);
       Assert.AreEqual ("boolean", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
@@ -48,17 +44,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_FromSingleProperty_WithNullableBasicType()
+    public void GetMetadata_WithNullableBasicType()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("NaBooleanProperty");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
-      Assert.AreEqual ("NaBooleanProperty", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (NaBoolean), actual.PropertyType);
       Assert.AreEqual ("boolean", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
@@ -67,17 +59,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_FromSingleProperty_WithEnumProperty()
+    public void GetMetadata_WithEnumProperty()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("EnumProperty");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty", actual.PropertyName);
-      Assert.AreEqual ("EnumProperty", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests",
@@ -88,17 +76,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_FromSingleProperty_WithOptionalRelationProperty()
+    public void GetMetadata_WithOptionalRelationProperty()
     {
       PropertyInfo propertyInfo = typeof (ClassWithGuidKey).GetProperty ("ClassWithValidRelationsOptional");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
-      Assert.IsNotNull (actual);
-      Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", actual.PropertyName);
-      Assert.AreEqual ("ClassWithValidRelationsOptional", actual.ColumnName);
-      Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
@@ -109,8 +93,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException),
         "The property type System.Object is not supported.\r\n  "
-            + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
-    public void GetMetadata_FromSingleProperty_WithInvalidPropertyType()
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
+    public void GetMetadata_WithInvalidPropertyType()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("ObjectProperty");
 
