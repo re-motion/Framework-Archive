@@ -20,6 +20,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
+    public void GetPropertyName()
+    {
+      Assert.AreEqual ("System.DateTime.Year", PropertyReflector.GetPropertyName (typeof (DateTime).GetProperty ("Year")));
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty",
+          PropertyReflector.GetPropertyName (typeof (ClassWithAllDataTypes).GetProperty ("DateTimeProperty")));
+    }
+
+    [Test]
     public void GetMetadata_FromSingleProperty_WithBasicType()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("BooleanProperty");
@@ -93,14 +102,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
-      Assert.AreEqual(NaInt32.Null, actual.MaxLength);
+      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
     }
 
     [Test]
     [ExpectedException (typeof (MappingException),
         "The property type System.Object is not supported.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
+            + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
     public void GetMetadata_FromSingleProperty_WithInvalidPropertyType()
     {
       PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("ObjectProperty");
