@@ -13,6 +13,7 @@
   SchemaLoader.Queries, LegacySchemaLoader.Mapping, und LegacySchemaLoader.StorageProviders zu verwenden.
 
 - Klasse StorageProviderdefinition: Obsolete Property StorageProviderID wurde entfernt. Stattdessen zu verwenden: Property Name
+- Klasse PropertyDefinition: Property ColumnName ist obsolete. Stattdessen zu verwenden: Property StorageSpecficName
 
 - Klasse StorageProviderConfigurationLoader: gelöscht.
 - Klasse StorageProviderCollection: gelöscht. Statt dessen leifert die Konfiguration ein Objekt vom Typ ProviderCollection<StorageProviderDefinition>.

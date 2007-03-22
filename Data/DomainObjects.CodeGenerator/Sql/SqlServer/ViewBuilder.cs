@@ -109,10 +109,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
         if (IsPartOfInheritanceBranch (classDefinitionForUnionSelect, propertyDefinition.ClassDefinition))
         {
-          stringBuilder.AppendFormat ("[{0}]", propertyDefinition.ColumnName);
+          stringBuilder.AppendFormat ("[{0}]", propertyDefinition.StorageSpecificName);
 
           if (TableBuilder.HasClassIDColumn (propertyDefinition))
-            stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName));
+            stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
         }
         else
         {
@@ -133,10 +133,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
         if (stringBuilder.Length != 0)
           stringBuilder.Append (", ");
 
-        stringBuilder.AppendFormat ("[{0}]", propertyDefinition.ColumnName);
+        stringBuilder.AppendFormat ("[{0}]", propertyDefinition.StorageSpecificName);
 
         if (TableBuilder.HasClassIDColumn (propertyDefinition))
-          stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName));
+          stringBuilder.AppendFormat (", [{0}]", RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
       }
       return stringBuilder.ToString ();
     }

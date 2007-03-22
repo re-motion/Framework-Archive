@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].StorageSpecificName);
         _converter.GetValue (_ceoDefinition, _ceoDefinition["Company"], reader, columnOrdinal);
       }
     }
@@ -92,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].StorageSpecificName);
         _converter.GetValue (_ceoDefinition, _ceoDefinition["Company"], reader, columnOrdinal);
       }
     }
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].StorageSpecificName);
         _converter.GetValue (_ceoDefinition, _ceoDefinition["Company"], reader, columnOrdinal);
       }
     }
@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, classWithOptionalOneToOneRelationAndOppositeDerivedClass["Company"].ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, classWithOptionalOneToOneRelationAndOppositeDerivedClass["Company"].StorageSpecificName);
 
         _converter.GetValue (
             classWithOptionalOneToOneRelationAndOppositeDerivedClass, 
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       {
         Assert.IsTrue (reader.Read ());
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, _ceoDefinition["Company"].StorageSpecificName);
         ObjectID actualID = (ObjectID) _converter.GetValue (_ceoDefinition, _ceoDefinition["Company"], reader, columnOrdinal);
 
         Assert.AreEqual (DomainObjectIDs.Company1, actualID);
@@ -160,7 +160,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Folder");
         PropertyDefinition parentFolderProperty = folderDefinition.GetMandatoryPropertyDefinition ("ParentFolder");
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.StorageSpecificName);
         Assert.IsNull (_converter.GetValue (folderDefinition, parentFolderProperty, reader, columnOrdinal));
       }
     }
@@ -177,7 +177,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ClassDefinition fileDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("File");
         PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("ParentFolder");
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.StorageSpecificName);
         Assert.IsNull (_converter.GetValue (fileDefinition, parentFolderProperty, reader, columnOrdinal));
       }
     }
@@ -194,7 +194,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ClassDefinition fileDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("File");
         PropertyDefinition parentFolderProperty = fileDefinition.GetMandatoryPropertyDefinition ("ParentFolder");
 
-        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.ColumnName);
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.StorageSpecificName);
         Assert.IsNull (_converter.GetValue (fileDefinition, parentFolderProperty, reader, columnOrdinal));
       }
     }

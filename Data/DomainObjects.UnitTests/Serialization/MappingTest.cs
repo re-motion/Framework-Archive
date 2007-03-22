@@ -391,7 +391,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       else
         Assert.IsNull (actual.ClassDefinition);
 
-      Assert.AreEqual (expected.ColumnName, actual.ColumnName);
+      Assert.AreEqual (expected.StorageSpecificName, actual.StorageSpecificName);
       Assert.AreEqual (expected.DefaultValue, actual.DefaultValue);
       Assert.AreEqual (expected.IsNullable, actual.IsNullable);
       Assert.AreEqual (expected.MappingTypeName, actual.MappingTypeName);

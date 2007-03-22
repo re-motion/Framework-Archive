@@ -4,7 +4,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 {
   public abstract class ClassWithNSideRelationProperties: TestDomainBase
   {
-    protected ClassWithNSideRelationProperties (ObjectID objectID)
+    protected ClassWithNSideRelationProperties (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
     {
     }
 

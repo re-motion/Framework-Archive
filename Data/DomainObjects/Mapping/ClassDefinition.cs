@@ -529,18 +529,18 @@ public class ClassDefinition : ISerializable, IObjectReference
 
     foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
     {
-      if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.ColumnName))
+      if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.StorageSpecificName))
       {
-        PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.ColumnName];
+        PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName];
 
         throw CreateMappingException (
             "Property '{0}' of class '{1}' must not define column name '{2}',"
             + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
-            myPropertyDefinition.PropertyName, _id, myPropertyDefinition.ColumnName,
+            myPropertyDefinition.PropertyName, _id, myPropertyDefinition.StorageSpecificName,
             basePropertyDefinition.ClassDefinition.ID, basePropertyDefinition.PropertyName);
       }
 
-      allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.ColumnName, myPropertyDefinition);
+      allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, myPropertyDefinition);
     }
 
     foreach (ClassDefinition derivedClassDefinition in _derivedClasses)

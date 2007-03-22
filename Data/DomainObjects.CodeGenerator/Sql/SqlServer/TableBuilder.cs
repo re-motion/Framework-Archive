@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
         nullable = " NOT NULL";
 
       return string.Format ("  [{0}] {1}{2},\r\n{3}",
-          propertyDefinition.ColumnName,
+          propertyDefinition.StorageSpecificName,
           GetSqlDataType (propertyDefinition),
           nullable,
           GetClassIDColumn (propertyDefinition));
@@ -95,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
       if (!HasClassIDColumn (propertyDefinition))
         return string.Empty;
 
-      return string.Format ("  [{0}] {1} NULL,\r\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), SqlDataTypeClassID);
+      return string.Format ("  [{0}] {1} NULL,\r\n", RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName), SqlDataTypeClassID);
     }
   }
 }

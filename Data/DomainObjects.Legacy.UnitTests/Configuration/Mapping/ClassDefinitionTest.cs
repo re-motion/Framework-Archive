@@ -326,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
     {
       ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", true, false, 100);
+      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string", true, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }

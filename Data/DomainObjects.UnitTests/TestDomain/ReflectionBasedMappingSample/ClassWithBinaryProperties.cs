@@ -4,7 +4,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 {
   public abstract class ClassWithBinaryProperties: TestDomainBase
   {
-    protected ClassWithBinaryProperties (ObjectID objectID)
+    protected ClassWithBinaryProperties (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
     {
     }
 

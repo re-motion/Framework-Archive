@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
 
       return string.Format ("  CONSTRAINT [FK_{0}] FOREIGN KEY ([{1}]) REFERENCES [{2}].[{3}] ([ID])",
           GetUniqueConstraintName (relationEndPoint),
-          propertyDefinition.ColumnName,
+          propertyDefinition.StorageSpecificName,
           SqlFileBuilder.DefaultSchema,
           oppositeClassDefinition.GetEntityName ());
     }

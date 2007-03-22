@@ -179,7 +179,7 @@ public class ValueConverter : ValueConverterBase
       int classIDColumnOrdinal = -1;
       try
       {
-        classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName));
+        classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
       }
       catch (IndexOutOfRangeException)
       {
@@ -187,7 +187,7 @@ public class ValueConverter : ValueConverterBase
             "Incorrect database format encountered."
             + " Entity '{0}' must have column '{1}' defined, because opposite class '{2}' is part of an inheritance hierarchy.",
             classDefinition.GetEntityName (),
-            RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), 
+            RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName), 
             relatedClassDefinition.ID);    
       }
 
@@ -195,7 +195,7 @@ public class ValueConverter : ValueConverterBase
       {
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.",
-            RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
+            RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
             classDefinition.GetEntityName ());
       }
 
@@ -203,7 +203,7 @@ public class ValueConverter : ValueConverterBase
       {
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
-            RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
+            RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
             classDefinition.GetEntityName ());
       }
 
@@ -224,7 +224,7 @@ public class ValueConverter : ValueConverterBase
         {      
           try
           {
-            dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName));
+            dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
             s_hasClassIDColumn[hashKey] = true;
           }
           catch (IndexOutOfRangeException)
@@ -238,7 +238,7 @@ public class ValueConverter : ValueConverterBase
           throw CreateRdbmsProviderException (
               "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
               classDefinition.GetEntityName (),
-              RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
+              RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName),
               relatedClassDefinition.ID);
         }
       }
@@ -254,7 +254,7 @@ public class ValueConverter : ValueConverterBase
 
     return storageProviderDefinition.GetHashCode ()
         ^ classDefinition.GetEntityName ().GetHashCode ()
-        ^ propertyDefinition.ColumnName.GetHashCode ();
+        ^ propertyDefinition.StorageSpecificName.GetHashCode ();
   }
 
   protected RdbmsProviderException CreateRdbmsProviderException (

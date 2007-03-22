@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void GetColumnsFromSortExpressionChecksForDisposal ()
     {
       Provider.Dispose ();
-      Provider.GetColumnsFromSortExpression ("ColumnName asc");
+      Provider.GetColumnsFromSortExpression ("StorageSpecificName asc");
     }
   }
 }

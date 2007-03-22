@@ -51,8 +51,8 @@ public class InsertCommandBuilder : CommandBuilder
     {
       if (propertyValue.PropertyType != typeof (ObjectID))
       {
-        AppendColumn (propertyValue.Definition.ColumnName, propertyValue.Definition.ColumnName);
-        AddCommandParameter (command, propertyValue.Definition.ColumnName, propertyValue);
+        AppendColumn (propertyValue.Definition.StorageSpecificName, propertyValue.Definition.StorageSpecificName);
+        AddCommandParameter (command, propertyValue.Definition.StorageSpecificName, propertyValue);
       }
     }
     

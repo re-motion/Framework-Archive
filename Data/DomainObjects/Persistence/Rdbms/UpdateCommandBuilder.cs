@@ -76,10 +76,10 @@ public class UpdateCommandBuilder : CommandBuilder
 
   private void AddPropertyValue (IDbCommand command, PropertyValue propertyValue)
   {
-    AppendColumn (propertyValue.Definition.ColumnName, propertyValue.Definition.ColumnName);
+    AppendColumn (propertyValue.Definition.StorageSpecificName, propertyValue.Definition.StorageSpecificName);
 
     if (propertyValue.PropertyType != typeof (ObjectID))
-      AddCommandParameter (command, propertyValue.Definition.ColumnName, propertyValue);
+      AddCommandParameter (command, propertyValue.Definition.StorageSpecificName, propertyValue);
     else
       AddObjectIDAndClassIDParameters (command, _dataContainer.ClassDefinition, propertyValue);
   }

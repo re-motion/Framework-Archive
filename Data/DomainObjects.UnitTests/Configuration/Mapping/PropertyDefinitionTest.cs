@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", false, true, NaInt32.Null, true);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("UnknownMappingType", actual.MappingTypeName);
@@ -79,12 +79,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException( typeof (InvalidOperationException), "Cannot access property 'ColumnName' for non-persistent property definitions.")]
+    [ExpectedException (typeof (InvalidOperationException), "Cannot access property 'StorageSpecificName' for non-persistent property definitions.")]
     public void NonPersistentProperty ()
     {
       PropertyDefinition actual = new PropertyDefinition ("ThePropertyName", "TheColumnName", "int32", true, true, NaInt32.Null, false);
       Assert.IsFalse (actual.IsPersistent);
-      Dev.Null = actual.ColumnName;
+      Dev.Null = actual.StorageSpecificName;
     }
 
     [Test]

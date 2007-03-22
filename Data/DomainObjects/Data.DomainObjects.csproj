@@ -108,6 +108,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClass.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageSpecificNameAttribute.cs" />
     <Compile Include="MandatoryAttribute.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />

@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       IDbCommand command = Provider.CreateDbCommand ();
       WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
-      whereClauseBuilder.Add (_propertyDefinition.ColumnName, GetObjectIDValueForParameter (_relatedID));
+      whereClauseBuilder.Add (_propertyDefinition.StorageSpecificName, GetObjectIDValueForParameter (_relatedID));
 
       VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition =
           (VirtualRelationEndPointDefinition) _classDefinition.GetMandatoryOppositeEndPointDefinition (_propertyDefinition.PropertyName);

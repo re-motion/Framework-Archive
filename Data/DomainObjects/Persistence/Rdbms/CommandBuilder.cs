@@ -100,7 +100,7 @@ public abstract class CommandBuilder
       relatedIDValue = null;
     }
 
-    AddCommandParameter (command, propertyValue.Definition.ColumnName, relatedIDValue);
+    AddCommandParameter (command, propertyValue.Definition.StorageSpecificName, relatedIDValue);
 
     if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
       AddClassIDParameter (command, relatedClassDefinition, propertyValue);
@@ -117,7 +117,7 @@ public abstract class CommandBuilder
 
     if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
     {
-      string classIDColumnName = RdbmsProvider.GetClassIDColumnName (propertyValue.Definition.ColumnName);
+      string classIDColumnName = RdbmsProvider.GetClassIDColumnName (propertyValue.Definition.StorageSpecificName);
       AppendColumn (classIDColumnName, classIDColumnName);
 
       string classID = null;

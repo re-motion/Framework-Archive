@@ -17,7 +17,7 @@ public sealed class PropertyDefinitionFactory
 
   public static PropertyDefinition CreateWithUnresolvedRelationPropertyType ()
   {
-    return new PropertyDefinition ("PropertyName", "ColumnName", TypeInfo.ObjectIDMappingTypeName, false, false, NaInt32.Null);
+    return new PropertyDefinition ("PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName, false, false, NaInt32.Null);
   }
 
   // member fields

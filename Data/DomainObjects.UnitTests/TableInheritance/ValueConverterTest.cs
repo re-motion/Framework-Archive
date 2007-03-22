@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         {
           Assert.IsTrue (reader.Read ());
 
-          int columnOrdinal = _converter.GetMandatoryOrdinal (reader, clientProperty.ColumnName);
+          int columnOrdinal = _converter.GetMandatoryOrdinal (reader, clientProperty.StorageSpecificName);
           Assert.AreEqual (expectedID, _converter.GetValue (personClass, clientProperty, reader, columnOrdinal));
         }
       }

@@ -50,7 +50,7 @@ public class PropertyDefinitionCollection : CommonCollection
 
     foreach (PropertyDefinition propertyDefinition in this)
     {
-      if (propertyDefinition.ColumnName == columnName)
+      if (propertyDefinition.StorageSpecificName == columnName)
         return true;
     }
 

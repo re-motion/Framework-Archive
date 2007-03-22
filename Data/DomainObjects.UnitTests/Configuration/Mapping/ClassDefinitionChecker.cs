@@ -137,12 +137,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.AreEqual (expectedDefinition.ClassDefinition.ID, actualDefinition.ClassDefinition.ID,
           string.Format ("ClassDefinitionID of property definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.PropertyName, expectedDefinition.ColumnName, actualDefinition.ColumnName));
+          expectedDefinition.PropertyName, expectedDefinition.StorageSpecificName, actualDefinition.StorageSpecificName));
 
-      Assert.AreEqual (expectedDefinition.ColumnName, actualDefinition.ColumnName,
+      Assert.AreEqual (expectedDefinition.StorageSpecificName, actualDefinition.StorageSpecificName,
           string.Format ("ColumnName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
           expectedDefinition.PropertyName, classDefinition,
-          expectedDefinition.ColumnName, actualDefinition.ColumnName));
+          expectedDefinition.StorageSpecificName, actualDefinition.StorageSpecificName));
 
       Assert.AreEqual (expectedDefinition.MaxLength, actualDefinition.MaxLength,
           string.Format ("MaxLength of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",

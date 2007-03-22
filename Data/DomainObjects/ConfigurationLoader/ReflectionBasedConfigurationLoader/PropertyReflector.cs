@@ -169,6 +169,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetColumnName (PropertyInfo propertyInfo)
     {
+      StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (propertyInfo, true);
+      if (attribute != null)
+        return attribute.Name;
       return propertyInfo.Name;
     }
 

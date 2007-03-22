@@ -58,7 +58,7 @@ public class DataContainerFactory
 
     foreach (PropertyDefinition propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ())
     {
-      int columnOrdinal = valueConverter.GetMandatoryOrdinal (_dataReader, propertyDefinition.ColumnName);
+      int columnOrdinal = valueConverter.GetMandatoryOrdinal (_dataReader, propertyDefinition.StorageSpecificName);
 
       object dataValue;
 

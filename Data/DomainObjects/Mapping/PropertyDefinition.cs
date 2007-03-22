@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     private ClassDefinition _classDefinition;
     private string _propertyName;
-    private string _columnName;
+    private string _storageSpecificName;
     private TypeInfo _typeInfo;
     private string _mappingTypeName;
     private bool _isNullable;
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
 
       _propertyName = propertyName;
-      _columnName = columnName;
+      _storageSpecificName = columnName;
       _mappingTypeName = mappingTypeName;
       _isNullable = isNullable;
       _maxLength = maxLength;
@@ -112,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       else
       {
         _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
-        _columnName = info.GetString ("ColumnName");
+        _storageSpecificName = info.GetString ("StorageSpecificName");
 
         // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
         _mappingTypeName = info.GetString ("MappingTypeName");
@@ -162,13 +162,19 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _propertyName; }
     }
 
+    [Obsolete ("Use StorageSpecificName instead. (Version 1.7.42)")]
     public string ColumnName
+    {
+      get { return StorageSpecificName; }
+    }
+
+    public string StorageSpecificName
     {
       get
       {
         if (!_isPersistent)
-          throw new InvalidOperationException ("Cannot access property 'ColumnName' for non-persistent property definitions.");
-        return _columnName;
+          throw new InvalidOperationException ("Cannot access property 'StorageSpecificName' for non-persistent property definitions.");
+        return _storageSpecificName;
       }
     }
 
@@ -246,7 +252,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       else
       {
         info.AddValue ("ClassDefinition", _classDefinition);
-        info.AddValue ("ColumnName", _columnName);
+        info.AddValue ("StorageSpecificName", _storageSpecificName);
         info.AddValue ("HasTypeInfo", _typeInfo != null);
         info.AddValue ("MappingTypeName", _mappingTypeName);
         info.AddValue ("IsNullable", _isNullable);

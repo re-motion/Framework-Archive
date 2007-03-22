@@ -25,9 +25,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithResolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, NaInt32.Null);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
@@ -40,9 +40,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithUnresolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", false, true, NaInt32.Null);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
@@ -55,9 +55,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "UnknownMappingType", false, true, NaInt32.Null);
       Assert.IsNull (actual.ClassDefinition);
-      Assert.AreEqual ("ColumnName", actual.ColumnName);
+      Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("UnknownMappingType", actual.MappingTypeName);
@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void StringPropertyWithoutMaxLength ()
     {
-      PropertyDefinition definition = new PropertyDefinition ("PropertyName", "ColumnName", "string");
+      PropertyDefinition definition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string");
       Assert.AreEqual (NaInt32.Null, definition.MaxLength);
     }
 
@@ -96,6 +96,16 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void InvalidMappingType ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
+    }
+
+    [Test]
+    [Obsolete]
+    public void GetColumnName ()
+    {
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, NaInt32.Null);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
+      Assert.AreEqual (actual.StorageSpecificName, actual.ColumnName);
     }
   }
 }

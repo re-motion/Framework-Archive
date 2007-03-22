@@ -45,7 +45,7 @@ public class SelectCommandBuilder : CommandBuilder
         (VirtualRelationEndPointDefinition) classDefinition.GetMandatoryOppositeEndPointDefinition (propertyDefinition.PropertyName);
 
     return new SelectCommandBuilder (
-        provider, "*", classDefinition.GetEntityName (), propertyDefinition.ColumnName, new ObjectID[] { relatedID }, true, oppositeRelationEndPointDefinition.SortExpression);
+        provider, "*", classDefinition.GetEntityName (), propertyDefinition.StorageSpecificName, new ObjectID[] { relatedID }, true, oppositeRelationEndPointDefinition.SortExpression);
   }
 
   // member fields

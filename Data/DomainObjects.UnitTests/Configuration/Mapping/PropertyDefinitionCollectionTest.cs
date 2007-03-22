@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_propertyDefinition);
 
       PropertyDefinition copy = new PropertyDefinition (
-          _propertyDefinition.PropertyName, _propertyDefinition.ColumnName, _propertyDefinition.MappingTypeName, true,
+          _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.MappingTypeName, true,
           _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
 
       Assert.IsFalse (_collection.Contains (copy));
