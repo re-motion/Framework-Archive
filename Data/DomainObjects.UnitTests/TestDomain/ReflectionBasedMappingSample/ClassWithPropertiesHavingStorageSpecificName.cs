@@ -1,5 +1,5 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
@@ -14,8 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     public abstract int NoAttribute { get; set; }
 
     [AutomaticProperty]
-    [StubStorageSpecificName ("CustomName")]
+    [RdbmsColumn ("CustomName")]
     public abstract int StorageSpecificName { get; set; }
-
   }
 }

@@ -1,13 +1,17 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
+  /// <summary>Defines if and how a property is managed by the persistence framework.</summary>
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class StorageClassAttribute: Attribute
   {
     private StorageClass _storageClass;
 
     public StorageClassAttribute (StorageClass storageClass)
     {
+      ArgumentUtility.CheckValidEnumValue ("storageClass", storageClass);
       _storageClass = storageClass;
     }
 

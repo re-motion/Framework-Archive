@@ -110,6 +110,8 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageSpecificNameAttribute.cs" />
     <Compile Include="MandatoryAttribute.cs" />
+    <Compile Include="Persistence\Rdbms\RdbmsColumnAttribute.cs" />
+    <Compile Include="Persistence\Rdbms\RdbmsNameAttribute.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StringAttribute.cs" />
