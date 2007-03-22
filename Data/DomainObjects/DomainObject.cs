@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 using System.Reflection;
 using Rubicon.Logging;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects
 {

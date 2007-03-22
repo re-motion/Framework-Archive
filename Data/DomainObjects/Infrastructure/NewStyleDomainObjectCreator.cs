@@ -4,46 +4,47 @@ using System.Text;
 using System.Diagnostics;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Utilities;
-using Rubicon.Logging;
 using System.Reflection;
+using Rubicon.Logging;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.Infrastructure
 {
-  class LegacyDomainObjectCreator : IDomainObjectCreator
+  // Creates new domain object instances via the DomainObjectFactory.
+  // Needed constructors:
+  // MyDomainObject (ClientTransaction, ObjectID) -- for all constructions
+  class NewStyleDomainObjectCreator : IDomainObjectCreator
   {
-    public readonly static LegacyDomainObjectCreator Instance = new LegacyDomainObjectCreator ();
-    private static ILog s_log = LogManager.GetLogger (typeof (LegacyDomainObjectCreator));
+    public readonly static NewStyleDomainObjectCreator Instance = new NewStyleDomainObjectCreator ();
+    private static ILog s_log = LogManager.GetLogger (typeof (NewStyleDomainObjectCreator));
 
     public DomainObject CreateWithCurrentTransaction (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return Create (type, new object[] { });
+      return Create (type, new object[] { ClientTransaction.Current, null });
     }
 
     public DomainObject CreateWithTransaction (Type type, ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      return Create (type, new object[] { clientTransaction });
+      return Create (type, new object[] { clientTransaction, null });
     }
 
     public DomainObject CreateWithDataContainer (DataContainer dataContainer, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return Create (dataContainer.DomainObjectType, new object[] { dataContainer });
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+      DomainObject obj = Create (dataContainer.DomainObjectType, new object[] { null, objectID });
+      obj.DataContainer = dataContainer;
+      return obj;
     }
 
     private DomainObject Create (Type type, object[] constructorArgs)
     {
       try
       {
-        return (DomainObject) ReflectionUtility.CreateObject (type, constructorArgs);
-      }
-      catch (ArgumentException ex)
-      {
-        throw new MissingMethodException (string.Format("The given type {0} does not implement the required legacy constructor taking a " +
-            "ClientTransaction only.", type.FullName), ex);
+        return (DomainObject) DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create (type, constructorArgs);
       }
       catch (TargetInvocationException ex)
       {

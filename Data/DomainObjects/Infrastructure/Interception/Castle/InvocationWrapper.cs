@@ -4,7 +4,7 @@ using System.Text;
 using CastleInvocation = Castle.Core.Interceptor.IInvocation;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 {
   class InvocationWrapper<T> : IInvocation<T>
   {

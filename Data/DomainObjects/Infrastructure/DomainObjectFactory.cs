@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using Rubicon.Utilities;
-using Rubicon.Data.DomainObjects.Interception;
-using Rubicon.Data.DomainObjects.Interception.Castle;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Default implementation of <see cref="IDomainObjectFactory"/>.

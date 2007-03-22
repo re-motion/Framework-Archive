@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Data.DomainObjects.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   public interface IInterceptableObjectGenerator<TInterceptorTarget>
   {

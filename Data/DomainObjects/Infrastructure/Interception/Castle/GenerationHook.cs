@@ -4,7 +4,7 @@ using System.Text;
 using Castle.DynamicProxy;
 using System.Reflection;
 
-namespace Rubicon.Data.DomainObjects.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 {
   class GenerationHook<TTarget> : IProxyGenerationHook
   {

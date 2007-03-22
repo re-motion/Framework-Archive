@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   /// <summary>
   /// Handles property accessor calls of domain objects and prepares the properties accordingly.

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Diagnostics;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Interception
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   public class DomainObjectTypeInterceptor : IInterceptor<DomainObject>
   {

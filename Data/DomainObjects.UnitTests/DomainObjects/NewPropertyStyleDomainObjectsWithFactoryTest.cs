@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Interception;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {

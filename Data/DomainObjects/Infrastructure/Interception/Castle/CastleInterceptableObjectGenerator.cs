@@ -4,7 +4,7 @@ using System.Text;
 using Castle.DynamicProxy;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Interception.Castle
+namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 {
   public interface IProxyMarker { } // must not be generic for current version of DP 2
 

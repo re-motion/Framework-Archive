@@ -3,6 +3,7 @@ using System.Configuration;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Mapping.Configuration
 {
