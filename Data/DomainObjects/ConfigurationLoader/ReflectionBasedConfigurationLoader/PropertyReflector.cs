@@ -5,6 +5,7 @@ using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Format=Microsoft.SqlServer.Server.Format;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -91,6 +92,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           typeInfo.IsNullable,
           GetMaxLength (propertyInfo),
           true);
+    }
+
+    public IRelationEndPointDefinition GetRelationEndPointDefinition (PropertyInfo propertyInfo, PropertyDefinition propertyDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+      return new RelationEndPointDefinition (propertyDefinition.ClassDefinition, propertyDefinition.PropertyName, !propertyDefinition.IsNullable);
     }
 
     private void Validate (PropertyInfo propertyInfo)

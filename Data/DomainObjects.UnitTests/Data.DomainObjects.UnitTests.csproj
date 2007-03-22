@@ -120,8 +120,8 @@
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BinaryProperty.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\StorageSpecificName.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\PropertyWithStorageClass.cs" />
-    <Compile Include="Configuration\Mapping\PropertyReflectorTests\GetMetadataCommon.cs" />
-    <Compile Include="Configuration\Mapping\PropertyReflectorTests\NSideRelationProperty.cs">
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\Common.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\ManySideRelationProperty.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\StringProperty.cs" />
@@ -133,6 +133,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\ClassWithAllPropertyVariations.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\TestDomainBase.cs" />
     <Compile Include="Configuration\Mapping\NullablePropertyAttributeTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationReflectorTests\RelationProperty.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="ReflectionBasedMappingTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
@@ -654,11 +655,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBinaryProperties.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithNSideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithManySideRelationProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStringProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageClassAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageSpecificName.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
       <SubType>Code</SubType>
     </Compile>

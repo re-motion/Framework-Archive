@@ -9,7 +9,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class NSideRelationProperty: ReflectionBasedMappingTest
+  public class ManySideRelationProperty: ReflectionBasedMappingTest
   {
     private PropertyReflector _propertyReflector;
 
@@ -22,12 +22,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithNSideRelationProperties).GetProperty ("NoAttribute");
+      PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("NoAttribute");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithNSideRelationProperties.NoAttribute",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
@@ -39,12 +39,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNotNullableFromAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithNSideRelationProperties).GetProperty ("NotNullable");
+      PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("NotNullable");
 
       PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithNSideRelationProperties.NotNullable",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [ExpectedException (typeof (MappingException),
         "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types " 
         + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.NSideRelationProperty, property: Int32Property")]
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ManySideRelationProperty, property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
       PropertyInfo propertyInfo = GetType().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);

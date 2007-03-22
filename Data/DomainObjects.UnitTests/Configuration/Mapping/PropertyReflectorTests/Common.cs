@@ -1,14 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class GetMetadataCommon: ReflectionBasedMappingTest
+  public class Common: ReflectionBasedMappingTest
   {
     private PropertyReflector _propertyReflector;
 

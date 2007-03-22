@@ -100,6 +100,7 @@
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
     <Compile Include="BinaryAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ILengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\INullablePropertyAttribute.cs" />
