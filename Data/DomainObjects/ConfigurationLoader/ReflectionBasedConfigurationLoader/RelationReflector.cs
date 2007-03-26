@@ -1,22 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  public class RelationReflector
-  {
-    public RelationReflector()
+  public class RelationReflector : BaseReflector
+  {    
+    public RelationReflector ()
     {
     }
 
-    public IRelationEndPointDefinition GetRelationEndPointDefinition (PropertyInfo propertyInfo, PropertyDefinition propertyDefinition)
+    public IRelationEndPointDefinition GetRelationEndPointDefinition (PropertyInfo propertyInfo, ClassDefinition classDefinition)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
-      return new RelationEndPointDefinition (propertyDefinition.ClassDefinition, propertyDefinition.PropertyName, !propertyDefinition.IsNullable);
+      Validate (propertyInfo);
+      
+      return new RelationEndPointDefinition (classDefinition, GetPropertyName (propertyInfo), !GetNullabilityForReferenceType (propertyInfo));
     }
   }
 }

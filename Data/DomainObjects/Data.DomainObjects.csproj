@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BaseReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
     <Compile Include="BinaryAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
