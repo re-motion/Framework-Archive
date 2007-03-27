@@ -10,8 +10,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   [TestFixture]
   public class RelationReflectorTest: ReflectionBasedMappingTest
   {
-    private PropertyReflector _propertyReflector;
-    private RelationReflector _relationReflector;
     private ClassDefinition _classWithManySideRelationPropertiesClassDefinition;
     private ClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
     private ClassDefinitionCollection _classDefinitions;
@@ -19,8 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public override void SetUp()
     {
       base.SetUp();
-      _propertyReflector = new PropertyReflector();
-      _relationReflector = new RelationReflector();
       _classWithManySideRelationPropertiesClassDefinition = new ClassDefinition (
           "ClassWithManySideRelationProperties", "ClassWithManySideRelationProperties", "TestDomain", typeof (ClassWithManySideRelationProperties));
       _classWithOneSideRelationPropertiesClassDefinition = new ClassDefinition (
@@ -35,10 +31,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_UnidirectionalOneToOne()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToOne");
-      PropertyDefinition propertyDefinition = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
-      RelationDefinition actual = _relationReflector.GetMetadata (_classDefinitions, propertyInfo);
+      RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
       Assert.AreEqual ("ClassWithManySideRelationPropertiesToUnidirectionalOneToOne", actual.ID);
 
@@ -58,10 +56,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_UnidirectionalOneToMany ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToMany");
-      PropertyDefinition propertyDefinition = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
-      RelationDefinition actual = _relationReflector.GetMetadata (_classDefinitions, propertyInfo);
+      RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
       Assert.AreEqual ("ClassWithManySideRelationPropertiesToUnidirectionalOneToMany", actual.ID);
 
@@ -81,10 +81,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_BidirectionalOneToOne ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToOne");
-      PropertyDefinition propertyDefinition = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
-      RelationDefinition actual = _relationReflector.GetMetadata (_classDefinitions, propertyInfo);
+      RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
       Assert.AreEqual ("ClassWithManySideRelationPropertiesToBidirectionalOneToOne", actual.ID);
 
@@ -108,10 +110,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_BidirectionalOneToMany ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToMany");
-      PropertyDefinition propertyDefinition = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
-      RelationDefinition actual = _relationReflector.GetMetadata (_classDefinitions, propertyInfo);
+      RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
       Assert.AreEqual ("ClassWithManySideRelationPropertiesToBidirectionalOneToMany", actual.ID);
 

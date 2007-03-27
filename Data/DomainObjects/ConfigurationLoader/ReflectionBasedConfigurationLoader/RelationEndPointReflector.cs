@@ -1,57 +1,54 @@
 using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
-  public class RelationEndPointReflector : RelationReflectorBase
+  public class RelationEndPointReflector: RelationReflectorBase
   {
-    public RelationEndPointReflector()
+    public RelationEndPointReflector (PropertyInfo propertyInfo)
+        : base (propertyInfo)
     {
     }
 
-    public IRelationEndPointDefinition GetMetadata (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    public IRelationEndPointDefinition GetMetadata (ClassDefinitionCollection classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      Validate (propertyInfo);
-      ClassDefinition classDefinition = classDefinitions.GetMandatory (propertyInfo.DeclaringType);
+      Validate ();
+      ClassDefinition classDefinition = classDefinitions.GetMandatory (PropertyInfo.DeclaringType);
 
-      if (IsVirtualEndRelationEndpoint (propertyInfo))
-        return CreateVirtualRelationEndPointDefinition (classDefinition, propertyInfo);
+      if (IsVirtualEndRelationEndpoint())
+        return CreateVirtualRelationEndPointDefinition (classDefinition);
       else
-        return CreateRelationEndPointDefinition (classDefinition, propertyInfo);
+        return CreateRelationEndPointDefinition (classDefinition);
     }
 
-    protected virtual bool IsVirtualEndRelationEndpoint (PropertyInfo propertyInfo)
+    protected virtual bool IsVirtualEndRelationEndpoint()
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      return IsManySide (propertyInfo);
+      return IsManySide (PropertyInfo);
     }
 
-    private RelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, PropertyInfo propertyInfo)
+    private RelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      return new RelationEndPointDefinition (classDefinition, GetPropertyName (propertyInfo), !GetNullability (propertyInfo));
+      return new RelationEndPointDefinition (classDefinition, GetPropertyName (PropertyInfo), !IsNullable);
     }
 
-    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition, PropertyInfo propertyInfo)
+    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
     {
       return new VirtualRelationEndPointDefinition (
           classDefinition,
-          GetPropertyName (propertyInfo),
-          !GetNullability (propertyInfo),
-          GetCardinality (propertyInfo),
-          propertyInfo.PropertyType);
+          GetPropertyName (PropertyInfo),
+          !IsNullable,
+          Cardinality,
+          PropertyInfo.PropertyType);
     }
 
-    private CardinalityType GetCardinality (PropertyInfo propertyInfo)
+    private CardinalityType Cardinality
     {
-      return IsManySide (propertyInfo) ? CardinalityType.Many : CardinalityType.One;
+      get { return IsManySide (PropertyInfo) ? CardinalityType.Many : CardinalityType.One; }
     }
 
     protected bool IsManySide (PropertyInfo propertyInfo)

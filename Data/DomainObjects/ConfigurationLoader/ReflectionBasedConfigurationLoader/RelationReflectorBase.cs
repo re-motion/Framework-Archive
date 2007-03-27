@@ -4,14 +4,18 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Base class for reflecting on the relations of a class.</summary>
-  public class RelationReflectorBase: MemberReflectorBase
+  public abstract class RelationReflectorBase: MemberReflectorBase
   {
-    protected PropertyInfo GetOppositePropertyInfo (PropertyInfo propertyInfo, BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    protected RelationReflectorBase (PropertyInfo propertyInfo)
+        : base(propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+    }
+
+    protected PropertyInfo GetOppositePropertyInfo (BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    {
       ArgumentUtility.CheckNotNull ("bidirectionalRelationAttribute", bidirectionalRelationAttribute);
 
-      PropertyInfo oppositePropertyInfo = propertyInfo.PropertyType.GetProperty (
+      PropertyInfo oppositePropertyInfo = PropertyInfo.PropertyType.GetProperty (
           bidirectionalRelationAttribute.OppositeProperty,
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -19,10 +23,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         throw CreateMappingException (
             null,
-            propertyInfo,
+            PropertyInfo,
             "Opposite relation property '{0}' could not be found on type '{1}'.",
             bidirectionalRelationAttribute.OppositeProperty,
-            propertyInfo.PropertyType);
+            PropertyInfo.PropertyType);
       }
 
       return oppositePropertyInfo;

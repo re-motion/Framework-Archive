@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -8,22 +7,14 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class PropertyWithStorageClass: ReflectionBasedMappingTest
+  public class PropertyWithStorageClass: BaseTest
   {
-    private PropertyReflector _propertyReflector;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-      _propertyReflector = new PropertyReflector();
-    }
-
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageClassAttribute).GetProperty ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> ("NoAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.NoAttribute",
@@ -35,9 +26,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithStorageClassPersistent()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageClassAttribute).GetProperty ("Persistent");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> ("Persistent");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.Persistent",
@@ -53,9 +44,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
         + "property: Transaction")]
     public void GetMetadata_WithStorageClassTransaction()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageClassAttribute).GetProperty ("Transaction");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> ("Transaction");
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      propertyReflector.GetMetadata();
     }
 
     [Test]
@@ -65,9 +56,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
         + "property: None")]
     public void GetMetadata_WithStorageClassNone()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageClassAttribute).GetProperty ("None");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> ("None");
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      propertyReflector.GetMetadata();
     }
   }
 }

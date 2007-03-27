@@ -117,6 +117,7 @@
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\LengthConstrainedPropertyAttributeTest.cs" />
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\BaseTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BinaryProperty.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\StorageSpecificName.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\PropertyWithStorageClass.cs" />

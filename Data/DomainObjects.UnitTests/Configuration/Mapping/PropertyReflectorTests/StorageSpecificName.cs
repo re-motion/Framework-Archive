@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -8,22 +7,14 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class StorageSpecificName: ReflectionBasedMappingTest
+  public class StorageSpecificName: BaseTest
   {
-    private PropertyReflector _propertyReflector;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-      _propertyReflector = new PropertyReflector();
-    }
-
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageSpecificNameAttribute).GetProperty ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageSpecificNameAttribute> ("NoAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageSpecificNameAttribute.NoAttribute",
@@ -34,9 +25,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithStorageSpecificName()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithPropertiesHavingStorageSpecificNameAttribute).GetProperty ("StorageSpecificName");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageSpecificNameAttribute> ("StorageSpecificName");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageSpecificNameAttribute.StorageSpecificName",

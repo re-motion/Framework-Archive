@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -9,25 +8,17 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class BinaryProperty : ReflectionBasedMappingTest
+  public class BinaryProperty: BaseTest
   {
-    private PropertyReflector _propertyReflector;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-      _propertyReflector = new PropertyReflector();
-    }
-
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithBinaryProperties).GetProperty ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("NoAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute", 
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
@@ -37,11 +28,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_WithNullableFromAttribute ()
+    public void GetMetadata_WithNullableFromAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithBinaryProperties).GetProperty ("NullableFromAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("NullableFromAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NullableFromAttribute",
@@ -54,11 +45,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_WithNotNullableFromAttribute ()
+    public void GetMetadata_WithNotNullableFromAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithBinaryProperties).GetProperty ("NotNullable");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("NotNullable");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullable",
@@ -71,11 +62,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_WithMaximumLength ()
+    public void GetMetadata_WithMaximumLength()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithBinaryProperties).GetProperty ("MaximumLength");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("MaximumLength");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength",
@@ -88,11 +79,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    public void GetMetadata_WithNotNullableAndMaximumLength ()
+    public void GetMetadata_WithNotNullableAndMaximumLength()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithBinaryProperties).GetProperty ("NotNullableAndMaximumLength");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties> ("NotNullableAndMaximumLength");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullableAndMaximumLength",
@@ -107,18 +98,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException),
         "The Rubicon.Data.DomainObjects.BinaryAttribute may be only applied to properties of type System.Byte[].\r\n  "
-            + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
-    public void GetMetadata_WithAttributeAppliedToInvalidProperty ()
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
+    public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
-      PropertyInfo propertyInfo = GetType ().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
+      PropertyReflector propertyReflector = CreatePropertyReflector<BinaryProperty> ("Int32Property");
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      propertyReflector.GetMetadata();
     }
 
     [Binary]
     private int Int32Property
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
   }
 }

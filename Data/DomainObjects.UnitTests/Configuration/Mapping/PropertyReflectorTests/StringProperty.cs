@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -9,22 +8,14 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class StringProperty : ReflectionBasedMappingTest
+  public class StringProperty: BaseTest
   {
-    private PropertyReflector _propertyReflector;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-      _propertyReflector = new PropertyReflector();
-    }
-
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithStringProperties).GetProperty ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties> ("NoAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute",
@@ -39,9 +30,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNullableFromAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithStringProperties).GetProperty ("NullableFromAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties> ("NullableFromAttribute");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute",
@@ -56,9 +47,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNotNullableFromAttribute()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithStringProperties).GetProperty ("NotNullable");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties> ("NotNullable");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullable",
@@ -73,9 +64,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithMaximumLength()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithStringProperties).GetProperty ("MaximumLength");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties> ("MaximumLength");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength",
@@ -90,9 +81,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNotNullableAndMaximumLength()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithStringProperties).GetProperty ("NotNullableAndMaximumLength");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties> ("NotNullableAndMaximumLength");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength",
@@ -107,12 +98,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException),
         "The Rubicon.Data.DomainObjects.StringAttribute may be only applied to properties of type System.String.\r\n  "
-            + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.StringProperty, property: Int32Property")]
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.StringProperty, property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
-      PropertyInfo propertyInfo = GetType().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
+      PropertyReflector propertyReflector = CreatePropertyReflector<StringProperty> ("Int32Property");
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      propertyReflector.GetMetadata();
     }
 
     [String]

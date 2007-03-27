@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -9,16 +8,8 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class ValueTypes : ReflectionBasedMappingTest
+  public class ValueTypes: BaseTest
   {
-    private PropertyReflector _propertyReflector;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-      _propertyReflector = new PropertyReflector();
-    }
-
     [Test]
     public void GetPropertyName()
     {
@@ -31,9 +22,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithBasicType()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("BooleanProperty");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("BooleanProperty");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (bool), actual.PropertyType);
@@ -46,9 +37,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNullableBasicType()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("NaBooleanProperty");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("NaBooleanProperty");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (NaBoolean), actual.PropertyType);
@@ -61,9 +52,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithEnumProperty()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("EnumProperty");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("EnumProperty");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty", actual.PropertyName);
       Assert.AreSame (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
@@ -78,9 +69,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithOptionalRelationProperty()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithGuidKey).GetProperty ("ClassWithValidRelationsOptional");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey> ("ClassWithValidRelationsOptional");
 
-      PropertyDefinition actual = _propertyReflector.GetMetadata (propertyInfo);
+      PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
@@ -96,9 +87,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
         + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
     public void GetMetadata_WithInvalidPropertyType()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithAllDataTypes).GetProperty ("ObjectProperty");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("ObjectProperty");
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      propertyReflector.GetMetadata();
     }
   }
 }

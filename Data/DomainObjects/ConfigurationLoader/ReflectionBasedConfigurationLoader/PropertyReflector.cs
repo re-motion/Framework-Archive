@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
@@ -10,31 +9,30 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="PropertyDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class PropertyReflector: MemberReflectorBase
   {
-    public PropertyReflector()
+    public PropertyReflector (PropertyInfo propertyInfo)
+        : base(propertyInfo)
     {
     }
 
-    public PropertyDefinition GetMetadata (PropertyInfo propertyInfo)
+    public PropertyDefinition GetMetadata()
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      Validate (propertyInfo);
-      TypeInfo typeInfo = GetTypeInfo (propertyInfo);
+      Validate ();
+      TypeInfo typeInfo = GetTypeInfo();
 
       return new PropertyDefinition (
-          GetPropertyName (propertyInfo),
-          GetColumnName (propertyInfo),
+          GetPropertyName (PropertyInfo),
+          StorageSpecificName,
           typeInfo.MappingType,
           true,
           typeInfo.IsNullable,
-          GetMaxLength (propertyInfo),
+          MaxLength,
           true);
     }
 
-    private TypeInfo GetTypeInfo (PropertyInfo propertyInfo)
+    private TypeInfo GetTypeInfo()
     {
-      Type nativePropertyType = IsRelationProperty (propertyInfo) ? typeof (ObjectID) : propertyInfo.PropertyType;
-      bool isNullable = GetNullability (propertyInfo);
+      Type nativePropertyType = IsRelationProperty ? typeof (ObjectID) : PropertyInfo.PropertyType;
+      bool isNullable = IsNullable;
 
       if (nativePropertyType.IsEnum)
         return GetEnumTypeInfo (nativePropertyType, isNullable);
@@ -45,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
       catch (MandatoryMappingTypeNotFoundException e)
       {
-        throw CreateMappingException (e, propertyInfo, "The property type {0} is not supported.", nativePropertyType);
+        throw CreateMappingException (e, PropertyInfo, "The property type {0} is not supported.", nativePropertyType);
       }
     }
 
@@ -54,20 +52,26 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
     }
 
-    private string GetColumnName (PropertyInfo propertyInfo)
+    private string StorageSpecificName
     {
-      StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (propertyInfo, true);
-      if (attribute != null)
-        return attribute.Name;
-      return propertyInfo.Name;
+      get
+      {
+        StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (PropertyInfo, true);
+        if (attribute != null)
+          return attribute.Name;
+        return PropertyInfo.Name;
+      }
     }
 
-    private NaInt32 GetMaxLength (PropertyInfo propertyInfo)
+    private NaInt32 MaxLength
     {
-      ILengthConstrainedPropertyAttribute attribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (propertyInfo, true);
-      if (attribute != null)
-        return NaInt32.FromBoxedInt32 (attribute.MaximumLength);
-      return NaInt32.Null;
+      get
+      {
+        ILengthConstrainedPropertyAttribute attribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (PropertyInfo, true);
+        if (attribute != null)
+          return NaInt32.FromBoxedInt32 (attribute.MaximumLength);
+        return NaInt32.Null;
+      }
     }
   }
 }

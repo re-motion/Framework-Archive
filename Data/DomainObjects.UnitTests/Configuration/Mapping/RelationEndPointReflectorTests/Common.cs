@@ -10,15 +10,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
   [TestFixture]
   public class Common: ReflectionBasedMappingTest
   {
-    private PropertyReflector _propertyReflector;
-    private RdbmsRelationEndPointReflector _relationEndPointReflector;
     private ClassDefinitionCollection _classDefinitions;
 
     public override void SetUp()
     {
       base.SetUp();
-      _propertyReflector = new PropertyReflector();
-      _relationEndPointReflector = new RdbmsRelationEndPointReflector();
 
       _classDefinitions = new ClassDefinitionCollection();
     }
@@ -32,8 +28,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
       PropertyInfo propertyInfo = GetType().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      _propertyReflector.GetMetadata (propertyInfo);
+      relationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
     [Test]
@@ -44,8 +41,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     public void GetMetadata_WithStringAttributeAppliedToInvalidProperty()
     {
       PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithStringAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      _relationEndPointReflector.GetMetadata (_classDefinitions, propertyInfo);
+      relationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
     [Test]
@@ -56,8 +54,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     public void GetMetadata_WithBinaryAttributeAppliedToInvalidProperty()
     {
       PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithBinaryAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      _relationEndPointReflector.GetMetadata (_classDefinitions, propertyInfo);
+      relationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
     [Mandatory]

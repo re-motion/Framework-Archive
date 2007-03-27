@@ -8,43 +8,46 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="RelationDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationReflector: RelationReflectorBase
   {
-    private RelationEndPointReflector _endPointReflector = new RdbmsRelationEndPointReflector();
-
-    public RelationReflector()
+    public RelationReflector (PropertyInfo propertyInfo)
+        : base (propertyInfo)
     {
     }
 
-    public RelationDefinition GetMetadata (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    public RelationDefinition GetMetadata (ClassDefinitionCollection classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       return new RelationDefinition (
-          GetRelationID (propertyInfo),
-          _endPointReflector.GetMetadata (classDefinitions, propertyInfo),
-          GetOppositeEndPointDefinition (classDefinitions, propertyInfo));
+          GetRelationID (),
+          CreateEndPointReflector (PropertyInfo).GetMetadata (classDefinitions),
+          GetOppositeEndPointDefinition (classDefinitions));
     }
 
-    private string GetRelationID (PropertyInfo propertyInfo)
+    private RelationEndPointReflector CreateEndPointReflector (PropertyInfo propertyInfo)
     {
-      return propertyInfo.DeclaringType.Name + "To" + propertyInfo.Name;
+      return new RdbmsRelationEndPointReflector (propertyInfo);
     }
 
-    private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    private string GetRelationID ()
     {
-      BidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<BidirectionalRelationAttribute> (propertyInfo, true);
+      return PropertyInfo.DeclaringType.Name + "To" + PropertyInfo.Name;
+    }
+
+    private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)
+    {
+      BidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<BidirectionalRelationAttribute> (PropertyInfo, true);
       if (attribute == null)
-        return new NullRelationEndPointDefinition (GetClassDefinition (classDefinitions, propertyInfo));
+        return new NullRelationEndPointDefinition (GetClassDefinition (classDefinitions));
 
-      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (propertyInfo, attribute);
-      return _endPointReflector.GetMetadata (classDefinitions, oppositePropertyInfo);
+      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (attribute);
+      return CreateEndPointReflector (oppositePropertyInfo).GetMetadata (classDefinitions);
     }
 
-    private ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    private ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
     {
-      if (typeof (ObjectList<>).IsAssignableFrom (propertyInfo.PropertyType))
-        return classDefinitions.GetMandatory (propertyInfo.PropertyType.GetGenericArguments()[0]);
-      return classDefinitions.GetMandatory (propertyInfo.PropertyType);
+      if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
+        return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments ()[0]);
+      return classDefinitions.GetMandatory (PropertyInfo.PropertyType);
     }
   }
 }

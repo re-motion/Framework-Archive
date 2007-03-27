@@ -7,37 +7,36 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/> for types persisted in an <b>RDBMS</b>.</summary>
-  public class RdbmsRelationEndPointReflector : RelationEndPointReflector
+  public class RdbmsRelationEndPointReflector: RelationEndPointReflector
   {
-    public RdbmsRelationEndPointReflector()
+    public RdbmsRelationEndPointReflector (PropertyInfo propertyInfo)
+        : base (propertyInfo)
     {
     }
 
-    protected override bool IsVirtualEndRelationEndpoint (PropertyInfo propertyInfo)
+    protected override bool IsVirtualEndRelationEndpoint()
     {
-      if (base.IsVirtualEndRelationEndpoint (propertyInfo))
+      if (base.IsVirtualEndRelationEndpoint())
         return true;
 
-      return !ContainsKey (propertyInfo);
+      return !ContainsKey();
     }
 
-    private bool ContainsKey (PropertyInfo propertyInfo)
+    private bool ContainsKey()
     {
-      RdbmsBidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<RdbmsBidirectionalRelationAttribute> (propertyInfo, true);
+      RdbmsBidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<RdbmsBidirectionalRelationAttribute> (PropertyInfo, true);
       if (attribute != null)
       {
         if (attribute.ContainsForeignKey)
           return true;
-        return IsOppositeClassManySide (propertyInfo, attribute);
+        return IsOppositeClassManySide (attribute);
       }
       return true;
     }
 
-    private bool IsOppositeClassManySide (PropertyInfo propertyInfo, BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    private bool IsOppositeClassManySide (BidirectionalRelationAttribute bidirectionalRelationAttribute)
     {
-      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (propertyInfo, bidirectionalRelationAttribute);
-
-      return IsManySide (oppositePropertyInfo);
+      return IsManySide (GetOppositePropertyInfo (bidirectionalRelationAttribute));
     }
   }
 }

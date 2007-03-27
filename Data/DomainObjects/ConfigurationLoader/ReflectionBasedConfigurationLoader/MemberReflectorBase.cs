@@ -54,26 +54,32 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     }
 
     private Dictionary<Type, AttributeConstraint> _attributeConstraints = null;
+    private PropertyInfo _propertyInfo;
 
-    protected MemberReflectorBase()
-    {
-    }
-
-    protected virtual void Validate (PropertyInfo propertyInfo)
+    protected MemberReflectorBase (PropertyInfo propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      
-      CheckStorageClass (propertyInfo);
-      CheckSupportedPropertyAttributes (propertyInfo);
+      _propertyInfo = propertyInfo;
+    }
+
+    public PropertyInfo PropertyInfo
+    {
+      get { return _propertyInfo; }
+    }
+
+    protected virtual void Validate()
+    {
+      CheckStorageClass();
+      CheckSupportedPropertyAttributes();
     }
 
     protected virtual void AddAttributeConstraints (Dictionary<Type, AttributeConstraint> attributeConstraints)
     {
       ArgumentUtility.CheckNotNull ("attributeConstraints", attributeConstraints);
 
-      attributeConstraints.Add (typeof (StringAttribute), CreateAttributeConstraintForValueTypeProperty<StringAttribute, string> ());
-      attributeConstraints.Add (typeof (BinaryAttribute), CreateAttributeConstraintForValueTypeProperty<BinaryAttribute, byte[]> ());
-      attributeConstraints.Add (typeof (MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute> ());
+      attributeConstraints.Add (typeof (StringAttribute), CreateAttributeConstraintForValueTypeProperty<StringAttribute, string>());
+      attributeConstraints.Add (typeof (BinaryAttribute), CreateAttributeConstraintForValueTypeProperty<BinaryAttribute, byte[]>());
+      attributeConstraints.Add (typeof (MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
     }
 
     protected AttributeConstraint CreateAttributeConstraintForValueTypeProperty<TAttribute, TProperty>()
@@ -103,60 +109,62 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         if (_attributeConstraints == null)
         {
-          _attributeConstraints = new Dictionary<Type, AttributeConstraint> ();
+          _attributeConstraints = new Dictionary<Type, AttributeConstraint>();
           AddAttributeConstraints (_attributeConstraints);
         }
         return _attributeConstraints;
       }
     }
 
-    private void CheckStorageClass (PropertyInfo propertyInfo)
+    private void CheckStorageClass()
     {
-      StorageClassAttribute attribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, true);
+      StorageClassAttribute attribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (PropertyInfo, true);
       if (attribute != null && attribute.StorageClass != StorageClass.Persistent)
-        throw CreateMappingException (null, propertyInfo, "Only StorageClass.Persistent is supported.");
+        throw CreateMappingException (null, PropertyInfo, "Only StorageClass.Persistent is supported.");
     }
 
-    private void CheckSupportedPropertyAttributes (PropertyInfo propertyInfo)
+    private void CheckSupportedPropertyAttributes()
     {
-      foreach (Attribute attribute in AttributeUtility.GetCustomAttributes<Attribute> (propertyInfo, true))
+      foreach (Attribute attribute in AttributeUtility.GetCustomAttributes<Attribute> (PropertyInfo, true))
       {
         AttributeConstraint constraint;
         if (AttributeConstraints.TryGetValue (attribute.GetType(), out constraint))
         {
-          if (!Array.Exists (constraint.PropertyTypes, delegate (Type type) { return type.IsAssignableFrom (propertyInfo.PropertyType); }))
-            throw CreateMappingException (null, propertyInfo, constraint.Message);
+          if (!Array.Exists (constraint.PropertyTypes, delegate (Type type) { return type.IsAssignableFrom (PropertyInfo.PropertyType); }))
+            throw CreateMappingException (null, PropertyInfo, constraint.Message);
         }
       }
     }
 
-    protected bool IsRelationProperty (PropertyInfo propertyInfo)
+    protected bool IsRelationProperty
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      return (typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType));
+      get { return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType)); }
     }
 
-    protected bool GetNullability (PropertyInfo propertyInfo)
+    protected bool IsNullable
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      
-      if (propertyInfo.PropertyType.IsValueType)
-        return GetNullabilityForValueType (propertyInfo);
-      return GetNullabilityForReferenceType (propertyInfo);
+      get
+      {
+        if (PropertyInfo.PropertyType.IsValueType)
+          return IsNullableValueType;
+        return IsNullableReferenceType;
+      }
     }
 
-    private bool GetNullabilityForValueType (PropertyInfo propertyInfo)
+    private bool IsNullableValueType
     {
-      return typeof (INaNullable).IsAssignableFrom (propertyInfo.PropertyType);
+      get { return typeof (INaNullable).IsAssignableFrom (PropertyInfo.PropertyType); }
     }
 
-    private bool GetNullabilityForReferenceType (PropertyInfo propertyInfo)
+    private bool IsNullableReferenceType
     {
-      INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (propertyInfo, true);
-      if (attribute != null)
-        return attribute.IsNullable;
-      return true;
+      get
+      {
+        INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (PropertyInfo, true);
+        if (attribute != null)
+          return attribute.IsNullable;
+        return true;
+      }
     }
 
     protected MappingException CreateMappingException (Exception innerException, PropertyInfo propertyInfo, string message, params object[] args)
@@ -164,7 +172,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNullOrEmpty ("message", message);
 
-      StringBuilder messageBuilder = new StringBuilder ();
+      StringBuilder messageBuilder = new StringBuilder();
       messageBuilder.AppendFormat (message, args);
       messageBuilder.AppendLine();
       messageBuilder.AppendFormat ("  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name);
