@@ -32,13 +32,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToOne");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
-      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
       RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
-      Assert.AreEqual ("ClassWithManySideRelationPropertiesToUnidirectionalOneToOne", actual.ID);
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToOne",
+          actual.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual.EndPointDefinitions[0]);
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actual.EndPointDefinitions[0];
@@ -53,17 +55,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void GetMetadata_UnidirectionalOneToMany ()
+    public void GetMetadata_UnidirectionalOneToMany()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToMany");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
-      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
       RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
-      Assert.AreEqual ("ClassWithManySideRelationPropertiesToUnidirectionalOneToMany", actual.ID);
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToMany",
+          actual.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual.EndPointDefinitions[0]);
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actual.EndPointDefinitions[0];
@@ -78,17 +82,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToOne ()
+    public void GetMetadata_BidirectionalOneToOne()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToOne");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
-      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
       RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
-      Assert.AreEqual ("ClassWithManySideRelationPropertiesToBidirectionalOneToOne", actual.ID);
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
+          actual.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual.EndPointDefinitions[0]);
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actual.EndPointDefinitions[0];
@@ -100,24 +106,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       VirtualRelationEndPointDefinition oppositeEndPointDefinition = (VirtualRelationEndPointDefinition) actual.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
-         "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToOne",
-         oppositeEndPointDefinition.PropertyName);
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToOne",
+          oppositeEndPointDefinition.PropertyName);
       Assert.AreSame (typeof (ClassWithManySideRelationProperties), oppositeEndPointDefinition.PropertyType);
       Assert.AreSame (actual, oppositeEndPointDefinition.RelationDefinition);
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToMany ()
+    public void GetMetadata_BidirectionalOneToMany()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToMany");
       PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
-      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
 
       RelationDefinition actual = relationReflector.GetMetadata (_classDefinitions);
 
-      Assert.AreEqual ("ClassWithManySideRelationPropertiesToBidirectionalOneToMany", actual.ID);
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToMany",
+          actual.ID);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual.EndPointDefinitions[0]);
       RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actual.EndPointDefinitions[0];
@@ -129,8 +137,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       VirtualRelationEndPointDefinition oppositeEndPointDefinition = (VirtualRelationEndPointDefinition) actual.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreEqual (
-         "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToMany",
-         oppositeEndPointDefinition.PropertyName);
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToMany",
+          oppositeEndPointDefinition.PropertyName);
       Assert.AreSame (typeof (ObjectList<ClassWithManySideRelationProperties>), oppositeEndPointDefinition.PropertyType);
       Assert.AreSame (actual, oppositeEndPointDefinition.RelationDefinition);
     }

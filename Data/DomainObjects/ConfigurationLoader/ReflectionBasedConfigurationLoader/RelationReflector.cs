@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string RelationID
     {
-      get { return PropertyInfo.DeclaringType.Name + "To" + PropertyInfo.Name; }
+      get { return PropertyInfo.DeclaringType.FullName + "." + PropertyInfo.Name; }
     }
 
     private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)
