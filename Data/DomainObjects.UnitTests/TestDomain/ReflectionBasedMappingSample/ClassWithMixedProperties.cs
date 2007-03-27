@@ -24,5 +24,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 
     [AutomaticProperty]
     public abstract ClassWithOneSideRelationProperties UnidirectionalOneToOne { get; set; }
+
+    [AutomaticProperty]
+    public abstract ObjectList<ClassWithOneSideRelationProperties> UnidirectionalOneToMany { get; }
   }
 }
