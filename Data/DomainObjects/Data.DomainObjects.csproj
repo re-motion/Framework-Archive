@@ -98,10 +98,15 @@
   <ItemGroup>
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
-    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BaseReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MemberReflectorBase.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BidirectionalRelationAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
     <Compile Include="BinaryAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflectorBase.cs" />
+    <Compile Include="Persistence\Rdbms\RdbmsBidirectionalRelationAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RdbmsRelationEndPointReflector.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationEndPointReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ILengthConstrainedPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\INullablePropertyAttribute.cs" />

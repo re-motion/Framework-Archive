@@ -8,7 +8,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  public abstract class BaseReflector
+  /// <summary>Base class for reflecting on the properties and relations of a class.</summary>
+  public abstract class MemberReflectorBase
   {
     protected sealed class AttributeConstraint
     {
@@ -54,12 +55,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private Dictionary<Type, AttributeConstraint> _attributeConstraints = null;
 
-    protected BaseReflector()
+    protected MemberReflectorBase()
     {
     }
 
     protected virtual void Validate (PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      
       CheckStorageClass (propertyInfo);
       CheckSupportedPropertyAttributes (propertyInfo);
     }
@@ -107,24 +110,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    protected TypeInfo GetTypeInfo (PropertyInfo propertyInfo)
-    {
-      Type nativePropertyType = IsRelationProperty (propertyInfo) ? typeof (ObjectID) : propertyInfo.PropertyType;
-      bool isNullable = GetNullability (propertyInfo);
-
-      if (nativePropertyType.IsEnum)
-        return GetEnumTypeInfo (nativePropertyType, isNullable);
-
-      try
-      {
-        return TypeInfo.GetMandatory (nativePropertyType, isNullable);
-      }
-      catch (MandatoryMappingTypeNotFoundException e)
-      {
-        throw CreateMappingException (e, propertyInfo, "The property type {0} is not supported.", nativePropertyType);
-      }
-    }
-
     private void CheckStorageClass (PropertyInfo propertyInfo)
     {
       StorageClassAttribute attribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, true);
@@ -145,18 +130,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    private TypeInfo GetEnumTypeInfo (Type type, bool isNullable)
+    protected bool IsRelationProperty (PropertyInfo propertyInfo)
     {
-      return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
-    }
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-    private bool IsRelationProperty (PropertyInfo propertyInfo)
-    {
       return (typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType));
     }
 
-    private bool GetNullability (PropertyInfo propertyInfo)
+    protected bool GetNullability (PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      
       if (propertyInfo.PropertyType.IsValueType)
         return GetNullabilityForValueType (propertyInfo);
       return GetNullabilityForReferenceType (propertyInfo);
@@ -167,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return typeof (INaNullable).IsAssignableFrom (propertyInfo.PropertyType);
     }
 
-    protected bool GetNullabilityForReferenceType (PropertyInfo propertyInfo)
+    private bool GetNullabilityForReferenceType (PropertyInfo propertyInfo)
     {
       INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (propertyInfo, true);
       if (attribute != null)
@@ -175,9 +159,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return true;
     }
 
-    private MappingException CreateMappingException (Exception innerException, PropertyInfo propertyInfo, string message, params object[] args)
+    protected MappingException CreateMappingException (Exception innerException, PropertyInfo propertyInfo, string message, params object[] args)
     {
-      StringBuilder messageBuilder = new StringBuilder();
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+
+      StringBuilder messageBuilder = new StringBuilder ();
       messageBuilder.AppendFormat (message, args);
       messageBuilder.AppendLine();
       messageBuilder.AppendFormat ("  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name);

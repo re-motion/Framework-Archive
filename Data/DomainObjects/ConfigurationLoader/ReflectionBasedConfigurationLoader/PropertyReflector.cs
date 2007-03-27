@@ -7,10 +7,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  /// <summary>
-  /// Used to create the <see cref="PropertyDefinition"/> from a single <see cref="PropertyInfo"/> or for the properties of the entire type.
-  /// </summary>
-  public class PropertyReflector: BaseReflector
+  /// <summary>Used to create the <see cref="PropertyDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
+  public class PropertyReflector: MemberReflectorBase
   {
     public PropertyReflector()
     {
@@ -31,6 +29,29 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           typeInfo.IsNullable,
           GetMaxLength (propertyInfo),
           true);
+    }
+
+    private TypeInfo GetTypeInfo (PropertyInfo propertyInfo)
+    {
+      Type nativePropertyType = IsRelationProperty (propertyInfo) ? typeof (ObjectID) : propertyInfo.PropertyType;
+      bool isNullable = GetNullability (propertyInfo);
+
+      if (nativePropertyType.IsEnum)
+        return GetEnumTypeInfo (nativePropertyType, isNullable);
+
+      try
+      {
+        return TypeInfo.GetMandatory (nativePropertyType, isNullable);
+      }
+      catch (MandatoryMappingTypeNotFoundException e)
+      {
+        throw CreateMappingException (e, propertyInfo, "The property type {0} is not supported.", nativePropertyType);
+      }
+    }
+
+    private TypeInfo GetEnumTypeInfo (Type type, bool isNullable)
+    {
+      return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
     }
 
     private string GetColumnName (PropertyInfo propertyInfo)
