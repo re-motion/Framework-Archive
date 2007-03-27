@@ -18,19 +18,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       return new RelationDefinition (
-          GetRelationID (),
-          CreateEndPointReflector (PropertyInfo).GetMetadata (classDefinitions),
+          RelationID,
+          CreateEndPointDefinition (classDefinitions, PropertyInfo),
           GetOppositeEndPointDefinition (classDefinitions));
     }
 
-    private RelationEndPointReflector CreateEndPointReflector (PropertyInfo propertyInfo)
+    private string RelationID
     {
-      return new RdbmsRelationEndPointReflector (propertyInfo);
-    }
-
-    private string GetRelationID ()
-    {
-      return PropertyInfo.DeclaringType.Name + "To" + PropertyInfo.Name;
+      get { return PropertyInfo.DeclaringType.Name + "To" + PropertyInfo.Name; }
     }
 
     private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)
@@ -40,13 +35,19 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return new NullRelationEndPointDefinition (GetClassDefinition (classDefinitions));
 
       PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (attribute);
-      return CreateEndPointReflector (oppositePropertyInfo).GetMetadata (classDefinitions);
+      return CreateEndPointDefinition (classDefinitions, oppositePropertyInfo);
+    }
+
+    private IRelationEndPointDefinition CreateEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    {
+      RelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+      return relationEndPointReflector.GetMetadata (classDefinitions);
     }
 
     private ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
-        return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments ()[0]);
+        return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments()[0]);
       return classDefinitions.GetMandatory (PropertyInfo.PropertyType);
     }
   }
