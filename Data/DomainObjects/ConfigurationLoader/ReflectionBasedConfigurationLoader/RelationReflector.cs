@@ -18,14 +18,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       return new RelationDefinition (
-          RelationID,
+          GetRelationID(),
           CreateEndPointDefinition (classDefinitions, PropertyInfo),
           GetOppositeEndPointDefinition (classDefinitions));
     }
 
-    private string RelationID
+    private string GetRelationID()
     {
-      get { return PropertyInfo.DeclaringType.FullName + "." + PropertyInfo.Name; }
+      return PropertyInfo.DeclaringType.FullName + "." + PropertyInfo.Name;
     }
 
     private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)

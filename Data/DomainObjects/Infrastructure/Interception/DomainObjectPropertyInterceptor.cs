@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -53,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private static string GetIdentifierFromProperty (PropertyInfo property)
     {
-      return PropertyReflector.GetPropertyName (property);
+      return ReflectionUtility.GetPropertyName (property);
     }
 
     public static bool IsRelatedObject (Type type, string propertyID)

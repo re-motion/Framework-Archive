@@ -36,23 +36,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    /// <summary>
-    /// Returns the RPF property identifier for a given property member.
-    /// </summary>
-    /// <param name="propertyInfo">The property whose identifier should be returned.</param>
-    /// <returns>The property identifier for the given property.</returns>
-    /// <remarks>
-    /// Currently, the identifier is defined to be the full name of the property's declaring type, suffixed with a dot (".") and the
-    /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
-    /// identifier must be retrieved programmatically.
-    /// </remarks>
-    // TODO: consider moving this somewhere else
-    public static string GetPropertyName (PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      return propertyInfo.DeclaringType.FullName + "." + propertyInfo.Name;
-    }
-
     private Dictionary<Type, AttributeConstraint> _attributeConstraints = null;
     private PropertyInfo _propertyInfo;
 
@@ -136,35 +119,34 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    protected bool IsRelationProperty
+    protected string GetPropertyName ()
     {
-      get { return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType)); }
+      return ReflectionUtility.GetPropertyName (PropertyInfo);
     }
 
-    protected bool IsNullable
+    protected bool IsRelationProperty()
     {
-      get
-      {
-        if (PropertyInfo.PropertyType.IsValueType)
-          return IsNullableValueType;
-        return IsNullableReferenceType;
-      }
+      return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType));
     }
 
-    private bool IsNullableValueType
+    protected bool IsNullable()
     {
-      get { return typeof (INaNullable).IsAssignableFrom (PropertyInfo.PropertyType); }
+      if (PropertyInfo.PropertyType.IsValueType)
+        return IsNullableValueType();
+      return IsNullableReferenceType();
     }
 
-    private bool IsNullableReferenceType
+    private bool IsNullableValueType()
     {
-      get
-      {
-        INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (PropertyInfo, true);
-        if (attribute != null)
-          return attribute.IsNullable;
-        return true;
-      }
+      return typeof (INaNullable).IsAssignableFrom (PropertyInfo.PropertyType);
+    }
+
+    private bool IsNullableReferenceType()
+    {
+      INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (PropertyInfo, true);
+      if (attribute != null)
+        return attribute.IsNullable;
+      return true;
     }
 
     protected MappingException CreateMappingException (Exception innerException, PropertyInfo propertyInfo, string message, params object[] args)

@@ -20,19 +20,19 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       TypeInfo typeInfo = GetTypeInfo();
 
       return new PropertyDefinition (
-          GetPropertyName (PropertyInfo),
-          StorageSpecificName,
+          GetPropertyName(),
+          GetStorageSpecificName(),
           typeInfo.MappingType,
           true,
           typeInfo.IsNullable,
-          MaxLength,
+          GetMaxLength(),
           true);
     }
 
     private TypeInfo GetTypeInfo()
     {
-      Type nativePropertyType = IsRelationProperty ? typeof (ObjectID) : PropertyInfo.PropertyType;
-      bool isNullable = IsNullable;
+      Type nativePropertyType = IsRelationProperty() ? typeof (ObjectID) : PropertyInfo.PropertyType;
+      bool isNullable = IsNullable();
 
       if (nativePropertyType.IsEnum)
         return GetEnumTypeInfo (nativePropertyType, isNullable);
@@ -52,26 +52,20 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
     }
 
-    private string StorageSpecificName
+    private string GetStorageSpecificName()
     {
-      get
-      {
-        StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (PropertyInfo, true);
-        if (attribute != null)
-          return attribute.Name;
-        return PropertyInfo.Name;
-      }
+      StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (PropertyInfo, true);
+      if (attribute != null)
+        return attribute.Name;
+      return PropertyInfo.Name;
     }
 
-    private NaInt32 MaxLength
+    private NaInt32 GetMaxLength()
     {
-      get
-      {
-        ILengthConstrainedPropertyAttribute attribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (PropertyInfo, true);
-        if (attribute != null)
-          return NaInt32.FromBoxedInt32 (attribute.MaximumLength);
-        return NaInt32.Null;
-      }
+      ILengthConstrainedPropertyAttribute attribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (PropertyInfo, true);
+      if (attribute != null)
+        return NaInt32.FromBoxedInt32 (attribute.MaximumLength);
+      return NaInt32.Null;
     }
   }
 }

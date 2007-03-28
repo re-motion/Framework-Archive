@@ -11,15 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
   public class ValueTypes: BaseTest
   {
     [Test]
-    public void GetPropertyName()
-    {
-      Assert.AreEqual ("System.DateTime.Year", PropertyReflector.GetPropertyName (typeof (DateTime).GetProperty ("Year")));
-      Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty",
-          PropertyReflector.GetPropertyName (typeof (ClassWithAllDataTypes).GetProperty ("DateTimeProperty")));
-    }
-
-    [Test]
     public void GetMetadata_WithBasicType()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("BooleanProperty");

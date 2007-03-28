@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      Validate ();
+      Validate();
       ClassDefinition classDefinition = classDefinitions.GetMandatory (PropertyInfo.DeclaringType);
 
       if (IsVirtualEndRelationEndpoint())
@@ -33,22 +33,22 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private RelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      return new RelationEndPointDefinition (classDefinition, GetPropertyName (PropertyInfo), !IsNullable);
+      return new RelationEndPointDefinition (classDefinition, GetPropertyName(), !IsNullable());
     }
 
     private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
     {
       return new VirtualRelationEndPointDefinition (
           classDefinition,
-          GetPropertyName (PropertyInfo),
-          !IsNullable,
-          Cardinality,
+          GetPropertyName(),
+          !IsNullable(),
+          GetCardinality(),
           PropertyInfo.PropertyType);
     }
 
-    private CardinalityType Cardinality
+    private CardinalityType GetCardinality()
     {
-      get { return IsManySide (PropertyInfo) ? CardinalityType.Many : CardinalityType.One; }
+      return IsManySide (PropertyInfo) ? CardinalityType.Many : CardinalityType.One;
     }
 
     protected bool IsManySide (PropertyInfo propertyInfo)

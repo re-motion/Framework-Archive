@@ -48,11 +48,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       if (expectedDefinition.BaseClass == null)
       {
-        Assert.IsNull (actualDefinition.BaseClass, "actualDefinition.BaseClass");
+        Assert.IsNull (actualDefinition.BaseClass, "actualDefinition.BaseClass is not null.");
       }
       else
       {
-        Assert.IsNotNull (actualDefinition.BaseClass, "actualDefinition.BaseClass");
+        Assert.IsNotNull (actualDefinition.BaseClass, "actualDefinition.BaseClass is null.");
 
         Assert.AreEqual (expectedDefinition.BaseClass.ID, actualDefinition.BaseClass.ID,
             string.Format ("BaseClass of class definition '{0}' does not match. Expected: {1}, actual: {2}",

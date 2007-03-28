@@ -504,6 +504,7 @@
     <Compile Include="Queries\QueryTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ReflectionUtilityTest.cs" />
     <Compile Include="Resources\ResourceManager.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -665,6 +666,7 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageClassAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageSpecificName.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
       <SubType>Code</SubType>
     </Compile>

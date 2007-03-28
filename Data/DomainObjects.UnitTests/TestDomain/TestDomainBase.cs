@@ -52,6 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [StorageClassNone]
     public new DataContainer DataContainer
     {
       get { return base.DataContainer; }
