@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Mixins.Configuration.ClassConfiguration">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\ClassConfiguration.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAIRAAAAAAAQAAQAAAAAAAQAEAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Members" />
+    </ShowAsCollectionAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Type" Type="System.Type" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="1.438" />
+        <Point X="0.812" Y="1.438" />
+        <Point X="0.812" Y="6.5" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="Mixins.Configuration.MemberConfiguration">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\MemberConfiguration.cs</FileName>
+      <HashCode>AAAAAAAAgAAAAIAAAAAAAAQAACIIAAAAAAAAABIACAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Member" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Mixins.Configuration.BaseClassConfiguration">
+    <Position X="3.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\BaseClassConfiguration.cs</FileName>
+      <HashCode>AAAAAAAAAAAAIAIAIABAAAAAAAAAAAAAAAAAQAAIAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Mixins" />
+      <Property Name="FaceInterfaces" />
+    </ShowAsCollectionAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="FaceInterfaces" Type="System.Type" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="5.648" />
+        <Point X="4" Y="6.125" />
+        <Point X="2.5" Y="6.125" />
+        <Point X="2.5" Y="6.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.173" Y="0.112" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="Mixins.Configuration.MixinConfiguration">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\MixinConfiguration.cs</FileName>
+      <HashCode>AAAAAAAIAQEAAAAAAAACAAAAAAAAAAAACAAAAAIAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="IntroducedInterfaces" />
+      <Property Name="Overrides" />
+    </ShowAsCollectionAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="IntroducedInterfaces" Type="System.Type" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="5.648" />
+        <Point X="6.5" Y="6.875" />
+        <Point X="2.75" Y="6.875" />
+      </Path>
+    </AssociationLine>
+  </Class>
+  <Class Name="System.Type" Collapsed="true" HideInheritanceLine="true">
+    <Position X="0.5" Y="6.5" Width="2.25" />
+    <TypeIdentifier />
+    <Lollipop Orientation="Left" Position="0.43" Collapsed="true" />
+  </Class>
+  <Class Name="Mixins.Configuration.OverrideConfiguration">
+    <Position X="8.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Configuration\OverrideConfiguration.cs</FileName>
+      <HashCode>AAAIAAAAIQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Overridden" />
+      <Property Name="Overrider" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Overrider" Type="Mixins.Configuration.MemberConfiguration">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.88" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Class Name="System.Reflection.MemberInfo" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+</ClassDiagram>
