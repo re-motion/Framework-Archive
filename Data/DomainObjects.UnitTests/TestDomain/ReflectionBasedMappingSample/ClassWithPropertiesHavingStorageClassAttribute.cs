@@ -17,9 +17,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     [StorageClass (StorageClass.Persistent)]
     public abstract int Persistent { get; set; }
 
-    [AutomaticProperty]
-    [StorageClass (StorageClass.Transaction)]
-    public abstract object Transaction { get; set; }
+    //[AutomaticProperty]
+    //[StorageClassTransaction]
+    //public abstract object Transaction { get; set; }
 
     [StorageClassNone]
     public object None 

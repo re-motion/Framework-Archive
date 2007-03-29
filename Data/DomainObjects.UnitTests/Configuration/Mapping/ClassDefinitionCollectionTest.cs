@@ -157,14 +157,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
     public void GetMandatoryForInvalidClass ()
     {
-      TestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());
+      LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), "Mapping does not contain class 'Zaphod'.")]
     public void GetMandatoryForInvalidClassID ()
     {
-      TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Zaphod");
+      LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Zaphod");
     }
 
     [Test]

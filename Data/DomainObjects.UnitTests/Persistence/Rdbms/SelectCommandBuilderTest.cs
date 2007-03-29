@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateWithOrderClause ()
     {
-      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       Provider.Connect ();
 
@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
       using (StorageProviderManager manager = new StorageProviderManager ())
       {
         RdbmsProvider provider = (RdbmsProvider) manager.GetMandatory (c_testDomainProviderID);

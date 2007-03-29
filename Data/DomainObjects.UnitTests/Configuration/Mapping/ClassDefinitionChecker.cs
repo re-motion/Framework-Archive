@@ -63,16 +63,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       CheckPropertyDefinitions (expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
     }
 
+    
     public void Check (ClassDefinitionCollection expectedDefinitions, ClassDefinitionCollection actualDefinitions)
     {
-      Check (expectedDefinitions, actualDefinitions, true);
+      Check (expectedDefinitions, actualDefinitions, true, false);
     }
 
     public void Check (ClassDefinitionCollection expectedDefinitions, ClassDefinitionCollection actualDefinitions, bool checkRelations)
     {
-      Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count,
-          string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}",
-          expectedDefinitions.Count, actualDefinitions.Count));
+      Check (expectedDefinitions, actualDefinitions, checkRelations, false);
+    }
+
+    public void Check (
+        ClassDefinitionCollection expectedDefinitions, 
+        ClassDefinitionCollection actualDefinitions, 
+        bool checkRelations, 
+        bool ignoreUnknown)
+    {
+      if (!ignoreUnknown)
+      {
+        Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count,
+            string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}",
+            expectedDefinitions.Count, actualDefinitions.Count));
+      }
 
       Assert.AreEqual (expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired,
           string.Format ("AreResolvedTypesRequired does not match. Expected: {0}, actual: {1}",
@@ -86,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         if (checkRelations)
         {
           RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
-          relationDefinitionChecker.Check (expectedDefinition.MyRelationDefinitions, actualDefinition.MyRelationDefinitions);
+          relationDefinitionChecker.Check (expectedDefinition.MyRelationDefinitions, actualDefinition.MyRelationDefinitions, ignoreUnknown);
         }
       }
     }

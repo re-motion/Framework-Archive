@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithMixedProperties: DomainObject
+  public abstract class ClassWithMixedProperties: TestDomainBase
   {
     protected ClassWithMixedProperties (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)
@@ -30,5 +30,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 
     [AutomaticProperty]
     public abstract ObjectList<ClassWithOneSideRelationProperties> UnidirectionalOneToMany { get; }
+
+    private string PrivateString
+    {
+      get { return GetPropertyValue<string> ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString"); }
+      set { SetPropertyValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString", value); }
+    }
   }
 }

@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 {
   /// <summary>Overrides the name used to represent the type or property in the storage layer.</summary>
   [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public abstract class StorageSpecificNameAttribute: Attribute
+  public abstract class StorageSpecificNameAttribute : Attribute, IMappingAttribute
   {
     private string _name;
 

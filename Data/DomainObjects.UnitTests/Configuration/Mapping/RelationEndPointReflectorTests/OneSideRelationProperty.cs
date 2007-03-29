@@ -91,5 +91,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.AreEqual (CardinalityType.Many, relationEndPointDefiniton.Cardinality);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
+    {
+      PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("BidirectionalOneToOne");
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+
+      Assert.IsTrue (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
+    {
+      PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("BidirectionalOneToMany");
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+
+      Assert.IsTrue (relationEndPointReflector.IsVirtualEndRelationEndpoint());
+    }
   }
 }

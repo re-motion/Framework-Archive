@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void NewDataContainer ()
     {
       DataContainer newDataContainer = Provider.CreateNewDataContainer (
-          TestMappingConfiguration.Current.ClassDefinitions["Computer"]);
+          LegacyTestMappingConfiguration.Current.ClassDefinitions["Computer"]);
 
       newDataContainer["SerialNumber"] = "123";
 
@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void AllDataTypes ()
     {
       ClassDefinition classDefinition =
-          TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
+          LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
 
       DataContainer classWithAllDataTypes = Provider.CreateNewDataContainer (classDefinition);
       ObjectID newID = classWithAllDataTypes.ID;
@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void ExistingObjectRelatesToNew ()
     {
-      ClassDefinition employeeClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Employee)];
+      ClassDefinition employeeClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Employee)];
       Employee newSupervisor = new Employee ();
       Employee existingSubordinate = Employee.GetObject (DomainObjectIDs.Employee1);
 
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = Provider.CreateNewDataContainer (LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);
@@ -240,7 +240,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = Provider.CreateNewDataContainer (LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);
@@ -265,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = Provider.CreateNewDataContainer (LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);

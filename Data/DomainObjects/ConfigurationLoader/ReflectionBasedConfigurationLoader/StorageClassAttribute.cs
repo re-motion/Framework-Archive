@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 {
   /// <summary>Defines if and how a property is managed by the persistence framework.</summary>
   [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public class StorageClassAttribute: Attribute
+  public class StorageClassAttribute : Attribute, IMappingAttribute
   {
     private StorageClass _storageClass;
 

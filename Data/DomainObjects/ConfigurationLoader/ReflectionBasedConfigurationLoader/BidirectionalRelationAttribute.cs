@@ -7,7 +7,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// Declares a relation as bidirectional.
   /// </summary>
   [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public class BidirectionalRelationAttribute: Attribute
+  public class BidirectionalRelationAttribute: Attribute, IMappingAttribute
   {
     private readonly string _oppositeProperty;
 

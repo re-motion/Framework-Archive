@@ -33,8 +33,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      _distributorClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
+      _orderClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      _distributorClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
 
       _checker = new ClassDefinitionChecker ();
     }
@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointTrue ()
     {
-      RelationDefinition orderToOrderItem = TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"];
+      RelationDefinition orderToOrderItem = LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"];
       IRelationEndPointDefinition endPointDefinition = orderToOrderItem.GetEndPointDefinition ("Order", "OrderItems");
 
       Assert.IsTrue (_orderClass.IsRelationEndPoint (endPointDefinition));
@@ -163,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointFalse ()
     {
-      RelationDefinition partnerToPerson = TestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
+      RelationDefinition partnerToPerson = LegacyTestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
       IRelationEndPointDefinition partnerEndPoint = partnerToPerson.GetEndPointDefinition ("Partner", "ContactPerson");
 
       Assert.IsFalse (_orderClass.IsRelationEndPoint (partnerEndPoint));
@@ -179,7 +179,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointWithInheritance ()
     {
-      RelationDefinition partnerToPerson = TestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
+      RelationDefinition partnerToPerson = LegacyTestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
       IRelationEndPointDefinition partnerEndPoint = partnerToPerson.GetEndPointDefinition ("Partner", "ContactPerson");
 
       Assert.IsTrue (_distributorClass.IsRelationEndPoint (partnerEndPoint));
@@ -746,14 +746,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetInheritanceRootClass ()
     {
-      ClassDefinition expected = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition expected = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
       Assert.AreSame (expected, _distributorClass.GetInheritanceRootClass ());
     }
 
     [Test]
     public void GetAllDerivedClasses ()
     {
-      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
       ClassDefinitionCollection allDerivedClasses = companyClass.GetAllDerivedClasses ();
       Assert.IsNotNull (allDerivedClasses);
       Assert.AreEqual (4, allDerivedClasses.Count);
@@ -779,7 +779,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsSameOrBaseClassOfTrueWithBaseClass ()
     {
-      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
       Assert.IsTrue (companyClass.IsSameOrBaseClassOf (_distributorClass));
     }

@@ -312,7 +312,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void CreateNewDataContainer ()
     {
-      ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      ClassDefinition orderClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
       DataContainer container = _persistenceManager.CreateNewDataContainer (orderClass);
 
       Assert.IsNotNull (container);

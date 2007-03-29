@@ -31,10 +31,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _clientClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
-      _locationClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
+      _clientClass = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
+      _locationClass = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
 
-      RelationDefinition relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
+      RelationDefinition relation = LegacyTestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
       _clientEndPoint = (NullRelationEndPointDefinition) relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) relation.EndPointDefinitions[1];
     }

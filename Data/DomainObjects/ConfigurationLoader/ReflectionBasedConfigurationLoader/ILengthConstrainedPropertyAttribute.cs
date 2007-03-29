@@ -1,6 +1,6 @@
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  public interface ILengthConstrainedPropertyAttribute
+  public interface ILengthConstrainedPropertyAttribute: IMappingAttribute
   {
     int? MaximumLength { get;}
   }

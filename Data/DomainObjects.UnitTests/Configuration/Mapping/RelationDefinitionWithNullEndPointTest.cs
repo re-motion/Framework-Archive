@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
+      _relation = LegacyTestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
       _clientEndPoint = (NullRelationEndPointDefinition) _relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];
     }
@@ -45,8 +45,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetOppositeClassDefinition ()
     {
-      Assert.AreSame (TestMappingConfiguration.Current.ClassDefinitions["Client"], _relation.GetOppositeClassDefinition ("Location", "Client"));
-      Assert.AreSame (TestMappingConfiguration.Current.ClassDefinitions["Location"], _relation.GetOppositeClassDefinition ("Client", null));
+      Assert.AreSame (LegacyTestMappingConfiguration.Current.ClassDefinitions["Client"], _relation.GetOppositeClassDefinition ("Location", "Client"));
+      Assert.AreSame (LegacyTestMappingConfiguration.Current.ClassDefinitions["Location"], _relation.GetOppositeClassDefinition ("Client", null));
     }
 
     [Test]

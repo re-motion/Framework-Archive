@@ -8,6 +8,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationEndPointReflector: RelationReflectorBase
   {
+    public static RdbmsRelationEndPointReflector CreateRelationEndPointReflector (PropertyInfo propertyInfo)
+    {
+      return new RdbmsRelationEndPointReflector (propertyInfo);
+    }
+
     public RelationEndPointReflector (PropertyInfo propertyInfo)
         : base (propertyInfo)
     {
@@ -26,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return CreateRelationEndPointDefinition (classDefinition);
     }
 
-    protected virtual bool IsVirtualEndRelationEndpoint()
+    public virtual bool IsVirtualEndRelationEndpoint()
     {
       return IsManySide (PropertyInfo);
     }

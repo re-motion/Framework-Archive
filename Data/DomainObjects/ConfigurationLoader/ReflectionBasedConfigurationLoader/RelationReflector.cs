@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private IRelationEndPointDefinition CreateEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
     {
-      RelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(propertyInfo);
       return relationEndPointReflector.GetMetadata (classDefinitions);
     }
 

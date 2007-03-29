@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _relationDefinition = TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderTicket"];
+      _relationDefinition = LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderTicket"];
       _collection = new RelationDefinitionCollection ();
     }
 

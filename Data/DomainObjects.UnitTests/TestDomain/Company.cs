@@ -3,13 +3,13 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  public class Company : TestDomainBase
+  public class Company: TestDomainBase
   {
     // types
 
     // static members and constants
 
-    public static new Company GetObject (ObjectID id)
+    public new static Company GetObject (ObjectID id)
     {
       return (Company) DomainObject.GetObject (id);
     }
@@ -19,23 +19,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     // construction and disposing
 
     // New customers cannot be created directly.
-    protected Company ()
+    protected Company()
     {
     }
 
     // New customers cannot be created directly.
     protected Company (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
     }
 
     public Company (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Company (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
@@ -66,15 +66,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     private ClassWithoutRelatedClassIDColumnAndDerivation ClassWithoutRelatedClassIDColumnAndDerivation
     {
-      get
-      {
-        return (ClassWithoutRelatedClassIDColumnAndDerivation) GetRelatedObject (
-            "ClassWithoutRelatedClassIDColumnAndDerivation");
-      }
-      set
-      {
-        SetRelatedObject ("ClassWithoutRelatedClassIDColumnAndDerivation", value);
-      }
+      get { return (ClassWithoutRelatedClassIDColumnAndDerivation) GetRelatedObject ("ClassWithoutRelatedClassIDColumnAndDerivation"); }
+      set { SetRelatedObject ("ClassWithoutRelatedClassIDColumnAndDerivation", value); }
     }
   }
 }

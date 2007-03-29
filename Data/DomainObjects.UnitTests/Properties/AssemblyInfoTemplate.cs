@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -60,3 +61,5 @@ using System.Reflection;
 [assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
+
+[assembly: MappingAssembly]

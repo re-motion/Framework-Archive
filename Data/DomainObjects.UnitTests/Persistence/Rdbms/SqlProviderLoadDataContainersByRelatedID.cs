@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void Loading ()
     {
       DataContainerCollection collection = Provider.LoadDataContainersByRelatedID (
-          TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)],
+          LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Order)],
           "Customer",
           DomainObjectIDs.Customer1);
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer personContainer = Provider.LoadDataContainer (DomainObjectIDs.Person6);
 
       DataContainerCollection collection = Provider.LoadDataContainersByRelatedID (
-          TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)],
+          LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)],
           "ContactPerson",
           DomainObjectIDs.Person6);
 
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void LoadWithOrderBy ()
     {
-      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (
           orderDefinition, "Customer", DomainObjectIDs.Customer1);
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void LoadDataContainersByRelatedIDOfDifferentStorageProvider ()
     {
-      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (orderDefinition, "Official", DomainObjectIDs.Official1);
       Assert.IsNotNull (orderContainers);

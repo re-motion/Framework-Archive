@@ -120,6 +120,51 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_UnidirectionalOneToOne ()
+    {
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToOne");
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint());
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_UnidirectionalOneToMany ()
+    {
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToMany");
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
+    {
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToOne");
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
+    {
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToMany");
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
     private PropertyReflector CreatePropertyReflector<T> (string property)
     {
       PropertyInfo propertyInfo = typeof (T).GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

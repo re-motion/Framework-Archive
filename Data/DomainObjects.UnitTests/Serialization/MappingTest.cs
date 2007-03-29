@@ -227,7 +227,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationDefinitionNotInMapping ()
     {
-      RelationDefinition relationDefinition = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("OrderToOrderTicket");
+      RelationDefinition relationDefinition = LegacyTestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("OrderToOrderTicket");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
 
       Assert.IsFalse (object.ReferenceEquals (relationDefinition, deserializedRelationDefinition));
@@ -262,8 +262,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void SimpleClassDefinitionCollection ()
     {
       ClassDefinitionCollection definitions = new ClassDefinitionCollection ();
-      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[0]);
-      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[1]);
+      definitions.Add (LegacyTestMappingConfiguration.Current.ClassDefinitions[0]);
+      definitions.Add (LegacyTestMappingConfiguration.Current.ClassDefinitions[1]);
 
       ClassDefinitionCollection deserializedDefinitions = (ClassDefinitionCollection) SerializeAndDeserialize (definitions);
 
@@ -276,7 +276,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ClassDefinitionNotInMapping ()
     {
-      ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
+      ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
 
       ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
 
@@ -320,7 +320,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinitionWithEnumType ()
     {
       PropertyDefinition enumPropertyDefinition =
-          TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
+          LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
 
       PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
 

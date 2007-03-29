@@ -356,7 +356,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
 
         PropertyDefinition newDefinition =
-            TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderItem)]["Product"];
+            LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (OrderItem)]["Product"];
 
         orderContainer.PropertyValues.Add (new PropertyValue (newDefinition, "Raumschiff"));
         orderContainer["Product"] = "Auto";
@@ -498,7 +498,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Provider.BeginTransaction ();
 
         DataContainerCollection orderTicketContainers = Provider.LoadDataContainersByRelatedID (
-            TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)],
+            LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)],
             "Order",
             DomainObjectIDs.Order1);
 

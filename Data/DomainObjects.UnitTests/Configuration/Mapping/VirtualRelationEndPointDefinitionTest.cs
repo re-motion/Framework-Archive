@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      RelationDefinition customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["CustomerToOrder"];
+      RelationDefinition customerToOrder = LegacyTestMappingConfiguration.Current.RelationDefinitions["CustomerToOrder"];
 
       _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
           "Customer", "Orders");
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionNull ()
     {
       VirtualRelationEndPointDefinition definition = new VirtualRelationEndPointDefinition (
-          TestMappingConfiguration.Current.ClassDefinitions["Order"], "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+          LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"], "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       Assert.IsNull (definition.RelationDefinition);
     }

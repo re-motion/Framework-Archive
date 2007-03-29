@@ -102,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsClassDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions["Order"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"]));
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions["Order"]));
     }
 
@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsPropertyDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions["Order"]["OrderNumber"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"]["OrderNumber"]));
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions["Order"]["OrderNumber"]));
     }
 
@@ -124,15 +124,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void ContainsRelationDefinition ()
     {
 
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]));
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]));
     }
 
     [Test]
     public void ContainsRelationEndPointDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
 
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));

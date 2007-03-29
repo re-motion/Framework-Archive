@@ -21,12 +21,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     // methods and properties
 
     public void Check (
-      RelationDefinitionCollection expectedDefinitions, 
-      RelationDefinitionCollection actualDefinitions)
+        RelationDefinitionCollection expectedDefinitions,
+        RelationDefinitionCollection actualDefinitions)
     {
-      Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
-        string.Format ("Number of relation definitions does not match. Expected: {0}, actual: {1}", 
-        expectedDefinitions.Count, actualDefinitions.Count));
+      Check (expectedDefinitions, actualDefinitions, false);
+    }
+
+    public void Check (
+        RelationDefinitionCollection expectedDefinitions, 
+        RelationDefinitionCollection actualDefinitions,
+        bool ignoreUnknown)
+    {
+      if (!ignoreUnknown)
+      {
+        Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count,
+          string.Format ("Number of relation definitions does not match. Expected: {0}, actual: {1}",
+          expectedDefinitions.Count, actualDefinitions.Count));
+      }
 
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {

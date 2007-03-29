@@ -59,6 +59,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       _onLoadedHasBeenCalled = true;
     }
 
+    [StorageClassNone]
     public object ObjectProperty
     {
       get { return null; }

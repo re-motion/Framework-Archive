@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    protected override bool IsVirtualEndRelationEndpoint()
+    public override bool IsVirtualEndRelationEndpoint()
     {
       if (base.IsVirtualEndRelationEndpoint())
         return true;

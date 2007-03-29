@@ -10,15 +10,18 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   public class ClassReflector
   {
     private Type _type;
-    private readonly ClassDefinitionCollection _cache;
+    private readonly ClassDefinitionCollection _classDefinitions;
+    private readonly List<RelationReflector> _relations;
 
-    public ClassReflector (Type type, ClassDefinitionCollection cache)
+    public ClassReflector (Type type, ClassDefinitionCollection classDefinitions, List<RelationReflector> relations)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull ("relations", relations);
 
       _type = type;
-      _cache = cache;
+      _classDefinitions = classDefinitions;
+      _relations = relations;
     }
 
     public Type Type
@@ -28,13 +31,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public ClassDefinition GetMetadata()
     {
-      if (_cache[Type] != null)
-        return _cache[Type];
+      if (_classDefinitions[Type] != null)
+        return _classDefinitions[Type];
 
-      ClassDefinition classDefinition = CreateClassDefinition();
-      _cache.Add (classDefinition);
+      ClassDefinition classDefiniton = CreateClassDefinition();
+      _classDefinitions.Add (classDefiniton);
 
-      return classDefinition;
+      return classDefiniton;
     }
 
     private ClassDefinition CreateClassDefinition()
@@ -44,21 +47,16 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetStorageSpecificName(),
           GetStorageProviderID(),
           Type,
-          GetBaseClassDefinition());
+          GetBaseClassDefinition(Type));
 
-      MemberInfo[] propertyInfos = Type.FindMembers (
-          MemberTypes.Property,
-          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
-          FindPropertiesFilter,
-          null);
+      MemberInfo[] propertyInfos = GetPropertyInfos();
 
-      CreatePropertyDefinitions(classDefinition, propertyInfos);
+      CreatePropertyDefinitions (classDefinition, propertyInfos);
 
-      List<PropertyInfo> possibleRelationEndPoints = new List<PropertyInfo> ();
       foreach (PropertyInfo propertyInfo in propertyInfos)
       {
         if (IsRelationEndPoint (propertyInfo))
-          possibleRelationEndPoints.Add (propertyInfo);
+          _relations.Add (new RelationReflector (propertyInfo));
       }
 
       return classDefinition;
@@ -73,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    private static bool IsRelationEndPoint (PropertyInfo propertyInfo)
+    private bool IsRelationEndPoint (PropertyInfo propertyInfo)
     {
       return typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType);
     }
@@ -93,30 +91,78 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
     }
 
-    private ClassDefinition GetBaseClassDefinition()
+    private ClassDefinition GetBaseClassDefinition (Type type)
     {
-      if (Type.BaseType == typeof (DomainObject))
+      if (type.BaseType == typeof (DomainObject))
         return null;
 
-      ClassReflector classReflector = new ClassReflector (Type.BaseType, _cache);
+      if (Attribute.IsDefined (type.BaseType, typeof (IgnoreForMappingAttribute), false))
+        return GetBaseClassDefinition (type.BaseType);
+
+      ClassReflector classReflector = new ClassReflector (type.BaseType, _classDefinitions, _relations);
       return classReflector.GetMetadata();
+    }
+
+    private MemberInfo[] GetPropertyInfos()
+    {
+      return Type.FindMembers (
+          MemberTypes.Property,
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
+          FindPropertiesFilter,
+          null);
     }
 
     private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
     {
-      PropertyInfo propertyInfo = ArgumentUtility.CheckNotNullAndType<PropertyInfo> ("member", member);
+      PropertyInfo propertyInfo = (PropertyInfo) member;
 
-      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, true);
-      if (storageClassAttribute != null && storageClassAttribute.StorageClass == StorageClass.None)
+      if (!IsOriginalDeclaringType (propertyInfo))
+      {
+        CheckForMappingAttributes (propertyInfo);
+        return false;
+      }
+
+      if (!IsManagedProperty (propertyInfo))
         return false;
 
-      if (typeof (DomainObjectCollection).IsAssignableFrom (propertyInfo.PropertyType))
-        return false;
-
-      if (ReflectionUtility.GetOriginalDeclaringType (propertyInfo) != propertyInfo.DeclaringType)
+      if (IsVirtualRelationEndPoint (propertyInfo))
         return false;
 
       return true;
+    }
+
+    private bool IsManagedProperty (PropertyInfo propertyInfo)
+    {
+      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, false);
+      if (storageClassAttribute == null)
+        return true;
+
+      return storageClassAttribute.StorageClass != StorageClass.None;
+    }
+
+    private void CheckForMappingAttributes (PropertyInfo propertyInfo)
+    {
+      IMappingAttribute[] mappingAttributes = AttributeUtility.GetCustomAttributes<IMappingAttribute> (propertyInfo, false);
+      if (mappingAttributes.Length > 0)
+      {
+        throw new MappingException (
+            string.Format (
+                "The '{0}' is a mapping attribute and may only be applied at the property's base definiton.\r\n  Type: {1}, property: {2}",
+                mappingAttributes[0].GetType().FullName,
+                propertyInfo.DeclaringType.FullName,
+                propertyInfo.Name));
+      }
+    }
+
+    private static bool IsOriginalDeclaringType (PropertyInfo propertyInfo)
+    {
+      return ReflectionUtility.GetOriginalDeclaringType (propertyInfo) == propertyInfo.DeclaringType;
+    }
+
+    private bool IsVirtualRelationEndPoint (PropertyInfo propertyInfo)
+    {
+      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo);
+      return relationEndPointReflector.IsVirtualEndRelationEndpoint();
     }
   }
 }

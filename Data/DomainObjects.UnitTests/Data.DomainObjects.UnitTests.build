@@ -15,7 +15,9 @@
         <include name="**/*.cs"/>
         <include name="Properties/**/*.cs" />
         <exclude name="bin/**" />
+        <exclude name="Configuration/Mapping/ReferencedTestDomain/*.cs" />
         <exclude name="Configuration/Mapping/TestDomain/*.cs" />
+        <exclude name="Configuration/Mapping/TestDomainWithErrors/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />   
       </sources>
       <references failonempty="true">
@@ -46,7 +48,9 @@
 
     <copy todir="${build.test.outputdir}" overwrite="true">
       <fileset>
+        <include name="Configuration/Mapping/ReferencedTestDomain/*.cs" />
         <include name="Configuration/Mapping/TestDomain/*.cs" />
+        <include name="Configuration/Mapping/TestDomainWithErrors/*.cs" />
       </fileset>
     </copy>
     

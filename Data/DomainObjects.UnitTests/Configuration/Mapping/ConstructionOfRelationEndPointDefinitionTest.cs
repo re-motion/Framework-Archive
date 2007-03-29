@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
             + " but non-virtual properties must be of type 'Rubicon.Data.DomainObjects.ObjectID'.")]
     public void PropertyOfWrongType ()
     {
-      ClassDefinition companyDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
       RelationEndPointDefinition endPointDefinition = new RelationEndPointDefinition (
           companyDefinition, "Name", false);
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         "Relation definition error for end point: Class 'Company' has no property 'UndefinedProperty'.")]
     public void UndefinedProperty ()
     {
-      ClassDefinition companyDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
       RelationEndPointDefinition endPointDefinition = new RelationEndPointDefinition (
           companyDefinition, "UndefinedProperty", false);

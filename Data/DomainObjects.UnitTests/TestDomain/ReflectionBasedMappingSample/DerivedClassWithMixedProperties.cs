@@ -22,5 +22,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     [AutomaticProperty]
     [RdbmsColumn ("NewString")]
     public new abstract string String { get; set; }
+
+    [RdbmsColumn ("DerivedPrivateString")]
+    private string PrivateString
+    {
+      get { return GetPropertyValue<string> ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.PrivateString"); }
+      set { SetPropertyValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.PrivateString", value); }
+    }
   }
 }

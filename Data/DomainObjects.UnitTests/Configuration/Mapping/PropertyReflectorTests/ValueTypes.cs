@@ -75,12 +75,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException),
         "The property type System.Object is not supported.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes, property: ObjectProperty")]
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ValueTypes, property: ObjectProperty")]
     public void GetMetadata_WithInvalidPropertyType()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("ObjectProperty");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ValueTypes> ("ObjectProperty");
 
       propertyReflector.GetMetadata();
+    }
+
+    public object ObjectProperty
+    {
+      get { return null; }
+      set { }
     }
   }
 }

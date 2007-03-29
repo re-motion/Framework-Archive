@@ -20,6 +20,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     }
 
     [Test]
+    public void CreateRelationEndPointReflector ()
+    {
+      PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("NoAttribute");
+      Assert.IsInstanceOfType (typeof (RdbmsRelationEndPointReflector), RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo));
+    }
+
+    [Test]
     [ExpectedException (typeof (MappingException),
         "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
         + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
