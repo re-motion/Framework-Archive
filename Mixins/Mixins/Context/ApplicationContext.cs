@@ -27,14 +27,7 @@ namespace Mixins.Context
 
     public ClassContext GetClassContext (Type type)
     {
-      if (HasClassContext (type))
-      {
-        return _classContexts[type];
-      }
-      else
-      {
-        return null;
-      }
+      return HasClassContext (type)? _classContexts[type] : null;
     }
 
     public bool HasClassContext (Type type)

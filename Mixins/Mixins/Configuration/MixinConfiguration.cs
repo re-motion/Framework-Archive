@@ -5,22 +5,44 @@ namespace Mixins.Configuration
 {
   public class MixinConfiguration : ClassConfiguration
   {
-    private List<Type> _introducedInterfaces = new List<Type> ();
+    private BaseClassConfiguration _baseClass;
+    private Dictionary<Type, InterfaceIntroductionConfiguration> _interfaceIntroductions = new Dictionary<Type, InterfaceIntroductionConfiguration> ();
     private List<OverrideConfiguration> _overrides = new List<OverrideConfiguration> ();
 
-    public MixinConfiguration (Type type)
+    public MixinConfiguration (Type type, BaseClassConfiguration baseClass)
         : base (type)
     {
+      _baseClass = baseClass;
     }
 
-    public IEnumerable<Type> IntroducedInterfaces
+    public BaseClassConfiguration BaseClass
     {
-      get { return _introducedInterfaces; }
+      get { return _baseClass; }
     }
 
-    public void AddIntroducedInterface (Type newInterface)
+    public IEnumerable<InterfaceIntroductionConfiguration> InterfaceIntroductions
     {
-      _introducedInterfaces.Add (newInterface);
+      get { return _interfaceIntroductions.Values; }
+    }
+
+    public bool HasInterfaceIntroduction (Type type)
+    {
+      return _interfaceIntroductions.ContainsKey (type);
+    }
+
+    public void AddInterfaceIntroduction (InterfaceIntroductionConfiguration introduction)
+    {
+      if (HasInterfaceIntroduction (introduction.Type))
+      {
+        string message = string.Format("Mixin {0} already has introduction {1}.", FullName, introduction.FullName);
+        throw new InvalidOperationException (message);
+      }
+      _interfaceIntroductions.Add (introduction.Type, introduction);
+    }
+
+    public InterfaceIntroductionConfiguration GetInterfaceIntroduction (Type type)
+    {
+      return HasInterfaceIntroduction(type) ? _interfaceIntroductions[type] : null;
     }
 
     public IEnumerable<OverrideConfiguration> Overrides

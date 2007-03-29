@@ -28,14 +28,7 @@ namespace Mixins.Configuration
 
     public BaseClassConfiguration GetBaseClassConfiguration (Type type)
     {
-      if (HasBaseClassConfiguration (type))
-      {
-        return _baseClassConfigurations[type];
-      }
-      else
-      {
-        return null;
-      }
+      return HasBaseClassConfiguration (type) ? _baseClassConfigurations[type] : null;
     }
 
     public bool HasBaseClassConfiguration (Type type)

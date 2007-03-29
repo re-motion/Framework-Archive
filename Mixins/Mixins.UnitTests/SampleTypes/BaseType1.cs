@@ -6,5 +6,9 @@ namespace Mixins.UnitTests.SampleTypes
 {
   public class BaseType1
   {
+    public virtual string VirtualMethod ()
+    {
+      return "BaseType1.VirtualMethod";
+    }
   }
 }

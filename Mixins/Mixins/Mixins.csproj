@@ -35,7 +35,12 @@
   <ItemGroup>
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\BaseClassConfiguration.cs" />
+    <Compile Include="Configuration\Building\ApplicationConfigurationBuilder.cs" />
+    <Compile Include="Configuration\Building\BaseClassConfigurationBuilder.cs" />
+    <Compile Include="Configuration\Building\MixinConfigurationBuilder.cs" />
     <Compile Include="Configuration\ClassConfiguration.cs" />
+    <Compile Include="Configuration\ConfigurationBuilder.cs" />
+    <Compile Include="Configuration\InterfaceIntroductionConfiguration.cs" />
     <Compile Include="Configuration\MemberConfiguration.cs" />
     <Compile Include="Configuration\MixinConfiguration.cs" />
     <Compile Include="Configuration\OverrideConfiguration.cs" />
@@ -44,6 +49,7 @@
     <Compile Include="Context\DefaultContextBuilder.cs" />
     <Compile Include="Context\MixinDefinition.cs" />
     <Compile Include="MixinAttribute.cs" />
+    <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
