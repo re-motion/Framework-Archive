@@ -50,7 +50,9 @@
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />
     <Compile Include="Context\MixinDefinition.cs" />
+    <Compile Include="Mixin.cs" />
     <Compile Include="MixinAttribute.cs" />
+    <Compile Include="MixinInitializationMethodAttribute.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

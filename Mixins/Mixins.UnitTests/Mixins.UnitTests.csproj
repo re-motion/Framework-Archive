@@ -38,8 +38,15 @@
     <Compile Include="DefaultContextBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleTypes\BaseType1.cs" />
-    <Compile Include="SampleTypes\Mixin1ForBT1.cs" />
-    <Compile Include="SampleTypes\Mixin2ForBT1.cs" />
+    <Compile Include="SampleTypes\BaseType2.cs" />
+    <Compile Include="SampleTypes\BaseType3.cs" />
+    <Compile Include="SampleTypes\BT1Mixin1.cs" />
+    <Compile Include="SampleTypes\BT2Mixin1.cs" />
+    <Compile Include="SampleTypes\BT1Mixin2.cs" />
+    <Compile Include="SampleTypes\BT3Mixin1.cs" />
+    <Compile Include="SampleTypes\BT3Mixin2.cs" />
+    <Compile Include="SampleTypes\BT3Mixin3.cs" />
+    <Compile Include="SampleTypes\BT3Mixin4.cs" />
     <Compile Include="SignatureCheckerTests.cs" />
   </ItemGroup>
   <ItemGroup>

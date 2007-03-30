@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Mixins.Context;
+using System.Collections.Generic;
 
 namespace Mixins.Configuration.Building
 {
@@ -27,8 +28,9 @@ namespace Mixins.Configuration.Building
 
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
+      
       // TODO: adjust face interfaces accordingly
-
+      AnalyzeInitializationMethods (mixin);
     }
 
     private void InitializeMembers (MixinConfiguration mixin)
@@ -80,6 +82,26 @@ namespace Mixins.Configuration.Building
         }
       }
       return null;
+    }
+
+    private void AnalyzeInitializationMethods (MixinConfiguration mixin)
+    {
+      foreach (MethodInfo method in GetMixinInitializationMethods (mixin.Type))
+      {
+        MethodConfiguration methodConf = new MethodConfiguration (method, mixin);
+        mixin.AddInitializationMethod (methodConf);
+      }
+    }
+
+    private IEnumerable<MethodInfo> GetMixinInitializationMethods (Type type)
+    {
+      foreach (MethodInfo method in type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+      {
+        if (method.IsDefined (typeof (MixinInitializationMethodAttribute), true))
+        {
+          yield return method;
+        }
+      }
     }
   }
 }

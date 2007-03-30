@@ -2,7 +2,7 @@ using System;
 
 namespace Mixins
 {
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)] // MixinAttribute is not inherited!
   public class MixinAttribute : Attribute
   {
     private Type _targetType;

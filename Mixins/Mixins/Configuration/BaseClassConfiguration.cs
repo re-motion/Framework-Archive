@@ -16,6 +16,11 @@ namespace Mixins.Configuration
     {
     }
 
+    public bool IsInterface
+    {
+      get { return Type.IsInterface; }
+    }
+
     public IEnumerable<MixinConfiguration> Mixins
     {
       get { return _mixins.Values; }

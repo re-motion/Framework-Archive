@@ -30,7 +30,7 @@ namespace Mixins.Context
       {
         if (t.IsDefined (typeof (MixinAttribute), true))
         {
-          foreach (MixinAttribute mixinAttribute in t.GetCustomAttributes(typeof(MixinAttribute), true))
+          foreach (MixinAttribute mixinAttribute in t.GetCustomAttributes(typeof(MixinAttribute), false))
           {
             MixinDefinition definition = new MixinDefinition(mixinAttribute, t);
             targetContext.GetOrAddClassContext (definition.TargetType).AddMixinDefinition (definition);

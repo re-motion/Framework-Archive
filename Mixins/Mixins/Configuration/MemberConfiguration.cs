@@ -97,14 +97,7 @@ namespace Mixins.Configuration
 
     public MemberConfiguration GetOverride (Type overrider)
     {
-      if (HasOverride (overrider))
-      {
-        return _overrides[overrider];
-      }
-      else
-      {
-        return null;
-      }
+      return HasOverride (overrider) ? _overrides[overrider] : null;
     }
 
     public bool CanBeOverriddenBy (MemberConfiguration overrider)

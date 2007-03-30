@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Mixins.Configuration
 {
@@ -7,10 +8,16 @@ namespace Mixins.Configuration
   {
     private BaseClassConfiguration _baseClass;
     private Dictionary<Type, InterfaceIntroductionConfiguration> _interfaceIntroductions = new Dictionary<Type, InterfaceIntroductionConfiguration> ();
+    private Dictionary<MethodInfo, MethodConfiguration> _initializationMethods = new Dictionary<MethodInfo, MethodConfiguration> ();
 
     public MixinConfiguration (Type type, BaseClassConfiguration baseClass)
         : base (type)
     {
+      if (type.IsInterface)
+      {
+        string message = string.Format("Interfaces ({0}) are not allowed as mixin types.", type.FullName);
+        throw new ArgumentException (message, "type");
+      }
       _baseClass = baseClass;
     }
 
@@ -56,6 +63,32 @@ namespace Mixins.Configuration
           }
         }
       }
+    }
+
+    public IEnumerable<MethodConfiguration> InitializationMethods
+    {
+      get { return _initializationMethods.Values; }
+    }
+
+    public bool HasInitializationMethod (MethodInfo method)
+    {
+      return _initializationMethods.ContainsKey (method);
+    }
+
+    public void AddInitializationMethod (MethodConfiguration initializationMethod)
+    {
+      if (HasInitializationMethod (initializationMethod.MethodInfo))
+      {
+        string message = string.Format ("Cannot at initialization method {0} to mixin {1}, an equivalent initialization method ({2}) already exists.",
+          initializationMethod.FullName, FullName, GetInitializationMethod (initializationMethod.MethodInfo).FullName);
+        throw new InvalidOperationException (message);
+      }
+      _initializationMethods.Add (initializationMethod.MethodInfo, initializationMethod);
+    }
+
+    public MethodConfiguration GetInitializationMethod (MethodInfo method)
+    {
+      return HasInitializationMethod (method) ? _initializationMethods[method] : null;
     }
   }
 }

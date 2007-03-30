@@ -12,5 +12,10 @@ namespace Mixins.Configuration
       builder.Apply (context);
       return builder.GetConfiguration ();
     }
+
+    public static BaseClassConfiguration GetMergedConfiguration (Type type, ApplicationConfiguration source)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
   }
 }
