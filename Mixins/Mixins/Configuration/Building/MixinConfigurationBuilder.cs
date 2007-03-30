@@ -20,35 +20,66 @@ namespace Mixins.Configuration.Building
 
     public void Apply (MixinDefinition mixinDefinition)
     {
-      MixinConfiguration mixinConfiguration = new MixinConfiguration(mixinDefinition.MixinType, BaseClass);
-      BaseClass.AddMixin (mixinConfiguration);
+      MixinConfiguration mixin = new MixinConfiguration(mixinDefinition.MixinType, BaseClass);
+      BaseClass.AddMixin (mixin);
 
-      InitializeMembers (mixinConfiguration);
+      InitializeMembers (mixin);
 
-      InitializeInterfaceIntroductions (mixinConfiguration);
-      // TODO: adjust face interfaces and overrides accordingly
+      AnalyzeInterfaceIntroductions (mixin);
+      AnalyzeOverrides (mixin);
+      // TODO: adjust face interfaces accordingly
 
     }
 
-    private void InitializeMembers (MixinConfiguration mixinConfiguration)
+    private void InitializeMembers (MixinConfiguration mixin)
     {
-      foreach (MethodInfo method in mixinConfiguration.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+      foreach (MethodInfo method in mixin.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
       {
         if (method.IsPublic)
         {
-          mixinConfiguration.AddMember (new MemberConfiguration (method, mixinConfiguration));
+          mixin.AddMember (new MethodConfiguration (method, mixin));
         }
       }
     }
 
-    private void InitializeInterfaceIntroductions (MixinConfiguration mixinConfiguration)
+    private void AnalyzeInterfaceIntroductions (MixinConfiguration mixin)
     {
-      foreach (Type implementedInterface in mixinConfiguration.ImplementedInterfaces)
+      foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
-        InterfaceIntroductionConfiguration introducedInterface = new InterfaceIntroductionConfiguration (implementedInterface, mixinConfiguration);
-        mixinConfiguration.AddInterfaceIntroduction (introducedInterface);
+        InterfaceIntroductionConfiguration introducedInterface = new InterfaceIntroductionConfiguration (implementedInterface, mixin);
+        mixin.AddInterfaceIntroduction (introducedInterface);
         BaseClass.AddIntroducedInterface (introducedInterface);
       }
+    }
+
+    private void AnalyzeOverrides (MixinConfiguration mixin)
+    {
+      foreach (MemberConfiguration member in mixin.Members)
+      {
+        if (member.MemberInfo.IsDefined (typeof (OverrideAttribute), true))
+        {
+          MemberConfiguration baseMember = FindBaseMember (member, mixin);
+          if (baseMember == null)
+          {
+            string message = string.Format ("Could not find virtual base member for overrider {0}.", member.FullName);
+            throw new ConfigurationException (message);
+          }
+          member.Base = baseMember;
+          baseMember.AddOverride (member);
+        }
+      }
+    }
+
+    private MemberConfiguration FindBaseMember (MemberConfiguration overrider, MixinConfiguration mixin)
+    {
+      foreach (MemberConfiguration classMember in mixin.BaseClass.Members)
+      {
+        if (classMember.CanBeOverriddenBy (overrider))
+        {
+          return classMember;
+        }
+      }
+      return null;
     }
   }
 }

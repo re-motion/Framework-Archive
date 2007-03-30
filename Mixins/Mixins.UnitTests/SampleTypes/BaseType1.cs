@@ -10,5 +10,10 @@ namespace Mixins.UnitTests.SampleTypes
     {
       return "BaseType1.VirtualMethod";
     }
+
+    public virtual string VirtualMethod (string text)
+    {
+      return "BaseType1.VirtualMethod(" + text + ")";
+    }
   }
 }

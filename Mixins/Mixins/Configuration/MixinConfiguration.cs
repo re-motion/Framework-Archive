@@ -7,7 +7,6 @@ namespace Mixins.Configuration
   {
     private BaseClassConfiguration _baseClass;
     private Dictionary<Type, InterfaceIntroductionConfiguration> _interfaceIntroductions = new Dictionary<Type, InterfaceIntroductionConfiguration> ();
-    private List<OverrideConfiguration> _overrides = new List<OverrideConfiguration> ();
 
     public MixinConfiguration (Type type, BaseClassConfiguration baseClass)
         : base (type)
@@ -45,14 +44,18 @@ namespace Mixins.Configuration
       return HasInterfaceIntroduction(type) ? _interfaceIntroductions[type] : null;
     }
 
-    public IEnumerable<OverrideConfiguration> Overrides
+    public IEnumerable<MemberConfiguration> Overrides
     {
-      get { return _overrides; }
-    }
-
-    public void AddOverride (OverrideConfiguration newOverride)
-    {
-      _overrides.Add (newOverride);
+      get
+      {
+        foreach (MemberConfiguration member in Members)
+        {
+          if (member.Base != null)
+          {
+            yield return member;
+          }
+        }
+      }
     }
   }
 }

@@ -37,13 +37,15 @@
     <Compile Include="Configuration\BaseClassConfiguration.cs" />
     <Compile Include="Configuration\Building\ApplicationConfigurationBuilder.cs" />
     <Compile Include="Configuration\Building\BaseClassConfigurationBuilder.cs" />
+    <Compile Include="Configuration\Building\ConfigurationException.cs" />
     <Compile Include="Configuration\Building\MixinConfigurationBuilder.cs" />
     <Compile Include="Configuration\ClassConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Configuration\InterfaceIntroductionConfiguration.cs" />
     <Compile Include="Configuration\MemberConfiguration.cs" />
+    <Compile Include="Configuration\MethodConfiguration.cs" />
     <Compile Include="Configuration\MixinConfiguration.cs" />
-    <Compile Include="Configuration\OverrideConfiguration.cs" />
+    <Compile Include="Configuration\SignatureChecker.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />

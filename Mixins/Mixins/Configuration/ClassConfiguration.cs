@@ -51,12 +51,12 @@ namespace Mixins.Configuration
 
     public void AddMember (MemberConfiguration newMember)
     {
-      if (HasMember (newMember.Member))
+      if (HasMember (newMember.MemberInfo))
       {
         string message = string.Format ("Class {0} already has member {1}.", FullName, newMember.FullName);
         throw new InvalidOperationException (message);
       }
-      _members.Add (newMember.Member, newMember);
+      _members.Add (newMember.MemberInfo, newMember);
     }
   }
 }

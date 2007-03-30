@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Mixins.Context;
 using System.Reflection;
@@ -44,34 +45,65 @@ namespace Mixins.UnitTests
     }
 
     [Test]
-    public void Members ()
+    public void Methods ()
     {
       ApplicationConfiguration configuration = GetConfiguration ();
       BaseClassConfiguration classConfiguration = configuration.GetBaseClassConfiguration (typeof (BaseType1));
 
-      Assert.IsTrue (classConfiguration.HasMember (typeof (BaseType1).GetMethod ("VirtualMethod")));
-      Assert.IsFalse (classConfiguration.HasMember(typeof(Mixin1ForBT1).GetMethod("VirtualMethod")));
-      MemberConfiguration member = classConfiguration.GetMember(typeof (BaseType1).GetMethod ("VirtualMethod"));
+      MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
+      MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] { typeof (string) });
+      MethodInfo mixinMethod1 = typeof (Mixin1ForBT1).GetMethod ("VirtualMethod", new Type[0]);
+
+      Assert.IsTrue (classConfiguration.HasMember (baseMethod1));
+      Assert.IsFalse (classConfiguration.HasMember(mixinMethod1));
+      MemberConfiguration member = classConfiguration.GetMember(baseMethod1);
 
       Assert.AreEqual ("VirtualMethod", member.Name);
       Assert.AreEqual (typeof (BaseType1).FullName + ".VirtualMethod", member.FullName);
       Assert.IsTrue (member.IsMethod);
       Assert.IsFalse (member.IsProperty);
       Assert.IsFalse (member.IsEvent);
-      Assert.AreSame (classConfiguration, member.ParentClass);
+      Assert.AreSame (classConfiguration, member.DeclaringClass);
+
+      Assert.IsTrue (classConfiguration.HasMember (baseMethod2));
+      Assert.AreNotSame (member, classConfiguration.GetMember (baseMethod2));
 
       MixinConfiguration mixinConf1 = classConfiguration.GetMixin (typeof (Mixin1ForBT1));
-      
-      Assert.IsFalse (mixinConf1.HasMember (typeof (BaseType1).GetMethod ("VirtualMethod")));
-      Assert.IsTrue(mixinConf1.HasMember(typeof(Mixin1ForBT1).GetMethod("VirtualMethod")));
-      member = mixinConf1.GetMember (typeof (Mixin1ForBT1).GetMethod ("VirtualMethod"));
+
+      Assert.IsFalse (mixinConf1.HasMember (baseMethod1));
+      Assert.IsTrue(mixinConf1.HasMember(mixinMethod1));
+      member = mixinConf1.GetMember (mixinMethod1);
 
       Assert.AreEqual ("VirtualMethod", member.Name);
       Assert.AreEqual (typeof (Mixin1ForBT1).FullName + ".VirtualMethod", member.FullName);
       Assert.IsTrue (member.IsMethod);
       Assert.IsFalse (member.IsProperty);
       Assert.IsFalse (member.IsEvent);
-      Assert.AreSame (mixinConf1, member.ParentClass);
+      Assert.AreSame (mixinConf1, member.DeclaringClass);
+    }
+
+    [Test]
+    public void Overrides ()
+    {
+      ApplicationConfiguration configuration = GetConfiguration ();
+      BaseClassConfiguration classConfiguration = configuration.GetBaseClassConfiguration (typeof (BaseType1));
+      MixinConfiguration mixinConf1 = classConfiguration.GetMixin(typeof(Mixin1ForBT1));
+
+      MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
+      MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] { typeof (string) });
+      MethodInfo mixinMethod1 = typeof (Mixin1ForBT1).GetMethod ("VirtualMethod", new Type[0]);
+
+      MemberConfiguration overridden = classConfiguration.GetMember(baseMethod1);
+
+      Assert.IsTrue (overridden.HasOverride (typeof(Mixin1ForBT1)));
+      MemberConfiguration overrider = overridden.GetOverride (typeof (Mixin1ForBT1));
+      
+      Assert.AreSame (overrider, mixinConf1.GetMember(mixinMethod1));
+      Assert.IsNotNull (overrider.Base);
+      Assert.AreSame(overridden, overrider.Base);
+
+      MemberConfiguration notOverridden = classConfiguration.GetMember (baseMethod2);
+      Assert.AreEqual (0, new List<MemberConfiguration>(notOverridden.Overrides).Count);
     }
   }
 }

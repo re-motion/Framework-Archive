@@ -40,6 +40,7 @@
     <Compile Include="SampleTypes\BaseType1.cs" />
     <Compile Include="SampleTypes\Mixin1ForBT1.cs" />
     <Compile Include="SampleTypes\Mixin2ForBT1.cs" />
+    <Compile Include="SignatureCheckerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mixins\Mixins.csproj">

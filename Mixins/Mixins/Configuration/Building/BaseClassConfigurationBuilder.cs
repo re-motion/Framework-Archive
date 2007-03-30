@@ -34,7 +34,7 @@ namespace Mixins.Configuration.Building
       {
         if (method.IsPublic || method.IsFamily)
         {
-          classConfiguration.AddMember (new MemberConfiguration (method, classConfiguration));
+          classConfiguration.AddMember (new MethodConfiguration (method, classConfiguration));
         }
       }
     }
