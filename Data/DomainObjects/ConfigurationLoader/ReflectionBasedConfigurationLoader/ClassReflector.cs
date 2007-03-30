@@ -105,7 +105,20 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private MemberInfo[] GetPropertyInfos()
     {
-      return Type.FindMembers (
+      List<MemberInfo> propertyInfos = new List<MemberInfo>();
+      Type type = Type;
+      do 
+      {
+        propertyInfos.AddRange (GetPropertyInfos (type));
+        type = type.BaseType;
+      } while (Attribute.IsDefined (type, typeof (IgnoreForMappingAttribute), false));
+
+      return propertyInfos.ToArray();
+    }
+
+    private MemberInfo[] GetPropertyInfos (Type type)
+    {
+      return type.FindMembers (
           MemberTypes.Property,
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
           FindPropertiesFilter,
