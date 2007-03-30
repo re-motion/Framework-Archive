@@ -116,6 +116,8 @@
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTestBase.cs" />
+    <Compile Include="Configuration\Mapping\RdbmsClassReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\LengthConstrainedPropertyAttributeTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BaseTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BinaryProperty.cs" />
@@ -143,6 +145,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\ClassWithPropertyTypeInOtherAssembly.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\AssemblyInfo.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\AssemblyInfo.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidBidirectionalRelation.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Factories\LegacyTestMappingConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
@@ -573,6 +576,7 @@
     <Compile Include="TableInheritance\TestDomain\Person.cs" />
     <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs" />
     <Compile Include="TableInheritance\ValueConverterTest.cs" />
+    <Compile Include="TestDomain\AbstractClassNotInMapping.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -668,13 +672,12 @@
     </Compile>
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBinaryProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithManySideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedPropertiesNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStringProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageClassAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageSpecificName.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedProperties.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedPropertiesNotInMapping.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithMixedPropertiesNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
       <SubType>Code</SubType>
@@ -682,6 +685,7 @@
     <Compile Include="TestDomain\Supplier.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDomain\TestDomainAttribute.cs" />
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>
     </Compile>

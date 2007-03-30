@@ -129,6 +129,7 @@
     <Compile Include="TestDomain\Client.cs" />
     <Compile Include="TestDomain\Company.cs" />
     <Compile Include="TestDomain\Computer.cs" />
+    <Compile Include="TestDomain\AbstractClassNotInMapping.cs" />
     <Compile Include="TestDomain\Customer.cs" />
     <Compile Include="TestDomain\Distributor.cs" />
     <Compile Include="TestDomain\Employee.cs" />

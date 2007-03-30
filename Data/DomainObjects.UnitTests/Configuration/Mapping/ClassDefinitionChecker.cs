@@ -38,6 +38,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           string.Format ("IsClassTypeResolved of class definition '{0}' does not match. Expected: {1}, actual: {2}",
           expectedDefinition.ID, expectedDefinition.IsClassTypeResolved, actualDefinition.IsClassTypeResolved));
 
+      Assert.AreEqual (expectedDefinition.IsAbstract, actualDefinition.IsAbstract,
+          string.Format ("IsAbstract of class definition '{0}' does not match. Expected: {1}, actual: {2}",
+          expectedDefinition.ID, expectedDefinition.IsAbstract, actualDefinition.IsAbstract));
+
       Assert.AreEqual (expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID,
           string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}",
           expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID));

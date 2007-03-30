@@ -21,6 +21,7 @@ public class ClassDefinition : ISerializable, IObjectReference
   private Type _classType;
   private string _classTypeName;
   private string _storageProviderID;
+  private bool? _isAbstract;
   private ClassDefinition _baseClass;
   private ClassDefinitionCollection _derivedClasses;
   private PropertyDefinitionCollection _propertyDefinitions;
@@ -50,7 +51,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNullOrEmpty ("classTypeName", classTypeName);
 
-    Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassTypeName, baseClass);
+    Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassTypeName, baseClass, null);
   }
 
   public ClassDefinition (string id, string entityName, string storageProviderID, Type classType)
@@ -58,19 +59,31 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
   }
 
-  public ClassDefinition (
-      string id, 
-      string entityName, 
-      string storageProviderID, 
-      Type classType, 
-      ClassDefinition baseClass)
+  public ClassDefinition (string id, string entityName, string storageProviderID, Type classType, ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-    if (entityName == string.Empty) throw new ArgumentEmptyException ("entityName");
+    if (entityName == string.Empty)
+      throw new ArgumentEmptyException ("entityName");
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNull ("classType", classType);
 
-    Initialize (id, entityName, storageProviderID, classType, null, false, baseClass);
+    Initialize (id, entityName, storageProviderID, classType, null, false, baseClass, null);
+  }
+
+  public ClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
+    : this (id, entityName, storageProviderID, classType, isAbstract, null)
+  {
+  }
+
+  public ClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ClassDefinition baseClass)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+    if (entityName == string.Empty) 
+      throw new ArgumentEmptyException ("entityName");
+    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+    ArgumentUtility.CheckNotNull ("classType", classType);
+
+    Initialize (id, entityName, storageProviderID, classType, null, false, baseClass, isAbstract);
   }
 
   private void Initialize (
@@ -80,7 +93,8 @@ public class ClassDefinition : ISerializable, IObjectReference
       Type classType, 
       string classTypeName, 
       bool resolveClassTypeName, 
-      ClassDefinition baseClass)
+      ClassDefinition baseClass, 
+      bool? isAbstract)
   {
     if (resolveClassTypeName)
       classType = Type.GetType (classTypeName, true);
@@ -96,6 +110,12 @@ public class ClassDefinition : ISerializable, IObjectReference
     _classType = classType;
     _classTypeName = classTypeName;
     _storageProviderID = storageProviderID;
+    if (isAbstract.HasValue)
+      _isAbstract = isAbstract;
+    else if (_classType != null)
+      _isAbstract = classType.IsAbstract;
+    else
+      _isAbstract = null;
 
     _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (resolveClassTypeName), true);
     _propertyDefinitions = new PropertyDefinitionCollection (this);
@@ -481,6 +501,17 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return (_baseClass != null || _derivedClasses.Count > 0); }
   }
 
+  public bool IsAbstract
+  {
+    get
+    {
+      if (_classType == null)
+        throw CreateInvalidOperationException ("Cannot evaluate IsAbstract for ClassDefinition '{0}' since ResolveTypeNames is false.", _id);
+        
+      return _isAbstract.Value;
+    }
+  }
+
   [Obsolete ("Check after Refactoring. (Version 1.7.42")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void SetBaseClass (ClassDefinition baseClass)
@@ -498,7 +529,7 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
     if (_classType != null)
     {
-      if (GetEntityName () == null && !_classType.IsAbstract)
+      if (GetEntityName () == null && !IsAbstract)
       {
         throw CreateMappingException (
             "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",

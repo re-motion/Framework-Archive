@@ -5,12 +5,11 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassReflectorTest: StandardMappingTest
+  public class RdbmsClassReflectorTest : ClassReflectorTestBase
   {
     private ClassDefinitionChecker _classDefinitionChecker;
     private ClassDefinitionCollection _classDefinitions;
@@ -23,12 +22,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _classDefinitionChecker = new ClassDefinitionChecker();
       _classDefinitions = new ClassDefinitionCollection();
       _relations = new List<RelationReflector>();
+
+    }
+
+    [Test]
+    public void GetMetadata_ForClassWithStorageSpecificIdentifier ()
+    {
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (ClassHavingStorageSpecificIdentifierAttribute), _classDefinitions, _relations);
+
+      ClassDefinition actual = classReflector.GetMetadata ();
+
+      Assert.IsNotNull (actual);
+      Assert.AreEqual (
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassHavingStorageSpecificIdentifierAttribute", 
+        actual.ID);
+      Assert.AreEqual ("TableName", actual.MyEntityName);
     }
 
     [Test]
     public void GetMetadata_ForBaseClass()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperties), _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (ClassWithMixedProperties), _classDefinitions, _relations);
       ClassDefinition expected = CreateClassWithMixedPropertiesClassDefinition();
 
       ClassDefinition actual = classReflector.GetMetadata();
@@ -43,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMetadata_ForDerivedClass()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
       ClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition();
 
       ClassDefinition actual = classReflector.GetMetadata();
@@ -59,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMetadata_ForDerivedClassWithBaseClassAlreadyInClassDefinitionCollection()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
       ClassDefinition expectedBaseClass = CreateClassWithMixedPropertiesClassDefinition();
       _classDefinitions.Add (expectedBaseClass);
 
@@ -75,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMetadata_ForDerivedClassWithDerivedClassAlreadyInClassDefinitionCollection()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (DerivedClassWithMixedProperties), _classDefinitions, _relations);
       ClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition();
       ClassDefinition expectedBaseClass = expected.BaseClass;
       _classDefinitions.Add (expectedBaseClass);
@@ -94,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMetadata_ForClassWithOneSideRelationProperties()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithOneSideRelationProperties), _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (typeof (ClassWithOneSideRelationProperties), _classDefinitions, _relations);
       ClassDefinition expected = CreateClassWithOneSideRelationPropertiesClassDefinition();
 
       ClassDefinition actual = classReflector.GetMetadata();
@@ -117,7 +131,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
           true,
           false);
-      ClassReflector classReflector = new ClassReflector (derivedClass, _classDefinitions, _relations);
+      ClassReflector classReflector = new RdbmsClassReflector (derivedClass, _classDefinitions, _relations);
 
       classReflector.GetMetadata();
     }
@@ -128,7 +142,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties",
           "ClassWithMixedProperties",
           "TestDomain",
-          typeof (ClassWithMixedProperties));
+          typeof (ClassWithMixedProperties),
+          false);
 
       CreatePropertyDefinitionsForClassWithMixedProperties (classDefinition);
 
@@ -139,10 +154,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition classDefinition = new ClassDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties",
-          "DerivedClassWithMixedProperties",
+          null,
           "TestDomain",
           typeof (DerivedClassWithMixedProperties),
-          CreateClassWithMixedPropertiesClassDefinition());
+          false,
+          CreateClassWithMixedPropertiesClassDefinition ());
 
       CreatePropertyDefinitionsForDerivedClassWithMixedProperties (classDefinition);
 
@@ -155,105 +171,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties",
           "ClassWithOneSideRelationProperties",
           "TestDomain",
-          typeof (ClassWithOneSideRelationProperties));
+          typeof (ClassWithOneSideRelationProperties),
+          false);
 
       return classDefinition;
-    }
-
-    private void CreatePropertyDefinitionsForClassWithMixedProperties (ClassDefinition classDefinition)
-    {
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.Boolean",
-              "Boolean",
-              "boolean",
-              true,
-              false,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
-              "Int32",
-              "int32",
-              true,
-              false,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String",
-              "String",
-              "string",
-              true,
-              true,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString",
-              "PrivateString",
-              "string",
-              true,
-              true,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.UnidirectionalOneToOne",
-              "UnidirectionalOneToOne",
-              TypeInfo.ObjectIDMappingTypeName,
-              true,
-              true,
-              NaInt32.Null,
-              true));
-    }
-
-    private void CreatePropertyDefinitionsForDerivedClassWithMixedProperties (ClassDefinition classDefinition)
-    {
-      classDefinition.MyPropertyDefinitions.Add (
-            new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedPropertiesNotInMapping.DateTime",
-              "DateTime",
-              "dateTime",
-              true,
-              false,
-              NaInt32.Null,
-              true));
-
-     classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.String",
-              "NewString",
-              "string",
-              true,
-              true,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.PrivateString",
-              "DerivedPrivateString",
-              "string",
-              true,
-              true,
-              NaInt32.Null,
-              true));
-
-      classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.OtherString",
-              "OtherString",
-              "string",
-              true,
-              true,
-              NaInt32.Null,
-              true));
     }
   }
 }

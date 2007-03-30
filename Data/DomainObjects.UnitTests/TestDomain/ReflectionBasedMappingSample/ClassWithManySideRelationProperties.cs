@@ -27,11 +27,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     public abstract ClassWithOneSideRelationProperties UnidirectionalOneToMany { get; set; }
 
     [AutomaticProperty]
-    [RdbmsBidirectionalRelation ("BidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation ("BidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithOneSideRelationProperties BidirectionalOneToOne { get; set; }
 
     [AutomaticProperty]
-    [RdbmsBidirectionalRelation ("BidirectionalOneToMany")]
+    [DBBidirectionalRelation ("BidirectionalOneToMany")]
     public abstract ClassWithOneSideRelationProperties BidirectionalOneToMany { get; set; }
   }
 }

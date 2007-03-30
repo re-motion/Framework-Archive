@@ -7,6 +7,8 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="PropertyDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
+  //TODO: Validation: check only non-virtual relation endpoints are returned as propertydefinition.
+  //TODO: Test for null or empty StorageSpecificIdentifier
   public class PropertyReflector: MemberReflectorBase
   {
     public PropertyReflector (PropertyInfo propertyInfo)
@@ -21,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       return new PropertyDefinition (
           GetPropertyName(),
-          GetStorageSpecificName(),
+          GetStorageSpecificIdentifier(),
           typeInfo.MappingType,
           true,
           typeInfo.IsNullable,
@@ -52,11 +54,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
     }
 
-    private string GetStorageSpecificName()
+    private string GetStorageSpecificIdentifier()
     {
-      StorageSpecificNameAttribute attribute = AttributeUtility.GetCustomAttribute<StorageSpecificNameAttribute> (PropertyInfo, true);
+      IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (PropertyInfo, true);
       if (attribute != null)
-        return attribute.Name;
+        return attribute.Identifier;
       return PropertyInfo.Name;
     }
 

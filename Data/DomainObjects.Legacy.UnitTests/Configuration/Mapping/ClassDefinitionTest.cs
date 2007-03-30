@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
@@ -78,6 +79,30 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.IsNull (actual.ClassType);
       Assert.AreEqual ("UnexistingType", actual.ClassTypeName);
       Assert.IsFalse (actual.IsClassTypeResolved);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromNonAbstractType ()
+    {
+      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+
+      Assert.IsFalse (actual.IsAbstract);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromAbstractType ()
+    {
+      ClassDefinition actual = new ClassDefinition ("AbstractClassNotInMapping", "Table", "StorageProvider", typeof (AbstractClassNotInMapping));
+
+      Assert.IsTrue (actual.IsAbstract);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
+    public void GetIsAbstract_ForUnresolvedTypeName ()
+    {
+      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
+      Dev.Null = actual.IsAbstract;
     }
 
     [Test]

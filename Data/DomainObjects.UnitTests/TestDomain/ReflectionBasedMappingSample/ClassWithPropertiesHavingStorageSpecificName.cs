@@ -1,11 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithPropertiesHavingStorageSpecificNameAttribute: TestDomainBase
+  [DBTable (Name = "TableName")]
+  public abstract class ClassHavingStorageSpecificIdentifierAttribute: TestDomainBase
   {
-    protected ClassWithPropertiesHavingStorageSpecificNameAttribute (ClientTransaction clientTransaction, ObjectID objectID)
+    protected ClassHavingStorageSpecificIdentifierAttribute (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
     {
     }
@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     public abstract int NoAttribute { get; set; }
 
     [AutomaticProperty]
-    [RdbmsColumn ("CustomName")]
+    [DBColumn ("CustomName")]
     public abstract int StorageSpecificName { get; set; }
   }
 }

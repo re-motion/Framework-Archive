@@ -12,12 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithNoAttribute()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageSpecificNameAttribute> ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassHavingStorageSpecificIdentifierAttribute> ("NoAttribute");
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageSpecificNameAttribute.NoAttribute",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassHavingStorageSpecificIdentifierAttribute.NoAttribute",
           actual.PropertyName);
       Assert.AreEqual ("NoAttribute", actual.StorageSpecificName);
     }
@@ -25,12 +25,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     public void GetMetadata_WithStorageSpecificName()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageSpecificNameAttribute> ("StorageSpecificName");
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassHavingStorageSpecificIdentifierAttribute> ("StorageSpecificName");
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageSpecificNameAttribute.StorageSpecificName",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassHavingStorageSpecificIdentifierAttribute.StorageSpecificName",
           actual.PropertyName);
       Assert.AreEqual ("CustomName", actual.StorageSpecificName);
     }

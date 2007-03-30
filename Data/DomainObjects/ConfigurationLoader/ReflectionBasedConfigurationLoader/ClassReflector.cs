@@ -7,8 +7,16 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
+  //TODO: Doc
+  //TODO: Validation: no types having IgnoreForMappingAttribute
+  //TODO: More property logic to property reflector
   public class ClassReflector
   {
+    public static ClassReflector CreateClassReflector (Type type, ClassDefinitionCollection classDefinitions, List<RelationReflector> relations)
+    {
+      return new RdbmsClassReflector (type, classDefinitions, relations);
+    }
+
     private Type _type;
     private readonly ClassDefinitionCollection _classDefinitions;
     private readonly List<RelationReflector> _relations;
@@ -47,7 +55,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetStorageSpecificName(),
           GetStorageProviderID(),
           Type,
-          GetBaseClassDefinition(Type));
+          IsAbstract(),
+          GetBaseClassDefinition());
 
       MemberInfo[] propertyInfos = GetPropertyInfos();
 
@@ -81,8 +90,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return Type.FullName;
     }
 
-    private string GetStorageSpecificName()
+    public virtual string GetStorageSpecificName()
     {
+      IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (Type, false);
+      if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
+        return attribute.Identifier;
       return Type.Name;
     }
 
@@ -91,27 +103,41 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
     }
 
-    private ClassDefinition GetBaseClassDefinition (Type type)
+    private bool IsAbstract()
     {
-      if (type.BaseType == typeof (DomainObject))
+      if (Type.IsAbstract)
+        return !Attribute.IsDefined (Type, typeof (NotAbstractAttribute), false);
+
+      return false;
+    }
+
+    private ClassDefinition GetBaseClassDefinition()
+    {
+      if (IsInheritenceRoot())
         return null;
 
-      if (Attribute.IsDefined (type.BaseType, typeof (IgnoreForMappingAttribute), false))
-        return GetBaseClassDefinition (type.BaseType);
-
-      ClassReflector classReflector = new ClassReflector (type.BaseType, _classDefinitions, _relations);
+      ClassReflector classReflector = new ClassReflector (Type.BaseType, _classDefinitions, _relations);
       return classReflector.GetMetadata();
+    }
+
+    private bool IsInheritenceRoot()
+    {
+      if (Type.BaseType == typeof (DomainObject))
+        return true;
+
+      return Attribute.IsDefined (Type, typeof (StorageGroupAttribute), false);
     }
 
     private MemberInfo[] GetPropertyInfos()
     {
       List<MemberInfo> propertyInfos = new List<MemberInfo>();
-      Type type = Type;
-      do 
+      propertyInfos.AddRange (GetPropertyInfos (Type));
+
+      if (IsInheritenceRoot())
       {
-        propertyInfos.AddRange (GetPropertyInfos (type));
-        type = type.BaseType;
-      } while (Attribute.IsDefined (type, typeof (IgnoreForMappingAttribute), false));
+        for (Type type = Type.BaseType; type != typeof (DomainObject); type = type.BaseType)
+          propertyInfos.AddRange (GetPropertyInfos (type));
+      }
 
       return propertyInfos.ToArray();
     }

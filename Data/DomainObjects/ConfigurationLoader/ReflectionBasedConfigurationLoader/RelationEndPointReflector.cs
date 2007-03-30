@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationEndPointReflector: RelationReflectorBase
   {
-    public static RdbmsRelationEndPointReflector CreateRelationEndPointReflector (PropertyInfo propertyInfo)
+    public static RelationEndPointReflector CreateRelationEndPointReflector (PropertyInfo propertyInfo)
     {
       return new RdbmsRelationEndPointReflector (propertyInfo);
     }
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public virtual bool IsVirtualEndRelationEndpoint()
     {
-      return IsManySide (PropertyInfo);
+      return IsCollectionPropery (PropertyInfo);
     }
 
     private RelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -53,10 +53,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private CardinalityType GetCardinality()
     {
-      return IsManySide (PropertyInfo) ? CardinalityType.Many : CardinalityType.One;
+      return IsCollectionPropery (PropertyInfo) ? CardinalityType.Many : CardinalityType.One;
     }
 
-    protected bool IsManySide (PropertyInfo propertyInfo)
+    protected bool IsCollectionPropery (PropertyInfo propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 

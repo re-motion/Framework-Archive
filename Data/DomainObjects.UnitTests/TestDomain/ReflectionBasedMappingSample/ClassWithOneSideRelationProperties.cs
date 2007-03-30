@@ -4,7 +4,9 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithOneSideRelationProperties: DomainObject //TestDomainBase
+  [DBTable]
+  [NotAbstractAttribute]
+  public abstract class ClassWithOneSideRelationProperties : DomainObject //TestDomainBase
   {
     protected ClassWithOneSideRelationProperties (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
@@ -21,11 +23,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     public abstract ObjectList<ClassWithManySideRelationProperties> NotNullable { get; set; }
 
     [AutomaticProperty]
-    [RdbmsBidirectionalRelation ("BidirectionalOneToOne")]
+    [DBBidirectionalRelation ("BidirectionalOneToOne")]
     public abstract ClassWithManySideRelationProperties BidirectionalOneToOne { get; set; }
 
     [AutomaticProperty]
-    [RdbmsBidirectionalRelation ("BidirectionalOneToMany")]
+    [DBBidirectionalRelation ("BidirectionalOneToMany")]
     public abstract ObjectList<ClassWithManySideRelationProperties> BidirectionalOneToMany { get; }
   }
 }

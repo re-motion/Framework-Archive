@@ -3,6 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
@@ -20,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     }
 
     [Test]
-    public void CreateRelationEndPointReflector ()
+    public void CreateRelationEndPointReflector()
     {
       PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("NoAttribute");
       Assert.IsInstanceOfType (typeof (RdbmsRelationEndPointReflector), RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo));
@@ -61,6 +62,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     public void GetMetadata_WithBinaryAttributeAppliedToInvalidProperty()
     {
       PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithBinaryAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+
+      relationEndPointReflector.GetMetadata (_classDefinitions);
+    }
+    [Test]
+    [Ignore("Not sure if this test is required, since a relation with 2 virtual end points is already covered by the RelationDefinition ctor.")]
+    [ExpectedException (typeof (MappingException),
+        "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n  "
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation, "
+        + "property: LeftSide")]
+    public void GetMetadata_WithNeitherSideContainingTheKey ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
+      ClassDefinition classDefinition = new ClassDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation",
+          "ClassWithInvalidBidirectionalRelation",
+          "TestDomain",
+          type);
+      _classDefinitions.Add (classDefinition);
+      PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
       relationEndPointReflector.GetMetadata (_classDefinitions);

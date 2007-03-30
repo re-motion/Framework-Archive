@@ -24,19 +24,19 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool ContainsKey()
     {
-      RdbmsBidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<RdbmsBidirectionalRelationAttribute> (PropertyInfo, true);
+      DBBidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<DBBidirectionalRelationAttribute> (PropertyInfo, true);
       if (attribute != null)
       {
         if (attribute.ContainsForeignKey)
           return true;
-        return IsOppositeClassManySide (attribute);
+        return IsCollectionProperyOnOppositeSide (attribute);
       }
       return true;
     }
 
-    private bool IsOppositeClassManySide (BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    private bool IsCollectionProperyOnOppositeSide (BidirectionalRelationAttribute bidirectionalRelationAttribute)
     {
-      return IsManySide (GetOppositePropertyInfo (bidirectionalRelationAttribute));
+      return IsCollectionPropery (GetOppositePropertyInfo (bidirectionalRelationAttribute));
     }
   }
 }

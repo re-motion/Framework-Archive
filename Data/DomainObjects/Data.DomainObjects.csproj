@@ -96,9 +96,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotAbstractAttribute.cs" />
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IMappingAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RdbmsClassReflector.cs" />
     <Compile Include="MappingAssemblyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MemberReflectorBase.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BidirectionalRelationAttribute.cs" />
@@ -106,8 +108,7 @@
     <Compile Include="BinaryAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflectorBase.cs" />
-    <Compile Include="IgnoreForMappingAttribute.cs" />
-    <Compile Include="Persistence\Rdbms\RdbmsBidirectionalRelationAttribute.cs" />
+    <Compile Include="DBBidirectionalRelationAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RdbmsRelationEndPointReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationEndPointReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\NullableLengthConstrainedPropertyAttribute.cs" />
@@ -118,12 +119,13 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClass.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageClassAttribute.cs" />
-    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\StorageSpecificNameAttribute.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="MandatoryAttribute.cs" />
-    <Compile Include="Persistence\Rdbms\RdbmsColumnAttribute.cs" />
-    <Compile Include="Persistence\Rdbms\RdbmsNameAttribute.cs" />
+    <Compile Include="DBColumnAttribute.cs" />
+    <Compile Include="DBTableAttribute.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
+    <Compile Include="StorageGroupAttribute.cs" />
     <Compile Include="StringAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="Infrastructure\Interception\NonInterceptableTypeException.cs" />

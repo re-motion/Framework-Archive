@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       List<RelationReflector> relations = new List<RelationReflector>();
       foreach (Type domainObjectClass in domainObjectClasses)
       {
-        ClassReflector classReflector = new ClassReflector (domainObjectClass, classDefinitions, relations);
+        ClassReflector classReflector = ClassReflector.CreateClassReflector (domainObjectClass, classDefinitions, relations);
         classReflector.GetMetadata();
       }
 

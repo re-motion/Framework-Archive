@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -62,10 +63,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void InitializeWithTypeNameAndBaseClass ()
     {
       ClassDefinition expected = new ClassDefinition (
-          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), CreatePartnerClass ());
+          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor), CreatePartnerClass ());
 
       ClassDefinition actual = new ClassDefinition (
-          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, 
+          "Distributor", "Company", c_testDomainProviderID, 
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true, CreatePartnerClass ());
 
       _checker.Check (expected, actual);
@@ -78,6 +79,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsNull (actual.ClassType);
       Assert.AreEqual ("UnexistingType", actual.ClassTypeName);
       Assert.IsFalse (actual.IsClassTypeResolved);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromNonAbstractType ()
+    {
+      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+
+      Assert.IsFalse (actual.IsAbstract);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromAbstractType ()
+    {
+      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (AbstractClassNotInMapping));
+
+      Assert.IsTrue (actual.IsAbstract);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromArgumentFalse ()
+    {
+      ClassDefinition actual = new ClassDefinition ("ClassID", "Table", "StorageProvider", typeof (AbstractClassNotInMapping), false);
+
+      Assert.IsFalse (actual.IsAbstract);
+    }
+
+    [Test]
+    public void GetIsAbstract_FromArgumentTrue ()
+    {
+      ClassDefinition actual = new ClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), true);
+
+      Assert.IsTrue (actual.IsAbstract);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
+    public void GetIsAbstract_ForUnresolvedTypeName ()
+    {
+      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
+      Dev.Null = actual.IsAbstract;
     }
 
     [Test]
@@ -239,11 +280,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ClassTypeIsNotDerivedFromBaseClassType ()
     {
-      ClassDefinition orderClass = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+      ClassDefinition orderClass = new ClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order));
 
       try
       {
-        new ClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), orderClass);
+        new ClassDefinition ("Distributor", "Company", c_testDomainProviderID, typeof (Distributor), orderClass);
         Assert.Fail ("MappingException was expected.");
       }
       catch (MappingException ex)
@@ -260,10 +301,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypes ()
     {
       ClassDefinition orderClass = new ClassDefinition (
-          "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
+          "Order", "Order", c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
 
       ClassDefinition distributorClass = new ClassDefinition (
-          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, false, orderClass);
+          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, false, orderClass);
 
       // Expectation: no exception
     }
@@ -272,10 +313,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypeInBaseClassOnly ()
     {
       ClassDefinition orderClass = new ClassDefinition (
-          "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
+          "Order", "Order", c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
 
       ClassDefinition distributorClass = new ClassDefinition (
-          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, true, orderClass);
+          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, true, orderClass);
 
       // Expectation: no exception
     }
@@ -797,7 +838,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     private ClassDefinition CreatePartnerClass ()
     {
-      return new ClassDefinition ("Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner));
+      return new ClassDefinition ("Partner", "Company", c_testDomainProviderID, typeof (Partner));
     }
   }
 }
