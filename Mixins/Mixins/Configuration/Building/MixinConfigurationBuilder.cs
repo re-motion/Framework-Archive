@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Mixins.Context;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Mixins.Configuration.Building
 {
@@ -19,18 +20,17 @@ namespace Mixins.Configuration.Building
       get { return _baseClass; }
     }
 
-    public void Apply (MixinDefinition mixinDefinition)
+    public void Apply (MixinContext mixinContext)
     {
-      MixinConfiguration mixin = new MixinConfiguration(mixinDefinition.MixinType, BaseClass);
+      MixinConfiguration mixin = new MixinConfiguration(mixinContext.MixinType, BaseClass);
       BaseClass.AddMixin (mixin);
 
       InitializeMembers (mixin);
 
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
-      
-      // TODO: adjust face interfaces accordingly
       AnalyzeInitializationMethods (mixin);
+      AnalyzeRequiredFaceInterfaces (mixin);
     }
 
     private void InitializeMembers (MixinConfiguration mixin)
@@ -100,6 +100,82 @@ namespace Mixins.Configuration.Building
         if (method.IsDefined (typeof (MixinInitializationMethodAttribute), true))
         {
           yield return method;
+        }
+      }
+    }
+
+    private void AnalyzeRequiredFaceInterfaces (MixinConfiguration mixin)
+    {
+      Type mixinBase = GetMixinBase(mixin);
+      if (mixinBase != null)
+      {
+        Debug.Assert (mixinBase.IsGenericType);
+        foreach (Type genericArgument in mixinBase.GetGenericArguments ())
+        {
+          AnalyzeGenericArgumentFaceRequirements(genericArgument, mixin);
+        }
+      }
+    }
+
+    private Type GetMixinBase (MixinConfiguration mixin)
+    {
+      Type mixinBase = mixin.Type.BaseType;
+      while (mixinBase != null && !IsSpecializationOf(mixinBase, typeof(Mixin<,>)))
+      {
+        mixinBase = mixinBase.BaseType;
+      }
+      return mixinBase;
+    }
+
+    private bool IsSpecializationOf (Type typeToCheck, Type requestedType)
+    {
+      if (requestedType.IsAssignableFrom (typeToCheck))
+      {
+        return true;
+      }
+      else if (typeToCheck.IsGenericType && !typeToCheck.IsGenericTypeDefinition)
+      {
+        Type typeDefinition = typeToCheck.GetGenericTypeDefinition ();
+        return IsSpecializationOf(typeDefinition, requestedType);
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    private void AnalyzeGenericArgumentFaceRequirements(Type genericArgument, MixinConfiguration mixin)
+    {
+      if (genericArgument.IsGenericParameter)
+      {
+        Type[] constraints = genericArgument.GetGenericParameterConstraints ();
+        foreach (Type constraint in constraints)
+        {
+          ApplyRequiredFaceType(constraint, mixin);
+        }
+      }
+      else
+      {
+        ApplyRequiredFaceType (genericArgument, mixin);
+      }
+    }
+
+    private void ApplyRequiredFaceType(Type requiredFaceType, MixinConfiguration mixin)
+    {
+      if (requiredFaceType.IsClass)
+      {
+        if (!requiredFaceType.IsAssignableFrom (mixin.BaseClass.Type))
+        {
+          string message = string.Format ("Mixin {0} requires its target {1} to derive from base type {2}.", mixin.FullName,
+                                          mixin.BaseClass.FullName, requiredFaceType.FullName);
+          throw new ConfigurationException (message);
+        }
+      }
+      else
+      {
+        if (!mixin.BaseClass.HasRequiredFaceInterface (requiredFaceType))
+        {
+          mixin.BaseClass.AddRequiredFaceInterface (requiredFaceType);
         }
       }
     }

@@ -33,6 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplyMixinAttribute.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\BaseClassConfiguration.cs" />
     <Compile Include="Configuration\Building\ApplicationConfigurationBuilder.cs" />
@@ -49,9 +50,9 @@
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />
-    <Compile Include="Context\MixinDefinition.cs" />
+    <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Mixin.cs" />
-    <Compile Include="MixinAttribute.cs" />
+    <Compile Include="MixinForAttribute.cs" />
     <Compile Include="MixinInitializationMethodAttribute.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

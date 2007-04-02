@@ -42,9 +42,9 @@ namespace Mixins.Configuration.Building
     private static void ApplyMixins(BaseClassConfiguration classConfiguration, ClassContext classContext)
     {
       MixinConfigurationBuilder mixinConfigurationBuilder = new MixinConfigurationBuilder (classConfiguration);
-      foreach (MixinDefinition mixinDefinition in classContext.MixinDefinitions)
+      foreach (MixinContext mixinContext in classContext.MixinContexts)
       {
-        mixinConfigurationBuilder.Apply (mixinDefinition);
+        mixinConfigurationBuilder.Apply (mixinContext);
       }
     }
   }

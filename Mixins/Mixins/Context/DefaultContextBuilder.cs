@@ -28,14 +28,32 @@ namespace Mixins.Context
     {
       foreach (Type t in assembly.GetTypes())
       {
-        if (t.IsDefined (typeof (MixinAttribute), true))
+        if (t.IsDefined (typeof (MixinForAttribute), false))
         {
-          foreach (MixinAttribute mixinAttribute in t.GetCustomAttributes(typeof(MixinAttribute), false))
-          {
-            MixinDefinition definition = new MixinDefinition(mixinAttribute, t);
-            targetContext.GetOrAddClassContext (definition.TargetType).AddMixinDefinition (definition);
-          }
+          AnalyzeMixin(t, targetContext);
         }
+        if (t.IsDefined (typeof (ApplyMixinAttribute), true))
+        {
+          AnalyzeMixinApplications(t, targetContext);
+        }
+      }
+    }
+
+    private static void AnalyzeMixin(Type mixinType, ApplicationContext targetContext)
+    {
+      foreach (MixinForAttribute mixinAttribute in mixinType.GetCustomAttributes(typeof(MixinForAttribute), false))
+      {
+        MixinContext definition = new MixinContext(mixinAttribute.TargetType, mixinType);
+        targetContext.GetOrAddClassContext (definition.TargetType).AddMixinContext (definition);
+      }
+    }
+
+    private static void AnalyzeMixinApplications(Type targetType, ApplicationContext targetContext)
+    {
+      foreach (ApplyMixinAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (ApplyMixinAttribute), true))
+      {
+        MixinContext definition = new MixinContext (targetType, applyMixinAttribute.MixinType);
+        targetContext.GetOrAddClassContext (targetType).AddMixinContext (definition);
       }
     }
   }

@@ -221,7 +221,15 @@ namespace Mixins.UnitTests
     [Test]
     public void FaceInterfaces ()
     {
-      Assert.Fail ();
+      ApplicationConfiguration configuration = GetConfiguration ();
+      BaseClassConfiguration classConfiguration = configuration.GetBaseClassConfiguration (typeof (BaseType3));
+
+      List<Type> requiredFaceInterfaces = new List<Type> (classConfiguration.RequiredFaceInterfaces);
+      Assert.Contains (typeof (IBaseType31), requiredFaceInterfaces);
+      Assert.Contains (typeof (IBaseType32), requiredFaceInterfaces);
+      Assert.Contains (typeof (IBaseType33), requiredFaceInterfaces);
+      Assert.Contains (typeof (IBaseType34), requiredFaceInterfaces);
+      Assert.IsFalse (requiredFaceInterfaces.Contains (typeof (IBaseType35)));
     }
   }
 }

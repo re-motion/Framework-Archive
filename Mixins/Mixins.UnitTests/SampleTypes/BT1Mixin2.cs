@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [Mixin (typeof (BaseType1))]
+  [MixinFor (typeof (BaseType1))]
   public class BT1Mixin2
   {
     [Override]

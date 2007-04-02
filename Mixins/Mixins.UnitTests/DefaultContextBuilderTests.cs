@@ -29,24 +29,24 @@ namespace Mixins.UnitTests
       Assert.IsTrue (classContexts.Count > 0);
 
       ClassContext contextForBaseType1 = context.GetClassContext (typeof (BaseType1));
-      List<MixinDefinition> mixinDefinitions = new List<MixinDefinition> (contextForBaseType1.MixinDefinitions);
-      Assert.AreEqual (2, mixinDefinitions.Count);
+      List<MixinContext> mixinContexts = new List<MixinContext> (contextForBaseType1.MixinContexts);
+      Assert.AreEqual (2, mixinContexts.Count);
 
-      MixinDefinition def1 =
-          mixinDefinitions.Find (delegate (MixinDefinition mixinDefinition) { return mixinDefinition.MixinType == typeof (BT1Mixin1); });
+      MixinContext def1 =
+          mixinContexts.Find (delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT1Mixin1); });
       Assert.IsNotNull (def1);
 
       Assert.AreEqual (typeof (BT1Mixin1), def1.MixinType);
       Assert.AreEqual (typeof (BaseType1), def1.TargetType);
-      Assert.AreEqual (typeof (BaseType1), def1.DefiningAttribute.TargetType);
+      Assert.AreEqual (typeof (BaseType1), def1.TargetType);
 
-      MixinDefinition def2 =
-          mixinDefinitions.Find (delegate (MixinDefinition mixinDefinition) { return mixinDefinition.MixinType == typeof (BT1Mixin2); });
+      MixinContext def2 =
+          mixinContexts.Find (delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT1Mixin2); });
       Assert.IsNotNull (def2);
 
       Assert.AreEqual (typeof (BT1Mixin2), def2.MixinType);
       Assert.AreEqual (typeof (BaseType1), def2.TargetType);
-      Assert.AreEqual (typeof (BaseType1), def2.DefiningAttribute.TargetType);
+      Assert.AreEqual (typeof (BaseType1), def2.TargetType);
     }
 
     [Test][ExpectedException (typeof (InvalidOperationException))]
@@ -63,15 +63,15 @@ namespace Mixins.UnitTests
       DefaultContextBuilder.AnalyzeAssemblyIntoContext (Assembly.GetExecutingAssembly (), context);
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
-      List<MixinDefinition> mixinDefinitions = new List<MixinDefinition> (classContext.MixinDefinitions);
-      Assert.AreEqual (4, mixinDefinitions.Count);
+      List<MixinContext> mixinContexts = new List<MixinContext> (classContext.MixinContexts);
+      Assert.AreEqual (4, mixinContexts.Count);
 
-      List<MixinDefinition> defs1 =
-          mixinDefinitions.FindAll (delegate (MixinDefinition mixinDefinition) { return mixinDefinition.MixinType == typeof (BT1Mixin1); });
+      List<MixinContext> defs1 =
+          mixinContexts.FindAll (delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT1Mixin1); });
       Assert.AreEqual (2, defs1.Count);
 
-      List<MixinDefinition> defs2 =
-          mixinDefinitions.FindAll (delegate (MixinDefinition mixinDefinition) { return mixinDefinition.MixinType == typeof (BT1Mixin2); });
+      List<MixinContext> defs2 =
+          mixinContexts.FindAll (delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT1Mixin2); });
       Assert.AreEqual (2, defs2.Count);
      
     }
@@ -84,12 +84,12 @@ namespace Mixins.UnitTests
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
       Assert.IsNotNull (classContext);
 
-      List<MixinDefinition> mixinDefinitions = new List<MixinDefinition> (classContext.MixinDefinitions);
-      Assert.AreEqual (1, mixinDefinitions.Count);
+      List<MixinContext> mixinContexts = new List<MixinContext> (classContext.MixinContexts);
+      Assert.AreEqual (1, mixinContexts.Count);
 
-      MixinDefinition definition =
-          new List<MixinDefinition> (classContext.MixinDefinitions).Find (
-          delegate (MixinDefinition def) { return def.MixinType == typeof (BT2Mixin1); });
+      MixinContext definition =
+          new List<MixinContext> (classContext.MixinContexts).Find (
+          delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT2Mixin1); });
 
       Assert.IsNotNull (definition);
     }
@@ -97,7 +97,18 @@ namespace Mixins.UnitTests
     [Test]
     public void AttributeOnTargetClass ()
     {
-      Assert.Fail ();
+      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly(Assembly.GetExecutingAssembly());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType3));
+      Assert.IsNotNull (classContext);
+
+      List<MixinContext> mixinContexts = new List<MixinContext> (classContext.MixinContexts);
+      Assert.AreEqual (5, mixinContexts.Count);
+      
+      MixinContext definition =
+        new List<MixinContext> (classContext.MixinContexts).Find (
+        delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT3Mixin5); });
+      Assert.IsNotNull (definition);
     }
   }
 }

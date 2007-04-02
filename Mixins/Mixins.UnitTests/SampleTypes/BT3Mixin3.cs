@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [Mixin (typeof (BaseType3))]
+  [MixinFor (typeof (BaseType3))]
   public class BT3Mixin3<TThis, TBase> : Mixin<TThis, TBase>
-    where TThis : IBaseType3
-    where TBase : IBaseType3
+    where TThis : IBaseType33
+    where TBase : IBaseType33
   {
     public new TThis This
     {

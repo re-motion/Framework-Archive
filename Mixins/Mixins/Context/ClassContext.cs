@@ -6,7 +6,7 @@ namespace Mixins.Context
   public class ClassContext
   {
     private Type _type;
-    private List<MixinDefinition> _mixinDefinitions = new List<MixinDefinition> ();
+    private List<MixinContext> _mixinContexts = new List<MixinContext> ();
 
     public ClassContext (Type type)
     {
@@ -18,19 +18,19 @@ namespace Mixins.Context
       get { return _type; }
     }
 
-    public IEnumerable<MixinDefinition> MixinDefinitions
+    public IEnumerable<MixinContext> MixinContexts
     {
-      get { return _mixinDefinitions; }
+      get { return _mixinContexts; }
     }
 
-    public void AddMixinDefinition (MixinDefinition mixinDefinition)
+    public void AddMixinContext (MixinContext mixinContext)
     {
-      if (mixinDefinition.TargetType != Type)
+      if (mixinContext.TargetType != Type)
       {
-        string message = string.Format("Cannot add mixin definition for different type {0} to context of class {1}.", mixinDefinition.TargetType, Type);
-        throw new ArgumentException (message, "mixinDefinition");
+        string message = string.Format("Cannot add mixin definition for different type {0} to context of class {1}.", mixinContext.TargetType, Type);
+        throw new ArgumentException (message, "mixinContext");
       }
-      _mixinDefinitions.Add (mixinDefinition);
+      _mixinContexts.Add (mixinContext);
     }
   }
 }

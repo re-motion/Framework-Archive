@@ -9,7 +9,7 @@ namespace Mixins.UnitTests.SampleTypes
     string IntroducedMethod ();
   }
 
-  [Mixin (typeof (BaseType1))]
+  [MixinFor (typeof (BaseType1))]
   public class BT1Mixin1 : IBT1Mixin1
   {
     [Override]

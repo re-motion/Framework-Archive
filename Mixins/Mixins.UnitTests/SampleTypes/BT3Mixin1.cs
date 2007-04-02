@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [Mixin (typeof (BaseType3))]
-  public class BT3Mixin1 : Mixin<IBaseType3, IBaseType3>
+  [MixinFor (typeof (BaseType3))]
+  public class BT3Mixin1 : Mixin<IBaseType31, IBaseType31>
   {
-    public new IBaseType3 This
+    public new IBaseType31 This
     {
       get { return base.This; }
     }
 
-    public new IBaseType3 Base
+    public new IBaseType31 Base
     {
       get { return base.Base; }
     }
