@@ -81,7 +81,7 @@
     set { SetPropertyValue (value); }
   }
   
-  Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt:
+  Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit NotAbstractAttribute gekennzeichnet werden:
   [AutomaticProperty]
   public abstract int IntProperty { get; set; }
 

@@ -42,11 +42,19 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("type", type);
       if (!typeof (DomainObject).IsAssignableFrom (type))
       {
-        throw new ArgumentException ("Cannot instantiate type " + type.FullName + " as it is not derived from DomainObject.");
+        string message = string.Format("Cannot instantiate type {0} as it is not derived from DomainObject.", type.FullName);
+        throw new ArgumentException (message);
       }
       if (type.IsSealed)
       {
-        throw new ArgumentException ("Cannot instantiate type " + type.FullName + " as it is sealed.");
+        string message = string.Format ("Cannot instantiate type {0} as it is sealed.", type.FullName);
+        throw new ArgumentException (message);
+      }
+      if (type.IsAbstract && !type.IsDefined (typeof (NotAbstractAttribute), false))
+      {
+        string message = string.Format("Cannot instantiate type {0} as it is abstract; for automatic properties, NotAbstractAttribute must be used.",
+            type.FullName);
+        throw new ArgumentException (message);
       }
       if (args == null)
       {

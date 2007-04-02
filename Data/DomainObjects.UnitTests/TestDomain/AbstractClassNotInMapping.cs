@@ -16,6 +16,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    public AbstractClassNotInMapping (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
+    {
+    }
+
     public AbstractClassNotInMapping (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

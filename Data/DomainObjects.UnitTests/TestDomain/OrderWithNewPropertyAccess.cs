@@ -4,6 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [FactoryInstantiated]
+  [NotAbstract]
   public abstract class OrderWithNewPropertyAccess : TestDomainBase
   {
     // types

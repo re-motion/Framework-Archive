@@ -375,5 +375,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess),
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.DeliveryDate"));
     }
+
+    [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "AbstractClassNotInMapping as it is abstract; for automatic properties, NotAbstractAttribute must be used.")]
+    public void CannotInstantiateReallyAbstractClass ()
+    {
+      using (new FactoryInstantiationScope ())
+      {
+        DomainObject.Create<AbstractClassNotInMapping>();
+      }
+    }
   }
 }

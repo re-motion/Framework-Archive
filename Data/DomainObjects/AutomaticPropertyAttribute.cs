@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects
 {
@@ -22,8 +23,10 @@ namespace Rubicon.Data.DomainObjects
   /// </code>
   /// </para>
   /// <para>
-  /// Use this whenever you need to implement trivial properties on your domain objects. Note that the automatic implementation will only
-  /// work for domain objects instantiated with the <see cref="DomainObjectFactory"/>.
+  /// Use automatic properties whenever a domain object's property implementationw ould be trivial. Make the properties abstract and annotate them
+  /// with this attribute. Note that the automatic implementation will only work for domain objects instantiated with the
+  /// <see cref="DomainObjectFactory"/>. In order to communicate that the domain object class is only abstract because of the automatic properties,
+  /// annotate the class with a <see cref="NotAbstractAttribute"/>.
   /// </para>
   /// </remarks>
   [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]

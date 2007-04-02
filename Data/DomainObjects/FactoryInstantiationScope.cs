@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects

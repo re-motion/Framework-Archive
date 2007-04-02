@@ -114,12 +114,12 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// Initializes a new <see cref="BindableDomainObject"/>.
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/> should be part of.
-  /// Must not be <see langword="null"/>, unless an <param name="objectID"/> is given.</param>
-  /// <param name="id">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
+  /// Must not be <see langword="null"/>, unless an <paramref name="objectID"/> is given.</param>
+  /// <param name="objectID">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
   /// If it has a value, the constructor assumes that it is invoked as part of a loading process.</param>
   /// <remarks>Implement a protected constructor with the same signature on concrete domain objects, delegate to this base constructor, and only use
-  /// the <see cref="Create"/> and <see cref="GetObject"/> factory methods to invoke it. Domain objects generally should not be constructed via the
-  /// <c>new</c> operator.</remarks>
+  /// the <see cref="DomainObject.Create{T}(ClientTransaction)"/> and <see cref="DomainObject.GetObject{T}(ObjectID)"/> factory methods to invoke it.
+  /// Domain objects generally should not be constructed via the <c>new</c> operator.</remarks>
   /// <exception cref="ArgumentNullException">Both the <paramref name="clientTransaction"/> and <paramref name="objectID"/> arguments are <see langword="null"/>.</exception>
   protected BindableDomainObject (ClientTransaction clientTransaction, ObjectID objectID)
     : base (clientTransaction, objectID)
