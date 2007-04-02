@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
     ///</remarks>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> or <paramref name="args"/> argument is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The <paramref name="type"/> cannot be intercepted because it is sealed or abstract (apart from automatic
-    /// properties) or it's not at least of type <typeparamref name="TInterceptorTarget"/>.</exception>
+    /// properties) or it's not at least of type <typeparamref name="TTarget"/>.</exception>
     /// <exception cref="MissingMethodException">The given <paramref name="type"/> does not implement a corresponding public or protected constructor.
     /// </exception>
     /// <exception cref="System.Reflection.TargetInvocationException">The constructor of the given <paramref name="type"/> threw an exception. See

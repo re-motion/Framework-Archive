@@ -17,12 +17,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   {
     // types
 
+    [NotAbstract]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
       public NonInstantiableAbstractClass () : base (null, null) { }
       public abstract void Foo ();
     }
 
+    [NotAbstract]
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
       public NonInstantiableAbstractClassWithProps () : base (null, null) { }
@@ -191,7 +193,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClass, the method Foo is abstract (and not part of an automatic "
+        + "property).\r\nParameter name: type")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
@@ -201,17 +205,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps, the method get_Foo is abstract (and not part of an "
+        + "automatic property).\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<NonInstantiableAbstractClass> ();
+        DomainObject.Create<NonInstantiableAbstractClassWithProps> ();
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: type")]
     public void SealedCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
@@ -221,7 +228,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableNonDomainClass as it is not derived from DomainObject.\r\nParameter name: type")]
     public void NonDomainCannotBeInstantiated ()
     {
       DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create (typeof (NonInstantiableNonDomainClass),
@@ -229,7 +237,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
+        + "OrderWithNewPropertyAccess does not support the requested constructor with signature (System.String, System.String, System.String, "
+        + "<any reference type>).")]
     public void WrongConstructorCannotBeInstantiated ()
     {
       DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create(typeof(OrderWithNewPropertyAccess),
@@ -254,14 +264,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The given type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not implement the required legacy constructor taking a "
+        + "ClientTransaction only.")]
     public void OldConstructorMismatch1 ()
     {
       DomainObject.Create<ClassWithWrongConstructor> ();
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not support the requested constructor with signature "
+        + "(Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
     public void NewConstructorMismatch1 ()
     {
       using (new FactoryInstantiationScope ())
@@ -271,14 +285,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The given type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not implement the required legacy constructor taking a "
+        + "ClientTransaction only.")]
     public void OldConstructorMismatch2 ()
     {
       DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException))]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not support the requested constructor with signature "
+        + "(Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
     public void NewConstructorMismatch2 ()
     {
       using (new FactoryInstantiationScope ())
@@ -321,7 +339,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
+    [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
@@ -329,7 +347,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
     public void RelatedAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
@@ -377,7 +395,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "AbstractClassNotInMapping as it is abstract; for automatic properties, NotAbstractAttribute must be used.")]
+        + "AbstractClassNotInMapping as it is abstract; for automatic properties, NotAbstractAttribute must be used.\r\nParameter name: type")]
     public void CannotInstantiateReallyAbstractClass ()
     {
       using (new FactoryInstantiationScope ())

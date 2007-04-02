@@ -9,32 +9,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   public class DomainObjectTypeInterceptor : IInterceptor<DomainObject>
   {
-    class InterceptorSelector : IInterceptorSelector<DomainObject>
-    {
-      private DomainObjectTypeInterceptor _interceptor;
-
-      public InterceptorSelector (DomainObjectTypeInterceptor interceptor)
-      {
-        _interceptor = interceptor;
-      }
-
-      public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
-      {
-        return memberInfo.Name == "GetPublicDomainObjectType";
-      }
-
-      public IInterceptor<DomainObject> SelectInterceptor (Type type, MethodInfo memberInfo)
-      {
-        Assertion.DebugAssert (ShouldInterceptMethod (type, memberInfo));
-        return _interceptor;
-      }
-    }
-
     public readonly IInterceptorSelector<DomainObject> Selector;
 
     public DomainObjectTypeInterceptor ()
     {
-      Selector = new InterceptorSelector (this);
+      Selector = new DomainObjectTypeInterceptorSelector (this);
     }
 
     public void Intercept (IInvocation<DomainObject> invocation)
