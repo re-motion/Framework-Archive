@@ -21,7 +21,7 @@ namespace Mixins.Definitions.Building
     public void Apply (ClassContext classContext)
     {
       BaseClassDefinition classDefinition = new BaseClassDefinition (classContext.Type);
-      Application.AddBaseClass (classDefinition);
+      Application.BaseClasses.Add (classDefinition);
 
       InitializeMembers (classDefinition);
       ApplyMixins(classDefinition, classContext);
@@ -34,7 +34,7 @@ namespace Mixins.Definitions.Building
       {
         if (method.IsPublic || method.IsFamily)
         {
-          classDefinition.AddMember (new MethodDefinition (method, classDefinition));
+          classDefinition.Members.Add (new MethodDefinition (method, classDefinition));
         }
       }
     }

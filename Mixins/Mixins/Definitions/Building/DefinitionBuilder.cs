@@ -2,7 +2,7 @@ using System;
 using Mixins.Context;
 using Mixins.Definitions.Building;
 
-namespace Mixins.Definitions
+namespace Mixins.Definitions.Building
 {
   public static class DefinitionBuilder
   {

@@ -23,7 +23,7 @@ namespace Mixins.Definitions.Building
     public void Apply (MixinContext mixinContext)
     {
       MixinDefinition mixin = new MixinDefinition(mixinContext.MixinType, BaseClass);
-      BaseClass.AddMixin (mixin);
+      BaseClass.Mixins.Add (mixin);
 
       InitializeMembers (mixin);
 
@@ -40,7 +40,7 @@ namespace Mixins.Definitions.Building
       {
         if (method.IsPublic)
         {
-          mixin.AddMember (new MethodDefinition (method, mixin));
+          mixin.Members.Add (new MethodDefinition (method, mixin));
         }
       }
     }
@@ -50,8 +50,8 @@ namespace Mixins.Definitions.Building
       foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
         InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
-        mixin.AddInterfaceIntroduction (introducedInterface);
-        BaseClass.AddIntroducedInterface (introducedInterface);
+        mixin.InterfaceIntroductions.Add (introducedInterface);
+        BaseClass.IntroducedInterfaces.Add (introducedInterface);
       }
     }
 
@@ -68,7 +68,7 @@ namespace Mixins.Definitions.Building
             throw new ConfigurationException (message);
           }
           member.Base = baseMember;
-          baseMember.AddOverride (member);
+          baseMember.Overrides.Add (member);
         }
       }
     }
@@ -90,7 +90,7 @@ namespace Mixins.Definitions.Building
       foreach (MethodInfo method in GetMixinInitializationMethods (mixin.Type))
       {
         MethodDefinition methodDefinition = new MethodDefinition (method, mixin);
-        mixin.AddInitializationMethod (methodDefinition);
+        mixin.InitializationMethods.Add (methodDefinition);
       }
     }
 
@@ -174,9 +174,9 @@ namespace Mixins.Definitions.Building
       }
       else
       {
-        if (!BaseClass.HasRequiredFaceInterface (requiredFaceType))
+        if (!BaseClass.RequiredFaceInterfaces.HasItem (requiredFaceType))
         {
-          BaseClass.AddRequiredFaceInterface (requiredFaceType);
+          BaseClass.RequiredFaceInterfaces.Add (requiredFaceType);
         }
       }
     }

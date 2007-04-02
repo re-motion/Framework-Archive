@@ -5,7 +5,7 @@ namespace Mixins.Definitions
 {
   public class MethodDefinition : MemberDefinition
   {
-    private SignatureChecker signatureChecker = new SignatureChecker ();
+    private static SignatureChecker s_signatureChecker = new SignatureChecker ();
 
     public MethodDefinition (MethodInfo memberInfo, ClassDefinition declaringClass)
         : base (memberInfo, declaringClass)
@@ -34,7 +34,7 @@ namespace Mixins.Definitions
 
     private bool IsSignatureCompatibleWithMethod (MethodDefinition overrider)
     {
-      return signatureChecker.SignatureMatch (MethodInfo, overrider.MethodInfo);
+      return s_signatureChecker.SignatureMatch (MethodInfo, overrider.MethodInfo);
     }
   }
 }

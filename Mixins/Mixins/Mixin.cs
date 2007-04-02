@@ -18,7 +18,7 @@ namespace Mixins
     }
 
     [MixinInitializationMethod]
-    internal void Initialize(TThis @this, TBase @base)
+    internal void Initialize([This]TThis @this, [Base]TBase @base)
     {
       _this = @this;
       _base = @base;

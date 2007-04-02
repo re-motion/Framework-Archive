@@ -5,48 +5,42 @@
     <Position X="0.5" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>Definitions\ApplicationDefinition.cs</FileName>
-      <HashCode>AAAEAAAAAAAAABAAAAAAAAAAAAIAEAAAAACAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="BaseClasses" />
+      <Field Name="BaseClasses" />
     </ShowAsCollectionAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
   </Class>
   <Class Name="Mixins.Definitions.BaseClassDefinition">
     <Position X="3.5" Y="4.25" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\BaseClassDefinition.cs</FileName>
-      <HashCode>ACEAAAAIAAEAAAAAAABAAAAAAQAAAEgIAAAAQQIogAI=</HashCode>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAoAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="Mixins" />
-      <Property Name="IntroducedInterfaces" />
+      <Field Name="Mixins" />
+      <Field Name="IntroducedInterfaces" />
     </ShowAsCollectionAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
   </Class>
   <Class Name="Mixins.Definitions.MixinDefinition">
     <Position X="7.5" Y="4.25" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\MixinDefinition.cs</FileName>
-      <HashCode>AAAACgAAAQAEAAAAAABAAAAIAgEAAAACAAgAAAAgCAA=</HashCode>
+      <HashCode>AAAACgAAAQAAAAAAAAAAAAAIAgAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="BaseClass" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
-      <Property Name="InterfaceIntroductions" />
+      <Field Name="InterfaceIntroductions" />
       <Property Name="Overrides" />
     </ShowAsCollectionAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <Members>
+      <Field Name="_baseClass" Hidden="true" />
+    </Members>
   </Class>
   <Class Name="Mixins.Definitions.InterfaceIntroductionDefinition">
-    <Position X="7.5" Y="8.5" Width="2.5" />
+    <Position X="7.5" Y="8" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\InterfaceIntroductionDefinition.cs</FileName>
       <HashCode>AAAAAAAACAAAAIQAAAAAAAAIAAAAAAAAAQAAAAAAAAA=</HashCode>
@@ -54,48 +48,51 @@
     <ShowAsAssociation>
       <Property Name="Implementer" />
     </ShowAsAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <Members>
+      <Field Name="_implementer" Hidden="true" />
+      <Field Name="_type" Hidden="true" />
+    </Members>
   </Class>
   <Class Name="Mixins.Definitions.MemberDefinition">
     <Position X="11" Y="0.5" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\MemberDefinition.cs</FileName>
-      <HashCode>AQAIEgAAAQAAAIAAAAACIAQAAAIAAAAACAAKADIASAA=</HashCode>
+      <HashCode>AAAAEgAAAQAAAIAAAAACIAQAAAIAAAAAAAAKADIASAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="DeclaringClass" />
       <Property Name="Base" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
-      <Property Name="Overrides" />
+      <Field Name="Overrides" />
     </ShowAsCollectionAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <Members>
+      <Field Name="_base" Hidden="true" />
+      <Field Name="_declaringClass" Hidden="true" />
+      <Field Name="_memberInfo" Hidden="true" />
+    </Members>
   </Class>
   <Class Name="Mixins.Definitions.ClassDefinition">
     <Position X="5.25" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\ClassDefinition.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAIRAAAACAAQAAQAAAAAAASBEAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAIQAAAACAAQAAAAAAAAAAQAEAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="Members" />
+      <Field Name="Members" />
     </ShowAsCollectionAssociation>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <Members>
+      <Field Name="_type" Hidden="true" />
+    </Members>
   </Class>
   <Class Name="Mixins.Definitions.MethodDefinition">
-    <Position X="11" Y="5.25" Width="2" />
+    <Position X="11" Y="4.25" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\MethodDefinition.cs</FileName>
-      <HashCode>AAAAAAAAAAAACAQAAAACAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAQAAAgCAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
+    <Members>
+      <Field Name="s_signatureChecker" Hidden="true" />
+    </Members>
   </Class>
 </ClassDiagram>
