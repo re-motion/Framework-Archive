@@ -3,6 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class Location : TestDomainBase
   {
     // types
@@ -34,6 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [Mandatory]
     public Client Client
     {
       get { return (Client) GetRelatedObject ("Client"); }

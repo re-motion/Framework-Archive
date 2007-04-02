@@ -3,6 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class Ceo : TestDomainBase
   {
     // types
@@ -41,12 +42,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [String (IsNullable = false, MaximumLength = 100)]
     public string Name
     {
       get { return DataContainer.GetString ("Name"); }
       set { DataContainer.SetValue ("Name", value); }
     }
 
+    [DBBidirectionalRelation ("Ceo", ContainsForeignKey = true)]
+    [Mandatory]
     public Company Company
     {
       get { return (Company) GetRelatedObject ("Company"); }

@@ -2,7 +2,8 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class ClassWithOptionalOneToOneRelationAndOppositeDerivedClass : DomainObject
+  [DBTable (Name = "TableWithOptionalOneToOneRelationAndOppositeDerivedClass")]
+  public class ClassWithOptionalOneToOneRelationAndOppositeDerivedClass : TestDomainBase
   {
     // types
 

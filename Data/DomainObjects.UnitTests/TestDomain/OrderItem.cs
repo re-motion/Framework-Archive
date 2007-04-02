@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class OrderItem : TestDomainBase
   {
     // types
@@ -53,12 +54,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["Position"] = value; }
     }
 
+    [String (IsNullable = false, MaximumLength = 100)]
     public string Product
     {
       get { return (string) DataContainer["Product"]; }
       set { DataContainer["Product"] = value; }
     }
 
+    [DBBidirectionalRelation ("OrderItems")]
+    [Mandatory]
     public Order Order
     {
       get { return (Order) GetRelatedObject ("Order"); }

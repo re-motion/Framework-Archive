@@ -58,12 +58,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("CustomerSince", value); }
     }
 
+    [DBColumn ("CustomerType")]
     public CustomerType Type
     {
       get { return (CustomerType) DataContainer["Type"]; }
       set { DataContainer.SetValue ("Type", value); }
     }
 
+    [DBBidirectionalRelation ("Customer")]
     public OrderCollection Orders
     {
       get { return (OrderCollection) GetRelatedObjects ("Orders"); }

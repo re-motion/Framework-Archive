@@ -23,29 +23,23 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public ClassDefinitionCollection GetClassDefinitions()
     {
-      List<Assembly> assemblies = new List<Assembly>();
-      foreach (Assembly assembly in _rootAssemblies)
-        assemblies.AddRange (FindAssemblies (assembly));
-
-      List<Type> domainObjectClasses = new List<Type>();
-      foreach (Assembly assembly in assemblies)
-      {
-        foreach (Type type in assembly.GetTypes ())
-        {
-          if (type.IsSubclassOf (typeof (DomainObject)))
-            domainObjectClasses.Add (type);
-        }
-      }
-
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection();
-      List<RelationReflector> relations = new List<RelationReflector>();
-      foreach (Type domainObjectClass in domainObjectClasses)
-      {
-        ClassReflector classReflector = ClassReflector.CreateClassReflector (domainObjectClass, classDefinitions, relations);
-        classReflector.GetMetadata();
-      }
+      foreach (ClassReflector classReflector in CreateClassReflectors())
+        classReflector.GetClassDefinition (classDefinitions);
 
       return classDefinitions;
+    }
+
+    public RelationDefinitionCollection GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
+    {
+      RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection();
+      foreach (ClassReflector classReflector in CreateClassReflectors ())
+      {
+        foreach (RelationDefinition relationDefinition in classReflector.GetRelationDefinitions (classDefinitions))
+          relationDefinitions.Add (relationDefinition);
+      }
+
+      return relationDefinitions;
     }
 
     public List<Assembly> FindAssemblies (Assembly assembly)
@@ -65,14 +59,31 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return referencesAssemblies;
     }
 
-    public RelationDefinitionCollection GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool ResolveTypes
+    bool IMappingLoader.ResolveTypes
     {
       get { return true; }
+    }
+
+    private List<ClassReflector> CreateClassReflectors ()
+    {
+      List<Assembly> assemblies = new List<Assembly> ();
+      foreach (Assembly assembly in _rootAssemblies)
+        assemblies.AddRange (FindAssemblies (assembly));
+
+      List<Type> domainObjectClasses = new List<Type> ();
+      foreach (Assembly assembly in assemblies)
+      {
+        foreach (Type type in assembly.GetTypes ())
+        {
+          if (type.IsSubclassOf (typeof (DomainObject)))
+            domainObjectClasses.Add (type);
+        }
+      }
+
+      List<ClassReflector> classReflectors = new List<ClassReflector> ();
+      foreach (Type domainObjectClass in domainObjectClasses)
+        classReflectors.Add (ClassReflector.CreateClassReflector (domainObjectClass));
+      return classReflectors;
     }
   }
 }

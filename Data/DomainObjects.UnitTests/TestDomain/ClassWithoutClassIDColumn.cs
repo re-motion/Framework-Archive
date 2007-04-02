@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [DBTable (Name = "TableWithoutClassIDColumn")]
   public class ClassWithoutClassIDColumn : TestDomainBase
   {
     // types

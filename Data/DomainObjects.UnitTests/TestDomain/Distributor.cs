@@ -44,16 +44,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["NumberOfShops"] = value; }
     }
 
+    [DBBidirectionalRelation ("Distributor")]
     private ClassWithoutRelatedClassIDColumn ClassWithoutRelatedClassIDColumn
     {
-      get
-      {
-        return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("ClassWithoutRelatedClassIDColumn");
-      }
-      set
-      {
-        SetRelatedObject ("ClassWithoutRelatedClassIDColumn", value);
-      }
+      get { return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("ClassWithoutRelatedClassIDColumn"); }
+      set { SetRelatedObject ("ClassWithoutRelatedClassIDColumn", value); }
     }
   }
 }

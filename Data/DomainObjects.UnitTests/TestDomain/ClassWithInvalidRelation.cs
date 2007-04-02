@@ -2,13 +2,14 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class ClassWithInvalidRelation : TestDomainBase
+  [DBTable (Name = "TableWithInvalidRelation")]
+  public class ClassWithInvalidRelation: TestDomainBase
   {
     // types
 
     // static members and constants
 
-    public static new ClassWithInvalidRelation GetObject (ObjectID id)
+    public new static ClassWithInvalidRelation GetObject (ObjectID id)
     {
       return (ClassWithInvalidRelation) DomainObject.GetObject (id);
     }
@@ -17,32 +18,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
-    public ClassWithInvalidRelation ()
+    public ClassWithInvalidRelation()
     {
     }
 
     public ClassWithInvalidRelation (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
     }
 
     protected ClassWithInvalidRelation (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
     // methods and properties
 
+    [DBBidirectionalRelation ("ClassWithInvalidRelation", ContainsForeignKey = true)]
+    [DBColumn ("TableWithGuidKeyID")]
     public ClassWithGuidKey ClassWithGuidKey
     {
-      get
-      {
-        return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKey");
-      }
-      set
-      {
-        SetRelatedObject ("ClassWithGuidKey", value);
-      }
+      get { return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKey"); }
+      set { SetRelatedObject ("ClassWithGuidKey", value); }
     }
   }
 }

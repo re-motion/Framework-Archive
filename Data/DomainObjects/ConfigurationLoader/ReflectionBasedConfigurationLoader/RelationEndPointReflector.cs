@@ -23,7 +23,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       Validate();
-      ClassDefinition classDefinition = classDefinitions.GetMandatory (PropertyInfo.DeclaringType);
+      ClassDefinition classDefinition;
+      try
+      {
+        classDefinition = classDefinitions.GetMandatory (PropertyInfo.DeclaringType);
+      }
+      catch (MappingException e)
+      {
+        throw CreateMappingException (null, PropertyInfo, e.Message);
+      }
 
       if (IsVirtualEndRelationEndpoint())
         return CreateVirtualRelationEndPointDefinition (classDefinition);

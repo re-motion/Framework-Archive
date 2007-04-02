@@ -119,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    protected string GetPropertyName ()
+    protected virtual string GetPropertyName ()
     {
       return ReflectionUtility.GetPropertyName (PropertyInfo);
     }

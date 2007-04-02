@@ -126,7 +126,11 @@
 					<column>CustomerID</column>
 				</relationProperty>
 				<relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true"/>
-				<relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true"/>
+        <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true">
+          <collectionType>
+            Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.UnitTests]], Rubicon.Data.DomainObjects
+          </collectionType>
+        </relationProperty>
 				<relationProperty name="Official" relationID="OfficialToOrder" cardinality="one" isMandatory="true">
 					<column>OfficialID</column>
 				</relationProperty>
@@ -168,7 +172,7 @@
           <column>CustomerID</column>
           <oppositeClass>Customer</oppositeClass>
         </relationProperty>
-        <relationProperty name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderItems" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="many" isMandatory="true"/>
+        <relationProperty name="Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderItems" relationID="OrderToOrderItemWithNewPropertyAccess" cardinality="many" isMandatory="true" />
       </properties>
     </class>
     <class id="OrderItemWithNewPropertyAccess">
@@ -215,7 +219,11 @@
 					<column>Name</column>
 					<maxLength>100</maxLength>
 				</property>
-				<relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false"/>
+        <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false">
+          <collectionType>
+            Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests]], Rubicon.Data.DomainObjects
+          </collectionType>
+        </relationProperty>
 			</properties>
 		</class>
     <class id="SpecialOfficial" baseClass="Official">
@@ -234,7 +242,11 @@
 					<column>Name</column>
 					<maxLength>100</maxLength>
 				</property>
-				<relationProperty name="Companies" relationID="IndustrialSectorToCompany" cardinality="many" isMandatory="true"/>
+        <relationProperty name="Companies" relationID="IndustrialSectorToCompany" cardinality="many" isMandatory="true">
+          <collectionType>
+            Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests]], Rubicon.Data.DomainObjects
+          </collectionType>
+        </relationProperty>
 			</properties>
 		</class>
 		<class id="Employee">
@@ -247,7 +259,11 @@
 					<column>Name</column>
 					<maxLength>100</maxLength>
 				</property>
-				<relationProperty name="Subordinates" relationID="SupervisorToSubordinate" cardinality="many" isMandatory="false"/>
+        <relationProperty name="Subordinates" relationID="SupervisorToSubordinate" cardinality="many" isMandatory="false">
+          <collectionType>
+            Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.UnitTests]], Rubicon.Data.DomainObjects
+          </collectionType>
+        </relationProperty>
 				<relationProperty name="Supervisor" relationID="SupervisorToSubordinate" cardinality="one" isMandatory="false">
 					<column>SupervisorID</column>
 				</relationProperty>
@@ -306,7 +322,11 @@
 		  <entity name="FileSystemItem"/>
 		  <storageProviderID>TestDomain</storageProviderID>
 		  <properties>
-		    <relationProperty name="FileSystemItems" relationID="FolderToFileSystemItem" isMandatory="false" cardinality="many"/>
+        <relationProperty name="FileSystemItems" relationID="FolderToFileSystemItem" isMandatory="false" cardinality="many">
+          <collectionType>
+            Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem, Rubicon.Data.DomainObjects.UnitTests]], Rubicon.Data.DomainObjects
+          </collectionType>
+        </relationProperty>
 		  </properties>
 		</class>
 		<class id="File" baseClass="FileSystemItem">

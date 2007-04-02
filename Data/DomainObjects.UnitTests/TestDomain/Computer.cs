@@ -3,13 +3,14 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  public class Computer : TestDomainBase
+  [DBTable]
+  public class Computer: TestDomainBase
   {
     // types
 
     // static members and constants
 
-    public static new Computer GetObject (ObjectID id)
+    public new static Computer GetObject (ObjectID id)
     {
       return (Computer) DomainObject.GetObject (id);
     }
@@ -18,33 +19,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
-    public Computer ()
+    public Computer()
     {
     }
 
     public Computer (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
     }
 
     public Computer (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Computer (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
     // methods and properties
 
+    [String (IsNullable = false, MaximumLength = 20)]
     public string SerialNumber
     {
       get { return DataContainer.GetString ("SerialNumber"); }
       set { DataContainer.SetValue ("SerialNumber", value); }
     }
 
+    [DBBidirectionalRelation ("Computer", ContainsForeignKey = true)]
     public Employee Employee
     {
       get { return (Employee) GetRelatedObject ("Employee"); }

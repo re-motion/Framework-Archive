@@ -2,7 +2,8 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class ClassWithoutRelatedClassIDColumnAndDerivation : DomainObject
+  [DBTable (Name = "TableWithoutRelatedClassIDColumnAndDerivation")]
+  public class ClassWithoutRelatedClassIDColumnAndDerivation : TestDomainBase
   {
     // types
 
@@ -33,6 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [DBBidirectionalRelation ("ClassWithoutRelatedClassIDColumnAndDerivation", ContainsForeignKey = true)]
     public Company Company
     {
       get { return (Company) GetRelatedObject ("Company"); }

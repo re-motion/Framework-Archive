@@ -38,6 +38,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [DBBidirectionalRelation ("AssociatedPartnerCompany", ContainsForeignKey = true)]
+    [Mandatory]
     public Person ContactPerson
     {
       get { return (Person) GetRelatedObject ("ContactPerson"); }

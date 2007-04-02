@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 {
   [DBTable]
   [TestDomain]
-  [NotAbstractAttribute]
+  [NotAbstract]
   public abstract class ClassWithMixedProperties: ClassWithMixedPropertiesNotInMapping
   {
     protected ClassWithMixedProperties (ClientTransaction clientTransaction, ObjectID objectID)
@@ -26,8 +26,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
       get
       {
-        return
-            GetPropertyValue<string> ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String");
+        return GetPropertyValue<string> (
+            "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String");
       }
       set { SetPropertyValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String", value); }
     }
@@ -42,9 +42,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
       get
       {
-        return
-            GetPropertyValue<string> (
-                "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString");
+        return GetPropertyValue<string> (
+            "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString");
       }
       set
       {

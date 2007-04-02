@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [DBTable]
   public class IndustrialSector : TestDomainBase
   {
     // types
@@ -38,15 +39,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [String (IsNullable = false, MaximumLength = 100)]
     public string Name
     {
       get { return (string) DataContainer["Name"]; }
       set { DataContainer["Name"] = value; }
     }
 
-    public DomainObjectCollection Companies
+    [DBBidirectionalRelationAttribute ("IndustrialSector")]
+    [Mandatory]
+    public ObjectList<Company> Companies
     {
-      get { return GetRelatedObjects ("Companies"); }
+      get { return (ObjectList<Company>) GetRelatedObjects ("Companies"); }
     }
   }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTestBase.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTest_GetRelationDefinitions.cs" />
     <Compile Include="Configuration\Mapping\RdbmsClassReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\LengthConstrainedPropertyAttributeTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BaseTest.cs" />
@@ -623,6 +624,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
+    <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
+    <Compile Include="TestDomain\StorageProviderStubTestDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />
     <Compile Include="TestDomain\OrderWithNewPropertyAccess.cs" />
     <Compile Include="TestDomain\Customer.cs">
@@ -676,8 +679,10 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStringProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageClassAttribute.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassHavingStorageSpecificIdentifier.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassHavingStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassHavingClassIDAttribute.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
       <SubType>Code</SubType>

@@ -3,6 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class Company: TestDomainBase
   {
     // types
@@ -41,29 +42,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {
       set { DataContainer["Name"] = value; }
     }
 
+    [String (IsNullable = false, MaximumLength = 100)]
     public string Name
     {
       get { return DataContainer.GetString ("Name"); }
       set { DataContainer.SetValue ("Name", value); }
     }
 
+    [DBBidirectionalRelation ("Company")]
+    [Mandatory]
     public Ceo Ceo
     {
       get { return (Ceo) GetRelatedObject ("Ceo"); }
       set { SetRelatedObject ("Ceo", value); }
     }
 
+    [DBBidirectionalRelation ("Companies")]
     public IndustrialSector IndustrialSector
     {
       get { return (IndustrialSector) GetRelatedObject ("IndustrialSector"); }
       set { SetRelatedObject ("IndustrialSector", value); }
     }
 
+    [DBBidirectionalRelation ("Company")]
     private ClassWithoutRelatedClassIDColumnAndDerivation ClassWithoutRelatedClassIDColumnAndDerivation
     {
       get { return (ClassWithoutRelatedClassIDColumnAndDerivation) GetRelatedObject ("ClassWithoutRelatedClassIDColumnAndDerivation"); }

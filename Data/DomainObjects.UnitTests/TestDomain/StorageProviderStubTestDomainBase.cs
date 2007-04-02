@@ -3,26 +3,26 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [TestDomain]
-  public class TestDomainBase : DomainObject
+  [StorageProviderStub]
+  public class StorageProviderStubDomainBase : DomainObject
   {
     // types
 
     // static members and constants
 
-    public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static new StorageProviderStubDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, clientTransaction);
+      return (StorageProviderStubDomainBase) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
+    public static new StorageProviderStubDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
+      return (StorageProviderStubDomainBase) DomainObject.GetObject (id, includeDeleted);
     }
 
-    public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public static new StorageProviderStubDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      return (StorageProviderStubDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     // member fields
@@ -30,23 +30,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     // construction and disposing
 
     // TODO: [Obsolete ("Use ctor(ClientTransaction, objectID) instead.")]
-    protected TestDomainBase ()
+    protected StorageProviderStubDomainBase ()
     {
     }
 
     // TODO: [Obsolete ("Use ctor(ClientTransaction, objectID) instead.")]
-    protected TestDomainBase (ClientTransaction clientTransaction)
+    protected StorageProviderStubDomainBase (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }
 
-    protected TestDomainBase (ClientTransaction clientTransaction, ObjectID objectID)
+    protected StorageProviderStubDomainBase (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)
     {
     }
 
     // TODO: [Obsolete("Use ctor(ClientTransaction, objectID) instead.")]
-    protected TestDomainBase (DataContainer dataContainer)
+    protected StorageProviderStubDomainBase (DataContainer dataContainer)
       : base (dataContainer)
     {
     }

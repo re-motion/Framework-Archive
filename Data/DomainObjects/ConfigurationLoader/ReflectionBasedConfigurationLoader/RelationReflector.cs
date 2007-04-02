@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
+  //TODO: Validation: Invalid Opposite Property (Name, Type)
   /// <summary>Used to create the <see cref="RelationDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationReflector: RelationReflectorBase
   {
@@ -40,15 +41,22 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private IRelationEndPointDefinition CreateEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
     {
-      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(propertyInfo);
+      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo);
       return relationEndPointReflector.GetMetadata (classDefinitions);
     }
 
     private ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
     {
-      if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
-        return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments()[0]);
-      return classDefinitions.GetMandatory (PropertyInfo.PropertyType);
+      try
+      {
+        if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
+          return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments()[0]);
+        return classDefinitions.GetMandatory (PropertyInfo.PropertyType);
+      }
+      catch (MappingException e)
+      {
+        throw CreateMappingException (null, PropertyInfo, e.Message);
+      }
     }
   }
 }

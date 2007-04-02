@@ -2,10 +2,16 @@ using System;
 
 namespace Rubicon.Data.DomainObjects
 {
-  public class ObjectList<T>: DomainObjectCollection where T: DomainObject
+  [Serializable]
+  public class ObjectList<T> : DomainObjectCollection where T : DomainObject
   {
     public ObjectList()
         : base (typeof (T))
+    {
+    }
+
+    public ObjectList (ObjectList<T> collection, bool isCollectionReadOnly)
+      : base (collection, isCollectionReadOnly)
     {
     }
 

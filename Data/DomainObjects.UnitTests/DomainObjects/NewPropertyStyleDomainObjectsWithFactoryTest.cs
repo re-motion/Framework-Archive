@@ -343,7 +343,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
-      int i = order.NotInMapping;
+      Dev.Null = order.NotInMapping;
     }
 
     [Test]
@@ -351,7 +351,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void RelatedAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
-      DomainObject o = order.NotInMappingRelated;
+      Dev.Null = order.NotInMappingRelated;
     }
 
     [Test]

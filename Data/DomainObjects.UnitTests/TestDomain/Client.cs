@@ -3,6 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class Client : TestDomainBase
   {
     // types

@@ -2,13 +2,14 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class ClassWithoutRelatedClassIDColumn : DomainObject
+  [DBTable (Name = "TableWithoutRelatedClassIDColumn")]
+  public class ClassWithoutRelatedClassIDColumn: TestDomainBase
   {
     // types
 
     // static members and constants
 
-    public static new ClassWithoutRelatedClassIDColumn GetObject (ObjectID id)
+    public new static ClassWithoutRelatedClassIDColumn GetObject (ObjectID id)
     {
       return (ClassWithoutRelatedClassIDColumn) DomainObject.GetObject (id);
     }
@@ -17,26 +18,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
-    public ClassWithoutRelatedClassIDColumn ()
+    public ClassWithoutRelatedClassIDColumn()
     {
     }
 
     public ClassWithoutRelatedClassIDColumn (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
     }
 
     protected ClassWithoutRelatedClassIDColumn (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
     // methods and properties
 
-    public Partner Partner
+    [DBBidirectionalRelation ("ClassWithoutRelatedClassIDColumn", ContainsForeignKey = true)]
+    public Distributor Distributor
     {
-      get { return (Partner) GetRelatedObject ("Partner"); }
-      set { SetRelatedObject ("Partner", value); }
+      get { return (Distributor) GetRelatedObject ("Distributor"); }
+      set { SetRelatedObject ("Distributor", value); }
     }
   }
 }

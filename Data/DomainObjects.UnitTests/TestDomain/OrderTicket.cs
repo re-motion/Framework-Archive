@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
+  [DBTable]
   public class OrderTicket : TestDomainBase
   {
     // types
@@ -50,12 +51,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [String (IsNullable = false, MaximumLength = 255)]
     public string FileName
     {
       get { return DataContainer.GetString ("FileName"); }
       set { DataContainer.SetValue ("FileName", value); }
     }
 
+    [DBBidirectionalRelation ("OrderTicket", ContainsForeignKey = true)]
+    [Mandatory]
     public Order Order
     {
       get { return (Order) GetRelatedObject ("Order"); }

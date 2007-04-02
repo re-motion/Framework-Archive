@@ -4,7 +4,6 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Data.DomainObjects.Configuration;
 

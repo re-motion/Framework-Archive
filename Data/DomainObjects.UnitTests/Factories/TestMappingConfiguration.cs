@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
@@ -65,7 +66,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection ();
 
-      ClassDefinition company = CreateCompanyDefinition ();
+      ClassDefinition testDomainBase = CreateTestDomainBaseDefinition();
+      ClassDefinition storageProviderStubDomainBase = CreateStorageProviderStubDomainBaseDefinition ();
+
+      ClassDefinition company = CreateCompanyDefinition (testDomainBase);
       classDefinitions.Add (company);
 
       ClassDefinition customer = CreateCustomerDefinition (company);
@@ -80,52 +84,69 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition distributor = CreateDistributorDefinition (partner);
       classDefinitions.Add (distributor);
 
-      classDefinitions.Add (CreateOrderDefinition ());
-      classDefinitions.Add (CreateOrderTicketDefinition ());
-      classDefinitions.Add (CreateOrderItemDefinition ());
+      classDefinitions.Add (CreateOrderDefinition (testDomainBase));
+      classDefinitions.Add (CreateOrderTicketDefinition (testDomainBase));
+      classDefinitions.Add (CreateOrderItemDefinition (testDomainBase));
 
-      ClassDefinition officialDefinition = CreateOfficialDefinition ();
+      //TODO: reset to storageProviderStubDomainBase
+      ClassDefinition officialDefinition = CreateOfficialDefinition (testDomainBase);
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
-      classDefinitions.Add (CreateCeoDefinition ());
-      classDefinitions.Add (CreatePersonDefinition ());
+      classDefinitions.Add (CreateCeoDefinition (testDomainBase));
+      classDefinitions.Add (CreatePersonDefinition (testDomainBase));
 
-      classDefinitions.Add (CreateClientDefinition ());
-      classDefinitions.Add (CreateLocationDefinition ());
+      classDefinitions.Add (CreateClientDefinition (testDomainBase));
+      classDefinitions.Add (CreateLocationDefinition (testDomainBase));
 
-      ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
+      ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition (testDomainBase);
       classDefinitions.Add (fileSystemItemDefinition);
       classDefinitions.Add (CreateFolderDefinition (fileSystemItemDefinition));
       classDefinitions.Add (CreateFileDefinition (fileSystemItemDefinition));
 
-      classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ());
-      classDefinitions.Add (CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ());
-      classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition ());
-      classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
-      classDefinitions.Add (CreateClassWithGuidKeyDefinition ());
-      classDefinitions.Add (CreateClassWithInvalidKeyTypeDefinition ());
-      classDefinitions.Add (CreateClassWithoutIDColumnDefinition ());
-      classDefinitions.Add (CreateClassWithoutClassIDColumnDefinition ());
-      classDefinitions.Add (CreateClassWithoutTimestampColumnDefinition ());
-      classDefinitions.Add (CreateClassWithValidRelationsDefinition ());
-      classDefinitions.Add (CreateClassWithInvalidRelationDefinition ());
-      classDefinitions.Add (CreateIndustrialSectorDefinition ());
-      classDefinitions.Add (CreateEmployeeDefinition ());
-      classDefinitions.Add (CreateComputerDefinition ());
-      classDefinitions.Add (CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ());
+      classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithAllDataTypesDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithGuidKeyDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithInvalidKeyTypeDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithoutIDColumnDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithoutClassIDColumnDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithoutTimestampColumnDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithValidRelationsDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithInvalidRelationDefinition (testDomainBase));
+      classDefinitions.Add (CreateIndustrialSectorDefinition (testDomainBase));
+      classDefinitions.Add (CreateEmployeeDefinition (testDomainBase));
+      classDefinitions.Add (CreateComputerDefinition (testDomainBase));
+      classDefinitions.Add (CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition (testDomainBase));
 
 
       return classDefinitions;
     }
 
-    private ClassDefinition CreateCompanyDefinition ()
+    private ClassDefinition CreateTestDomainBaseDefinition ()
+    {
+      ClassDefinition testDomainBase = new ClassDefinition (
+          "TestDomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (TestDomainBase));
+
+      return testDomainBase;
+    }
+
+    private ClassDefinition CreateStorageProviderStubDomainBaseDefinition ()
+    {
+      ClassDefinition storageProviderStubDomainBase = new ClassDefinition (
+          "StorageProviderStubDomainBase", null, DatabaseTest.c_unitTestStorageProviderStubID, typeof (StorageProviderStubDomainBase));
+
+      return storageProviderStubDomainBase;
+    }
+
+    private ClassDefinition CreateCompanyDefinition (ClassDefinition baseClass)
     {
       ClassDefinition company = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company));
+          "Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company), baseClass);
 
-      company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      company.MyPropertyDefinitions.Add (new PropertyDefinition ("IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName));
+      company.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name", "Name", "string", 100));
+      company.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName));
 
       return company;
     }
@@ -133,15 +154,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass)
     {
       ClassDefinition customer = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer", "Company", DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
+          "Customer", null, DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
 
-      customer.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
+      customer.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince", "CustomerSince", "dateTime", true));
 
-      customer.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Type",
-              "CustomerType",
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests"));
+      customer.MyPropertyDefinitions.Add (new PropertyDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type",
+          "CustomerType",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests"));
 
       return customer;
     }
@@ -149,9 +169,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass)
     {
       ClassDefinition partner = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
+          "Partner", null, DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
-      partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
+      partner.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
 
       return partner;
     }
@@ -159,9 +179,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass)
     {
       ClassDefinition supplier = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier", "Company", DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
+          "Supplier", null, DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
 
-      supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
+      supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Supplier.SupplierQuality", "SupplierQuality", "int32"));
 
       return supplier;
     }
@@ -169,113 +189,114 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass)
     {
       ClassDefinition distributor = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
+          "Distributor", null, DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
 
-      distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
+      distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.NumberOfShops", "NumberOfShops", "int32"));
 
       return distributor;
     }
 
-    private ClassDefinition CreateOrderDefinition ()
+    private ClassDefinition CreateOrderDefinition (ClassDefinition baseClass)
     {
       ClassDefinition order = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+          "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order), baseClass);
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", "OrderNo", "int32"));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate", "DeliveryDate", "dateTime"));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName));
 
       return order;
     }
 
-    private ClassDefinition CreateOfficialDefinition ()
+    //TODO: reset to c_unitTestStorageProviderStubID
+    private ClassDefinition CreateOfficialDefinition (ClassDefinition baseClass)
     {
       ClassDefinition official = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official));
+          "Official", "Official", DatabaseTest.c_testDomainProviderID, typeof (Official), baseClass);
 
-      official.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      official.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Name", "Name", "string", 100));
 
       return official;
     }
 
+    //TODO: reset to c_unitTestStorageProviderStubID
     private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
     {
       return new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.SpecialOfficial", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (SpecialOfficial), officialDefinition);
+          "SpecialOfficial", null, DatabaseTest.c_testDomainProviderID, typeof (SpecialOfficial), officialDefinition);
     }
 
-    private ClassDefinition CreateOrderTicketDefinition ()
+    private ClassDefinition CreateOrderTicketDefinition (ClassDefinition baseClass)
     {
       ClassDefinition orderTicket = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
+          "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket), baseClass);
 
-      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
-      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName", "FileName", "string", 255));
+      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
 
       return orderTicket;
     }
 
-    private ClassDefinition CreateOrderItemDefinition ()
+    private ClassDefinition CreateOrderItemDefinition (ClassDefinition baseClass)
     {
       ClassDefinition orderItem = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
+          "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem), baseClass);
 
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", "string", 100));
+      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Position", "Position", "int32"));
+      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product", "Product", "string", 100));
 
       return orderItem;
     }
 
-    private ClassDefinition CreateCeoDefinition ()
+    private ClassDefinition CreateCeoDefinition (ClassDefinition baseClass)
     {
       ClassDefinition order = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
+          "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo), baseClass);
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Name", "Name", "string", 100));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
 
       return order;
     }
 
-    private ClassDefinition CreatePersonDefinition ()
+    private ClassDefinition CreatePersonDefinition (ClassDefinition baseClass)
     {
       ClassDefinition order = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person));
+          "Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person), baseClass);
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.Name", "Name", "string", 100));
 
       return order;
     }
 
-    private ClassDefinition CreateClientDefinition ()
+    private ClassDefinition CreateClientDefinition (ClassDefinition baseClass)
     {
       ClassDefinition clientClass = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
+          "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client), baseClass);
 
-      clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
+      clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
 
       return clientClass;
     }
 
-    private ClassDefinition CreateLocationDefinition ()
+    private ClassDefinition CreateLocationDefinition (ClassDefinition baseClass)
     {
       ClassDefinition location = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
+          "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location), baseClass);
 
-      location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
+      location.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 
       return location;
     }
 
-    private ClassDefinition CreateFileSystemItemDefinition ()
+    private ClassDefinition CreateFileSystemItemDefinition (ClassDefinition baseClass)
     {
       ClassDefinition fileSystemItem = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
+          "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem), baseClass);
 
-      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
+      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
 
       return fileSystemItem;
     }
@@ -283,7 +304,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
     {
       ClassDefinition folder = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (Folder), baseClass);
+          "Folder", null, DatabaseTest.c_testDomainProviderID, typeof (Folder), baseClass);
 
       return folder;
     }
@@ -291,212 +312,216 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
     {
       ClassDefinition file = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.File", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (File), baseClass);
+          "File", null, DatabaseTest.c_testDomainProviderID, typeof (File), baseClass);
 
       return file;
     }
 
-    private ClassDefinition CreateClassWithAllDataTypesDefinition ()
+    //TODO: remove Date and NaDate properties
+    private ClassDefinition CreateClassWithAllDataTypesDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classWithAllDataTypes = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes));
+          "ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes), baseClass);
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DateProperty", "Date", "date"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DateTimeProperty", "DateTime", "dateTime"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DecimalProperty", "Decimal", "decimal"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DoubleProperty", "Double", "double"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", "Boolean", "boolean"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty", "Byte", "byte"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty", "Date", "dateTime"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty", "DateTime", "dateTime"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty", "Decimal", "decimal"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty", "Double", "double"));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "EnumProperty",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty",
           "Enum",
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests"));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("GuidProperty", "Guid", "guid"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int16Property", "Int16", "int16"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int32Property", "Int32", "int32"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", "int64"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("SingleProperty", "Single", "single"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringProperty", "String", "string", 100));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringPropertyWithoutMaxLength", "StringWithoutMaxLength", "string"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BinaryProperty", "Binary", "binary"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty", "Guid", "guid"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property", "Int16", "int16"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property", "Int32", "int32"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property", "Int64", "int64"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty", "Single", "single"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty", "String", "string", 100));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength", "StringWithoutMaxLength", "string"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty", "Binary", "binary"));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanProperty", "NaBoolean", "boolean", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaByteProperty", "NaByte", "byte", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateProperty", "NaDate", "date", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeProperty", "NaDateTime", "dateTime", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDecimalProperty", "NaDecimal", "decimal", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDoubleProperty", "NaDouble", "double", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaGuidProperty", "NaGuid", "guid", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt16Property", "NaInt16", "int16", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt32Property", "NaInt32", "int32", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64Property", "NaInt64", "int64", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleProperty", "NaSingle", "single", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", "NaBoolean", "boolean", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty", "NaByte", "byte", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty", "NaDate", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty", "NaDateTime", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty", "NaDecimal", "decimal", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty", "NaDouble", "double", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty", "NaGuid", "guid", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property", "NaInt16", "int16", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property", "NaInt32", "int32", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property", "NaInt64", "int64", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty", "NaSingle", "single", true));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, true, 100));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDecimalWithNullValueProperty", "NaDecimalWithNullValue", "decimal", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaGuidWithNullValueProperty", "NaGuidWithNullValue", "guid", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt16WithNullValueProperty", "NaInt16WithNullValue", "int16", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NullableBinaryProperty", "NullableBinary", "binary", true, true, 1000000));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty", "StringWithNullValue", "string", true, true, 100));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty", "NaDateWithNullValue", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalWithNullValueProperty", "NaDecimalWithNullValue", "decimal", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidWithNullValueProperty", "NaGuidWithNullValue", "guid", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16WithNullValueProperty", "NaInt16WithNullValue", "int16", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty", "NullableBinary", "binary", true, true, 1000000));
 
       return classWithAllDataTypes;
     }
 
-    private ClassDefinition CreateClassWithGuidKeyDefinition ()
+    private ClassDefinition CreateClassWithGuidKeyDefinition (ClassDefinition baseClass)
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey", "TableWithGuidKey",
-        DatabaseTest.c_testDomainProviderID, typeof (ClassWithGuidKey));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithGuidKey), baseClass);
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
+    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition (ClassDefinition baseClass)
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
-        DatabaseTest.c_testDomainProviderID, typeof (ClassWithKeyOfInvalidType));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithKeyOfInvalidType), baseClass);
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutIDColumnDefinition ()
+    private ClassDefinition CreateClassWithoutIDColumnDefinition (ClassDefinition baseClass)
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDColumn", "TableWithoutIDColumn",
-        DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDColumn));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDColumn), baseClass);
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutClassIDColumnDefinition ()
+    private ClassDefinition CreateClassWithoutClassIDColumnDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDColumn", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDColumn));
+          "ClassWithoutClassIDColumn", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDColumn), baseClass);
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutTimestampColumnDefinition ()
+    private ClassDefinition CreateClassWithoutTimestampColumnDefinition (ClassDefinition baseClass)
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
-          DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampColumn));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
+          DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampColumn), baseClass);
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithValidRelationsDefinition ()
+    private ClassDefinition CreateClassWithValidRelationsDefinition (ClassDefinition baseClass)
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations", "TableWithValidRelations",
-          DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
+          DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations), baseClass);
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidRelationDefinition ()
+    private ClassDefinition CreateClassWithInvalidRelationDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
+          "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation), baseClass);
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation.ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
+    private ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn",
+          "ClassWithoutRelatedClassIDColumn",
           "TableWithoutRelatedClassIDColumn",
           DatabaseTest.c_testDomainProviderID,
-          typeof (ClassWithoutRelatedClassIDColumn));
+          typeof (ClassWithoutRelatedClassIDColumn),
+          baseClass);
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
+    private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass",
+          "ClassWithOptionalOneToOneRelationAndOppositeDerivedClass",
           "TableWithOptionalOneToOneRelationAndOppositeDerivedClass",
           DatabaseTest.c_testDomainProviderID,
-          typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass));
+          typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass),
+          baseClass);
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
+    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation",
+          "ClassWithoutRelatedClassIDColumnAndDerivation",
           "TableWithoutRelatedClassIDColumnAndDerivation",
           DatabaseTest.c_testDomainProviderID,
-          typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
+          typeof (ClassWithoutRelatedClassIDColumnAndDerivation), 
+          baseClass);
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateIndustrialSectorDefinition ()
+    private ClassDefinition CreateIndustrialSectorDefinition (ClassDefinition baseClass)
     {
       ClassDefinition industrialSector = new ClassDefinition (
-        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector));
+        "IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector), baseClass);
 
-      industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name", "Name", "string", 100));
 
       return industrialSector;
     }
 
-    private ClassDefinition CreateEmployeeDefinition ()
+    private ClassDefinition CreateEmployeeDefinition (ClassDefinition baseClass)
     {
       ClassDefinition employee = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
+          "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee), baseClass);
 
-      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName));
+      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", "string", 100));
+      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName));
 
       return employee;
     }
 
-    private ClassDefinition CreateComputerDefinition ()
+    private ClassDefinition CreateComputerDefinition (ClassDefinition baseClass)
     {
       ClassDefinition computer = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
+          "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer), baseClass);
 
-      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
-      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName));
+      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber", "SerialNumber", "string", 20));
+      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName));
 
       return computer;
     }
 
-    private static ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
+    private ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition (ClassDefinition baseClass)
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
-          DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
+          "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
+          DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance), baseClass);
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
+      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
 
       return classDefinition;
     }
@@ -533,19 +558,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return relationDefinitions;
     }
 
+    //TODO: reset sort expression
     private RelationDefinition CreateCustomerToOrderRelationDefinition ()
     {
       ClassDefinition customer = _classDefinitions[typeof (Customer)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          customer, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
+          customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection));
+//          customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
 
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          orderClass, "Customer", true);
+          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", true);
 
-      RelationDefinition relation = new RelationDefinition ("CustomerToOrder", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", endPoint1, endPoint2);
 
       customer.MyRelationDefinitions.Add (relation);
       orderClass.MyRelationDefinitions.Add (relation);
@@ -556,16 +583,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateOrderToOrderTicketRelationDefinition ()
     {
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          orderClass, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       ClassDefinition orderTicketClass = _classDefinitions[typeof (OrderTicket)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          orderTicketClass, "Order", true);
+          orderTicketClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", true);
 
-      RelationDefinition relation = new RelationDefinition ("OrderToOrderTicket", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", endPoint1, endPoint2);
 
       orderClass.MyRelationDefinitions.Add (relation);
       orderTicketClass.MyRelationDefinitions.Add (relation);
@@ -576,16 +601,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateOrderToOrderItemRelationDefinition ()
     {
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          orderClass, "OrderItems", true, CardinalityType.Many, typeof (DomainObjectCollection));
+          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", true, CardinalityType.Many, typeof (ObjectList<OrderItem>));
 
       ClassDefinition orderItemClass = _classDefinitions[typeof (OrderItem)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          orderItemClass, "Order", true);
+          orderItemClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", true);
 
-      RelationDefinition relation = new RelationDefinition ("OrderToOrderItem", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", endPoint1, endPoint2);
 
       orderClass.MyRelationDefinitions.Add (relation);
       orderItemClass.MyRelationDefinitions.Add (relation);
@@ -598,14 +621,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition officialClass = _classDefinitions[typeof (Official)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          officialClass, "Orders", false, CardinalityType.Many, typeof (DomainObjectCollection));
+          officialClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Orders", false, CardinalityType.Many, typeof (ObjectList<Order>));
 
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          orderClass, "Official", true);
+          orderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", true);
 
-      RelationDefinition relation = new RelationDefinition ("OfficialToOrder", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", endPoint1, endPoint2);
 
       officialClass.MyRelationDefinitions.Add (relation);
       orderClass.MyRelationDefinitions.Add (relation);
@@ -618,14 +641,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition companyClass = _classDefinitions[typeof (Company)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          companyClass, "Ceo", true, CardinalityType.One, typeof (Ceo));
+          companyClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", true, CardinalityType.One, typeof (Ceo));
 
       ClassDefinition ceoClass = _classDefinitions[typeof (Ceo)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          ceoClass, "Company", true);
+          ceoClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", true);
 
-      RelationDefinition relation = new RelationDefinition ("CompanyToCeo", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", endPoint1, endPoint2);
 
       companyClass.MyRelationDefinitions.Add (relation);
       ceoClass.MyRelationDefinitions.Add (relation);
@@ -635,17 +658,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     private RelationDefinition CreatePartnerToPersonRelationDefinition ()
     {
-      ClassDefinition personClass = _classDefinitions[typeof (Person)];
-
       ClassDefinition partnerClass = _classDefinitions[typeof (Partner)];
-
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition (
-          partnerClass, "ContactPerson", true);
+          partnerClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", true);
 
+      ClassDefinition personClass = _classDefinitions[typeof (Person)];
       VirtualRelationEndPointDefinition endPoint2 = new VirtualRelationEndPointDefinition (
-          personClass, "AssociatedPartnerCompany", false, CardinalityType.One, typeof (Partner));
+          personClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false, CardinalityType.One, typeof (Partner));
 
-      RelationDefinition relation = new RelationDefinition ("PartnerToPerson", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", endPoint1, endPoint2);
 
       personClass.MyRelationDefinitions.Add (relation);
       partnerClass.MyRelationDefinitions.Add (relation);
@@ -658,8 +679,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition clientClass = _classDefinitions[typeof (Client)];
 
       NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
-      RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (clientClass, "ParentClient", false);
-      RelationDefinition relation = new RelationDefinition ("ParentClientToChildClient", endPoint1, endPoint2);
+      RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (clientClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", false);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", endPoint1, endPoint2);
 
       clientClass.MyRelationDefinitions.Add (relation);
 
@@ -674,9 +695,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          locationClass, "Client", true);
+          locationClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", true);
 
-      RelationDefinition relation = new RelationDefinition ("ClientToLocation", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", endPoint1, endPoint2);
 
       locationClass.MyRelationDefinitions.Add (relation);
 
@@ -685,16 +706,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     private RelationDefinition CreateFolderToFileSystemItemRelationDefinition ()
     {
-      ClassDefinition folderClass = _classDefinitions[typeof (Folder)];
       ClassDefinition fileSystemItemClass = _classDefinitions[typeof (FileSystemItem)];
-
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition (
-          fileSystemItemClass, "ParentFolder", false);
+          fileSystemItemClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder", false);
 
+      ClassDefinition folderClass = _classDefinitions[typeof (Folder)];
       VirtualRelationEndPointDefinition endPoint2 = new VirtualRelationEndPointDefinition (
-          folderClass, "FileSystemItems", false, CardinalityType.Many, typeof (DomainObjectCollection));
+          folderClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems", false, CardinalityType.Many, typeof (ObjectList<FileSystemItem>));
 
-      RelationDefinition relation = new RelationDefinition ("FolderToFileSystemItem", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder", endPoint1, endPoint2);
 
       folderClass.MyRelationDefinitions.Add (relation);
       fileSystemItemClass.MyRelationDefinitions.Add (relation);
@@ -710,15 +730,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
           distributorClass,
-          "ClassWithoutRelatedClassIDColumn",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn",
           false,
           CardinalityType.One,
           typeof (ClassWithoutRelatedClassIDColumn));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithoutRelatedClassIDColumnClass, "Distributor", false);
+          classWithoutRelatedClassIDColumnClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor", false);
 
-      RelationDefinition relation = new RelationDefinition ("DistributorToClassWithoutRelatedClassIDColumn", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor", endPoint1, endPoint2);
 
       distributorClass.MyRelationDefinitions.Add (relation);
       classWithoutRelatedClassIDColumnClass.MyRelationDefinitions.Add (relation);
@@ -734,16 +754,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
           companyClass,
-          "ClassWithoutRelatedClassIDColumnAndDerivation",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation",
           false,
           CardinalityType.One,
           typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithoutRelatedClassIDColumnAndDerivation, "Company", false);
+          classWithoutRelatedClassIDColumnAndDerivation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company", false);
 
-      RelationDefinition relation = new RelationDefinition (
-          "CompanyToClassWithoutRelatedClassIDColumnAndDerivation", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company", endPoint1, endPoint2);
 
       companyClass.MyRelationDefinitions.Add (relation);
       classWithoutRelatedClassIDColumnAndDerivation.MyRelationDefinitions.Add (relation);
@@ -759,9 +778,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (companyClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithOptionalOneToOneRelationAndOppositeDerivedClass, "Company", false);
+          classWithOptionalOneToOneRelationAndOppositeDerivedClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company", false);
 
-      RelationDefinition relation = new RelationDefinition ("CompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClass", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company", endPoint1, endPoint2);
 
       classWithOptionalOneToOneRelationAndOppositeDerivedClass.MyRelationDefinitions.Add (relation);
 
@@ -771,16 +790,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsOptional ()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey, "ClassWithValidRelationsOptional", false, CardinalityType.One, typeof (ClassWithValidRelations));
+          classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", false, CardinalityType.One, typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _classDefinitions[typeof (ClassWithValidRelations)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithValidRelations, "ClassWithGuidKeyOptional", false);
+          classWithValidRelations, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional", false);
 
-      RelationDefinition relation = new RelationDefinition ("ClassWithGuidKeyToClassWithValidRelationsOptional",
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional",
           endPoint1, endPoint2);
 
       classWithGuidKey.MyRelationDefinitions.Add (relation);
@@ -792,20 +809,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
           classWithGuidKey,
-          "ClassWithValidRelationsNonOptional",
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional",
           true,
           CardinalityType.One,
           typeof (ClassWithValidRelations));
 
       ClassDefinition classWithValidRelations = _classDefinitions[typeof (ClassWithValidRelations)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithValidRelations, "ClassWithGuidKeyNonOptional", true);
+          classWithValidRelations, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional", true);
 
-      RelationDefinition relation = new RelationDefinition ("ClassWithGuidKeyToClassWithValidRelationsNonOptional",
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional",
           endPoint1, endPoint2);
 
       classWithGuidKey.MyRelationDefinitions.Add (relation);
@@ -817,16 +832,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithInvalidRelation ()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey, "ClassWithInvalidRelation", false, CardinalityType.One, typeof (ClassWithInvalidRelation));
+          classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithInvalidRelation", false, CardinalityType.One, typeof (ClassWithInvalidRelation));
 
       ClassDefinition classWithInvalidRelation = _classDefinitions[typeof (ClassWithInvalidRelation)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithInvalidRelation, "ClassWithGuidKey", false);
+          classWithInvalidRelation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation.ClassWithGuidKey", false);
 
-      RelationDefinition relation = new RelationDefinition ("ClassWithGuidKeyToClassWithInvalidRelation",
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation.ClassWithGuidKey",
           endPoint1, endPoint2);
 
       classWithGuidKey.MyRelationDefinitions.Add (relation);
@@ -838,17 +851,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation ()
     {
       ClassDefinition classWithGuidKey = _classDefinitions[typeof (ClassWithGuidKey)];
-
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          classWithGuidKey, "ClassWithRelatedClassIDColumnAndNoInheritance", false, CardinalityType.One,
+          classWithGuidKey, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithRelatedClassIDColumnAndNoInheritance", false, CardinalityType.One,
           typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
       ClassDefinition classWithRelatedClassIDColumnAndNoInheritance = _classDefinitions[typeof (ClassWithRelatedClassIDColumnAndNoInheritance)];
-
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          classWithRelatedClassIDColumnAndNoInheritance, "ClassWithGuidKey", false);
+          classWithRelatedClassIDColumnAndNoInheritance, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey", false);
 
-      RelationDefinition relation = new RelationDefinition ("ClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritance",
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey",
           endPoint1, endPoint2);
 
       classWithGuidKey.MyRelationDefinitions.Add (relation);
@@ -862,14 +873,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition industrialSectorClass = _classDefinitions[typeof (IndustrialSector)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          industrialSectorClass, "Companies", true, CardinalityType.Many, typeof (DomainObjectCollection));
+          industrialSectorClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies", true, CardinalityType.Many, typeof (ObjectList<Company>));
 
       ClassDefinition companyClass = _classDefinitions[typeof (Company)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          companyClass, "IndustrialSector", false);
+          companyClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", false);
 
-      RelationDefinition relation = new RelationDefinition ("IndustrialSectorToCompany", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", endPoint1, endPoint2);
 
       industrialSectorClass.MyRelationDefinitions.Add (relation);
       companyClass.MyRelationDefinitions.Add (relation);
@@ -880,14 +891,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private RelationDefinition CreateSupervisorToSubordinateRelationDefinition ()
     {
       ClassDefinition employeeClass = _classDefinitions[typeof (Employee)];
-
+      
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          employeeClass, "Subordinates", false, CardinalityType.Many, typeof (DomainObjectCollection));
+          employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates", false, CardinalityType.Many, typeof (ObjectList<Employee>));
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          employeeClass, "Supervisor", false);
+          employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", false);
 
-      RelationDefinition relation = new RelationDefinition ("SupervisorToSubordinate", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", endPoint1, endPoint2);
 
       employeeClass.MyRelationDefinitions.Add (relation);
 
@@ -899,14 +910,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition employeeClass = _classDefinitions[typeof (Employee)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          employeeClass, "Computer", false, CardinalityType.One, typeof (Computer));
+          employeeClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer", false, CardinalityType.One, typeof (Computer));
 
       ClassDefinition computerClass = _classDefinitions[typeof (Computer)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
-          computerClass, "Employee", false);
+          computerClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee", false);
 
-      RelationDefinition relation = new RelationDefinition ("EmployeeToComputer", endPoint1, endPoint2);
+      RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee", endPoint1, endPoint2);
 
       employeeClass.MyRelationDefinitions.Add (relation);
       computerClass.MyRelationDefinitions.Add (relation);

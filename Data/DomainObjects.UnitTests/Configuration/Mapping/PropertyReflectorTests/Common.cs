@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.IsNotNull (actual);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
-      Assert.AreEqual ("BooleanProperty", actual.StorageSpecificName);
+      Assert.AreEqual ("Boolean", actual.StorageSpecificName);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (bool), actual.PropertyType);
       Assert.AreEqual ("boolean", actual.MappingTypeName);

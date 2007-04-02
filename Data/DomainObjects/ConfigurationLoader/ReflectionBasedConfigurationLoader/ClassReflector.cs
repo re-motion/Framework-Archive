@@ -12,24 +12,18 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   //TODO: More property logic to property reflector
   public class ClassReflector
   {
-    public static ClassReflector CreateClassReflector (Type type, ClassDefinitionCollection classDefinitions, List<RelationReflector> relations)
+    public static ClassReflector CreateClassReflector (Type type)
     {
-      return new RdbmsClassReflector (type, classDefinitions, relations);
+      return new RdbmsClassReflector (type);
     }
 
     private Type _type;
-    private readonly ClassDefinitionCollection _classDefinitions;
-    private readonly List<RelationReflector> _relations;
 
-    public ClassReflector (Type type, ClassDefinitionCollection classDefinitions, List<RelationReflector> relations)
+    public ClassReflector (Type type)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull ("relations", relations);
 
       _type = type;
-      _classDefinitions = classDefinitions;
-      _relations = relations;
     }
 
     public Type Type
@@ -37,18 +31,37 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       get { return _type; }
     }
 
-    public ClassDefinition GetMetadata()
+    public ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
     {
-      if (_classDefinitions[Type] != null)
-        return _classDefinitions[Type];
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      ClassDefinition classDefiniton = CreateClassDefinition();
-      _classDefinitions.Add (classDefiniton);
+      if (classDefinitions[Type] != null)
+        return classDefinitions[Type];
+
+      ClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
+      classDefinitions.Add (classDefiniton);
 
       return classDefiniton;
     }
 
-    private ClassDefinition CreateClassDefinition()
+    public List<RelationDefinition> GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+
+      List<RelationDefinition> relations = new List<RelationDefinition>();
+      foreach (PropertyInfo propertyInfo in GetPropertyInfos ())
+      {
+        if (IsRelationEndPoint (propertyInfo))
+        {
+          RelationReflector relationReflector = new RelationReflector (propertyInfo);
+          relations.Add (relationReflector.GetMetadata (classDefinitions));
+        }
+      }
+
+      return relations;
+    }
+
+    private ClassDefinition CreateClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       ClassDefinition classDefinition = new ClassDefinition (
           GetID(),
@@ -56,17 +69,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetStorageProviderID(),
           Type,
           IsAbstract(),
-          GetBaseClassDefinition());
+          GetBaseClassDefinition (classDefinitions));
 
-      MemberInfo[] propertyInfos = GetPropertyInfos();
-
-      CreatePropertyDefinitions (classDefinition, propertyInfos);
-
-      foreach (PropertyInfo propertyInfo in propertyInfos)
-      {
-        if (IsRelationEndPoint (propertyInfo))
-          _relations.Add (new RelationReflector (propertyInfo));
-      }
+      CreatePropertyDefinitions (classDefinition, GetPropertyInfos());
 
       return classDefinition;
     }
@@ -87,7 +92,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetID()
     {
-      return Type.FullName;
+      ClassIDAttribute attribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute> (Type, false);
+      if (attribute != null)
+        return attribute.ClassID;
+      return Type.Name;
     }
 
     public virtual string GetStorageSpecificName()
@@ -95,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (Type, false);
       if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
         return attribute.Identifier;
-      return Type.Name;
+      return GetID();
     }
 
     private string GetStorageProviderID()
@@ -111,13 +119,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return false;
     }
 
-    private ClassDefinition GetBaseClassDefinition()
+    private ClassDefinition GetBaseClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       if (IsInheritenceRoot())
         return null;
 
-      ClassReflector classReflector = new ClassReflector (Type.BaseType, _classDefinitions, _relations);
-      return classReflector.GetMetadata();
+      ClassReflector classReflector = new ClassReflector (Type.BaseType);
+      return classReflector.GetClassDefinition (classDefinitions);
     }
 
     private bool IsInheritenceRoot()

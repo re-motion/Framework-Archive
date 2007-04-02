@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
+  [ClassID ("TI_BaseClassWithInvalidRelationClassIDColumns")]
   public abstract class BaseClassWithInvalidRelationClassIDColumns : DomainObject
   {
     // types

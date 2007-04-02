@@ -2,8 +2,10 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  //TODO: Reset domain base
   [Serializable]
-  public class Official : TestDomainBase
+  [DBTable]
+  public class Official : TestDomainBase//StorageProviderStubDomainBase
   {
     // types
 
@@ -39,15 +41,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [String (IsNullable = false, MaximumLength = 100)]
     public string Name
     {
       get { return DataContainer.GetString ("Name"); }
       set { DataContainer.SetValue ("Name", value); }
     }
 
-    public DomainObjectCollection Orders
+    [DBBidirectionalRelation ("Official")]
+    public ObjectList<Order> Orders
     {
-      get { return GetRelatedObjects ("Orders"); }
+      get { return (ObjectList<Order>) GetRelatedObjects ("Orders"); }
     }
   }
 }

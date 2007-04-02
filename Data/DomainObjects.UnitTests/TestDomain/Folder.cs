@@ -48,9 +48,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
-    public DomainObjectCollection FileSystemItems
+    [DBBidirectionalRelation ("ParentFolder")]
+    public ObjectList<FileSystemItem> FileSystemItems
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("FileSystemItems"); }
+      get { return (ObjectList<FileSystemItem>) GetRelatedObjects ("FileSystemItems"); }
     }
 
   }

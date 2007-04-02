@@ -3,13 +3,14 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  public class Order : TestDomainBase
+  [DBTable]
+  public class Order: TestDomainBase
   {
     // types
 
     // static members and constants
 
-    public static new Order GetObject (ObjectID id)
+    public new static Order GetObject (ObjectID id)
     {
       return (Order) DomainObject.GetObject (id);
     }
@@ -18,27 +19,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
-    public Order ()
+    public Order()
     {
     }
 
     public Order (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
     }
 
     protected Order (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
     public Order (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     // methods and properties
 
+    [DBColumn ("OrderNo")]
     public int OrderNumber
     {
       get { return (int) DataContainer["OrderNumber"]; }
@@ -51,27 +53,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["DeliveryDate"] = value; }
     }
 
+    [Mandatory]
+    [DBBidirectionalRelation ("Orders")]
     public Official Official
     {
       get { return (Official) GetRelatedObject ("Official"); }
       set { SetRelatedObject ("Official", value); }
     }
 
+    [Mandatory]
+    [DBBidirectionalRelation ("Order")]
     public OrderTicket OrderTicket
     {
       get { return (OrderTicket) GetRelatedObject ("OrderTicket"); }
       set { SetRelatedObject ("OrderTicket", value); }
     }
 
+    [Mandatory]
+    [DBBidirectionalRelation ("Orders")]
     public Customer Customer
     {
       get { return (Customer) GetRelatedObject ("Customer"); }
       set { SetRelatedObject ("Customer", value); }
     }
 
-    public DomainObjectCollection OrderItems
+    [Mandatory]
+    [DBBidirectionalRelation ("Order")]
+    public ObjectList<OrderItem> OrderItems
     {
-      get { return GetRelatedObjects ("OrderItems"); }
+      get { return (ObjectList<OrderItem>) GetRelatedObjects ("OrderItems"); }
     }
   }
 }

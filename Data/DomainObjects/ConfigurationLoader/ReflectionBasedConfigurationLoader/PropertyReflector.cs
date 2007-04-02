@@ -12,13 +12,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   public class PropertyReflector: MemberReflectorBase
   {
     public PropertyReflector (PropertyInfo propertyInfo)
-        : base(propertyInfo)
+        : base (propertyInfo)
     {
     }
 
     public PropertyDefinition GetMetadata()
     {
-      Validate ();
+      Validate();
       TypeInfo typeInfo = GetTypeInfo();
 
       return new PropertyDefinition (
@@ -54,11 +54,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
     }
 
+    //TODO: Move adding of "ID" to RdbmsPropertyReflector
     private string GetStorageSpecificIdentifier()
     {
       IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (PropertyInfo, true);
       if (attribute != null)
         return attribute.Identifier;
+      if (IsRelationProperty())
+        return PropertyInfo.Name + "ID";
       return PropertyInfo.Name;
     }
 

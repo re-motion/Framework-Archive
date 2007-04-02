@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     Premium = 1
   }
 
+  [ClassID ("TI_Customer")]
   public class Customer : Person
   {
     // types

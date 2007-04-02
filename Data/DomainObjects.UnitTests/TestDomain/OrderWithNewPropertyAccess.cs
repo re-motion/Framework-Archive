@@ -66,9 +66,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       get { return GetPropertyValue<int> (); }
     }
 
-    public virtual DomainObject NotInMappingRelated
+    public virtual OrderWithNewPropertyAccess NotInMappingRelated
     {
-      get { return GetRelatedObject (); }
+      get { return (OrderWithNewPropertyAccess) GetRelatedObject (); }
     }
   }
 }

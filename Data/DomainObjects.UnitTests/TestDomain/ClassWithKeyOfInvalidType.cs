@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [DBTable (Name = "TableWithKeyOfInvalidType")]
   public class ClassWithKeyOfInvalidType : TestDomainBase
   {
     // types

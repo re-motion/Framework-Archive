@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [DBTable]
   public class FileSystemItem : TestDomainBase
   {
     // types
@@ -48,6 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
+    [DBBidirectionalRelation ("FileSystemItems")]
     public Folder ParentFolder
     {
       get { return (Folder) GetRelatedObject ("ParentFolder"); }

@@ -3,7 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  public class OrderCollection : DomainObjectCollection
+  public class OrderCollection : ObjectList<Order>
   {
     // types
 
@@ -15,7 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // standard constructor for collections
     public OrderCollection ()
-      : base (typeof (Order))
     {
     }
 
@@ -31,20 +30,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       base.SetIsReadOnly (isReadOnly);
     }
-
-    #region standard implementation for collections
-
-    public new Order this[int index]
-    {
-      get { return (Order) base[index]; }
-      set { base[index] = value; }
-    }
-
-    public new Order this[ObjectID id]
-    {
-      get { return (Order) base[id]; }
-    }
-
-    #endregion
   }
 }

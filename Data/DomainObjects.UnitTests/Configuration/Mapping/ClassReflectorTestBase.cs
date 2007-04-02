@@ -1,3 +1,4 @@
+using System;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 
@@ -50,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classDefinition.MyPropertyDefinitions.Add (
           new PropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.UnidirectionalOneToOne",
-              "UnidirectionalOneToOne",
+              "UnidirectionalOneToOneID",
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,

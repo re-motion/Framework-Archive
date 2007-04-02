@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [DBTable (Name = "TableWithoutTimestampColumn")]
   public class ClassWithoutTimestampColumn : TestDomainBase
   {
     // types
