@@ -18,79 +18,64 @@
     <Position X="3.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Context\ClassContext.cs</FileName>
-      <HashCode>AQAAAAAAAAQAAAQAIAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAABAAAQAAAAAABAAAAAAAAACAQAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Type" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
-      <Property Name="MixinDefinitions" />
+      <Property Name="MixinContexts" />
     </ShowAsCollectionAssociation>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="Type" Type="System.Type" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="4.406" Y="2.863" />
-        <Point X="4.406" Y="5.005" />
-        <Point X="9.062" Y="5.005" />
-        <Point X="9.062" Y="4.63" />
-      </Path>
+    <AssociationLine Name="Type" Type="System.Type">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.315" Y="0.1" />
+        <Position X="0.1" Y="-0.315" />
       </MemberNameLabel>
     </AssociationLine>
   </Class>
-  <Class Name="Mixins.MixinAttribute">
-    <Position X="9.5" Y="1.5" Width="1.5" />
+  <Class Name="Mixins.MixinForAttribute">
+    <Position X="5.25" Y="5.25" Width="1.75" />
     <TypeIdentifier>
-      <FileName>MixinAttribute.cs</FileName>
+      <FileName>MixinForAttribute.cs</FileName>
       <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="TargetType" />
-    </ShowAsAssociation>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
   </Class>
   <Class Name="Mixins.Context.DefaultContextBuilder">
-    <Position X="0.75" Y="4.5" Width="3" />
+    <Position X="0.75" Y="5.25" Width="3" />
     <TypeIdentifier>
       <FileName>Context\DefaultContextBuilder.cs</FileName>
-      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAIAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAIAIAAAAAAAAAAAAoAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="System.Type" Collapsed="true">
-    <Position X="8.25" Y="4" Width="1.5" />
+    <Position X="8.25" Y="4" Width="2.5" />
     <TypeIdentifier />
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Orientation="Bottom" Position="0.731" Collapsed="true" />
   </Class>
-  <Struct Name="Mixins.Context.MixinDefinition">
-    <Position X="6.25" Y="1.5" Width="1.5" />
+  <Class Name="Mixins.ApplyMixinAttribute">
+    <Position X="7.5" Y="5.25" Width="2" />
     <TypeIdentifier>
-      <FileName>Context\MixinDefinition.cs</FileName>
-      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAA=</HashCode>
+      <FileName>ApplyMixinAttribute.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAABAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Struct Name="Mixins.Context.MixinContext">
+    <Position X="8.25" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Context\MixinContext.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAA=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="MixinType" />
-      <Field Name="DefiningAttribute" />
-      <Property Name="TargetType" />
+      <Field Name="TargetType" />
     </ShowAsAssociation>
-    <AssociationLine Name="MixinType" Type="System.Type">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.05" Y="-0.182" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="TargetType" Type="System.Type" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="7.406" Y="2.481" />
-        <Point X="7.406" Y="4.062" />
-        <Point X="8.25" Y="4.062" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.06" Y="0.12" />
-      </MemberNameLabel>
-    </AssociationLine>
   </Struct>
 </ClassDiagram>

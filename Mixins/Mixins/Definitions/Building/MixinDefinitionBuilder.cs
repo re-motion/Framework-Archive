@@ -30,6 +30,7 @@ namespace Mixins.Definitions.Building
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
       AnalyzeInitializationMethods (mixin);
+
       ApplyRequiredFaceInterfacesToBaseClass (mixin);
     }
 
@@ -60,7 +61,7 @@ namespace Mixins.Definitions.Building
       {
         if (member.MemberInfo.IsDefined (typeof (OverrideAttribute), true))
         {
-          MemberDefinition baseMember = FindBaseMember (member, mixin);
+          MemberDefinition baseMember = FindBaseMember (member);
           if (baseMember == null)
           {
             string message = string.Format ("Could not find virtual base member for overrider {0}.", member.FullName);
@@ -72,9 +73,9 @@ namespace Mixins.Definitions.Building
       }
     }
 
-    private MemberDefinition FindBaseMember (MemberDefinition overrider, MixinDefinition mixin)
+    private MemberDefinition FindBaseMember (MemberDefinition overrider)
     {
-      foreach (MemberDefinition classMember in mixin.BaseClass.Members)
+      foreach (MemberDefinition classMember in BaseClass.Members)
       {
         if (classMember.CanBeOverriddenBy (overrider))
         {
@@ -164,18 +165,18 @@ namespace Mixins.Definitions.Building
     {
       if (requiredFaceType.IsClass)
       {
-        if (!requiredFaceType.IsAssignableFrom (mixin.BaseClass.Type))
+        if (!requiredFaceType.IsAssignableFrom (BaseClass.Type))
         {
           string message = string.Format ("Mixin {0} requires its target {1} to derive from base type {2}.", mixin.FullName,
-                                          mixin.BaseClass.FullName, requiredFaceType.FullName);
+                                          BaseClass.FullName, requiredFaceType.FullName);
           throw new ConfigurationException (message);
         }
       }
       else
       {
-        if (!mixin.BaseClass.HasRequiredFaceInterface (requiredFaceType))
+        if (!BaseClass.HasRequiredFaceInterface (requiredFaceType))
         {
-          mixin.BaseClass.AddRequiredFaceInterface (requiredFaceType);
+          BaseClass.AddRequiredFaceInterface (requiredFaceType);
         }
       }
     }
