@@ -4,25 +4,25 @@ using Mixins.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Mixins.Configuration.Building
+namespace Mixins.Definitions.Building
 {
-  public class MixinConfigurationBuilder
+  public class MixinDefinitionBuilder
   {
-    private BaseClassConfiguration _baseClass;
+    private BaseClassDefinition _baseClass;
 
-    public MixinConfigurationBuilder (BaseClassConfiguration baseClass)
+    public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
       _baseClass = baseClass;
     }
 
-    public BaseClassConfiguration BaseClass
+    public BaseClassDefinition BaseClass
     {
       get { return _baseClass; }
     }
 
     public void Apply (MixinContext mixinContext)
     {
-      MixinConfiguration mixin = new MixinConfiguration(mixinContext.MixinType, BaseClass);
+      MixinDefinition mixin = new MixinDefinition(mixinContext.MixinType, BaseClass);
       BaseClass.AddMixin (mixin);
 
       InitializeMembers (mixin);
@@ -33,34 +33,34 @@ namespace Mixins.Configuration.Building
       ApplyRequiredFaceInterfacesToBaseClass (mixin);
     }
 
-    private void InitializeMembers (MixinConfiguration mixin)
+    private void InitializeMembers (MixinDefinition mixin)
     {
       foreach (MethodInfo method in mixin.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
       {
         if (method.IsPublic)
         {
-          mixin.AddMember (new MethodConfiguration (method, mixin));
+          mixin.AddMember (new MethodDefinition (method, mixin));
         }
       }
     }
 
-    private void AnalyzeInterfaceIntroductions (MixinConfiguration mixin)
+    private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
     {
       foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
-        InterfaceIntroductionConfiguration introducedInterface = new InterfaceIntroductionConfiguration (implementedInterface, mixin);
+        InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
         mixin.AddInterfaceIntroduction (introducedInterface);
         BaseClass.AddIntroducedInterface (introducedInterface);
       }
     }
 
-    private void AnalyzeOverrides (MixinConfiguration mixin)
+    private void AnalyzeOverrides (MixinDefinition mixin)
     {
-      foreach (MemberConfiguration member in mixin.Members)
+      foreach (MemberDefinition member in mixin.Members)
       {
         if (member.MemberInfo.IsDefined (typeof (OverrideAttribute), true))
         {
-          MemberConfiguration baseMember = FindBaseMember (member, mixin);
+          MemberDefinition baseMember = FindBaseMember (member, mixin);
           if (baseMember == null)
           {
             string message = string.Format ("Could not find virtual base member for overrider {0}.", member.FullName);
@@ -72,9 +72,9 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private MemberConfiguration FindBaseMember (MemberConfiguration overrider, MixinConfiguration mixin)
+    private MemberDefinition FindBaseMember (MemberDefinition overrider, MixinDefinition mixin)
     {
-      foreach (MemberConfiguration classMember in mixin.BaseClass.Members)
+      foreach (MemberDefinition classMember in mixin.BaseClass.Members)
       {
         if (classMember.CanBeOverriddenBy (overrider))
         {
@@ -84,12 +84,12 @@ namespace Mixins.Configuration.Building
       return null;
     }
 
-    private void AnalyzeInitializationMethods (MixinConfiguration mixin)
+    private void AnalyzeInitializationMethods (MixinDefinition mixin)
     {
       foreach (MethodInfo method in GetMixinInitializationMethods (mixin.Type))
       {
-        MethodConfiguration methodConf = new MethodConfiguration (method, mixin);
-        mixin.AddInitializationMethod (methodConf);
+        MethodDefinition methodDefinition = new MethodDefinition (method, mixin);
+        mixin.AddInitializationMethod (methodDefinition);
       }
     }
 
@@ -104,7 +104,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private void ApplyRequiredFaceInterfacesToBaseClass (MixinConfiguration mixin)
+    private void ApplyRequiredFaceInterfacesToBaseClass (MixinDefinition mixin)
     {
       Type mixinBase = GetMixinBase(mixin);
       if (mixinBase != null)
@@ -117,7 +117,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private Type GetMixinBase (MixinConfiguration mixin)
+    private Type GetMixinBase (MixinDefinition mixin)
     {
       Type mixinBase = mixin.Type.BaseType;
       while (mixinBase != null && !IsSpecializationOf(mixinBase, typeof(Mixin<,>)))
@@ -144,7 +144,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private void ApplyGenericArgumentFaceRequirements(Type genericArgument, MixinConfiguration mixin)
+    private void ApplyGenericArgumentFaceRequirements(Type genericArgument, MixinDefinition mixin)
     {
       if (genericArgument.IsGenericParameter)
       {
@@ -160,7 +160,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private void ApplyRequiredFaceType(Type requiredFaceType, MixinConfiguration mixin)
+    private void ApplyRequiredFaceType(Type requiredFaceType, MixinDefinition mixin)
     {
       if (requiredFaceType.IsClass)
       {

@@ -1,13 +1,13 @@
 using System;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public class InterfaceIntroductionConfiguration
+  public class InterfaceIntroductionDefinition
   {
     private Type _type;
-    private MixinConfiguration _implementer;
+    private MixinDefinition _implementer;
 
-    public InterfaceIntroductionConfiguration (Type type, MixinConfiguration implementer)
+    public InterfaceIntroductionDefinition (Type type, MixinDefinition implementer)
     {
       _type = type;
       _implementer = implementer;
@@ -18,7 +18,7 @@ namespace Mixins.Configuration
       get { return _type; }
     }
 
-    public MixinConfiguration Implementer
+    public MixinDefinition Implementer
     {
       get { return _implementer; }
     }

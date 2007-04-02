@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Mixins.Context
 {
   /// <summary>
-  /// A set of class contexts to be fed into a configuration builder.
+  /// A set of class contexts to be fed into a definition builder.
   /// </summary>
   public class ApplicationContext
   {

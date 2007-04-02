@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.Configuration.Building
+namespace Mixins.Definitions.Building
 {
   public class ConfigurationException : Exception
   {

@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public class MethodConfiguration : MemberConfiguration
+  public class MethodDefinition : MemberDefinition
   {
     private SignatureChecker signatureChecker = new SignatureChecker ();
 
-    public MethodConfiguration (MethodInfo memberInfo, ClassConfiguration declaringClass)
+    public MethodDefinition (MethodInfo memberInfo, ClassDefinition declaringClass)
         : base (memberInfo, declaringClass)
     {
     }
@@ -19,9 +19,9 @@ namespace Mixins.Configuration
       }
     }
 
-    protected override bool IsSignatureCompatibleWith (MemberConfiguration overrider)
+    protected override bool IsSignatureCompatibleWith (MemberDefinition overrider)
     {
-      MethodConfiguration overriderMethod = overrider as MethodConfiguration;
+      MethodDefinition overriderMethod = overrider as MethodDefinition;
       if (overrider == null)
       {
         return false;
@@ -32,7 +32,7 @@ namespace Mixins.Configuration
       }
     }
 
-    private bool IsSignatureCompatibleWithMethod (MethodConfiguration overrider)
+    private bool IsSignatureCompatibleWithMethod (MethodDefinition overrider)
     {
       return signatureChecker.SignatureMatch (MethodInfo, overrider.MethodInfo);
     }

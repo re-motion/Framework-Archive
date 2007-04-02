@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
   public class SignatureChecker
   {

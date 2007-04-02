@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public class ClassConfiguration
+  public class ClassDefinition
   {
     private Type _type;
-    private Dictionary<MemberInfo, MemberConfiguration> _members = new Dictionary<MemberInfo, MemberConfiguration> ();
+    private Dictionary<MemberInfo, MemberDefinition> _members = new Dictionary<MemberInfo, MemberDefinition> ();
 
-    public ClassConfiguration (Type type)
+    public ClassDefinition (Type type)
     {
       _type = type;
     }
@@ -34,7 +34,7 @@ namespace Mixins.Configuration
       get { return Type.GetInterfaces(); }
     }
 
-    public IEnumerable<MemberConfiguration> Members
+    public IEnumerable<MemberDefinition> Members
     {
       get { return _members.Values; }
     }
@@ -44,12 +44,12 @@ namespace Mixins.Configuration
       return _members.ContainsKey (member);
     }
 
-    public MemberConfiguration GetMember (MemberInfo member)
+    public MemberDefinition GetMember (MemberInfo member)
     {
       return HasMember (member) ? _members[member] : null;
     }
 
-    public void AddMember (MemberConfiguration newMember)
+    public void AddMember (MemberDefinition newMember)
     {
       if (HasMember (newMember.MemberInfo))
       {

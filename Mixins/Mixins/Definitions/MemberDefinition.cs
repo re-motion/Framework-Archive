@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public abstract class MemberConfiguration
+  public abstract class MemberDefinition
   {
     private MemberInfo _memberInfo;
-    private ClassConfiguration _declaringClass;
+    private ClassDefinition _declaringClass;
 
-    private MemberConfiguration _base = null;
-    private Dictionary<Type, MemberConfiguration> _overrides = new Dictionary<Type, MemberConfiguration> ();
+    private MemberDefinition _base = null;
+    private Dictionary<Type, MemberDefinition> _overrides = new Dictionary<Type, MemberDefinition> ();
 
-    public MemberConfiguration (MemberInfo memberInfo, ClassConfiguration declaringClass)
+    public MemberDefinition (MemberInfo memberInfo, ClassDefinition declaringClass)
     {
       _memberInfo = memberInfo;
       _declaringClass = declaringClass;
@@ -24,7 +24,7 @@ namespace Mixins.Configuration
       get { return _memberInfo; }
     }
 
-    public ClassConfiguration DeclaringClass
+    public ClassDefinition DeclaringClass
     {
       get { return _declaringClass; }
     }
@@ -59,13 +59,13 @@ namespace Mixins.Configuration
       get { return string.Format ("{0}.{1}", DeclaringClass.FullName, Name); }
     }
 
-    public MemberConfiguration Base
+    public MemberDefinition Base
     {
       get { return _base; }
       set { _base = value; }
     }
 
-    public IEnumerable<MemberConfiguration> Overrides
+    public IEnumerable<MemberDefinition> Overrides
     {
       get { return _overrides.Values; }
     }
@@ -75,7 +75,7 @@ namespace Mixins.Configuration
       return _overrides.ContainsKey (overrider);
     }
 
-    public void AddOverride (MemberConfiguration overridingMember)
+    public void AddOverride (MemberDefinition overridingMember)
     {
       if (HasOverride (overridingMember.DeclaringClass.Type))
       {
@@ -95,16 +95,16 @@ namespace Mixins.Configuration
       _overrides.Add (overridingMember.DeclaringClass.Type, overridingMember);
     }
 
-    public MemberConfiguration GetOverride (Type overrider)
+    public MemberDefinition GetOverride (Type overrider)
     {
       return HasOverride (overrider) ? _overrides[overrider] : null;
     }
 
-    public bool CanBeOverriddenBy (MemberConfiguration overrider)
+    public bool CanBeOverriddenBy (MemberDefinition overrider)
     {
       return MemberType == overrider.MemberType && IsSignatureCompatibleWith (overrider);
     }
 
-    protected abstract bool IsSignatureCompatibleWith (MemberConfiguration overrider);
+    protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);
   }
 }

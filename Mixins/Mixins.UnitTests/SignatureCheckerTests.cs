@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Configuration;
+using Mixins.Definitions;
 using NUnit.Framework;
 using System.Reflection;
 

@@ -34,7 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationBuilderTests.cs" />
+    <Compile Include="DefinitionBuilderTests.cs" />
     <Compile Include="DefaultContextBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleTypes\BaseType1.cs" />

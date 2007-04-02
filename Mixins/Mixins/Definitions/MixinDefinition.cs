@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public class MixinConfiguration : ClassConfiguration
+  public class MixinDefinition : ClassDefinition
   {
-    private BaseClassConfiguration _baseClass;
-    private Dictionary<Type, InterfaceIntroductionConfiguration> _interfaceIntroductions = new Dictionary<Type, InterfaceIntroductionConfiguration> ();
-    private Dictionary<MethodInfo, MethodConfiguration> _initializationMethods = new Dictionary<MethodInfo, MethodConfiguration> ();
+    private BaseClassDefinition _baseClass;
+    private Dictionary<Type, InterfaceIntroductionDefinition> _interfaceIntroductions = new Dictionary<Type, InterfaceIntroductionDefinition> ();
+    private Dictionary<MethodInfo, MethodDefinition> _initializationMethods = new Dictionary<MethodInfo, MethodDefinition> ();
 
-    public MixinConfiguration (Type type, BaseClassConfiguration baseClass)
+    public MixinDefinition (Type type, BaseClassDefinition baseClass)
         : base (type)
     {
       if (type.IsInterface)
@@ -21,12 +21,12 @@ namespace Mixins.Configuration
       _baseClass = baseClass;
     }
 
-    public BaseClassConfiguration BaseClass
+    public BaseClassDefinition BaseClass
     {
       get { return _baseClass; }
     }
 
-    public IEnumerable<InterfaceIntroductionConfiguration> InterfaceIntroductions
+    public IEnumerable<InterfaceIntroductionDefinition> InterfaceIntroductions
     {
       get { return _interfaceIntroductions.Values; }
     }
@@ -36,7 +36,7 @@ namespace Mixins.Configuration
       return _interfaceIntroductions.ContainsKey (type);
     }
 
-    public void AddInterfaceIntroduction (InterfaceIntroductionConfiguration introduction)
+    public void AddInterfaceIntroduction (InterfaceIntroductionDefinition introduction)
     {
       if (HasInterfaceIntroduction (introduction.Type))
       {
@@ -46,16 +46,16 @@ namespace Mixins.Configuration
       _interfaceIntroductions.Add (introduction.Type, introduction);
     }
 
-    public InterfaceIntroductionConfiguration GetInterfaceIntroduction (Type type)
+    public InterfaceIntroductionDefinition GetInterfaceIntroduction (Type type)
     {
       return HasInterfaceIntroduction(type) ? _interfaceIntroductions[type] : null;
     }
 
-    public IEnumerable<MemberConfiguration> Overrides
+    public IEnumerable<MemberDefinition> Overrides
     {
       get
       {
-        foreach (MemberConfiguration member in Members)
+        foreach (MemberDefinition member in Members)
         {
           if (member.Base != null)
           {
@@ -65,7 +65,7 @@ namespace Mixins.Configuration
       }
     }
 
-    public IEnumerable<MethodConfiguration> InitializationMethods
+    public IEnumerable<MethodDefinition> InitializationMethods
     {
       get { return _initializationMethods.Values; }
     }
@@ -75,7 +75,7 @@ namespace Mixins.Configuration
       return _initializationMethods.ContainsKey (method);
     }
 
-    public void AddInitializationMethod (MethodConfiguration initializationMethod)
+    public void AddInitializationMethod (MethodDefinition initializationMethod)
     {
       if (HasInitializationMethod (initializationMethod.MethodInfo))
       {
@@ -86,7 +86,7 @@ namespace Mixins.Configuration
       _initializationMethods.Add (initializationMethod.MethodInfo, initializationMethod);
     }
 
-    public MethodConfiguration GetInitializationMethod (MethodInfo method)
+    public MethodDefinition GetInitializationMethod (MethodInfo method)
     {
       return HasInitializationMethod (method) ? _initializationMethods[method] : null;
     }

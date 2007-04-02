@@ -34,19 +34,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
-    <Compile Include="Configuration\ApplicationConfiguration.cs" />
-    <Compile Include="Configuration\BaseClassConfiguration.cs" />
-    <Compile Include="Configuration\Building\ApplicationConfigurationBuilder.cs" />
-    <Compile Include="Configuration\Building\BaseClassConfigurationBuilder.cs" />
-    <Compile Include="Configuration\Building\ConfigurationException.cs" />
-    <Compile Include="Configuration\Building\MixinConfigurationBuilder.cs" />
-    <Compile Include="Configuration\ClassConfiguration.cs" />
-    <Compile Include="Configuration\ConfigurationBuilder.cs" />
-    <Compile Include="Configuration\InterfaceIntroductionConfiguration.cs" />
-    <Compile Include="Configuration\MemberConfiguration.cs" />
-    <Compile Include="Configuration\MethodConfiguration.cs" />
-    <Compile Include="Configuration\MixinConfiguration.cs" />
-    <Compile Include="Configuration\SignatureChecker.cs" />
+    <Compile Include="Definitions\ApplicationDefinition.cs" />
+    <Compile Include="Definitions\BaseClassDefinition.cs" />
+    <Compile Include="Definitions\Building\ApplicationDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\ConfigurationException.cs" />
+    <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
+    <Compile Include="Definitions\ClassDefinition.cs" />
+    <Compile Include="Definitions\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\InterfaceIntroductionDefinition.cs" />
+    <Compile Include="Definitions\MemberDefinition.cs" />
+    <Compile Include="Definitions\MethodDefinition.cs" />
+    <Compile Include="Definitions\MixinDefinition.cs" />
+    <Compile Include="Definitions\SignatureChecker.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />
@@ -58,7 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Configuration\Configuration.cd" />
+    <None Include="Definitions\Configuration.cd" />
     <None Include="Context\Context.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

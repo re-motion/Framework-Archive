@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Mixins.Configuration
+namespace Mixins.Definitions
 {
-  public class BaseClassConfiguration : ClassConfiguration
+  public class BaseClassDefinition : ClassDefinition
   {
-    private Dictionary<Type, MixinConfiguration> _mixins = new Dictionary<Type, MixinConfiguration> ();
-    private Dictionary<Type, InterfaceIntroductionConfiguration> _introducedInterfaces = new Dictionary<Type, InterfaceIntroductionConfiguration> ();
+    private Dictionary<Type, MixinDefinition> _mixins = new Dictionary<Type, MixinDefinition> ();
+    private Dictionary<Type, InterfaceIntroductionDefinition> _introducedInterfaces = new Dictionary<Type, InterfaceIntroductionDefinition> ();
     private Dictionary<Type, Type> _requiredFaceInterfaces = new Dictionary<Type, Type> ();
 
-    public BaseClassConfiguration (Type type)
+    public BaseClassDefinition (Type type)
         : base (type)
     {
     }
@@ -21,7 +21,7 @@ namespace Mixins.Configuration
       get { return Type.IsInterface; }
     }
 
-    public IEnumerable<MixinConfiguration> Mixins
+    public IEnumerable<MixinDefinition> Mixins
     {
       get { return _mixins.Values; }
     }
@@ -31,7 +31,7 @@ namespace Mixins.Configuration
       return _mixins.ContainsKey (type);
     }
 
-    public void AddMixin (MixinConfiguration newMixin)
+    public void AddMixin (MixinDefinition newMixin)
     {
       if (HasMixin (newMixin.Type))
       {
@@ -41,12 +41,12 @@ namespace Mixins.Configuration
       _mixins.Add (newMixin.Type, newMixin);
     }
 
-    public MixinConfiguration GetMixin (Type type)
+    public MixinDefinition GetMixin (Type type)
     {
       return HasMixin (type) ? _mixins[type] : null;
     }
 
-    public IEnumerable<InterfaceIntroductionConfiguration> IntroducedInterfaces
+    public IEnumerable<InterfaceIntroductionDefinition> IntroducedInterfaces
     {
       get { return _introducedInterfaces.Values; }
     }
@@ -56,7 +56,7 @@ namespace Mixins.Configuration
       return _introducedInterfaces.ContainsKey (type);
     }
 
-    public void AddIntroducedInterface (InterfaceIntroductionConfiguration introducedInterface)
+    public void AddIntroducedInterface (InterfaceIntroductionDefinition introducedInterface)
     {
       Debug.Assert (HasMixin(introducedInterface.Implementer.Type));
       if (HasIntroducedInterface (introducedInterface.Type))
@@ -69,7 +69,7 @@ namespace Mixins.Configuration
       _introducedInterfaces.Add (introducedInterface.Type, introducedInterface);
     }
 
-    public InterfaceIntroductionConfiguration GetIntroducedInterface (Type type)
+    public InterfaceIntroductionDefinition GetIntroducedInterface (Type type)
     {
       return HasIntroducedInterface (type) ? _introducedInterfaces[type] : null;
     }
