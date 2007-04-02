@@ -14,8 +14,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   public class OldPropertyStyleDomainObjectsWithFactoryTest : ClientTransactionBaseTest
   {
     // types
-    [FactoryInstantiated]
-    private class ClassToBeConstructedByFactory : ClassWithAllDataTypes { }
 
     // static members and constants
 
@@ -92,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ShouldUseFactoryForInstantiation ()
     {
       Assert.IsFalse (DomainObject.ShouldUseFactoryForInstantiation(typeof (ClassWithAllDataTypes)));
-      Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassToBeConstructedByFactory)));
+      Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (OrderItemWithNewPropertyAccess)));
 
       using (new FactoryInstantiationScope ())
       {
