@@ -30,7 +30,7 @@ namespace Mixins.Configuration.Building
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
       AnalyzeInitializationMethods (mixin);
-      AnalyzeRequiredFaceInterfaces (mixin);
+      ApplyRequiredFaceInterfacesToBaseClass (mixin);
     }
 
     private void InitializeMembers (MixinConfiguration mixin)
@@ -104,7 +104,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private void AnalyzeRequiredFaceInterfaces (MixinConfiguration mixin)
+    private void ApplyRequiredFaceInterfacesToBaseClass (MixinConfiguration mixin)
     {
       Type mixinBase = GetMixinBase(mixin);
       if (mixinBase != null)
@@ -112,7 +112,7 @@ namespace Mixins.Configuration.Building
         Debug.Assert (mixinBase.IsGenericType);
         foreach (Type genericArgument in mixinBase.GetGenericArguments ())
         {
-          AnalyzeGenericArgumentFaceRequirements(genericArgument, mixin);
+          ApplyGenericArgumentFaceRequirements(genericArgument, mixin);
         }
       }
     }
@@ -144,7 +144,7 @@ namespace Mixins.Configuration.Building
       }
     }
 
-    private void AnalyzeGenericArgumentFaceRequirements(Type genericArgument, MixinConfiguration mixin)
+    private void ApplyGenericArgumentFaceRequirements(Type genericArgument, MixinConfiguration mixin)
     {
       if (genericArgument.IsGenericParameter)
       {
