@@ -676,7 +676,7 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStringProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageClassAttribute.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithPropertiesHavingStorageSpecificName.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassHavingStorageSpecificIdentifier.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithMixedProperties.cs" />
     <Compile Include="TestDomain\SpecialOfficial.cs">
