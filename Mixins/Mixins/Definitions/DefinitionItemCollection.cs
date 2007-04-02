@@ -32,7 +32,7 @@ namespace Mixins.Definitions
       return _items.ContainsKey (key);
     }
 
-    public void Add (TValue newItem)
+    internal void Add (TValue newItem)
     {
       TKey key = _keyMaker (newItem);
       if (HasItem (key))

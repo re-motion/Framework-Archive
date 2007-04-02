@@ -1,0 +1,3 @@
+- Required base types must be interfaces directly or indirectly implemented by the base class
+- Required face types can either be types the base class can be assigned to, or interfaces directly or indirectly implemented by the base class
+- Overridden methods must be virtual

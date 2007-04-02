@@ -7,12 +7,12 @@ namespace Mixins
   {
   }
 
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.GenericParameter)]
   internal class ThisAttribute : Attribute
   {
   }
 
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.GenericParameter)]
   internal class BaseAttribute : Attribute
   {
   }

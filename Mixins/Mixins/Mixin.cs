@@ -2,7 +2,7 @@ using System;
 
 namespace Mixins
 {
-  public class Mixin<TThis, TBase>
+  public class Mixin<[This]TThis, [Base]TBase>
   {
     private TThis _this;
     private TBase _base;

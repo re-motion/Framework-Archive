@@ -11,7 +11,9 @@ namespace Mixins.Definitions
         new DefinitionItemCollection<Type, MixinDefinition> (delegate (MixinDefinition m) { return m.Type; });
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-    public readonly DefinitionItemCollection<Type, Type> RequiredFaceInterfaces =
+    public readonly DefinitionItemCollection<Type, Type> RequiredFaceTypes =
+        new DefinitionItemCollection<Type, Type> (delegate (Type t) { return t; });
+    public readonly DefinitionItemCollection<Type, Type> RequiredBaseCallTypes =
         new DefinitionItemCollection<Type, Type> (delegate (Type t) { return t; });
 
     public BaseClassDefinition (Type type)

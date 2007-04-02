@@ -40,6 +40,7 @@
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\ConfigurationException.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\RequiredTypesBuilder.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\DefinitionItemCollection.cs" />
@@ -61,6 +62,9 @@
   <ItemGroup>
     <None Include="Definitions\Definitions.cd" />
     <None Include="Context\Context.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Validations.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -189,7 +189,7 @@ namespace Mixins.UnitTests
       Assert.IsFalse (baseClass.Members.HasItem (methodOfInterface));
 
       Assert.Contains (typeof (IBaseType2), new List<Type> (baseClass.ImplementedInterfaces));
-      Assert.IsTrue (baseClass.RequiredFaceInterfaces.HasItem (typeof (IBaseType2)));
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.HasItem (typeof (IBaseType2)));
     }
 
     [Test]
@@ -225,12 +225,27 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = GetApplicationDefinition ();
       BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType3));
 
-      List<Type> requiredFaceInterfaces = new List<Type> (baseClass.RequiredFaceInterfaces);
-      Assert.Contains (typeof (IBaseType31), requiredFaceInterfaces);
-      Assert.Contains (typeof (IBaseType32), requiredFaceInterfaces);
-      Assert.Contains (typeof (IBaseType33), requiredFaceInterfaces);
-      Assert.Contains (typeof (IBaseType34), requiredFaceInterfaces);
-      Assert.IsFalse (requiredFaceInterfaces.Contains (typeof (IBaseType35)));
+      List<Type> requiredFaceTypes = new List<Type> (baseClass.RequiredFaceTypes);
+      Assert.Contains (typeof (IBaseType31), requiredFaceTypes);
+      Assert.Contains (typeof (IBaseType32), requiredFaceTypes);
+      Assert.Contains (typeof (IBaseType33), requiredFaceTypes);
+      Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType34)));
+      Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType35)));
+    }
+
+    [Test]
+    public void BaseInterfaces ()
+    {
+      ApplicationDefinition application = GetApplicationDefinition ();
+      BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType3));
+
+      List<Type> requiredBaseCallTypes = new List<Type> (baseClass.RequiredBaseCallTypes);
+      Assert.Contains (typeof (IBaseType31), requiredBaseCallTypes);
+      Assert.Contains (typeof (IBaseType33), requiredBaseCallTypes);
+      Assert.Contains (typeof (IBaseType34), requiredBaseCallTypes);
+      Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType32)));
+      Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
+      Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (INull)));
     }
   }
 }
