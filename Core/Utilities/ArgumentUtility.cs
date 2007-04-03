@@ -10,7 +10,7 @@ namespace Rubicon.Utilities
   /// </summary>
   public static class ArgumentUtility
   {
-    public static void CheckNotNull (string argumentName, object actualValue)
+    public static void CheckNotNull<T> (string argumentName, T actualValue)
     {
       if (actualValue == null)
         throw new ArgumentNullException (argumentName);

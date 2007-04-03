@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Rubicon.Utilities
 {
@@ -14,22 +13,42 @@ namespace Rubicon.Utilities
   {
     public static IEnumerable<TResult> Select<TSource, TResult> (IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      Rubicon.Utilities.ArgumentUtility.CheckNotNull ("source", source);
 
       foreach (TSource item in source)
         yield return selector (item);
     }
 
-    public static TResult[] SelectToArray<TSource, TResult> (IList<TSource> source, Func<TSource, TResult> selector)
+    public static TResult[] SelectToArray<TSource, TResult> (IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
       if (source == null)
         return null;
 
-      TResult[] result = new TResult[source.Count];
-      for (int i = 0; i < source.Count; ++i)
-        result[i] = selector (source[i]);
+      IList<TSource> sourceList = ToList (source);
+
+      TResult[] result = new TResult[sourceList.Count];
+      for (int i = 0; i < sourceList.Count; ++i)
+        result[i] = selector (sourceList[i]);
 
       return result;
+    }
+
+    public static IList<T> ToList<T> (IEnumerable<T> source)
+    {
+      IList<T> list = source as IList<T>;
+      if (list != null)
+        return list;
+      else
+        return new List<T> (source);
+    }
+
+    public static T[] ToArray<T> (IEnumerable<T> source)
+    {
+      T[] array = source as T[];
+      if (array != null)
+        return array;
+      else
+        return new List<T> (source).ToArray();
     }
   }
 }

@@ -7,75 +7,91 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Text.CommandLine
 {
-
-public class CommandLineClassParser: CommandLineParser
-{
-  private Type _argumentClass;
-
-  /// <summary> IDictionary &lt;CommandLineArgument, MemberInfo&gt; </summary>
-  private IDictionary _arguments;
-  
-  public CommandLineClassParser (Type argumentClass)
+  public class CommandLineClassParser: CommandLineParser
   {
-    _argumentClass = argumentClass;
-    _arguments = new ListDictionary();
+    private Type _argumentClass;
 
-    foreach (MemberInfo member in argumentClass.GetMembers (BindingFlags.Public | BindingFlags.Instance))
+    /// <summary> IDictionary &lt;CommandLineArgument, MemberInfo&gt; </summary>
+    private IDictionary _arguments;
+    
+    public CommandLineClassParser (Type argumentClass)
     {
-      if (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
+      _argumentClass = argumentClass;
+      _arguments = new ListDictionary();
+
+      foreach (MemberInfo member in argumentClass.GetMembers (BindingFlags.Public | BindingFlags.Instance))
       {
-        CommandLineArgumentAttribute argumentAttribute = (CommandLineArgumentAttribute) ReflectionUtility.GetSingleAttribute (
-            member, typeof (CommandLineArgumentAttribute), false, false);
-        if (argumentAttribute != null)
+        if (member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
         {
-          argumentAttribute.SetMember (member);
-          argumentAttribute.AddArgument (this.Arguments, _arguments, member);
+          CommandLineArgumentAttribute argumentAttribute = (CommandLineArgumentAttribute) ReflectionUtility.GetSingleAttribute (
+              member, typeof (CommandLineArgumentAttribute), false, false);
+          if (argumentAttribute != null)
+          {
+            argumentAttribute.SetMember (member);
+            argumentAttribute.AddArgument (this.Arguments, _arguments, member);
+          }
         }
       }
     }
-  }
 
-  public new object Parse (string commandLine, bool includeFirstArgument)
-  {
-    return Parse (SplitCommandLine (commandLine, includeFirstArgument));
-  }
-
-  public new object Parse (string[] args)
-  {
-    base.Parse (args);
-    object obj = Activator.CreateInstance (_argumentClass);
-
-    foreach (DictionaryEntry entry in _arguments)
+    public new object Parse (string commandLine, bool includeFirstArgument)
     {
-      CommandLineArgument argument = (CommandLineArgument) entry.Key;
-      MemberInfo fieldOrProperty = (MemberInfo) entry.Value;
-      Type memberType = ReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
-      object value = argument.ValueObject;
-      if (argument is ICommandLinePartArgument)
-        value = ((ICommandLinePartArgument)argument).Group.ValueObject;
-
-      if (value is NaBoolean && memberType == typeof (bool))
-      {
-        NaBoolean naboolval = (NaBoolean) value;
-        if (naboolval.IsNull)
-          throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Rubicon.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
-        value = (bool) naboolval;
-      }
-
-      if (value != null)
-      {
-        try
-        {
-          ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrProperty, value);
-        }
-        catch (Exception e)
-        {
-          throw new ApplicationException (string.Format ("Error setting value of {0} {1}: {2}", fieldOrProperty.MemberType, fieldOrProperty.Name, e.Message), e);
-        }
-      }
+      return Parse (SplitCommandLine (commandLine, includeFirstArgument));
     }
-    return obj;
-  }
-}
 
+    public new object Parse (string[] args)
+    {
+      base.Parse (args);
+      object obj = Activator.CreateInstance (_argumentClass);
+
+      foreach (DictionaryEntry entry in _arguments)
+      {
+        CommandLineArgument argument = (CommandLineArgument) entry.Key;
+        MemberInfo fieldOrProperty = (MemberInfo) entry.Value;
+        Type memberType = ReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+        object value = argument.ValueObject;
+        if (argument is ICommandLinePartArgument)
+          value = ((ICommandLinePartArgument)argument).Group.ValueObject;
+
+        if (value is NaBoolean && memberType == typeof (bool))
+        {
+          NaBoolean naboolval = (NaBoolean) value;
+          if (naboolval.IsNull)
+            throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Rubicon.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
+          value = (bool) naboolval;
+        }
+
+        if (value != null)
+        {
+          try
+          {
+            ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrProperty, value);
+          }
+          catch (Exception e)
+          {
+            throw new ApplicationException (string.Format ("Error setting value of {0} {1}: {2}", fieldOrProperty.MemberType, fieldOrProperty.Name, e.Message), e);
+          }
+        }
+      }
+      return obj;
+    }
+  }
+
+  public class CommandLineClassParser<T>: CommandLineClassParser
+  {
+    public CommandLineClassParser ()
+        : base (typeof (T))
+    {
+    }
+
+    public new T Parse (string commandLine, bool includeFirstArgument)
+    {
+      return (T) base.Parse (commandLine, includeFirstArgument);
+    }
+
+    public new T Parse (string[] args)
+    {
+      return (T) base.Parse (args);
+    }
+  }
 }

@@ -4,22 +4,27 @@ using Rubicon.Collections;
 
 namespace Rubicon.Core.UnitTests.Collections
 {
+  using TestTuple = Tuple<int, string, double, DateTime>;
+
   [TestFixture]
   public class TupelAbcdTest
   {
+    private readonly DateTime date1 = new DateTime (2006, 7, 17, 11, 15, 10);
+    private readonly DateTime date2 = new DateTime (2005, 7, 17, 11, 15, 10);
+
     [Test]
     public void Initialize ()
     {
-      Tuple<int, string, double, DateTime> tupel = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple tuple = new TestTuple (1, "X", 2.5, date1);
 
-      Assert.AreEqual (1, tupel.A);
-      Assert.AreEqual ("X", tupel.B);
+      Assert.AreEqual (1, tuple.A);
+      Assert.AreEqual ("X", tuple.B);
     }
 
     [Test]
     public void Equals_WithNull ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5,new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5,date1);
 
       Assert.IsFalse (left.Equals (null));
     }
@@ -27,16 +32,16 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithSame ()
     {
-      Tuple<int, string, double, DateTime> tupel = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple tuple = new TestTuple (1, "X", 2.5, date1);
 
-      Assert.IsTrue (tupel.Equals (tupel));
+      Assert.IsTrue (tuple.Equals (tuple));
     }
 
     [Test]
     public void Equals_WithEqual ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "X", 2.5, date1);
 
       Assert.IsTrue (left.Equals (right));
       Assert.IsTrue (right.Equals (left));
@@ -45,8 +50,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDifferentA ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (-1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (-1, "X", 2.5, date1);
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -55,8 +60,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDiffentB ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "A", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "A", 2.5, date1);
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -65,8 +70,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDiffentC ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "X", -2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "X", -2.5, date1);
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -75,8 +80,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDiffentD ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2005, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "X", 2.5, date2);
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -85,8 +90,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithEqual ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "X", 2.5, date1);
 
       Assert.IsTrue (left.Equals ((object) right));
     }
@@ -94,7 +99,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithNull ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
 
       Assert.IsFalse (left.Equals ((object) null));
     }
@@ -102,7 +107,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithObject ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
 
       Assert.IsFalse (left.Equals (new object ()));
     }
@@ -110,8 +115,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void TestGetHashCode ()
     {
-      Tuple<int, string, double, DateTime> left = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
-      Tuple<int, string, double, DateTime> right = new Tuple<int, string, double, DateTime> (1, "X", 2.5, new DateTime (2006, 7, 17, 11, 15, 10));
+      TestTuple left = new TestTuple (1, "X", 2.5, date1);
+      TestTuple right = new TestTuple (1, "X", 2.5, date1);
 
       Assert.AreEqual (left.GetHashCode (), right.GetHashCode ());
     }

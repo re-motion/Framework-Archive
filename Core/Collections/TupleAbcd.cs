@@ -21,11 +21,6 @@ namespace Rubicon.Collections
 
     public Tuple (TA a, TB b, TC c, TD d)
     {
-      ArgumentUtility.CheckNotNull ("a", a);
-      ArgumentUtility.CheckNotNull ("b", b);
-      ArgumentUtility.CheckNotNull ("c", c);
-      ArgumentUtility.CheckNotNull ("d", d);
-
       _a = a;
       _b = b;
       _c = c;
@@ -60,7 +55,10 @@ namespace Rubicon.Collections
       if (other == null)
         return false;
 
-      return this._a.Equals (other._a) && this._b.Equals (other._b) && this._c.Equals (other._c) && this._d.Equals (other._d);
+      return EqualityUtility.Equals (_a, other._a)
+             && EqualityUtility.Equals (_b, other._b)
+             && EqualityUtility.Equals (_c, other._c)
+             && EqualityUtility.Equals (_d, other._d);
     }
 
     public override bool Equals (object obj)
@@ -73,7 +71,7 @@ namespace Rubicon.Collections
 
     public override int GetHashCode ()
     {
-      return _a.GetHashCode () ^ _b.GetHashCode () ^ _c.GetHashCode () ^ _d.GetHashCode ();
+      return EqualityUtility.GetRotatedHashCode (_a, _b, _c, _d);
     }
   }
 }

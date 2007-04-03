@@ -4,22 +4,24 @@ using Rubicon.Collections;
 
 namespace Rubicon.Core.UnitTests.Collections
 {
+  using TestTuple = Tuple<int, string>;
+
   [TestFixture]
   public class TupelAbTest
   {
     [Test]
     public void Initialize ()
     {
-      Tuple<int, string> tupel = new Tuple<int, string> (1, "X");
+      TestTuple tuple = new TestTuple (1, "X");
 
-      Assert.AreEqual (1, tupel.A);
-      Assert.AreEqual ("X", tupel.B);
+      Assert.AreEqual (1, tuple.A);
+      Assert.AreEqual ("X", tuple.B);
     }
 
     [Test]
     public void Equals_WithNull ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
 
       Assert.IsFalse (left.Equals (null));
     }
@@ -27,16 +29,26 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithSame ()
     {
-      Tuple<int, string> tupel = new Tuple<int, string> (1, "X");
+      TestTuple tuple = new TestTuple (1, "X");
 
-      Assert.IsTrue (tupel.Equals (tupel));
+      Assert.IsTrue (tuple.Equals (tuple));
     }
 
     [Test]
     public void Equals_WithEqual ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
-      Tuple<int, string> right = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
+      TestTuple right = new TestTuple (1, "X");
+
+      Assert.IsTrue (left.Equals (right));
+      Assert.IsTrue (right.Equals (left));
+    }
+
+    [Test]
+    public void Equals_WithEqualNulls ()
+    {
+      Tuple<int?, string> left = new Tuple<int?, string> (null, null);
+      Tuple<int?, string> right = new Tuple<int?, string> (null, null);
 
       Assert.IsTrue (left.Equals (right));
       Assert.IsTrue (right.Equals (left));
@@ -45,8 +57,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDifferentA ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
-      Tuple<int, string> right = new Tuple<int, string> (-1, "X");
+      TestTuple left = new TestTuple (1, "X");
+      TestTuple right = new TestTuple (-1, "X");
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -55,8 +67,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void Equals_WithDiffentB ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
-      Tuple<int, string> right = new Tuple<int, string> (1, "A");
+      TestTuple left = new TestTuple (1, "X");
+      TestTuple right = new TestTuple (1, null);
 
       Assert.IsFalse (left.Equals (right));
       Assert.IsFalse (right.Equals (left));
@@ -65,8 +77,8 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithEqual ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
-      Tuple<int, string> right = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
+      TestTuple right = new TestTuple (1, "X");
 
       Assert.IsTrue (left.Equals ((object) right));
     }
@@ -74,7 +86,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithNull ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
 
       Assert.IsFalse (left.Equals ((object) null));
     }
@@ -82,7 +94,7 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void EqualsObject_WithObject ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
 
       Assert.IsFalse (left.Equals (new object ()));
     }
@@ -90,11 +102,19 @@ namespace Rubicon.Core.UnitTests.Collections
     [Test]
     public void TestGetHashCode ()
     {
-      Tuple<int, string> left = new Tuple<int, string> (1, "X");
-      Tuple<int, string> right = new Tuple<int, string> (1, "X");
+      TestTuple left = new TestTuple (1, "X");
+      TestTuple right = new TestTuple (1, "X");
 
       Assert.AreEqual (left.GetHashCode (), right.GetHashCode ());
     }
 
+    [Test]
+    public void TestGetHashCodeNull ()
+    {
+      Tuple<int?, string> left = new Tuple<int?, string> (null, null);
+      Tuple<int?, string> right = new Tuple<int?, string> (null, null);
+
+      Assert.AreEqual (left.GetHashCode (), right.GetHashCode ());
+    }
   }
 }
