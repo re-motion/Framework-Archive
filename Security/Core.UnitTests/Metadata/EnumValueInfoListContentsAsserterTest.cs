@@ -57,14 +57,14 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetMessage ()
     {
       EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Expected", _list, string.Empty, null);
-      Assert.AreEqual ("\r\n\texpected: <\"Expected\">\r\n\t but was: <<\"First\">,<\"Second\">>", asserter.Message);
+      Assert.AreEqual ("\texpected: <\"Expected\">\r\n\t but was: <<\"First\">,<\"Second\">>\r\n", asserter.Message);
     }
 
     [Test]
     public void GetMessageWithUserMessage ()
     {
       EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Expected", _list, "Custom: {0}", "value");
-      Assert.AreEqual ("Custom: value\r\n\texpected: <\"Expected\">\r\n\t but was: <<\"First\">,<\"Second\">>", asserter.Message);
+      Assert.AreEqual ("Custom: value\r\n\texpected: <\"Expected\">\r\n\t but was: <<\"First\">,<\"Second\">>\r\n", asserter.Message);
     }
   }
 }

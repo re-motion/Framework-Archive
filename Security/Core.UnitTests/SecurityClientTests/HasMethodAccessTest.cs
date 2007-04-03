@@ -61,7 +61,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+        ExpectedMessage = "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod");
@@ -74,7 +74,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+        ExpectedMessage = "The member 'InstanceMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod");
@@ -89,7 +89,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The securableObject did not return an IObjectSecurityStrategy.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The securableObject did not return an IObjectSecurityStrategy.")]
     public void Test_WithSecurityStrategyIsNull ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", TestAccessTypes.First);
@@ -101,7 +101,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", (Enum[]) null);
@@ -113,7 +113,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions ("InstanceMethod", (Enum[]) null);

@@ -365,7 +365,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateStateCombination_BeforeClassIsSet ()
     {
       AccessControlList acl = new AccessControlList (_testHelper.Transaction);
@@ -373,7 +373,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateAccessControlEntry_BeforeClassIsSet ()
     {
       AccessControlList acl = new AccessControlList (_testHelper.Transaction);

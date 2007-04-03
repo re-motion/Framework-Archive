@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
     public void GetIsAbstract_ForUnresolvedTypeName ()
     {
       ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
@@ -247,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
+        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
         + " of class 'Company' is not derived from"
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation ()
@@ -258,7 +258,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Type 'Rubicon.Data.DomainObjects.DomainObject' of class 'Company' is not derived from"
+        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DomainObject' of class 'Company' is not derived from"
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeDomainObject ()
     {
@@ -268,7 +268,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
+        ExpectedMessage = "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void BaseClassWithDifferentStorageProvider ()
     {
       ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
@@ -322,7 +322,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Class 'Company' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' already contains the property 'Name'.")]
     public void AddDuplicateProperty ()
     {
       ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -332,7 +332,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Class 'Customer' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Customer' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseClass ()
     {
       ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -345,7 +345,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Class 'Supplier' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Supplier' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
       ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -362,7 +362,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
+        ExpectedMessage = "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
         + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.")]
     public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
     {
@@ -374,7 +374,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
+        ExpectedMessage = "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
         + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.")]
     public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
     {
@@ -392,7 +392,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "No relation found for class 'Order' and property 'UndefinedProperty'.")]
+        ExpectedMessage = "No relation found for class 'Order' and property 'UndefinedProperty'.")]
     public void GetMandatoryRelationEndPointDefinitionForUndefinedProperty ()
     {
       _orderClass.GetMandatoryRelationEndPointDefinition ("UndefinedProperty");
@@ -680,7 +680,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
     public void GetMandatoryOppositeEndPointDefinitionWithInvalidPropertyName ()
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
@@ -698,7 +698,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
     public void GetMandatoryOppositeClassDefinitionWithInvalidPropertyName ()
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
@@ -716,7 +716,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "No relation found for class 'Order' and property 'InvalidProperty'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'Order' and property 'InvalidProperty'.")]
     public void GetMandatoryRelationDefinitionWithInvalidPropertyName ()
     {
       _orderClass.GetMandatoryRelationDefinition ("InvalidProperty");
@@ -729,7 +729,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Class 'Order' does not contain the property 'InvalidProperty'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Order' does not contain the property 'InvalidProperty'.")]
     public void GetMandatoryPropertyDefinitionWithInvalidPropertName ()
     {
       _orderClass.GetMandatoryPropertyDefinition ("InvalidProperty");

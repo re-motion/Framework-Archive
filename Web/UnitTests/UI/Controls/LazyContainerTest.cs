@@ -23,7 +23,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
     private HttpContext _currentHttpContext;
 
-    private StringCollectionChecker _stringCollectionChecker;
     private StringCollection _actualEvents;
 
     private LazyContainer _lazyContainer;
@@ -56,7 +55,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls
     {
       base.SetUpPage ();
 
-      _stringCollectionChecker = new StringCollectionChecker ();
       _actualEvents = new StringCollection ();
 
       _lazyContainer = new LazyContainer ();
@@ -118,7 +116,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       _lazyContainer.RealControls.Add (_parent);
       NamingContainerInvoker.InitRecursive ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -126,7 +124,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
     [Test]
@@ -138,7 +136,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       NamingContainerInvoker.InitRecursive ();
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -146,7 +144,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.RealControls.Add (_parent);
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
 
@@ -161,7 +159,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       NamingContainerInvoker.InitRecursive ();
       NamingContainerInvoker.LoadRecursive ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -172,7 +170,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
     [Test]
@@ -186,7 +184,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       _lazyContainer.RealControls.Add (_parent);
       NamingContainerInvoker.LoadRecursive ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -197,7 +195,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
     [Test]
@@ -211,7 +209,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       NamingContainerInvoker.LoadRecursive ();
       _lazyContainer.RealControls.Add (_parent);
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -222,7 +220,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
     [Test]
@@ -236,7 +234,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       NamingContainerInvoker.LoadRecursive ();
       _lazyContainer.RealControls.Add (_parent);
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
 
       expectedEvents.Add (FormatInitEvent (_child));
       expectedEvents.Add (FormatInitEvent (_childSecond));
@@ -247,7 +245,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       _lazyContainer.Ensure ();
 
-      _stringCollectionChecker.AreEqual (expectedEvents, _actualEvents);
+      CollectionAssert.AreEqual (expectedEvents, _actualEvents);
     }
 
     [Test]
@@ -305,7 +303,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
     public void Control_PostBack_Init_Add_Ensure ()
     {
       Page.SetRequestValueCollection (new NameValueCollection ());
@@ -428,7 +426,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
     public void Control_RestoreChildControlState_EnsureBeforeLoadAllState ()
     {
       Page_Init_Load_Add_Ensure_SaveAllState ("Parent Value", "Child Value", null);

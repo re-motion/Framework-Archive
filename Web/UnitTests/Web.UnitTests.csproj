@@ -212,12 +212,6 @@
     <Compile Include="ExecutionEngine\WxeTransactionMock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StringCollectionChecker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="StringCollectionCheckerTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Controls\CommandTests\BaseTest.cs" />
     <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
     <Compile Include="UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />

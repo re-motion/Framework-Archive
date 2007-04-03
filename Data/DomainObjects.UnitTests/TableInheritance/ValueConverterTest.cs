@@ -98,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must have column"
+        ExpectedMessage = "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must have column"
         + " 'DomainBaseIDClassID' defined, because opposite class 'DomainBase' is part of an inheritance hierarchy.")]
     public void GetValueWithMissingRelationClassIDColumn ()
     {
@@ -123,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain column"
+        ExpectedMessage = "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain column"
         + " 'ClientIDClassID', because opposite class 'Client' is not part of an inheritance hierarchy.")]
     public void GetValueWithInvalidRelationClassIDColumn ()
     {
@@ -148,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDValueIDClassID' of entity"
+        ExpectedMessage = "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDValueIDClassID' of entity"
         + " 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain a value.")]
     public void GetValueWithInvalidRelationClassIDColumnValue ()
     {
@@ -173,7 +173,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDNullValueIDClassID' of entity"
+        ExpectedMessage = "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDNullValueIDClassID' of entity"
         + " 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain null.")]
     public void GetValueWithInvalidRelationClassIDColumnNullValue ()
     {

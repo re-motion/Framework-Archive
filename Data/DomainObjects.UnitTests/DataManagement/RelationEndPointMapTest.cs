@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "GetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+        ExpectedMessage = "GetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
     public void GetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "GetOriginalRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+        ExpectedMessage = "GetOriginalRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
     public void GetOriginalRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "SetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
+        ExpectedMessage = "SetRelatedObject can only be called for end points with a cardinality of 'One'.\r\nParameter name: endPointID")]
     public void SetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -108,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "GetRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
+        ExpectedMessage = "GetRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
     public void GetRelatedObjectsWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "GetOriginalRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
+        ExpectedMessage = "GetOriginalRelatedObjects can only be called for end points with a cardinality of 'Many'.\r\nParameter name: endPointID")]
     public void GetOriginalRelatedObjectsWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        "Property 'OrderTicket' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
+        ExpectedMessage = "Property 'OrderTicket' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
         + " cannot be set to DomainObject 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid',"
         + " because the objects do not belong to the same ClientTransaction.")]
     public void SetRelatedObjectWithOtherClientTransaction ()
@@ -141,7 +141,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
+        ExpectedMessage = "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
         + " at position 2 into collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
         + " because the objects do not belong to the same ClientTransaction.")]
     public void PerformCollectionAddWithOtherClientTransaction ()
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
+        ExpectedMessage = "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
         + " at position 0 into collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
         + " because the objects do not belong to the same ClientTransaction.")]
     public void PerformCollectionInsertWithOtherClientTransaction ()
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        "Cannot remove DomainObject 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'"
+        ExpectedMessage = "Cannot remove DomainObject 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'"
         + " from collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
         + " because the objects do not belong to the same ClientTransaction.")]
     public void PerformCollectionRemoveWithOtherClientTransaction ()
@@ -213,7 +213,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        "Cannot remove DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from RelationEndPointMap, because it belongs to a different ClientTransaction.")]
+        ExpectedMessage = "Cannot remove DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from RelationEndPointMap, because it belongs to a different ClientTransaction.")]
     public void PerformDeletionWithOtherClientTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();

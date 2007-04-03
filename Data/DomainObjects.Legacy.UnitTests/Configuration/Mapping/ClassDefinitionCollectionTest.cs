@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
+        ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
     public void AddWithUnresolvedType ()
     {
       ClassDefinition classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
@@ -154,14 +154,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Mapping does not contain class 'Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
+        ExpectedMessage = "Mapping does not contain class 'Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
     public void GetMandatoryForInvalidClass ()
     {
       TestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Mapping does not contain class 'Zaphod'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Mapping does not contain class 'Zaphod'.")]
     public void GetMandatoryForInvalidClassID ()
     {
       TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Zaphod");

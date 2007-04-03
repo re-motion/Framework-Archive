@@ -41,7 +41,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated type 'Rubicon.Security.Web.UnitTests.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Rubicon.Security.Web.UnitTests.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedType ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show);
@@ -49,7 +49,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The declaring type of enumerated type 'Rubicon.Security.Web.UnitTests.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        ExpectedMessage = "The declaring type of enumerated type 'Rubicon.Security.Web.UnitTests.Domain.SimpleType+MethodNameEnum' does not implement interface"
         + " 'Rubicon.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringType ()
     {
@@ -58,7 +58,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated type 'Rubicon.Security.Web.UnitTests.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
+        ExpectedMessage = "Enumerated type 'Rubicon.Security.Web.UnitTests.Domain.MethodNameEnum' is not declared as a nested type.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotNestedTypeAndSecurableClass ()
     {
       new WxeDemandTargetStaticMethodPermissionAttribute (MethodNameEnum.Show, typeof (DerivedSecurableObject));
@@ -66,7 +66,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The declaring type of enumerated type 'Rubicon.Security.Web.UnitTests.Domain.SimpleType+MethodNameEnum' does not implement interface"
+        ExpectedMessage = "The declaring type of enumerated type 'Rubicon.Security.Web.UnitTests.Domain.SimpleType+MethodNameEnum' does not implement interface"
         + " 'Rubicon.Security.ISecurableObject'.\r\nParameter name: methodNameEnum")]
     public void Initialize_WithMethodNameEnumNotHavingValidDeclaringTypeAndSecurableClass ()
     {
@@ -75,7 +75,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Type 'Rubicon.Security.Web.UnitTests.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
+        ExpectedMessage = "Type 'Rubicon.Security.Web.UnitTests.Domain.OtherSecurableObject' cannot be assigned to the declaring type of enumerated type"
         + " 'Rubicon.Security.Web.UnitTests.Domain.SecurableObject+Method'.\r\nParameter name: securableClass")]
     public void TestWithParameterNotOfNotMatchingType ()
     {

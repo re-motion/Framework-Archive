@@ -86,14 +86,14 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The type of the property 'ID' in type 'Rubicon.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'ID' in type 'Rubicon.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property")]
     public void GetMetadataWithInvalidType ()
     {
       new StatePropertyReflector().GetMetadata (typeof (PaperFile).GetProperty ("ID"), _cache);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The type of the property 'SimpleEnum' in type 'Rubicon.Security.UnitTests.TestDomain.File' does not have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: property")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'SimpleEnum' in type 'Rubicon.Security.UnitTests.TestDomain.File' does not have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: property")]
     public void GetMetadataWithInvalidEnum ()
     {
       new StatePropertyReflector ().GetMetadata (typeof (PaperFile).GetProperty ("SimpleEnum"), _cache);

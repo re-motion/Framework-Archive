@@ -52,7 +52,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlSchemaValidationException),
-        "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
+        ExpectedMessage = "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests' has invalid child element 'value1' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. List of possible elements expected: 'value' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. Line 2, position 14.")]
@@ -68,7 +68,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlException),
-        "Error reading 'root/sampleClass'. The value of endelement 'sampleClass' could not be parsed:"
+        ExpectedMessage = "Error reading 'root/sampleClass'. The value of endelement 'sampleClass' could not be parsed:"
         + " Input string was not in a correct format. Line 3, position 13.")]
     public void Test_WithContextAndTypeAndNamespaceAndSchemaSet_HavingInvalidDataTypeInXmlFragment ()
     {
@@ -96,7 +96,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlSchemaValidationException),
-        "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
+        ExpectedMessage = "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests' has invalid child element 'value1' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. List of possible elements expected: 'value' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. Line 2, position 14.")]
@@ -112,7 +112,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlException),
-        "Error reading 'root/sampleClass'. The value of endelement 'sampleClass' could not be parsed:"
+        ExpectedMessage = "Error reading 'root/sampleClass'. The value of endelement 'sampleClass' could not be parsed:"
         + " Input string was not in a correct format. Line 3, position 13.")]
     public void Test_WithContextAndTypeAndNamespaceAndXmlReaderSettings_HavingInvalidDataTypeInXmlFragment ()
     {

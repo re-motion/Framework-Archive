@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     [Test]
     [ExpectedException (typeof (ImportException),
-       "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' "
+       ExpectedMessage = "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' "
        + "('Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain') "
        + "could not be found.")]
     public void Import_NotExistingMetadataObject ()
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ImportException), "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' could not be found.")]
+    [ExpectedException (typeof (ImportException), ExpectedMessage = "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' could not be found.")]
     public void Import_NotExistingMetadataObjectWithoutComment ()
     {
       string cultureXml = @"

@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     [Test]
     [ExpectedException (typeof (QueryConfigurationException),
-        "A scalar query 'OrderSumQuery' must not specify a collectionType.")]
+        ExpectedMessage = "A scalar query 'OrderSumQuery' must not specify a collectionType.")]
     public void ScalarQueryWithCollectionType ()
     {
       QueryConfigurationLoader loader = new QueryConfigurationLoader (@"ScalarQueryWithCollectionType.xml");

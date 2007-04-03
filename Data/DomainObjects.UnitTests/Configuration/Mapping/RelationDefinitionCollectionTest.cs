@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Relation 'NonExistingRelationDefinitionID' does not exist.")]
+        ExpectedMessage = "Relation 'NonExistingRelationDefinitionID' does not exist.")]
     public void GetMandatoryWithNonExistingRelationDefinitionID ()
     {
       _collection.GetMandatory ("NonExistingRelationDefinitionID");

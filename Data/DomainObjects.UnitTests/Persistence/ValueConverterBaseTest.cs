@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
     [Test]
     [ExpectedException (typeof (ConverterException),
-        "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
+        ExpectedMessage = "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
         + " does not define the value 'InvalidEnumValue', property 'Type'.")]
     public void GetInvalidEnumValue ()
     {
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
     public void GetNullValueForEnum ()
     {
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");

@@ -178,7 +178,7 @@ public class EditableRowTest : BocTest
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls().")]
+      ExpectedMessage = "BocList 'BocList': DataSourceFactory has not been set prior to invoking CreateControls().")]
   public void CreateControlsDataSourceFactoryNull ()
   {
     Invoker.InitRecursive();
@@ -188,7 +188,7 @@ public class EditableRowTest : BocTest
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls().")]
+      ExpectedMessage = "BocList 'BocList': ControlFactory has not been set prior to invoking CreateControls().")]
   public void CreateControlsControlFactoryNull ()
   {
     Invoker.InitRecursive();

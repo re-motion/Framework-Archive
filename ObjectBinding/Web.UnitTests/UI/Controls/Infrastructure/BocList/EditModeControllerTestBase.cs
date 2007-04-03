@@ -21,7 +21,6 @@ public class EditModeControllerTestBase : BocTest
 
   // member fields
 
-  private StringCollectionChecker _stringCollectionChecker;
   private StringCollection _actualEvents;
 
   private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
@@ -54,7 +53,6 @@ public class EditModeControllerTestBase : BocTest
   {
     base.SetUp();
 
-    _stringCollectionChecker = new StringCollectionChecker();
     _actualEvents = new StringCollection();
 
     _values = new TypeWithAllDataTypes[5];
@@ -160,7 +158,7 @@ public class EditModeControllerTestBase : BocTest
 
   protected void CheckEvents (StringCollection expected, StringCollection actual)
   {
-    _stringCollectionChecker.AreEqual (expected, actual);
+    CollectionAssert.AreEqual (expected, actual);
   }
 
   protected string FormatChangesCanceledEventMessage (int index, IBusinessObject businessObject)

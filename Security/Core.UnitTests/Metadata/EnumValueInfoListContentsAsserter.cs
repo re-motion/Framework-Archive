@@ -5,7 +5,6 @@ using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {
-  [CLSCompliant (false)] // AbstractAsserter is not CLS complient
   public class EnumValueInfoListContentsAsserter : AbstractAsserter
   {
     // types

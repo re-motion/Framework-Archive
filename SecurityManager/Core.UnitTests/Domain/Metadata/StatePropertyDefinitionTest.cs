@@ -29,7 +29,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The state 'New' is not defined for the property 'Confidentiality'.\r\nParameter name: name")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The state 'New' is not defined for the property 'Confidentiality'.\r\nParameter name: name")]
     public void GetState_InvalidName ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "A state with the value 42 is not defined for the property 'Confidentiality'.\r\nParameter name: stateValue")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "A state with the value 42 is not defined for the property 'Confidentiality'.\r\nParameter name: stateValue")]
     public void GetState_InvalidValue ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);

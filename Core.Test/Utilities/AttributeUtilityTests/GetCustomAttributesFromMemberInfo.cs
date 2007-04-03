@@ -39,7 +39,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The type parameter must be assignable to System.Attribute or an interface.\r\nParameter name: T")
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type parameter must be assignable to System.Attribute or an interface.\r\nParameter name: T")
     ]
     public void Test_FromBaseWithInvalidType()
     {

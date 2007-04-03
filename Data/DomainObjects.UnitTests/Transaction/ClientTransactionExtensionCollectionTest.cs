@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "An extension with name 'Name' is already part of the collection.\r\nParameter name: extensionName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "An extension with name 'Name' is already part of the collection.\r\nParameter name: extensionName")]
     public void AddWithDuplicateName ()
     {
       _collection.Add ("Name", _extension1);
@@ -118,7 +118,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "An extension with name 'Name' is already part of the collection.\r\nParameter name: extensionName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "An extension with name 'Name' is already part of the collection.\r\nParameter name: extensionName")]
     public void InsertWithDuplicateName ()
     {
       _collection.Insert (0, "Name", _extension1);

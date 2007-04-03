@@ -55,7 +55,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlSchemaValidationException),
-        "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
+        ExpectedMessage = "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests' has invalid child element 'value1' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. List of possible elements expected: 'value' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. Line 2, position 14.")]
@@ -71,7 +71,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlException),
-        "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Input string was not in a correct format. "
+        ExpectedMessage = "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Input string was not in a correct format. "
         + "Line 2, position 32.")]
     public void Test_WithContextAndTypeAndNamespaceAndSchemaSet_HavingInvalidDataTypeInXmlFragment ()
     {
@@ -99,7 +99,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlSchemaValidationException),
-        "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
+        ExpectedMessage = "Schema verification failed with 1 errors and 0 warnings in 'root/sampleClass'. First error: The element 'sampleClass' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests' has invalid child element 'value1' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. List of possible elements expected: 'value' in namespace "
         + "'http://www.rubicon-it.com/commons/core/unitTests'. Line 2, position 14.")]
@@ -115,7 +115,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlException),
-        "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Input string was not in a correct format. "
+        ExpectedMessage = "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Input string was not in a correct format. "
         + "Line 2, position 32.")]
     public void Test_WithContextAndTypeAndNamespaceAndXmlReaderSettings_HavingInvalidDataTypeInXmlFragment ()
     {
@@ -129,7 +129,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
 
     [Test]
     [ExpectedException (typeof (XmlException),
-        "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Only positive integer values are allowed.\r\n"
+        ExpectedMessage = "Error reading 'root/sampleClass'. The value of whitespace '' could not be parsed: Only positive integer values are allowed.\r\n"
         + "Parameter name: Value\r\nActual value was -1. Line 2, position 30.")]
     public void Test_WithContextAndTypeAndNamespaceAndXmlReaderSettings_HavingInvalidValueInXmlFragment ()
     {

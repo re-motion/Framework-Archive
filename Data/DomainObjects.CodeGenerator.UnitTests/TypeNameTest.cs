@@ -143,7 +143,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        "Argument 'value' must be of type 'Rubicon.Data.DomainObjects.CodeGenerator.TypeName' but was of type 'System.String'.\r\n"
+        ExpectedMessage = "Argument 'value' must be of type 'Rubicon.Data.DomainObjects.CodeGenerator.TypeName' but was of type 'System.String'.\r\n"
         + "Parameter name: value")]
     public void CompareToWithInvalidArgumentType ()
     {
@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest' does not contain an assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest' does not contain an assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithMissingAssemblyName ()
     {
@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest,' does contains an empty assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest,' does contains an empty assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithEmptyAssemblyName ()
     {
@@ -170,7 +170,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest,  ' does contains an empty assembly name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName 'Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TypeNameTest,  ' does contains an empty assembly name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithWhiteSpaceAssemblyName ()
     {
@@ -179,7 +179,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The assemblyQualifiedName ', Rubicon.Data.DomainObjects.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName ', Rubicon.Data.DomainObjects.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithEmptyTypeName ()
     {
@@ -188,7 +188,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The assemblyQualifiedName '  , Rubicon.Data.DomainObjects.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
+        ExpectedMessage = "The assemblyQualifiedName '  , Rubicon.Data.DomainObjects.CodeGenerator.UnitTests' does contains an empty type name.\r\n"
         + "Parameter name: assemblyQualifiedName")]
     public void InitializeWithWhiteSpaceTypeName ()
     {

@@ -118,7 +118,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "You must specify at least a localization or a metadata converter.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "You must specify at least a localization or a metadata converter.")]
     public void Create_ExceptionWithoutLocalizationAndMetadataConverter ()
     {
       _converterBuilder.Create ();

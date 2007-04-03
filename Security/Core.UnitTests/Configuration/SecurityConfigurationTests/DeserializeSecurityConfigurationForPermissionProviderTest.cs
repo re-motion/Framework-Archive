@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The provider 'Invalid' specified for the defaultPermissionProvider does not exist in the providers collection.")]
+        ExpectedMessage = "The provider 'Invalid' specified for the defaultPermissionProvider does not exist in the providers collection.")]
     public void Test_WithCustomPermissionProviderAndInvalidName()
     {
       string xmlFragment =
@@ -85,7 +85,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The name of the entry 'Reflection' identifies a well known provider and cannot be reused for custom providers.")]
+        ExpectedMessage = "The name of the entry 'Reflection' identifies a well known provider and cannot be reused for custom providers.")]
     public void Test_DuplicateWellKnownPermissionProviderForPermissionReflector()
     {
       string xmlFragment =
@@ -101,7 +101,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The value for the property 'defaultPermissionProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+        ExpectedMessage = "The value for the property 'defaultPermissionProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomPermissionProviderNameEmpty()
     {
       string xmlFragment =

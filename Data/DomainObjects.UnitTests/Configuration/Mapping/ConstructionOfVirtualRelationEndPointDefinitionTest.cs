@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Relation definition error: Virtual property 'Dummy' of class 'Company' is of type"
+        ExpectedMessage = "Relation definition error: Virtual property 'Dummy' of class 'Company' is of type"
             + "'Rubicon.Data.DomainObjects.DomainObject',"
             + " but must be derived from 'Rubicon.Data.DomainObjects.DomainObject' or "
             + " 'Rubicon.Data.DomainObjects.DomainObjectCollection' or must be"
@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "The property type of a virtual end point of a one-to-one relation"
+        ExpectedMessage = "The property type of a virtual end point of a one-to-one relation"
         + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void VirtualEndPointWithCardinalityOneAndWrongPropertyType ()
     {
@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "The property type of a virtual end point of a one-to-many relation"
+        ExpectedMessage = "The property type of a virtual end point of a one-to-many relation"
         + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointWithCardinalityManyAndWrongPropertyType ()
     {
@@ -91,7 +91,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Property 'Orders' of class 'Customer' must not specify a SortExpression, because cardinality is equal to 'one'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Property 'Orders' of class 'Customer' must not specify a SortExpression, because cardinality is equal to 'one'.")]
     public void InitializeWithSortExpressionAndCardinalityOfOne ()
     {
       ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));

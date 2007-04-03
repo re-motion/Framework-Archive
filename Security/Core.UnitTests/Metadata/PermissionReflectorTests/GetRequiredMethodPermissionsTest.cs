@@ -100,21 +100,21 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Sve' could not be found.\r\nParameter name: memberName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The member 'Sve' could not be found.\r\nParameter name: memberName")]
     public void Test_NotExistingMethod ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Sve");
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Send' has multiple DemandMethodPermissionAttribute defined.\r\nParameter name: memberName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The member 'Send' has multiple DemandMethodPermissionAttribute defined.\r\nParameter name: memberName")]
     public void Test_PermissionsDeclaredOnBaseAndDerivedClass ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Send");
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Load' has multiple DemandMethodPermissionAttribute defined.\r\nParameter name: memberName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The member 'Load' has multiple DemandMethodPermissionAttribute defined.\r\nParameter name: memberName")]
     public void Test_PermissionsDeclaredOnOverloads ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Load");
@@ -122,7 +122,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-      "The DemandMethodPermissionAttribute must not be defined on members overriden or redefined in derived classes. "
+      ExpectedMessage = "The DemandMethodPermissionAttribute must not be defined on members overriden or redefined in derived classes. "
         + "A member 'Print' exists in class 'Rubicon.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class."
         + "\r\nParameter name: memberName")]
     public void Test_VirtualMethod ()

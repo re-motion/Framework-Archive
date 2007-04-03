@@ -55,7 +55,7 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "A null value was detected in element 0 of property path ReferenceListProperty.Property. Cannot evaluate rest of path.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A null value was detected in element 0 of property path ReferenceListProperty.Property. Cannot evaluate rest of path.")]
     public void GetValue_ThrowsInvalidOperationExceptionBecauseOfUnreachableObject ()
     {
       using (_testHelper.Ordered ())
@@ -69,7 +69,7 @@ namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Element 0 of property path ReferenceListProperty.Property is not a single-value property.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Element 0 of property path ReferenceListProperty.Property is not a single-value property.")]
     public void GetValue_ThrowsInvalidOperationExceptionBecauseOfListProperty ()
     {
       using (_testHelper.Ordered ())

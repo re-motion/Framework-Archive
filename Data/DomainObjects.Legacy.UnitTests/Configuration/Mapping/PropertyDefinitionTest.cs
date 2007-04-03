@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
+        ExpectedMessage = "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
     public void IntPropertyWithMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", new NaInt32 (10));

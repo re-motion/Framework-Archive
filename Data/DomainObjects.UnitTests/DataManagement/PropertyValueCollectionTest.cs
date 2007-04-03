@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Property 'DoesNotExist' does not exist.\r\nParameter name: propertyName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Property 'DoesNotExist' does not exist.\r\nParameter name: propertyName")]
     public void NonExistingPropertyName ()
     {
       _collection.Add (CreatePropertyValue ("PropertyName 1", "int32", 42));
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Property 'PropertyName' already exists in collection.\r\nParameter name: value")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Property 'PropertyName' already exists in collection.\r\nParameter name: value")]
     public void DuplicatePropertyNames ()
     {
       _collection.Add (CreatePropertyValue ("PropertyName", "int32", 42));

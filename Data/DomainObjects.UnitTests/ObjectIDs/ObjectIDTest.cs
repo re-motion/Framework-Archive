@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Value cannot contain '&amp;pipe;'.\r\nParameter name: value")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Value cannot contain '&amp;pipe;'.\r\nParameter name: value")]
     public void EscapedDelimiterPlaceholderInValue ()
     {
       ObjectID id = new ObjectID ("Official", "Arthur|Dent &pipe; &amp;pipe; Zaphod Beeblebrox");
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (FormatException),
-        "Serialized ObjectID 'Order|5d09030c-25"
+        ExpectedMessage = "Serialized ObjectID 'Order|5d09030c-25"
          + "c2-4735-b514-46333bd28ac8|System.Guid|Zaphod' is not correctly formatted.")]
     public void ObjectIDStringWithTooManyParts ()
     {
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
-    [ExpectedException (typeof (FormatException), "Type 'System.Double' is not supported.")]
+    [ExpectedException (typeof (FormatException), ExpectedMessage = "Type 'System.Double' is not supported.")]
     public void ObjectIDStringWithInvalidValueType ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double";
@@ -312,7 +312,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'"
+        ExpectedMessage = "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'"
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithInvalidClassDefinition ()
     {
@@ -322,7 +322,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
+        ExpectedMessage = "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithClassDefinitionNotPartOfMappingConfiguration ()
     {
       ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
@@ -366,7 +366,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Rubicon.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
+        ExpectedMessage = "Rubicon.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
     public void InitializeWithInvalidType ()
     {
       ObjectID id = new ObjectID ("Official", (byte) 1);

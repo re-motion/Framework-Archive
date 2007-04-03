@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
     public void Create_WithNotExistingAbstractRole ()
     {
       ClientTransaction transaction = new ClientTransaction ();
@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The user 'notexisting.user' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The user 'notexisting.user' could not be found.")]
     public void Create_WithNotExistingUser ()
     {
       ClientTransaction transaction = new ClientTransaction ();
@@ -122,7 +122,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The group 'UID: NotExistingGroup' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The group 'UID: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingOwningGroup ()
     {
       ClientTransaction transaction = new ClientTransaction ();

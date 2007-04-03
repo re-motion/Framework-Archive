@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Collection allows only ClassDefinitions with resolved types and therefore this overload of the indexer cannot be used.")]
+        ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore this overload of the indexer cannot be used.")]
     public void TypeIndexer ()
     {
       ClassDefinition orderDefinition = _collection[typeof (Order)];
@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Collection allows only ClassDefinitions with resolved types and therefore Contains(Type) cannot be used.")]
+        ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore Contains(Type) cannot be used.")]
     public void ContainsType ()
     {
       _collection.Contains (typeof (Order));
@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Collection allows only ClassDefinitions with resolved types and therefore GetMandatory(Type) cannot be used.")]
+        ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore GetMandatory(Type) cannot be used.")]
     public void GetMandatoryType ()
     {
       _collection.GetMandatory (typeof (Order));

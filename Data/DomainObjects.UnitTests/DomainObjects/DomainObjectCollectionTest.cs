@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. "
+        ExpectedMessage = "Values of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor' cannot be added to this collection. "
         + "Values must be of type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer' "
         + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
     public void InvalidDerivedType ()
@@ -596,7 +596,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The number of items in the source collection is greater than the available space from index to the end of the destination array.\r\nParameter name: index")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The number of items in the source collection is greater than the available space from index to the end of the destination array.\r\nParameter name: index")]
     public void CopyToArraySmallerThanCollection ()
     {
       DomainObject[] array = new DomainObject[_collection.Count - 1];
@@ -905,7 +905,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentOutOfRangeException),
-        "Index is out of range. Must be non-negative and less than the size of the collection."
+        ExpectedMessage = "Index is out of range. Must be non-negative and less than the size of the collection."
         + "\r\nParameter name: index\r\nActual value was 2.")]
     public void SetInvalidNumericIndex ()
     {

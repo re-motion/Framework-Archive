@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (ConstraintViolationException),
-       "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+       ExpectedMessage = "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void ValidateDuringCommit_ByTouchOnClass ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();

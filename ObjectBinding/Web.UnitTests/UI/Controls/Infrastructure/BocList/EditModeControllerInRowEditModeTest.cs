@@ -63,7 +63,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot initialize row edit mode: The BocList 'BocList' does not have a Value.")]
+      ExpectedMessage = "Cannot initialize row edit mode: The BocList 'BocList' does not have a Value.")]
   public void SwitchRowIntoEditModeWithValueNull ()
   {
     Invoker.InitRecursive();
@@ -599,7 +599,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot restore row edit mode: The Value collection of the BocList 'BocList' no longer contains the previously edited row.")]
+      ExpectedMessage = "Cannot restore row edit mode: The Value collection of the BocList 'BocList' no longer contains the previously edited row.")]
   public void EnsureEditModeRestoredWithInvalidRowIndex ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);
@@ -612,7 +612,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot restore edit mode: The BocList 'BocList' does not have a Value.")]
+      ExpectedMessage = "Cannot restore edit mode: The BocList 'BocList' does not have a Value.")]
   public void EnsureEditModeRestoredWithValueNull ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);
@@ -669,7 +669,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows.")]
+      ExpectedMessage = "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows.")]
   public void RemoveRows ()
   {
     Invoker.InitRecursive();
@@ -684,7 +684,7 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove a row while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the row.")]
+      ExpectedMessage = "Cannot remove a row while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the row.")]
   public void RemoveRow ()
   {
     Invoker.InitRecursive();

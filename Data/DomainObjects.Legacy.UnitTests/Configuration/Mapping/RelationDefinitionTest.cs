@@ -97,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Relation 'OrderToOrderItem' has no association with class 'Customer' and property 'Orders'.")]
+        ExpectedMessage = "Relation 'OrderToOrderItem' has no association with class 'Customer' and property 'Orders'.")]
     public void GetMandatoryOppositeRelationEndPointDefinitionWithNotAssociatedRelationDefinitionID ()
     {
       RelationDefinition orderToOrderItem = TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"];
@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Relation 'InvalidRelation' cannot have two null end points.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'InvalidRelation' cannot have two null end points.")]
     public void InitializeWithTwoNullRelationEndPointDefinitions ()
     {
       NullRelationEndPointDefinition nullEndPointDefinition = new NullRelationEndPointDefinition (_customerClass);

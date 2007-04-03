@@ -90,7 +90,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The provider 'Invalid' specified for the defaultSecurityProvider does not exist in the providers collection.")]
+        ExpectedMessage = "The provider 'Invalid' specified for the defaultSecurityProvider does not exist in the providers collection.")]
     public void Test_WithCustomSecurityProviderAndInvalidName ()
     {
       string xmlFragment = @"
@@ -106,7 +106,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'None' identifies a well known provider and cannot be reused for custom providers.")]
+    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "The name of the entry 'None' identifies a well known provider and cannot be reused for custom providers.")]
     public void Test_DuplicateWellKnownSecurityProviderForNullSecurityProvider ()
     {
       string xmlFragment = @"
@@ -120,7 +120,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), "The name of the entry 'SecurityManager' identifies a well known provider and cannot be reused for custom providers.")]
+    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "The name of the entry 'SecurityManager' identifies a well known provider and cannot be reused for custom providers.")]
     public void Test_DuplicateWellKnownSecurityProviderForSecurityManagerSecurityService ()
     {
       string xmlFragment = @"
@@ -135,7 +135,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The value for the property 'defaultSecurityProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+        ExpectedMessage = "The value for the property 'defaultSecurityProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomSecurityProviderNameEmpty ()
     {
       string xmlFragment = @"

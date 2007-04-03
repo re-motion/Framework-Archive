@@ -67,7 +67,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException), "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+    [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
         + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject' is null.")]
     public void TestWithParameterNull ()
     {
@@ -82,7 +82,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException), "The parameter 'SomeObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+    [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'SomeObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
         + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' does not implement"
         + " interface 'Rubicon.Security.ISecurableObject'.")]
     public void TestWithParameterNotImplementingISecurableObject ()
@@ -97,7 +97,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException), "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+    [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
         + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not derived from type"
         + " 'Rubicon.Security.Web.UnitTests.Domain.OtherSecurableObject'.")]
     public void TestWithParameterNotOfMatchingType ()
@@ -125,7 +125,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException),
-       "WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithoutParameters' has a WxeDemandTargetMethodPermissionAttribute"
+       ExpectedMessage = "WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithoutParameters' has a WxeDemandTargetMethodPermissionAttribute"
        + " applied, but does not define any parameters to supply the 'this-object'.")]
     public void TestWithFunctionWithoutParameters ()
     {
@@ -137,7 +137,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    [ExpectedException (typeof (WxeException), "The parameter 'Invalid' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+    [ExpectedException (typeof (WxeException), ExpectedMessage = "The parameter 'Invalid' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
         + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not a valid parameter"
         + " of this function.")]
     public void TestWithInvalidParameterName ()

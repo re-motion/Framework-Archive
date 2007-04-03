@@ -76,7 +76,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
-    [ExpectedException(typeof (ArgumentOutOfRangeException), "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
+    [ExpectedException(typeof (ArgumentOutOfRangeException), ExpectedMessage = "An event id of value 65536 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDGreaterThan0xFFFF ()
     {
       _logger.Repository.Threshold = Level.Info;
@@ -98,7 +98,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException), "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
+    [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage = "An event id of value -1 is not supported. Valid event ids must be within a range of 0 and 65535.\r\nParameter name: eventID")]
     public void Log_WithEventIDLessThanZero ()
     {
       _logger.Repository.Threshold = Level.Info;

@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Only StorageClass.Persistent is supported.\r\n  "
+        ExpectedMessage = "Only StorageClass.Persistent is supported.\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.PropertyWithStorageClass, "
         + "property: Transaction")]
     public void GetMetadata_WithStorageClassTransaction ()
@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Only StorageClass.Persistent is supported.\r\n  "
+        ExpectedMessage = "Only StorageClass.Persistent is supported.\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute, "
         + "property: None")]
     public void GetMetadata_WithStorageClassNone ()

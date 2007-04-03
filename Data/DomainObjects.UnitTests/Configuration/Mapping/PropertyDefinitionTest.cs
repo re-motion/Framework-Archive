@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Cannot access property 'StorageSpecificName' for non-persistent property definitions.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot access property 'StorageSpecificName' for non-persistent property definitions.")]
     public void NonPersistentProperty ()
     {
       PropertyDefinition actual = new PropertyDefinition ("ThePropertyName", "TheColumnName", "int32", true, true, NaInt32.Null, false);
@@ -88,7 +88,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
     public void IntPropertyWithMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", new NaInt32 (10));

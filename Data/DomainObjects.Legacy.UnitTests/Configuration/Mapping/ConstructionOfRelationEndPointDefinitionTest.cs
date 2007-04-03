@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Relation definition error: Property 'Name' of class 'Company' is of type 'System.String',"
+        ExpectedMessage = "Relation definition error: Property 'Name' of class 'Company' is of type 'System.String',"
             + " but non-virtual properties must be of type 'Rubicon.Data.DomainObjects.ObjectID'.")]
     public void PropertyOfWrongType ()
     {
@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Relation definition error for end point: Class 'Company' has no property 'UndefinedProperty'.")]
+        ExpectedMessage = "Relation definition error for end point: Class 'Company' has no property 'UndefinedProperty'.")]
     public void UndefinedProperty ()
     {
       ClassDefinition companyDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];

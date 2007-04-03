@@ -317,7 +317,7 @@ namespace Rubicon.Core.UnitTests.Logging
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "LogLevel does not support value 10000.\r\nParameter name: logLevel")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "LogLevel does not support value 10000.\r\nParameter name: logLevel")]
     public void Test_ConvertInvalid ()
     {
       Log4NetTraceListener.Convert ((TraceEventType) 10000);

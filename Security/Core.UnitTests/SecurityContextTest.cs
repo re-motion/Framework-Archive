@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
+       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
         + "Valid abstract roles must have the Rubicon.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
@@ -54,7 +54,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
+       ExpectedMessage = "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
         + "Valid security states must have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {

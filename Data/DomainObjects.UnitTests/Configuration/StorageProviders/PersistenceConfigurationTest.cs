@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), "Collection is read-only.")]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Collection is read-only.")]
     public void Initialize_WithProviderCollectionAndProvider_Expect()
     {
       StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition ("ProviderDefinition", typeof (SqlProvider), "ConnectionString");
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection.")]
+        ExpectedMessage = "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection.")]
     public void Test_WithRdbmsProviderDefinitionAndInvalidName()
     {
       string xmlFragment =

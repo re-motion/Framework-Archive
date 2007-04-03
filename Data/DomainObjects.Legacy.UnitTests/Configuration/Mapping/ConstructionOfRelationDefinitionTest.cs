@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // methods and properties
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' cannot have two virtual end points.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two virtual end points.")]
     public void TwoVirtualRelationEndPointDefinitions ()
     {
       ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]
     public void TwoRelationEndPointDefinitions ()
     {
       ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));

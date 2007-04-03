@@ -172,7 +172,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
     public void AllowAccess_InvalidAccessType ()
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
@@ -216,7 +216,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
     public void AttachAccessType_ExistingAccessType ()
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);

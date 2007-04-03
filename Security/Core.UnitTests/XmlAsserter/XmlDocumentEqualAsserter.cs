@@ -23,9 +23,9 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
     {
       if (expectedParentNode.ChildNodes.Count != actualParentNode.ChildNodes.Count)
       {
-        FailureMessage.AddLine ("Child node lengths differ:");
-        FailureMessage.AddExpectedLine (expectedParentNode.ChildNodes.Count.ToString ());
-        FailureMessage.AddActualLine (actualParentNode.ChildNodes.Count.ToString ());
+        FailureMessage.WriteLine ("Child node lengths differ:");
+        FailureMessage.WriteExpectedLine (expectedParentNode.ChildNodes.Count.ToString ());
+        FailureMessage.WriteActualLine (actualParentNode.ChildNodes.Count.ToString ());
         SetFailureMessage (expectedParentNode, actualParentNode);
 
         return false;
@@ -38,7 +38,7 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
 
         if (!AreNodesEqual (expectedNode, actualNode))
         {
-          FailureMessage.AddLine ("Nodes differ:");
+          FailureMessage.WriteLine ("Nodes differ:");
           SetFailureMessage (expectedNode, actualNode);
           return false;
         }
@@ -90,8 +90,8 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
 
     protected void SetFailureMessage (XmlNode expectedNode, XmlNode actualNode)
     {
-      ShowNodeStack (expectedNode, FailureMessage.AddExpectedLine);
-      ShowNodeStack (actualNode, FailureMessage.AddActualLine);
+      ShowNodeStack (expectedNode, FailureMessage.WriteExpectedLine);
+      ShowNodeStack (actualNode, FailureMessage.WriteActualLine);
     }
   }
 }

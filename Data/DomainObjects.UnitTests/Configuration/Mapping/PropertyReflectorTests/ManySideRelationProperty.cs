@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
         + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ManySideRelationProperty, "
         + "property: Int32Property")]

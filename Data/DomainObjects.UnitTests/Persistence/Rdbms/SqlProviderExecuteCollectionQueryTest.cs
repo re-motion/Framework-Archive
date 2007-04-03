@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query")]
     public void ScalarQuery ()
     {
       Provider.ExecuteCollectionQuery (new Query ("OrderNoSumByCustomerNameQuery"));

@@ -346,7 +346,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     [Test]
     [ExpectedException (typeof (MandatoryRelationNotSetException),
-        "Mandatory relation property 'Order' of domain object"
+        ExpectedMessage = "Mandatory relation property 'Order' of domain object"
         + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null.")]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {
@@ -371,7 +371,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     [Test]
     [ExpectedException (typeof (MandatoryRelationNotSetException),
-       "Mandatory relation property 'Companies' of domain object"
+       ExpectedMessage = "Mandatory relation property 'Companies' of domain object"
        + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
     public void CommitWithMandatoryOneToManyRelationNotSet ()
     {

@@ -62,7 +62,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot initialize list edit mode: The BocList 'BocList' does not have a Value.")]
+      ExpectedMessage = "Cannot initialize list edit mode: The BocList 'BocList' does not have a Value.")]
   public void SwitchListIntoEditModeWithValueNull ()
   {
     Invoker.InitRecursive();

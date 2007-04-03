@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (PersistenceException),
-        "The property 'Owner' of the loaded DataContainer 'HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid'"
+        ExpectedMessage = "The property 'Owner' of the loaded DataContainer 'HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid'"
         + " refers to ClassID 'OrganizationalUnit', but the actual ClassID is 'Person'.")]
     public void SameIDInDifferentConcreteTables ()
     {

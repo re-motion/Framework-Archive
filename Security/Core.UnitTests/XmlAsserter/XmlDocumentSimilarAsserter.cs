@@ -42,9 +42,9 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
       XmlNodeList nodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
       if (nodes.Count == 0)
       {
-        FailureMessage.AddLine (xPathExpression + " Evaluation failed.");
-        FailureMessage.AddLine ("Node missing in actual document:");
-        ShowNodeStack (node, FailureMessage.AddExpectedLine);
+        FailureMessage.WriteLine (xPathExpression + " Evaluation failed.");
+        FailureMessage.WriteLine ("Node missing in actual document:");
+        ShowNodeStack (node, FailureMessage.WriteExpectedLine);
 
         if (node.ParentNode != null)
         {
@@ -52,7 +52,7 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
           xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (parentNodeStack);
           XmlNodeList actualNodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
           if (actualNodes.Count > 0)
-            ShowNodeStack (actualNodes[0], FailureMessage.AddActualLine);
+            ShowNodeStack (actualNodes[0], FailureMessage.WriteActualLine);
         }
         return false;
       }

@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        "Collations cannot be used in sort expressions. Sort expression: 'Column1 collate German_PhoneBook_CI_AI'.\r\nParameter name: sortExpression")]
+        ExpectedMessage = "Collations cannot be used in sort expressions. Sort expression: 'Column1 collate German_PhoneBook_CI_AI'.\r\nParameter name: sortExpression")]
     public void GetColumnsWithCollate ()
     {
       Provider.GetColumnsFromSortExpression ("Column1 collate German_PhoneBook_CI_AI");
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Collations cannot be used in sort expressions. Sort expression: 'Column1\t\tcollate German_PhoneBook_CI_AI'.\r\nParameter name: sortExpression")]
+        ExpectedMessage = "Collations cannot be used in sort expressions. Sort expression: 'Column1\t\tcollate German_PhoneBook_CI_AI'.\r\nParameter name: sortExpression")]
     public void GetColumnsWithCollateAfterMultipleTabs ()
     {
       Provider.GetColumnsFromSortExpression ("Column1\t\tcollate German_PhoneBook_CI_AI");

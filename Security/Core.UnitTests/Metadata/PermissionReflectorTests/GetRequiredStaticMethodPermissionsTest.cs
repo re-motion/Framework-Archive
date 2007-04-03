@@ -75,7 +75,7 @@ namespace Rubicon.Security.UnitTests.Metadata.PermissionReflectorTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The member 'Sve' could not be found.\r\nParameter name: memberName")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The member 'Sve' could not be found.\r\nParameter name: memberName")]
     public void Test_NotExistingMethod ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "Sve");

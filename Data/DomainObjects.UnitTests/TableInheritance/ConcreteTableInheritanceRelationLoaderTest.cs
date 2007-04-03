@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "Invalid ClassID 'InvalidClassID' for ID '1b5ba13a-f6ad-4390-87bb-d85a1c098d1c' encountered.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "Invalid ClassID 'InvalidClassID' for ID '1b5ba13a-f6ad-4390-87bb-d85a1c098d1c' encountered.")]
     public void LoadDataContainerWithInvalidClassID ()
     {
       ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (

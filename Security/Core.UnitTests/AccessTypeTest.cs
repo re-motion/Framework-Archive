@@ -33,7 +33,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     [Ignore]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
+        ExpectedMessage = "Enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {

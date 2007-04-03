@@ -59,7 +59,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The state 'Payment' is missing in the security context.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The state 'Payment' is missing in the security context.")]
     public void Fail_WithSecurityContextDoesNotContainAllStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
@@ -72,7 +72,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        "The state 'None' is not defined for the property 'State' of the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' or its base classes.")]
+        ExpectedMessage = "The state 'None' is not defined for the property 'State' of the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' or its base classes.")]
     public void Fail_WithSecurityContextContainsStateWithInvalidValue ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
@@ -87,7 +87,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        "The ACL for the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
+        ExpectedMessage = "The ACL for the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
     public void Fail_WithSecurityContextContainsInvalidState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
@@ -149,7 +149,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The state 'Delivery' is missing in the security context.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The state 'Delivery' is missing in the security context.")]
     public void Fail_WithDerivedClassDefinitionAndMissingStatePropertyInSecurityContext ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();

@@ -86,7 +86,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection.")]
+        ExpectedMessage = "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection.")]
     public void GetProvider_WithInvalidProviderName()
     {
       string xmlFragment = @"
@@ -103,7 +103,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The name of the entry 'WellKnown' identifies a well known provider and cannot be reused for custom providers.")]
+        ExpectedMessage = "The name of the entry 'WellKnown' identifies a well known provider and cannot be reused for custom providers.")]
     public void PostDeserialize_DuplicateWellKnownProvider ()
     {
       string xmlFragment = @"
@@ -129,7 +129,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), 
-        "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application.")]
+        ExpectedMessage = "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application.")]
     public void GetType_WithInvalidAssemblyName ()
     {
       _providerHelper.GetType (

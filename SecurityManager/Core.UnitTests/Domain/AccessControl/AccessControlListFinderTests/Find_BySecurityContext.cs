@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        "The securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.PremiumOrder, Rubicon.SecurityManager.UnitTests' cannot be found.")]
+        ExpectedMessage = "The securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.PremiumOrder, Rubicon.SecurityManager.UnitTests' cannot be found.")]
     public void Fail_WithUnkownSecurableClassDefinition ()
     {
       SecurityContext context = new SecurityContext (typeof (PremiumOrder));

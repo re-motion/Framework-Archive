@@ -285,7 +285,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableStringToNull ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", true, false, new NaInt32 (10));
@@ -323,7 +323,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaConstructor ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
@@ -331,7 +331,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaProperty ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
@@ -340,7 +340,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ValueTooLongException), "Value for property 'test' is too large. Maximum size: 1000000.")]
+    [ExpectedException (typeof (ValueTooLongException), ExpectedMessage = "Value for property 'test' is too large. Maximum size: 1000000.")]
     public void SetBinaryLargerThanMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true, true, 1000000);
@@ -349,7 +349,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The relation property 'test' cannot be set directly.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The relation property 'test' cannot be set directly.")]
     public void SetRelationPropertyDirectly ()
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", TypeInfo.ObjectIDMappingTypeName, true);

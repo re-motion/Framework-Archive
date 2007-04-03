@@ -28,7 +28,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), "Multiple custom attributes of the same type found.")]
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithAttribute_ExpectAmbigousMatch()
     {
       AttributeUtility.GetCustomAttribute<MultipleAttribute> (_derivedPropertyWithMultipleAttribute, true);
@@ -42,14 +42,14 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), "Multiple custom attributes of the same type found.")]
+    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Multiple custom attributes of the same type found.")]
     public void Test_FromOverrideWithInterface_ExpectAmbigousMatch()
     {
       AttributeUtility.GetCustomAttribute<ICustomAttribute> (_derivedPropertyWithMultipleAttribute, true);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The type parameter must be assignable to System.Attribute or an interface.\r\nParameter name: T")
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type parameter must be assignable to System.Attribute or an interface.\r\nParameter name: T")
     ]
     public void Test_FromBaseWithInvalidType()
     {

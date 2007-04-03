@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [ExpectedException (typeof (QueryConfigurationException), "QueryDefinition 'UnknownQuery' does not exist.")]
+    [ExpectedException (typeof (QueryConfigurationException), ExpectedMessage = "QueryDefinition 'UnknownQuery' does not exist.")]
     public void UnknownQueryDefinitionInQueryConfiguration ()
     {
       QueryDefinition unknownQueryDefinition = new QueryDefinition ("UnknownQuery", "TestDomain", "select 42", QueryType.Scalar);

@@ -418,7 +418,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     [Test]
     [ExpectedException (typeof (ImportException),
-       "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found.")]
+       ExpectedMessage = "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found.")]
     public void Import_MissingBaseClass ()
     {
       string metadataXml = @"
@@ -437,7 +437,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     [Test]
     [ExpectedException (typeof (ImportException),
-       "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
+       ExpectedMessage = "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
     public void Import_MissingStateProperty ()
     {
       string metadataXml = @"
@@ -467,7 +467,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     [Test]
     [ExpectedException (typeof (ImportException),
-        "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
+        ExpectedMessage = "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
     public void Import_MissingAccessType ()
     {
       string metadataXml = @"

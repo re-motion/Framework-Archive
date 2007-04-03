@@ -61,7 +61,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+        ExpectedMessage = "The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod");
@@ -74,7 +74,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+        ExpectedMessage = "The member 'StaticMethod' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void Test_WithoutRequiredPermissionsAndWithinSecurityFreeSection_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod");
@@ -89,7 +89,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", (Enum[]) null);
@@ -101,7 +101,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IPermissionProvider.GetRequiredStaticMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
       _testHelper.ExpectPermissionReflectorGetRequiredStaticMethodPermissions ("StaticMethod", (Enum[]) null);

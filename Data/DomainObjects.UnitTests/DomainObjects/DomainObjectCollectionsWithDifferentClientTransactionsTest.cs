@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "The object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' is already part of this collection.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' is already part of this collection.")]
     public void ReplaceObjectWithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Cannot add object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' already part of this collection.\r\nParameter name: domainObject")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot add object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' already part of this collection.\r\nParameter name: domainObject")]
     public void AddSameObjectWithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);
@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Cannot insert object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' already part of this collection.\r\nParameter name: domainObject")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot insert object 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid' already part of this collection.\r\nParameter name: domainObject")]
     public void InsertSameObjectWithDifferentClientTransaction ()
     {
       _secondCollection.Add (_secondCustomer1);

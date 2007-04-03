@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition")]
+        ExpectedMessage = "QueryDefinition 'OrderQuery' already exists in collection.\r\nParameter name: queryDefinition")]
     public void DuplicateQueryIDs ()
     {
       _collection.Add (_definition);
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     [Test]
     [ExpectedException (typeof (QueryConfigurationException),
-        "QueryDefinition 'OrderQuery' does not exist.")]
+        ExpectedMessage = "QueryDefinition 'OrderQuery' does not exist.")]
     public void GetMandatoryForNonExisting ()
     {
       _collection.GetMandatory ("OrderQuery");

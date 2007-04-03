@@ -100,7 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException), 
-        "Class 'Customer' must not specify an entity name 'DifferentEntityNameThanBaseClass'"
+        ExpectedMessage = "Class 'Customer' must not specify an entity name 'DifferentEntityNameThanBaseClass'"
         + " which is different from inherited entity name 'TableInheritance_Person'.")]
     public void ValidateWithDifferentEntityNames ()
     {
@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Validate cannot be invoked, because class 'Person' is a base class of a class in the collection,"
+        ExpectedMessage = "Validate cannot be invoked, because class 'Person' is a base class of a class in the collection,"
         + " but the base class is not part of the collection itself.")]
     public void ValidateWithBaseClassNotInCollection ()
     {
@@ -130,7 +130,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Validate cannot be invoked, because class 'Customer' is a derived class of 'Person', but is not part of the collection itself.")]
+        ExpectedMessage = "Validate cannot be invoked, because class 'Customer' is a derived class of 'Person', but is not part of the collection itself.")]
     public void ValidateWithDerivedClassNotInCollection ()
     {
       ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define column name 'NameColumn',"
+        ExpectedMessage = "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define column name 'NameColumn',"
         + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same column name.")]
     public void ValidateWithSameColumnNameInDifferentInheritanceBranches ()
     {
@@ -193,7 +193,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException), 
-        "At least two classes in different inheritance branches derived from abstract class 'DomainBase'"
+        ExpectedMessage = "At least two classes in different inheritance branches derived from abstract class 'DomainBase'"
         + " specify the same entity name 'TableInheritance_Person', which is not allowed.")]
     public void ValidateWithSameEntityNamesInDifferentInheritanceBranches ()
     {

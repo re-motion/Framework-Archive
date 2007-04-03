@@ -36,7 +36,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-         "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
+         ExpectedMessage = "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
     public void GetAndRemoveNonEmptyStringAttribute_WithMissingAttributeAndRequired ()
     {
       StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
@@ -47,7 +47,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-         "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
+         ExpectedMessage = "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
     public void GetAndRemoveNonEmptyStringAttribute_WithEmptyAttributeAndRequired ()
     {
       StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());
@@ -76,7 +76,7 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-         "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
+         ExpectedMessage = "The attribute 'Name' is missing in the configuration of the 'Provider' provider.")]
     public void GetAndRemoveNonEmptyStringAttribute_WithEmptyAttributeAndNotRequired ()
     {
       StubExtendedProvider provider = new StubExtendedProvider ("Provider", new NameValueCollection ());

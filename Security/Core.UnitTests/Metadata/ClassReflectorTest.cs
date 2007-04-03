@@ -127,7 +127,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Value types are not supported.\r\nParameter name: type")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Value types are not supported.\r\nParameter name: type")]
     public void GetMetadataWithInvalidValueType ()
     {
       new ClassReflector ().GetMetadata (typeof (TestValueType), _cache);

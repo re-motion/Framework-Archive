@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "Error while executing SQL command.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "Error while executing SQL command.")]
     public void LoadDataContainerWithInvalidIDType ()
     {
       ObjectID id = new ObjectID ("ClassWithKeyOfInvalidType", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "Error while executing SQL command.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "Error while executing SQL command.")]
     public void LoadDataContainerWithoutIDColumn ()
     {
       ObjectID id = new ObjectID ("ClassWithoutIDColumn", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'ClassID' could not be found.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "The mandatory column 'ClassID' could not be found.")]
     public void LoadDataContainerWithoutClassIDColumn ()
     {
       ObjectID id = new ObjectID ("ClassWithoutClassIDColumn", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'Timestamp' could not be found.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "The mandatory column 'Timestamp' could not be found.")]
     public void LoadDataContainerWithoutTimestampColumn ()
     {
       ObjectID id = new ObjectID ("ClassWithoutTimestampColumn", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
@@ -87,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf' encountered.")]
+        ExpectedMessage = "Invalid ClassID 'NonExistingClassID' for ID 'c9f16f93-cf42-4357-b87b-7493882aaeaf' encountered.")]
     public void LoadDataContainerWithNonExistingClassID ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'OrderNo' could not be found.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "The mandatory column 'OrderNo' could not be found.")]
     public void LoadDataContainerWithClassIDFromOtherClass ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
@@ -174,7 +174,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Error while reading property 'Distributor' of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
+        ExpectedMessage = "Error while reading property 'Distributor' of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumn' must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumn ()
@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-       "Error while reading property 'Company' of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
+       ExpectedMessage = "Error while reading property 'Company' of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumnAndDerivation' must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
@@ -199,7 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
+        ExpectedMessage = "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
     public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
     {
       ObjectID invalidID = new ObjectID (DomainObjectIDs.Official1.ClassID, (int) DomainObjectIDs.Official1.Value);
@@ -209,7 +209,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-       "Error while reading property 'ClassWithGuidKey' of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
+       ExpectedMessage = "Error while reading property 'ClassWithGuidKey' of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithRelatedClassIDColumnAndNoInheritance' must not contain column 'TableWithGuidKeyIDClassID',"
         + " because opposite class 'ClassWithGuidKey' is not part of an inheritance hierarchy.")]

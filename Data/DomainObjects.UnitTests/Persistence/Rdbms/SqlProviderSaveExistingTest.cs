@@ -299,7 +299,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (ConcurrencyViolationException),
-        "Concurrency violation encountered. Object"
+        ExpectedMessage = "Concurrency violation encountered. Object"
         + " 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
         + " has already been changed by someone else.")]
     public void ConcurrentSave ()
@@ -545,7 +545,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Commit cannot be called without calling BeginTransaction first.")]
+        ExpectedMessage = "Commit cannot be called without calling BeginTransaction first.")]
     public void CommitWithoutBeginTransaction ()
     {
       using (Provider)
@@ -588,7 +588,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Rollback cannot be called without calling BeginTransaction first.")]
+        ExpectedMessage = "Rollback cannot be called without calling BeginTransaction first.")]
     public void RollbackWithoutBeginTransaction ()
     {
       using (Provider)
@@ -738,7 +738,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
-        "Cannot call BeginTransaction when a transaction is already in progress.")]
+        ExpectedMessage = "Cannot call BeginTransaction when a transaction is already in progress.")]
     public void CallBeginTransactionTwice ()
     {
       using (Provider)

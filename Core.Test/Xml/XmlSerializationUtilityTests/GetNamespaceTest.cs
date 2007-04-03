@@ -20,7 +20,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Cannot determine the xml namespace of type 'SampleType' because neither an "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because neither an "
         + "XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type")]
     public void Test_WithXmlTypeAttributeWithoutNamespace()
     {
@@ -36,7 +36,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Cannot determine the xml namespace of type 'SampleType' because neither an "
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because neither an "
         + "XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.\r\nParameter name: type")]
     public void Test_WithXmlRootAttributeWithoutNamespace()
     {
@@ -55,7 +55,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "Cannot determine the xml namespace of type 'SampleType' because no neither an XmlTypeAttribute"
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot determine the xml namespace of type 'SampleType' because no neither an XmlTypeAttribute"
         + " nor an XmlRootAttribute has been provided.\r\nParameter name: type")]
     public void Test_WithoutXmlRootAttributeAndWithoutXmlTypeAttribute()
     {

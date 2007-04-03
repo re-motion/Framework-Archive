@@ -195,7 +195,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.")]
     public void HasAccess_WithGlobalCacheProviderReturningNull()
     {
       SetupResult.For (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))
@@ -208,7 +208,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.")]
     public void HasAccess_WithSecurityContextFactoryReturningNull()
     {
       SetupResult.For (_mockLocalAccessTypeCache.GetOrCreateValue (null, null))

@@ -77,7 +77,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-         "The provider 'Invalid' specified for the defaultUserProvider does not exist in the providers collection.")]
+         ExpectedMessage = "The provider 'Invalid' specified for the defaultUserProvider does not exist in the providers collection.")]
     public void Test_WithCustomUserProviderAndInvalidName ()
     {
       string xmlFragment = @"
@@ -94,7 +94,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), 
-        "The name of the entry 'Thread' identifies a well known provider and cannot be reused for custom providers.")]
+        ExpectedMessage = "The name of the entry 'Thread' identifies a well known provider and cannot be reused for custom providers.")]
     public void Test_DuplicateWellKnownUserProviderForThreadUserProvider ()
     {
       string xmlFragment = @"
@@ -109,7 +109,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException), 
-        "The name of the entry 'HttpContext' identifies a well known provider and cannot be reused for custom providers.")]
+        ExpectedMessage = "The name of the entry 'HttpContext' identifies a well known provider and cannot be reused for custom providers.")]
     public void Test_DuplicateWellKnownUserProviderForHttpContextUserProvider ()
     {
       string xmlFragment = @"
@@ -124,7 +124,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
-        "The value for the property 'defaultUserProvider' is not valid. The error is: The string must be at least 1 characters long.")]
+        ExpectedMessage = "The value for the property 'defaultUserProvider' is not valid. The error is: The string must be at least 1 characters long.")]
     public void Test_WithCustomUserProviderNameEmpty ()
     {
       string xmlFragment = @"

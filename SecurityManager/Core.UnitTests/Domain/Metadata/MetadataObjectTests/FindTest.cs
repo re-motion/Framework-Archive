@@ -64,7 +64,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The metadata ID 'Hello|42' is invalid.\r\nParameter name: metadataID")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The metadata ID 'Hello|42' is invalid.\r\nParameter name: metadataID")]
     public void Find_InvalidMetadataItemID ()
     {
       string metadataObjectID = "Hello|42";
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.\r\nParameter name: metadataID")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The metadata ID '9e689c4c-3758-436e-ac86-23171289fa5e|Hello' is invalid.\r\nParameter name: metadataID")]
     public void Find_InvalidStateValue ()
     {
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|Hello";

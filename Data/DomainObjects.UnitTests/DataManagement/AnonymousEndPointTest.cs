@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The provided relation definition must contain a NullRelationEndPointDefinition.\r\nParameter name: relationDefinition")]
+        ExpectedMessage = "The provided relation definition must contain a NullRelationEndPointDefinition.\r\nParameter name: relationDefinition")]
     public void InitializeWithInvalidRelationDefinition ()
     {
       RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("OrderToOrderTicket");

@@ -291,7 +291,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Cannot add object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+        ExpectedMessage = "Cannot add object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
         + " already part of this collection.\r\nParameter name: domainObject")]
     public void AddObjectAlreadyInCollection ()
     {
@@ -301,7 +301,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Cannot insert object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
+        ExpectedMessage = "Cannot insert object 'Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid'"
         + " already part of this collection.\r\nParameter name: domainObject")]
     public void InsertObjectAlreadyInCollection ()
     {

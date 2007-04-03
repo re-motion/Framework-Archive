@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (DataManagementException), "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
+    [ExpectedException (typeof (DataManagementException), ExpectedMessage = "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
     public void RemoveFromOppositeDomainObjects ()
     {
       CollectionEndPoint collectionEndPoint = new CollectionEndPoint (
@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (DataManagementException), "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
+    [ExpectedException (typeof (DataManagementException), ExpectedMessage = "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
     public void AddToOppositeDomainObjects ()
     {
       Order newOrder = Order.GetObject (DomainObjectIDs.Order2);

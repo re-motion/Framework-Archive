@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Property 'NonExistingPropertyName' does not exist.\r\nParameter name: propertyName")]
+        ExpectedMessage = "Property 'NonExistingPropertyName' does not exist.\r\nParameter name: propertyName")]
     public void GetObjectIDForNonExistingProperty ()
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
