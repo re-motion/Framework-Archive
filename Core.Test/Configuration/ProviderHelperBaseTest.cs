@@ -174,14 +174,14 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Type name must be specified for this provider.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Type name must be specified for this provider.")]
     public void InstantiateProvider_WithMissingTypeName ()
     {
       _providerHelper.InstantiateProvider (new ProviderSettings (), typeof (FakeProviderBase));
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
     public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeOtherProvider");
@@ -189,7 +189,7 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Core.UnitTests.Configuration.IFakeProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Rubicon.Core.UnitTests.Configuration.IFakeProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProviderBase");

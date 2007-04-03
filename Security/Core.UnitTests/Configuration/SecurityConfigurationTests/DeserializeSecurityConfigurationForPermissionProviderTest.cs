@@ -135,7 +135,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
+        ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.Metadata.IPermissionProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface()
     {
       string xmlFragment =

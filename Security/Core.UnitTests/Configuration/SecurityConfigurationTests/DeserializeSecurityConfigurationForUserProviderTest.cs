@@ -156,7 +156,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), "Provider must implement the interface 'Rubicon.Security.IUserProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.IUserProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       string xmlFragment =

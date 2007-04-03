@@ -168,7 +168,7 @@ namespace Rubicon.Security.UnitTests.Configuration.SecurityConfigurationTests
 
     [Test]
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
-        "Provider must implement the interface 'Rubicon.Security.IGlobalAccessTypeCacheProvider'.")]
+        ExpectedMessage = "Provider must implement the interface 'Rubicon.Security.IGlobalAccessTypeCacheProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface()
     {
       string xmlFragment =

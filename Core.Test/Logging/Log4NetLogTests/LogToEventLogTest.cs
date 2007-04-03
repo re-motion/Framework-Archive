@@ -72,7 +72,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
       EventLogEntry eventLogEntry = _testEventLog.Entries[0];
       Assert.AreEqual (EventLogEntryType.Information, eventLogEntry.EntryType);
       Assert.AreEqual ("The message.\r\n\r\n", eventLogEntry.Message);
-      Assert.AreEqual (1, eventLogEntry.EventID);
+      Assert.AreEqual (1, eventLogEntry.InstanceId);
     }
 
     [Test]
@@ -91,7 +91,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
         EventLogEntry eventLogEntry = _testEventLog.Entries[0];
         Assert.AreEqual (EventLogEntryType.Error, eventLogEntry.EntryType);
         Assert.AreEqual ("Failure during logging of message:\r\nThe message.\r\nEvent ID: 65536\r\n\r\n", eventLogEntry.Message);
-        Assert.AreEqual (0xFFFF, eventLogEntry.EventID);
+        Assert.AreEqual (0xFFFF, eventLogEntry.InstanceId);
 
         throw;
       }
@@ -113,7 +113,7 @@ namespace Rubicon.Core.UnitTests.Logging.Log4NetLogTests
         EventLogEntry eventLogEntry = _testEventLog.Entries[0];
         Assert.AreEqual (EventLogEntryType.Error, eventLogEntry.EntryType);
         Assert.AreEqual ("Failure during logging of message:\r\nThe message.\r\nEvent ID: -1\r\n\r\n", eventLogEntry.Message);
-        Assert.AreEqual (0x0, eventLogEntry.EventID);
+        Assert.AreEqual (0x0, eventLogEntry.InstanceId);
 
         throw;
       }

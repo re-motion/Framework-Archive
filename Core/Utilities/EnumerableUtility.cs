@@ -5,7 +5,7 @@ using System.Text;
 namespace Rubicon.Utilities
 {
   /// <summary>
-  /// Provides helper functions for <see cref="IEnumerable<T>"/> objects.
+  /// Provides helper functions for <see cref="IEnumerable{T}"/> objects.
   /// </summary>
   /// <remarks>
   /// Most of these methods will become obsolete with C# 3.0/LINQ.

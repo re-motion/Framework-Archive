@@ -7,7 +7,7 @@ namespace Rubicon.Collections
   /// This class implements a cache that does not actually cache anything.
   /// </summary>
   /// <remarks>
-  /// Use NullCache objects if some code expects an <see cref="ICache<TKey,TValue>"/> interface, but you don't actually want to use caching.
+  /// Use NullCache objects if some code expects an <see cref="ICache{TKey,TValue}"/> interface, but you don't actually want to use caching.
   /// </remarks>
   public class NullCache<TKey, TValue> : ICache<TKey, TValue>
   {
