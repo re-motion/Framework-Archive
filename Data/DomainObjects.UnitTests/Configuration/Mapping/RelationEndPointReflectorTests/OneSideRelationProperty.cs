@@ -90,6 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.AreSame (typeof (ObjectList<ClassWithManySideRelationProperties>), relationEndPointDefiniton.PropertyType);
       Assert.AreEqual (CardinalityType.Many, relationEndPointDefiniton.Cardinality);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+      Assert.AreEqual ("The Sort Expression", relationEndPointDefiniton.SortExpression);
     }
 
     [Test]

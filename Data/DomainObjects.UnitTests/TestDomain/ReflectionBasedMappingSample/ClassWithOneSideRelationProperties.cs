@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     public abstract ClassWithManySideRelationProperties BidirectionalOneToOne { get; set; }
 
     [AutomaticProperty]
-    [DBBidirectionalRelation ("BidirectionalOneToMany")]
+    [DBBidirectionalRelation ("BidirectionalOneToMany", SortExpression = "The Sort Expression")]
     public abstract ObjectList<ClassWithManySideRelationProperties> BidirectionalOneToMany { get; }
   }
 }

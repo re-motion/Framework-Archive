@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("Type", value); }
     }
 
-    [DBBidirectionalRelation ("Customer")]
+    [DBBidirectionalRelation ("Customer", SortExpression = "OrderNo asc")]
     public OrderCollection Orders
     {
       get { return (OrderCollection) GetRelatedObjects ("Orders"); }

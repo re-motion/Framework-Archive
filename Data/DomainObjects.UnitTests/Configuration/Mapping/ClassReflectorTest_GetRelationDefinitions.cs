@@ -231,11 +231,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
               false),
-          CreateVirtualRelationEndPointDefinition (
+          CreateVirtualRelationEndPointDefinitionForOneSide (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.NoAttribute",
               false,
-              CardinalityType.Many,
-              typeof (ObjectList<ClassWithManySideRelationProperties>)));
+              null));
     }
 
     private RelationDefinition CreateNotNullableRelationDefinition()
@@ -245,11 +244,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
               true),
-          CreateVirtualRelationEndPointDefinition (
+          CreateVirtualRelationEndPointDefinitionForOneSide (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.NotNullable",
               true,
-              CardinalityType.Many,
-              typeof (ObjectList<ClassWithManySideRelationProperties>)));
+              null));
     }
 
     private RelationDefinition CreateUnidirectionalOneToOneRelationDefinition()
@@ -279,11 +277,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
               false),
-          CreateVirtualRelationEndPointDefinition (
+          CreateVirtualRelationEndPointDefinitionForManySide (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToOne",
-              false,
-              CardinalityType.One,
-              typeof (ClassWithManySideRelationProperties)));
+              false));
     }
 
     private RelationDefinition CreateBidirectionalOneToManyRelationDefinition()
@@ -293,11 +289,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToMany",
               false),
-          CreateVirtualRelationEndPointDefinition (
+          CreateVirtualRelationEndPointDefinitionForOneSide (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToMany",
               false,
-              CardinalityType.Many,
-              typeof (ObjectList<ClassWithManySideRelationProperties>)));
+              "The Sort Expression"));
     }
 
     private RelationEndPointDefinition CreateRelationEndPointDefinition (string propertyName, bool isMandatory)
@@ -305,11 +300,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return new RelationEndPointDefinition (_classWithManySideRelationPropertiesClassDefinition, propertyName, isMandatory);
     }
 
-    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (
-        string propertyName, bool isMandatory, CardinalityType cardinality, Type propertyType)
+    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinitionForManySide (string propertyName, bool isMandatory)
     {
       return new VirtualRelationEndPointDefinition (
-          _classWithOneSideRelationPropertiesClassDefinition, propertyName, isMandatory, cardinality, propertyType);
+          _classWithOneSideRelationPropertiesClassDefinition,
+          propertyName,
+          isMandatory,
+          CardinalityType.One,
+          typeof (ClassWithManySideRelationProperties));
+    }
+
+    private VirtualRelationEndPointDefinition CreateVirtualRelationEndPointDefinitionForOneSide (
+        string propertyName, bool isMandatory, string sortExpression)
+    {
+      return new VirtualRelationEndPointDefinition (
+          _classWithOneSideRelationPropertiesClassDefinition,
+          propertyName,
+          isMandatory,
+          CardinalityType.Many,
+          typeof (ObjectList<ClassWithManySideRelationProperties>),
+          sortExpression);
     }
 
     private NullRelationEndPointDefinition CreateNullRelationEndPointDefinition()

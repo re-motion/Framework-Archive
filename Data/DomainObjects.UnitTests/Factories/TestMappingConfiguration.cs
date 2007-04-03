@@ -558,14 +558,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return relationDefinitions;
     }
 
-    //TODO: reset sort expression
     private RelationDefinition CreateCustomerToOrderRelationDefinition ()
     {
       ClassDefinition customer = _classDefinitions[typeof (Customer)];
 
       VirtualRelationEndPointDefinition endPoint1 = new VirtualRelationEndPointDefinition (
-          customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection));
-//          customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
+          customer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNo asc");
 
       ClassDefinition orderClass = _classDefinitions[typeof (Order)];
 

@@ -56,7 +56,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetPropertyName(),
           !IsNullable(),
           GetCardinality(),
-          PropertyInfo.PropertyType);
+          PropertyInfo.PropertyType,
+          GetSortExpression());
     }
 
     private CardinalityType GetCardinality()
@@ -69,6 +70,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
       return typeof (DomainObjectCollection).IsAssignableFrom (propertyInfo.PropertyType);
+    }
+
+    protected virtual string GetSortExpression ()
+    {
+      return null;
     }
   }
 }
