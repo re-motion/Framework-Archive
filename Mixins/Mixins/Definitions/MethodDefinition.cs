@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Mixins.Definitions
 {
-  public class MethodDefinition : MemberDefinition
+  public class MethodDefinition : MemberDefinition, IVisitableDefinition
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker ();
 
@@ -35,6 +35,11 @@ namespace Mixins.Definitions
     private bool IsSignatureCompatibleWithMethod (MethodDefinition overrider)
     {
       return s_signatureChecker.SignatureMatch (MethodInfo, overrider.MethodInfo);
+    }
+
+    public override void Accept (IDefinitionVisitor visitor)
+    {
+      visitor.Visit (this);
     }
   }
 }

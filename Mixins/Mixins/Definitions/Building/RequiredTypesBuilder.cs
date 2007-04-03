@@ -5,15 +5,21 @@ using System.Collections.Generic;
 
 namespace Mixins.Definitions.Building
 {
-  public class RequiredTypesBuilder
+  public class RequiredTypesBuilder<TValue>
+      where TValue : IVisitableDefinition
   {
-    private DefinitionItemCollection<Type, Type> _requiredTypes;
+    private DefinitionItemCollection<Type, TValue> _requiredTypes;
     private Type _filterAttribute;
-    private ClassDefinition _baseClass;
+    private BaseClassDefinition _baseClass;
+    private ValueCreator _valueCreator;
 
-    public RequiredTypesBuilder(ClassDefinition baseClass, DefinitionItemCollection<Type, Type> requiredTypeCollection, Type filterAttribute)
+    public delegate TValue ValueCreator (BaseClassDefinition baseClass, Type requiredType);
+
+    public RequiredTypesBuilder (BaseClassDefinition baseClass, DefinitionItemCollection<Type, TValue> requiredTypeCollection, Type filterAttribute,
+        ValueCreator valueCreator)
     {
       _baseClass = baseClass;
+      _valueCreator = valueCreator;
       _requiredTypes = requiredTypeCollection;
       _filterAttribute = filterAttribute;
     }
@@ -104,7 +110,7 @@ namespace Mixins.Definitions.Building
       Debug.Assert (!requiredType.IsGenericParameter);
       if (!_requiredTypes.HasItem (requiredType) && !requiredType.Equals(typeof(INull)))
       {
-        _requiredTypes.Add (requiredType);
+        _requiredTypes.Add (_valueCreator(_baseClass, requiredType));
       }
     }
   }

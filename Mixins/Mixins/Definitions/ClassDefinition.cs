@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Mixins.Definitions
 {
-  public class ClassDefinition
+  public abstract class ClassDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<MemberInfo, MemberDefinition> Members =
         new DefinitionItemCollection<MemberInfo, MemberDefinition> (delegate (MemberDefinition m) { return m.MemberInfo; });
@@ -34,5 +34,7 @@ namespace Mixins.Definitions
     {
       get { return Type.GetInterfaces(); }
     }
+
+    public abstract void Accept (IDefinitionVisitor visitor);
   }
 }

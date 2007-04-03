@@ -6,6 +6,7 @@ using System.Collections;
 namespace Mixins.Definitions
 {
   public class DefinitionItemCollection<TKey, TValue> : IEnumerable<TValue>
+      where TValue : IVisitableDefinition
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();
     private KeyMaker _keyMaker;
@@ -46,6 +47,14 @@ namespace Mixins.Definitions
     public TValue Get (TKey key)
     {
       return HasItem (key) ? _items[key] : default (TValue);
+    }
+
+    internal void Accept (IDefinitionVisitor visitor)
+    {
+      foreach (TValue value in this)
+      {
+        value.Accept (visitor);
+      }
     }
   }
 }

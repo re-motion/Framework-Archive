@@ -9,14 +9,16 @@ namespace Mixins.Definitions.Building
   public class MixinDefinitionBuilder
   {
     private BaseClassDefinition _baseClass;
-    private RequiredTypesBuilder _requiredFacesBuilder;
-    private RequiredTypesBuilder _requiredBaseCallTypesBuilder;
+    private RequiredTypesBuilder<RequiredFaceTypeDefinition> _requiredFacesBuilder;
+    private RequiredTypesBuilder<RequiredBaseCallTypeDefinition> _requiredBaseCallTypesBuilder;
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
       _baseClass = baseClass;
-      _requiredFacesBuilder = new RequiredTypesBuilder (_baseClass, _baseClass.RequiredFaceTypes, typeof (ThisAttribute));
-      _requiredBaseCallTypesBuilder = new RequiredTypesBuilder (_baseClass, _baseClass.RequiredBaseCallTypes, typeof (BaseAttribute));
+      _requiredFacesBuilder = new RequiredTypesBuilder<RequiredFaceTypeDefinition> (_baseClass, _baseClass.RequiredFaceTypes, typeof (ThisAttribute),
+          delegate (BaseClassDefinition bc, Type t) { return new RequiredFaceTypeDefinition (bc, t); });
+      _requiredBaseCallTypesBuilder = new RequiredTypesBuilder<RequiredBaseCallTypeDefinition> (_baseClass, _baseClass.RequiredBaseCallTypes,
+          typeof (BaseAttribute), delegate (BaseClassDefinition bc, Type t) { return new RequiredBaseCallTypeDefinition (bc, t); });
     }
 
     public BaseClassDefinition BaseClass
@@ -56,7 +58,6 @@ namespace Mixins.Definitions.Building
       {
         InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
         mixin.InterfaceIntroductions.Add (introducedInterface);
-        BaseClass.IntroducedInterfaces.Add (introducedInterface);
       }
     }
 

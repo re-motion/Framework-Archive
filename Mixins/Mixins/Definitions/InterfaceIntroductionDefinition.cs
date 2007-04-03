@@ -2,7 +2,7 @@ using System;
 
 namespace Mixins.Definitions
 {
-  public class InterfaceIntroductionDefinition
+  public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
     private Type _type;
     private MixinDefinition _implementer;
@@ -26,6 +26,11 @@ namespace Mixins.Definitions
     public string FullName
     {
       get { return Type.FullName; }
+    }
+
+    public void Accept (IDefinitionVisitor visitor)
+    {
+      visitor.Visit (this);
     }
   }
 }

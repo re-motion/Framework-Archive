@@ -43,11 +43,15 @@
     <Compile Include="Definitions\Building\RequiredTypesBuilder.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollection.cs" />
+    <Compile Include="Definitions\IDefinitionVisitor.cs" />
     <Compile Include="Definitions\InterfaceIntroductionDefinition.cs" />
+    <Compile Include="Definitions\IVisitableDefinition.cs" />
     <Compile Include="Definitions\MemberDefinition.cs" />
     <Compile Include="Definitions\MethodDefinition.cs" />
     <Compile Include="Definitions\MixinDefinition.cs" />
+    <Compile Include="Definitions\RequiredFaceTypeDefinition.cs" />
     <Compile Include="Definitions\SignatureChecker.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
@@ -58,10 +62,17 @@
     <Compile Include="MixinInitializationMethodAttribute.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\ConsoleDumper.cs" />
+    <Compile Include="Validation\DefaultValidationLog.cs" />
+    <Compile Include="Validation\IValidationLog.cs" />
+    <Compile Include="Validation\Rules\IRuleSet.cs" />
+    <Compile Include="Validation\ValidatingVisitor.cs" />
+    <Compile Include="Validation\Validator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Definitions\Definitions.cd" />
     <None Include="Context\Context.cd" />
+    <None Include="Validation\Validation.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Validations.txt" />

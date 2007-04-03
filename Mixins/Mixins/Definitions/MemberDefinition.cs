@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Mixins.Definitions
 {
-  public abstract class MemberDefinition
+  public abstract class MemberDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, MemberDefinition> Overrides =
         new DefinitionItemCollection<Type, MemberDefinition> (delegate (MemberDefinition m) { return m.DeclaringClass.Type; });
@@ -73,5 +73,7 @@ namespace Mixins.Definitions
     }
 
     protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);
+
+    public abstract void Accept (IDefinitionVisitor visitor);
   }
 }

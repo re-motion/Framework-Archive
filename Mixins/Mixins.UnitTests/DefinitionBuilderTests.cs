@@ -37,12 +37,11 @@ namespace Mixins.UnitTests
       BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType1));
       MixinDefinition mixin1 = baseClass.Mixins.Get (typeof (BT1Mixin1));
 
-      Assert.IsTrue (baseClass.IntroducedInterfaces.HasItem (typeof (IBT1Mixin1)));
-      InterfaceIntroductionDefinition introducedInterface = baseClass.IntroducedInterfaces.Get (typeof (IBT1Mixin1));
-      Assert.AreSame (mixin1, introducedInterface.Implementer);
-
       Assert.IsTrue (mixin1.InterfaceIntroductions.HasItem (typeof (IBT1Mixin1)));
-      Assert.AreSame (introducedInterface, mixin1.InterfaceIntroductions.Get (typeof (IBT1Mixin1)));
+      InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions.Get (typeof (IBT1Mixin1));
+      Assert.AreSame (mixin1, introducedInterface.Implementer);
+      List<InterfaceIntroductionDefinition> introducedInterfaces = new List<InterfaceIntroductionDefinition> (baseClass.IntroducedInterfaces);
+      Assert.Contains(introducedInterface, introducedInterfaces);
     }
 
     [Test]
@@ -135,7 +134,7 @@ namespace Mixins.UnitTests
       Assert.AreSame (baseClass, mixin.BaseClass);
     }
 
-    [Test]
+    // [Test]
     [Ignore("Merge not yet implemented")]
     public void MergeNoMixins ()
     {
@@ -146,7 +145,7 @@ namespace Mixins.UnitTests
       Assert.IsNull (baseClass);
     }
 
-    [Test]
+    // [Test]
     [Ignore ("Merge not yet implemented")]
     public void MergeStandardMixins ()
     {
@@ -158,7 +157,7 @@ namespace Mixins.UnitTests
       Assert.AreSame (baseClass, application.BaseClasses.Get (typeof (BaseType1)));
     }
 
-    [Test]
+    // [Test]
     [Ignore ("Merge not yet implemented")]
     public void MergeInterfaceMixins ()
     {
@@ -192,7 +191,7 @@ namespace Mixins.UnitTests
       Assert.IsTrue (baseClass.RequiredBaseCallTypes.HasItem (typeof (IBaseType2)));
     }
 
-    [Test]
+    // [Test]
     [Ignore ("Merge not yet implemented")]
     public void MergeSeveralInterfaceAndStandardMixins ()
     {
@@ -225,7 +224,8 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = GetApplicationDefinition ();
       BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType3));
 
-      List<Type> requiredFaceTypes = new List<Type> (baseClass.RequiredFaceTypes);
+      List<Type> requiredFaceTypes = new List<RequiredFaceTypeDefinition> (baseClass.RequiredFaceTypes).ConvertAll<Type>
+          (delegate(RequiredFaceTypeDefinition def) { return def.Type; });
       Assert.Contains (typeof (IBaseType31), requiredFaceTypes);
       Assert.Contains (typeof (IBaseType32), requiredFaceTypes);
       Assert.Contains (typeof (IBaseType33), requiredFaceTypes);
@@ -239,7 +239,8 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = GetApplicationDefinition ();
       BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType3));
 
-      List<Type> requiredBaseCallTypes = new List<Type> (baseClass.RequiredBaseCallTypes);
+      List<Type> requiredBaseCallTypes = new List<RequiredBaseCallTypeDefinition> (baseClass.RequiredBaseCallTypes).ConvertAll<Type>
+          (delegate (RequiredBaseCallTypeDefinition def) { return def.Type; });
       Assert.Contains (typeof (IBaseType31), requiredBaseCallTypes);
       Assert.Contains (typeof (IBaseType33), requiredBaseCallTypes);
       Assert.Contains (typeof (IBaseType34), requiredBaseCallTypes);

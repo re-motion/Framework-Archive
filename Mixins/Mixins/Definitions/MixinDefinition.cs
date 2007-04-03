@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Mixins.Definitions
 {
-  public class MixinDefinition : ClassDefinition
+  public class MixinDefinition : ClassDefinition, IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
@@ -42,6 +42,15 @@ namespace Mixins.Definitions
           }
         }
       }
+    }
+
+    public override void Accept (IDefinitionVisitor visitor)
+    {
+      visitor.Visit (this);
+
+      Members.Accept (visitor);
+      InterfaceIntroductions.Accept (visitor);
+      InitializationMethods.Accept (visitor);
     }
   }
 }
