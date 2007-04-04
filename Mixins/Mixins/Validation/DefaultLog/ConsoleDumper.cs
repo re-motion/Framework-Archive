@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.Validation
+namespace Mixins.Validation.DefaultLog
 {
   public static class ConsoleDumper
   {
     public static void DumpLog (DefaultValidationLog log)
     {
-      foreach (DefaultValidationLog.ValidationData result in log.Results)
+      foreach (DefaultValidationResult result in log.Results)
       {
         if (result.TotalRulesExecuted == 0)
         {
-          Console.ForegroundColor = ConsoleColor.Red;
+          Console.ForegroundColor = ConsoleColor.DarkGray;
         }
         else
         {
@@ -28,7 +28,7 @@ namespace Mixins.Validation
       }
     }
 
-    private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor backColor)
+    private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor backColor) where T : IDefaultValidationResultItem
     {
       if (resultList.Count > 0)
       {
@@ -38,7 +38,7 @@ namespace Mixins.Validation
         Console.WriteLine ("  {0} - {1}", title, resultList.Count);
         foreach (T resultItem in resultList)
         {
-          Console.WriteLine ("    " + resultItem);
+          Console.WriteLine ("    {0} ({1})", resultItem.Message, resultItem.Rule.RuleName);
         }
       }
     }

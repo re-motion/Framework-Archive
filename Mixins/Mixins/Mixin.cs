@@ -3,6 +3,8 @@ using System;
 namespace Mixins
 {
   public class Mixin<[This]TThis, [Base]TBase>
+      where TThis : class
+      where TBase : class
   {
     private TThis _this;
     private TBase _base;
@@ -26,6 +28,7 @@ namespace Mixins
   }
 
   public class Mixin<TThis> : Mixin<TThis, INull>
+    where TThis : class
   {
   }
 

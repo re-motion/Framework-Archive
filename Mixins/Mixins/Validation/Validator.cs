@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Mixins.Definitions;
+using Mixins.Validation.DefaultLog;
 using Mixins.Validation.Rules;
 
 namespace Mixins.Validation
@@ -31,7 +32,7 @@ namespace Mixins.Validation
     {
       foreach (Type t in Assembly.GetExecutingAssembly ().GetTypes ())
       {
-        if (t.Namespace == typeof (IRuleSet).Namespace && t != typeof(IRuleSet) && typeof(IRuleSet).IsAssignableFrom(t))
+        if (!t.IsAbstract && typeof(IRuleSet).IsAssignableFrom(t) && t.Namespace == typeof (IRuleSet).Namespace)
         {
           IRuleSet ruleSet = (IRuleSet)Activator.CreateInstance (t);
           ruleSet.Install (visitor);

@@ -6,8 +6,8 @@ namespace Mixins.UnitTests.SampleTypes
 {
   [MixinFor (typeof (BaseType3))]
   public class BT3Mixin3<TThis, TBase> : Mixin<TThis, TBase>
-    where TThis : IBaseType33
-    where TBase : IBaseType33
+    where TThis : class, IBaseType33
+    where TBase : class, IBaseType33
   {
     public new TThis This
     {

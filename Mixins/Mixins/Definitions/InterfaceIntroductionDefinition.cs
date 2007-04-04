@@ -28,6 +28,11 @@ namespace Mixins.Definitions
       get { return Type.FullName; }
     }
 
+    public BaseClassDefinition BaseClass
+    {
+      get { return Implementer.BaseClass; }
+    }
+
     public void Accept (IDefinitionVisitor visitor)
     {
       visitor.Visit (this);

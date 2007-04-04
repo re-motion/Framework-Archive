@@ -17,11 +17,6 @@ namespace Mixins.Definitions
     public MixinDefinition (Type type, BaseClassDefinition baseClass)
         : base (type)
     {
-      if (type.IsInterface)
-      {
-        string message = string.Format("Interfaces ({0}) are not allowed as mixin types.", type.FullName);
-        throw new ArgumentException (message, "type");
-      }
       _baseClass = baseClass;
     }
 

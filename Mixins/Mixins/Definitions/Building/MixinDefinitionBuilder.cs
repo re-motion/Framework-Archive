@@ -70,7 +70,7 @@ namespace Mixins.Definitions.Building
           MemberDefinition baseMember = FindBaseMember (member);
           if (baseMember == null)
           {
-            string message = string.Format ("Could not find virtual base member for overrider {0}.", member.FullName);
+            string message = string.Format ("Could not find base member for overrider {0}.", member.FullName);
             throw new ConfigurationException (message);
           }
           member.Base = baseMember;
@@ -83,7 +83,7 @@ namespace Mixins.Definitions.Building
     {
       foreach (MemberDefinition classMember in BaseClass.Members)
       {
-        if (classMember.CanBeOverriddenBy (overrider))
+        if (classMember.Name == overrider.Name && classMember.CanBeOverriddenBy (overrider))
         {
           return classMember;
         }

@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefBuilder.cs" />
     <Compile Include="DefinitionBuilderTests.cs" />
     <Compile Include="DefaultContextBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +51,10 @@
     <Compile Include="SampleTypes\BT3Mixin3.cs" />
     <Compile Include="SampleTypes\BT3Mixin4.cs" />
     <Compile Include="SampleTypes\BT3Mixin5.cs" />
+    <Compile Include="SampleTypes\BaseType4.cs" />
+    <Compile Include="SampleTypes\BT4Mixin1.cs" />
+    <Compile Include="SampleTypes\BaseType5.cs" />
+    <Compile Include="SampleTypes\BT5Mixin1.cs" />
     <Compile Include="SignatureCheckerTests.cs" />
     <Compile Include="ValidationTests.cs" />
   </ItemGroup>

@@ -10,10 +10,10 @@ namespace Mixins.Validation
     void ValidationStartsFor (IVisitableDefinition definition);
     void ValidationEndsFor (IVisitableDefinition definition);
 
-    void Succeed (string message);
-    void Warn (string message);
-    void Fail (string message);
+    void Succeed (IValidationRule rule);
+    void Warn (IValidationRule rule);
+    void Fail (IValidationRule rule);
 
-    void UnexpectedException (Exception ex);
+    void UnexpectedException<TDefinition> (IValidationRule<TDefinition> rule, Exception ex) where TDefinition : IVisitableDefinition;
   }
 }

@@ -42,6 +42,7 @@ namespace Mixins.UnitTests
       Assert.AreSame (mixin1, introducedInterface.Implementer);
       List<InterfaceIntroductionDefinition> introducedInterfaces = new List<InterfaceIntroductionDefinition> (baseClass.IntroducedInterfaces);
       Assert.Contains(introducedInterface, introducedInterfaces);
+      Assert.AreSame (baseClass, introducedInterface.BaseClass);
     }
 
     [Test]
@@ -111,6 +112,45 @@ namespace Mixins.UnitTests
 
       Assert.IsTrue (new List<MemberDefinition> (mixin2.Overrides).Contains (overrider));
       Assert.AreSame (overridden, overrider.Base);
+    }
+
+    [Test]
+    public void OverrideNonVirtual ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType4), typeof (BT4Mixin1));
+
+      BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType4));
+      MixinDefinition mixin = baseClass.Mixins.Get(typeof(BT4Mixin1));
+      Assert.IsNotNull (mixin);
+      MemberDefinition overrider = mixin.Members.Get(typeof(BT4Mixin1).GetMethod("NonVirtualMethod"));
+      Assert.IsNotNull(overrider);
+      Assert.IsNotNull(overrider.Base);
+
+      Assert.AreSame(baseClass, overrider.Base.DeclaringClass);
+
+      List<MemberDefinition> overrides = new List<MemberDefinition> (baseClass.Members.Get (typeof (BaseType4).GetMethod ("NonVirtualMethod")).Overrides);
+      Assert.AreEqual (1, overrides.Count);
+      Assert.AreSame (overrider, overrides[0]);
+    }
+
+    [Test]
+    [ExpectedException(typeof( ConfigurationException), ExpectedMessage = "Could not find base member for overrider Mixins.UnitTests.SampleTypes.BT5Mixin1.Method.")]
+    public void ThrowsWhenInexistingOverrideBase ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType5), typeof (BT5Mixin1));
+
+      BaseClassDefinition baseClass = application.BaseClasses.Get (typeof (BaseType5));
+      MixinDefinition mixin = baseClass.Mixins.Get (typeof (BT5Mixin1));
+      Assert.IsNotNull (mixin);
+      MemberDefinition overrider = mixin.Members.Get (typeof (BT5Mixin1).GetMethod ("NonVirtualMethod"));
+      Assert.IsNotNull (overrider);
+      Assert.IsNotNull (overrider.Base);
+
+      Assert.AreSame (baseClass, overrider.Base.DeclaringClass);
+
+      List<MemberDefinition> overrides = new List<MemberDefinition> (baseClass.Members.Get (typeof (BaseType5).GetMethod ("NonVirtualMethod")).Overrides);
+      Assert.AreEqual (1, overrides.Count);
+      Assert.AreSame (overrider, overrides[0]);
     }
 
     [Test]
