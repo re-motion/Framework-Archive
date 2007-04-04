@@ -42,6 +42,12 @@ namespace Mixins.UnitTests
       return DefinitionBuilder.CreateApplicationDefinition (assemblyContext);
     }
 
+    public static void Main ()
+    {
+      ValidationTests t = new ValidationTests ();
+      t.ValidationDump ();
+    }
+
     [Test]
     public void ValidationVisitsSomething ()
     {
@@ -60,10 +66,14 @@ namespace Mixins.UnitTests
       ConsoleDumper.DumpLog (log);
     }
 
-    public static void Main ()
+    [Test]
+    public void ValidationResultDefinition ()
     {
-      ValidationTests t = new ValidationTests();
-      t.ValidationDump ();
+      ApplicationDefinition application = GetApplicationDefinitionForAssembly ();
+
+      DefaultValidationLog log = Validator.Validate (application);
+      Assert.AreSame (application, log.Results[0].Definition);
+      Assert.AreEqual ("<application>", log.Results[0].Definition.FullName);
     }
 
     [Test]

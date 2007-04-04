@@ -256,6 +256,13 @@ namespace Mixins.UnitTests
       Assert.IsNotNull (methodInfo);
       
       Assert.AreEqual (methodInfo, initializationMethods[0].MethodInfo);
+
+      BaseType3 @this = new BaseType3();
+      BaseType3 @base = new BaseType3();
+      BT3Mixin1 mixinInstance = new BT3Mixin1 ();
+      initializationMethods[0].MethodInfo.Invoke (mixinInstance, new object[] { @this, @base });
+      Assert.AreSame (@this, mixinInstance.This);
+      Assert.AreSame (@base, mixinInstance.Base);
     }
 
     [Test]

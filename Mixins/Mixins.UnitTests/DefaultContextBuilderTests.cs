@@ -23,6 +23,18 @@ namespace Mixins.UnitTests
     public void BuildFromTestAssembly ()
     {
       ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      CheckContext(context);
+    }
+
+    [Test]
+    public void BuildFromTestAssemblies ()
+    {
+      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssemblies (AppDomain.CurrentDomain.GetAssemblies ());
+      CheckContext (context);
+    }
+
+    private static void CheckContext(ApplicationContext context)
+    {
       Assert.IsTrue (context.HasClassContext (typeof (BaseType1)));
       
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
@@ -109,6 +121,16 @@ namespace Mixins.UnitTests
         new List<MixinContext> (classContext.MixinContexts).Find (
         delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT3Mixin5); });
       Assert.IsNotNull (definition);
+    }
+
+    [Test]
+    [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot add mixin definition for different type Mixins.UnitTests.SampleTypes."
+        + "BaseType3 to context of class Mixins.UnitTests.SampleTypes.BaseType1.\r\nParameter name: mixinContext")]
+    public void ThrowsOnMixinContextForDifferentClass ()
+    {
+      MixinContext mc = new MixinContext (typeof (BaseType3), typeof(BT3Mixin1));
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      cc.AddMixinContext (mc);
     }
   }
 }
