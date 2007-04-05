@@ -9,62 +9,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   }
 
   [ClassID ("TI_Customer")]
-  public class Customer : Person
+  [NotAbstract]
+  public abstract class Customer: Person
   {
-    // types
-
-    // static members and constants
-
-    public static new Customer GetObject (ObjectID id)
+    public new static Customer GetObject (ObjectID id)
     {
       return (Customer) DomainObject.GetObject (id);
     }
 
-    public static new Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Customer) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Customer ()
-    {
-    }
-
-    public Customer (ClientTransaction clientTransaction) : base (clientTransaction)
+    public Customer (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Customer (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    public abstract CustomerType CustomerType { get; set; }
 
-    public CustomerType CustomerType
-    {
-      get { return (CustomerType) DataContainer.GetValue ("CustomerType"); }
-      set { DataContainer.SetValue ("CustomerType", value); }
-    }
+    public abstract DateTime CustomerSince { get; set; }
 
-    public DateTime CustomerSince
-    {
-      get { return DataContainer.GetDateTime ("CustomerSince"); }
-      set { DataContainer.SetValue ("CustomerSince", value); }
-    }
+    [DBBidirectionalRelation ("Customers")]
+    public abstract Region Region { get; set; }
 
-    public Region Region
-    {
-      get { return (Region) GetRelatedObject ("Region"); }
-      set { SetRelatedObject ("Region", value); }
-    }
-
-    public DomainObjectCollection Orders
-    {
-      get { return GetRelatedObjects ("Orders"); }
-    }
+    [DBBidirectionalRelation ("Customer")]
+    public abstract ObjectList<Order> Orders { get; }
   }
 }

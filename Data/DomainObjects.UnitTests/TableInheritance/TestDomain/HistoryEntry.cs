@@ -3,57 +3,32 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_HistoryEntry")]
-  public class HistoryEntry : DomainObject
+  [DBTable (Name = "TableInheritance_HistoryEntry")]
+  [NotAbstract]
+  public abstract class HistoryEntry: DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new HistoryEntry GetObject (ObjectID id)
+    public new static HistoryEntry GetObject (ObjectID id)
     {
       return (HistoryEntry) DomainObject.GetObject (id);
     }
 
-    public static new HistoryEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (HistoryEntry) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public HistoryEntry ()
-    {
-    }
-
-    public HistoryEntry (ClientTransaction clientTransaction) : base (clientTransaction)
+    protected HistoryEntry (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected HistoryEntry (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    public abstract DateTime HistoryDate { get; set; }
 
-    public DateTime HistoryDate
-    {
-      get { return DataContainer.GetDateTime ("HistoryDate"); }
-      set { DataContainer.SetValue ("HistoryDate", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 250)]
+    public abstract string Text { get; set; }
 
-    public string Text
-    {
-      get { return DataContainer.GetString ("Text"); }
-      set { DataContainer.SetValue ("Text", value); }
-    }
-
-    public DomainBase Owner
-    {
-      get { return (DomainBase) GetRelatedObject ("Owner"); }
-      set { SetRelatedObject ("Owner", value); }
-    }
+    [DBBidirectionalRelation ("HistoryEntries")]
+    [Mandatory]
+    public abstract DomainBase Owner { get; set; }
   }
 }

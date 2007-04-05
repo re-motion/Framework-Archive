@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
@@ -65,26 +66,26 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
     {
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection ();
 
-      ClassDefinition company = CreateCompanyDefinition ();
+      XmlBasedClassDefinition company = CreateCompanyDefinition ();
       classDefinitions.Add (company);
 
-      ClassDefinition customer = CreateCustomerDefinition (company);
+      XmlBasedClassDefinition customer = CreateCustomerDefinition (company);
       classDefinitions.Add (customer);
 
-      ClassDefinition partner = CreatePartnerDefinition (company);
+      XmlBasedClassDefinition partner = CreatePartnerDefinition (company);
       classDefinitions.Add (partner);
 
-      ClassDefinition supplier = CreateSupplierDefinition (partner);
+      XmlBasedClassDefinition supplier = CreateSupplierDefinition (partner);
       classDefinitions.Add (supplier);
 
-      ClassDefinition distributor = CreateDistributorDefinition (partner);
+      XmlBasedClassDefinition distributor = CreateDistributorDefinition (partner);
       classDefinitions.Add (distributor);
 
       classDefinitions.Add (CreateOrderDefinition ());
       classDefinitions.Add (CreateOrderTicketDefinition ());
       classDefinitions.Add (CreateOrderItemDefinition ());
 
-      ClassDefinition officialDefinition = CreateOfficialDefinition ();
+      XmlBasedClassDefinition officialDefinition = CreateOfficialDefinition ();
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
@@ -94,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       classDefinitions.Add (CreateClientDefinition ());
       classDefinitions.Add (CreateLocationDefinition ());
 
-      ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
+      XmlBasedClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
       classDefinitions.Add (fileSystemItemDefinition);
       classDefinitions.Add (CreateFolderDefinition (fileSystemItemDefinition));
       classDefinitions.Add (CreateFileDefinition (fileSystemItemDefinition));
@@ -119,9 +120,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinitions;
     }
 
-    private ClassDefinition CreateCompanyDefinition ()
+    private XmlBasedClassDefinition CreateCompanyDefinition ()
     {
-      ClassDefinition company = new ClassDefinition (
+      XmlBasedClassDefinition company = new XmlBasedClassDefinition (
           "Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company));
 
       company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -131,9 +132,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return company;
     }
 
-    private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreateCustomerDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition customer = new ClassDefinition (
+      XmlBasedClassDefinition customer = new XmlBasedClassDefinition (
           "Customer", "Company", DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
 
       customer.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
@@ -147,9 +148,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return customer;
     }
 
-    private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreatePartnerDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition partner = new ClassDefinition (
+      XmlBasedClassDefinition partner = new XmlBasedClassDefinition (
           "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
       partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
@@ -157,9 +158,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return partner;
     }
 
-    private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreateSupplierDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition supplier = new ClassDefinition (
+      XmlBasedClassDefinition supplier = new XmlBasedClassDefinition (
           "Supplier", "Company", DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
 
       supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
@@ -167,9 +168,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return supplier;
     }
 
-    private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreateDistributorDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition distributor = new ClassDefinition (
+      XmlBasedClassDefinition distributor = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
 
       distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
@@ -177,9 +178,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return distributor;
     }
 
-    private ClassDefinition CreateOrderDefinition ()
+    private XmlBasedClassDefinition CreateOrderDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
@@ -190,9 +191,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreateOfficialDefinition ()
+    private XmlBasedClassDefinition CreateOfficialDefinition ()
     {
-      ClassDefinition official = new ClassDefinition (
+      XmlBasedClassDefinition official = new XmlBasedClassDefinition (
           "Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official));
 
       official.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -200,15 +201,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return official;
     }
 
-    private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
+    private XmlBasedClassDefinition CreateSpecialOfficialDefinition (XmlBasedClassDefinition officialDefinition)
     {
-      return new ClassDefinition (
+      return new XmlBasedClassDefinition (
           "SpecialOfficial", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (SpecialOfficial), officialDefinition);
     }
 
-    private ClassDefinition CreateOrderTicketDefinition ()
+    private XmlBasedClassDefinition CreateOrderTicketDefinition ()
     {
-      ClassDefinition orderTicket = new ClassDefinition (
+      XmlBasedClassDefinition orderTicket = new XmlBasedClassDefinition (
           "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
 
       orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
@@ -217,9 +218,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return orderTicket;
     }
 
-    private ClassDefinition CreateOrderItemDefinition ()
+    private XmlBasedClassDefinition CreateOrderItemDefinition ()
     {
-      ClassDefinition orderItem = new ClassDefinition (
+      XmlBasedClassDefinition orderItem = new XmlBasedClassDefinition (
           "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
 
       orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
@@ -229,9 +230,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return orderItem;
     }
 
-    private ClassDefinition CreateCeoDefinition ()
+    private XmlBasedClassDefinition CreateCeoDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -240,9 +241,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreatePersonDefinition ()
+    private XmlBasedClassDefinition CreatePersonDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -250,9 +251,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreateClientDefinition ()
+    private XmlBasedClassDefinition CreateClientDefinition ()
     {
-      ClassDefinition clientClass = new ClassDefinition (
+      XmlBasedClassDefinition clientClass = new XmlBasedClassDefinition (
           "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
       clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
@@ -260,9 +261,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return clientClass;
     }
 
-    private ClassDefinition CreateLocationDefinition ()
+    private XmlBasedClassDefinition CreateLocationDefinition ()
     {
-      ClassDefinition location = new ClassDefinition (
+      XmlBasedClassDefinition location = new XmlBasedClassDefinition (
           "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
 
       location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
@@ -270,9 +271,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return location;
     }
 
-    private ClassDefinition CreateFileSystemItemDefinition ()
+    private XmlBasedClassDefinition CreateFileSystemItemDefinition ()
     {
-      ClassDefinition fileSystemItem = new ClassDefinition (
+      XmlBasedClassDefinition fileSystemItem = new XmlBasedClassDefinition (
           "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
 
       fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
@@ -280,25 +281,25 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return fileSystemItem;
     }
 
-    private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreateFolderDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition folder = new ClassDefinition (
+      XmlBasedClassDefinition folder = new XmlBasedClassDefinition (
           "Folder", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (Folder), baseClass);
 
       return folder;
     }
 
-    private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
+    private XmlBasedClassDefinition CreateFileDefinition (XmlBasedClassDefinition baseClass)
     {
-      ClassDefinition file = new ClassDefinition (
+      XmlBasedClassDefinition file = new XmlBasedClassDefinition (
           "File", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (File), baseClass);
 
       return file;
     }
 
-    private ClassDefinition CreateClassWithAllDataTypesDefinition ()
+    private XmlBasedClassDefinition CreateClassWithAllDataTypesDefinition ()
     {
-      ClassDefinition classWithAllDataTypes = new ClassDefinition (
+      XmlBasedClassDefinition classWithAllDataTypes = new XmlBasedClassDefinition (
           "ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
@@ -351,49 +352,49 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classWithAllDataTypes;
     }
 
-    private ClassDefinition CreateClassWithGuidKeyDefinition ()
+    private XmlBasedClassDefinition CreateClassWithGuidKeyDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithGuidKey));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
+    private XmlBasedClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithKeyOfInvalidType));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutIDColumnDefinition ()
+    private XmlBasedClassDefinition CreateClassWithoutIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutClassIDColumnDefinition ()
+    private XmlBasedClassDefinition CreateClassWithoutClassIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithoutClassIDColumn", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutTimestampColumnDefinition ()
+    private XmlBasedClassDefinition CreateClassWithoutTimestampColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithValidRelationsDefinition ()
+    private XmlBasedClassDefinition CreateClassWithValidRelationsDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
@@ -405,9 +406,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidRelationDefinition ()
+    private XmlBasedClassDefinition CreateClassWithInvalidRelationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
@@ -416,9 +417,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
+    private XmlBasedClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithoutRelatedClassIDColumn",
           "TableWithoutRelatedClassIDColumn",
           DatabaseTest.c_testDomainProviderID,
@@ -430,9 +431,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
+    private XmlBasedClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithOptionalOneToOneRelationAndOppositeDerivedClass",
           "TableWithOptionalOneToOneRelationAndOppositeDerivedClass",
           DatabaseTest.c_testDomainProviderID,
@@ -444,9 +445,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
+    private XmlBasedClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithoutRelatedClassIDColumnAndDerivation",
           "TableWithoutRelatedClassIDColumnAndDerivation",
           DatabaseTest.c_testDomainProviderID,
@@ -458,9 +459,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateIndustrialSectorDefinition ()
+    private XmlBasedClassDefinition CreateIndustrialSectorDefinition ()
     {
-      ClassDefinition industrialSector = new ClassDefinition (
+      XmlBasedClassDefinition industrialSector = new XmlBasedClassDefinition (
         "IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector));
 
       industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -468,9 +469,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return industrialSector;
     }
 
-    private ClassDefinition CreateEmployeeDefinition ()
+    private XmlBasedClassDefinition CreateEmployeeDefinition ()
     {
-      ClassDefinition employee = new ClassDefinition (
+      XmlBasedClassDefinition employee = new XmlBasedClassDefinition (
           "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
 
       employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -479,9 +480,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return employee;
     }
 
-    private ClassDefinition CreateComputerDefinition ()
+    private XmlBasedClassDefinition CreateComputerDefinition ()
     {
-      ClassDefinition computer = new ClassDefinition (
+      XmlBasedClassDefinition computer = new XmlBasedClassDefinition (
           "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
 
       computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
@@ -490,9 +491,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       return computer;
     }
 
-    private static ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
+    private static XmlBasedClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 

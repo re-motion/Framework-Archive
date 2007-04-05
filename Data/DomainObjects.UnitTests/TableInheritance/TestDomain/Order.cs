@@ -3,57 +3,30 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Order")]
-  public class Order : DomainObject
+  [DBTable (Name = "TableInheritance_Order")]
+  [NotAbstract]
+  public abstract class Order: DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Order GetObject (ObjectID id)
-    {
-      return (Order) DomainObject.GetObject (id);
-    }
-
-    public static new Order GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Order) DomainObject.GetObject (id, clientTransaction);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Order ()
-    {
-    }
-
-    public Order (ClientTransaction clientTransaction) : base (clientTransaction)
+    protected Order (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected Order (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    public abstract int Number { get; set; }
 
-    public int Number
-    {
-      get { return DataContainer.GetInt32 ("Number"); }
-      set { DataContainer.SetValue ("Number", value); }
-    }
+    public abstract DateTime OrderDate { get; set; }
 
-    public DateTime OrderDate
-    {
-      get { return DataContainer.GetDateTime ("OrderDate"); }
-      set { DataContainer.SetValue ("OrderDate", value); }
-    }
-
-    public Customer Customer
-    {
-      get { return (Customer) GetRelatedObject ("Customer"); }
-      set { SetRelatedObject ("Customer", value); }
-    }
+    [DBBidirectionalRelation ("Orders")]
+    public abstract Customer Customer { get; set; }
   }
 }

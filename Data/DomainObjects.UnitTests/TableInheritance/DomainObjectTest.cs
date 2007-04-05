@@ -107,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void UpdateConcreteSingle ()
     {
-      Region expectedNewRegion = new Region ();
+      Region expectedNewRegion = DomainObject.Create<Region> ();
       expectedNewRegion.Name = "Wachau";
 
       Customer expectedCustomer = Customer.GetObject (DomainObjectIDs.Customer);
@@ -124,14 +124,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void InsertConcreteSingle ()
     {
-      Customer expectedCustomer = new Customer ();
+      Customer expectedCustomer = DomainObject.Create <Customer> ();
       expectedCustomer.FirstName = "Franz";
       expectedCustomer.LastName = "Kameramann";
       expectedCustomer.DateOfBirth = new DateTime (1950, 1, 3);
       expectedCustomer.CustomerType = CustomerType.Premium;
       expectedCustomer.CustomerSince = DateTime.Now;
-      
-      Address expectedAddress = new Address ();
+
+      Address expectedAddress = DomainObject.Create <Address> ();
       expectedAddress.Street = "Linzer Straße 1";
       expectedAddress.Zip = "3100";
       expectedAddress.City = "St. Pölten";

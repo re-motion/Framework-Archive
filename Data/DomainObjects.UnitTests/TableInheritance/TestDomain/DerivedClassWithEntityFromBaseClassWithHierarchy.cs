@@ -3,53 +3,32 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_DerivedClassWithEntityFromBaseClassWithHierarchy")]
-  public class DerivedClassWithEntityFromBaseClassWithHierarchy : DerivedClassWithEntityWithHierarchy
+  [NotAbstract]
+  public abstract class DerivedClassWithEntityFromBaseClassWithHierarchy: DerivedClassWithEntityWithHierarchy
   {
-    // types
-
-    // static members and constants
-
-    public static new DerivedClassWithEntityFromBaseClassWithHierarchy GetObject (ObjectID id)
+    public new static DerivedClassWithEntityFromBaseClassWithHierarchy GetObject (ObjectID id)
     {
       return (DerivedClassWithEntityFromBaseClassWithHierarchy) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public DerivedClassWithEntityFromBaseClassWithHierarchy ()
+    protected DerivedClassWithEntityFromBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected DerivedClassWithEntityFromBaseClassWithHierarchy (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [DBBidirectionalRelation ("ChildDerivedClassesWithEntityFromBaseClassWithHierarchy")]
+    public abstract DerivedClassWithEntityFromBaseClassWithHierarchy ParentDerivedClassWithEntityFromBaseClassWithHierarchy { get; set; }
 
-    public DerivedClassWithEntityFromBaseClassWithHierarchy ParentDerivedClassWithEntityFromBaseClassWithHierarchy
-    {
-      get { return (DerivedClassWithEntityFromBaseClassWithHierarchy) GetRelatedObject ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy"); }
-      set { SetRelatedObject ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", value); }
-    }
+    [DBBidirectionalRelation ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", SortExpression = "Name ASC")]
+    public abstract ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get; }
 
-    public DomainObjectCollection ChildDerivedClassesWithEntityFromBaseClassWithHierarchy
-    {
-      get { return GetRelatedObjects ("ChildDerivedClassesWithEntityFromBaseClassWithHierarchy"); }
-    }
+    public abstract Client ClientFromDerivedClassWithEntityFromBaseClass { get; set; }
 
-    public Client ClientFromDerivedClassWithEntityFromBaseClass
-    {
-      get { return (Client) GetRelatedObject ("ClientFromDerivedClassWithEntityFromBaseClass"); }
-      set { SetRelatedObject ("ClientFromDerivedClassWithEntityFromBaseClass", value); }
-    }
-
-    public FileSystemItem FileSystemItemFromDerivedClassWithEntityFromBaseClass
-    {
-      get { return (FileSystemItem) GetRelatedObject ("FileSystemItemFromDerivedClassWithEntityFromBaseClass"); }
-      set { SetRelatedObject ("FileSystemItemFromDerivedClassWithEntityFromBaseClass", value); }
-    }
+    public abstract FileSystemItem FileSystemItemFromDerivedClassWithEntityFromBaseClass { get; set; }
   }
 }

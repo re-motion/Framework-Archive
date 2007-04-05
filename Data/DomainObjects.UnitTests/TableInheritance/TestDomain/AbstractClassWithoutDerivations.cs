@@ -1,37 +1,23 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_AbstractClassWithoutDerivations")]
+  [TestDomain]
   public abstract class AbstractClassWithoutDerivations : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    protected AbstractClassWithoutDerivations ()
-    {
-    }
-
-    protected AbstractClassWithoutDerivations (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected AbstractClassWithoutDerivations (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected AbstractClassWithoutDerivations (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
-
-    public DomainBase DomainBase
-    {
-      get { return (DomainBase) GetRelatedObject ("DomainBase"); }
-    }
+    [DBBidirectionalRelation ("AbstractClassesWithoutDerivations")]
+    public abstract DomainBase DomainBase { get; }
   }
 }

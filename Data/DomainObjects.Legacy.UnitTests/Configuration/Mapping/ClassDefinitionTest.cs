@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
@@ -18,8 +19,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     // member fields
 
-    private ClassDefinition _orderClass;
-    private ClassDefinition _distributorClass;
+    private XmlBasedClassDefinition _orderClass;
+    private XmlBasedClassDefinition _distributorClass;
     private ClassDefinitionChecker _checker;
 
     // construction and disposing
@@ -34,8 +35,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      _distributorClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
+      _orderClass = (XmlBasedClassDefinition) TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      _distributorClass = (XmlBasedClassDefinition) TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
 
       _checker = new ClassDefinitionChecker ();
     }
@@ -43,9 +44,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithTypeName ()
     {
-      ClassDefinition expected = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+      XmlBasedClassDefinition expected = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
 
-      ClassDefinition actual = new ClassDefinition (
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition (
           "Order", "OrderTable", "StorageProvider",
           "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.Legacy.UnitTests", true);
 
@@ -56,16 +57,16 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void InitializeWithTypeNotDerivedFromDomainObject ()
     {
-      new ClassDefinition ("Order", "OrderTable", "StorageProvider", this.GetType ().AssemblyQualifiedName, true);
+      new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", this.GetType ().AssemblyQualifiedName, true);
     }
 
     [Test]
     public void InitializeWithTypeNameAndBaseClass ()
     {
-      ClassDefinition expected = new ClassDefinition (
+      XmlBasedClassDefinition expected = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), CreatePartnerClass ());
 
-      ClassDefinition actual = new ClassDefinition (
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, 
           "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.Legacy.UnitTests", true, CreatePartnerClass ());
 
@@ -75,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void IntializeWithUnresolvedTypeName ()
     {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
       Assert.IsNull (actual.ClassType);
       Assert.AreEqual ("UnexistingType", actual.ClassTypeName);
       Assert.IsFalse (actual.IsClassTypeResolved);
@@ -84,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void GetIsAbstract_FromNonAbstractType ()
     {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
 
       Assert.IsFalse (actual.IsAbstract);
     }
@@ -92,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void GetIsAbstract_FromAbstractType ()
     {
-      ClassDefinition actual = new ClassDefinition ("AbstractClassNotInMapping", "Table", "StorageProvider", typeof (AbstractClassNotInMapping));
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition ("AbstractClassNotInMapping", "Table", "StorageProvider", typeof (AbstractClassNotInMapping));
 
       Assert.IsTrue (actual.IsAbstract);
     }
@@ -101,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
     public void GetIsAbstract_ForUnresolvedTypeName ()
     {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
+      XmlBasedClassDefinition actual = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
       Dev.Null = actual.IsAbstract;
     }
 
@@ -236,7 +237,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject));
     }
 
@@ -246,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeDomainObject ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "Company", "Company", "TestDomain", typeof (DomainObject));
     }
 
@@ -255,20 +256,20 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void BaseClassWithDifferentStorageProvider ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
+      XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
 
-      ClassDefinition customerClass = new ClassDefinition (
+      XmlBasedClassDefinition customerClass = new XmlBasedClassDefinition (
           "Customer", "Company", "Provider 2", typeof (Customer), companyClass);
     }
 
     [Test]
     public void ClassTypeIsNotDerivedFromBaseClassType ()
     {
-      ClassDefinition orderClass = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+      XmlBasedClassDefinition orderClass = new XmlBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
 
       try
       {
-        new ClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), orderClass);
+        new XmlBasedClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), orderClass);
         Assert.Fail ("MappingException was expected.");
       }
       catch (MappingException ex)
@@ -284,10 +285,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypes ()
     {
-      ClassDefinition orderClass = new ClassDefinition (
+      XmlBasedClassDefinition orderClass = new XmlBasedClassDefinition (
           "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
 
-      ClassDefinition distributorClass = new ClassDefinition (
+      XmlBasedClassDefinition distributorClass = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, false, orderClass);
 
       // Expectation: no exception
@@ -296,10 +297,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypeInBaseClassOnly ()
     {
-      ClassDefinition orderClass = new ClassDefinition (
+      XmlBasedClassDefinition orderClass = new XmlBasedClassDefinition (
           "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
 
-      ClassDefinition distributorClass = new ClassDefinition (
+      XmlBasedClassDefinition distributorClass = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, true, orderClass);
 
       // Expectation: no exception
@@ -309,7 +310,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' already contains the property 'Name'.")]
     public void AddDuplicateProperty ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -319,10 +320,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Customer' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      ClassDefinition customerClass = new ClassDefinition (
+      XmlBasedClassDefinition customerClass = new XmlBasedClassDefinition (
           "Customer", "Company", "TestDomain", typeof (Customer), companyClass);
 
       customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -332,13 +333,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Supplier' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      ClassDefinition partnerClass = new ClassDefinition (
+      XmlBasedClassDefinition partnerClass = new XmlBasedClassDefinition (
           "Partner", "Company", "TestDomain", typeof (Partner), companyClass);
 
-      ClassDefinition supplierClass = new ClassDefinition (
+      XmlBasedClassDefinition supplierClass = new XmlBasedClassDefinition (
           "Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);
 
       supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -350,7 +351,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.")]
     public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
       PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string", true, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
@@ -362,7 +363,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.")]
     public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
       PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
@@ -371,7 +372,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void ConstructorWithoutBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
     }
 
     [Test]
@@ -725,9 +726,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
-      // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
+      // Note: Never use a XmlBasedClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
       // this test does not affect other tests through modifying the singleton instances.
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       Assert.AreSame (classDefinition, propertyDefinition.ClassDefinition);
@@ -739,9 +740,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
-      // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
+      // Note: Never use a XmlBasedClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
       // this test does not affect other tests through modifying the singleton instances.
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       PropertyDefinitionCollectionEventReceiver receiver = new PropertyDefinitionCollectionEventReceiver (classDefinition.MyPropertyDefinitions, true);
       try
@@ -820,9 +821,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       return false;
     }
 
-    private ClassDefinition CreatePartnerClass ()
+    private XmlBasedClassDefinition CreatePartnerClass ()
     {
-      return new ClassDefinition ("Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner));
+      return new XmlBasedClassDefinition ("Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner));
     }
   }
 }

@@ -3,41 +3,28 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Folder")]
-  public class Folder : FileSystemItem
+  [DBTable (Name = "TableInheritance_Folder")]
+  [NotAbstract]
+  public abstract class Folder: FileSystemItem
   {
-    // types
-
-    // static members and constants
-
-    public static new Folder GetObject (ObjectID id)
+    public new static Folder GetObject (ObjectID id)
     {
       return (Folder) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Folder ()
+    protected Folder (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected Folder (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [DBBidirectionalRelation ("ParentFolder", SortExpression = "Name ASC")]
+    public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
 
-    public DomainObjectCollection FileSystemItems
-    {
-      get { return GetRelatedObjects ("FileSystemItems"); }
-    }
-
-    public DateTime CreatedAt
-    {
-      get { return DataContainer.GetDateTime ("CreatedAt"); }
-      set { DataContainer.SetValue ("CreatedAt", value); }
-    }
+    public abstract DateTime CreatedAt { get; set; }
   }
 }

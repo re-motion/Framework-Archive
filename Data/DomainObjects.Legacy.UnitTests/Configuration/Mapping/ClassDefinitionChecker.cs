@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
@@ -20,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    public void Check (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
+    public void Check (XmlBasedClassDefinition expectedDefinition, XmlBasedClassDefinition actualDefinition)
     {
       Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID,
           string.Format ("IDs of class definitions do not match. Expected: {0}, actual: {1}",
@@ -82,10 +84,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
           string.Format ("AreResolvedTypesRequired does not match. Expected: {0}, actual: {1}",
           expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired));
 
-      foreach (ClassDefinition expectedDefinition in expectedDefinitions)
+      foreach (XmlBasedClassDefinition expectedDefinition in expectedDefinitions)
       {
         ClassDefinition actualDefinition = actualDefinitions[expectedDefinition.ClassType];
-        Check (expectedDefinition, actualDefinition);
+        Assert.That (actualDefinition, Is.InstanceOfType (typeof (XmlBasedClassDefinition)));
+        Check (expectedDefinition, (XmlBasedClassDefinition) actualDefinition);
 
         if (checkRelations)
         {

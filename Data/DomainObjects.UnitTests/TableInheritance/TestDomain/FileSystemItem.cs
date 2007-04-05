@@ -1,44 +1,26 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_FileSystemItem")]
+  [TestDomain]
   public abstract class FileSystemItem : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new FileSystemItem GetObject (ObjectID id)
-    {
-      return (FileSystemItem) DomainObject.GetObject (id);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public FileSystemItem ()
+    protected FileSystemItem (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected FileSystemItem (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    public string Name
-    {
-      get { return DataContainer.GetString ("Name"); }
-      set { DataContainer.SetValue ("Name", value); }
-    }
-
-    public Folder ParentFolder
-    {
-      get { return (Folder) GetRelatedObject ("ParentFolder"); }
-      set { SetRelatedObject ("ParentFolder", value); }
-    }
+    [DBBidirectionalRelation ("FileSystemItems")]
+    public abstract Folder ParentFolder { get; set; }
   }
 }

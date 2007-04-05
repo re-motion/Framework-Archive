@@ -1,52 +1,35 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Client")]
-  public class Client : DomainObject
+  [DBTable (Name = "TableInheritence_")]
+  [NotAbstract]
+  [TestDomain]
+  public abstract class Client : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Client GetObject (ObjectID id)
+    public new static Client GetObject (ObjectID id)
     {
       return (Client) DomainObject.GetObject (id);
     }
 
-    public static new Client GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Client) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Client ()
-    {
-    }
-
-    public Client (ClientTransaction clientTransaction) : base (clientTransaction)
+    public Client (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Client (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
     // methods and properties
 
-    public DomainObjectCollection AssignedObjects
-    {
-      get { return GetRelatedObjects ("AssignedObjects"); }
-    }
+    [DBBidirectionalRelation ("Client", SortExpression = "CreatedAt asc")]
+    public abstract ObjectList<DomainBase> AssignedObjects { get; }
 
-    public string Name
-    {
-      get { return DataContainer.GetString ("Name"); }
-      set { DataContainer.SetValue ("Name", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
   }
 }

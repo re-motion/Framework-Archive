@@ -3,62 +3,37 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Person")]
-  public class Person : DomainBase
+  [DBTable (Name = "TableInheritance_Person")]
+  [NotAbstract]
+  public abstract class Person: DomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new Person GetObject (ObjectID id)
+    public new static Person GetObject (ObjectID id)
     {
       return (Person) DomainObject.GetObject (id);
     }
 
-    public static new Person GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Person) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Person ()
-    {
-    }
-
-    public Person (ClientTransaction clientTransaction) : base (clientTransaction)
+    public Person (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Person (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string FirstName { get; set; }
 
-    public string FirstName
-    {
-      get { return DataContainer.GetString ("FirstName"); }
-      set { DataContainer.SetValue ("FirstName", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string LastName { get; set; }
 
-    public string LastName
-    {
-      get { return DataContainer.GetString ("LastName"); }
-      set { DataContainer.SetValue ("LastName", value); }
-    }
+    public abstract DateTime DateOfBirth { get; set; }
 
-    public DateTime DateOfBirth
-    {
-      get { return DataContainer.GetDateTime ("DateOfBirth"); }
-      set { DataContainer.SetValue ("DateOfBirth", value); }
-    }
+    [DBBidirectionalRelation ("Person")]
+    public abstract Address Address { get; }
 
-    public Address Address
-    {
-      get { return (Address) GetRelatedObject ("Address"); }
-    }
+    [Binary]
+    public abstract byte[] Photo { get; set; }
   }
 }

@@ -1,61 +1,38 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_AbstractBaseClassWithHierarchy")]
+  [TestDomain]
   public abstract class AbstractBaseClassWithHierarchy : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new AbstractBaseClassWithHierarchy GetObject (ObjectID id)
+    public new static AbstractBaseClassWithHierarchy GetObject (ObjectID id)
     {
       return (AbstractBaseClassWithHierarchy) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public AbstractBaseClassWithHierarchy ()
+    protected AbstractBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected AbstractBaseClassWithHierarchy (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    public string Name
-    {
-      get { return DataContainer.GetString ("Name"); }
-      set { DataContainer.SetValue ("Name", value); }
-    }
+    [DBBidirectionalRelation ("ChildAbstractBaseClassesWithHierarchy")]
+    public abstract AbstractBaseClassWithHierarchy ParentAbstractBaseClassWithHierarchy { get; set; }
 
-    public AbstractBaseClassWithHierarchy ParentAbstractBaseClassWithHierarchy
-    {
-      get { return (AbstractBaseClassWithHierarchy) GetRelatedObject ("ParentAbstractBaseClassWithHierarchy"); }
-      set { SetRelatedObject ("ParentAbstractBaseClassWithHierarchy", value); }
-    }
+    [DBBidirectionalRelation ("ParentAbstractBaseClassWithHierarchy", SortExpression = "Name DESC")]
+    public abstract ObjectList<AbstractBaseClassWithHierarchy> ChildAbstractBaseClassesWithHierarchy { get; }
 
-    public DomainObjectCollection ChildAbstractBaseClassesWithHierarchy
-    {
-      get { return GetRelatedObjects ("ChildAbstractBaseClassesWithHierarchy"); }
-    }
+    public abstract Client ClientFromAbstractBaseClass { get; set; }
 
-    public Client ClientFromAbstractBaseClass
-    {
-      get { return (Client) GetRelatedObject ("ClientFromAbstractBaseClass"); }
-      set { SetRelatedObject ("ClientFromAbstractBaseClass", value); }
-    }
-
-    public FileSystemItem FileSystemItemFromAbstractBaseClass
-    {
-      get { return (FileSystemItem) GetRelatedObject ("FileSystemItemFromAbstractBaseClass"); }
-      set { SetRelatedObject ("FileSystemItemFromAbstractBaseClass", value); }
-    }
+    public abstract FileSystemItem FileSystemItemFromAbstractBaseClass { get; set; }
   }
 }

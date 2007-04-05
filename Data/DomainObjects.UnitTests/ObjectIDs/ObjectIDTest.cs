@@ -12,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
   {
     // types
 
+    [DBTable]
     private class InvalidDomainObject : DomainObject
     {
     }

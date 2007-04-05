@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [StorageProviderStub]
-  public class StorageProviderStubDomainBase : DomainObject
+  public abstract class StorageProviderStubDomainBase : DomainObject
   {
     // types
 

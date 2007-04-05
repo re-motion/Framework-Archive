@@ -3,50 +3,24 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Region")]
-  public class Region : DomainObject
+  [DBTable (Name = "TableInheritance_Region")]
+  [NotAbstract]
+  public abstract class Region: DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Region GetObject (ObjectID id)
-    {
-      return (Region) DomainObject.GetObject (id);
-    }
-
-    public static new Region GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Region) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Region ()
-    {
-    }
-
-    public Region (ClientTransaction clientTransaction) : base (clientTransaction)
+    protected Region (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
     protected Region (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    public string Name
-    {
-      get { return DataContainer.GetString ("Name"); }
-      set { DataContainer.SetValue ("Name", value); }
-    }
-
-    public DomainObjectCollection Customers
-    {
-      get { return GetRelatedObjects ("Customers"); }
-    }
+    [DBBidirectionalRelation ("Region")]
+    public abstract ObjectList<Customer> Customers { get; }
   }
 }

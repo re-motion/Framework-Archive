@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -58,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigu
 
       foreach (XmlNode classNode in _classNodeList)
       {
-        ClassDefinition classDefinition = GetClassDefinition (classNode);
+        XmlBasedClassDefinition classDefinition = GetClassDefinition (classNode);
         classDefinitions.Add (classDefinition);
       }
     
@@ -86,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigu
       }
     }
 
-    private ClassDefinition GetClassDefinition (XmlNode classNode)
+    private XmlBasedClassDefinition GetClassDefinition (XmlNode classNode)
     {
       string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
       string entityName = GetEntityName (classNode);
@@ -94,11 +95,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigu
       string storageProviderID = classNode.SelectSingleNode (FormatXPath ("{0}:storageProviderID"), _namespaceManager).InnerText;
       string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
-      ClassDefinition classDefinition;
+      XmlBasedClassDefinition classDefinition;
       if (_resolveTypes)
-        classDefinition = new ClassDefinition (id, entityName, storageProviderID, LoaderUtility.GetType (classTypeName));
+        classDefinition = new XmlBasedClassDefinition (id, entityName, storageProviderID, LoaderUtility.GetType (classTypeName));
       else
-        classDefinition = new ClassDefinition (id, entityName, storageProviderID, classTypeName, _resolveTypes);
+        classDefinition = new XmlBasedClassDefinition (id, entityName, storageProviderID, classTypeName, _resolveTypes);
 
       FillPropertyDefinitions (classDefinition, classNode);
 

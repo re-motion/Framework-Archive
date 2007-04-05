@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
+
 [Serializable]
 public class ClassDefinition : ISerializable, IObjectReference
 {
@@ -525,57 +526,67 @@ public class ClassDefinition : ISerializable, IObjectReference
     PerformSetBaseClass (baseClass);
   }
 
-  internal void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
+  protected internal virtual void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
   {
+    ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
+
     if (_classType != null)
     {
-      if (GetEntityName () == null && !IsAbstract)
+      if (GetEntityName() == null && !IsAbstract)
       {
         throw CreateMappingException (
             "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",
-            _classType.AssemblyQualifiedName, _id);
+            _classType.AssemblyQualifiedName,
+            _id);
       }
     }
 
-    if (_baseClass != null && _entityName != null && _baseClass.GetEntityName () != null && _entityName != _baseClass.GetEntityName ())
+    if (_baseClass != null && _entityName != null && _baseClass.GetEntityName() != null && _entityName != _baseClass.GetEntityName())
     {
       throw CreateMappingException (
           "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.",
-          _id, _entityName, _baseClass.GetEntityName ());
+          _id,
+          _entityName,
+          _baseClass.GetEntityName());
     }
 
-    if (_baseClass != null)
-    {
-      PropertyDefinitionCollection basePropertyDefinitions = _baseClass.GetPropertyDefinitions ();
-      foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
-      {
-        if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
-        {
-          throw CreateMappingException (
-              "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
-              _id, propertyDefinition.PropertyName, basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
-        }
-      }
-    }
+    //if (_baseClass != null)
+    //{
+    //  PropertyDefinitionCollection basePropertyDefinitions = _baseClass.GetPropertyDefinitions();
+    //  foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
+    //  {
+    //    if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
+    //    {
+    //      throw CreateMappingException (
+    //          "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
+    //          _id,
+    //          propertyDefinition.PropertyName,
+    //          basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
+    //    }
+    //  }
+    //}
 
-    foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
-    {
-      if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.StorageSpecificName))
-      {
-        PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName];
+    //foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
+    //{
+    //  if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.StorageSpecificName))
+    //  {
+    //    PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName];
 
-        throw CreateMappingException (
-            "Property '{0}' of class '{1}' must not define column name '{2}',"
-            + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
-            myPropertyDefinition.PropertyName, _id, myPropertyDefinition.StorageSpecificName,
-            basePropertyDefinition.ClassDefinition.ID, basePropertyDefinition.PropertyName);
-      }
+    //    throw CreateMappingException (
+    //        "Property '{0}' of class '{1}' must not define column name '{2}',"
+    //        + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
+    //        myPropertyDefinition.PropertyName,
+    //        _id,
+    //        myPropertyDefinition.StorageSpecificName,
+    //        basePropertyDefinition.ClassDefinition.ID,
+    //        basePropertyDefinition.PropertyName);
+    //  }
 
-      allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, myPropertyDefinition);
-    }
+    //  allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, myPropertyDefinition);
+    //}
 
-    foreach (ClassDefinition derivedClassDefinition in _derivedClasses)
-      derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
+    //foreach (ClassDefinition derivedClassDefinition in _derivedClasses)
+    //  derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
   }
 
   internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)

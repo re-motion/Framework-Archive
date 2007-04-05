@@ -1,71 +1,38 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Address")]
-  public class Address : DomainObject
+  [DBTable (Name = "TableInheritance_Address")]
+  [NotAbstract]
+  [TestDomain]
+  public abstract class Address : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Address GetObject (ObjectID id)
-    {
-      return (Address) DomainObject.GetObject (id);
-    }
-
-    public static new Address GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Address) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Address ()
-    {
-    }
-
-    public Address (ClientTransaction clientTransaction) : base (clientTransaction)
+    public Address (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
     protected Address (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Street { get; set; }
 
-    public string Street
-    {
-      get { return DataContainer.GetString ("Street"); }
-      set { DataContainer.SetValue ("Street", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 10)]
+    public abstract string Zip { get; set; }
 
-    public string Zip
-    {
-      get { return DataContainer.GetString ("Zip"); }
-      set { DataContainer.SetValue ("Zip", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string City { get; set; }
 
-    public string City
-    {
-      get { return DataContainer.GetString ("City"); }
-      set { DataContainer.SetValue ("City", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string Country { get; set; }
 
-    public string Country
-    {
-      get { return DataContainer.GetString ("Country"); }
-      set { DataContainer.SetValue ("Country", value); }
-    }
-
-    public Person Person
-    {
-      get { return (Person) GetRelatedObject ("Person"); }
-      set { SetRelatedObject ("Person", value); }
-    }
+    [DBBidirectionalRelation ("Address")]
+    [Mandatory]
+    public abstract Person Person { get; set; }
   }
 }

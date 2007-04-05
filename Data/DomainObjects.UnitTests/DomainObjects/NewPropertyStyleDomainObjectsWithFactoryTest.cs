@@ -18,6 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     // types
 
     [NotAbstract]
+    [DBTable]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
       public NonInstantiableAbstractClass () : base (null, null) { }
@@ -25,12 +26,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [NotAbstract]
+    [DBTable]
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
       public NonInstantiableAbstractClassWithProps () : base (null, null) { }
       public abstract int Foo { get; }
     }
 
+    [DBTable]
     public sealed class NonInstantiableSealedClass : DomainObject
     {
       public NonInstantiableSealedClass () : base (null, null) { }
@@ -40,6 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
     }
 
+    [DBTable]
     public class Throws : DomainObject
     {
       public Throws ()
@@ -53,6 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
     }
 
+    [DBTable]
     public class ClassWithWrongConstructor : DomainObject
     {
       public ClassWithWrongConstructor (string s)

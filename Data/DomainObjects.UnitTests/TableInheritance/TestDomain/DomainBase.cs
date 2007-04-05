@@ -1,68 +1,43 @@
 using System;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_DomainBase")]
-  public abstract class DomainBase : DomainObject
+  [TestDomain]
+  public abstract class DomainBase: DomainObject
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    protected DomainBase ()
+    protected DomainBase (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
-      InitializeNew ();
-    }
-
-    protected DomainBase (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-      InitializeNew ();
+      if (objectID == null)
+        InitializeNew();
     }
 
     protected DomainBase (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    private void InitializeNew ()
+    private void InitializeNew()
     {
       CreatedBy = "UnitTests";
       CreatedAt = DateTime.Now;
     }
 
-    // methods and properties
-
     // Note: This property always returns an empty collection.
-    public DomainObjectCollection AbstractClassesWithoutDerivations
-    {
-      get { return GetRelatedObjects ("AbstractClassesWithoutDerivations"); }
-    }
+    [DBBidirectionalRelation ("DomainBase")]
+    public abstract ObjectList<AbstractClassWithoutDerivations> AbstractClassesWithoutDerivations { get; }
 
-    public string CreatedBy
-    {
-      get { return DataContainer.GetString ("CreatedBy"); }
-      set { DataContainer.SetValue ("CreatedBy", value); }
-    }
+    [String (IsNullable = false, MaximumLength = 100)]
+    public abstract string CreatedBy { get; set; }
 
-    public DateTime CreatedAt
-    {
-      get { return DataContainer.GetDateTime ("CreatedAt"); }
-      set { DataContainer.SetValue ("CreatedAt", value); }
-    }
+    public abstract DateTime CreatedAt { get; set; }
 
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-    }
+    [DBBidirectionalRelation ("AssignedObjects")]
+    public abstract Client Client { get; }
 
-    public DomainObjectCollection HistoryEntries
-    {
-      get { return GetRelatedObjects ("HistoryEntries"); }
-    }
+    [DBBidirectionalRelation ("Owner", SortExpression = "HistoryDate desc")]
+    public abstract ObjectList<HistoryEntry> HistoryEntries { get; }
   }
 }

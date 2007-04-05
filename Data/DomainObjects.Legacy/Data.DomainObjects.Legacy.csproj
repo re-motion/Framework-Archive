@@ -38,6 +38,7 @@
     <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\MappingLoader.cs" />
     <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\LegacyPrefixNamespace.cs" />
     <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\RelationDefinitionLoader.cs" />
+    <Compile Include="Mapping\XmlBasedClassDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schemas\LegacySchemaLoader.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />

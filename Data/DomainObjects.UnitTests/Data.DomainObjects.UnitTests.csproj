@@ -542,43 +542,99 @@
     <Compile Include="TableInheritance\ClassDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs" />
-    <Compile Include="TableInheritance\DataContainerFactoryTest.cs" />
+    <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\DataContainerFactoryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TableInheritance\DomainObjectIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TableInheritance\DomainObjectTest.cs" />
-    <Compile Include="TableInheritance\IntegrationTest.cs" />
+    <Compile Include="TableInheritance\DomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\IntegrationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TableInheritance\MappingConfigurationTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableInheritance\ObjectIDTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TableInheritance\SelectCommandBuilderTest.cs" />
-    <Compile Include="TableInheritance\SqlProviderTest.cs" />
-    <Compile Include="TableInheritance\SqlProviderBaseTest.cs" />
-    <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
-    <Compile Include="TableInheritance\TestDomain\AbstractClassWithoutDerivations.cs" />
-    <Compile Include="TableInheritance\TestDomain\Address.cs" />
-    <Compile Include="TableInheritance\TestDomain\Client.cs" />
-    <Compile Include="TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs" />
-    <Compile Include="TableInheritance\TestDomain\AbstractBaseClassWithHierarchy.cs" />
-    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityFromBaseClassWithHierarchy.cs" />
-    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityWithHierarchy.cs" />
-    <Compile Include="TableInheritance\TestDomain\File.cs" />
-    <Compile Include="TableInheritance\TestDomain\Folder.cs" />
-    <Compile Include="TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs" />
-    <Compile Include="TableInheritance\TestDomain\FileSystemItem.cs" />
-    <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs" />
-    <Compile Include="TableInheritance\TestDomain\Order.cs" />
-    <Compile Include="TableInheritance\TestDomain\Region.cs" />
-    <Compile Include="TableInheritance\TestDomain\OrganizationalUnit.cs" />
-    <Compile Include="TableInheritance\TestDomain\Customer.cs" />
-    <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />
-    <Compile Include="TableInheritance\TestDomain\Person.cs" />
-    <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs" />
-    <Compile Include="TableInheritance\ValueConverterTest.cs" />
+    <Compile Include="TableInheritance\SelectCommandBuilderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\SqlProviderBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\SqlProviderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TableInheritanceMappingTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\AbstractBaseClassWithHierarchy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\AbstractClassWithoutDerivations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Address.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Client.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Customer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityFromBaseClassWithHierarchy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityWithHierarchy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\DomainBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\File.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\FileSystemItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Folder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Order.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\OrganizationalUnit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Person.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\TestDomain\Region.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\ValueConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestDomain\AbstractClassNotInMapping.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
