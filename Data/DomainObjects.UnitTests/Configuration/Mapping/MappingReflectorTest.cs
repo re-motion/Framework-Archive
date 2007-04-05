@@ -10,7 +10,7 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class MappingReflectorTest: StandardMappingTest
+  public class MappingReflectorTest: LegacyMappingTest
   {
     [Test]
     public void GetResolveTypes()

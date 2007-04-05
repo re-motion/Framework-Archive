@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class ObjectDeletedExceptionTest : StandardMappingTest
+  public class ObjectDeletedExceptionTest : LegacyMappingTest
   {
     // types
 

@@ -88,8 +88,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classDefinitions.Add (CreateOrderTicketDefinition (testDomainBase));
       classDefinitions.Add (CreateOrderItemDefinition (testDomainBase));
 
-      //TODO: reset to storageProviderStubDomainBase
-      ClassDefinition officialDefinition = CreateOfficialDefinition (testDomainBase);
+      ClassDefinition officialDefinition = CreateOfficialDefinition (storageProviderStubDomainBase);
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
@@ -209,22 +208,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return order;
     }
 
-    //TODO: reset to c_unitTestStorageProviderStubID
     private ClassDefinition CreateOfficialDefinition (ClassDefinition baseClass)
     {
       ClassDefinition official = new ClassDefinition (
-          "Official", "Official", DatabaseTest.c_testDomainProviderID, typeof (Official), baseClass);
+          "Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official), baseClass);
 
       official.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Name", "Name", "string", 100));
 
       return official;
     }
 
-    //TODO: reset to c_unitTestStorageProviderStubID
     private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
     {
       return new ClassDefinition (
-          "SpecialOfficial", null, DatabaseTest.c_testDomainProviderID, typeof (SpecialOfficial), officialDefinition);
+          "SpecialOfficial", null, DatabaseTest.c_unitTestStorageProviderStubID, typeof (SpecialOfficial), officialDefinition);
     }
 
     private ClassDefinition CreateOrderTicketDefinition (ClassDefinition baseClass)

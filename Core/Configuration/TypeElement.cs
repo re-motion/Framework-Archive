@@ -6,6 +6,18 @@ namespace Rubicon.Configuration
   public class TypeElement<TBase> : ConfigurationElement
       where TBase : class
   {
+    //TODO: test
+    public static ConfigurationProperty CreateTypeProperty (Type defaultValue)
+    {
+      return new ConfigurationProperty (
+          "type",
+          typeof (Type),
+          defaultValue,
+          new Rubicon.Utilities.TypeNameConverter (),
+          new SubclassTypeValidator (typeof (TBase)),
+          ConfigurationPropertyOptions.IsRequired);
+    }
+
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _typeProperty;
 
@@ -16,13 +28,7 @@ namespace Rubicon.Configuration
 
     protected TypeElement (Type defaultValue)
     {
-      _typeProperty = new ConfigurationProperty (
-          "type",
-          typeof (Type),
-          defaultValue,
-          new Rubicon.Utilities.TypeNameConverter (),
-          new SubclassTypeValidator (typeof (TBase)),
-          ConfigurationPropertyOptions.IsRequired);
+      _typeProperty = CreateTypeProperty (defaultValue);
 
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_typeProperty);

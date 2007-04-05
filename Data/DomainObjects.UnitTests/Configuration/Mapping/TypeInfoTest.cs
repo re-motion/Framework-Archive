@@ -8,7 +8,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class TypeInfoTest: StandardMappingTest
+  public class TypeInfoTest: LegacyMappingTest
   {
     private enum TypeMappingTestEnum
     {

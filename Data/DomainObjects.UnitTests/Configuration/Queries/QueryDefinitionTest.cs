@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   [TestFixture]
-  public class QueryDefinitionTest : StandardMappingTest
+  public class QueryDefinitionTest : LegacyMappingTest
   {
     // types
 

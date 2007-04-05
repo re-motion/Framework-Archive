@@ -7,7 +7,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class ValueConverterBaseTest : StandardMappingTest
+  public class ValueConverterBaseTest : LegacyMappingTest
   {
     // types
 

@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ConstructionOfVirtualRelationEndPointDefinitionTest : StandardMappingTest
+  public class ConstructionOfVirtualRelationEndPointDefinitionTest : LegacyMappingTest
   {
     // types
 

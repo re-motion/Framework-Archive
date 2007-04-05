@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class ValueConverterTest : StandardMappingTest
+  public class ValueConverterTest : LegacyMappingTest
   {
     // types
 

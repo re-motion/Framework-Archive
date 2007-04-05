@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionTest : StandardMappingTest
+  public class ClassDefinitionTest : LegacyMappingTest
   {
     // types
 

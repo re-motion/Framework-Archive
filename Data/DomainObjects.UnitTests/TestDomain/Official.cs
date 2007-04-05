@@ -2,10 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  //TODO: Reset domain base
   [Serializable]
   [DBTable]
-  public class Official : TestDomainBase//StorageProviderStubDomainBase
+  public class Official : StorageProviderStubDomainBase
   {
     // types
 

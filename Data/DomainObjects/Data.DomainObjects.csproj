@@ -126,6 +126,7 @@
     <Compile Include="MandatoryAttribute.cs" />
     <Compile Include="DBColumnAttribute.cs" />
     <Compile Include="DBTableAttribute.cs" />
+    <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StorageGroupAttribute.cs" />

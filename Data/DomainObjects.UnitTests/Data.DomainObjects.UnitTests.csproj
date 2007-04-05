@@ -147,7 +147,9 @@
     <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\AssemblyInfo.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\AssemblyInfo.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidBidirectionalRelation.cs" />
+    <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
+    <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
     <Compile Include="Factories\LegacyTestMappingConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
     <Compile Include="ReflectionBasedMappingTest.cs" />
@@ -533,7 +535,7 @@
     <Compile Include="Serialization\QueriesTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StandardMappingTest.cs" />
+    <Compile Include="LegacyMappingTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -624,6 +626,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStorageProviderFromStorageGroup.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithDefaultStorageProvider.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
     <Compile Include="TestDomain\StorageProviderStubTestDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />

@@ -10,7 +10,7 @@ using Rubicon.Development.UnitTesting.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class RdbmsProviderDefinitionTest: StandardMappingTest
+  public class RdbmsProviderDefinitionTest: LegacyMappingTest
   {
     private StorageProviderDefinition _definition;
     private ConfigSystemHelper _configSystemHelper;

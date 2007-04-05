@@ -150,6 +150,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classReflector.GetClassDefinition(_classDefinitions);
     }
 
+    [Test]
+    public void GetClassDefinition_ForClassWithStorageProviderFromStorageGroup ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithStorageProviderFromStorageGroup));
+      ClassDefinition expected = CreateClassWithStorageProviderFromStorageGroup ();
+
+      ClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+
+      Assert.IsNotNull (actual);
+      _classDefinitionChecker.Check (expected, actual);
+      Assert.AreEqual (1, _classDefinitions.Count);
+    }
+
+    //TODO: Explicit default provider
+    [Test]
+    public void GetClassDefinition_ForClassWithDefaultStorageProvider ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithDefaultStorageProvider));
+      ClassDefinition expected = CreateClassWithDefaultStorageProvider ();
+
+      ClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+
+      Assert.IsNotNull (actual);
+      _classDefinitionChecker.Check (expected, actual);
+      Assert.AreEqual (1, _classDefinitions.Count);
+    }
+
     private ClassDefinition CreateClassWithMixedPropertiesClassDefinition()
     {
       ClassDefinition classDefinition = new ClassDefinition (
@@ -186,6 +213,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           "ClassWithOneSideRelationProperties",
           "TestDomain",
           typeof (ClassWithOneSideRelationProperties),
+          false);
+
+      return classDefinition;
+    }
+
+    private ClassDefinition CreateClassWithDefaultStorageProvider ()
+    {
+      ClassDefinition classDefinition = new ClassDefinition (
+          "ClassWithDefaultStorageProvider",
+          "ClassWithDefaultStorageProvider",
+          "TestDomain",
+          typeof (ClassWithDefaultStorageProvider),
+          false);
+
+      return classDefinition;
+    }
+
+    private ClassDefinition CreateClassWithStorageProviderFromStorageGroup ()
+    {
+      ClassDefinition classDefinition = new ClassDefinition (
+          "ClassWithStorageProviderFromStorageGroup",
+          "ClassWithStorageProviderFromStorageGroup",
+          "UnitTestStorageProviderStub",
+          typeof (ClassWithStorageProviderFromStorageGroup),
           false);
 
       return classDefinition;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -106,9 +107,16 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return GetID();
     }
 
+    //TODO: Move type resolving to storagegrouplist
     private string GetStorageProviderID()
     {
-      return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
+      StorageGroupAttribute storageGroupAttribute = AttributeUtility.GetCustomAttribute<StorageGroupAttribute> (Type, true);
+      if (storageGroupAttribute == null)
+        return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
+
+      string storageGroupName = TypeUtility.GetPartialAssemblyQualifiedName (storageGroupAttribute.GetType());
+      StorageGroupElement storageGroup = DomainObjectsConfiguration.Current.Storage.StorageGroups[storageGroupName];
+      return storageGroup.StorageProviderName;
     }
 
     private bool IsAbstract()

@@ -9,10 +9,11 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  public class StandardMappingTest: DatabaseTest
+  public class LegacyMappingTest: DatabaseTest
   {
     // types
 
@@ -29,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     // construction and disposing
 
-    protected StandardMappingTest()
+    protected LegacyMappingTest()
         : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
     {
     }
@@ -41,7 +42,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create(); 
       PersistenceConfiguration persistenceConfiguration =
-          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
+          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[DatabaseTest.c_testDomainProviderID]);
+      persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new TestDomainAttribute(), DatabaseTest.c_testDomainProviderID));
+      persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new StorageProviderStubAttribute(), DatabaseTest.c_unitTestStorageProviderStubID));
 
       _domainObjectsConfiguration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration);
       DomainObjectsConfiguration.SetCurrent (_domainObjectsConfiguration);

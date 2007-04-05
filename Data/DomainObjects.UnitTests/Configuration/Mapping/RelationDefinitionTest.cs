@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationDefinitionTest : StandardMappingTest
+  public class RelationDefinitionTest : LegacyMappingTest
   {
     // types
 

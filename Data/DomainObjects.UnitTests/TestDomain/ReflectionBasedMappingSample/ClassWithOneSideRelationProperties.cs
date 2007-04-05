@@ -4,8 +4,9 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
   [DBTable]
-  [NotAbstractAttribute]
-  public abstract class ClassWithOneSideRelationProperties : DomainObject //TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithOneSideRelationProperties : TestDomainBase
   {
     protected ClassWithOneSideRelationProperties (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
