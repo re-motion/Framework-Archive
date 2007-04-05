@@ -8,7 +8,7 @@ using Rubicon.Security.Metadata;
 namespace Rubicon.Security.Configuration
 {
   /// <summary> The configuration section for <see cref="Rubicon.Security"/>. </summary>
-  /// <threadsafety static="true" instance="true">
+  /// <threadsafety static="true" instance="true" />
   public class SecurityConfiguration : ExtendedConfigurationSection
   {
     // types

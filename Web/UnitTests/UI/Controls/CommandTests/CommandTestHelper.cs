@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 using Rubicon.Security;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
@@ -142,7 +143,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateHrefCommandAsPartialMock ()
     {
       Command command = _mocks.PartialMock<Command> ();
-      SetupResult.For (command.HrefCommand).CallOriginalMethod ();
+      SetupResult.For (command.HrefCommand).CallOriginalMethod (OriginalCallOptions.NoExpectation);
       InitializeHrefCommand (command);
 
       return command;
@@ -189,7 +190,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateWxeFunctionCommandAsPartialMock ()
     {
       Command command = _mocks.PartialMock<Command> ();
-      SetupResult.For (command.WxeFunctionCommand).CallOriginalMethod();
+      SetupResult.For (command.WxeFunctionCommand).CallOriginalMethod(OriginalCallOptions.NoExpectation);
       InitializeWxeFunctionCommand (command);
 
       return command;

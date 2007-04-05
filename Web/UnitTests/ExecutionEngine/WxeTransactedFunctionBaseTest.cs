@@ -5,9 +5,9 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data;
 using Rubicon.Web.ExecutionEngine;
-using Mocks_Is = Rhino.Mocks.Is;
-using Mocks_List = Rhino.Mocks.List;
-using Mocks_Property = Rhino.Mocks.Property;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_List = Rhino.Mocks.Constraints.List;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {

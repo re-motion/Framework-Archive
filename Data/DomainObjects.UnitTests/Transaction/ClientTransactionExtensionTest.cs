@@ -1,15 +1,17 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Rhino.Mocks.Interfaces;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Mocks_Is = Rhino.Mocks.Is;
-using Mocks_List = Rhino.Mocks.List;
-using Mocks_Property = Rhino.Mocks.Property;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_List = Rhino.Mocks.Constraints.List;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -669,7 +671,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.FilterQueryResult (null, null);
         LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query));
         filteringExtension.FilterQueryResult (null, null);
-        LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query)).CallOriginalMethod ();
+        LastCall.Constraints (Mocks_Property.Value ("Count", 2), Mocks_Is.Same (query)).CallOriginalMethod (OriginalCallOptions.CreateExpectation);
         lastExtension.FilterQueryResult (null, null);
         LastCall.Constraints (Mocks_Property.Value ("Count", 1), Mocks_Is.Same (query));
       }

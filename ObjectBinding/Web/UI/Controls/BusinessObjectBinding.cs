@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
+using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 
@@ -292,7 +293,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     /// <param name="property">The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.</param>
     /// <returns>
     ///   <list type="bullet">
-    ///     <item><see langword="true"/> is <see cref="SupportedPropertyInterfaces"/> is null.</item>
+    ///     <item><see langword="true"/> if <see cref="IExtendedBusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> is null.</item>
     ///     <item><see langword="false"/> if the <see cref="DataSource"/> is in <see cref="DataSourceMode.Search"/> mode.</item>
     ///     <item>Otherwise, <see langword="IsPropertyInterfaceSupported"/> is evaluated and returned as result.</item>
     ///   </list>

@@ -14,9 +14,9 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.UnitTests.Domain;
 using Rubicon.SecurityManager.UnitTests.TestDomain;
-using Mocks_Is = Rhino.Mocks.Is;
-using Mocks_List = Rhino.Mocks.List;
-using Mocks_Property = Rhino.Mocks.Property;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_List = Rhino.Mocks.Constraints.List;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Rubicon.SecurityManager.UnitTests
 {

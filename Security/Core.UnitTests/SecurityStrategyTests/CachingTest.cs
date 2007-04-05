@@ -7,9 +7,9 @@ using Rubicon.Collections;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.UnitTests.Configuration;
 using Rubicon.Security.UnitTests.SampleDomain;
-using Mocks_Is = Rhino.Mocks.Is;
-using Mocks_List = Rhino.Mocks.List;
-using Mocks_Property = Rhino.Mocks.Property;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_List = Rhino.Mocks.Constraints.List;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {

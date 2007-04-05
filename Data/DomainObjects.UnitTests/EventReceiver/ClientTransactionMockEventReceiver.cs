@@ -2,9 +2,9 @@ using System;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 using Rubicon.Utilities;
-using Mocks_Is = Rhino.Mocks.Is;
-using Mocks_List = Rhino.Mocks.List;
-using Mocks_Property = Rhino.Mocks.Property;
+using Mocks_Is = Rhino.Mocks.Constraints.Is;
+using Mocks_List = Rhino.Mocks.Constraints.List;
+using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {

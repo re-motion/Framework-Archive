@@ -2,8 +2,8 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Xml.Serialization;
-using Castle.DynamicProxy.Builder.CodeBuilder;
-using Castle.DynamicProxy.Builder.CodeGenerators;
+using Castle.DynamicProxy;
+using Castle.DynamicProxy.Generators.Emitters;
 using NUnit.Framework;
 using Rubicon.Xml;
 
@@ -66,11 +66,11 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     private Type CreateType (string typeName, params CustomAttributeBuilder[] attributeBuilders)
     {
       ModuleScope moduleScope = new ModuleScope();
-      EasyType easyType = new EasyType (moduleScope, typeName, typeof (object), null, false);
+      ClassEmitter classEmitter = new ClassEmitter (moduleScope, typeName, typeof (object), null, false);
       foreach (CustomAttributeBuilder attributeBuilder in attributeBuilders)
-        easyType.TypeBuilder.SetCustomAttribute (attributeBuilder);
+        classEmitter.TypeBuilder.SetCustomAttribute (attributeBuilder);
 
-      return easyType.BuildType ();
+      return classEmitter.BuildType ();
     }
 
     private CustomAttributeBuilder CreateXmlTypeAttributeBuilder (string @namespace)
