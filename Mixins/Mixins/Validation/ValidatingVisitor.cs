@@ -16,6 +16,8 @@ namespace Mixins.Validation
     private List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>> ();
     private List<IValidationRule<RequiredFaceTypeDefinition>> _requiredFaceTypeRules = new List<IValidationRule<RequiredFaceTypeDefinition>> ();
     private List<IValidationRule<RequiredBaseCallTypeDefinition>> _requiredBaseCallTypeRules = new List<IValidationRule<RequiredBaseCallTypeDefinition>> ();
+    private List<IValidationRule<ThisDependencyDefinition>> _thisDependencyRules = new List<IValidationRule<ThisDependencyDefinition>> ();
+    private List<IValidationRule<BaseDependencyDefinition>> _baseDependencyRules = new List<IValidationRule<BaseDependencyDefinition>> ();
 
     public ValidatingVisitor(IValidationLog validationLog)
     {
@@ -57,6 +59,16 @@ namespace Mixins.Validation
       get { return _requiredBaseCallTypeRules; }
     }
 
+    public IList<IValidationRule<ThisDependencyDefinition>> ThisDependencyRules
+    {
+      get { return _thisDependencyRules; }
+    }
+
+    public IList<IValidationRule<BaseDependencyDefinition>> BaseDependencyRules
+    {
+      get { return _baseDependencyRules; }
+    }
+
     public void Visit (ApplicationDefinition application)
     {
       CheckRules (_applicationRules, application);
@@ -90,6 +102,16 @@ namespace Mixins.Validation
     public void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType)
     {
       CheckRules (_requiredBaseCallTypeRules, requiredBaseCallType);
+    }
+
+    public void Visit (ThisDependencyDefinition dependency)
+    {
+      CheckRules (_thisDependencyRules, dependency);
+    }
+
+    public void Visit (BaseDependencyDefinition dependency)
+    {
+      CheckRules (_baseDependencyRules, dependency);
     }
 
     private void CheckRules<TDefinition> (List<IValidationRule<TDefinition>> rules, TDefinition definition) where TDefinition : IVisitableDefinition

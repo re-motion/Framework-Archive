@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Mixins;
 using Mixins.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,16 +10,10 @@ namespace Mixins.Definitions.Building
   public class MixinDefinitionBuilder
   {
     private BaseClassDefinition _baseClass;
-    private RequiredTypesBuilder<RequiredFaceTypeDefinition> _requiredFacesBuilder;
-    private RequiredTypesBuilder<RequiredBaseCallTypeDefinition> _requiredBaseCallTypesBuilder;
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
       _baseClass = baseClass;
-      _requiredFacesBuilder = new RequiredTypesBuilder<RequiredFaceTypeDefinition> (_baseClass, _baseClass.RequiredFaceTypes, typeof (ThisAttribute),
-          delegate (BaseClassDefinition bc, Type t) { return new RequiredFaceTypeDefinition (bc, t); });
-      _requiredBaseCallTypesBuilder = new RequiredTypesBuilder<RequiredBaseCallTypeDefinition> (_baseClass, _baseClass.RequiredBaseCallTypes,
-          typeof (BaseAttribute), delegate (BaseClassDefinition bc, Type t) { return new RequiredBaseCallTypeDefinition (bc, t); });
     }
 
     public BaseClassDefinition BaseClass
@@ -37,8 +32,13 @@ namespace Mixins.Definitions.Building
       AnalyzeOverrides (mixin);
       AnalyzeInitializationMethods (mixin);
 
-      _requiredFacesBuilder.Apply (mixin);
-      _requiredBaseCallTypesBuilder.Apply (mixin);
+      RequirementsAnalyzer faceRequirementsAnalyzer = new RequirementsAnalyzer (_baseClass, typeof (ThisAttribute));
+      faceRequirementsAnalyzer.Analyze (mixin);
+      ApplyFaceTypeRequirements (faceRequirementsAnalyzer.Results, mixin);
+
+      RequirementsAnalyzer baseRequirementsAnalyzer = new RequirementsAnalyzer (_baseClass, typeof (BaseAttribute));
+      baseRequirementsAnalyzer.Analyze (mixin);
+      ApplyBaseCallTypeRequirements (baseRequirementsAnalyzer.Results, mixin);
     }
 
     private void InitializeMembers (MixinDefinition mixin)
@@ -58,6 +58,7 @@ namespace Mixins.Definitions.Building
       {
         InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
         mixin.InterfaceIntroductions.Add (introducedInterface);
+        BaseClass.IntroducedInterfaces.Add (introducedInterface);
       }
     }
 
@@ -108,6 +109,36 @@ namespace Mixins.Definitions.Building
         {
           yield return method;
         }
+      }
+    }
+
+    private void ApplyFaceTypeRequirements (IEnumerable<Type> requiredTypes, MixinDefinition mixin)
+    {
+      foreach (Type type in requiredTypes)
+      {
+        RequiredFaceTypeDefinition requirement = BaseClass.RequiredFaceTypes[type];
+        if (requirement == null)
+        {
+          requirement = new RequiredFaceTypeDefinition (BaseClass, type);
+          BaseClass.RequiredFaceTypes.Add (requirement);
+        }
+        requirement.Requirers.Add (mixin);
+        mixin.ThisDependencies.Add (new ThisDependencyDefinition (requirement, mixin));
+      }
+    }
+
+    private void ApplyBaseCallTypeRequirements (IEnumerable<Type> requiredTypes, MixinDefinition mixin)
+    {
+      foreach (Type type in requiredTypes)
+      {
+        RequiredBaseCallTypeDefinition requirement = BaseClass.RequiredBaseCallTypes[type];
+        if (requirement == null)
+        {
+          requirement = new RequiredBaseCallTypeDefinition (BaseClass, type);
+          BaseClass.RequiredBaseCallTypes.Add (requirement);
+        }
+        requirement.Requirers.Add (mixin);
+        mixin.BaseDependencies.Add (new BaseDependencyDefinition (requirement, mixin));
       }
     }
   }

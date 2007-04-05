@@ -13,17 +13,17 @@ namespace Mixins.Validation.DefaultLog
         if (result.TotalRulesExecuted == 0)
         {
           Console.ForegroundColor = ConsoleColor.DarkGray;
+          Console.WriteLine ("No rules found for {0} '{1}'", result.Definition.GetType ().Name, result.Definition.FullName);
         }
-        else
+        else if (result.TotalRulesExecuted != result.Successes.Count)
         {
           Console.ForegroundColor = ConsoleColor.Gray;
+          Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
         }
-        Console.WriteLine ("{0} for {1}, {2} rules executed", result.Definition.GetType ().Name, result.Definition.FullName, result.TotalRulesExecuted);
         DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
-        DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
-        DumpResultList ("warnings", result.Failures, ConsoleColor.Yellow, ConsoleColor.Black);
+        // DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
+        DumpResultList ("warnings", result.Warnings, ConsoleColor.Yellow, ConsoleColor.Black);
         DumpResultList ("failures", result.Failures, ConsoleColor.Red, ConsoleColor.Black);
-        Console.WriteLine ();
         Console.ForegroundColor = ConsoleColor.Gray;
       }
     }

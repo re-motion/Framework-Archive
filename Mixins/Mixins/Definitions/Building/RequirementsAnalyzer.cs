@@ -5,26 +5,24 @@ using System.Collections.Generic;
 
 namespace Mixins.Definitions.Building
 {
-  public class RequiredTypesBuilder<TValue>
-      where TValue : IVisitableDefinition
+  public class RequirementsAnalyzer
   {
-    private DefinitionItemCollection<Type, TValue> _requiredTypes;
+    private Dictionary<Type, Type> _requirements = new Dictionary<Type, Type> (); // used as a set type
     private Type _filterAttribute;
     private BaseClassDefinition _baseClass;
-    private ValueCreator _valueCreator;
 
-    public delegate TValue ValueCreator (BaseClassDefinition baseClass, Type requiredType);
-
-    public RequiredTypesBuilder (BaseClassDefinition baseClass, DefinitionItemCollection<Type, TValue> requiredTypeCollection, Type filterAttribute,
-        ValueCreator valueCreator)
+    public RequirementsAnalyzer (BaseClassDefinition baseClass, Type filterAttribute)
     {
       _baseClass = baseClass;
-      _valueCreator = valueCreator;
-      _requiredTypes = requiredTypeCollection;
       _filterAttribute = filterAttribute;
     }
 
-    public void Apply (MixinDefinition mixin)
+    public IEnumerable<Type> Results
+    {
+      get { return _requirements.Keys; }
+    }
+
+    public void Analyze (MixinDefinition mixin)
     {
       Type mixinBase = GetMixinBase (mixin);
       if (mixinBase != null)
@@ -39,7 +37,7 @@ namespace Mixins.Definitions.Building
 
         foreach (Type genericArgument in GetFilteredGenericArguments (mixinBase))
         {
-          ApplyGenericArgumentRequirements (genericArgument);
+          AnalyzeRequirementsForMixinBaseArgument (genericArgument);
         }
       }
     }
@@ -87,30 +85,35 @@ namespace Mixins.Definitions.Building
       }
     }
 
-    // Since mixinBase is not a generic type definition, all of its arguments are bound, either to real types or to new type parameters
+    // The generic arguments used for MixinBase<,> are bound to either to real types or to new type parameters
     // The real types are directly taken as required interfaces; the type parameters have constraints which are taken as required interfaces
-    private void ApplyGenericArgumentRequirements (Type genericArgument)
+    private void AnalyzeRequirementsForMixinBaseArgument (Type genericArgument)
     {
       if (genericArgument.IsGenericParameter)
       {
         Type[] constraints = genericArgument.GetGenericParameterConstraints ();
         foreach (Type constraint in constraints)
         {
-          ApplyRequiredType (constraint);
+          AnalyzeRequirementForType (constraint);
         }
       }
       else
       {
-        ApplyRequiredType (genericArgument);
+        AnalyzeRequirementForType (genericArgument);
       }
     }
 
-    private void ApplyRequiredType (Type requiredType)
+    private void AnalyzeRequirementForType (Type requiredType)
     {
       Debug.Assert (!requiredType.IsGenericParameter);
-      if (!_requiredTypes.HasItem (requiredType) && !requiredType.Equals(typeof(INull)))
+      if (requiredType.Equals (typeof (INull)))
       {
-        _requiredTypes.Add (_valueCreator(_baseClass, requiredType));
+        return;
+      }
+
+      if (!_requirements.ContainsKey (requiredType))
+      {
+        _requirements.Add (requiredType, requiredType);
       }
     }
   }

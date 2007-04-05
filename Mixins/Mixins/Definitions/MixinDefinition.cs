@@ -10,6 +10,10 @@ namespace Mixins.Definitions
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
     public readonly DefinitionItemCollection<MethodInfo, MethodDefinition> InitializationMethods =
         new DefinitionItemCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
+    public readonly DefinitionItemCollection<Type, ThisDependencyDefinition> ThisDependencies =
+        new DefinitionItemCollection<Type, ThisDependencyDefinition> (delegate (ThisDependencyDefinition d) { return d.RequiredType.Type; });
+    public readonly DefinitionItemCollection<Type, BaseDependencyDefinition> BaseDependencies =
+        new DefinitionItemCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
 
     private BaseClassDefinition _baseClass;
     
@@ -46,6 +50,8 @@ namespace Mixins.Definitions
       Members.Accept (visitor);
       InterfaceIntroductions.Accept (visitor);
       InitializationMethods.Accept (visitor);
+      ThisDependencies.Accept (visitor);
+      BaseDependencies.Accept (visitor);
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Mixins.Definitions
       get { return Type.FullName; }
     }
 
-    public IEnumerable<Type> ImplementedInterfaces
+    public IList<Type> ImplementedInterfaces
     {
       get { return Type.GetInterfaces(); }
     }

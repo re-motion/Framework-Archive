@@ -44,9 +44,9 @@ namespace Mixins.Definitions
       _items.Add (key, newItem);
     }
 
-    public TValue Get (TKey key)
+    public TValue this[TKey key]
     {
-      return HasItem (key) ? _items[key] : default (TValue);
+      get { return HasItem (key) ? _items[key] : default (TValue); }
     }
 
     internal void Accept (IDefinitionVisitor visitor)

@@ -52,9 +52,14 @@
     <Compile Include="SampleTypes\BT3Mixin4.cs" />
     <Compile Include="SampleTypes\BT3Mixin5.cs" />
     <Compile Include="SampleTypes\BaseType4.cs" />
+    <Compile Include="SampleTypes\BT3Mixin6.cs" />
     <Compile Include="SampleTypes\BT4Mixin1.cs" />
     <Compile Include="SampleTypes\BaseType5.cs" />
     <Compile Include="SampleTypes\BT5Mixin1.cs" />
+    <Compile Include="SampleTypes\BT5Mixin2.cs" />
+    <Compile Include="SampleTypes\BT5Mixin3.cs" />
+    <Compile Include="SampleTypes\BT5MixinCircular.cs" />
+    <Compile Include="SampleTypes\BT3Mixin7.cs" />
     <Compile Include="SignatureCheckerTests.cs" />
     <Compile Include="ValidationTests.cs" />
   </ItemGroup>

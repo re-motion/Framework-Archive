@@ -114,9 +114,6 @@ namespace Mixins.UnitTests
       ClassContext classContext = context.GetClassContext (typeof (BaseType3));
       Assert.IsNotNull (classContext);
 
-      List<MixinContext> mixinContexts = new List<MixinContext> (classContext.MixinContexts);
-      Assert.AreEqual (5, mixinContexts.Count);
-      
       MixinContext definition =
         new List<MixinContext> (classContext.MixinContexts).Find (
         delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT3Mixin5); });

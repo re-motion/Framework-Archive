@@ -40,9 +40,13 @@
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\ConfigurationException.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
-    <Compile Include="Definitions\Building\RequiredTypesBuilder.cs" />
+    <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
+    <Compile Include="Definitions\BaseDependencyDefinition.cs" />
+    <Compile Include="Definitions\DependencyDefinitionBase.cs" />
+    <Compile Include="Definitions\RequirementDefinitionBase.cs" />
+    <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollection.cs" />
     <Compile Include="Definitions\IDefinitionVisitor.cs" />
@@ -71,6 +75,8 @@
     <Compile Include="Validation\DelegateValidationRule.cs" />
     <Compile Include="Validation\IValidationLog.cs" />
     <Compile Include="Validation\IValidationRule.cs" />
+    <Compile Include="Validation\Rules\DefaultBaseDependencyRules.cs" />
+    <Compile Include="Validation\Rules\DefaultDependencyRulesBase.cs" />
     <Compile Include="Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultMethodRules.cs" />
     <Compile Include="Validation\Rules\DefaultApplicationRules.cs" />
@@ -78,6 +84,7 @@
     <Compile Include="Validation\Rules\DefaultMixinRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredBaseCallTypeRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredFaceTypeRules.cs" />
+    <Compile Include="Validation\Rules\DefaultThisDependencyRules.cs" />
     <Compile Include="Validation\Rules\IRuleSet.cs" />
     <Compile Include="Validation\Rules\RuleSetBase.cs" />
     <Compile Include="Validation\ValidatingVisitor.cs" />

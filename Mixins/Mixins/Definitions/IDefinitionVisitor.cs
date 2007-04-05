@@ -13,5 +13,7 @@ namespace Mixins.Definitions
     void Visit (MethodDefinition method);
     void Visit (RequiredFaceTypeDefinition requiredFaceType);
     void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType);
+    void Visit (ThisDependencyDefinition thisDependency);
+    void Visit (BaseDependencyDefinition baseDependency);
   }
 }
