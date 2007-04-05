@@ -201,7 +201,6 @@
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
-    <Compile Include="Reflection\MethodCallerTest.cs" />
     <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>

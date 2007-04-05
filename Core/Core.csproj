@@ -262,7 +262,6 @@
     <Compile Include="Reflection\EmitUtility.cs" />
     <Compile Include="Reflection\GetDelegateWith.cs" />
     <Compile Include="Reflection\InvokeWith.cs" />
-    <Compile Include="Reflection\MethodCaller.cs" />
     <Compile Include="Reflection\TypesafeActivator.cs" />
     <Compile Include="Security\AbstractRoleAttribute.cs" />
     <Compile Include="Security\AccessType.cs" />
