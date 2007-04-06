@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("SingleProperty", value); }
     }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     [DBColumn ("String")]
     public string StringProperty
     {
@@ -160,7 +160,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("StringProperty", value); }
     }
 
-    [String (IsNullable = false)]
+    [StringProperty (IsNullable = false)]
     [DBColumn ("StringWithoutMaxLength")]
     public string StringPropertyWithoutMaxLength
     {
@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("StringPropertyWithoutMaxLength", value); }
     }
 
-    [Binary (IsNullable = false)]
+    [BinaryProperty (IsNullable = false)]
     [DBColumn ("Binary")]
     public byte[] BinaryProperty
     {
@@ -253,7 +253,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleProperty", value); }
     }
 
-    [String (MaximumLength = 100)]
+    [StringProperty (MaximumLength = 100)]
     [DBColumn ("StringWithNullValue")]
     public string StringWithNullValueProperty
     {
@@ -338,7 +338,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("NaSingleWithNullValueProperty", value); }
     }
 
-    [Binary (MaximumLength = 1000000)]
+    [BinaryProperty (MaximumLength = 1000000)]
     [DBColumn ("NullableBinary")]
     public byte[] NullableBinaryProperty
     {

@@ -12,19 +12,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     [AutomaticProperty]
     public abstract string NoAttribute { get; set; }
 
-    [String (IsNullable = true)]
+    [StringProperty (IsNullable = true)]
     [AutomaticProperty]
     public abstract string NullableFromAttribute { get; set; }
 
-    [String (IsNullable = false)]
+    [StringProperty (IsNullable = false)]
     [AutomaticProperty]
     public abstract string NotNullable { get; set; }
 
-    [String (MaximumLength = 100)]
+    [StringProperty (MaximumLength = 100)]
     [AutomaticProperty]
     public abstract string MaximumLength { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     [AutomaticProperty]
     public abstract string NotNullableAndMaximumLength { get; set; }
   }

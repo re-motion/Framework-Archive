@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     public abstract DateTime HistoryDate { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 250)]
+    [StringProperty (IsNullable = false, MaximumLength = 250)]
     public abstract string Text { get; set; }
 
     [DBBidirectionalRelation ("HistoryEntries")]

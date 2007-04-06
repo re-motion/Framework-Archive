@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public string Name
     {
       get { return (string) DataContainer["Name"]; }

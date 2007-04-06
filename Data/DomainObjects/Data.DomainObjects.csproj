@@ -109,7 +109,7 @@
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MemberReflectorBase.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\BidirectionalRelationAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\ClassReflector.cs" />
-    <Compile Include="BinaryAttribute.cs" />
+    <Compile Include="BinaryPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflector.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RelationReflectorBase.cs" />
     <Compile Include="DBBidirectionalRelationAttribute.cs" />
@@ -131,7 +131,7 @@
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StorageGroupAttribute.cs" />
-    <Compile Include="StringAttribute.cs" />
+    <Compile Include="StringPropertyAttribute.cs" />
     <Compile Include="Configuration\IDomainObjectsConfiguration.cs" />
     <Compile Include="Infrastructure\Interception\NonInterceptableTypeException.cs" />
     <Compile Include="Infrastructure\LegacyDomainObjectCreator.cs" />

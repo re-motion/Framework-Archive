@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["Position"] = value; }
     }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public string Product
     {
       get { return (string) DataContainer["Product"]; }

@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     [DBBidirectionalRelation ("Client", SortExpression = "CreatedAt asc")]
     public abstract ObjectList<DomainBase> AssignedObjects { get; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

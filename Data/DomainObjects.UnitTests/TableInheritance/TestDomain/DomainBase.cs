@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     [DBBidirectionalRelation ("DomainBase")]
     public abstract ObjectList<AbstractClassWithoutDerivations> AbstractClassesWithoutDerivations { get; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string CreatedBy { get; set; }
 
     public abstract DateTime CreatedAt { get; set; }

@@ -4,12 +4,12 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Apply the <see cref="StringAttribute"/> to properties of type <see cref="string"/>.
+  /// Apply the <see cref="StringPropertyAttribute"/> to properties of type <see cref="string"/>.
   /// </summary>
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public class StringAttribute: NullableLengthConstrainedPropertyAttribute
+  public class StringPropertyAttribute: NullableLengthConstrainedPropertyAttribute
   {
-    public StringAttribute()
+    public StringPropertyAttribute()
     {
     }
   }

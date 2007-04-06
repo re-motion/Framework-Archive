@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // methods and properties
 
-    [String (IsNullable = false, MaximumLength = 20)]
+    [StringProperty (IsNullable = false, MaximumLength = 20)]
     public string SerialNumber
     {
       get { return DataContainer.GetString ("SerialNumber"); }

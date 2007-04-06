@@ -19,16 +19,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Street { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 10)]
+    [StringProperty (IsNullable = false, MaximumLength = 10)]
     public abstract string Zip { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string City { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Country { get; set; }
 
     [DBBidirectionalRelation ("Address")]

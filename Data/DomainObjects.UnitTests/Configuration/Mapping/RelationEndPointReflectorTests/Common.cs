@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.StringAttribute may be only applied to properties of type System.String.\r\n  "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
         + "property: PropertyWithStringAttribute")]
     public void GetMetadata_WithStringAttributeAppliedToInvalidProperty()
@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryAttribute may be only applied to properties of type System.Byte[].\r\n  "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryPropertyAttribute may be only applied to properties of type System.Byte[].\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
         + "property: PropertyWithBinaryAttribute")]
     public void GetMetadata_WithBinaryAttributeAppliedToInvalidProperty()
@@ -94,13 +94,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       get { throw new NotImplementedException(); }
     }
 
-    [String]
+    [StringProperty]
     private ClassWithManySideRelationProperties PropertyWithStringAttribute
     {
       get { throw new NotImplementedException(); }
     }
 
-    [Binary]
+    [BinaryProperty]
     private ClassWithManySideRelationProperties PropertyWithBinaryAttribute
     {
       get { throw new NotImplementedException(); }

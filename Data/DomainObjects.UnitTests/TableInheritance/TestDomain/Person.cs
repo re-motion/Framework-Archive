@@ -22,10 +22,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string FirstName { get; set; }
 
-    [String (IsNullable = false, MaximumLength = 100)]
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string LastName { get; set; }
 
     public abstract DateTime DateOfBirth { get; set; }
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     [DBBidirectionalRelation ("Person")]
     public abstract Address Address { get; }
 
-    [Binary]
+    [BinaryProperty]
     public abstract byte[] Photo { get; set; }
   }
 }
