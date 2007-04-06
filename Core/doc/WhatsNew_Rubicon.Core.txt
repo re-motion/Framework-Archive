@@ -8,6 +8,7 @@
 - Neue Klasse Rubicon.Collections.ArrayComparer
 - Upgrade auf NUnit 2.4
 - Upgrade auf Rhino-Mocks 3.0.1
+- ArgumentUtility bietet nun bei den Check-Methoden den ActualValue als Rückgabewert an.
 
 1.7.41
 ======

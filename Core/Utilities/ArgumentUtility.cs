@@ -10,28 +10,36 @@ namespace Rubicon.Utilities
   /// </summary>
   public static class ArgumentUtility
   {
-    public static void CheckNotNull<T> (string argumentName, T actualValue)
+    public static T CheckNotNull<T> (string argumentName, T actualValue)
     {
       if (actualValue == null)
         throw new ArgumentNullException (argumentName);
+
+      return actualValue;
     }
 
-    public static void CheckNotNullOrEmpty (string argumentName, string actualValue)
+    public static string CheckNotNullOrEmpty (string argumentName, string actualValue)
     {
       CheckNotNull (argumentName, actualValue);
       if (actualValue.Length == 0)
         throw new ArgumentEmptyException (argumentName);
+
+      return actualValue;
     }
 
-    public static void CheckNotNullOrEmpty (string argumentName, ICollection collection)
+    public static T CheckNotNullOrEmpty<T> (string argumentName, T collection)
+      where T: ICollection
     {
       CheckNotNull (argumentName, collection);
       if (collection.Count == 0)
         throw new ArgumentEmptyException (argumentName);
+
+      return collection;
     }
 
-    public static void CheckNotNullOrItemsNull (string argumentName, ICollection collection)
-    {
+    public static T CheckNotNullOrItemsNull<T> (string argumentName, T collection)
+       where T: ICollection
+     {
       CheckNotNull (argumentName, collection);
 
       int i = 0;
@@ -41,13 +49,18 @@ namespace Rubicon.Utilities
           throw new ArgumentItemNullException (argumentName, i);
         ++i;
       }
+
+      return collection;
     }
 
-    public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, ICollection collection)
+    public static T CheckNotNullOrEmptyOrItemsNull<T> (string argumentName, T collection)
+       where T : ICollection
     {
       CheckNotNullOrItemsNull (argumentName, collection);
       if (collection.Count == 0)
         throw new ArgumentEmptyException (argumentName);
+      
+      return collection;
     }
 
     public static void ThrowEnumArgumentOutOfRangeException (string argumentName, System.Enum actualValue)
@@ -144,71 +157,84 @@ namespace Rubicon.Utilities
 		/// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
     /// <exception cref="ArgumentNullException">The <paramref name="actualType"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
-    public static void CheckNotNullAndTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
+    public static Type CheckNotNullAndTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
     {
       if (actualType == null)
         throw new ArgumentNullException (argumentName);
-      CheckTypeIsAssignableFrom (argumentName, actualType, expectedType);
+      return CheckTypeIsAssignableFrom (argumentName, actualType, expectedType);
     }
 
     /// <summary>Checks whether <paramref name="actualType"/> can be assigned to <paramref name="expectedType"/>.</summary>
     /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
-    public static void CheckTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
+    public static Type CheckTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
     {
       ArgumentUtility.CheckNotNull ("expectedType", expectedType);
-      if (actualType == null)
-        return;
+      if (actualType != null)
+      {
+        if (!expectedType.IsAssignableFrom (actualType))
+        {
+          throw new ArgumentTypeException (
+              string.Format ("Argument {0} is a {2}, which is cannot be assigned to type {1}.", argumentName, expectedType, actualType));
+        }
+      }
 
-      if (!expectedType.IsAssignableFrom (actualType))
-        throw new ArgumentTypeException (string.Format ("Argument {0} is a {2}, which is cannot be assigned to type {1}.", argumentName, expectedType, actualType));
+      return actualType;
     }
 
     /// <summary>Checks whether all items in <paramref name="collection"/> are of type <paramref name="itemType"/> or a null reference.</summary>
     /// <exception cref="ArgumentItemTypeException"> If at least one element is not of the specified type or a derived type. </exception>
-    public static void CheckItemsType (string argumentName, ICollection collection, Type itemType)
+    public static T CheckItemsType<T> (string argumentName, T collection, Type itemType)
+        where T: ICollection
     {
-      if (collection == null)
-        return;
-
-      int index = 0;
-      foreach (object item in collection)
+      if (collection != null)
       {
-        if (item != null && !itemType.IsAssignableFrom (item.GetType ()))
-          throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType ());
-        ++index;
+        int index = 0;
+        foreach (object item in collection)
+        {
+          if (item != null && !itemType.IsAssignableFrom (item.GetType()))
+            throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
+          ++index;
+        }
       }
+
+      return collection;
     }
 
     /// <summary>Checks whether all items in <paramref name="collection"/> are of type <paramref name="itemType"/> and not null references.</summary>
     /// <exception cref="ArgumentItemTypeException"> If at least one element is not of the specified type or a derived type. </exception>
     /// <exception cref="ArgumentItemNullException"> If at least one element is a null reference. </exception>
-    public static void CheckItemsNotNullAndType (string argumentName, ICollection collection, Type itemType)
+    public static T CheckItemsNotNullAndType<T> (string argumentName, T collection, Type itemType)
+        where T: ICollection
     {
-      if (collection == null)
-        return;
-
-      int index = 0;
-      foreach (object item in collection)
+      if (collection != null)
       {
-        if (item == null)
-          throw new ArgumentItemNullException (argumentName, index);
-        if (!itemType.IsAssignableFrom (item.GetType ()))
-          throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType ());
-        ++index;
+        int index = 0;
+        foreach (object item in collection)
+        {
+          if (item == null)
+            throw new ArgumentItemNullException (argumentName, index);
+          if (!itemType.IsAssignableFrom (item.GetType()))
+            throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
+          ++index;
+        }
       }
+
+      return collection;
     }
 
     /// <summary>Checks whether <paramref name="enumValue"/> is defined within its enumeration type.</summary>
     /// <exception cref="ArgumentNullException"> If <paramref name="enumValue"/> is a null reference. </exception>
     /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
     /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
-    public static void CheckValidEnumValue (string argumentName, Enum enumValue)
+    public static Enum CheckValidEnumValue (string argumentName, Enum enumValue)
     {
       if (enumValue == null)
         throw new ArgumentNullException (argumentName);
 
       if (! EnumUtility.IsValidEnumValue (enumValue))
         throw new ArgumentOutOfRangeException (argumentName);
+
+      return enumValue;
     }
 
     /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/> and defined within this type.</summary>
