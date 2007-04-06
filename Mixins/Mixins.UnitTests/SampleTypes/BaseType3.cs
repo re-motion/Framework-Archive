@@ -21,10 +21,12 @@ namespace Mixins.UnitTests.SampleTypes
 
   public interface IBaseType34 : IBaseType33
   {
+    new string IfcMethod ();
   }
 
   public interface IBaseType35
   {
+    string IfcMethod ();
   }
 
   [ApplyMixin(typeof(BT3Mixin5))]

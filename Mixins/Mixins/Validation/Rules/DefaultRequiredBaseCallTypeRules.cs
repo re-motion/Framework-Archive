@@ -12,17 +12,18 @@ namespace Mixins.Validation.Rules
       visitor.RequiredBaseCallTypeRules.Add (new DelegateValidationRule<RequiredBaseCallTypeDefinition> (BaseCallTypeMustBeIntroducedOrImplemented));
     }
 
-    private void BaseCallTypeMustBeInterface (RequiredBaseCallTypeDefinition definition, IValidationLog log, DelegateValidationRule<RequiredBaseCallTypeDefinition> self)
+    private void BaseCallTypeMustBeInterface (DelegateValidationRule<RequiredBaseCallTypeDefinition>.Args args)
     {
-      SingleMust (definition.Type.IsInterface, log, self);
+      SingleMust (args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
-    private void BaseCallTypeMustBeIntroducedOrImplemented (RequiredBaseCallTypeDefinition definition, IValidationLog log, DelegateValidationRule<RequiredBaseCallTypeDefinition> self)
+    private void BaseCallTypeMustBeIntroducedOrImplemented (DelegateValidationRule<RequiredBaseCallTypeDefinition>.Args args)
     {
-      List<Type> implementedInterfaces = new List<Type>(definition.BaseClass.ImplementedInterfaces);
-      List<Type> introducedInterfaces = new List<InterfaceIntroductionDefinition>(definition.BaseClass.IntroducedInterfaces).ConvertAll<Type>
+      List<Type> implementedInterfaces = new List<Type>(args.Definition.BaseClass.ImplementedInterfaces);
+      List<Type> introducedInterfaces = new List<InterfaceIntroductionDefinition>(args.Definition.BaseClass.IntroducedInterfaces).ConvertAll<Type>
         (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-      SingleMust (implementedInterfaces.Contains (definition.Type) || introducedInterfaces.Contains (definition.Type), log, self);
+      SingleMust (args.Definition.IsEmptyInterface
+          || implementedInterfaces.Contains (args.Definition.Type) || introducedInterfaces.Contains (args.Definition.Type), args.Log, args.Self);
     }
   }
 }

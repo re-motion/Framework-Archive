@@ -7,7 +7,23 @@ namespace Mixins.Validation
 {
   public class DelegateValidationRule<TDefinition> : IValidationRule<TDefinition> where TDefinition : IVisitableDefinition
   {
-    public delegate void Rule (TDefinition definition, IValidationLog log, DelegateValidationRule<TDefinition> self);
+    public struct Args
+    {
+      public readonly ValidatingVisitor Validator;
+      public readonly TDefinition Definition;
+      public readonly IValidationLog Log;
+      public readonly DelegateValidationRule<TDefinition> Self;
+
+      public Args (ValidatingVisitor validator, TDefinition definition, IValidationLog log, DelegateValidationRule<TDefinition> self)
+      {
+        Validator = validator;
+        Self = self;
+        Log = log;
+        Definition = definition;
+      }
+    }
+
+    public delegate void Rule (Args args);
 
     private Rule _rule;
     private string _ruleName;
@@ -40,9 +56,9 @@ namespace Mixins.Validation
       get { return _message; }
     }
 
-    public void Execute (TDefinition definition, IValidationLog log)
+    public void Execute (ValidatingVisitor validator, TDefinition definition, IValidationLog log)
     {
-      RuleDelegate (definition, log, this);
+      RuleDelegate (new Args(validator, definition, log, this));
     }
   }
 }

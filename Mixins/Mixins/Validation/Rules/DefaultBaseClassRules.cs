@@ -10,9 +10,9 @@ namespace Mixins.Validation.Rules
       visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (BaseClassMustNotBeSealed));
     }
 
-    private void BaseClassMustNotBeSealed (BaseClassDefinition definition, IValidationLog log, DelegateValidationRule<BaseClassDefinition> self)
+    private void BaseClassMustNotBeSealed (DelegateValidationRule<BaseClassDefinition>.Args args)
     {
-      SingleMust(!definition.Type.IsSealed, log, self);
+      SingleMust(!args.Definition.Type.IsSealed, args.Log, args.Self);
     }
   }
 }

@@ -121,7 +121,7 @@ namespace Mixins.Validation
       {
         try
         {
-          rule.Execute (definition, _validationLog);
+          rule.Execute (this, definition, _validationLog);
         }
         catch (Exception ex)
         {

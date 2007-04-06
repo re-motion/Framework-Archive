@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
@@ -10,7 +8,7 @@ namespace Mixins.UnitTests.SampleTypes
   public interface ICBaseType3BT3Mixin4 : ICBaseType3, IBT3Mixin4
   { }
 
-  public class BT3Mixin7 : Mixin<ICBaseType3, ICBaseType3>
+  public class BT3Mixin7 : Mixin<ICBaseType3BT3Mixin4, ICBaseType3BT3Mixin4>
   {
   }
 }

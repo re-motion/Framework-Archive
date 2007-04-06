@@ -28,6 +28,11 @@ namespace Mixins.Definitions
       get { return Type.FullName; }
     }
 
+    public IVisitableDefinition Parent
+    {
+      get { return Implementer; }
+    }
+
     public BaseClassDefinition BaseClass
     {
       get { return Implementer.BaseClass; }

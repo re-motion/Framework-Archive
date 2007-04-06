@@ -12,10 +12,10 @@ namespace Mixins.Validation.Rules
       visitor.InterfaceIntroductionRules.Add (new DelegateValidationRule<InterfaceIntroductionDefinition> (InterfaceShouldNotBeImplementedTwice));
     }
 
-    private void InterfaceShouldNotBeImplementedTwice (InterfaceIntroductionDefinition definition, IValidationLog log, DelegateValidationRule<InterfaceIntroductionDefinition> self)
+    private void InterfaceShouldNotBeImplementedTwice (DelegateValidationRule<InterfaceIntroductionDefinition>.Args args)
     {
-      List<Type> interfaces = new List<Type>(definition.BaseClass.ImplementedInterfaces);
-      SingleShould (!interfaces.Contains (definition.Type), log, self);
+      List<Type> interfaces = new List<Type>(args.Definition.BaseClass.ImplementedInterfaces);
+      SingleShould (!interfaces.Contains (args.Definition.Type), args.Log, args.Self);
     }
   }
 }

@@ -12,9 +12,9 @@ namespace Mixins.Validation.Rules
       visitor.ApplicationRules.Add(new DelegateValidationRule<ApplicationDefinition> (ApplicationShouldContainAtLeastOneBaseClass));
     }
 
-    public void ApplicationShouldContainAtLeastOneBaseClass (ApplicationDefinition definition, IValidationLog log, DelegateValidationRule<ApplicationDefinition> self)
+    public void ApplicationShouldContainAtLeastOneBaseClass (DelegateValidationRule<ApplicationDefinition>.Args args)
     {
-      SingleShould (definition.BaseClasses.GetEnumerator ().MoveNext (), log, self);
+      SingleShould (args.Definition.BaseClasses.GetEnumerator ().MoveNext (), args.Log, args.Self);
     }
   }
 }

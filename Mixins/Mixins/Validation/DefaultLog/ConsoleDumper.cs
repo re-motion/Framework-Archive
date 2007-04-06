@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mixins.Definitions;
 
 namespace Mixins.Validation.DefaultLog
 {
@@ -19,12 +20,27 @@ namespace Mixins.Validation.DefaultLog
         {
           Console.ForegroundColor = ConsoleColor.Gray;
           Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
+          DumpHierarchy (result.Definition);
         }
         DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
         // DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
         DumpResultList ("warnings", result.Warnings, ConsoleColor.Yellow, ConsoleColor.Black);
         DumpResultList ("failures", result.Failures, ConsoleColor.Red, ConsoleColor.Black);
         Console.ForegroundColor = ConsoleColor.Gray;
+      }
+    }
+
+    private static void DumpHierarchy (IVisitableDefinition definition)
+    {
+      IVisitableDefinition parent = definition.Parent;
+      while (parent != null)
+      {
+        Console.Write (" -> {0}", parent.FullName);
+        parent = parent.Parent;
+      }
+      if (definition.Parent != null)
+      {
+        Console.WriteLine();
       }
     }
 

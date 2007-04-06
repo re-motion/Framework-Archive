@@ -10,9 +10,9 @@ namespace Mixins.Validation.Rules
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMethodMustBeVirtual));
     }
 
-    private void OverriddenMethodMustBeVirtual (MethodDefinition definition, IValidationLog log, DelegateValidationRule<MethodDefinition> self)
+    private void OverriddenMethodMustBeVirtual (DelegateValidationRule<MethodDefinition>.Args args)
     {
-      SingleMust (definition.Overrides.GetEnumerator ().MoveNext () ? definition.MethodInfo.IsVirtual : true, log, self);
+      SingleMust (args.Definition.Overrides.GetEnumerator ().MoveNext () ? args.Definition.MethodInfo.IsVirtual : true, args.Log, args.Self);
     }
   }
 }

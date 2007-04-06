@@ -20,7 +20,7 @@ namespace Mixins.Definitions.Building
 
     public void Apply (ClassContext classContext)
     {
-      BaseClassDefinition classDefinition = new BaseClassDefinition (classContext.Type);
+      BaseClassDefinition classDefinition = new BaseClassDefinition (_application, classContext.Type);
       Application.BaseClasses.Add (classDefinition);
 
       InitializeMembers (classDefinition);

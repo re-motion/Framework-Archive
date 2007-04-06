@@ -2,10 +2,10 @@ using System;
 
 namespace Mixins.Definitions
 {
-  public class ThisDependencyDefinition : DependencyDefinitionBase<RequiredFaceTypeDefinition>, IVisitableDefinition
+  public class ThisDependencyDefinition : DependencyDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
   {
-    public ThisDependencyDefinition (RequiredFaceTypeDefinition requiredType, MixinDefinition depender)
-      : base (requiredType, depender)
+    public ThisDependencyDefinition (RequiredFaceTypeDefinition requiredType, MixinDefinition depender, ThisDependencyDefinition aggregator)
+      : base (requiredType, depender, aggregator)
     {
     }
 

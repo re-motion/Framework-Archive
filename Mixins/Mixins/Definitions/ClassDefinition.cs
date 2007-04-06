@@ -30,6 +30,8 @@ namespace Mixins.Definitions
       get { return Type.FullName; }
     }
 
+    public abstract IVisitableDefinition Parent { get; }
+
     public IList<Type> ImplementedInterfaces
     {
       get { return Type.GetInterfaces(); }

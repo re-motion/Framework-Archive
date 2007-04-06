@@ -12,17 +12,19 @@ namespace Mixins.Validation.Rules
       visitor.RequiredFaceTypeRules.Add (new DelegateValidationRule<RequiredFaceTypeDefinition> (FaceInterfaceMustBeIntroducedOrImplemented));
     }
 
-    private void FaceClassMustBeAssignableFromTargetType (RequiredFaceTypeDefinition definition, IValidationLog log, DelegateValidationRule<RequiredFaceTypeDefinition> self)
+    private void FaceClassMustBeAssignableFromTargetType (DelegateValidationRule<RequiredFaceTypeDefinition>.Args args)
     {
-      SingleMust(definition.Type.IsClass ? definition.Type.IsAssignableFrom(definition.BaseClass.Type) : true, log, self);
+      SingleMust (args.Definition.Type.IsClass ? args.Definition.Type.IsAssignableFrom (args.Definition.BaseClass.Type) : true, args.Log, args.Self);
     }
 
-    private void FaceInterfaceMustBeIntroducedOrImplemented (RequiredFaceTypeDefinition definition, IValidationLog log, DelegateValidationRule<RequiredFaceTypeDefinition> self)
+    private void FaceInterfaceMustBeIntroducedOrImplemented (DelegateValidationRule<RequiredFaceTypeDefinition>.Args args)
     {
-      List<Type> implementedInterfaces = new List<Type>(definition.BaseClass.ImplementedInterfaces);
-      List<Type> introducedInterfaces = new List<InterfaceIntroductionDefinition>(definition.BaseClass.IntroducedInterfaces).ConvertAll<Type>
+      List<Type> implementedInterfaces = new List<Type> (args.Definition.BaseClass.ImplementedInterfaces);
+      List<Type> introducedInterfaces = new List<InterfaceIntroductionDefinition> (args.Definition.BaseClass.IntroducedInterfaces).ConvertAll<Type>
         (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-      SingleMust (definition.Type.IsInterface ? implementedInterfaces.Contains(definition.Type) || introducedInterfaces.Contains(definition.Type) : true, log, self);
+
+      SingleMust (args.Definition.Type.IsClass || args.Definition.IsEmptyInterface
+          || implementedInterfaces.Contains(args.Definition.Type) || introducedInterfaces.Contains (args.Definition.Type), args.Log, args.Self);
     }
   }
 }

@@ -78,6 +78,36 @@ namespace Mixins.UnitTests
       return sum;
     }
 
+    public static bool HasFailure (string ruleName, DefaultValidationLog log)
+    {
+      foreach (DefaultValidationResult result in log.Results)
+      {
+        foreach (DefaultValidationResultItem item in result.Failures)
+        {
+          if (item.Rule.RuleName == ruleName)
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    public static bool HasWarning (string ruleName, DefaultValidationLog log)
+    {
+      foreach (DefaultValidationResult result in log.Results)
+      {
+        foreach (DefaultValidationResultItem item in result.Warnings)
+        {
+          if (item.Rule.RuleName == ruleName)
+          {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
     [Test]
     public void ValidationVisitsSomething ()
     {
@@ -195,8 +225,8 @@ namespace Mixins.UnitTests
     [Test]
     public void CollectsUnexpectedExceptions ()
     {
-      BaseClassDefinition bc = new BaseClassDefinition (typeof (DateTime));
-      DefaultValidationLog log = Validator.Validate (bc, new ThrowingRuleSet());
+      BaseClassDefinition bc = DefBuilder.Build (typeof (DateTime)).BaseClasses[typeof (DateTime)];
+      DefaultValidationLog log = Validator.Validate (bc, new ThrowingRuleSet ());
       Assert.IsTrue (log.Results[0].Exceptions.Count > 0);
       Assert.IsTrue (log.Results[0].Exceptions[0].Exception is InvalidOperationException);
     }
@@ -206,19 +236,17 @@ namespace Mixins.UnitTests
     {
       ApplicationDefinition application = new ApplicationDefinition ();
       DefaultValidationLog log = Validator.Validate (application);
-      Assert.IsTrue (log.Results[0].Warnings.Count > 0);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultApplicationRules.ApplicationShouldContainAtLeastOneBaseClass", log.Results[0].Warnings[0].Rule.RuleName);
-      Assert.IsTrue (log.Results[0].Failures.Count == 0);
+      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultApplicationRules.ApplicationShouldContainAtLeastOneBaseClass", log));
+      Assert.AreEqual (0, TotalFailures(log.Results));
     }
 
     [Test]
     public void FailsIfSealedBaseClass ()
     {
-      BaseClassDefinition bc = new BaseClassDefinition (typeof (DateTime));
+      BaseClassDefinition bc = DefBuilder.Build (typeof (DateTime)).BaseClasses[typeof (DateTime)];
       DefaultValidationLog log = Validator.Validate (bc);
-      Assert.IsTrue (log.Results[0].Failures.Count > 0);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log.Results[0].Failures[0].Rule.RuleName);
-      Assert.IsTrue (log.Results[0].Warnings.Count == 0);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log));
+      Assert.AreEqual (0, TotalWarnings (log.Results));
     }
 
     [Test]
@@ -227,8 +255,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build(typeof(BaseType4), typeof (BT4Mixin1));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType4)].Members[typeof(BaseType4).GetMethod("NonVirtualMethod")]);
 
-      Assert.IsTrue (log.Results[0].Failures.Count > 0);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
     }
 
     [Test]
@@ -237,8 +264,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (IBT1Mixin1));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType1)].Mixins[typeof (IBT1Mixin1)]);
 
-      Assert.IsTrue (log.Results[0].Failures.Count > 0);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultMixinRules.MixinCannotBeInterface", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinCannotBeInterface", log));
     }
 
     [Test]
@@ -247,8 +273,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType2), typeof (DoubleImplementer));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType2)].Mixins[typeof (DoubleImplementer)].InterfaceIntroductions[typeof (IBaseType2)]);
 
-      Assert.IsTrue (log.Results[0].Warnings.Count > 0);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceShouldNotBeImplementedTwice", log.Results[0].Warnings[0].Rule.RuleName);
+      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceShouldNotBeImplementedTwice", log));
     }
 
     [Test]
@@ -257,7 +282,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (BT3Mixin4));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType1)].RequiredFaceTypes[typeof (BaseType3)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceClassMustBeAssignableFromTargetType", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceClassMustBeAssignableFromTargetType", log));
     }
 
     [Test]
@@ -266,7 +291,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (BT3Mixin2));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType1)].RequiredFaceTypes[typeof (IBaseType32)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
     }
 
     [Test]
@@ -275,7 +300,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithClassBase));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType1)].RequiredBaseCallTypes[typeof (BaseType1)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeInterface", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeInterface", log));
     }
 
     [Test]
@@ -284,8 +309,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (BT3Mixin1));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType1)].RequiredBaseCallTypes[typeof (IBaseType31)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeIntroducedOrImplemented", log.Results[0].Failures[0].Rule.RuleName);
-      Assert.AreEqual (0, log.Results[0].Warnings.Count);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeIntroducedOrImplemented", log));
     }
 
     [Test]
@@ -294,7 +318,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin6<,>));
       DefaultValidationLog log = Validator.Validate(application.BaseClasses[typeof(BaseType3)].Mixins[typeof(BT3Mixin6<,>)].ThisDependencies[typeof(IBT3Mixin4)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
     }
 
     [Test]
@@ -303,7 +327,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin6<,>));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin6<,>)].BaseDependencies[typeof (IBT3Mixin4)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
     }
 
     [Test]
@@ -312,7 +336,7 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType5), typeof (BT5Mixin2));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5Mixin2)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]
@@ -336,43 +360,35 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType5), typeof (BT5MixinC1), typeof(BT5MixinC2));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5MixinC2)].ThisDependencies[typeof (IBT5MixinC1)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultThisDependencyRules.NoCircularDependencies", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.NoCircularDependencies", log));
 
       log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5MixinC2)].BaseDependencies[typeof (IBT5MixinC1)]);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultBaseDependencyRules.NoCircularDependencies", log.Results[0].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseDependencyRules.NoCircularDependencies", log));
     }
 
     [Test]
-    [Ignore ("Todo")]
     public void SucceedsIfAggregateDependencyIsFullyImplemented ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7));
-      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin7)].ThisDependencies[typeof (ICBaseType3)]);
+      DefaultValidationLog log = Validator.Validate (application);
 
       Assert.AreEqual (0, TotalFailures(log.Results));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
-
-      log = Validator.Validate (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin7)].BaseDependencies[typeof (ICBaseType3)]);
-
-      Assert.AreEqual (0, TotalFailures (log.Results));
       Assert.AreEqual (0, TotalWarnings (log.Results));
     }
 
     [Test]
-    [Ignore ("Todo")]
     public void FailsIfAggregateDependencyIsNotFullyImplemented ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7));
-      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin7)].ThisDependencies[typeof (ICBaseType3)]);
+      DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log.Results[0].Failures[0].Rule.RuleName);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultThisDependencyRules.AggregateDependencyMustBeFullyImplemented", log.Results[1].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
 
-      log = Validator.Validate (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin7)].BaseDependencies[typeof (ICBaseType3)]);
-
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log.Results[0].Failures[0].Rule.RuleName);
-      Assert.AreEqual ("Mixins.Validation.Rules.DefaultBaseDependencyRules.AggregateDependencyMustBeFullyImplemented", log.Results[1].Failures[0].Rule.RuleName);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeIntroducedOrImplemented", log));
     }
+   
   }
 }

@@ -61,6 +61,11 @@ namespace Mixins.Definitions
       get { return string.Format ("{0}.{1}", DeclaringClass.FullName, Name); }
     }
 
+    public IVisitableDefinition Parent
+    {
+      get { return DeclaringClass; }
+    }
+
     public MemberDefinition Base
     {
       get { return _base; }

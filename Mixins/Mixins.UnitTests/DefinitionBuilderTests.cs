@@ -105,7 +105,7 @@ namespace Mixins.UnitTests
       Assert.AreSame(overridden, overrider.Base);
 
       MemberDefinition notOverridden = baseClass.Members[baseMethod2];
-      Assert.AreEqual (0, new List<MemberDefinition>(notOverridden.Overrides).Count);
+      Assert.AreEqual (0, notOverridden.Overrides.Count);
 
       Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin2)));
       overrider = overridden.Overrides[typeof (BT1Mixin2)];
@@ -128,7 +128,7 @@ namespace Mixins.UnitTests
 
       Assert.AreSame(baseClass, overrider.Base.DeclaringClass);
 
-      List<MemberDefinition> overrides = new List<MemberDefinition> (baseClass.Members[typeof (BaseType4).GetMethod ("NonVirtualMethod")].Overrides);
+      List<MemberDefinition> overrides = new List<MemberDefinition>  (baseClass.Members[typeof (BaseType4).GetMethod ("NonVirtualMethod")].Overrides);
       Assert.AreEqual (1, overrides.Count);
       Assert.AreSame (overrider, overrides[0]);
     }
@@ -244,17 +244,17 @@ namespace Mixins.UnitTests
       ApplicationDefinition application = GetApplicationDefinition ();
       BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType1)];
       MixinDefinition mixin = baseClass.Mixins[typeof (BT1Mixin1)];
-      Assert.AreEqual (0, new List<MethodDefinition>(mixin.InitializationMethods).Count);
+      Assert.AreEqual (0, mixin.InitializationMethods.Count);
 
       baseClass = application.BaseClasses[typeof (BaseType3)];
       mixin = baseClass.Mixins[typeof (BT3Mixin1)];
       
-      List<MethodDefinition> initializationMethods = new List<MethodDefinition> (mixin.InitializationMethods);
-      Assert.AreEqual (1, initializationMethods.Count);
+      Assert.AreEqual (1, mixin.InitializationMethods.Count);
 
       MethodInfo methodInfo = typeof (BT3Mixin1).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.IsNotNull (methodInfo);
-      
+
+      List<MethodDefinition> initializationMethods = new List<MethodDefinition> (mixin.InitializationMethods);
       Assert.AreEqual (methodInfo, initializationMethods[0].MethodInfo);
 
       BaseType3 @this = new BaseType3();
@@ -279,10 +279,12 @@ namespace Mixins.UnitTests
       Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType34)));
       Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType35)));
 
-      List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].Requirers);
+      List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin6<,>)], requirers);
       Assert.AreEqual (2, requirers.Count);
+
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
     }
 
     [Test]
@@ -300,10 +302,9 @@ namespace Mixins.UnitTests
       Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
       Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (INull)));
 
-      List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IBaseType33)].Requirers);
+      List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin3<,>)], requirers);
       Assert.AreEqual (1, requirers.Count);
-
     }
 
     [Test]
@@ -313,20 +314,16 @@ namespace Mixins.UnitTests
       MixinDefinition bt3Mixin1 = application.BaseClasses[typeof (BaseType3)].Mixins[typeof(BT3Mixin1)];
       
       Assert.IsTrue (bt3Mixin1.ThisDependencies.HasItem (typeof (IBaseType31)));
-      List<ThisDependencyDefinition> bt3m1ThisDeps = new List<ThisDependencyDefinition> (bt3Mixin1.ThisDependencies);
-      Assert.AreEqual (1, bt3m1ThisDeps.Count);
+      Assert.AreEqual (1, bt3Mixin1.ThisDependencies.Count);
 
       Assert.IsTrue (bt3Mixin1.BaseDependencies.HasItem (typeof (IBaseType31)));
-      List<BaseDependencyDefinition> bt3m1BaseDeps = new List<BaseDependencyDefinition> (bt3Mixin1.BaseDependencies);
-      Assert.AreEqual (1, bt3m1BaseDeps.Count);
+      Assert.AreEqual (1, bt3Mixin1.BaseDependencies.Count);
 
       MixinDefinition bt3Mixin2 = application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
       Assert.IsTrue (bt3Mixin2.ThisDependencies.HasItem (typeof (IBaseType32)));
-      List<ThisDependencyDefinition> bt3m2ThisDeps = new List<ThisDependencyDefinition> (bt3Mixin2.ThisDependencies);
-      Assert.AreEqual (1, bt3m2ThisDeps.Count);
+      Assert.AreEqual (1, bt3Mixin2.ThisDependencies.Count);
 
-      List<BaseDependencyDefinition> bt3m2BaseDeps = new List<BaseDependencyDefinition> (bt3Mixin2.BaseDependencies);
-      Assert.IsEmpty (bt3m2BaseDeps);
+      Assert.AreEqual (0, bt3Mixin2.BaseDependencies.Count);
 
       MixinDefinition bt3Mixin6 = application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin6<,>)];
       
@@ -336,8 +333,13 @@ namespace Mixins.UnitTests
       Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBT3Mixin4)));
       Assert.IsFalse (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType34)));
 
-      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBaseType31)].IsAggregateOnly);
-      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].IsAggregateOnly);
+      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBaseType31)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].IsAggregate);
+
+      Assert.AreEqual (0, bt3Mixin6.ThisDependencies[typeof (IBaseType31)].AggregatedDependencies.Count);
+
+      Assert.IsTrue (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.HasItem (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)]));
+      Assert.IsNull (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].Aggregator);
 
       Assert.AreEqual (application.BaseClasses[typeof (BaseType3)].RequiredFaceTypes[typeof (IBaseType31)], bt3Mixin6.ThisDependencies[typeof (IBaseType31)].RequiredType);
 
@@ -357,12 +359,16 @@ namespace Mixins.UnitTests
       Assert.AreSame (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin4)],
           bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].GetImplementer ());
 
-      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof(IBT3Mixin4)].IsAggregateOnly);
-      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregateOnly);
+      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof(IBT3Mixin4)].IsAggregate);
+      Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
+
+      Assert.AreEqual (0, bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].AggregatedDependencies.Count);
+
+      Assert.IsTrue (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.HasItem (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)]));
+      Assert.IsNull (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].Aggregator);
     }
 
     [Test]
-    [Ignore ("Todo")]
     public void CompleteInterfacesAndDependencies ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7));
@@ -371,16 +377,48 @@ namespace Mixins.UnitTests
       MixinDefinition m4 = bt3.Mixins[typeof (BT3Mixin4)];
       MixinDefinition m7 = bt3.Mixins[typeof (BT3Mixin7)];
 
-      ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3)];
+      ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer());
 
-      BaseDependencyDefinition d2 = m7.BaseDependencies[typeof (ICBaseType3)];
+      BaseDependencyDefinition d2 = m7.BaseDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d2.GetImplementer ());
 
-      Assert.IsTrue (d1.IsAggregateOnly);
-      Assert.IsTrue (d2.IsAggregateOnly);
+      Assert.IsTrue (d1.IsAggregate);
+      Assert.IsTrue (d2.IsAggregate);
 
-      Assert.Fail ("TODO: AggregatedDependencies");
+      Assert.IsTrue (d1.AggregatedDependencies[typeof(ICBaseType3)].IsAggregate);
+      Assert.IsFalse (d1.AggregatedDependencies[typeof (ICBaseType3)]
+          .AggregatedDependencies[typeof(IBaseType31)].IsAggregate);
+      Assert.AreSame (bt3, d1.AggregatedDependencies[typeof (ICBaseType3)]
+          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer());
+
+      Assert.IsFalse (d1.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
+      Assert.AreSame (m4, d1.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer());
+
+      Assert.AreSame (d1, d1.AggregatedDependencies[typeof (IBT3Mixin4)].Aggregator);
+
+      Assert.IsTrue (d2.AggregatedDependencies[typeof (ICBaseType3)].IsAggregate);
+      Assert.IsFalse (d2.AggregatedDependencies[typeof (ICBaseType3)]
+          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
+      Assert.AreSame (bt3, d2.AggregatedDependencies[typeof (ICBaseType3)]
+          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
+
+      Assert.IsFalse (d2.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
+      Assert.AreSame (m4, d2.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer ());
+
+      Assert.AreSame (d2, d2.AggregatedDependencies[typeof (IBT3Mixin4)].Aggregator);
+
+      Assert.IsTrue (bt3.RequiredFaceTypes[typeof (ICBaseType3)].IsEmptyInterface);
+
+      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (IBaseType31)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (IBT3Mixin4)));
+
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType31)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBT3Mixin4)));
     }
   }
 }

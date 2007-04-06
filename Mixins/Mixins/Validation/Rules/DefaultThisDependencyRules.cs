@@ -17,14 +17,19 @@ namespace Mixins.Validation.Rules
       return mixin.ThisDependencies;
     }
 
-    protected override void NoCircularDependencies (ThisDependencyDefinition definition, IValidationLog log, DelegateValidationRule<ThisDependencyDefinition> self)
+    protected override void NoCircularDependencies (DelegateValidationRule<ThisDependencyDefinition>.Args args)
     {
-      NoCircularDependenciesImpl (definition, log, self);
+      NoCircularDependenciesImpl (args);
     }
 
-    protected override void DependencyMustBeSatisfied (ThisDependencyDefinition definition, IValidationLog log, DelegateValidationRule<ThisDependencyDefinition> self)
+    protected override void DependencyMustBeSatisfied (DelegateValidationRule<ThisDependencyDefinition>.Args args)
     {
-      DependencyMustBeSatisfiedImpl (definition, log, self);
+      DependencyMustBeSatisfiedImpl (args);
+    }
+
+    protected override void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<ThisDependencyDefinition>.Args args)
+    {
+      AggregateDependencyMustBeFullyImplementedImpl (args);
     }
   }
 }

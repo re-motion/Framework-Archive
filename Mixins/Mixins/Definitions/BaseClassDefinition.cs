@@ -16,14 +16,27 @@ namespace Mixins.Definitions
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
 
-    public BaseClassDefinition (Type type)
+    private ApplicationDefinition _application;
+
+    public BaseClassDefinition (ApplicationDefinition application, Type type)
         : base (type)
     {
+      _application = application;
+    }
+
+    public ApplicationDefinition Application
+    {
+      get { return _application; }
     }
 
     public bool IsInterface
     {
       get { return Type.IsInterface; }
+    }
+
+    public override IVisitableDefinition Parent
+    {
+      get { return Application; }
     }
 
     public override void Accept (IDefinitionVisitor visitor)

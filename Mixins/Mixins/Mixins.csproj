@@ -39,8 +39,11 @@
     <Compile Include="Definitions\Building\ApplicationDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\ConfigurationException.cs" />
+    <Compile Include="Definitions\Building\BaseDependencyDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
+    <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />

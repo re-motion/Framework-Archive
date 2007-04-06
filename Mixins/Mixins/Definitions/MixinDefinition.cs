@@ -43,6 +43,11 @@ namespace Mixins.Definitions
       }
     }
 
+    public override IVisitableDefinition Parent
+    {
+      get { return BaseClass; }
+    }
+
     public override void Accept (IDefinitionVisitor visitor)
     {
       visitor.Visit (this);

@@ -7,7 +7,7 @@ namespace Mixins.Definitions.Building
 {
   public class RequirementsAnalyzer
   {
-    private Dictionary<Type, Type> _requirements = new Dictionary<Type, Type> (); // used as a set type
+    private Dictionary<Type, Type> _requirements; // used as a set type
     private Type _filterAttribute;
     private BaseClassDefinition _baseClass;
 
@@ -17,13 +17,9 @@ namespace Mixins.Definitions.Building
       _filterAttribute = filterAttribute;
     }
 
-    public IEnumerable<Type> Results
+    public IEnumerable<Type> Analyze (MixinDefinition mixin)
     {
-      get { return _requirements.Keys; }
-    }
-
-    public void Analyze (MixinDefinition mixin)
-    {
+      _requirements = new Dictionary<Type, Type> ();
       Type mixinBase = GetMixinBase (mixin);
       if (mixinBase != null)
       {
@@ -40,6 +36,7 @@ namespace Mixins.Definitions.Building
           AnalyzeRequirementsForMixinBaseArgument (genericArgument);
         }
       }
+      return _requirements.Keys;
     }
 
     private IEnumerable<Type> GetFilteredGenericArguments (Type mixinBase)

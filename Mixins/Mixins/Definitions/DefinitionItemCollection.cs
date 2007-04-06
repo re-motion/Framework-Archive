@@ -28,6 +28,11 @@ namespace Mixins.Definitions
       return GetEnumerator ();
     }
 
+    public int Count
+    {
+      get { return _items.Count; }
+    }
+
     public bool HasItem (TKey key)
     {
       return _items.ContainsKey (key);

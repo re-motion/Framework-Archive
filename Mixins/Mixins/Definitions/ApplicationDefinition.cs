@@ -23,5 +23,10 @@ namespace Mixins.Definitions
     {
       get { return "<application>"; }
     }
+
+    public IVisitableDefinition Parent
+    {
+      get { return null; }
+    }
   }
 }

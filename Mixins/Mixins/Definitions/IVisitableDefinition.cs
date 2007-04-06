@@ -8,5 +8,6 @@ namespace Mixins.Definitions
   {
     void Accept (IDefinitionVisitor visitor);
     string FullName { get; }
+    IVisitableDefinition Parent { get; }
   }
 }

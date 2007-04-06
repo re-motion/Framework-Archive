@@ -12,6 +12,6 @@ namespace Mixins.Validation
   public interface IValidationRule<TDefinition> : IValidationRule
       where TDefinition : IVisitableDefinition
   {
-    void Execute (TDefinition definition, IValidationLog log);
+    void Execute (ValidatingVisitor validator, TDefinition definition, IValidationLog log);
   }
 }

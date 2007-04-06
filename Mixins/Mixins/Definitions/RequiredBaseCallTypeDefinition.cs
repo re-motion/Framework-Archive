@@ -2,7 +2,7 @@ using System;
 
 namespace Mixins.Definitions
 {
-  public class RequiredFaceTypeDefinition: RequirementDefinitionBase
+  public class RequiredFaceTypeDefinition: RequirementDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
   {
     public RequiredFaceTypeDefinition(BaseClassDefinition baseClass, Type type)
         : base(baseClass, type)

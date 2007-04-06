@@ -11,14 +11,14 @@ namespace Mixins.Validation.Rules
       visitor.MixinRules.Add (new DelegateValidationRule<MixinDefinition> (MixinMustBePublic));
     }
 
-    private void MixinCannotBeInterface (MixinDefinition definition, IValidationLog log, DelegateValidationRule<MixinDefinition> self)
+    private void MixinCannotBeInterface (DelegateValidationRule<MixinDefinition>.Args args)
     {
-      SingleMust (!definition.Type.IsInterface, log, self);
+      SingleMust (!args.Definition.Type.IsInterface, args.Log, args.Self);
     }
 
-    private void MixinMustBePublic (MixinDefinition definition, IValidationLog log, DelegateValidationRule<MixinDefinition> self)
+    private void MixinMustBePublic (DelegateValidationRule<MixinDefinition>.Args args)
     {
-      SingleMust (definition.Type.IsPublic, log, self);
+      SingleMust (args.Definition.Type.IsPublic, args.Log, args.Self);
     }
   }
 }
