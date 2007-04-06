@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Legacy.Mapping
 {
+  /// <summary><see cref="ClassDefinition"/> used when loading the mappign from an xml-file.</summary>
   [Serializable]
   public class XmlBasedClassDefinition: ClassDefinition
   {
