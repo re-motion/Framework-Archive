@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     // member fields
 
     private ClassDefinitionCollection _collection;
-    private ClassDefinition _classDefinition;
+    private ReflectionBasedClassDefinition _classDefinition;
 
     // construction and disposing
 
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _classDefinition = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
       _collection = new ClassDefinitionCollection ();
     }
 
@@ -51,22 +51,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
-    public void AddWithUnresolvedType ()
-    {
-      ClassDefinition classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
-      _collection.Add (classDefinitionWithUnresolvedType);
-    }
-
-    [Test]
     public void AddTwiceWithSameType ()
     {
       _collection.Add (_classDefinition);
 
       try
       {
-        _collection.Add (new ClassDefinition ("OtherID", "OtherTable", DatabaseTest.c_testDomainProviderID, typeof (Order)));
+        _collection.Add (new ReflectionBasedClassDefinition ("OtherID", "OtherTable", DatabaseTest.c_testDomainProviderID, typeof (Order)));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException e)
@@ -85,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_classDefinition);
       try
       {
-        _collection.Add (new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
+        _collection.Add (new ReflectionBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException)
@@ -134,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       _collection.Add (_classDefinition);
 
-      ClassDefinition copy = new ClassDefinition (
+      ReflectionBasedClassDefinition copy = new ReflectionBasedClassDefinition (
           _classDefinition.ID, _classDefinition.MyEntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, _classDefinition.BaseClass);
 
       Assert.IsFalse (_collection.Contains (copy));

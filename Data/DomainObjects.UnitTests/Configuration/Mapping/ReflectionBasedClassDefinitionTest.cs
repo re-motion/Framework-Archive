@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -10,7 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionTest : LegacyMappingTest
+  public class ReflectionBasedClassDefinitionTest : LegacyMappingTest
   {
     // types
 
@@ -24,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // construction and disposing
 
-    public ClassDefinitionTest ()
+    public ReflectionBasedClassDefinitionTest ()
     {
     }
 
@@ -41,50 +42,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void InitializeWithTypeName ()
+    public void InitializeWithType ()
     {
-      ClassDefinition expected = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+      ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
 
-      ClassDefinition actual = new ClassDefinition (
-          "Order", "OrderTable", "StorageProvider",
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests", true);
-
-      _checker.Check (expected, actual);
+      Assert.That (actual.ID, Is.EqualTo ("Order"));
+      Assert.That (actual.MyEntityName, Is.EqualTo ("OrderTable"));
+      Assert.That (actual.StorageProviderID, Is.EqualTo ("StorageProvider"));
+      Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
+      Assert.That (actual.BaseClass, Is.Null);
     }
 
     [Test]
     [ExpectedException (typeof (MappingException))]
     public void InitializeWithTypeNotDerivedFromDomainObject ()
     {
-      new ClassDefinition ("Order", "OrderTable", "StorageProvider", this.GetType ().AssemblyQualifiedName, true);
-    }
-
-    [Test]
-    public void InitializeWithTypeNameAndBaseClass ()
-    {
-      ClassDefinition expected = new ClassDefinition (
-          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor), CreatePartnerClass ());
-
-      ClassDefinition actual = new ClassDefinition (
-          "Distributor", "Company", c_testDomainProviderID, 
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true, CreatePartnerClass ());
-
-      _checker.Check (expected, actual);
-    }
-
-    [Test]
-    public void IntializeWithUnresolvedTypeName ()
-    {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
-      Assert.IsNull (actual.ClassType);
-      Assert.AreEqual ("UnexistingType", actual.ClassTypeName);
-      Assert.IsFalse (actual.IsClassTypeResolved);
+      new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", GetType ());
     }
 
     [Test]
     public void GetIsAbstract_FromNonAbstractType ()
     {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+      ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
 
       Assert.IsFalse (actual.IsAbstract);
     }
@@ -92,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetIsAbstract_FromAbstractType ()
     {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (AbstractClassNotInMapping));
+      ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (AbstractClassNotInMapping));
 
       Assert.IsTrue (actual.IsAbstract);
     }
@@ -100,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetIsAbstract_FromArgumentFalse ()
     {
-      ClassDefinition actual = new ClassDefinition ("ClassID", "Table", "StorageProvider", typeof (AbstractClassNotInMapping), false);
+      ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (AbstractClassNotInMapping), false);
 
       Assert.IsFalse (actual.IsAbstract);
     }
@@ -108,17 +87,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetIsAbstract_FromArgumentTrue ()
     {
-      ClassDefinition actual = new ClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), true);
+      ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (Order), true);
 
       Assert.IsTrue (actual.IsAbstract);
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot evaluate IsAbstract for ClassDefinition 'Order' since ResolveTypeNames is false.")]
-    public void GetIsAbstract_ForUnresolvedTypeName ()
-    {
-      ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
-      Dev.Null = actual.IsAbstract;
     }
 
     [Test]
@@ -252,8 +223,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
-          "Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject));
+      new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject));
     }
 
     [Test]
@@ -262,8 +232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeDomainObject ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
-          "Company", "Company", "TestDomain", typeof (DomainObject));
+      new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (DomainObject));
     }
 
     [Test]
@@ -271,20 +240,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         ExpectedMessage = "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void BaseClassWithDifferentStorageProvider ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
 
-      ClassDefinition customerClass = new ClassDefinition (
-          "Customer", "Company", "Provider 2", typeof (Customer), companyClass);
+      new ReflectionBasedClassDefinition ("Customer", "Company", "Provider 2", typeof (Customer), companyClass);
     }
 
     [Test]
     public void ClassTypeIsNotDerivedFromBaseClassType ()
     {
-      ClassDefinition orderClass = new ClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order));
+      ReflectionBasedClassDefinition orderClass = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order));
 
       try
       {
-        new ClassDefinition ("Distributor", "Company", c_testDomainProviderID, typeof (Distributor), orderClass);
+        new ReflectionBasedClassDefinition ("Distributor", "Company", c_testDomainProviderID, typeof (Distributor), orderClass);
         Assert.Fail ("MappingException was expected.");
       }
       catch (MappingException ex)
@@ -298,34 +266,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypes ()
-    {
-      ClassDefinition orderClass = new ClassDefinition (
-          "Order", "Order", c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
-
-      ClassDefinition distributorClass = new ClassDefinition (
-          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, false, orderClass);
-
-      // Expectation: no exception
-    }
-
-    [Test]
-    public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypeInBaseClassOnly ()
-    {
-      ClassDefinition orderClass = new ClassDefinition (
-          "Order", "Order", c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
-
-      ClassDefinition distributorClass = new ClassDefinition (
-          "Distributor", "Company", c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, true, orderClass);
-
-      // Expectation: no exception
-    }
-
-    [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' already contains the property 'Name'.")]
     public void AddDuplicateProperty ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -335,10 +279,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Customer' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      ClassDefinition customerClass = new ClassDefinition (
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition (
           "Customer", "Company", "TestDomain", typeof (Customer), companyClass);
 
       customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -348,13 +292,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Supplier' already contains the property 'Name'.")]
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      ClassDefinition partnerClass = new ClassDefinition (
+      ReflectionBasedClassDefinition partnerClass = new ReflectionBasedClassDefinition (
           "Partner", "Company", "TestDomain", typeof (Partner), companyClass);
 
-      ClassDefinition supplierClass = new ClassDefinition (
+      ReflectionBasedClassDefinition supplierClass = new ReflectionBasedClassDefinition (
           "Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);
 
       supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -363,22 +307,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage = "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
-        + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.")]
-    public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
-    {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string", true, false, 100);
-
-      classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
         + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.")]
     public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
       PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
@@ -387,7 +319,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ConstructorWithoutBaseClass ()
     {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+
+      // Expectation: no exception
     }
 
     [Test]
@@ -743,7 +677,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
       // this test does not affect other tests through modifying the singleton instances.
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       Assert.AreSame (classDefinition, propertyDefinition.ClassDefinition);
@@ -757,9 +691,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
       // this test does not affect other tests through modifying the singleton instances.
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
-      PropertyDefinitionCollectionEventReceiver receiver = new PropertyDefinitionCollectionEventReceiver (classDefinition.MyPropertyDefinitions, true);
+      new PropertyDefinitionCollectionEventReceiver (classDefinition.MyPropertyDefinitions, true);
       try
       {
         classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
@@ -836,9 +770,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return false;
     }
 
-    private ClassDefinition CreatePartnerClass ()
+    private ReflectionBasedClassDefinition CreatePartnerClass ()
     {
-      return new ClassDefinition ("Partner", "Company", c_testDomainProviderID, typeof (Partner));
+      return new ReflectionBasedClassDefinition ("Partner", "Company", c_testDomainProviderID, typeof (Partner));
     }
   }
 }

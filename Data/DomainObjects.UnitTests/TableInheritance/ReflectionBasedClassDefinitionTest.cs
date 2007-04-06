@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
   [Ignore]
-  public class ClassDefinitionTest : TableInheritanceMappingTest
+  public class ReflectionBasedClassDefinitionTest : TableInheritanceMappingTest
   {
     // types
 
@@ -16,15 +16,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     // member fields
 
-    private ClassDefinition _domainBaseClass;
-    private ClassDefinition _personClass;
-    private ClassDefinition _customerClass;
-    private ClassDefinition _addressClass;
-    private ClassDefinition _organizationalUnitClass;
+    private ReflectionBasedClassDefinition _domainBaseClass;
+    private ReflectionBasedClassDefinition _personClass;
+    private ReflectionBasedClassDefinition _customerClass;
+    private ReflectionBasedClassDefinition _addressClass;
+    private ReflectionBasedClassDefinition _organizationalUnitClass;
 
     // construction and disposing
 
-    public ClassDefinitionTest ()
+    public ReflectionBasedClassDefinitionTest ()
     {
     }
 
@@ -34,12 +34,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       base.SetUp ();
 
-      _domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
-      _personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), _domainBaseClass);
-      _customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), _personClass);
-      _addressClass = new ClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address));
-      
-      _organizationalUnitClass = new ClassDefinition (
+      _domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      _personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), _domainBaseClass);
+      _customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), _personClass);
+      _addressClass = new ReflectionBasedClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address));
+
+      _organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), _domainBaseClass);  
     }
 
@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       Assert.IsNull (_domainBaseClass.MyEntityName);
 
-      ClassDefinition classDefinition = new ClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase).AssemblyQualifiedName, true);
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
       Assert.IsNull (classDefinition.MyEntityName);
     }
 
@@ -56,14 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [ExpectedException (typeof (ArgumentEmptyException))]
     public void EntityNameMustNotBeEmptyWithClassType ()
     {
-      new ClassDefinition ("DomainBase", string.Empty, c_testDomainProviderID, typeof (DomainBase));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentEmptyException))]
-    public void EntityNameMustNotBeEmptyWithClassTypeName ()
-    {
-      new ClassDefinition ("DomainBase", string.Empty, c_testDomainProviderID, typeof (DomainBase).AssemblyQualifiedName, true);
+      new ReflectionBasedClassDefinition ("DomainBase", string.Empty, c_testDomainProviderID, typeof (DomainBase));
     }
 
     [Test]
@@ -103,8 +96,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void GetAllConcreteEntityNamesForConreteSingleWithEntityName ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
-      ClassDefinition customerClass = new ClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), personClass);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), personClass);
 
       string[] entityNames = customerClass.GetAllConcreteEntityNames ();
       Assert.IsNotNull (entityNames);
@@ -125,9 +118,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void GetAllConcreteEntityNamesForAbstractClassWithSameEntityNameInInheritanceHierarchy ()
     {
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
-      ClassDefinition customerClass = new ClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), personClass);
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), personClass);
 
       string[] entityNames = domainBaseClass.GetAllConcreteEntityNames ();
       Assert.IsNotNull (entityNames);

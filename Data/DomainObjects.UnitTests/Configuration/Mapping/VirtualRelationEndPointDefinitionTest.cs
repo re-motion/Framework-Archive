@@ -53,19 +53,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void InitializeWithUnresolvedPropertyType ()
-    {
-      VirtualRelationEndPointDefinition endPoint = new VirtualRelationEndPointDefinition (
-          ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (),
-          "VirtualEndPoint", true, CardinalityType.One,
-          "UnresolvedType", null);
-
-      Assert.IsFalse (endPoint.IsPropertyTypeResolved);
-      Assert.IsNull (endPoint.PropertyType);
-      Assert.AreEqual ("UnresolvedType", endPoint.PropertyTypeName);
-    }
-
-    [Test]
     public void IsNull ()
     {
       Assert.IsNotNull (_customerEndPoint as INullableObject);

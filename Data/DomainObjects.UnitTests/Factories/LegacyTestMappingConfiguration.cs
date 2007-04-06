@@ -65,26 +65,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection ();
 
-      ClassDefinition company = CreateCompanyDefinition ();
+      ReflectionBasedClassDefinition company = CreateCompanyDefinition ();
       classDefinitions.Add (company);
 
-      ClassDefinition customer = CreateCustomerDefinition (company);
+      ReflectionBasedClassDefinition customer = CreateCustomerDefinition (company);
       classDefinitions.Add (customer);
 
-      ClassDefinition partner = CreatePartnerDefinition (company);
+      ReflectionBasedClassDefinition partner = CreatePartnerDefinition (company);
       classDefinitions.Add (partner);
 
-      ClassDefinition supplier = CreateSupplierDefinition (partner);
+      ReflectionBasedClassDefinition supplier = CreateSupplierDefinition (partner);
       classDefinitions.Add (supplier);
 
-      ClassDefinition distributor = CreateDistributorDefinition (partner);
+      ReflectionBasedClassDefinition distributor = CreateDistributorDefinition (partner);
       classDefinitions.Add (distributor);
 
       classDefinitions.Add (CreateOrderDefinition ());
       classDefinitions.Add (CreateOrderTicketDefinition ());
       classDefinitions.Add (CreateOrderItemDefinition ());
 
-      ClassDefinition officialDefinition = CreateOfficialDefinition ();
+      ReflectionBasedClassDefinition officialDefinition = CreateOfficialDefinition ();
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classDefinitions.Add (CreateClientDefinition ());
       classDefinitions.Add (CreateLocationDefinition ());
 
-      ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
+      ReflectionBasedClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition ();
       classDefinitions.Add (fileSystemItemDefinition);
       classDefinitions.Add (CreateFolderDefinition (fileSystemItemDefinition));
       classDefinitions.Add (CreateFileDefinition (fileSystemItemDefinition));
@@ -119,9 +119,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinitions;
     }
 
-    private ClassDefinition CreateCompanyDefinition ()
+    private ReflectionBasedClassDefinition CreateCompanyDefinition ()
     {
-      ClassDefinition company = new ClassDefinition (
+      ReflectionBasedClassDefinition company = new ReflectionBasedClassDefinition (
           "Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company));
 
       company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -131,9 +131,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return company;
     }
 
-    private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreateCustomerDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition customer = new ClassDefinition (
+      ReflectionBasedClassDefinition customer = new ReflectionBasedClassDefinition (
           "Customer", "Company", DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
 
       customer.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
@@ -147,9 +147,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return customer;
     }
 
-    private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreatePartnerDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition partner = new ClassDefinition (
+      ReflectionBasedClassDefinition partner = new ReflectionBasedClassDefinition (
           "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
       partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
@@ -157,9 +157,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return partner;
     }
 
-    private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreateSupplierDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition supplier = new ClassDefinition (
+      ReflectionBasedClassDefinition supplier = new ReflectionBasedClassDefinition (
           "Supplier", "Company", DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
 
       supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
@@ -167,9 +167,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return supplier;
     }
 
-    private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreateDistributorDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition distributor = new ClassDefinition (
+      ReflectionBasedClassDefinition distributor = new ReflectionBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
 
       distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
@@ -177,9 +177,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return distributor;
     }
 
-    private ClassDefinition CreateOrderDefinition ()
+    private ReflectionBasedClassDefinition CreateOrderDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      ReflectionBasedClassDefinition order = new ReflectionBasedClassDefinition (
           "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
@@ -190,9 +190,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreateOfficialDefinition ()
+    private ReflectionBasedClassDefinition CreateOfficialDefinition ()
     {
-      ClassDefinition official = new ClassDefinition (
+      ReflectionBasedClassDefinition official = new ReflectionBasedClassDefinition (
           "Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official));
 
       official.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -200,15 +200,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return official;
     }
 
-    private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
+    private ReflectionBasedClassDefinition CreateSpecialOfficialDefinition (ReflectionBasedClassDefinition officialDefinition)
     {
-      return new ClassDefinition (
+      return new ReflectionBasedClassDefinition (
           "SpecialOfficial", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (SpecialOfficial), officialDefinition);
     }
 
-    private ClassDefinition CreateOrderTicketDefinition ()
+    private ReflectionBasedClassDefinition CreateOrderTicketDefinition ()
     {
-      ClassDefinition orderTicket = new ClassDefinition (
+      ReflectionBasedClassDefinition orderTicket = new ReflectionBasedClassDefinition (
           "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
 
       orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
@@ -217,9 +217,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return orderTicket;
     }
 
-    private ClassDefinition CreateOrderItemDefinition ()
+    private ReflectionBasedClassDefinition CreateOrderItemDefinition ()
     {
-      ClassDefinition orderItem = new ClassDefinition (
+      ReflectionBasedClassDefinition orderItem = new ReflectionBasedClassDefinition (
           "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
 
       orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
@@ -229,9 +229,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return orderItem;
     }
 
-    private ClassDefinition CreateCeoDefinition ()
+    private ReflectionBasedClassDefinition CreateCeoDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      ReflectionBasedClassDefinition order = new ReflectionBasedClassDefinition (
           "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -240,9 +240,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreatePersonDefinition ()
+    private ReflectionBasedClassDefinition CreatePersonDefinition ()
     {
-      ClassDefinition order = new ClassDefinition (
+      ReflectionBasedClassDefinition order = new ReflectionBasedClassDefinition (
           "Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -250,9 +250,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return order;
     }
 
-    private ClassDefinition CreateClientDefinition ()
+    private ReflectionBasedClassDefinition CreateClientDefinition ()
     {
-      ClassDefinition clientClass = new ClassDefinition (
+      ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition (
           "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
       clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
@@ -260,9 +260,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return clientClass;
     }
 
-    private ClassDefinition CreateLocationDefinition ()
+    private ReflectionBasedClassDefinition CreateLocationDefinition ()
     {
-      ClassDefinition location = new ClassDefinition (
+      ReflectionBasedClassDefinition location = new ReflectionBasedClassDefinition (
           "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
 
       location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
@@ -270,9 +270,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return location;
     }
 
-    private ClassDefinition CreateFileSystemItemDefinition ()
+    private ReflectionBasedClassDefinition CreateFileSystemItemDefinition ()
     {
-      ClassDefinition fileSystemItem = new ClassDefinition (
+      ReflectionBasedClassDefinition fileSystemItem = new ReflectionBasedClassDefinition (
           "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
 
       fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -281,25 +281,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return fileSystemItem;
     }
 
-    private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreateFolderDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition folder = new ClassDefinition (
+      ReflectionBasedClassDefinition folder = new ReflectionBasedClassDefinition (
           "Folder", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (Folder), baseClass);
 
       return folder;
     }
 
-    private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
+    private ReflectionBasedClassDefinition CreateFileDefinition (ReflectionBasedClassDefinition baseClass)
     {
-      ClassDefinition file = new ClassDefinition (
+      ReflectionBasedClassDefinition file = new ReflectionBasedClassDefinition (
           "File", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (File), baseClass);
 
       return file;
     }
 
-    private ClassDefinition CreateClassWithAllDataTypesDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithAllDataTypesDefinition ()
     {
-      ClassDefinition classWithAllDataTypes = new ClassDefinition (
+      ReflectionBasedClassDefinition classWithAllDataTypes = new ReflectionBasedClassDefinition (
           "ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
@@ -352,49 +352,49 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classWithAllDataTypes;
     }
 
-    private ClassDefinition CreateClassWithGuidKeyDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithGuidKeyDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithGuidKey));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithKeyOfInvalidType));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutIDColumnDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithoutIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutClassIDColumnDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithoutClassIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithoutClassIDColumn", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutTimestampColumnDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithoutTimestampColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithValidRelationsDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithValidRelationsDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
@@ -406,9 +406,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidRelationDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithInvalidRelationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
@@ -417,9 +417,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithoutRelatedClassIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithoutRelatedClassIDColumn",
           "TableWithoutRelatedClassIDColumn",
           DatabaseTest.c_testDomainProviderID,
@@ -431,9 +431,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOptionalOneToOneRelationAndOppositeDerivedClass",
           "TableWithOptionalOneToOneRelationAndOppositeDerivedClass",
           DatabaseTest.c_testDomainProviderID,
@@ -445,9 +445,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
+    private ReflectionBasedClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithoutRelatedClassIDColumnAndDerivation",
           "TableWithoutRelatedClassIDColumnAndDerivation",
           DatabaseTest.c_testDomainProviderID,
@@ -459,9 +459,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateIndustrialSectorDefinition ()
+    private ReflectionBasedClassDefinition CreateIndustrialSectorDefinition ()
     {
-      ClassDefinition industrialSector = new ClassDefinition (
+      ReflectionBasedClassDefinition industrialSector = new ReflectionBasedClassDefinition (
         "IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector));
 
       industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -469,9 +469,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return industrialSector;
     }
 
-    private ClassDefinition CreateEmployeeDefinition ()
+    private ReflectionBasedClassDefinition CreateEmployeeDefinition ()
     {
-      ClassDefinition employee = new ClassDefinition (
+      ReflectionBasedClassDefinition employee = new ReflectionBasedClassDefinition (
           "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
 
       employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -480,9 +480,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return employee;
     }
 
-    private ClassDefinition CreateComputerDefinition ()
+    private ReflectionBasedClassDefinition CreateComputerDefinition ()
     {
-      ClassDefinition computer = new ClassDefinition (
+      ReflectionBasedClassDefinition computer = new ReflectionBasedClassDefinition (
           "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
 
       computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
@@ -491,9 +491,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return computer;
     }
 
-    private static ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
+    private static ReflectionBasedClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 

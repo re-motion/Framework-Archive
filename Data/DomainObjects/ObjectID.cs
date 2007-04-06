@@ -234,7 +234,7 @@ public sealed class ObjectID
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
-    if (classDefinition.ClassType.IsAbstract && !classDefinition.ShouldUseFactoryForInstantiation)
+    if (classDefinition.IsAbstract && !classDefinition.ShouldUseFactoryForInstantiation)
     {
       throw CreateArgumentException (
           argumentName, "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.", 

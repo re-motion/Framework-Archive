@@ -8,20 +8,15 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Legacy.Mapping
 {
   [Serializable]
-  public class XmlBasedClassDefinition:ClassDefinition
+  public class XmlBasedClassDefinition: ClassDefinition
   {
     public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType)
         : base (id, entityName, storageProviderID, classType)
     {
     }
 
-    public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, string classTypeName, bool resolveClassTypeName, ClassDefinition baseClass)
+    public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, string classTypeName, bool resolveClassTypeName, XmlBasedClassDefinition baseClass)
         : base (id, entityName, storageProviderID, classTypeName, resolveClassTypeName, baseClass)
-    {
-    }
-
-    public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, XmlBasedClassDefinition baseClass)
-        : base (id, entityName, storageProviderID, classType, isAbstract, baseClass)
     {
     }
 
@@ -35,14 +30,25 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     {
     }
 
-    public XmlBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
-        : base (id, entityName, storageProviderID, classType, isAbstract)
-    {
-    }
-
     public XmlBasedClassDefinition (SerializationInfo info, StreamingContext context)
       : base (info, context)
     {
+    }
+
+    public new XmlBasedClassDefinition BaseClass
+    {
+      get { return (XmlBasedClassDefinition) base.BaseClass; }
+    }
+
+    public override bool IsAbstract
+    {
+      get
+      {
+        if (ClassType == null)
+          throw CreateInvalidOperationException ("Cannot evaluate IsAbstract for ClassDefinition '{0}' since ResolveTypeNames is false.", ID);
+
+        return ClassType.IsAbstract;
+      }
     }
 
     protected override void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
@@ -88,6 +94,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
 
       foreach (XmlBasedClassDefinition derivedClassDefinition in DerivedClasses)
         derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
+    }
+
+    private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+    {
+      return new InvalidOperationException (string.Format (message, args));
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

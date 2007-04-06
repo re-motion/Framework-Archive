@@ -39,17 +39,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void InitializeWithUnresolvedPropertyType ()
-    {
-      RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
-          ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (), "PropertyName", true);
-
-      Assert.IsFalse (endPoint.IsPropertyTypeResolved);
-      Assert.IsNull (endPoint.PropertyType);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.ObjectID, Rubicon.Data.DomainObjects", endPoint.PropertyTypeName);
-    }
-
-    [Test]
     public void InitializeWithResolvedPropertyType ()
     {
       RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
@@ -58,18 +47,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsTrue (endPoint.IsPropertyTypeResolved);
       Assert.AreSame (typeof (ObjectID), endPoint.PropertyType);
       Assert.AreEqual (typeof (ObjectID).AssemblyQualifiedName, endPoint.PropertyTypeName);
-    }
-
-    [Test]
-    public void IRelationEndPointDefinitionWithUnresolvedType ()
-    {
-      IRelationEndPointDefinition endPoint = new RelationEndPointDefinition (
-          ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (), "PropertyName", true);
-
-      Assert.IsFalse (endPoint.IsPropertyTypeResolved);
-      Assert.IsNull (endPoint.PropertyType);
-      Assert.AreEqual ("Rubicon.Data.DomainObjects.ObjectID, Rubicon.Data.DomainObjects", endPoint.PropertyTypeName);
-
     }
 
     [Test]

@@ -48,15 +48,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void Create ()
     {
       // Note: This test builds its own relations without a sort expression.
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
-      
-      ClassDefinition personClass = new ClassDefinition (
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
+
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
-      
-      ClassDefinition organizationalUnitClass = new ClassDefinition (
+
+      ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
 
-      ClassDefinition clientClass = new ClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client));
+      ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client));
 
       domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 

@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ValidateAbstractClass ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
+      ClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
       _classDefinitions.Add (personClass);
 
       try
@@ -54,24 +54,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    public void ValidateDoesNotCheckAbstractClassIfClassTypeIsNotResolved ()
-    {
-      ClassDefinitionCollection classDefinitionsWithUnresolvedTypes = new ClassDefinitionCollection (false);
-
-      ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person).AssemblyQualifiedName, false);
-      classDefinitionsWithUnresolvedTypes.Add (personClass);
-
-      classDefinitionsWithUnresolvedTypes.Validate ();
-
-      // Expectation: no exception
-    }
-
-    [Test]
     public void ValidateAbstractClassHandlesNullEntityNameWithInherited ()
     {
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
-      ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
 
       _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);
@@ -85,9 +72,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ValidateAbstractClassHandlesSameInheritedEntityName ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
 
-      ClassDefinition customerClass = new ClassDefinition (
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition (
           "Customer", personClass.MyEntityName, c_testDomainProviderID, typeof (Customer), personClass);
 
       _classDefinitions.Add (personClass);
@@ -104,9 +91,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         + " which is different from inherited entity name 'TableInheritance_Person'.")]
     public void ValidateWithDifferentEntityNames ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
 
-      ClassDefinition customerClass = new ClassDefinition (
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition (
           "Customer", "DifferentEntityNameThanBaseClass", c_testDomainProviderID, typeof (Customer), personClass);
 
       _classDefinitions.Add (personClass);
@@ -121,8 +108,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         + " but the base class is not part of the collection itself.")]
     public void ValidateWithBaseClassNotInCollection ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
-      ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
 
       _classDefinitions.Add (customerClass);
       _classDefinitions.Validate ();
@@ -133,8 +120,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         ExpectedMessage = "Validate cannot be invoked, because class 'Customer' is a derived class of 'Person', but is not part of the collection itself.")]
     public void ValidateWithDerivedClassNotInCollection ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
-      ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
 
       _classDefinitions.Add (personClass);
       _classDefinitions.Validate ();
@@ -143,8 +130,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ValidateEntityNameWithAbstractBaseClass ()
     {
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
-      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
 
       _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);
@@ -157,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ValidateWithoutBaseClass ()
     {
-      ClassDefinition addressClass = new ClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address));
+      ReflectionBasedClassDefinition addressClass = new ReflectionBasedClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address));
 
       _classDefinitions.Add (addressClass);
 
@@ -172,14 +159,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same column name.")]
     public void ValidateWithSameColumnNameInDifferentInheritanceBranches ()
     {
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
 
-      ClassDefinition personClass = new ClassDefinition (
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
 
       personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("PersonName", "NameColumn", "string", true, false, 100));
 
-      ClassDefinition organizationalUnitClass = new ClassDefinition (
+      ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
 
       organizationalUnitClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OrganizationalUnitName", "NameColumn", "string", true, false, 100));
@@ -197,12 +184,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         + " specify the same entity name 'TableInheritance_Person', which is not allowed.")]
     public void ValidateWithSameEntityNamesInDifferentInheritanceBranches ()
     {
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
 
-      ClassDefinition personClass = new ClassDefinition (
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
 
-      ClassDefinition organizationalUnitClass = new ClassDefinition (
+      ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_Person", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
 
       _classDefinitions.Add (domainBaseClass);

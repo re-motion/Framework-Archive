@@ -179,13 +179,10 @@
     <Compile Include="Configuration\Mapping\ClassDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypesTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\Mapping\ClassDefinitionFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\ClassDefinitionTest.cs">
+    <Compile Include="Configuration\Mapping\ReflectionBasedClassDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\ClassDefinitionWithNullEndPointTest.cs">
@@ -539,7 +536,7 @@
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TableInheritance\ClassDefinitionTest.cs">
+    <Compile Include="TableInheritance\ReflectionBasedClassDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs">

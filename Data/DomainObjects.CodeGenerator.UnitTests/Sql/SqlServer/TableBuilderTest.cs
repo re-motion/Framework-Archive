@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 
@@ -115,17 +116,17 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddToCreateTableScriptWithTwoAbstractBaseClasses ()
     {
-      ClassDefinition abstractClass = new ClassDefinition ("AbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+      XmlBasedClassDefinition abstractClass = new XmlBasedClassDefinition ("AbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
       abstractClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("PropertyInAbstractClass", "PropertyInAbstractClass", "string", false, true, 100));
 
-      ClassDefinition derivedAbstractClass = new ClassDefinition (
+      XmlBasedClassDefinition derivedAbstractClass = new XmlBasedClassDefinition (
           "DerivedAbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, abstractClass);
 
       derivedAbstractClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", "string", false, false, 101));
 
-      ClassDefinition derivedConcreteClass = new ClassDefinition (
+      XmlBasedClassDefinition derivedConcreteClass = new XmlBasedClassDefinition (
           "DerivedConcreteClass", "EntityName", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, derivedAbstractClass);
 
       derivedConcreteClass.MyPropertyDefinitions.Add (

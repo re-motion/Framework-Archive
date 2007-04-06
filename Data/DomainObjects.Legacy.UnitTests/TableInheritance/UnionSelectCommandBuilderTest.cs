@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
@@ -47,15 +48,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     public void Create ()
     {
       // Note: This test builds its own relations without a sort expression.
-      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
-      
-      ClassDefinition personClass = new ClassDefinition (
+      XmlBasedClassDefinition domainBaseClass = new XmlBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
+
+      XmlBasedClassDefinition personClass = new XmlBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
-      
-      ClassDefinition organizationalUnitClass = new ClassDefinition (
+
+      XmlBasedClassDefinition organizationalUnitClass = new XmlBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
 
-      ClassDefinition clientClass = new ClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client));
+      XmlBasedClassDefinition clientClass = new XmlBasedClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client));
 
       domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 

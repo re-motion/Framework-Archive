@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
@@ -16,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // member fields
 
     private ClassDefinitionCollection _collection;
-    private ClassDefinition _classDefinition;
+    private XmlBasedClassDefinition _classDefinition;
 
     // construction and disposing
 
@@ -30,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _classDefinition = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+      _classDefinition = new XmlBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
       _collection = new ClassDefinitionCollection ();
     }
 
@@ -55,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
     public void AddWithUnresolvedType ()
     {
-      ClassDefinition classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
+      XmlBasedClassDefinition classDefinitionWithUnresolvedType = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
       _collection.Add (classDefinitionWithUnresolvedType);
     }
 
@@ -66,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
       try
       {
-        _collection.Add (new ClassDefinition ("OtherID", "OtherTable", DatabaseTest.c_testDomainProviderID, typeof (Order)));
+        _collection.Add (new XmlBasedClassDefinition ("OtherID", "OtherTable", DatabaseTest.c_testDomainProviderID, typeof (Order)));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException e)
@@ -85,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       _collection.Add (_classDefinition);
       try
       {
-        _collection.Add (new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
+        _collection.Add (new XmlBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
         Assert.Fail ("Expected an ArgumentException.");
       }
       catch (ArgumentException)
@@ -134,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       _collection.Add (_classDefinition);
 
-      ClassDefinition copy = new ClassDefinition (
+      XmlBasedClassDefinition copy = new XmlBasedClassDefinition (
           _classDefinition.ID, _classDefinition.MyEntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, _classDefinition.BaseClass);
 
       Assert.IsFalse (_collection.Contains (copy));

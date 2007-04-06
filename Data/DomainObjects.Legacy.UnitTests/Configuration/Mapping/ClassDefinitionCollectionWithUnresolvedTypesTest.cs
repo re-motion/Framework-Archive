@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
@@ -15,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // member fields
 
     private ClassDefinitionCollection _collection;
-    private ClassDefinition _classDefinitionWithUnresolvedType;
+    private XmlBasedClassDefinition _classDefinitionWithUnresolvedType;
 
     // construction and disposing
 
@@ -30,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       _collection = new ClassDefinitionCollection (false);
-      _classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
+      _classDefinitionWithUnresolvedType = new XmlBasedClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
     }
 
 
@@ -70,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       Assert.AreEqual (0, _collection.Count);
 
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
       _collection.Add (classDefinition);
 
       Assert.AreEqual (1, _collection.Count);

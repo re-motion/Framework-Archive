@@ -17,9 +17,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public override void SetUp()
     {
       base.SetUp();
-      _classWithManySideRelationPropertiesClassDefinition = new ClassDefinition (
+      _classWithManySideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
           "ClassWithManySideRelationProperties", "ClassWithManySideRelationProperties", "TestDomain", typeof (ClassWithManySideRelationProperties));
-      _classWithOneSideRelationPropertiesClassDefinition = new ClassDefinition (
+      _classWithOneSideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties", "ClassWithOneSideRelationProperties", "TestDomain", typeof (ClassWithOneSideRelationProperties));
 
       _classDefinitions = new ClassDefinitionCollection();

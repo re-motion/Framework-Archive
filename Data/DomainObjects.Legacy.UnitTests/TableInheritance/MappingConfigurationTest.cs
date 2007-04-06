@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
 
@@ -26,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     [ExpectedException (typeof (MappingException))]
     public void Validate ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
+      XmlBasedClassDefinition personClass = new XmlBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
       MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
@@ -36,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     [Test]
     public void SetCurrentValidates ()
     {
-      ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
+      XmlBasedClassDefinition personClass = new XmlBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
       MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);

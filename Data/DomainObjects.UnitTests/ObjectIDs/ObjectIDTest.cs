@@ -281,7 +281,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
     [ExpectedException (typeof (MappingException))]
     public void InitializeWithUnknownClassDefinitionID ()
     {
-      ClassDefinition unknownDefinition = new ClassDefinition ("UnknownClass", "UnknownTable", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("UnknownClass", "UnknownTable", "TestDomain", typeof (Order));
       Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
       ObjectID id = new ObjectID (unknownDefinition, value);
@@ -291,7 +291,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
     [ExpectedException (typeof (MappingException))]
     public void InitializeWithUnknownClassDefinitionType ()
     {
-      ClassDefinition unknownDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (InvalidDomainObject));
+      ReflectionBasedClassDefinition unknownDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (InvalidDomainObject));
       Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
       ObjectID id = new ObjectID (unknownDefinition, value);
@@ -317,7 +317,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
         + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithInvalidClassDefinition ()
     {
-      ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Customer));
+      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Customer));
       ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
     }
 
@@ -326,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
         ExpectedMessage = "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
     public void InitializeWithClassDefinitionNotPartOfMappingConfiguration ()
     {
-      ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition invalidDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
       ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
     }
 

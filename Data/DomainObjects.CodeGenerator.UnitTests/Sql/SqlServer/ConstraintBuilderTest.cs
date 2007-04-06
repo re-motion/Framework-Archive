@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using System.Collections;
@@ -76,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddConstraintWithTwoConstraints ()
     {
-      ClassDefinition firstClass = new ClassDefinition (
+      XmlBasedClassDefinition firstClass = new XmlBasedClassDefinition (
           "FirstClass", "FirstEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
       firstClass.MyPropertyDefinitions.Add (
@@ -85,10 +86,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       firstClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("ThirdClass", "ThirdClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
 
-      ClassDefinition secondClass = new ClassDefinition (
+      XmlBasedClassDefinition secondClass = new XmlBasedClassDefinition (
           "SecondClass", "SecondEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
-      ClassDefinition thirdClass = new ClassDefinition (
+      XmlBasedClassDefinition thirdClass = new XmlBasedClassDefinition (
           "ThirdClass", "ThirdEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
       RelationDefinition relationDefinition1 = new RelationDefinition (
@@ -124,16 +125,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void AddConstraintWithRelationInDerivedClass ()
     {
-      ClassDefinition baseClass = new ClassDefinition (
+      XmlBasedClassDefinition baseClass = new XmlBasedClassDefinition (
           "BaseClass", "BaseClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
-      ClassDefinition derivedClass = new ClassDefinition (
+      XmlBasedClassDefinition derivedClass = new XmlBasedClassDefinition (
           "DerivedClass", "BaseClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, baseClass);
 
       derivedClass.MyPropertyDefinitions.Add (
           new PropertyDefinition ("OtherClass", "OtherClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
 
-      ClassDefinition otherClass = new ClassDefinition (
+      XmlBasedClassDefinition otherClass = new XmlBasedClassDefinition (
           "OtherClass", "OtherClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
       RelationDefinition relationDefinition1 = new RelationDefinition (

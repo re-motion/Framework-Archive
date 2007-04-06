@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
-      ClassDefinition classDefinition = new ClassDefinition (
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation",
           "ClassWithInvalidBidirectionalRelation",
           "TestDomain",

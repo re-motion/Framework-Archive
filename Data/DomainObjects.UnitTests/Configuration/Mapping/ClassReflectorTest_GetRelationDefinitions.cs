@@ -123,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     private ClassDefinition CreateClassWithOneSideRelationPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties",
           "ClassWithOneSideRelationProperties",
           "TestDomain",
@@ -135,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     private ClassDefinition CreateClassWithManySideRelationPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithManySideRelationProperties",
           "ClassWithManySideRelationProperties",
           "TestDomain",
@@ -149,7 +149,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     private ClassDefinition CreateClassWithMixedPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithMixedProperties",
           "ClassWithMixedProperties",
           "TestDomain",

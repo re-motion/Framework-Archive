@@ -26,12 +26,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two virtual end points.")]
     public void TwoVirtualRelationEndPointDefinitions ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      ClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
       VirtualRelationEndPointDefinition endPointDefinition1 = new VirtualRelationEndPointDefinition (
           customerDefinition, "Orders", true, CardinalityType.One, typeof (Order));
 
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       VirtualRelationEndPointDefinition endPointDefinition2 = new VirtualRelationEndPointDefinition (
           orderDefinition, "Customer", true, CardinalityType.One, typeof (Customer));
@@ -44,13 +44,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]
     public void TwoRelationEndPointDefinitions ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      ClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
       customerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
           customerDefinition, "Order", false);
 
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       orderDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
 

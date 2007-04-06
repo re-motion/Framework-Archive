@@ -150,9 +150,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classReflector.GetClassDefinition (_classDefinitions);
     }
 
-    private ClassDefinition CreateClassWithMixedPropertiesClassDefinition()
+    private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithMixedProperties",
           "ClassWithMixedProperties",
           "TestDomain",
@@ -164,9 +164,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateDerivedClassWithMixedPropertiesClassDefinition()
+    private ReflectionBasedClassDefinition CreateDerivedClassWithMixedPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "DerivedClassWithMixedProperties",
           null,
           "TestDomain",
@@ -179,9 +179,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithOneSideRelationPropertiesClassDefinition()
+    private ReflectionBasedClassDefinition CreateClassWithOneSideRelationPropertiesClassDefinition()
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties",
           "ClassWithOneSideRelationProperties",
           "TestDomain",

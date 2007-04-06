@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
@@ -31,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointOfDomainObjectType ()
     {
-      ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           companyDefinition, "Dummy", false, CardinalityType.One, typeof (DomainObject));
@@ -40,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void VirtualEndPointOfDomainObjectCollectionType ()
     {
-      ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           companyDefinition, "Dummy", false, CardinalityType.Many, typeof (DomainObjectCollection));
@@ -49,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void VirtualEndPointOfOrderCollectionType ()
     {
-      ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           companyDefinition, "Dummy", false, CardinalityType.Many, typeof (OrderCollection));
@@ -61,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void VirtualEndPointWithCardinalityOneAndWrongPropertyType ()
     {
-      ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           companyDefinition, "Dummy", false, CardinalityType.One, typeof (OrderCollection));
@@ -73,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
     public void VirtualEndPointWithCardinalityManyAndWrongPropertyType ()
     {
-      ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
+      XmlBasedClassDefinition companyDefinition = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           companyDefinition, "Dummy", false, CardinalityType.Many, typeof (Company));
@@ -82,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithSortExpression ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      XmlBasedClassDefinition customerDefinition = new XmlBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           customerDefinition, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
@@ -94,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Property 'Orders' of class 'Customer' must not specify a SortExpression, because cardinality is equal to 'one'.")]
     public void InitializeWithSortExpressionAndCardinalityOfOne ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      XmlBasedClassDefinition customerDefinition = new XmlBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
       VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
           customerDefinition, "Orders", false, CardinalityType.One, typeof (Order), "OrderNumber desc");

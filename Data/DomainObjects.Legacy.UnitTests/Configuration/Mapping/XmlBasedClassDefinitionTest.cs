@@ -11,7 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionTest : StandardMappingTest
+  public class XmlBasedClassDefinitionTest : StandardMappingTest
   {
     // types
 
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     // construction and disposing
 
-    public ClassDefinitionTest ()
+    public XmlBasedClassDefinitionTest ()
     {
     }
 

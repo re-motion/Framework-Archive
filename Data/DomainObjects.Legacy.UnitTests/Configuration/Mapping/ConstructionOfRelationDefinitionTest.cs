@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 
@@ -26,12 +27,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two virtual end points.")]
     public void TwoVirtualRelationEndPointDefinitions ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      XmlBasedClassDefinition customerDefinition = new XmlBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
       VirtualRelationEndPointDefinition endPointDefinition1 = new VirtualRelationEndPointDefinition (
           customerDefinition, "Orders", true, CardinalityType.One, typeof (Order));
 
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       VirtualRelationEndPointDefinition endPointDefinition2 = new VirtualRelationEndPointDefinition (
           orderDefinition, "Customer", true, CardinalityType.One, typeof (Customer));
@@ -44,13 +45,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]
     public void TwoRelationEndPointDefinitions ()
     {
-      ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
+      XmlBasedClassDefinition customerDefinition = new XmlBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
       customerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
           customerDefinition, "Order", false);
 
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       orderDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
 

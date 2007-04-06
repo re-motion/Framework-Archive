@@ -32,14 +32,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       get { return _type; }
     }
 
-    public ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
+    public ReflectionBasedClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       if (classDefinitions[Type] != null)
-        return classDefinitions[Type];
+        return (ReflectionBasedClassDefinition) classDefinitions[Type];
 
-      ClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
+      ReflectionBasedClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
       classDefinitions.Add (classDefiniton);
 
       return classDefiniton;
@@ -62,9 +62,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return relations;
     }
 
-    private ClassDefinition CreateClassDefinition (ClassDefinitionCollection classDefinitions)
+    private ReflectionBasedClassDefinition CreateClassDefinition (ClassDefinitionCollection classDefinitions)
     {
-      ClassDefinition classDefinition = new ClassDefinition (
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           GetID(),
           GetStorageSpecificName(),
           GetStorageProviderID(),
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefinition;
     }
 
-    private void CreatePropertyDefinitions (ClassDefinition classDefinition, MemberInfo[] propertyInfos)
+    private void CreatePropertyDefinitions (ReflectionBasedClassDefinition classDefinition, MemberInfo[] propertyInfos)
     {
       foreach (PropertyInfo propertyInfo in propertyInfos)
       {
@@ -127,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return false;
     }
 
-    private ClassDefinition GetBaseClassDefinition (ClassDefinitionCollection classDefinitions)
+    private ReflectionBasedClassDefinition GetBaseClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       if (IsInheritenceRoot())
         return null;

@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinitionWithClassDefinition ()
     {
       PropertyDefinition propertyDefinition = new PropertyDefinition ("OrderNumber", "OrderNo", "int32", false);
-      ClassDefinition classDefinition = new ClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointDefinitionWithoutRelationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
       RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
@@ -109,8 +109,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointDefinitionWithRelationDefinition ()
     {
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
-      ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
+      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
 
       orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
@@ -140,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void VirtualRelationEndPointDefinitionWithoutRelationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       VirtualRelationEndPointDefinition endPointdefinition = new VirtualRelationEndPointDefinition (
           classDefinition, "OrderTicket", true, CardinalityType.One, typeof (Order));
@@ -154,8 +154,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void VirtualRelationEndPointDefinitionWithRelationDefinition ()
     {
-      ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
-      ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
+      ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
 
       orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
@@ -185,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void NullRelationEndPointDefinitionWithoutRelationDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
+      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
 
       NullRelationEndPointDefinition endPointdefinition = new NullRelationEndPointDefinition (classDefinition);
 
@@ -198,8 +198,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void NullRelationEndPointDefinitionWithRelationDefinition ()
     {
-      ClassDefinition clientDefinition = new ClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
-      ClassDefinition locationDefinition = new ClassDefinition ("Location", "Location", "TestDomain", typeof (Location));
+      ClassDefinition clientDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
+      ClassDefinition locationDefinition = new ReflectionBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location));
 
       locationDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, false));
 
@@ -277,17 +277,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void ClassDefinitionNotInMapping ()
     {
       ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
-
-      ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
-
-      Assert.IsFalse (object.ReferenceEquals (classDefinition, deserializedClassDefinition));
-      AreEqual (classDefinition, deserializedClassDefinition);
-    }
-
-    [Test]
-    public void ClassDefinitionNotInMappingWithUnresolvedClassType ()
-    {
-      ClassDefinition classDefinition = new ClassDefinition ("Order", "OrderTable", "StorageProver", "UnexistingType", false);
 
       ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
 
