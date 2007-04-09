@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
@@ -22,8 +23,8 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed ()
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
+      Type result = ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
+      Assert.That (result, Is.SameAs (typeof (string)));
     }
-
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
@@ -11,14 +12,18 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Succeed_ICollection ()
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", new ArrayList ());
+      ArrayList list = new ArrayList ();
+      ArrayList result = ArgumentUtility.CheckNotNullOrItemsNull ("arg", list);
+      Assert.That (result, Is.SameAs (list));
     }
-    [Test]
+
+	  [Test]
     [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_NullICollection ()
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", null);
+      ArgumentUtility.CheckNotNullOrItemsNull ("arg", (ICollection) null);
     }
+
     [Test]
     [ExpectedException (typeof (ArgumentItemNullException))]
     public void Fail_zItemNullICollection ()

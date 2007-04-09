@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
 
 namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
@@ -39,14 +40,17 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
 
     [Test]
 		public void Succeed_SingleValue ()
-		{
-			ArgumentUtility.CheckValidEnumValue ("arg", TestEnum.Value1);
-		}
-		[Test]
+    {
+      Enum result = ArgumentUtility.CheckValidEnumValue ("arg", TestEnum.Value1);
+      Assert.That (result, Is.EqualTo (TestEnum.Value1));
+    }
+
+	  [Test]
 		public void Succeed_Flags ()
-		{
-			ArgumentUtility.CheckValidEnumValue ("arg", TestFlags.Flag1 | TestFlags.Flag2);
-		}
+	  {
+      Enum result = ArgumentUtility.CheckValidEnumValue ("arg", TestFlags.Flag1 | TestFlags.Flag2);
+      Assert.That (result, Is.EqualTo (TestFlags.Flag1 | TestFlags.Flag2));
+	  }
 	}
 
 	[TestFixture]

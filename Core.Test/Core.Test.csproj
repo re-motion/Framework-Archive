@@ -231,7 +231,8 @@
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndType.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckValueType.cs" />
     <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullAndValueType.cs" />
-    <Compile Include="Utilities\ArgumentUtilityTests\CheckEnumsl.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckEnums.cs" />
+    <Compile Include="Utilities\ArgumentUtilityTests\CheckNotNullOrEmptyOrItemsNull.cs" />
     <Compile Include="Utilities\ArrayUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
