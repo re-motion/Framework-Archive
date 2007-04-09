@@ -10,22 +10,8 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class MappingConfigurationTest : LegacyMappingTest
+  public class MappingConfigurationTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public MappingConfigurationTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     [Ignore]
     public void InitializeWithFileNamesOnly ()
@@ -102,8 +88,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsClassDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions["Order"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)]));
+      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions[typeof (Order)]));
     }
 
     [Test]
@@ -116,26 +102,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsPropertyDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"]["OrderNumber"]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions["Order"]["OrderNumber"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
+      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
     [Test]
     public void ContainsRelationDefinition ()
     {
 
-      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
+      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
     }
 
     [Test]
     public void ContainsRelationEndPointDefinition ()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
-      Assert.IsFalse (MappingConfiguration.Current.Contains (LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
+      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
 
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
+      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
+      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
     }
 
     [Test]
@@ -143,12 +129,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
       ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
-      orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
-          orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+          orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
-      RelationEndPointDefinition orderTicketEndPointdefinition = new RelationEndPointDefinition (orderTicketDefinition, "Order", true);
+      RelationEndPointDefinition orderTicketEndPointdefinition = new RelationEndPointDefinition (orderTicketDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", true);
 
       RelationDefinition relationDefinitionNotInMapping = new RelationDefinition (
           "RelationIDNotInMapping",

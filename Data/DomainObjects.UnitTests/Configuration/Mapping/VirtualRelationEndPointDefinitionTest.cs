@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class VirtualRelationEndPointDefinitionTest : LegacyMappingTest
+  public class VirtualRelationEndPointDefinitionTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -30,13 +30,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      RelationDefinition customerToOrder = LegacyTestMappingConfiguration.Current.RelationDefinitions["CustomerToOrder"];
+      RelationDefinition customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
 
       _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Customer", "Orders");
+          "Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
       _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Order", "Customer");
+          "Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionNull ()
     {
       VirtualRelationEndPointDefinition definition = new VirtualRelationEndPointDefinition (
-          LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"], "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+          TestMappingConfiguration.Current.ClassDefinitions["Order"], "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       Assert.IsNull (definition.RelationDefinition);
     }

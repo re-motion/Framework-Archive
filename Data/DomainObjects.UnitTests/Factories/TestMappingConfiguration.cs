@@ -67,7 +67,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection ();
 
       ReflectionBasedClassDefinition testDomainBase = CreateTestDomainBaseDefinition();
+      classDefinitions.Add (testDomainBase);
+
       ReflectionBasedClassDefinition storageProviderStubDomainBase = CreateStorageProviderStubDomainBaseDefinition ();
+      classDefinitions.Add (storageProviderStubDomainBase);
 
       ReflectionBasedClassDefinition company = CreateCompanyDefinition (testDomainBase);
       classDefinitions.Add (company);

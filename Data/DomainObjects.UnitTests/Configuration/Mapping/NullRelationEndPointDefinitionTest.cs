@@ -1,28 +1,15 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class NullRelationEndPointDefinitionTest : LegacyMappingTest
+  public class NullRelationEndPointDefinitionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ClassDefinition _clientDefinition;
     private NullRelationEndPointDefinition _definition;
-
-    // construction and disposing
-
-    public NullRelationEndPointDefinitionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -64,8 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void RelationDefinitionNull ()
     {
-      NullRelationEndPointDefinition definition = new NullRelationEndPointDefinition (
-          MappingConfiguration.Current.ClassDefinitions["Client"]);
+      NullRelationEndPointDefinition definition = new NullRelationEndPointDefinition (MappingConfiguration.Current.ClassDefinitions[typeof (Client)]);
 
       Assert.IsNull (definition.RelationDefinition);
     }
@@ -74,9 +60,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionNotNull ()
     {
       RelationEndPointDefinition oppositeEndPoint = new RelationEndPointDefinition (
-          MappingConfiguration.Current.ClassDefinitions["Location"], "Client", true);
+          MappingConfiguration.Current.ClassDefinitions[typeof (Location)], "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", true);
 
-      RelationDefinition relationDefinition = new RelationDefinition ("ClientToLocation", _definition, oppositeEndPoint);
+      RelationDefinition relationDefinition = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _definition, oppositeEndPoint);
 
       Assert.IsNotNull (_definition.RelationDefinition);
     }

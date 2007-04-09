@@ -5,13 +5,12 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ReflectionBasedClassDefinitionTest : LegacyMappingTest
+  public class ReflectionBasedClassDefinitionTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -19,8 +18,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // member fields
 
-    private ClassDefinition _orderClass;
-    private ClassDefinition _distributorClass;
+    private ReflectionBasedClassDefinition _orderClass;
+    private ReflectionBasedClassDefinition _distributorClass;
     private ClassDefinitionChecker _checker;
 
     // construction and disposing
@@ -35,8 +34,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _orderClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      _distributorClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
+      _orderClass = (ReflectionBasedClassDefinition) TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      _distributorClass = (ReflectionBasedClassDefinition) TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
 
       _checker = new ClassDefinitionChecker ();
     }
@@ -95,16 +94,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinition ()
     {
-      RelationDefinition relation = _orderClass.GetRelationDefinition ("Customer");
+      RelationDefinition relation = _orderClass.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
 
       Assert.IsNotNull (relation);
-      Assert.AreEqual ("CustomerToOrder", relation.ID);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", relation.ID);
     }
 
     [Test]
     public void GetUndefinedRelationDefinition ()
     {
-      Assert.IsNull (_orderClass.GetRelationDefinition ("OrderNumber"));
+      Assert.IsNull (_orderClass.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
@@ -114,11 +113,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsNotNull (relations);
       Assert.AreEqual (5, relations.Count);
-      Assert.IsNotNull (relations["CompanyToCeo"]);
-      Assert.IsNotNull (relations["PartnerToPerson"]);
-      Assert.IsNotNull (relations["DistributorToClassWithoutRelatedClassIDColumn"]);
-      Assert.IsNotNull (relations["CompanyToClassWithoutRelatedClassIDColumnAndDerivation"]);
-      Assert.IsNotNull (relations["IndustrialSectorToCompany"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"]);
     }
 
     [Test]
@@ -131,15 +130,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitionWithInheritance ()
     {
-      Assert.IsNotNull (_distributorClass.GetRelationDefinition ("Ceo"));
-      Assert.IsNotNull (_distributorClass.GetRelationDefinition ("ContactPerson"));
+      Assert.IsNotNull (_distributorClass.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
+      Assert.IsNotNull (_distributorClass.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"));
     }
 
     [Test]
     public void GetRelatedClassDefinition ()
     {
-      Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("Ceo"));
-      Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("ContactPerson"));
+      Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
+      Assert.IsNotNull (_distributorClass.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"));
     }
 
     [Test]
@@ -152,8 +151,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationEndPointDefinition ()
     {
-      Assert.IsNotNull (_distributorClass.GetRelationEndPointDefinition ("Ceo"));
-      Assert.IsNotNull (_distributorClass.GetRelationEndPointDefinition ("ContactPerson"));
+      Assert.IsNotNull (_distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
+      Assert.IsNotNull (_distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"));
     }
 
     [Test]
@@ -166,8 +165,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointTrue ()
     {
-      RelationDefinition orderToOrderItem = LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"];
-      IRelationEndPointDefinition endPointDefinition = orderToOrderItem.GetEndPointDefinition ("Order", "OrderItems");
+      RelationDefinition orderToOrderItem = 
+          TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"];
+      IRelationEndPointDefinition endPointDefinition = 
+          orderToOrderItem.GetEndPointDefinition ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       Assert.IsTrue (_orderClass.IsRelationEndPoint (endPointDefinition));
     }
@@ -175,8 +176,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointFalse ()
     {
-      RelationDefinition partnerToPerson = LegacyTestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
-      IRelationEndPointDefinition partnerEndPoint = partnerToPerson.GetEndPointDefinition ("Partner", "ContactPerson");
+      RelationDefinition partnerToPerson = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"];
+      IRelationEndPointDefinition partnerEndPoint = partnerToPerson.GetEndPointDefinition ("Partner", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson");
 
       Assert.IsFalse (_orderClass.IsRelationEndPoint (partnerEndPoint));
     }
@@ -191,8 +192,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointWithInheritance ()
     {
-      RelationDefinition partnerToPerson = LegacyTestMappingConfiguration.Current.RelationDefinitions["PartnerToPerson"];
-      IRelationEndPointDefinition partnerEndPoint = partnerToPerson.GetEndPointDefinition ("Partner", "ContactPerson");
+      RelationDefinition partnerToPerson = 
+          TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"];
+      IRelationEndPointDefinition partnerEndPoint = 
+          partnerToPerson.GetEndPointDefinition ("Partner", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson");
 
       Assert.IsTrue (_distributorClass.IsRelationEndPoint (partnerEndPoint));
     }
@@ -200,7 +203,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetPropertyDefinition ()
     {
-      Assert.IsNotNull (_orderClass.GetPropertyDefinition ("OrderNumber"));
+      Assert.IsNotNull (_orderClass.GetPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
@@ -213,14 +216,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetInheritedPropertyDefinition ()
     {
-      Assert.IsNotNull (_distributorClass.GetPropertyDefinition ("ContactPerson"));
+      Assert.IsNotNull (_distributorClass.GetPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"));
     }
 
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
-        + " of class 'Company' is not derived from"
-        + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
+        + " of class 'Company' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation ()
     {
       new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject));
@@ -335,9 +337,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryOppositeEndPointDefinition ()
     {
-      IRelationEndPointDefinition oppositeEndPointDefinition = _orderClass.GetMandatoryOppositeEndPointDefinition ("OrderTicket");
+      IRelationEndPointDefinition oppositeEndPointDefinition = _orderClass.GetMandatoryOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       Assert.IsNotNull (oppositeEndPointDefinition);
-      Assert.AreEqual ("Order", oppositeEndPointDefinition.PropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", oppositeEndPointDefinition.PropertyName);
     }
 
     [Test]
@@ -345,10 +347,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       IRelationEndPointDefinition[] relationEndPointDefinitions = _orderClass.GetRelationEndPointDefinitions ();
 
-      IRelationEndPointDefinition customerEndPoint = _orderClass.GetRelationEndPointDefinition ("Customer");
-      IRelationEndPointDefinition orderTicketEndPoint = _orderClass.GetRelationEndPointDefinition ("OrderTicket");
-      IRelationEndPointDefinition orderItemsEndPoint = _orderClass.GetRelationEndPointDefinition ("OrderItems");
-      IRelationEndPointDefinition officialEndPoint = _orderClass.GetRelationEndPointDefinition ("Official");
+      IRelationEndPointDefinition customerEndPoint = _orderClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
+      IRelationEndPointDefinition orderTicketEndPoint = _orderClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      IRelationEndPointDefinition orderItemsEndPoint = _orderClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      IRelationEndPointDefinition officialEndPoint = _orderClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official");
 
       Assert.AreEqual (4, relationEndPointDefinitions.Length);
       Assert.IsTrue (Array.IndexOf (relationEndPointDefinitions, customerEndPoint) >= 0);
@@ -364,7 +366,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsNotNull (relationEndPointDefinitions);
       Assert.AreEqual (1, relationEndPointDefinitions.Length);
-      Assert.AreEqual ("ClassWithoutRelatedClassIDColumn", relationEndPointDefinitions[0].PropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn", relationEndPointDefinitions[0].PropertyName);
     }
 
     [Test]
@@ -372,11 +374,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       IRelationEndPointDefinition[] relationEndPointDefinitions = _distributorClass.GetRelationEndPointDefinitions ();
 
-      IRelationEndPointDefinition classWithoutRelatedClassIDColumnEndPoint = _distributorClass.GetRelationEndPointDefinition ("ClassWithoutRelatedClassIDColumn");
-      IRelationEndPointDefinition contactPersonEndPoint = _distributorClass.GetRelationEndPointDefinition ("ContactPerson");
-      IRelationEndPointDefinition ceoEndPoint = _distributorClass.GetRelationEndPointDefinition ("Ceo");
-      IRelationEndPointDefinition classWithoutRelatedClassIDColumnAndDerivationEndPoint = _distributorClass.GetRelationEndPointDefinition ("ClassWithoutRelatedClassIDColumnAndDerivation");
-      IRelationEndPointDefinition industrialSectorEndPoint = _distributorClass.GetRelationEndPointDefinition ("IndustrialSector");
+      IRelationEndPointDefinition classWithoutRelatedClassIDColumnEndPoint = _distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn");
+      IRelationEndPointDefinition contactPersonEndPoint = _distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson");
+      IRelationEndPointDefinition ceoEndPoint = _distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo");
+      IRelationEndPointDefinition classWithoutRelatedClassIDColumnAndDerivationEndPoint = _distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.ClassWithoutRelatedClassIDColumnAndDerivation");
+      IRelationEndPointDefinition industrialSectorEndPoint = _distributorClass.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector");
 
       Assert.IsNotNull (relationEndPointDefinitions);
       Assert.AreEqual (5, relationEndPointDefinitions.Length);
@@ -414,6 +416,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsTrue (companyDefinition.IsPartOfInheritanceHierarchy);
       Assert.IsTrue (_distributorClass.IsPartOfInheritanceHierarchy);
+    }
+
+    [Test]
+    [Ignore ("Currently all classes inherit from layer super type, which defines the storage group, implicitly stopping the inheritence hierachy.")]
+    public void IsPartOfInheritanceHierarchy2 ()
+    {
       Assert.IsFalse (_orderClass.IsPartOfInheritanceHierarchy);
     }
 
@@ -425,7 +433,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationDefinitionCollection clientRelations = clientDefinition.GetRelationDefinitions ();
 
       Assert.AreEqual (1, clientRelations.Count);
-      Assert.AreEqual ("ParentClientToChildClient", clientRelations[0].ID);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", clientRelations[0].ID);
     }
 
     [Test]
@@ -433,8 +441,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
 
-      NullRelationEndPointDefinition clientNullEndPointDefinition = (NullRelationEndPointDefinition)
-          MappingConfiguration.Current.RelationDefinitions["ParentClientToChildClient"].GetEndPointDefinition ("Client", null);
+      RelationDefinition parentClient = 
+          MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"];
+      NullRelationEndPointDefinition clientNullEndPointDefinition =
+          (NullRelationEndPointDefinition) parentClient.GetEndPointDefinition ("Client", null);
 
       Assert.IsFalse (clientDefinition.IsRelationEndPoint (clientNullEndPointDefinition));
     }
@@ -447,7 +457,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       IRelationEndPointDefinition[] endPointDefinitions = clientDefinition.GetMyRelationEndPointDefinitions ();
 
       Assert.AreEqual (1, endPointDefinitions.Length);
-      Assert.IsTrue (Contains (endPointDefinitions, "ParentClient"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"));
     }
 
     [Test]
@@ -458,7 +468,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetMyRelationEndPointDefinitions ();
 
       Assert.AreEqual (1, endPointDefinitions.Length);
-      Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
     }
 
     [Test]
@@ -466,8 +476,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      IRelationEndPointDefinition folderEndPoint = folderDefinition.GetRelationEndPointDefinition ("FileSystemItems");
-      IRelationEndPointDefinition fileSystemItemEndPoint = folderDefinition.GetRelationEndPointDefinition ("ParentFolder");
+      IRelationEndPointDefinition folderEndPoint = folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems");
+      IRelationEndPointDefinition fileSystemItemEndPoint = folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder");
 
       Assert.IsTrue (folderDefinition.IsMyRelationEndPoint (folderEndPoint));
       Assert.IsFalse (folderDefinition.IsMyRelationEndPoint (fileSystemItemEndPoint));
@@ -481,7 +491,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetMyRelationEndPointDefinitions ();
 
       Assert.AreEqual (1, endPointDefinitions.Length);
-      Assert.IsTrue (Contains (endPointDefinitions, "FileSystemItems"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -492,7 +502,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetRelationEndPointDefinitions ();
 
       Assert.AreEqual (1, endPointDefinitions.Length);
-      Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
     }
 
     [Test]
@@ -503,8 +513,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetRelationEndPointDefinitions ();
 
       Assert.AreEqual (2, endPointDefinitions.Length);
-      Assert.IsTrue (Contains (endPointDefinitions, "FileSystemItems"));
-      Assert.IsTrue (Contains (endPointDefinitions, "ParentFolder"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
+      Assert.IsTrue (Contains (endPointDefinitions, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
     }
 
     [Test]
@@ -516,7 +526,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsNotNull (relations);
       Assert.AreEqual (1, relations.Count);
-      Assert.IsNotNull (relations["FolderToFileSystemItem"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"]);
     }
 
     [Test]
@@ -528,7 +538,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsNotNull (relations);
       Assert.AreEqual (1, relations.Count);
-      Assert.IsNotNull (relations["FolderToFileSystemItem"]);
+      Assert.IsNotNull (relations["Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"]);
     }
 
     [Test]
@@ -536,8 +546,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
 
-      Assert.IsNotNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("ParentFolder"));
-      Assert.IsNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("FileSystemItems"));
+      Assert.IsNotNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNull (fileSystemItemDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -545,8 +555,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("ParentFolder"));
-      Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("FileSystemItems"));
+      Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNotNull (folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -554,8 +564,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
 
-      Assert.IsNotNull (fileSystemItemDefinition.GetRelationDefinition ("ParentFolder"));
-      Assert.IsNull (fileSystemItemDefinition.GetRelationDefinition ("FileSystemItems"));
+      Assert.IsNotNull (fileSystemItemDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNull (fileSystemItemDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -563,8 +573,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      Assert.IsNotNull (folderDefinition.GetRelationDefinition ("ParentFolder"));
-      Assert.IsNotNull (folderDefinition.GetRelationDefinition ("FileSystemItems"));
+      Assert.IsNotNull (folderDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNotNull (folderDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -573,8 +583,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetOppositeClassDefinition ("ParentFolder"));
-      Assert.IsNull (fileSystemItemDefinition.GetOppositeClassDefinition ("FileSystemItems"));
+      Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNull (fileSystemItemDefinition.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -583,8 +593,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
 
-      Assert.AreSame (folderDefinition, folderDefinition.GetOppositeClassDefinition ("ParentFolder"));
-      Assert.AreSame (fileSystemItemDefinition, folderDefinition.GetOppositeClassDefinition ("FileSystemItems"));
+      Assert.AreSame (folderDefinition, folderDefinition.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.AreSame (fileSystemItemDefinition, folderDefinition.GetOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -592,7 +602,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
 
-      Assert.IsNotNull (fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition ("ParentFolder"));
+      Assert.IsNotNull (fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
     }
 
     [Test]
@@ -600,8 +610,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
 
-      Assert.IsNotNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("ParentFolder"));
-      Assert.IsNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("FileSystemItems"));
+      Assert.IsNotNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNull (fileSystemItemDefinition.GetOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -609,8 +619,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("ParentFolder"));
-      Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("FileSystemItems"));
+      Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
+      Assert.IsNotNull (folderDefinition.GetMandatoryOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
     }
 
     [Test]
@@ -628,7 +638,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
       ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
 
-      Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetMandatoryOppositeClassDefinition ("ParentFolder"));
+      Assert.AreSame (folderDefinition, fileSystemItemDefinition.GetMandatoryOppositeClassDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
     }
 
     [Test]
@@ -643,10 +653,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryRelationDefinition ()
     {
-      RelationDefinition relation = _orderClass.GetMandatoryRelationDefinition ("Customer");
+      RelationDefinition relation = _orderClass.GetMandatoryRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
 
       Assert.IsNotNull (relation);
-      Assert.AreEqual ("CustomerToOrder", relation.ID);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", relation.ID);
     }
 
     [Test]
@@ -659,7 +669,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryPropertyDefinition ()
     {
-      Assert.IsNotNull (_orderClass.GetMandatoryPropertyDefinition ("OrderNumber"));
+      Assert.IsNotNull (_orderClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
@@ -709,7 +719,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void Contains ()
     {
       Assert.IsFalse (_orderClass.Contains (new PropertyDefinition ("PropertyName", "ColumnName", "int32")));
-      Assert.IsTrue (_orderClass.Contains (_orderClass["OrderNumber"]));
+      Assert.IsTrue (_orderClass.Contains (_orderClass["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
     [Test]
@@ -721,14 +731,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetInheritanceRootClass ()
     {
-      ClassDefinition expected = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition expected = TestMappingConfiguration.Current.ClassDefinitions[typeof (TestDomainBase)];
       Assert.AreSame (expected, _distributorClass.GetInheritanceRootClass ());
     }
 
     [Test]
     public void GetAllDerivedClasses ()
     {
-      ClassDefinition companyClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
       ClassDefinitionCollection allDerivedClasses = companyClass.GetAllDerivedClasses ();
       Assert.IsNotNull (allDerivedClasses);
       Assert.AreEqual (4, allDerivedClasses.Count);
@@ -754,7 +764,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsSameOrBaseClassOfTrueWithBaseClass ()
     {
-      ClassDefinition companyClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
       Assert.IsTrue (companyClass.IsSameOrBaseClassOf (_distributorClass));
     }

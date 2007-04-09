@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class PropertyDefinitionCollectionTest : LegacyMappingTest
+  public class PropertyDefinitionCollectionTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithClassDefinition ()
     {
-      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
       PropertyDefinitionCollection collection = new PropertyDefinitionCollection (orderDefinition);
       Assert.AreSame (orderDefinition, collection.ClassDefinition);
     }

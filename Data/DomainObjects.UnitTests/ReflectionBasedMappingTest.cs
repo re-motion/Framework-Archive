@@ -29,11 +29,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), s_persistenceConfiguration));
 
-      s_mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (LegacyMappingTest).Assembly));
+      s_mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (ReflectionBasedMappingTest).Assembly));
     }
 
     private DomainObjectIDs _domainObjectIDs;
-    private FakeDomainObjectsConfiguration _domainObjectsConfiguration;
 
     protected ReflectionBasedMappingTest ()
         : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)

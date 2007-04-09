@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionWithNullEndPointTest : LegacyMappingTest
+  public class ClassDefinitionWithNullEndPointTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -31,10 +31,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _clientClass = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
-      _locationClass = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
+      _clientClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
+      _locationClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
 
-      RelationDefinition relation = LegacyTestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
+      RelationDefinition relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _clientEndPoint = (NullRelationEndPointDefinition) relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) relation.EndPointDefinitions[1];
     }
@@ -42,8 +42,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitions ()
     {
-      Assert.IsTrue (_locationClass.GetRelationDefinitions ().Contains ("ClientToLocation"));
-      Assert.IsFalse (_clientClass.GetRelationDefinitions ().Contains ("ClientToLocation"));
+      Assert.IsTrue (_locationClass.GetRelationDefinitions ().Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
+      Assert.IsFalse (_clientClass.GetRelationDefinitions ().Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]

@@ -7,7 +7,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class PropertyDefinitionTest : LegacyMappingTest
+  public class PropertyDefinitionTest : ReflectionBasedMappingTest
   {
     // types
 

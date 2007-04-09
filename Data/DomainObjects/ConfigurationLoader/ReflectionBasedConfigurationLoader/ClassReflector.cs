@@ -11,6 +11,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   //TODO: Doc
   //TODO: Validation: no types having IgnoreForMappingAttribute
   //TODO: More property logic to property reflector
+  //TODO: Fix: Inheritence Root: Base Class Reflection stops with StorageGroupAttribute but super classes would still be part of mapping since they would get reflected upon them selve
   public class ClassReflector
   {
     public static ClassReflector CreateClassReflector (Type type)

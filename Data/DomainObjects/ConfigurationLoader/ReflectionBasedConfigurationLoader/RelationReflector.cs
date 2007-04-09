@@ -18,10 +18,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      return new RelationDefinition (
+      RelationDefinition relationDefinition = new RelationDefinition (
           GetRelationID(),
           CreateEndPointDefinition (classDefinitions, PropertyInfo),
           GetOppositeEndPointDefinition (classDefinitions));
+
+      AddRelationDefinitionToClassDefinitions (relationDefinition);
+
+      return relationDefinition;
     }
 
     private string GetRelationID()
@@ -57,6 +61,18 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         throw CreateMappingException (null, PropertyInfo, e.Message);
       }
+    }
+
+    private void AddRelationDefinitionToClassDefinitions (RelationDefinition relationDefinition)
+    {
+      IRelationEndPointDefinition endPoint1 = relationDefinition.EndPointDefinitions[0];
+      IRelationEndPointDefinition endPoint2 = relationDefinition.EndPointDefinitions[1];
+
+      if (!endPoint1.IsNull)
+        endPoint1.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
+
+      if (endPoint1.ClassDefinition != endPoint2.ClassDefinition && !endPoint2.IsNull)
+        endPoint2.ClassDefinition.MyRelationDefinitions.Add (relationDefinition);
     }
   }
 }

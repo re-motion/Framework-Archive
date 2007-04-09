@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationDefinitionCollectionTest : LegacyMappingTest
+  public class RelationDefinitionCollectionTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _relationDefinition = LegacyTestMappingConfiguration.Current.RelationDefinitions["OrderToOrderTicket"];
+      _relationDefinition = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"];
       _collection = new RelationDefinitionCollection ();
     }
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void RelationDefinitionIndexer ()
     {
       _collection.Add (_relationDefinition);
-      Assert.AreSame (_relationDefinition, _collection["OrderToOrderTicket"]);
+      Assert.AreSame (_relationDefinition, _collection["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
     }
 
     [Test]
@@ -58,13 +58,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void ContainsRelationDefinitionIDTrue ()
     {
       _collection.Add (_relationDefinition);
-      Assert.IsTrue (_collection.Contains ("OrderToOrderTicket"));
+      Assert.IsTrue (_collection.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]
     public void ContainsRelationDefinitionIDFalse ()
     {
-      Assert.IsFalse (_collection.Contains ("OrderToOrderTicket"));
+      Assert.IsFalse (_collection.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]

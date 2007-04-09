@@ -7,43 +7,27 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ConstructionOfRelationEndPointDefinitionTest : LegacyMappingTest
+  public class ConstructionOfRelationEndPointDefinitionTest: ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public ConstructionOfRelationEndPointDefinitionTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Relation definition error: Property 'Name' of class 'Company' is of type 'System.String',"
-            + " but non-virtual properties must be of type 'Rubicon.Data.DomainObjects.ObjectID'.")]
-    public void PropertyOfWrongType ()
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Relation definition error: Property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name' of class 'Company' is of type "
+        + "'System.String', but non-virtual properties must be of type 'Rubicon.Data.DomainObjects.ObjectID'.")]
+    public void PropertyOfWrongType()
     {
-      ClassDefinition companyDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
-      RelationEndPointDefinition endPointDefinition = new RelationEndPointDefinition (
-          companyDefinition, "Name", false);
+      new RelationEndPointDefinition (companyDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name", false);
     }
 
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "Relation definition error for end point: Class 'Company' has no property 'UndefinedProperty'.")]
-    public void UndefinedProperty ()
+    public void UndefinedProperty()
     {
-      ClassDefinition companyDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinition companyDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
-      RelationEndPointDefinition endPointDefinition = new RelationEndPointDefinition (
-          companyDefinition, "UndefinedProperty", false);
+      new RelationEndPointDefinition (companyDefinition, "UndefinedProperty", false);
     }
   }
 }

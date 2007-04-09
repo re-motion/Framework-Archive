@@ -6,24 +6,10 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ConstructionOfRelationDefinitionTest : LegacyMappingTest
+  public class ConstructionOfRelationDefinitionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public ConstructionOfRelationDefinitionTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two virtual end points.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' cannot have two virtual end points.")]
     public void TwoVirtualRelationEndPointDefinitions ()
     {
       ClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
@@ -34,29 +20,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
       VirtualRelationEndPointDefinition endPointDefinition2 = new VirtualRelationEndPointDefinition (
-          orderDefinition, "Customer", true, CardinalityType.One, typeof (Customer));
+          orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", true, CardinalityType.One, typeof (Customer));
 
-      RelationDefinition relationDefinition = new RelationDefinition (
-          "CustomerToOrder", endPointDefinition1, endPointDefinition2);
+      new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", endPointDefinition1, endPointDefinition2);
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson' cannot have two non-virtual end points.")]
     public void TwoRelationEndPointDefinitions ()
     {
-      ClassDefinition customerDefinition = new ReflectionBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
-      customerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      ClassDefinition partnerDefinition = new ReflectionBasedClassDefinition ("Partner", "Partner", "TestDomain", typeof (Partner));
+      partnerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
-          customerDefinition, "Order", false);
+          partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", false);
 
-      ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      ClassDefinition personDefinition = new ReflectionBasedClassDefinition ("Person", "Person", "TestDomain", typeof (Person));
+      personDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", "AssociatedPartnerCompanyID", TypeInfo.ObjectIDMappingTypeName));
 
-      orderDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
+      RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (
+          personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false);
 
-      RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (orderDefinition, "Customer", false);
-
-      RelationDefinition relationDefinition = new RelationDefinition ("CustomerToOrder", endPointDefinition1, endPointDefinition2);
+      new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", endPointDefinition1, endPointDefinition2);
     }
   }
 }

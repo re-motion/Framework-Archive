@@ -4,7 +4,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
-  public class ClassReflectorTestBase: LegacyMappingTest
+  public class ClassReflectorTestBase: ReflectionBasedMappingTest
   {
     protected void CreatePropertyDefinitionsForClassWithMixedProperties (ClassDefinition classDefinition)
     {

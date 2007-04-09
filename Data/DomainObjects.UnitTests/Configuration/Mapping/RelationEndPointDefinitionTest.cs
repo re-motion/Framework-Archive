@@ -2,47 +2,36 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationEndPointDefinitionTest : LegacyMappingTest
+  public class RelationEndPointDefinitionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private VirtualRelationEndPointDefinition _customerEndPoint;
     private RelationEndPointDefinition _orderEndPoint;
-
-    // construction and disposing
-
-    public RelationEndPointDefinitionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      RelationDefinition customerToOrder = LegacyTestMappingConfiguration.Current.RelationDefinitions["CustomerToOrder"];
+      RelationDefinition customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
 
       _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Customer", "Orders");
+          "Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
       _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
-          "Order", "Customer");
+          "Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
     }
 
     [Test]
     public void InitializeWithResolvedPropertyType ()
     {
       RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
-          ClassDefinitionFactory.CreateOrderDefinitionWithResolvedCustomerProperty (), "Customer", true);
+          ClassDefinitionFactory.CreateOrderDefinitionWithResolvedCustomerProperty (), 
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", 
+          true);
 
       Assert.IsTrue (endPoint.IsPropertyTypeResolved);
       Assert.AreSame (typeof (ObjectID), endPoint.PropertyType);
@@ -59,24 +48,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void CorrespondsToForVirtualEndPoint ()
     {
-      Assert.IsTrue (_customerEndPoint.CorrespondsTo ("Customer", "Orders"));
+      Assert.IsTrue (_customerEndPoint.CorrespondsTo ("Customer", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
       Assert.IsFalse (_customerEndPoint.CorrespondsTo ("Customer", "NonExistingProperty"));
-      Assert.IsFalse (_customerEndPoint.CorrespondsTo ("OrderTicket", "Orders"));
+      Assert.IsFalse (_customerEndPoint.CorrespondsTo ("OrderTicket", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
     }
 
     [Test]
     public void CorrespondsTo ()
     {
-      Assert.IsTrue (_orderEndPoint.CorrespondsTo ("Order", "Customer"));
+      Assert.IsTrue (_orderEndPoint.CorrespondsTo ("Order", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
       Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Order", "NonExistingProperty"));
-      Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Partner", "Customer"));
+      Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Partner", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
     }
 
     [Test]
     public void RelationDefinitionNull ()
     {
       RelationEndPointDefinition definition = new RelationEndPointDefinition (
-          LegacyTestMappingConfiguration.Current.ClassDefinitions["OrderTicket"], "Order", true);
+          TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)], 
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", 
+          true);
 
       Assert.IsNull (definition.RelationDefinition);
     }

@@ -12,7 +12,7 @@ public sealed class PropertyDefinitionFactory
 
   public static PropertyDefinition CreateCustomerDefinition ()
   {
-    return new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, NaInt32.Null);
+    return new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, NaInt32.Null);
   }
 
   public static PropertyDefinition CreateWithUnresolvedRelationPropertyType ()

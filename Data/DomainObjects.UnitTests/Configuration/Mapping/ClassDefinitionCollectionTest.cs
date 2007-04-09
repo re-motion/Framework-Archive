@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionCollectionTest : LegacyMappingTest
+  public class ClassDefinitionCollectionTest : ReflectionBasedMappingTest
   {
     // types
 
@@ -148,14 +148,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         ExpectedMessage = "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassDefinitionCollectionTest'.")]
     public void GetMandatoryForInvalidClass ()
     {
-      LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());
+      TestMappingConfiguration.Current.ClassDefinitions.GetMandatory (this.GetType ());
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Mapping does not contain class 'Zaphod'.")]
     public void GetMandatoryForInvalidClassID ()
     {
-      LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Zaphod");
+      TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Zaphod");
     }
 
     [Test]
