@@ -1,6 +1,7 @@
 using System;
 using Mixins.Context;
 using System.Reflection;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -10,6 +11,7 @@ namespace Mixins.Definitions.Building
 
     public BaseClassDefinitionBuilder (ApplicationDefinition application)
     {
+      ArgumentUtility.CheckNotNull ("application", application);
       _application = application;
     }
 
@@ -20,6 +22,8 @@ namespace Mixins.Definitions.Building
 
     public void Apply (ClassContext classContext)
     {
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
+
       BaseClassDefinition classDefinition = new BaseClassDefinition (_application, classContext.Type);
       Application.BaseClasses.Add (classDefinition);
 
@@ -30,6 +34,8 @@ namespace Mixins.Definitions.Building
 
     private void InitializeMembers (BaseClassDefinition classDefinition)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
       foreach (MethodInfo method in classDefinition.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
       {
         if (method.IsPublic || method.IsFamily)
@@ -41,6 +47,9 @@ namespace Mixins.Definitions.Building
 
     private static void ApplyMixins(BaseClassDefinition classDefinition, ClassContext classContext)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
+
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
       foreach (MixinContext mixinContext in classContext.MixinContexts)
       {

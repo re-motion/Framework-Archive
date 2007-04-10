@@ -174,7 +174,7 @@ namespace Mixins.UnitTests
       Assert.AreSame (baseClass, mixin.BaseClass);
     }
 
-    // [Test]
+    /*// [Test]
     [Ignore("Merge not yet implemented")]
     public void MergeNoMixins ()
     {
@@ -236,7 +236,7 @@ namespace Mixins.UnitTests
     public void MergeSeveralInterfaceAndStandardMixins ()
     {
       Assert.Fail ();
-    }
+    }*/
 
     [Test]
     public void InitializationMethod ()

@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins
 {
@@ -9,6 +10,7 @@ namespace Mixins
 
     public MixinForAttribute (Type targetType)
     {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
       _targetType = targetType;
     }
 

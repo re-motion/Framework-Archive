@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -15,6 +16,9 @@ namespace Mixins.Definitions
 
     public RequirementDefinitionBase(BaseClassDefinition baseClass, Type type)
     {
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("type", type);
+
       _baseClass = baseClass;
       _type = type;
     }

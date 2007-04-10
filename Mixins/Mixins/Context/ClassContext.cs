@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Utilities;
 
 namespace Mixins.Context
 {
@@ -10,6 +11,7 @@ namespace Mixins.Context
 
     public ClassContext (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
       _type = type;
     }
 
@@ -25,6 +27,7 @@ namespace Mixins.Context
 
     public void AddMixinContext (MixinContext mixinContext)
     {
+      ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
       if (mixinContext.TargetType != Type)
       {
         string message = string.Format("Cannot add mixin definition for different type {0} to context of class {1}.", mixinContext.TargetType, Type);

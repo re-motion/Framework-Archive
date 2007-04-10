@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -21,6 +22,9 @@ namespace Mixins.Definitions
     public BaseClassDefinition (ApplicationDefinition application, Type type)
         : base (type)
     {
+      ArgumentUtility.CheckNotNull ("application", application);
+      ArgumentUtility.CheckNotNull ("type", type);
+
       _application = application;
     }
 
@@ -41,6 +45,8 @@ namespace Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
+
       visitor.Visit (this);
 
       Members.Accept (visitor);

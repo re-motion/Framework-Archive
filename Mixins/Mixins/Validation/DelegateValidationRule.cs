@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation
 {
@@ -16,6 +17,11 @@ namespace Mixins.Validation
 
       public Args (ValidatingVisitor validator, TDefinition definition, IValidationLog log, DelegateValidationRule<TDefinition> self)
       {
+        ArgumentUtility.CheckNotNull ("validator", validator);
+        ArgumentUtility.CheckNotNull ("definition", definition);
+        ArgumentUtility.CheckNotNull ("log", log);
+        ArgumentUtility.CheckNotNull ("self", self);
+
         Validator = validator;
         Self = self;
         Log = log;
@@ -31,13 +37,17 @@ namespace Mixins.Validation
 
     public DelegateValidationRule(Rule rule, string ruleName, string message)
     {
+      ArgumentUtility.CheckNotNull ("rule", rule);
+      ArgumentUtility.CheckNotNull ("ruleName", ruleName);
+      ArgumentUtility.CheckNotNull ("message", message);
+
       _rule = rule;
       _ruleName = ruleName;
       _message = message;
     }
 
     public DelegateValidationRule (Rule rule)
-        : this (rule, rule.Method.DeclaringType.FullName + "." + rule.Method.Name, rule.Method.Name)
+        : this (ArgumentUtility.CheckNotNull("rule", rule), rule.Method.DeclaringType.FullName + "." + rule.Method.Name, rule.Method.Name)
     {
     }
 
@@ -58,6 +68,9 @@ namespace Mixins.Validation
 
     public void Execute (ValidatingVisitor validator, TDefinition definition, IValidationLog log)
     {
+      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull ("log", log);
       RuleDelegate (new Args(validator, definition, log, this));
     }
   }

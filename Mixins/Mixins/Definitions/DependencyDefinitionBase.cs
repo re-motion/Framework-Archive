@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -15,6 +16,9 @@ namespace Mixins.Definitions
 
     public DependencyDefinitionBase (TRequirement requirement, MixinDefinition depender, TSelf aggregator)
     {
+      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull ("depender", depender);
+
       _requirement = requirement;
       _depender = depender;
       _aggregator = aggregator;

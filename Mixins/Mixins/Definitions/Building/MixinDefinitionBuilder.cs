@@ -4,6 +4,7 @@ using Mixins;
 using Mixins.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -15,6 +16,7 @@ namespace Mixins.Definitions.Building
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
       _baseClass = baseClass;
       _faceRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (ThisAttribute));
       _baseRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (BaseAttribute));
@@ -27,6 +29,8 @@ namespace Mixins.Definitions.Building
 
     public void Apply (MixinContext mixinContext)
     {
+      ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
+
       MixinDefinition mixin = new MixinDefinition (mixinContext.MixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 

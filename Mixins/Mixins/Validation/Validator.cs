@@ -3,6 +3,7 @@ using System.Reflection;
 using Mixins.Definitions;
 using Mixins.Validation.DefaultLog;
 using Mixins.Validation.Rules;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation
 {
@@ -10,6 +11,9 @@ namespace Mixins.Validation
   {
     public static DefaultValidationLog Validate (IVisitableDefinition startingPoint, params IRuleSet[] customRuleSets)
     {
+      ArgumentUtility.CheckNotNull ("startingPoint", startingPoint);
+      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+
       DefaultValidationLog log = new DefaultValidationLog ();
       Validate (startingPoint, log, customRuleSets);
       return log;
@@ -17,6 +21,10 @@ namespace Mixins.Validation
 
     public static void Validate (IVisitableDefinition startingPoint, IValidationLog log, params IRuleSet[] customRuleSets)
     {
+      ArgumentUtility.CheckNotNull ("startingPoint", startingPoint);
+      ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+
       ValidatingVisitor visitor = new ValidatingVisitor (log);
       InstallDefaultRules (visitor);
       

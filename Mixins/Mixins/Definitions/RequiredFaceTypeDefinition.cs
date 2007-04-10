@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -13,6 +14,7 @@ namespace Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
     }
   }

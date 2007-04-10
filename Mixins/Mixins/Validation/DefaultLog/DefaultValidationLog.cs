@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation.DefaultLog
 {
@@ -17,11 +18,13 @@ namespace Mixins.Validation.DefaultLog
 
     public void ValidationStartsFor (IVisitableDefinition definition)
     {
+      ArgumentUtility.CheckNotNull ("definition", definition);
       _currentData.Push (new DefaultValidationResult (definition));
     }
 
     public void ValidationEndsFor (IVisitableDefinition definition)
     {
+      ArgumentUtility.CheckNotNull ("definition", definition);
       if (_currentData.Count == 0)
       {
         string message = string.Format ("Validation of definition {0}/{1} cannot be ended, because it wasn't started.", definition.GetType ().Name,
@@ -51,16 +54,19 @@ namespace Mixins.Validation.DefaultLog
 
     public void Succeed (IValidationRule rule)
     {
+      ArgumentUtility.CheckNotNull ("rule", rule);
       GetCurrentResult().Successes.Add (new DefaultValidationResultItem(rule));
     }
 
     public void Warn (IValidationRule rule)
     {
+      ArgumentUtility.CheckNotNull ("rule", rule);
       GetCurrentResult ().Warnings.Add (new DefaultValidationResultItem(rule));
     }
 
     public void Fail (IValidationRule rule)
     {
+      ArgumentUtility.CheckNotNull ("rule", rule);
       GetCurrentResult ().Failures.Add (new DefaultValidationResultItem (rule));
     }
 

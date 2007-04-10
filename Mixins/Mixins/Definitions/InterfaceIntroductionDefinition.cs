@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -9,6 +10,9 @@ namespace Mixins.Definitions
 
     public InterfaceIntroductionDefinition (Type type, MixinDefinition implementer)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("implementer", implementer);
+
       _type = type;
       _implementer = implementer;
     }
@@ -40,6 +44,7 @@ namespace Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
     }
   }

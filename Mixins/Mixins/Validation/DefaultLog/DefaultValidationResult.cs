@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation.DefaultLog
 {
@@ -14,6 +15,8 @@ namespace Mixins.Validation.DefaultLog
 
     public DefaultValidationResult (IVisitableDefinition definition)
     {
+      ArgumentUtility.CheckNotNull ("definition", definition);
+
       Definition = definition;
       Successes = new List<DefaultValidationResultItem> ();
       Warnings = new List<DefaultValidationResultItem> ();

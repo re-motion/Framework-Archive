@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -11,26 +12,41 @@ namespace Mixins.Definitions.Building
 
     protected override RequiredFaceTypeDefinition GetRequirement (Type type, BaseClassDefinition baseClass)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+
       return baseClass.RequiredFaceTypes[type];
     }
 
-    protected override RequiredFaceTypeDefinition CreateRequirement (BaseClassDefinition baseClass, Type type)
+    protected override RequiredFaceTypeDefinition CreateRequirement (Type type, BaseClassDefinition baseClass)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+
       return new RequiredFaceTypeDefinition (baseClass, type);
     }
 
-    protected override void AddRequirement (BaseClassDefinition baseClass, RequiredFaceTypeDefinition requirement)
+    protected override void AddRequirement (RequiredFaceTypeDefinition requirement, BaseClassDefinition baseClass)
     {
+      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+
       baseClass.RequiredFaceTypes.Add (requirement);
     }
 
     protected override ThisDependencyDefinition CreateDependency (RequiredFaceTypeDefinition requirement, MixinDefinition mixin, ThisDependencyDefinition aggregator)
     {
+      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
+
       return new ThisDependencyDefinition (requirement, mixin, aggregator);
     }
 
     protected override void AddDependency (MixinDefinition mixin, ThisDependencyDefinition dependency)
     {
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
+      ArgumentUtility.CheckNotNull ("dependency", dependency);
+
       mixin.ThisDependencies.Add (dependency);
     }
   }

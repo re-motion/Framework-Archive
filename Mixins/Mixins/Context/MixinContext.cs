@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Context
 {
@@ -9,6 +10,9 @@ namespace Mixins.Context
 
     public MixinContext (Type targetType, Type mixinType)
     {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+
       TargetType = targetType;
       MixinType = mixinType;
     }

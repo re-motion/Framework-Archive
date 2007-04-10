@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation
 {
@@ -21,6 +22,7 @@ namespace Mixins.Validation
 
     public ValidatingVisitor(IValidationLog validationLog)
     {
+      ArgumentUtility.CheckNotNull ("validationLog", validationLog);
       _validationLog = validationLog;
     }
 
@@ -71,46 +73,55 @@ namespace Mixins.Validation
 
     public void Visit (ApplicationDefinition application)
     {
+      ArgumentUtility.CheckNotNull ("application", application);
       CheckRules (_applicationRules, application);
     }
 
     public void Visit (BaseClassDefinition baseClass)
     {
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
       CheckRules (_baseClassRules, baseClass);
     }
 
     public void Visit (MixinDefinition mixin)
     {
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
       CheckRules (_mixinRules, mixin);
     }
 
     public void Visit (InterfaceIntroductionDefinition interfaceIntroduction)
     {
+      ArgumentUtility.CheckNotNull ("interfaceIntroduction", interfaceIntroduction);
       CheckRules (_interfaceIntroductionRules, interfaceIntroduction);
     }
 
     public void Visit (MethodDefinition method)
     {
+      ArgumentUtility.CheckNotNull ("method", method);
       CheckRules (_methodRules, method);
     }
 
     public void Visit (RequiredFaceTypeDefinition requiredFaceType)
     {
+      ArgumentUtility.CheckNotNull ("requiredFaceType", requiredFaceType);
       CheckRules (_requiredFaceTypeRules, requiredFaceType);
     }
 
     public void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType)
     {
+      ArgumentUtility.CheckNotNull ("requiredBaseCallType", requiredBaseCallType);
       CheckRules (_requiredBaseCallTypeRules, requiredBaseCallType);
     }
 
     public void Visit (ThisDependencyDefinition dependency)
     {
+      ArgumentUtility.CheckNotNull ("dependency", dependency);
       CheckRules (_thisDependencyRules, dependency);
     }
 
     public void Visit (BaseDependencyDefinition dependency)
     {
+      ArgumentUtility.CheckNotNull ("dependency", dependency);
       CheckRules (_baseDependencyRules, dependency);
     }
 

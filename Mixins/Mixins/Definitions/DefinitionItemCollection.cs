@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -15,6 +16,7 @@ namespace Mixins.Definitions
 
     public DefinitionItemCollection (KeyMaker keyMaker)
     {
+      ArgumentUtility.CheckNotNull ("keyMaker", keyMaker);
       _keyMaker = keyMaker;
     }
 
@@ -35,11 +37,13 @@ namespace Mixins.Definitions
 
     public bool HasItem (TKey key)
     {
+      ArgumentUtility.CheckNotNull ("key", key);
       return _items.ContainsKey (key);
     }
 
     internal void Add (TValue newItem)
     {
+      ArgumentUtility.CheckNotNull ("newItem", newItem);
       TKey key = _keyMaker (newItem);
       if (HasItem (key))
       {
@@ -51,11 +55,12 @@ namespace Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return HasItem (key) ? _items[key] : default (TValue); }
+      get { return HasItem (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue); }
     }
 
     internal void Accept (IDefinitionVisitor visitor)
     {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
       foreach (TValue value in this)
       {
         value.Accept (visitor);

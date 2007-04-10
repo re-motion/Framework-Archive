@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Diagnostics;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -17,6 +16,9 @@ namespace Mixins.Definitions
 
     public MemberDefinition (MemberInfo memberInfo, ClassDefinition declaringClass)
     {
+      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull ("declaringClass", declaringClass);
+
       _memberInfo = memberInfo;
       _declaringClass = declaringClass;
     }
@@ -74,6 +76,7 @@ namespace Mixins.Definitions
 
     public bool CanBeOverriddenBy (MemberDefinition overrider)
     {
+      ArgumentUtility.CheckNotNull ("overrider", overrider);
       return MemberType == overrider.MemberType && IsSignatureCompatibleWith (overrider);
     }
 

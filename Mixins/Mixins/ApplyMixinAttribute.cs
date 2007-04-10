@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Utilities;
 
 namespace Mixins
 {
@@ -11,6 +12,7 @@ namespace Mixins
 
     public ApplyMixinAttribute (Type mixinType)
     {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       _mixinType = mixinType;
     }
 

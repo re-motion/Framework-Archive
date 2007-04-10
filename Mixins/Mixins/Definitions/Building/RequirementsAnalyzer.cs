@@ -1,7 +1,7 @@
  using System;
-using System.Collections.Generic;
+ using System.Collections.Generic;
  using System.Diagnostics;
- using System.Text;
+ using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -13,12 +13,17 @@ namespace Mixins.Definitions.Building
 
     public RequirementsAnalyzer (BaseClassDefinition baseClass, Type filterAttribute)
     {
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("filterAttribute", filterAttribute);
+
       _baseClass = baseClass;
       _filterAttribute = filterAttribute;
     }
 
     public IEnumerable<Type> Analyze (MixinDefinition mixin)
     {
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
+
       _requirements = new Dictionary<Type, Type> ();
       Type mixinBase = GetMixinBase (mixin);
       if (mixinBase != null)

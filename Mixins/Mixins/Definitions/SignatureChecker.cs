@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -7,6 +8,9 @@ namespace Mixins.Definitions
   {
     public bool SignatureMatch (MethodInfo methodOne, MethodInfo methodTwo)
     {
+      ArgumentUtility.CheckNotNull ("methodOne", methodOne);
+      ArgumentUtility.CheckNotNull ("methodTwo", methodTwo);
+
       if (!TypeEquals (methodOne.ReturnType, methodTwo.ReturnType))
       {
         return false;

@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation.Rules
 {
@@ -8,6 +9,9 @@ namespace Mixins.Validation.Rules
 
     protected void SingleShould (bool test, IValidationLog log, IValidationRule rule)
     {
+      ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull ("rule", rule);
+
       if (!test)
       {
         log.Warn (rule);
@@ -20,6 +24,9 @@ namespace Mixins.Validation.Rules
 
     protected void SingleMust (bool test, IValidationLog log, IValidationRule rule)
     {
+      ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull ("rule", rule);
+
       if (!test)
       {
         log.Fail (rule);

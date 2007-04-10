@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -11,17 +12,20 @@ namespace Mixins.Definitions.Building
 
     public DependencyDefinitionBuilderBase(MixinDefinition mixin)
     {
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
       _mixin = mixin;
     }
 
     protected abstract TRequirement GetRequirement (Type type, BaseClassDefinition baseClass);
-    protected abstract TRequirement CreateRequirement (BaseClassDefinition baseClass, Type type);
-    protected abstract void AddRequirement (BaseClassDefinition baseClass, TRequirement requirement);
+    protected abstract TRequirement CreateRequirement (Type type, BaseClassDefinition baseClass);
+    protected abstract void AddRequirement (TRequirement requirement, BaseClassDefinition baseClass);
     protected abstract TDependency CreateDependency (TRequirement requirement, MixinDefinition mixin, TDependency aggregator);
     protected abstract void AddDependency (MixinDefinition mixin, TDependency dependency);
 
     public void Apply (IEnumerable<Type> dependencyTypes)
     {
+      ArgumentUtility.CheckNotNull ("dependencyTypes", dependencyTypes);
+
       foreach (Type type in dependencyTypes)
       {
         TDependency dependency = BuildDependency(type, null);
@@ -31,11 +35,13 @@ namespace Mixins.Definitions.Building
 
     private TDependency BuildDependency(Type type, TDependency aggregator)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+
       TRequirement requirement = GetRequirement (type, _mixin.BaseClass);
       if (requirement == null)
       {
-        requirement = CreateRequirement (_mixin.BaseClass, type);
-        AddRequirement(_mixin.BaseClass, requirement);
+        requirement = CreateRequirement (type, _mixin.BaseClass);
+        AddRequirement(requirement, _mixin.BaseClass);
       }
       TDependency dependency = CreateDependency (requirement, _mixin, aggregator);
       requirement.RequiringDependencies.Add (dependency);
@@ -45,6 +51,8 @@ namespace Mixins.Definitions.Building
 
     private void CheckForAggregate (TDependency dependency)
     {
+      ArgumentUtility.CheckNotNull ("dependency", dependency);
+
       if (dependency.RequiredType.IsEmptyInterface)
       {
         foreach (Type type in dependency.RequiredType.Type.GetInterfaces ())

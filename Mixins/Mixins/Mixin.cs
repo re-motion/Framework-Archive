@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins
 {
@@ -22,6 +23,8 @@ namespace Mixins
     [MixinInitializationMethod]
     internal void Initialize([This]TThis @this, [Base]TBase @base)
     {
+      Assertion.Assert (@this != null);
+      Assertion.Assert (@base != null || typeof (INull).IsAssignableFrom (typeof(TBase)));
       _this = @this;
       _base = @base;
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
@@ -12,6 +13,7 @@ namespace Mixins.Definitions
 
     public ClassDefinition (Type type)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
       _type = type;
     }
 

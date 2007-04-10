@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Mixins.Definitions;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation.DefaultLog
 {
@@ -9,6 +10,8 @@ namespace Mixins.Validation.DefaultLog
   {
     public static void DumpLog (DefaultValidationLog log)
     {
+      ArgumentUtility.CheckNotNull ("log", log);
+
       foreach (DefaultValidationResult result in log.Results)
       {
         if (result.TotalRulesExecuted == 0)

@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Mixins.Validation.DefaultLog
 {
@@ -9,6 +10,9 @@ namespace Mixins.Validation.DefaultLog
 
     public DefaultValidationExceptionItem (IValidationRule rule, Exception exception)
     {
+      ArgumentUtility.CheckNotNull ("rule", rule);
+      ArgumentUtility.CheckNotNull ("exception", exception);
+
       _rule = rule;
       _exception = exception;
     }
