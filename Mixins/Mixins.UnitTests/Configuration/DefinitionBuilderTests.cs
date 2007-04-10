@@ -7,7 +7,7 @@ using System.Reflection;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 
-namespace Mixins.UnitTests
+namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class DefinitionBuilderTests
@@ -345,7 +345,7 @@ namespace Mixins.UnitTests
 
       Assert.AreSame (application.BaseClasses[typeof (BaseType3)], bt3Mixin6.ThisDependencies[typeof (IBaseType32)].GetImplementer ());
       Assert.AreSame (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin4)],
-          bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].GetImplementer ());
+                      bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].GetImplementer ());
 
       Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType34)));
       Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBT3Mixin4)));
@@ -357,7 +357,7 @@ namespace Mixins.UnitTests
 
       Assert.AreSame (application.BaseClasses[typeof (BaseType3)], bt3Mixin6.BaseDependencies[typeof (IBaseType34)].GetImplementer ());
       Assert.AreSame (application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin4)],
-          bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].GetImplementer ());
+                      bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].GetImplementer ());
 
       Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof(IBT3Mixin4)].IsAggregate);
       Assert.IsFalse (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].IsAggregate);
@@ -388,9 +388,9 @@ namespace Mixins.UnitTests
 
       Assert.IsTrue (d1.AggregatedDependencies[typeof(ICBaseType3)].IsAggregate);
       Assert.IsFalse (d1.AggregatedDependencies[typeof (ICBaseType3)]
-          .AggregatedDependencies[typeof(IBaseType31)].IsAggregate);
+                          .AggregatedDependencies[typeof(IBaseType31)].IsAggregate);
       Assert.AreSame (bt3, d1.AggregatedDependencies[typeof (ICBaseType3)]
-          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer());
+                               .AggregatedDependencies[typeof (IBaseType31)].GetImplementer());
 
       Assert.IsFalse (d1.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
       Assert.AreSame (m4, d1.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer());
@@ -399,9 +399,9 @@ namespace Mixins.UnitTests
 
       Assert.IsTrue (d2.AggregatedDependencies[typeof (ICBaseType3)].IsAggregate);
       Assert.IsFalse (d2.AggregatedDependencies[typeof (ICBaseType3)]
-          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
+                          .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
       Assert.AreSame (bt3, d2.AggregatedDependencies[typeof (ICBaseType3)]
-          .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
+                               .AggregatedDependencies[typeof (IBaseType31)].GetImplementer ());
 
       Assert.IsFalse (d2.AggregatedDependencies[typeof (IBT3Mixin4)].IsAggregate);
       Assert.AreSame (m4, d2.AggregatedDependencies[typeof (IBT3Mixin4)].GetImplementer ());

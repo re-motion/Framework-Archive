@@ -10,7 +10,7 @@ using Mixins.Definitions;
 using Mixins.Validation;
 using Mixins.Validation.Rules;
 
-namespace Mixins.UnitTests
+namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ValidationTests

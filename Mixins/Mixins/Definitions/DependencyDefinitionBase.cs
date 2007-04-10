@@ -46,7 +46,17 @@ namespace Mixins.Definitions
 
     public IVisitableDefinition Parent
     {
-      get { return Aggregator == null ? Depender : (IVisitableDefinition) Aggregator; }
+      get
+      {
+        if (AggregatedDependencies != null)
+        {
+          return Aggregator;
+        }
+        else
+        {
+          return Depender;
+        }
+      }
     }
 
     public bool IsAggregate

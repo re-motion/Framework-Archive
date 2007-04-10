@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Mixins.Context;
 using Mixins.UnitTests.SampleTypes;
 
-namespace Mixins.UnitTests
+namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class DefaultContextBuilderTests
@@ -101,7 +101,7 @@ namespace Mixins.UnitTests
 
       MixinContext definition =
           new List<MixinContext> (classContext.MixinContexts).Find (
-          delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT2Mixin1); });
+              delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT2Mixin1); });
 
       Assert.IsNotNull (definition);
     }
@@ -115,8 +115,8 @@ namespace Mixins.UnitTests
       Assert.IsNotNull (classContext);
 
       MixinContext definition =
-        new List<MixinContext> (classContext.MixinContexts).Find (
-        delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT3Mixin5); });
+          new List<MixinContext> (classContext.MixinContexts).Find (
+              delegate (MixinContext mixinContext) { return mixinContext.MixinType == typeof (BT3Mixin5); });
       Assert.IsNotNull (definition);
     }
 

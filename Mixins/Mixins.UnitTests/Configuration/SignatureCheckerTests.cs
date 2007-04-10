@@ -4,7 +4,7 @@ using Mixins.Definitions;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Mixins.UnitTests
+namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class SignatureCheckerTests

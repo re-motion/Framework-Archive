@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace Mixins.UnitTests.SampleTypes
 {
@@ -7,8 +8,25 @@ namespace Mixins.UnitTests.SampleTypes
     string IfcMethod ();
   }
   
-  public class BaseType2 : IBaseType2
+  [Serializable]
+  public class BaseType2 : IBaseType2, ISerializable
   {
+    public string S;
+
+    public BaseType2 ()
+    {
+    }
+
+    public BaseType2 (SerializationInfo info, StreamingContext context)
+    {
+      S = info.GetString ("S");
+    }
+
+    public void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      info.AddValue ("S", S);
+    }
+
     public string IfcMethod ()
     {
       return "BaseType2.IfcMethod";

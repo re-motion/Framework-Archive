@@ -28,6 +28,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.DynamicProxy, Version=2.0.0.1, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="Rubicon.Core, Version=1.7.40.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libraries\Commons\trunk\Core\bin\Debug\Rubicon.Core.dll</HintPath>
@@ -38,6 +42,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\ModuleManager.cs" />
+    <Compile Include="CodeGeneration\ConcreteTypeBuilder.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\VirtualMethodInvocationExpression.cs" />
+    <Compile Include="CodeGeneration\ExtensionFieldAttribute.cs" />
+    <Compile Include="CodeGeneration\IModuleManager.cs" />
+    <Compile Include="CodeGeneration\ITypeGenerator.cs" />
+    <Compile Include="CodeGeneration\SerializationHelper.cs" />
+    <Compile Include="CodeGeneration\TypeFactory.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />
     <Compile Include="Definitions\BaseClassDefinition.cs" />
     <Compile Include="Definitions\Building\ApplicationDefinitionBuilder.cs" />
@@ -104,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Validations.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
