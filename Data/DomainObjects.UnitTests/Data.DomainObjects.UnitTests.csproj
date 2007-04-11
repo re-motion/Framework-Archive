@@ -682,6 +682,7 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStorageProviderFromStorageGroup.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithDefaultStorageProvider.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ReflectionBasedMappingTestDomainBase.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
     <Compile Include="TestDomain\StorageProviderStubTestDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />

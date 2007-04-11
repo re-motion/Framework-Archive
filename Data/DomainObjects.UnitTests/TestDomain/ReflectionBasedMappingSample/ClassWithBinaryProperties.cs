@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithBinaryProperties: TestDomainBase
+  public abstract class ClassWithBinaryProperties : ReflectionBasedMappingTestDomainBase
   {
     protected ClassWithBinaryProperties (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)

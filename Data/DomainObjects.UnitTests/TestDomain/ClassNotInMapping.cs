@@ -2,31 +2,18 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class ClassNotInMapping : TestDomainBase
+  [DBTable]
+  [TestDomain]
+  public class ClassNotInMapping : DomainObject
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
     public ClassNotInMapping ()
+      : base ()
     {
     }
 
-    public ClassNotInMapping (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected ClassNotInMapping (ClientTransaction clientTransaction, ObjectID objectID)
+      : base (clientTransaction, objectID)
     {
     }
-
-    protected ClassNotInMapping (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
   }
 }

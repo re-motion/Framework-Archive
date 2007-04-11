@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [DBTable]
   [TestDomain]
   [NotAbstract]
-  public abstract class ClassWithOneSideRelationProperties : TestDomainBase
+  public abstract class ClassWithOneSideRelationProperties : ReflectionBasedMappingTestDomainBase
   {
     protected ClassWithOneSideRelationProperties (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)

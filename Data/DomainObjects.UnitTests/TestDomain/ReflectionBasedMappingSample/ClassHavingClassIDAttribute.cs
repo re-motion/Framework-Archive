@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 {
   [ClassID ("ClassIDForClassHavingClassIDAttribute")]
   [DBTable]
-  public abstract class ClassHavingClassIDAttribute: TestDomainBase
+  public abstract class ClassHavingClassIDAttribute : ReflectionBasedMappingTestDomainBase
   {
     protected ClassHavingClassIDAttribute (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)

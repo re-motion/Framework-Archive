@@ -6,7 +6,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [FactoryInstantiated]
   [NotAbstract]
   [DBTable]
-  public abstract class OrderWithNewPropertyAccess : TestDomainBase
+  [TestDomain]
+  public abstract class OrderWithNewPropertyAccess : DomainObject
   {
     // types
 

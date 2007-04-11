@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [DBTable]
   [TestDomain]
   [NotAbstract]
-  public abstract class ClassWithBothEndPointsOnSameClass : TestDomainBase
+  public abstract class ClassWithBothEndPointsOnSameClass : ReflectionBasedMappingTestDomainBase
   {
     protected ClassWithBothEndPointsOnSameClass (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)

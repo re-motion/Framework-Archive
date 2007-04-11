@@ -3,7 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
   [DBTable (Name = "ClassHavingStorageSpecificIdentifierAttributeTable")]
-  public abstract class ClassHavingStorageSpecificIdentifierAttribute: TestDomainBase
+  public abstract class ClassHavingStorageSpecificIdentifierAttribute : ReflectionBasedMappingTestDomainBase
   {
     protected ClassHavingStorageSpecificIdentifierAttribute (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)

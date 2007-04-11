@@ -3,7 +3,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  public abstract class ClassWithPropertiesHavingStorageClassAttribute: TestDomainBase
+  public abstract class ClassWithPropertiesHavingStorageClassAttribute : ReflectionBasedMappingTestDomainBase
   {
     protected ClassWithPropertiesHavingStorageClassAttribute (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)
