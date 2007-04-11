@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
@@ -12,19 +13,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
     {
-      if (_typeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo) || _propertyInterceptor.Selector.ShouldInterceptMethod (type, memberInfo))
+      bool hasInterceptor = (_typeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo) || _propertyInterceptor.Selector.ShouldInterceptMethod (type, memberInfo));
+      if (!hasInterceptor && memberInfo.IsAbstract)
       {
-        return true;
+        string message = string.Format ("Cannot instantiate type {0} as its member {1} is abstract (and not an automatic property).",
+          type.FullName, memberInfo.Name);
+        throw new NonInterceptableTypeException (message, type);
       }
-      else if (memberInfo.IsAbstract)
-      {
-        throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, the method {1} is abstract (and not part of an "
-            + "automatic property).", type.FullName, memberInfo.Name), type);
-      }
-      else
-      {
-        return false;
-      }
+      return hasInterceptor;
     }
 
     public IInterceptor<DomainObject> SelectInterceptor (Type type, MethodInfo memberInfo)

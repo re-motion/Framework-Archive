@@ -52,8 +52,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
       if (type.IsAbstract && !type.IsDefined (typeof (NotAbstractAttribute), false))
       {
-        string message = string.Format("Cannot instantiate type {0} as it is abstract; for automatic properties, NotAbstractAttribute must be used.",
-            type.FullName);
+        string message = string.Format(
+          "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, NotAbstractAttribute must be used.",
+          type.FullName);
         throw new ArgumentException (message, "type");
       }
       if (args == null)

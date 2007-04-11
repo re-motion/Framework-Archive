@@ -17,8 +17,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   {
     // types
 
-    [NotAbstract]
     [DBTable]
+    [NotAbstract]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
       public NonInstantiableAbstractClass () : base (null, null) { }
@@ -30,6 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
       public NonInstantiableAbstractClassWithProps () : base (null, null) { }
+      [StorageClassNone]
       public abstract int Foo { get; }
     }
 
@@ -198,9 +199,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClass, the method Foo is abstract (and not part of an automatic "
-        + "property).\r\nParameter name: type")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "automatic property).\r\nParameter name: type")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
@@ -211,7 +212,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps, the method get_Foo is abstract (and not part of an "
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps as its member get_Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
@@ -400,7 +401,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "AbstractClassNotInMapping as it is abstract; for automatic properties, NotAbstractAttribute must be used.\r\nParameter name: type")]
+        + "AbstractClassNotInMapping as it is abstract; for classes with automatic properties, NotAbstractAttribute must be used.\r\nParameter name: type")]
     public void CannotInstantiateReallyAbstractClass ()
     {
       using (new FactoryInstantiationScope ())

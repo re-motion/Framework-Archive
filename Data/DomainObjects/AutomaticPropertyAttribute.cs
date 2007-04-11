@@ -29,6 +29,7 @@ namespace Rubicon.Data.DomainObjects
   /// annotate the class with a <see cref="NotAbstractAttribute"/>.
   /// </para>
   /// </remarks>
+  // TODO: Remove
   [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
   public class AutomaticPropertyAttribute : Attribute
   {
