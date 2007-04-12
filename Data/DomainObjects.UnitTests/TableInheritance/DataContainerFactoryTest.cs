@@ -7,23 +7,8 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class DataContainerFactoryTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public DataContainerFactoryTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void RelationClassIDColumnRefersToAbstractClass ()
     {
@@ -43,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           }
           catch (RdbmsProviderException ex)
           {
-            string expectedBeginOfMessage = string.Format ("Error while reading property 'Customer' of object '{0}':", id);
+            string expectedBeginOfMessage = string.Format ("Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Order.Customer' of object '{0}':", id);
             Assert.IsTrue (ex.Message.StartsWith (expectedBeginOfMessage));
           }
         }

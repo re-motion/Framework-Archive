@@ -5,15 +5,8 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class IntegrationTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ObjectID _rootFolderID;
     private ObjectID _folder1ID;
     private ObjectID _fileInRootFolderID;
@@ -26,14 +19,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     private ObjectID _derivedClassWithEntityFromBaseClass1ID;
     private ObjectID _derivedClassWithEntityFromBaseClass2ID;
     private ObjectID _derivedClassWithEntityFromBaseClass3ID;
-
-    // construction and disposing
-
-    public IntegrationTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {

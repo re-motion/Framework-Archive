@@ -5,22 +5,8 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
-  public sealed class StorageProviderDefinitionFactory
+  public static class StorageProviderDefinitionFactory
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    private StorageProviderDefinitionFactory()
-    {
-    }
-
-    // methods and properties
-
     public static ProviderCollection<StorageProviderDefinition> Create()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();

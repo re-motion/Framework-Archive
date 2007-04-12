@@ -28,6 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       get { return (ObjectList<FileSystemItem>) GetRelatedObjects(); }
     }
 
+    [DBColumn ("FolderCreatedAt")]
     public abstract DateTime CreatedAt { get; set; }
   }
 }

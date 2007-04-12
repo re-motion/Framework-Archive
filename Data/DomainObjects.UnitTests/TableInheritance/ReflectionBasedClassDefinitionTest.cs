@@ -7,40 +7,25 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class ReflectionBasedClassDefinitionTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ReflectionBasedClassDefinition _domainBaseClass;
     private ReflectionBasedClassDefinition _personClass;
     private ReflectionBasedClassDefinition _customerClass;
     private ReflectionBasedClassDefinition _addressClass;
     private ReflectionBasedClassDefinition _organizationalUnitClass;
 
-    // construction and disposing
-
-    public ReflectionBasedClassDefinitionTest ()
-    {
-    }
-
-    // methods and properties
-
     public override void SetUp ()
     {
       base.SetUp ();
 
       _domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase), false);
-      _personClass = new ReflectionBasedClassDefinition ((string) "Person", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Person), (bool) false, _domainBaseClass);
+      _personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, _domainBaseClass);
       _customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), false, _personClass);
-      _addressClass = new ReflectionBasedClassDefinition ((string) "Address", (string) "TableInheritance_Address", (string) c_testDomainProviderID, typeof (Address), (bool) false);
+      _addressClass = new ReflectionBasedClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address), false);
 
       _organizationalUnitClass = new ReflectionBasedClassDefinition (
-          (string) "OrganizationalUnit", (string) "TableInheritance_OrganizationalUnit", (string) c_testDomainProviderID, typeof (OrganizationalUnit), (bool) false, _domainBaseClass);  
+          "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, _domainBaseClass);  
     }
 
     [Test]
@@ -56,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [ExpectedException (typeof (ArgumentEmptyException))]
     public void EntityNameMustNotBeEmptyWithClassType ()
     {
-      new ReflectionBasedClassDefinition ((string) "DomainBase", string.Empty, (string) c_testDomainProviderID, typeof (DomainBase), (bool) false);
+      new ReflectionBasedClassDefinition ("DomainBase", string.Empty, c_testDomainProviderID, typeof (DomainBase), false);
     }
 
     [Test]
@@ -96,8 +81,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void GetAllConcreteEntityNamesForConreteSingleWithEntityName ()
     {
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ((string) "Person", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Person), (bool) false);
-      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ((string) "Customer", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Customer), (bool) false, personClass);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), false, personClass);
 
       string[] entityNames = customerClass.GetAllConcreteEntityNames ();
       Assert.IsNotNull (entityNames);
@@ -119,8 +104,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void GetAllConcreteEntityNamesForAbstractClassWithSameEntityNameInInheritanceHierarchy ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase), false);
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ((string) "Person", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Person), (bool) false, domainBaseClass);
-      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ((string) "Customer", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Customer), (bool) false, personClass);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), false, personClass);
 
       string[] entityNames = domainBaseClass.GetAllConcreteEntityNames ();
       Assert.IsNotNull (entityNames);

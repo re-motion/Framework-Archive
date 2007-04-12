@@ -1,35 +1,21 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class MappingConfigurationTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public MappingConfigurationTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     [ExpectedException (typeof (MappingException))]
     public void Validate ()
     {
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
 
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector ());
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -39,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
 
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector ());
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try
@@ -61,16 +47,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void TableInheritanceMapping ()
     {
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader("TableInheritanceMapping.xml");
+      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (ReflectionBasedMappingTest).Assembly));
       ClassDefinition domainBaseClass = mappingConfiguration.ClassDefinitions.GetMandatory (typeof (DomainBase));
       Assert.IsNull (domainBaseClass.MyEntityName);
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Type 'Person' must be abstract, because neither class 'TI_Person' nor its base classes specify an entity name.")]
+    [Ignore( "TODO: Implement")]
     public void ConstructorValidates ()
     {
-      MappingConfiguration.CreateConfigurationFromFileBasedLoader("TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
+      //MappingConfiguration.CreateConfigurationFromFileBasedLoader("TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
     }
   }
 }

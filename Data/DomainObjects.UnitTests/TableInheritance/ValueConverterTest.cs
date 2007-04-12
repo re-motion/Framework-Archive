@@ -9,26 +9,11 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class ValueConverterTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     ValueConverter _converter = new ValueConverter ();
     StorageProviderManager _storageProviderManager;
     IDbConnection _connection;
-
-    // construction and disposing
-
-    public ValueConverterTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -54,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void GetObjectIDValue ()
     {
       ClassDefinition personClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Person));
-      PropertyDefinition clientProperty = personClass.GetMandatoryPropertyDefinition ("Client");
+      PropertyDefinition clientProperty = personClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client");
       ObjectID expectedID = DomainObjectIDs.Client;
 
       using (IDbCommand command = CreatePersonCommand ((Guid) DomainObjectIDs.Person.Value))
@@ -74,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       using (IDbCommand command = _connection.CreateCommand ())
       {
-        command.CommandText = string.Format ("SELECT '{0}' as ID, 'DomainBase' as ClassID;", DomainObjectIDs.Person.Value);
+        command.CommandText = string.Format ("SELECT '{0}' as ID, 'TI_DomainBase' as ClassID;", DomainObjectIDs.Person.Value);
         using (IDataReader reader = command.ExecuteReader ())
         {
           Assert.IsTrue (reader.Read ());
@@ -87,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           catch (RdbmsProviderException ex)
           {
             string expectedMessage = string.Format (
-                "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class 'DomainBase'.", 
+                "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class 'TI_DomainBase'.", 
                 DomainObjectIDs.Person.Value);
 
             Assert.AreEqual (expectedMessage, ex.Message);
@@ -97,9 +82,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException),
-        ExpectedMessage = "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must have column"
-        + " 'DomainBaseIDClassID' defined, because opposite class 'DomainBase' is part of an inheritance hierarchy.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must have column"
+        + " 'DomainBaseIDClassID' defined, because opposite class 'TI_DomainBase' is part of an inheritance hierarchy.")]
     public void GetValueWithMissingRelationClassIDColumn ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
@@ -115,16 +100,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBase"),
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBase"),
               reader, reader.GetOrdinal ("DomainBaseID"));
         }
       }
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException),
-        ExpectedMessage = "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain column"
-        + " 'ClientIDClassID', because opposite class 'Client' is not part of an inheritance hierarchy.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain column"
+        + " 'ClientIDClassID', because opposite class 'TI_Client' is not part of an inheritance hierarchy.")]
     public void GetValueWithInvalidRelationClassIDColumn ()
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
@@ -140,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Client"),
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.Client"),
               reader, reader.GetOrdinal ("ClientID"));
         }
       }
@@ -165,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBaseWithInvalidClassIDValue"),
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDValue"),
               reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDValueID"));
         }
       }
@@ -190,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBaseWithInvalidClassIDNullValue"),
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDNullValue"),
               reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDNullValueID"));
         }
       }

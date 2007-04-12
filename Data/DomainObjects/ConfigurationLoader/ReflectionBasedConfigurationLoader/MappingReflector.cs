@@ -12,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public MappingReflector ()
     {
+      _rootAssemblies = new Assembly[0];
     }
 
     public MappingReflector (params Assembly[] rootAssemblies)

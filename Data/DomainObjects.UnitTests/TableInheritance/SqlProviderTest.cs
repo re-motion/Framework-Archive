@@ -8,32 +8,17 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class SqlProviderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void LoadConcreteSingle ()
     {
       DataContainer customerContainer = Provider.LoadDataContainer (DomainObjectIDs.Customer);
       Assert.IsNotNull (customerContainer);
       Assert.AreEqual (DomainObjectIDs.Customer, customerContainer.ID);
-      Assert.AreEqual ("UnitTests", customerContainer.GetString ("CreatedBy"));
-      Assert.AreEqual ("Zaphod", customerContainer.GetString ("FirstName"));
-      Assert.AreEqual (CustomerType.Premium, customerContainer.GetValue ("CustomerType"));
+      Assert.AreEqual ("UnitTests", customerContainer.GetString ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.CreatedBy"));
+      Assert.AreEqual ("Zaphod", customerContainer.GetString ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person.FirstName"));
+      Assert.AreEqual (CustomerType.Premium, customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer.CustomerType"));
     }
 
     [Test]
@@ -41,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
 
-      DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Client", DomainObjectIDs.Client);
+      DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", DomainObjectIDs.Client);
 
       Assert.IsNotNull (loadedDataContainers);
       Assert.AreEqual (3, loadedDataContainers.Count);

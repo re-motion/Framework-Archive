@@ -8,25 +8,10 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class ConcreteTableInheritanceRelationLoaderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ClassDefinition _domainBaseClass;
     private ConcreteTableInheritanceRelationLoader _loader;
-
-    // construction and disposing
-
-    public ConcreteTableInheritanceRelationLoaderTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -35,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       _domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
 
       _loader = new ConcreteTableInheritanceRelationLoader (
-          Provider, _domainBaseClass, _domainBaseClass.GetMandatoryPropertyDefinition ("Client"), DomainObjectIDs.Client);
+          Provider, _domainBaseClass, _domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
     }
 
     [Test]
@@ -73,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void LoadDataContainerWithInvalidClassID ()
     {
       ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
-          Provider, _domainBaseClass, _domainBaseClass.GetMandatoryPropertyDefinition ("Client"), 
+          Provider, _domainBaseClass, _domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), 
           new ObjectID (typeof (Client), new Guid ("{58535280-84EC-41d9-9F8F-BCAC64BB3709}")));
 
       loader.LoadDataContainers ();
@@ -86,8 +71,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           typeof (AbstractClassWithoutDerivations));
 
       ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
-          Provider, abstractClassWithoutDerivationsClass, 
-          abstractClassWithoutDerivationsClass.GetMandatoryPropertyDefinition ("DomainBase"), 
+          Provider, abstractClassWithoutDerivationsClass,
+          abstractClassWithoutDerivationsClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.AbstractClassWithoutDerivations.DomainBase"), 
           DomainObjectIDs.Person);
 
       DataContainerCollection loadedDataContainers = loader.LoadDataContainers ();

@@ -111,12 +111,10 @@
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
     <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs" />
-    <Compile Include="TableInheritance\DataContainerFactoryTest.cs" />
     <Compile Include="TableInheritance\DomainObjectIDs.cs" />
     <Compile Include="TableInheritance\DomainObjectTest.cs" />
     <Compile Include="TableInheritance\IntegrationTest.cs" />
     <Compile Include="TableInheritance\MappingConfigurationTest.cs" />
-    <Compile Include="TableInheritance\ObjectIDTest.cs" />
     <Compile Include="TableInheritance\SelectCommandBuilderTest.cs" />
     <Compile Include="TableInheritance\SqlProviderBaseTest.cs" />
     <Compile Include="TableInheritance\SqlProviderTest.cs" />

@@ -167,7 +167,7 @@ values
     null, null, '{F7AD91EF-AC75-4fe3-A427-E40312B12917}',
     null, null,
     null, null,
-    '{6108E150-6D3C-4e38-9865-895BD143D180}', 'File')
+    '{6108E150-6D3C-4e38-9865-895BD143D180}', 'TI_File')
 
 insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
     (ID, ClassID, [Name], 

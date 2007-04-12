@@ -9,24 +9,9 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class UnionSelectCommandBuilderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private UnionSelectCommandBuilder _builder;
-
-    // construction and disposing
-
-    public UnionSelectCommandBuilderTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -35,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
 
       _builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Client"), DomainObjectIDs.Client);
+          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
     }
 
     [Test]
@@ -51,16 +36,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), false);
 
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
-          (string) "Person", (string) "TableInheritance_Person", (string) c_testDomainProviderID, typeof (Person), (bool) false, domainBaseClass);
+          "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
 
       ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
-          (string) "OrganizationalUnit", (string) "TableInheritance_OrganizationalUnit", (string) c_testDomainProviderID, typeof (OrganizationalUnit), (bool) false, domainBaseClass);
+          "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
-      ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition ((string) "Client", (string) "TableInheritance_Client", (string) c_testDomainProviderID, typeof (Client), (bool) false);
+      ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client), false);
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
+      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 
-      RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Client", false);
+      RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", false);
 
       VirtualRelationEndPointDefinition clientEndPointDefinition = new VirtualRelationEndPointDefinition (
           clientClass, "AssignedObjects", false, CardinalityType.Many, typeof (DomainObjectCollection));
@@ -72,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       clientClass.MyRelationDefinitions.Add (clientToDomainBaseDefinition);
 
       UnionSelectCommandBuilder builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Client"), DomainObjectIDs.Client);
+          Provider, domainBaseClass, domainBaseClass.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client"), DomainObjectIDs.Client);
 
       using (IDbCommand command = builder.Create ())
       {

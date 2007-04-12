@@ -6,23 +6,8 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class DomainObjectTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public DomainObjectTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void OneToManyRelationToAbstractClass ()
     {
@@ -37,9 +22,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "The property 'Owner' of the loaded DataContainer 'HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid'"
-        + " refers to ClassID 'OrganizationalUnit', but the actual ClassID is 'Person'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "The property 'Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.HistoryEntry.Owner' of the loaded DataContainer "
+        + "'TI_HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid' refers to ClassID 'TI_OrganizationalUnit', "
+        + "but the actual ClassID is 'TI_Person'.")]
     public void SameIDInDifferentConcreteTables ()
     {
       Person person = Person.GetObject (new ObjectID (typeof (Person), new Guid ("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")));

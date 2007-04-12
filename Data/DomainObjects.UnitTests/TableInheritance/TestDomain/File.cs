@@ -24,6 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     public abstract int Size { get; set; }
 
+    [DBColumn ("FileCreatedAt")]
     public abstract DateTime CreatedAt { get; set; }
   }
 }

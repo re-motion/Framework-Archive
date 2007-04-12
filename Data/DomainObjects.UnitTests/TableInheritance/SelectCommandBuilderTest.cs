@@ -4,31 +4,17 @@ using System.Data.SqlClient;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class SelectCommandBuilderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SelectCommandBuilderTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void CreateForIDLookupWithMultipleValues ()
     {
-      ClassDefinition personClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Person");
+      ClassDefinition personClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Person));
 
       SelectCommandBuilder sqlCommandBuilder = SelectCommandBuilder.CreateForIDLookup (
           Provider, personClass.GetEntityName (), new ObjectID[] { DomainObjectIDs.Person, DomainObjectIDs.Customer });

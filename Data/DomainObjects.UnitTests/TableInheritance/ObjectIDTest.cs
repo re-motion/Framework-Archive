@@ -5,23 +5,8 @@ using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  [Ignore]
   public class ObjectIDTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public ObjectIDTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void InitializeWithAbstractType ()
     {
@@ -34,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       {
         string expectedMessage = string.Format (
             "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.\r\nParameter name: classType",
-            typeof (DomainBase).AssemblyQualifiedName, "DomainBase");
+            typeof (DomainBase).AssemblyQualifiedName, "TI_DomainBase");
 
         Assert.AreEqual (expectedMessage, ex.Message);
       }

@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_BaseClassWithInvalidRelationClassIDColumns")]
-  [DBTable]
+  [DBTable (Name = "TableInheritance_BaseClassWithInvalidRelationClassIDColumns")]
   [TestDomain]
   public abstract class BaseClassWithInvalidRelationClassIDColumns : DomainObject
   {

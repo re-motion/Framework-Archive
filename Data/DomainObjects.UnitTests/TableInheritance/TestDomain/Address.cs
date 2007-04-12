@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Country { get; set; }
 
-    [DBBidirectionalRelation ("Address")]
+    [DBBidirectionalRelation ("Address", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Person Person { get; set; }
   }
