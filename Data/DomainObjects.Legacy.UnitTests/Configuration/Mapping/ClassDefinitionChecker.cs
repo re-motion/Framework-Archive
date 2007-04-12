@@ -139,7 +139,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       Assert.AreEqual (expectedDefinition.PropertyName, actualDefinition.PropertyName,
           string.Format ("PropertyNames of property definitions (class definition: '{0}') do not match. Expected: {1}, actual: {2}",
-          classDefinition,
+          classDefinition.ID,
           expectedDefinition.PropertyName, actualDefinition.PropertyName));
 
       Assert.AreEqual (expectedDefinition.ClassDefinition.ID, actualDefinition.ClassDefinition.ID,
@@ -148,22 +148,27 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
       Assert.AreEqual (expectedDefinition.StorageSpecificName, actualDefinition.StorageSpecificName,
           string.Format ("ColumnName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
-          expectedDefinition.PropertyName, classDefinition,
+          expectedDefinition.PropertyName, classDefinition.ID,
           expectedDefinition.StorageSpecificName, actualDefinition.StorageSpecificName));
 
       Assert.AreEqual (expectedDefinition.MaxLength, actualDefinition.MaxLength,
           string.Format ("MaxLength of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
-          expectedDefinition.PropertyName, classDefinition,
+          expectedDefinition.PropertyName, classDefinition.ID,
           expectedDefinition.MaxLength, actualDefinition.MaxLength));
 
       Assert.AreEqual (expectedDefinition.PropertyType, actualDefinition.PropertyType,
           string.Format ("PropertyType of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
-          expectedDefinition.PropertyName, classDefinition,
+          expectedDefinition.PropertyName, classDefinition.ID,
           expectedDefinition.PropertyType, actualDefinition.PropertyType));
+
+      Assert.AreEqual (expectedDefinition.IsNullable, actualDefinition.IsNullable,
+          string.Format ("IsNullable of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
+          expectedDefinition.PropertyName, classDefinition.ID,
+          expectedDefinition.IsNullable, actualDefinition.IsNullable));
 
       Assert.AreEqual (expectedDefinition.MappingTypeName, actualDefinition.MappingTypeName,
           string.Format ("PropertyTypeName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}",
-          expectedDefinition.PropertyName, classDefinition,
+          expectedDefinition.PropertyName, classDefinition.ID,
           expectedDefinition.MappingTypeName, actualDefinition.MappingTypeName));
     }
   }

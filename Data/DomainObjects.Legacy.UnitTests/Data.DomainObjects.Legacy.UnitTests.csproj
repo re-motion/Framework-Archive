@@ -74,8 +74,12 @@
     <Compile Include="DatabaseTest.cs" />
     <Compile Include="Database\StandardMappingTestDataLoader.cs" />
     <Compile Include="Database\TestDataLoader.cs" />
+    <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs" />
+    <Compile Include="DomainObjects\NewDomainObjectTest.cs" />
+    <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="EventReceiver\ChangeState.cs" />
     <Compile Include="EventReceiver\CollectionChangeState.cs" />
+    <Compile Include="EventReceiver\DomainObjectCollectionEventReceiver.cs" />
     <Compile Include="EventReceiver\DomainObjectCollectionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\DomainObjectEventReceiver.cs" />
     <Compile Include="EventReceiver\DomainObjectMockEventReceiver.cs" />

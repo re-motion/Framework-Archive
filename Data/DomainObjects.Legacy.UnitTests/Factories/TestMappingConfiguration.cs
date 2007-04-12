@@ -127,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
 
       company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
       company.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName));
+          "IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return company;
     }
@@ -153,7 +153,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition partner = new XmlBasedClassDefinition (
           "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
-      partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
+      partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return partner;
     }
@@ -185,8 +185,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return order;
     }
@@ -213,7 +213,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
 
       orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
-      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return orderTicket;
     }
@@ -223,7 +223,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition orderItem = new XmlBasedClassDefinition (
           "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
 
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
       orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
       orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", "string", 100));
 
@@ -236,7 +236,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
 
       order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return order;
     }
@@ -256,7 +256,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition clientClass = new XmlBasedClassDefinition (
           "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
-      clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
+      clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return clientClass;
     }
@@ -266,7 +266,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition location = new XmlBasedClassDefinition (
           "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
 
-      location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
+      location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return location;
     }
@@ -276,7 +276,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition fileSystemItem = new XmlBasedClassDefinition (
           "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
 
-      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
+      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return fileSystemItem;
     }
@@ -398,10 +398,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName));
+          "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName, true));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName));
+          "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
@@ -412,7 +412,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
+          "ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
@@ -426,7 +426,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           typeof (ClassWithoutRelatedClassIDColumn));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName));
+          "Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
@@ -440,7 +440,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
@@ -454,7 +454,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
       classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
@@ -475,7 +475,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
 
       employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName));
+      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return employee;
     }
@@ -486,7 +486,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
 
       computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
-      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName));
+      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return computer;
     }
@@ -497,7 +497,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
+      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }
