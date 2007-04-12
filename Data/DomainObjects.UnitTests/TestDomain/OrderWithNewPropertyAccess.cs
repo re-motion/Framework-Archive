@@ -3,28 +3,23 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [FactoryInstantiated]
   [NotAbstract]
   [DBTable]
   [TestDomain]
   public abstract class OrderWithNewPropertyAccess : DomainObject
   {
-    // types
+    public static OrderWithNewPropertyAccess Create ()
+    {
+      return DomainObject.Create<OrderWithNewPropertyAccess>();
+    }
 
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public OrderWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
+    protected OrderWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)
     {
     }
 
-    // methods and properties
-
     [AutomaticProperty]
+    [DBColumn( ("OrderNo"))]
     public abstract int OrderNumber { get; set; }
 
     public virtual DateTime DeliveryDate
@@ -53,21 +48,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { SetRelatedObject (value); }
     }
 
+    [StorageClassNone]
     public virtual Customer OriginalCustomer
     {
       get { return (Customer) GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"); }
     }
 
-    public virtual DomainObjectCollection OrderItems
+    [DBBidirectionalRelation ("Order")]
+    public virtual ObjectList<OrderItemWithNewPropertyAccess> OrderItems
     {
-      get { return GetRelatedObjects (); }
+      get { return (ObjectList<OrderItemWithNewPropertyAccess>) GetRelatedObjects (); }
     }
 
+    [StorageClassNone]
     public virtual int NotInMapping
     {
       get { return GetPropertyValue<int> (); }
     }
 
+    [StorageClassNone]
     public virtual OrderWithNewPropertyAccess NotInMappingRelated
     {
       get { return (OrderWithNewPropertyAccess) GetRelatedObject (); }

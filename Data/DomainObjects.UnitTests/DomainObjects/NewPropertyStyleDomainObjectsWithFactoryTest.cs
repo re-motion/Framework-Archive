@@ -15,8 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class NewPropertyStyleDomainObjectsWithFactoryTest : ClientTransactionBaseTest
   {
-    // types
-
     [DBTable]
     [NotAbstract]
     public abstract class NonInstantiableAbstractClass : DomainObject
@@ -66,18 +64,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.Fail ("Shouldn't be executed.");
       }
     }
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public NewPropertyStyleDomainObjectsWithFactoryTest ()
-    {
-    }
-
-    // methods and properties
 
     [SetUp]
     public override void SetUp ()
@@ -211,9 +197,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps as its member get_Foo is abstract (and not an "
-        + "automatic property).\r\nParameter name: type")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
+        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps, "
+        + "property Foo is abstract but not defined in the mapping (assumed property id: "
+        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
@@ -270,12 +258,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The given type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not implement the required legacy constructor taking a "
-        + "ClientTransaction only.")]
-    public void OldConstructorMismatch1 ()
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = 
+        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not "
+        + "support the requested constructor with signature (Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
+    public void OldConstructorMismatch1()
     {
-      DomainObject.Create<ClassWithWrongConstructor> ();
+      DomainObject.Create<ClassWithWrongConstructor>();
     }
 
     [Test]
@@ -291,9 +279,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The given type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not implement the required legacy constructor taking a "
-        + "ClientTransaction only.")]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
+        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not "
+        + "support the requested constructor with signature (Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
     public void OldConstructorMismatch2 ()
     {
       DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
@@ -325,6 +313,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreSame (newCustomer, order.Customer);
 
       Assert.AreSame (customer, order.OriginalCustomer);
+    }
+
+    [Test]
+    public void GetSetRelatedObjectAndOriginal_WithNullAndAutomaticProperty ()
+    {
+      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      Assert.IsNotEmpty (order.OrderItems);
+      OrderItemWithNewPropertyAccess orderItem = order.OrderItems[0];
+
+      orderItem.Order = null;
+      Assert.IsNull (orderItem.Order);
+
+      Assert.AreSame (order, orderItem.OriginalOrder);
     }
 
     [Test]
@@ -364,7 +365,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DefaultRelatedObject ()
     {
       OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
-      OrderItemWithNewPropertyAccess item = (OrderItemWithNewPropertyAccess) order.OrderItems[0];
+      OrderItemWithNewPropertyAccess item = order.OrderItems[0];
       Assert.AreSame (order, item.Order);
       
       OrderWithNewPropertyAccess newOrder = DomainObject.Create<OrderWithNewPropertyAccess> ();

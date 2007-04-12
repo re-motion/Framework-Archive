@@ -105,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void DefaultRelatedSetterImplementation (DomainObject target, IInvocation<DomainObject> invocation)
     {
-      Assertion.DebugAssert (invocation.Arguments.Length == 1 && invocation.Arguments[0] is DomainObject);
+      Assertion.DebugAssert (invocation.Arguments.Length == 1 && (invocation.Arguments[0] == null || invocation.Arguments[0] is DomainObject));
       target.SetRelatedObject ((DomainObject) invocation.Arguments[0]);
     }
 

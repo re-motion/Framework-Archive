@@ -4,26 +4,20 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [FactoryInstantiated]
   [NotAbstract]
   [DBTable]
   [TestDomain]
   public abstract class OrderItemWithNewPropertyAccess : DomainObject
   {
-    // types
+    public static OrderItemWithNewPropertyAccess Create ()
+    {
+      return DomainObject.Create<OrderItemWithNewPropertyAccess> ();
+    }
 
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public OrderItemWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
+    protected OrderItemWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
       : base (clientTransaction, objectID)
     {
     }
-
-    // methods and properties
 
     public int Position
     {
@@ -38,6 +32,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     [AutomaticProperty]
+    [DBBidirectionalRelation ("OrderItems")]
     public abstract OrderWithNewPropertyAccess Order { get; set; }
+
+    [StorageClassNone]
+    public virtual OrderWithNewPropertyAccess OriginalOrder
+    {
+      get { return (OrderWithNewPropertyAccess) GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order"); }
+    }
   }
 }
