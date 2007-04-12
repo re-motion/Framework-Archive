@@ -3,52 +3,27 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable (Name = "TableWithValidRelations")]
-  public class ClassWithValidRelations: TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithValidRelations : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public new static ClassWithValidRelations GetObject (ObjectID id)
+    public static ClassWithValidRelations Create ()
     {
-      return (ClassWithValidRelations) DomainObject.GetObject (id);
+      return DomainObject.Create<ClassWithValidRelations> ();
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public ClassWithValidRelations()
+    protected ClassWithValidRelations (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public ClassWithValidRelations (ClientTransaction clientTransaction)
-        : base (clientTransaction)
-    {
-    }
-
-    protected ClassWithValidRelations (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("ClassWithValidRelationsOptional", ContainsForeignKey = true)]
     [DBColumn ("TableWithGuidKeyOptionalID")]
-    public ClassWithGuidKey ClassWithGuidKeyOptional
-    {
-      get { return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKeyOptional"); }
-      set { SetRelatedObject ("ClassWithGuidKeyOptional", value); }
-    }
+    public abstract ClassWithGuidKey ClassWithGuidKeyOptional { get; set; }
 
     [DBBidirectionalRelation ("ClassWithValidRelationsNonOptional", ContainsForeignKey = true)]
     [DBColumn ("TableWithGuidKeyNonOptionalID")]
     [Mandatory]
-    public ClassWithGuidKey ClassWithGuidKeyNonOptional
-    {
-      get { return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKeyNonOptional"); }
-      set { SetRelatedObject ("ClassWithGuidKeyNonOptional", value); }
-    }
+    public abstract ClassWithGuidKey ClassWithGuidKeyNonOptional { get; set; }
   }
 }

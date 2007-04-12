@@ -9,12 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class OneToOneRelationChangeTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private Order _order;
     private OrderTicket _oldOrderTicket;
     private OrderTicket _newOrderTicket;
@@ -24,14 +18,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     private DomainObjectEventReceiver _oldOrderTicketEventReceiver;
     private DomainObjectEventReceiver _newOrderTicketEventReceiver;
     private DomainObjectEventReceiver _oldOrderOfNewOrderTicketEventReceiver;
-
-    // construction and disposing
-
-    public OneToOneRelationChangeTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -60,29 +46,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.AreEqual (true, _orderEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _orderEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_oldOrderTicket, _orderEventReceiver.OldRelatedObject);
       Assert.AreSame (_newOrderTicket, _orderEventReceiver.NewRelatedObject);
 
       Assert.AreEqual (true, _oldOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _oldOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("Order", _oldOrderTicketEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _oldOrderTicketEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_order, _oldOrderTicketEventReceiver.OldRelatedObject);
       Assert.AreSame (null, _oldOrderTicketEventReceiver.NewRelatedObject);
 
       Assert.AreEqual (true, _newOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _newOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("Order", _newOrderTicketEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrderTicketEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicketEventReceiver.OldRelatedObject);
       Assert.AreSame (_order, _newOrderTicketEventReceiver.NewRelatedObject);
 
       Assert.AreEqual (true, _oldOrderOfNewOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.AreEqual (true, _oldOrderOfNewOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangedRelationPropertyName);
       Assert.AreSame (_newOrderTicket, _oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
       Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
 
@@ -114,7 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.AreEqual (true, _orderEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _orderEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_orderEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderTicket, _orderEventReceiver.OldRelatedObject);
         Assert.AreSame (_newOrderTicket, _orderEventReceiver.NewRelatedObject);
@@ -169,14 +155,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.AreEqual (true, _orderEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _orderEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_orderEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderTicket, _orderEventReceiver.OldRelatedObject);
         Assert.AreSame (_newOrderTicket, _orderEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _oldOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _oldOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_oldOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_order, _oldOrderTicketEventReceiver.OldRelatedObject);
         Assert.AreSame (null, _oldOrderTicketEventReceiver.NewRelatedObject);
@@ -224,21 +210,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.AreEqual (true, _orderEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _orderEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_orderEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderTicket, _orderEventReceiver.OldRelatedObject);
         Assert.AreSame (_newOrderTicket, _orderEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _oldOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _oldOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_oldOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_order, _oldOrderTicketEventReceiver.OldRelatedObject);
         Assert.AreSame (null, _oldOrderTicketEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _newOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _newOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_newOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicketEventReceiver.OldRelatedObject);
         Assert.AreSame (_order, _newOrderTicketEventReceiver.NewRelatedObject);
@@ -279,28 +265,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.AreEqual (true, _orderEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _orderEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_orderEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderTicket, _orderEventReceiver.OldRelatedObject);
         Assert.AreSame (_newOrderTicket, _orderEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _oldOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _oldOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _oldOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_oldOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_order, _oldOrderTicketEventReceiver.OldRelatedObject);
         Assert.AreSame (null, _oldOrderTicketEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _newOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _newOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_newOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_oldOrderOfNewOrderTicket, _newOrderTicketEventReceiver.OldRelatedObject);
         Assert.AreSame (_order, _newOrderTicketEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (true, _oldOrderOfNewOrderTicketEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.AreEqual (false, _oldOrderOfNewOrderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangingRelationPropertyName);
+        Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _oldOrderOfNewOrderTicketEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.ChangedRelationPropertyName);
         Assert.AreSame (_newOrderTicket, _oldOrderOfNewOrderTicketEventReceiver.OldRelatedObject);
         Assert.IsNull (_oldOrderOfNewOrderTicketEventReceiver.NewRelatedObject);
@@ -350,8 +336,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order.OrderTicket = _newOrderTicket;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Order"));
+      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
       Assert.AreSame (_order, _newOrderTicket.Order);
@@ -364,8 +350,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newOrderTicket.Order = _order;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Order"));
+      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_order, _newOrderTicket.Order);
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
@@ -389,10 +375,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void NoPropertyValueEventForRelationChange ()
     {
       PropertyValueEventReceiver oldOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _oldOrderTicket.DataContainer.PropertyValues["Order"]);
+          _oldOrderTicket.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       PropertyValueEventReceiver newOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _newOrderTicket.DataContainer.PropertyValues["Order"]);
+          _newOrderTicket.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       _order.OrderTicket = _newOrderTicket;
 
@@ -415,12 +401,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Assert.AreSame (_oldOrderTicket, _order.GetOriginalRelatedObject ("OrderTicket"));
+      Assert.AreSame (_oldOrderTicket, _order.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
 
       _order.OrderTicket = _newOrderTicket;
 
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
-      Assert.AreSame (_oldOrderTicket, _order.GetOriginalRelatedObject ("OrderTicket"));
+      Assert.AreSame (_oldOrderTicket, _order.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
     }
 
     [Test]
@@ -428,14 +414,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order2);
 
-      Assert.AreEqual (DomainObjectIDs.OrderTicket3, order.GetOriginalRelatedObject ("OrderTicket").ID);
+      Assert.AreEqual (DomainObjectIDs.OrderTicket3, order.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket").ID);
     }
 
     [Test]
     public void GetNullOriginalRelatedObject ()
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      Assert.IsNull (computer.GetOriginalRelatedObject ("Employee"));
+      Assert.IsNull (computer.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
     }
 
     [Test]
@@ -468,7 +454,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       try
       {
         OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-        orderTicket.SetRelatedObject ("Order", Customer.GetObject (DomainObjectIDs.Customer1));
+        orderTicket.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", Customer.GetObject (DomainObjectIDs.Customer1));
 
         Assert.Fail ("DataManagementException was expected");
       }
@@ -477,7 +463,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         string expectedMessage = string.Format (
             "DomainObject '{0}' cannot be assigned to property '{1}' of DomainObject '{2}',"
             + " because it is not compatible with the type of the property.",
-            DomainObjectIDs.Customer1, "Order", DomainObjectIDs.OrderTicket1);
+            DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObjectIDs.OrderTicket1);
 
         Assert.AreEqual (expectedMessage, ex.Message);
       }
@@ -487,7 +473,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (DataManagementException))]
     public void SetRelatedObjectWithInvalidObjectClassOnVirtualRelationEndPoint ()
     {
-      _order.SetRelatedObject ("OrderTicket", new Ceo ());
+      _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", Ceo.Create ());
     }
 
   }

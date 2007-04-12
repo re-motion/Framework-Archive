@@ -4,46 +4,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class Client : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class Client : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
     public static new Client GetObject (ObjectID id)
     {
       return (Client) DomainObject.GetObject (id);
     }
 
-    // member fields
+    public static Client Create ()
+    {
+      return DomainObject.Create<Client> ();
+    }
 
-    // construction and disposing
-
-    public Client ()
+    protected Client (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
-    public Client (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    public Client (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected Client (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
-    public Client ParentClient
-    {
-      get { return (Client) GetRelatedObject ("ParentClient"); }
-      set { SetRelatedObject ("ParentClient", value); }
-    }
+    public abstract Client ParentClient { get; set; }
   }
 }

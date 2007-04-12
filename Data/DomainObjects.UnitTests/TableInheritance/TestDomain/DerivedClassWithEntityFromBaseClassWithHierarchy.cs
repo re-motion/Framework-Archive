@@ -11,13 +11,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (DerivedClassWithEntityFromBaseClassWithHierarchy) DomainObject.GetObject (id);
     }
 
-    protected DerivedClassWithEntityFromBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    public static DerivedClassWithEntityFromBaseClassWithHierarchy Create ()
     {
+      return DomainObject.Create<DerivedClassWithEntityFromBaseClassWithHierarchy> ();
     }
 
-    protected DerivedClassWithEntityFromBaseClassWithHierarchy (DataContainer dataContainer)
-        : base (dataContainer)
+    protected DerivedClassWithEntityFromBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract DerivedClassWithEntityFromBaseClassWithHierarchy ParentDerivedClassWithEntityFromBaseClassWithHierarchy { get; set; }
 
     [DBBidirectionalRelation ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", SortExpression = "Name ASC")]
-    public abstract ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get; }
+    public virtual ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get { return (ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy>) GetRelatedObjects(); } }
 
     public abstract Client ClientFromDerivedClassWithEntityFromBaseClass { get; set; }
 

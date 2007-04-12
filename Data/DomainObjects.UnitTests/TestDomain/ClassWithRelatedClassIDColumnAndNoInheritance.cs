@@ -3,43 +3,22 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable (Name = "TableWithRelatedClassIDColumnAndNoInheritance")]
-  public class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new ClassWithRelatedClassIDColumnAndNoInheritance GetObject (ObjectID id)
+    public static ClassWithRelatedClassIDColumnAndNoInheritance Create ()
     {
-      return (ClassWithRelatedClassIDColumnAndNoInheritance) DomainObject.GetObject (id);
+      return DomainObject.Create<ClassWithRelatedClassIDColumnAndNoInheritance> ();
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public ClassWithRelatedClassIDColumnAndNoInheritance ()
+    protected ClassWithRelatedClassIDColumnAndNoInheritance (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public ClassWithRelatedClassIDColumnAndNoInheritance (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected ClassWithRelatedClassIDColumnAndNoInheritance (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
     [DBColumn ("TableWithGuidKeyID")]
-    public ClassWithGuidKey ClassWithGuidKey
-    {
-      get { return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKey"); }
-      set { SetRelatedObject ("ClassWithGuidKey", value); }
-    }
+    public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }
   }
 }

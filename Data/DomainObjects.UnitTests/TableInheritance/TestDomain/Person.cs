@@ -12,13 +12,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Person) DomainObject.GetObject (id);
     }
 
-    public Person (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    public static Person Create ()
     {
+      return DomainObject.Create<Person> ();
     }
 
-    protected Person (DataContainer dataContainer)
-        : base (dataContainer)
+    public Person (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 

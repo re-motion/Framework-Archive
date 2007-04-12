@@ -3,36 +3,13 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable (Name = "TableWithoutClassIDColumn")]
-  public class ClassWithoutClassIDColumn : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithoutClassIDColumn : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new ClassWithoutClassIDColumn GetObject (ObjectID id)
-    {
-      return (ClassWithoutClassIDColumn) DomainObject.GetObject (id);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public ClassWithoutClassIDColumn ()
+    protected ClassWithoutClassIDColumn (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public ClassWithoutClassIDColumn (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected ClassWithoutClassIDColumn (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
   }
 }

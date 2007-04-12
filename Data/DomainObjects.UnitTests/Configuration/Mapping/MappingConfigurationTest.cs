@@ -127,8 +127,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsRelationEndPointDefinitionNotInMapping ()
     {
-      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
-      ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
+      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ((string) "Order", (string) "Order", (string) "TestDomain", typeof (Order), (bool) false);
+      ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ((string) "OrderTicket", (string) "OrderTicket", (string) "TestDomain", typeof (OrderTicket), (bool) false);
       orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (

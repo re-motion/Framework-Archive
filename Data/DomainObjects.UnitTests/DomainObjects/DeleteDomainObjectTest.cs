@@ -9,22 +9,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DeleteDomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     Order _order;
     OrderTicket _orderTicket;
-
-    // construction and disposing
-
-    public DeleteDomainObjectTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -75,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ObjectDeletedException))]
     public void ModifyDeletedObject ()
     {
-      PropertyValue propertyValue = _order.DataContainer.PropertyValues["OrderNumber"];
+      PropertyValue propertyValue = _order.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
 
       _order.Delete ();
 
@@ -91,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (3, _order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 3, 1), _order.DeliveryDate);
       Assert.IsNotNull (_order.DataContainer.Timestamp);
-      Assert.IsNotNull (_order.DataContainer.PropertyValues["OrderNumber"]);
+      Assert.IsNotNull (_order.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
     }
 
     [Test]
@@ -118,10 +104,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CascadedDeleteForNewObjects ()
     {
-      Order newOrder = new Order ();
-      OrderTicket newOrderTicket = new OrderTicket (newOrder);
+      Order newOrder = Order.Create ();
+      OrderTicket newOrderTicket = OrderTicket.Create (newOrder);
       Assert.AreSame (newOrderTicket, newOrder.OrderTicket);
-      OrderItem newOrderItem = new OrderItem (newOrder);
+      OrderItem newOrderItem = OrderItem.Create (newOrder);
       Assert.Contains (newOrderItem, newOrder.OrderItems);
 
       newOrder.Deleted += delegate

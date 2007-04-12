@@ -8,23 +8,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class UnidirectionalRelationTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private Client _oldClient;
     private Client _newClient;
     private Location _location;
-
-    // construction and disposing
-
-    public UnidirectionalRelationTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -41,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _location.Client = _newClient;
 
       Assert.AreSame (_newClient, _location.Client);
-      Assert.AreEqual (_newClient.ID, _location.DataContainer["Client"]);
+      Assert.AreEqual (_newClient.ID, _location.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
       Assert.AreEqual (StateType.Changed, _location.State);
       Assert.AreEqual (StateType.Unchanged, _oldClient.State);
       Assert.AreEqual (StateType.Unchanged, _newClient.State);
@@ -56,8 +42,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (_location, "Client", _oldClient, _newClient, "1. Changing event of location"),
-      new RelationChangeState (_location, "Client", null, null, "2. Changed event of location")
+      new RelationChangeState (_location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _oldClient, _newClient, "1. Changing event of location"),
+      new RelationChangeState (_location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
       eventReceiver.Check (expectedStates);
@@ -77,25 +63,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObject ()
     {
-      Assert.AreSame (_oldClient, _location.GetRelatedObject ("Client"));
+      Assert.AreSame (_oldClient, _location.GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Client"));
+      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
 
       _location.Client = _newClient;
 
-      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Client"));
+      Assert.AreSame (_oldClient, _location.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"));
     }
 
     [Test]
     public void CreateObjectsAndCommit ()
     {
-      Client client1 = new Client ();
-      Client client2 = new Client ();
-      Location location = new Location ();
+      Client client1 = Client.Create();
+      Client client2 = Client.Create ();
+      Location location = Location.Create ();
 
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { location, client1, client2 }, new DomainObjectCollection[0]);
 
@@ -112,8 +98,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (location, "Client", null, client1, "1. Changing event of location"),
-      new RelationChangeState (location, "Client", null, null, "2. Changed event of location")
+      new RelationChangeState (location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, client1, "1. Changing event of location"),
+      new RelationChangeState (location, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
       eventReceiver.Check (expectedStates);
@@ -171,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Rollback ()
     {
       _location.Delete ();
-      Location newLocation = new Location ();
+      Location newLocation = Location.Create ();
       newLocation.Client = _newClient;
 
       ClientTransactionMock.Rollback ();
@@ -182,8 +168,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CreateHierarchy ()
     {
-      Client newClient1 = new Client ();
-      Client newClient2 = new Client ();
+      Client newClient1 = Client.Create ();
+      Client newClient2 = Client.Create ();
       newClient2.ParentClient = newClient1;
 
       ObjectID newClientID1 = newClient1.ID;

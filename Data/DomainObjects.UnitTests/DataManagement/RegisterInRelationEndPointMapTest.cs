@@ -7,21 +7,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class RegisterInRelationEndPointMapTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private RelationEndPointMap _endPoints;
-
-    // construction and disposing
-
-    public RegisterInRelationEndPointMapTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -49,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.AreEqual (2, _endPoints.Count, "Count");
 
-      RelationEndPointID expectedEndPointIDForOrderTicket = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+      RelationEndPointID expectedEndPointIDForOrderTicket = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.AreEqual (expectedEndPointIDForOrderTicket,
           _endPoints[expectedEndPointIDForOrderTicket].ID, "RelationEndPointID for OrderTicket");
@@ -59,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
           ((ObjectEndPoint) _endPoints[expectedEndPointIDForOrderTicket]).OppositeObjectID,
           "OppositeObjectID for OrderTicket");
 
-      RelationEndPointID expectedEndPointIDForOrder = new RelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+      RelationEndPointID expectedEndPointIDForOrder = new RelationEndPointID (DomainObjectIDs.Order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       Assert.AreEqual (expectedEndPointIDForOrder,
           _endPoints[expectedEndPointIDForOrder].ID, "RelationEndPointID for Order");
@@ -98,10 +84,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.AreEqual (
           DomainObjectIDs.Customer1,
-          ((ObjectEndPoint) _endPoints[new RelationEndPointID (DomainObjectIDs.Order1, "Customer")]).OppositeObjectID);
+          ((ObjectEndPoint) _endPoints[new RelationEndPointID (DomainObjectIDs.Order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer")]).OppositeObjectID);
 
       Assert.AreEqual (DomainObjectIDs.Official1,
-          ((ObjectEndPoint) _endPoints[new RelationEndPointID (DomainObjectIDs.Order1, "Official")]).OppositeObjectID);
+          ((ObjectEndPoint) _endPoints[new RelationEndPointID (DomainObjectIDs.Order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official")]).OppositeObjectID);
     }
   }
 }

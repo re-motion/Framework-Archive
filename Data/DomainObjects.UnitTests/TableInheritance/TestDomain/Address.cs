@@ -14,9 +14,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected Address (DataContainer dataContainer)
-        : base (dataContainer)
+    public static Address Create ()
     {
+      return DomainObject.Create<Address> ();
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

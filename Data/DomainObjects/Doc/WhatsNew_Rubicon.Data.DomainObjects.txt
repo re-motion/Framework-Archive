@@ -85,6 +85,12 @@
   [AutomaticProperty]
   public abstract int IntProperty { get; set; }
 
+- Search & Replace für neue Property Accessors
+  Find what: public {.*}\n:b*\{:b*\n:b*get.*\n:b*set.*\n:b*\}*\n
+  Replace with: public abstract \1 { get; set; }\n
+
+  Find what: public {.*}\n:b*\{:b*\n:b*get.*\n:b*\}*\n
+  Replace with: public abstract \1 { get; }\n
 
 1.7.37.0
 ========

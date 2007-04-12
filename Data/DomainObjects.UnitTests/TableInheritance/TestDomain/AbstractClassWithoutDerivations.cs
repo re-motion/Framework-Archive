@@ -12,11 +12,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected AbstractClassWithoutDerivations (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("AbstractClassesWithoutDerivations")]
     public abstract DomainBase DomainBase { get; }
   }

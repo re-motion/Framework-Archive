@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -19,6 +20,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [NotAbstract]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
+      public static NonInstantiableAbstractClass Create()
+      {
+        return DomainObject.Create<NonInstantiableAbstractClass>();
+      }
+
       public NonInstantiableAbstractClass () : base (null, null) { }
       public abstract void Foo ();
     }
@@ -27,6 +33,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [DBTable]
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
+      public static NonInstantiableAbstractClassWithProps Create ()
+      {
+        return DomainObject.Create<NonInstantiableAbstractClassWithProps> ();
+      }
+      
       public NonInstantiableAbstractClassWithProps () : base (null, null) { }
       [StorageClassNone]
       public abstract int Foo { get; }
@@ -35,6 +46,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [DBTable]
     public sealed class NonInstantiableSealedClass : DomainObject
     {
+      public static NonInstantiableSealedClass Create ()
+      {
+        return DomainObject.Create<NonInstantiableSealedClass> ();
+      }
+
       public NonInstantiableSealedClass () : base (null, null) { }
     }
 
@@ -45,6 +61,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [DBTable]
     public class Throws : DomainObject
     {
+      public static Throws Create ()
+      {
+        return DomainObject.Create<Throws> ();
+      }
+
       public Throws ()
         : this (null, null)
       {
@@ -59,6 +80,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [DBTable]
     public class ClassWithWrongConstructor : DomainObject
     {
+      public static ClassWithWrongConstructor Create ()
+      {
+        return DomainObject.Create<ClassWithWrongConstructor> ();
+      }
+
+      public static ClassWithWrongConstructor Create (ClientTransaction clientTransaction)
+      {
+        return DomainObject.Create<ClassWithWrongConstructor> (clientTransaction);
+      }
+
       public ClassWithWrongConstructor (string s)
       {
         Assert.Fail ("Shouldn't be executed.");
@@ -94,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ConstructionOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.Create ();
       Assert.IsTrue (WasCreatedByFactory (order));
     }
 
@@ -105,6 +136,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (1, order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 01, 01), order.DeliveryDate);
       Assert.AreEqual (1, order.OrderNumber);
+    }
+
+    [Test]
+    public void GetPropertyValue_WithNullAndAbstractProperty ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.Create();
+      Assert.That (classWithAllDataTypes.StringWithNullValueProperty, Is.Null);
     }
 
     [Test]
@@ -119,6 +157,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (new DateTime (2007, 02, 03), order.DeliveryDate);
 
       Assert.AreEqual (15, order.OrderNumber);
+    }
+
+    [Test]
+    public void SetPropertyValue_WithNullAndAbstractProperty ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.Create ();
+      classWithAllDataTypes.StringWithNullValueProperty = null;
+      Assert.That (classWithAllDataTypes.StringWithNullValueProperty, Is.Null);
     }
 
     [Test]
@@ -192,7 +238,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<NonInstantiableAbstractClass> ();
+        NonInstantiableAbstractClass.Create ();
       }
     }
 
@@ -206,7 +252,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<NonInstantiableAbstractClassWithProps> ();
+        NonInstantiableAbstractClassWithProps.Create ();
       }
     }
 
@@ -217,7 +263,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<NonInstantiableSealedClass> ();
+        NonInstantiableSealedClass.Create ();
       }
     }
 
@@ -244,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (InvalidCastException))]
     public void OldConstructorThrowIsPropagated ()
     {
-      DomainObject.Create<Throws> ();
+      Throws.Create ();
     }
 
     [Test]
@@ -253,7 +299,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<Throws> ();
+        Throws.Create ();
       }
     }
 
@@ -263,7 +309,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "support the requested constructor with signature (Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
     public void OldConstructorMismatch1()
     {
-      DomainObject.Create<ClassWithWrongConstructor>();
+      ClassWithWrongConstructor.Create();
     }
 
     [Test]
@@ -274,7 +320,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<ClassWithWrongConstructor> ();
+        ClassWithWrongConstructor.Create();
       }
     }
 
@@ -284,7 +330,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "support the requested constructor with signature (Rubicon.Data.DomainObjects.UnitTests.ClientTransactionMock, <any reference type>).")]
     public void OldConstructorMismatch2 ()
     {
-      DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
+      ClassWithWrongConstructor.Create (ClientTransaction.Current);
     }
 
     [Test]
@@ -295,7 +341,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<ClassWithWrongConstructor> (ClientTransaction.Current);
+        ClassWithWrongConstructor.Create (ClientTransaction.Current);
       }
     }
 
@@ -306,8 +352,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Customer customer = order.Customer;
       Assert.IsNotNull (customer);
       Assert.AreSame (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1), customer);
-      
-      Customer newCustomer = DomainObject.Create<Customer> ();
+
+      Customer newCustomer = Customer.Create ();
       Assert.IsNotNull (newCustomer);
       order.Customer = newCustomer;
       Assert.AreSame (newCustomer, order.Customer);
@@ -338,8 +384,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess1));
       Assert.IsTrue (orderItems.Contains (DomainObjectIDs.OrderItemWithNewPropertyAccess2));
-      
-      OrderItemWithNewPropertyAccess newItem = DomainObject.Create<OrderItemWithNewPropertyAccess> ();
+
+      OrderItemWithNewPropertyAccess newItem = OrderItemWithNewPropertyAccess.Create ();
       order.OrderItems.Add (newItem);
 
       Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
@@ -349,7 +395,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.Create ();
       Dev.Null = order.NotInMapping;
     }
 
@@ -357,7 +403,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
     public void RelatedAccessWithoutBeingInMappingThrows ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.Create<OrderWithNewPropertyAccess> ();
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.Create ();
       Dev.Null = order.NotInMappingRelated;
     }
 
@@ -367,8 +413,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
       OrderItemWithNewPropertyAccess item = order.OrderItems[0];
       Assert.AreSame (order, item.Order);
-      
-      OrderWithNewPropertyAccess newOrder = DomainObject.Create<OrderWithNewPropertyAccess> ();
+
+      OrderWithNewPropertyAccess newOrder = OrderWithNewPropertyAccess.Create ();
       Assert.IsNotNull (newOrder);
       item.Order = newOrder;
       Assert.AreNotSame (order, item.Order);
@@ -407,7 +453,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        DomainObject.Create<AbstractClassNotInMapping>();
+        AbstractClassNotInMapping.Create ();
       }
     }
   }

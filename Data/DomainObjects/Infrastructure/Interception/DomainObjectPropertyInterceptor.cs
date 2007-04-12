@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
   /// <summary>
   /// Handles property accessor calls of domain objects and prepares the properties accordingly.
   /// </summary>
-  public class DomainObjectPropertyInterceptor: IInterceptor<DomainObject>
+  public class DomainObjectPropertyInterceptor : IInterceptor<DomainObject>
   {
     public static string GetIdentifierFromProperty (PropertyInfo property)
     {

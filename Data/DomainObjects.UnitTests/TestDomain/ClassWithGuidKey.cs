@@ -3,64 +3,32 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable (Name = "TableWithGuidKey")]
-  public class ClassWithGuidKey: TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithGuidKey : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public new static ClassWithGuidKey GetObject (ObjectID id)
+    public static ClassWithGuidKey Create ()
     {
-      return (ClassWithGuidKey) DomainObject.GetObject (id);
+      return DomainObject.Create<ClassWithGuidKey> ();
     }
 
-    // member fields
 
-    // construction and disposing
-
-    public ClassWithGuidKey()
+    protected ClassWithGuidKey (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public ClassWithGuidKey (ClientTransaction clientTransaction)
-        : base (clientTransaction)
-    {
-    }
-
-    protected ClassWithGuidKey (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("ClassWithGuidKeyOptional")]
-    public ClassWithValidRelations ClassWithValidRelationsOptional
-    {
-      get { return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsOptional"); }
-      set { SetRelatedObject ("ClassWithValidRelationsOptional", value); }
-    }
+    public abstract ClassWithValidRelations ClassWithValidRelationsOptional { get; set; }
 
     [DBBidirectionalRelation ("ClassWithGuidKeyNonOptional")]
     [Mandatory]
-    public ClassWithValidRelations ClassWithValidRelationsNonOptional
-    {
-      get { return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsNonOptional"); }
-      set { SetRelatedObject ("ClassWithValidRelationsNonOptional", value); }
-    }
+    public abstract ClassWithValidRelations ClassWithValidRelationsNonOptional { get; set; }
 
     [DBBidirectionalRelation ("ClassWithGuidKey")]
-    public ClassWithInvalidRelation ClassWithInvalidRelation
-    {
-      get { return (ClassWithInvalidRelation) GetRelatedObject ("ClassWithInvalidRelation"); }
-      set { SetRelatedObject ("ClassWithInvalidRelation", value); }
-    }
+    public abstract ClassWithInvalidRelation ClassWithInvalidRelation { get; set; }
 
     [DBBidirectionalRelation ("ClassWithGuidKey")]
-    public ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance
-    {
-      get { return (ClassWithRelatedClassIDColumnAndNoInheritance) GetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance"); }
-      set { SetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance", value); }
-    }
+    public abstract ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance { get; set; }
   }
 }

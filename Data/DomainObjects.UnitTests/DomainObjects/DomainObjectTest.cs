@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
@@ -10,20 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public DomainObjectTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void LoadingOfSimpleObject ()
     {
@@ -74,6 +61,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (NaSingle.Null, classWithAllDataTypes.NaSingleWithNullValueProperty, "NaSingleWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.StringWithNullValueProperty, "StringWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NullableBinaryProperty, "NullableBinaryProperty");
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty' does not allow null values.")]
+    public void GetNullFromNonNullableValueType()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.Create();
+      classWithAllDataTypes.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = null;
+      Dev.Null = classWithAllDataTypes.BooleanProperty;
     }
 
     [Test]
@@ -167,13 +163,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection collection = industrialSector.Companies;
 
       Assert.AreEqual (7, collection.Count);
-      Assert.AreEqual (typeof (Company), collection[DomainObjectIDs.Company1].GetType ());
-      Assert.AreEqual (typeof (Company), collection[DomainObjectIDs.Company2].GetType ());
-      Assert.AreEqual (typeof (Customer), collection[DomainObjectIDs.Customer2].GetType ());
-      Assert.AreEqual (typeof (Customer), collection[DomainObjectIDs.Customer3].GetType ());
-      Assert.AreEqual (typeof (Partner), collection[DomainObjectIDs.Partner2].GetType ());
-      Assert.AreEqual (typeof (Supplier), collection[DomainObjectIDs.Supplier2].GetType ());
-      Assert.AreEqual (typeof (Distributor), collection[DomainObjectIDs.Distributor1].GetType ());
+      Assert.AreEqual (typeof (Company), collection[DomainObjectIDs.Company1].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Company), collection[DomainObjectIDs.Company2].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Customer), collection[DomainObjectIDs.Customer2].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Customer), collection[DomainObjectIDs.Customer3].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Partner), collection[DomainObjectIDs.Partner2].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Supplier), collection[DomainObjectIDs.Supplier2].GetPublicDomainObjectType ());
+      Assert.AreEqual (typeof (Distributor), collection[DomainObjectIDs.Distributor1].GetPublicDomainObjectType ());
     }
 
     [Test]
@@ -296,7 +292,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       order3.OrderNumber = 7;
 
-      Order newOrder = new Order ();
+      Order newOrder = Order.Create ();
       ObjectID newOrderID = newOrder.ID;
       newOrder.DeliveryDate = DateTime.Now;
       newOrder.Official = official1;
@@ -305,28 +301,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       newOrder.OrderTicket = orderTicket1;
       orderTicket1.FileName = @"C:\NewFile.tif";
 
-      OrderItem newOrderItem1 = new OrderItem ();
+      OrderItem newOrderItem1 = OrderItem.Create ();
       ObjectID newOrderItem1ID = newOrderItem1.ID;
 
       newOrderItem1.Position = 1;
       newOrder.OrderItems.Add (newOrderItem1);
 
-      OrderItem newOrderItem2 = new OrderItem ();
+      OrderItem newOrderItem2 = OrderItem.Create ();
       ObjectID newOrderItem2ID = newOrderItem2.ID;
       newOrderItem2.Position = 2;
       order3.OrderItems.Add (newOrderItem2);
 
-      Customer newCustomer = new Customer ();
+      Customer newCustomer = Customer.Create ();
       ObjectID newCustomerID = newCustomer.ID;
 
-      Ceo newCeo = new Ceo ();
+      Ceo newCeo = Ceo.Create ();
       ObjectID newCeoID = newCeo.ID;
       newCustomer.Ceo = newCeo;
       order2.Customer = newCustomer;
 
       orderTicket3.FileName = @"C:\NewFile.gif";
 
-      Order deletedNewOrder = new Order ();
+      Order deletedNewOrder = Order.Create ();
       deletedNewOrder.Delete ();
 
       ClientTransactionMock.Commit ();
@@ -379,10 +375,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void TestAllOperationsWithHierarchy ()
     {
-      Employee newSupervisor1 = new Employee ();
+      Employee newSupervisor1 = Employee.Create ();
       ObjectID newSupervisor1ID = newSupervisor1.ID;
 
-      Employee newSubordinate1 = new Employee ();
+      Employee newSubordinate1 = Employee.Create ();
       ObjectID newSubordinate1ID = newSubordinate1.ID;
       newSubordinate1.Supervisor = newSupervisor1;
 
@@ -398,9 +394,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee supervisor6 = Employee.GetObject (DomainObjectIDs.Employee6);
       Employee subordinate7 = Employee.GetObject (DomainObjectIDs.Employee7);
 
-      Employee newSubordinate2 = new Employee ();
+      Employee newSubordinate2 = Employee.Create ();
       ObjectID newSubordinate2ID = newSubordinate2.ID;
-      Employee newSubordinate3 = new Employee ();
+      Employee newSubordinate3 = Employee.Create ();
       ObjectID newSubordinate3ID = newSubordinate3.ID;
 
       newSupervisor1.Supervisor = supervisor2;
@@ -452,7 +448,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Computer computer4 = Computer.GetObject (DomainObjectIDs.Computer4);
 
-      Employee newDeletedEmployee = new Employee ();
+      Employee newDeletedEmployee = Employee.Create ();
       computer4.Employee = newDeletedEmployee;
 
       newDeletedEmployee.Delete ();
@@ -469,7 +465,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Partner partner = Partner.GetObject (DomainObjectIDs.Partner2);
 
-      Person newPerson = new Person ();
+      Person newPerson = Person.Create ();
       partner.ContactPerson = newPerson;
       partner.IndustrialSector.Delete ();
 
@@ -510,7 +506,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CreateNewObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      Order order = new Order (clientTransactionMock);
+      Order order = Order.Create (clientTransactionMock);
 
       Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
       Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
@@ -539,7 +535,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetDomainObjectType ()
     {
-      Customer customer = new Customer ();
+      Customer customer = Customer.Create ();
       Assert.AreEqual (typeof (Customer), customer.DataContainer.DomainObjectType);
     }
   }

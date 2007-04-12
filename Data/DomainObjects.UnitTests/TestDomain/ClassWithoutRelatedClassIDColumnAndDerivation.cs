@@ -3,42 +3,21 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable (Name = "TableWithoutRelatedClassIDColumnAndDerivation")]
-  public class ClassWithoutRelatedClassIDColumnAndDerivation : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class ClassWithoutRelatedClassIDColumnAndDerivation : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new ClassWithoutRelatedClassIDColumnAndDerivation GetObject (ObjectID id)
+    public static ClassWithoutRelatedClassIDColumnAndDerivation Create ()
     {
-      return (ClassWithoutRelatedClassIDColumnAndDerivation) DomainObject.GetObject (id);
+      return DomainObject.Create<ClassWithoutRelatedClassIDColumnAndDerivation> ();
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public ClassWithoutRelatedClassIDColumnAndDerivation ()
+    protected ClassWithoutRelatedClassIDColumnAndDerivation (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public ClassWithoutRelatedClassIDColumnAndDerivation (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected ClassWithoutRelatedClassIDColumnAndDerivation (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("ClassWithoutRelatedClassIDColumnAndDerivation", ContainsForeignKey = true)]
-    public Company Company
-    {
-      get { return (Company) GetRelatedObject ("Company"); }
-      set { SetRelatedObject ("Company", value); }
-    }
+    public abstract Company Company { get; set; }
   }
 }

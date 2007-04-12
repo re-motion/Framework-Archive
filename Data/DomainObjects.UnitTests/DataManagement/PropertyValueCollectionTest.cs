@@ -7,23 +7,9 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class PropertyValueCollectionTest : LegacyMappingTest
+  public class PropertyValueCollectionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private PropertyValueCollection _collection;
-
-    // construction and disposing
-
-    public PropertyValueCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {

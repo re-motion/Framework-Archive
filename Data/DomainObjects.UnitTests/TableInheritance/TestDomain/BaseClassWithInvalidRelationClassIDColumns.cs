@@ -13,11 +13,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected BaseClassWithInvalidRelationClassIDColumns (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract Client Client { get; set; }
 
     public abstract DomainBase DomainBase { get; set; }

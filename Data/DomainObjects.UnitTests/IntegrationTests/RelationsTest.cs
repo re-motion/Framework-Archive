@@ -8,20 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
   [TestFixture]
   public class RelationsTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public RelationsTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void OneToOneRelationChangeTest ()
     {
@@ -35,13 +21,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       Assert.IsTrue (orderEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.IsTrue (orderTicketEventReceiver.HasRelationChangingEventBeenCalled);
-      Assert.AreSame (orderTicket, orderEventReceiver.GetChangingRelatedDomainObject ("OrderTicket"));
-      Assert.AreSame (order, orderTicketEventReceiver.GetChangingRelatedDomainObject ("Order"));
+      Assert.AreSame (orderTicket, orderEventReceiver.GetChangingRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.AreSame (order, orderTicketEventReceiver.GetChangingRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.IsTrue (orderEventReceiver.HasRelationChangedEventBeenCalled);
       Assert.IsTrue (orderTicketEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("OrderTicket"));
-      Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Order"));
+      Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
   }

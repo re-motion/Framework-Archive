@@ -11,20 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderCreateNewDataContainerTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void CreateNewDataContainer ()
     {
@@ -39,10 +25,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.IsNull (newContainer.Timestamp, "Timestamp of new DataContainer.");
       Assert.AreEqual (StateType.New, newContainer.State, "State of new DataContainer.");
       Assert.AreEqual (4, newContainer.PropertyValues.Count, "PropertyValues.Count");
-      Assert.AreEqual (int.MinValue, newContainer["OrderNumber"], "OrderNumber");
-      Assert.AreEqual (DateTime.MinValue, newContainer["DeliveryDate"], "DeliveryDate");
-      Assert.IsNull (newContainer["Official"], "Official");
-      Assert.IsNull (newContainer["Customer"], "Customer");
+      Assert.AreEqual (int.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"], "OrderNumber");
+      Assert.AreEqual (DateTime.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate"], "DeliveryDate");
+      Assert.IsNull (newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"], "Official");
+      Assert.IsNull (newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"], "Customer");
     }
 
     [Test]
@@ -51,47 +37,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
       DataContainer newContainer = Provider.CreateNewDataContainer (classDefinition);
 
-      Assert.AreEqual (false, newContainer["BooleanProperty"]);
-      Assert.AreEqual (byte.MinValue, newContainer["ByteProperty"]);
-      Assert.AreEqual (DateTime.MinValue, newContainer["DateProperty"]);
-      Assert.AreEqual (DateTime.MinValue, newContainer["DateTimeProperty"]);
-      Assert.AreEqual (decimal.MinValue, newContainer["DecimalProperty"]);
-      Assert.AreEqual (double.MinValue, newContainer["DoubleProperty"]);
-      Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, newContainer["EnumProperty"]);
-      Assert.AreEqual (Guid.Empty, newContainer["GuidProperty"]);
-      Assert.AreEqual (short.MinValue, newContainer["Int16Property"]);
-      Assert.AreEqual (int.MinValue, newContainer["Int32Property"]);
-      Assert.AreEqual (long.MinValue, newContainer["Int64Property"]);
-      Assert.AreEqual (float.MinValue, newContainer["SingleProperty"]);
-      Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
-      Assert.AreEqual (string.Empty, newContainer["StringPropertyWithoutMaxLength"]);
-      ResourceManager.IsEmptyImage ((byte[]) newContainer["BinaryProperty"]);
+      Assert.AreEqual (false, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
+      Assert.AreEqual (byte.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
+      Assert.AreEqual (DateTime.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"]);
+      Assert.AreEqual (DateTime.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"]);
+      Assert.AreEqual (decimal.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"]);
+      Assert.AreEqual (double.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"]);
+      Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
+      Assert.AreEqual (Guid.Empty, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"]);
+      Assert.AreEqual (short.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"]);
+      Assert.AreEqual (int.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"]);
+      Assert.AreEqual (long.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"]);
+      Assert.AreEqual (float.MinValue, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
+      Assert.AreEqual (string.Empty, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
+      Assert.AreEqual (string.Empty, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
+      ResourceManager.IsEmptyImage ((byte[]) newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
 
-      Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);
-      Assert.AreEqual (NaByte.Null, newContainer["NaByteProperty"]);
-      Assert.AreEqual (NaDateTime.Null, newContainer["NaDateProperty"]);
-      Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeProperty"]);
-      Assert.AreEqual (NaDecimal.Null, newContainer["NaDecimalProperty"]);
-      Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleProperty"]);
-      Assert.AreEqual (NaGuid.Null, newContainer["NaGuidProperty"]);
-      Assert.AreEqual (NaInt16.Null, newContainer["NaInt16Property"]);
-      Assert.AreEqual (NaInt32.Null, newContainer["NaInt32Property"]);
-      Assert.AreEqual (NaInt64.Null, newContainer["NaInt64Property"]);
-      Assert.AreEqual (NaSingle.Null, newContainer["NaSingleProperty"]);
+      Assert.AreEqual (NaBoolean.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
+      Assert.AreEqual (NaByte.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
+      Assert.AreEqual (NaDateTime.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"]);
+      Assert.AreEqual (NaDateTime.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"]);
+      Assert.AreEqual (NaDecimal.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"]);
+      Assert.AreEqual (NaDouble.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"]);
+      Assert.AreEqual (NaGuid.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"]);
+      Assert.AreEqual (NaInt16.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"]);
+      Assert.AreEqual (NaInt32.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
+      Assert.AreEqual (NaInt64.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
+      Assert.AreEqual (NaSingle.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
 
-      Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanWithNullValueProperty"]);
-      Assert.AreEqual (NaByte.Null, newContainer["NaByteWithNullValueProperty"]);
-      Assert.AreEqual (NaDateTime.Null, newContainer["NaDateWithNullValueProperty"]);
-      Assert.AreEqual (NaDateTime.Null, newContainer["NaDateTimeWithNullValueProperty"]);
-      Assert.AreEqual (NaDecimal.Null, newContainer["NaDecimalWithNullValueProperty"]);
-      Assert.AreEqual (NaDouble.Null, newContainer["NaDoubleWithNullValueProperty"]);
-      Assert.AreEqual (NaGuid.Null, newContainer["NaGuidWithNullValueProperty"]);
-      Assert.AreEqual (NaInt16.Null, newContainer["NaInt16WithNullValueProperty"]);
-      Assert.AreEqual (NaInt32.Null, newContainer["NaInt32WithNullValueProperty"]);
-      Assert.AreEqual (NaInt64.Null, newContainer["NaInt64WithNullValueProperty"]);
-      Assert.AreEqual (NaSingle.Null, newContainer["NaSingleWithNullValueProperty"]);
-      Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
-      Assert.IsNull (newContainer["NullableBinaryProperty"]);
+      Assert.AreEqual (NaBoolean.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanWithNullValueProperty"]);
+      Assert.AreEqual (NaByte.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteWithNullValueProperty"]);
+      Assert.AreEqual (NaDateTime.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty"]);
+      Assert.AreEqual (NaDateTime.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty"]);
+      Assert.AreEqual (NaDecimal.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalWithNullValueProperty"]);
+      Assert.AreEqual (NaDouble.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleWithNullValueProperty"]);
+      Assert.AreEqual (NaGuid.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidWithNullValueProperty"]);
+      Assert.AreEqual (NaInt16.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16WithNullValueProperty"]);
+      Assert.AreEqual (NaInt32.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"]);
+      Assert.AreEqual (NaInt64.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64WithNullValueProperty"]);
+      Assert.AreEqual (NaSingle.Null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleWithNullValueProperty"]);
+      Assert.AreEqual (null, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"]);
+      Assert.IsNull (newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
     }
 
     [Test]

@@ -6,32 +6,18 @@ using Rubicon.Data.DomainObjects.Mapping;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class RelationEndPointIDTest : LegacyMappingTest
+  public class RelationEndPointIDTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ObjectID _objectID;
     private string _propertyName;
     private RelationEndPointID _endPointID;
-
-    // construction and disposing
-
-    public RelationEndPointIDTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       _objectID = DomainObjectIDs.Order1;
-      _propertyName = "OrderTicket";
+      _propertyName = "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket";
       _endPointID = new RelationEndPointID (_objectID, _propertyName);
     }
 
@@ -117,7 +103,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetAllRelationEndPointIDs ()
     {
-      string[] expectedPropertyNames = new string[] { "Customer", "OrderTicket", "OrderItems", "Official" };
+      string[] expectedPropertyNames = new string[]
+          {
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems",
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"
+          };
 
       DataContainer existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", Guid.NewGuid ()), null);
 
@@ -147,7 +139,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void StaticNotEquals ()
     {
       RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
-      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.IsFalse (RelationEndPointID.Equals (id1, id2));
     }
@@ -166,7 +158,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void EqualityOperatorFalse ()
     {
       RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
-      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.IsFalse (id1 == id2);
       Assert.IsTrue (id1 != id2);
@@ -193,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EqualityOperatorID1Null ()
     {
-      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
+      RelationEndPointID id2 = new RelationEndPointID (DomainObjectIDs.OrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.IsFalse (null == id2);
       Assert.IsTrue (null != id2);

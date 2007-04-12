@@ -4,42 +4,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class Location : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class Location : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
     public static new Location GetObject (ObjectID id)
     {
       return (Location) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Location ()
+    public static Location Create ()
     {
+      return DomainObject.Create<Location> ();
     }
 
-    public Location (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Location (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    protected Location (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [Mandatory]
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
-    }
+    public abstract Client Client { get; set; }
   }
 }

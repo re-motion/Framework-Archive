@@ -8,29 +8,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class RelationEndPointCollectionTest : RelationEndPointBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private RelationEndPoint _orderTicketEndPoint;
     private RelationEndPointCollection _endPoints;
-
-    // construction and disposing
-
-    public RelationEndPointCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Order", DomainObjectIDs.Order1);
+      _orderTicketEndPoint = CreateObjectEndPoint (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObjectIDs.Order1);
       _endPoints = new RelationEndPointCollection ();
     }
 

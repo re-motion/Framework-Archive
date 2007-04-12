@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       base.SetUp();
 
       _classDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithManySideRelationProperties", "ClassWithManySideRelationProperties", "TestDomain", typeof (ClassWithManySideRelationProperties));
+          (string) "ClassWithManySideRelationProperties", (string) "ClassWithManySideRelationProperties", (string) "TestDomain", typeof (ClassWithManySideRelationProperties), (bool) false);
 
       _classDefinitions = new ClassDefinitionCollection();
       _classDefinitions.Add (_classDefinition);

@@ -5,68 +5,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class OrderItem : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class OrderItem : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new OrderItem GetObject (ObjectID id)
+    public static OrderItem GetObject (ObjectID id)
     {
       return (OrderItem) DomainObject.GetObject (id);
     }
 
-    // member fields
+    public static OrderItem Create ()
+    {
+      return DomainObject.Create<OrderItem> ();
+    }
 
-    // construction and disposing
+    public static OrderItem Create (Order order)
+    {
+      OrderItem orderItem = Create ();
+      orderItem.Initialize (order);
+      return orderItem;
+    }
 
-    public OrderItem ()
+    protected OrderItem (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
-    public OrderItem (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    public OrderItem (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    protected OrderItem (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    public OrderItem (Order order)
+    protected virtual void Initialize (Order order)
     {
       ArgumentUtility.CheckNotNull ("order", order);
-
-      this.Order = order;
+      Order = order;
     }
 
-    // methods and properties
-
-    public int Position
-    {
-      get { return (int) DataContainer["Position"]; }
-      set { DataContainer["Position"] = value; }
-    }
+    public abstract int Position { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public string Product
-    {
-      get { return (string) DataContainer["Product"]; }
-      set { DataContainer["Product"] = value; }
-    }
+    public abstract string Product { get; set; }
 
     [DBBidirectionalRelation ("OrderItems")]
     [Mandatory]
-    public Order Order
-    {
-      get { return (Order) GetRelatedObject ("Order"); }
-      set { SetRelatedObject ("Order", value); }
-    }
+    public abstract Order Order { get; set; }
   }
 }

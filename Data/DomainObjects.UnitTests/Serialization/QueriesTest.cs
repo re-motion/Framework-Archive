@@ -9,20 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
   [TestFixture]
   public class QueriesTest : SerializationBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public QueriesTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void QueryParameter ()
     {

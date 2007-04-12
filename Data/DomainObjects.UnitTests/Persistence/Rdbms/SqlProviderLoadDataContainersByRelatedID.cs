@@ -10,20 +10,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderLoadDataContainersByRelatedID ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void Loading ()
     {

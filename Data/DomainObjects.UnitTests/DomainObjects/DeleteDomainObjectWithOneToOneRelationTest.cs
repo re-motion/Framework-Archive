@@ -9,23 +9,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DeleteDomainObjectWithOneToOneRelationTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private OrderTicket _orderTicket;
     private Order _order;
     private SequenceEventReceiver _eventReceiver;
-
-    // construction and disposing
-
-    public DeleteDomainObjectWithOneToOneRelationTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -45,8 +31,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ChangeState[] expectedStates = new ChangeState[]
     {
       new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
-      new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order"),
-      new RelationChangeState (_order, "OrderTicket", null, null, "3. Relation changed event of order"),
+      new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket, null, "2. Relation changing event of order"),
+      new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, null, "3. Relation changed event of order"),
       new ObjectDeletionState (_orderTicket, "4. Deleted event of orderTicket")
     };
 
@@ -105,7 +91,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ChangeState[] expectedStates = new ChangeState[]
             {
               new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
-              new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
+              new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket, null, "2. Relation changing event of order")
             };
 
         _eventReceiver.Check (expectedStates);
@@ -119,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (_orderTicket.Order);
       Assert.IsNull (_order.OrderTicket);
-      Assert.IsNull (_orderTicket.DataContainer["Order"]);
+      Assert.IsNull (_orderTicket.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
       Assert.AreEqual (StateType.Changed, _order.State);
       Assert.AreEqual (StateType.Unchanged, _order.DataContainer.State);
     }
@@ -131,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (_orderTicket.Order);
       Assert.IsNull (_order.OrderTicket);
-      Assert.IsNull (_orderTicket.DataContainer["Order"]);
+      Assert.IsNull (_orderTicket.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
       Assert.AreEqual (StateType.Changed, _orderTicket.DataContainer.State);
     }
 
@@ -174,7 +160,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _orderTicket.Delete ();
 
-      Order originalOrder = (Order) _orderTicket.GetOriginalRelatedObject ("Order");
+      Order originalOrder = (Order) _orderTicket.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
       Assert.IsNotNull (originalOrder);
       Assert.AreEqual (DomainObjectIDs.Order1, originalOrder.ID);
@@ -186,7 +172,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order oldRelatedOrder = _orderTicket.Order;
       _orderTicket.Delete ();
 
-      OrderTicket deletedOrderTicket = (OrderTicket) oldRelatedOrder.GetOriginalRelatedObject ("OrderTicket");
+      OrderTicket deletedOrderTicket = (OrderTicket) oldRelatedOrder.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       Assert.IsNotNull (deletedOrderTicket);
       Assert.AreEqual (_orderTicket.ID, deletedOrderTicket.ID);
@@ -208,8 +194,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _order.Delete ();
       orderTicket.Delete ();
 
-      Assert.IsNotNull (_order.GetOriginalRelatedObject ("OrderTicket"));
-      Assert.IsNotNull (orderTicket.GetOriginalRelatedObject ("Order"));
+      Assert.IsNotNull (_order.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+      Assert.IsNotNull (orderTicket.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]

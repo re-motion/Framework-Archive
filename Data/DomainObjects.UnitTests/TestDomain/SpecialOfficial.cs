@@ -2,36 +2,17 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class SpecialOfficial : Official
+  [NotAbstract]
+  public abstract class SpecialOfficial : Official
   {
-    // types
-
-    // static members and constants
-
-    public static new SpecialOfficial GetObject (ObjectID id)
+    public static SpecialOfficial Create ()
     {
-      return (SpecialOfficial) DomainObject.GetObject (id);
+      return DomainObject.Create<SpecialOfficial>();
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public SpecialOfficial ()
+    protected SpecialOfficial (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public SpecialOfficial (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected SpecialOfficial (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
   }
 }

@@ -8,21 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
   [TestFixture]
   public class QueryManagerTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private QueryManager _queryManager;
-
-    // construction and disposing
-
-    public QueryManagerTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -54,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
       Assert.IsNotNull (customers);
       Assert.AreEqual (1, customers.Count);
       Assert.AreEqual (DomainObjectIDs.Customer1, customers[0].ID);
-      Assert.AreEqual (typeof (Customer), customers[0].GetType ());
+      Assert.AreEqual (typeof (Customer), customers[0].GetPublicDomainObjectType());
     }
 
     [Test]

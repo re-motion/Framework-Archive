@@ -12,18 +12,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Folder) DomainObject.GetObject (id);
     }
 
+    public static Folder Create()
+    {
+      return Create<Folder>();
+    }
+
     protected Folder (ClientTransaction clientTransaction, ObjectID id)
         : base (clientTransaction, id)
     {
     }
 
-    protected Folder (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("ParentFolder", SortExpression = "Name ASC")]
-    public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
+    public virtual ObjectList<FileSystemItem> FileSystemItems
+    {
+      get { return (ObjectList<FileSystemItem>) GetRelatedObjects(); }
+    }
 
     public abstract DateTime CreatedAt { get; set; }
   }

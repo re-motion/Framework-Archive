@@ -14,9 +14,9 @@ namespace Rubicon.Data.DomainObjects
   /// <remarks>
   /// <para>
   /// Usually, domain objects instantiated by <see cref="DomainObject.Create"/> or <see cref="DomainObject.GetObject"/> are allocated
-  /// via an ordinary constructor invocation. They are only created with the <see cref="DomainObjectFactory"/> if the mapping says so (TODO)
-  /// or if their class is annotated with a <see cref="FactoryInstantiatedAttribute"/>. You can use this class in a using-scope in order to force 
-  /// <see cref="DomainObject"/> to create all domain objects via the factory while within the scope.
+  /// via an ordinary constructor invocation. They are only created with the <see cref="DomainObjectFactory"/> if the mapping is reflection based. 
+  /// You can use this class in a using-scope in order to force <see cref="DomainObject"/> to create all domain objects via the factory while 
+  /// within the scope.
   /// </para>
   /// <para>
   /// It is vital to call the scope's <see cref="Dispose"/> method, either from a using block or explicitly from the finally part of a try/finally

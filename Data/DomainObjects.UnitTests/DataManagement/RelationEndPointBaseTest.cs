@@ -5,20 +5,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   public class RelationEndPointBaseTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    protected RelationEndPointBaseTest ()
-    {
-    }
-
-    // methods and properties
-
     protected CollectionEndPoint CreateCollectionEndPoint (
         RelationEndPointID endPointID,
         DomainObjectCollection domainObjects)

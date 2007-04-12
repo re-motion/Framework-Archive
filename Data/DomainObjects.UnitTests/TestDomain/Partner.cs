@@ -2,48 +2,26 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class Partner : Company
+  [NotAbstract]
+  public abstract class Partner : Company
   {
-    // types
-
-    // static members and constants
-
     public static new Partner GetObject (ObjectID id)
     {
       return (Partner) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Partner ()
+    public static Partner Create ()
     {
+      return DomainObject.Create<Partner>();
     }
 
-    public Partner (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Partner (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public Partner (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    protected Partner (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("AssociatedPartnerCompany", ContainsForeignKey = true)]
     [Mandatory]
-    public Person ContactPerson
-    {
-      get { return (Person) GetRelatedObject ("ContactPerson"); }
-      set { SetRelatedObject ("ContactPerson", value); }
-    }
+    public abstract Person ContactPerson { get; set; }
   }
 }

@@ -2,37 +2,24 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class NullAnonymousEndPointTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private RelationDefinition _clientToLocationDefinition;
     private IRelationEndPointDefinition _clientEndPointDefinition;
     private IRelationEndPointDefinition _locationEndPointDefinition;
-
-    // construction and disposing
-
-    public NullAnonymousEndPointTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _clientToLocationDefinition = MappingConfiguration.Current.ClassDefinitions["Location"].GetRelationDefinition ("Client");
+      _clientToLocationDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Location)].GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _clientEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Client", null);
-      _locationEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Location", "Client");
+      _locationEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Location", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
     }
 
     [Test]

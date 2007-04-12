@@ -7,23 +7,9 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class ValueConverterBaseTest : LegacyMappingTest
+  public class ValueConverterBaseTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private ValueConverterBaseMock _converterMock;
-
-    // construction and disposing
-
-    public ValueConverterBaseTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -35,21 +21,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     [ExpectedException (typeof (ConverterException),
         ExpectedMessage = "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
-        + " does not define the value 'InvalidEnumValue', property 'Type'.")]
+       + " does not define the value 'InvalidEnumValue', property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type'.")]
     public void GetInvalidEnumValue ()
     {
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-      PropertyDefinition enumProperty = customerDefinition["Type"];
+      PropertyDefinition enumProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       _converterMock.GetEnumValue (enumProperty, "InvalidEnumValue");
     }
 
     [Test]
-    [ExpectedException (typeof (ConverterException), ExpectedMessage = "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage = 
+        "Invalid null value for not-nullable property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type' encountered. Class: 'Customer'.")]
     public void GetNullValueForEnum ()
     {
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-      PropertyDefinition enumProperty = customerDefinition["Type"];
+      PropertyDefinition enumProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       _converterMock.GetValue (customerDefinition, enumProperty, null);
     }
@@ -58,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     public void GetNullValueForNaDateTime ()
     {
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-      PropertyDefinition dateTimeProperty = customerDefinition["CustomerSince"];
+      PropertyDefinition dateTimeProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
 
       Assert.AreEqual (NaDateTime.Null, _converterMock.GetValue (customerDefinition, dateTimeProperty, null));
     }

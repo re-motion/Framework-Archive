@@ -11,24 +11,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class NewDomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public NewDomainObjectTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void Creation ()
     {
-      Order order = new Order ();
+      Order order = Order.Create ();
 
       Assert.IsNotNull (order.ID);
       Assert.AreEqual (StateType.New, order.State);
@@ -36,16 +22,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void CreationOfObjectNotInMapping ()
-    {
-      ClassNotInMapping objectNotInMapping = new ClassNotInMapping ();
-    }
-
-    [Test]
     public void GetObject ()
     {
-      Order order = new Order ();
+      Order order = Order.Create ();
       Order sameOrder = Order.GetObject (order.ID);
 
       Assert.AreSame (order, sameOrder);
@@ -54,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObject ()
     {
-      Order order = new Order ();
+      Order order = Order.Create ();
 
       Assert.IsNull (order.OrderTicket);
     }
@@ -62,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObject ()
     {
-      Partner partner = new Partner ();
-      Ceo ceo = new Ceo ();
+      Partner partner = Partner.Create ();
+      Ceo ceo = Ceo.Create ();
 
       Assert.IsNull (partner.Ceo);
       Assert.IsNull (ceo.Company);
@@ -77,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObjects ()
     {
-      Order order = new Order ();
+      Order order = Order.Create ();
 
       Assert.IsNotNull (order.OrderItems);
       Assert.AreEqual (0, order.OrderItems.Count);
@@ -86,8 +65,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjects ()
     {
-      Order order = new Order ();
-      OrderItem orderItem = new OrderItem ();
+      Order order = Order.Create ();
+      OrderItem orderItem = OrderItem.Create ();
 
       order.OrderItems.Add (orderItem);
 
@@ -99,19 +78,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateForPropertyChange ()
     {
-      Customer customer = new Customer ();
+      Customer customer = Customer.Create ();
       customer.Name = "Arthur Dent";
 
       Assert.AreEqual ("Arthur Dent", customer.Name);
-      Assert.AreEqual (string.Empty, customer.DataContainer.PropertyValues["Name"].OriginalValue);
+      Assert.AreEqual (string.Empty, customer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].OriginalValue);
       Assert.AreEqual (StateType.New, customer.State);
     }
 
     [Test]
     public void StateForOneToOneRelationChange ()
     {
-      Partner partner = new Partner ();
-      Ceo ceo = new Ceo ();
+      Partner partner = Partner.Create();
+      Ceo ceo = Ceo.Create ();
 
       partner.Ceo = ceo;
 
@@ -122,8 +101,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateForOneToManyRelationChange ()
     {
-      Order order = new Order ();
-      OrderItem orderItem = new OrderItem ();
+      Order order = Order.Create ();
+      OrderItem orderItem = OrderItem.Create ();
 
       order.OrderItems.Add (orderItem);
 
@@ -134,8 +113,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Events ()
     {
-      Order order = new Order ();
-      OrderItem orderItem = new OrderItem ();
+      Order order = Order.Create ();
+      OrderItem orderItem = OrderItem.Create ();
 
       DomainObjectEventReceiver orderEventReceiver = new DomainObjectEventReceiver (order);
       DomainObjectEventReceiver orderItemEventReceiver = new DomainObjectEventReceiver (orderItem);
@@ -148,18 +127,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsTrue (orderEventReceiver.HasChangingEventBeenCalled);
       Assert.IsTrue (orderEventReceiver.HasChangedEventBeenCalled);
-      Assert.AreEqual ("DeliveryDate", orderEventReceiver.ChangingPropertyValue.Name);
-      Assert.AreEqual ("DeliveryDate", orderEventReceiver.ChangedPropertyValue.Name);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate", orderEventReceiver.ChangingPropertyValue.Name);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate", orderEventReceiver.ChangedPropertyValue.Name);
 
       Assert.IsTrue (orderEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.IsTrue (orderEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("OrderItems", orderEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("OrderItems", orderEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderEventReceiver.ChangedRelationPropertyName);
 
       Assert.IsTrue (orderItemEventReceiver.HasRelationChangingEventBeenCalled);
       Assert.IsTrue (orderItemEventReceiver.HasRelationChangedEventBeenCalled);
-      Assert.AreEqual ("Order", orderItemEventReceiver.ChangingRelationPropertyName);
-      Assert.AreEqual ("Order", orderItemEventReceiver.ChangedRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", orderItemEventReceiver.ChangingRelationPropertyName);
+      Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", orderItemEventReceiver.ChangedRelationPropertyName);
 
       Assert.IsTrue (collectionEventReceiver.HasAddingEventBeenCalled);
       Assert.IsTrue (collectionEventReceiver.HasAddedEventBeenCalled);
@@ -170,38 +149,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Partner partner = new Partner ();
-      Ceo ceo = new Ceo ();
+      Partner partner = Partner.Create();
+      Ceo ceo = Ceo.Create ();
 
       partner.Ceo = ceo;
 
-      Assert.IsNull (partner.GetOriginalRelatedObject ("Ceo"));
-      Assert.IsNull (ceo.GetOriginalRelatedObject ("Company"));
+      Assert.IsNull (partner.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
+      Assert.IsNull (ceo.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
     }
 
     [Test]
     public void GetOriginalRelatedObjects ()
     {
-      Order order = new Order ();
-      OrderItem orderItem = new OrderItem ();
+      Order order = Order.Create ();
+      OrderItem orderItem = OrderItem.Create ();
 
       order.OrderItems.Add (orderItem);
 
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("OrderItems");
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       Assert.IsNotNull (originalOrderItems);
       Assert.AreEqual (0, originalOrderItems.Count);
-      Assert.IsNull (orderItem.GetOriginalRelatedObject ("Order"));
+      Assert.IsNull (orderItem.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"));
     }
 
     [Test]
     public void SaveNewRelatedObjects ()
     {
-      Ceo ceo = new Ceo ();
-      Customer customer = new Customer ();
-      Order order = new Order ();
-      OrderTicket orderTicket = new OrderTicket (order);
-      OrderItem orderItem = new OrderItem ();
+      Ceo ceo = Ceo.Create ();
+      Customer customer = Customer.Create ();
+      Order order = Order.Create ();
+      OrderTicket orderTicket = OrderTicket.Create (order);
+      OrderItem orderItem = OrderItem.Create ();
 
       ObjectID ceoID = ceo.ID;
       ObjectID customerID = customer.ID;
@@ -281,8 +260,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SaveHierarchy ()
     {
-      Employee supervisor = new Employee ();
-      Employee subordinate = new Employee ();
+      Employee supervisor = Employee.Create ();
+      Employee subordinate = Employee.Create ();
 
       ObjectID supervisorID = supervisor.ID;
       ObjectID subordinateID = subordinate.ID;
@@ -311,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (MandatoryRelationNotSetException))]
     public void CheckMandatoryRelation ()
     {
-      OrderItem orderItem = new OrderItem ();
+      OrderItem orderItem = OrderItem.Create ();
       ClientTransactionMock.Commit ();
     }
 
@@ -319,7 +298,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void SaveExistingObjectWithRelatedNew ()
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      Employee newEmployee = new Employee ();
+      Employee newEmployee = Employee.Create ();
       ObjectID newEmployeeID = newEmployee.ID;
 
       newEmployee.Computer = computer;
@@ -339,7 +318,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DataContainerStateAfterCommit ()
     {
-      Computer computer = new Computer ();
+      Computer computer = Computer.Create();
 
       ClientTransactionMock.Commit ();
 
@@ -349,55 +328,55 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyValueHasChangedAfterCommit ()
     {
-      Employee employee = new Employee ();
+      Employee employee = Employee.Create ();
       employee.Name = "Mr. Prosser";
 
-      Assert.IsTrue (employee.DataContainer.PropertyValues["Name"].HasChanged);
+      Assert.IsTrue (employee.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
 
       ClientTransactionMock.Commit ();
 
-      Assert.IsFalse (employee.DataContainer.PropertyValues["Name"].HasChanged);
+      Assert.IsFalse (employee.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
     }
 
     [Test]
     public void OneToOneRelationHasChangedAfterCommit ()
     {
-      Employee employee = new Employee ();
+      Employee employee = Employee.Create ();
       employee.Name = "Jeltz";
 
-      Computer computer = new Computer ();
+      Computer computer = Computer.Create ();
       computer.SerialNumber = "42";
 
       employee.Computer = computer;
 
-      Assert.IsNull (employee.GetOriginalRelatedObject ("Computer"));
-      Assert.IsNull (computer.GetOriginalRelatedObject ("Employee"));
+      Assert.IsNull (employee.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"));
+      Assert.IsNull (computer.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       ClientTransactionMock.Commit ();
 
-      Assert.AreSame (computer, employee.GetOriginalRelatedObject ("Computer"));
-      Assert.AreSame (employee, computer.GetOriginalRelatedObject ("Employee"));
+      Assert.AreSame (computer, employee.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"));
+      Assert.AreSame (employee, computer.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
     }
 
     [Test]
     public void OneToManyRelationHasChangedAfterCommit ()
     {
-      Employee supervisor = new Employee ();
-      Employee subordinate = new Employee ();
+      Employee supervisor = Employee.Create ();
+      Employee subordinate = Employee.Create ();
 
       supervisor.Name = "Slartibartfast";
       subordinate.Name = "Zarniwoop";
       supervisor.Subordinates.Add (subordinate);
 
-      Assert.AreEqual (0, supervisor.GetOriginalRelatedObjects ("Subordinates").Count);
-      Assert.IsNull (subordinate.GetOriginalRelatedObject ("Supervisor"));
+      Assert.AreEqual (0, supervisor.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates").Count);
+      Assert.IsNull (subordinate.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
 
       ClientTransactionMock.Commit ();
 
-      DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjects ("Subordinates");
+      DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
       Assert.AreEqual (1, originalSubordinates.Count);
       Assert.AreSame (subordinate, originalSubordinates[subordinate.ID]);
-      Assert.AreSame (supervisor, subordinate.GetOriginalRelatedObject ("Supervisor"));
+      Assert.AreSame (supervisor, subordinate.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
     }
   }
 }

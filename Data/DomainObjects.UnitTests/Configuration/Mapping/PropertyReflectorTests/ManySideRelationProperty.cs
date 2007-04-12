@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
       Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
-      Assert.IsFalse (actual.IsNullable);
+      Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual (NaInt32.Null, actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
     }

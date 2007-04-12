@@ -10,24 +10,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class DataContainerTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private PropertyDefinition _nameDefinition;
     private PropertyValue _nameProperty;
     private DataContainer _newDataContainer;
     private DataContainer _existingDataContainer;
-
-    // construction and disposing
-
-    public DataContainerTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -166,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetObjectID ()
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
-      ObjectID id = dataContainer.GetObjectID ("Customer");
+      ObjectID id = dataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
       Assert.IsNotNull (id);
     }
 
@@ -185,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
+    [ExpectedException (typeof (ArgumentException), 
         ExpectedMessage = "Property 'NonExistingPropertyName' does not exist.\r\nParameter name: propertyName")]
     public void GetObjectIDForNonExistingProperty ()
     {
@@ -198,7 +184,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetObjectIDForPropertyWithWrongType ()
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
-      container.GetObjectID ("OrderNumber");
+      container.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
     }
 
     [Test]
@@ -206,13 +192,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
 
-      container["OrderNumber"] = 42;
+      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
       Assert.AreEqual (StateType.Changed, container.State);
-      Assert.AreEqual (42, container.GetInt32 ("OrderNumber"));
+      Assert.AreEqual (42, container.GetInt32 ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
 
-      container["OrderNumber"] = 1;
+      container["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 1;
       Assert.AreEqual (StateType.Unchanged, container.State);
-      Assert.AreEqual (1, container.GetInt32 ("OrderNumber"));
+      Assert.AreEqual (1, container.GetInt32 ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
     }
 
     [Test]
@@ -229,13 +215,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      Assert.IsTrue (dataContainer.IsNull ("StringWithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNull ("NaInt32WithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNull ("NullableBinaryProperty"));
+      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"));
+      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"));
+      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
 
-      Assert.IsFalse (dataContainer.IsNull ("NaDateProperty"));
-      Assert.IsFalse (dataContainer.IsNull ("Int32Property"));
-      Assert.IsFalse (dataContainer.IsNull ("BinaryProperty"));
+      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"));
+      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"));
+      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
     }
 
     [Test]
@@ -243,21 +229,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("StringWithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("NaInt32WithNullValueProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("NaDateProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Int32Property"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("GuidProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("StringProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("BinaryProperty"));
+      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"));
+      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"));
+      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"));
+      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"));
+      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"));
+      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"));
+      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
 
-      dataContainer["GuidProperty"] = Guid.Empty;
-      dataContainer["StringProperty"] = string.Empty;
-      dataContainer["BinaryProperty"] = new byte[0];
+      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"] = Guid.Empty;
+      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"] = string.Empty;
+      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = new byte[0];
 
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("GuidProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("StringProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("BinaryProperty"));
+      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"));
+      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"));
+      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
     }
 
     [Test]
@@ -265,8 +251,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      ResourceManager.IsEqualToImage1 (dataContainer.GetBytes ("BinaryProperty"));
-      Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));
+      ResourceManager.IsEqualToImage1 (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+      Assert.IsNull (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
     }
 
     [Test]
@@ -274,11 +260,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
 
-      dataContainer["BinaryProperty"] = new byte[0];
-      ResourceManager.IsEmptyImage (dataContainer.GetBytes ("BinaryProperty"));
+      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = new byte[0];
+      ResourceManager.IsEmptyImage (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
 
-      dataContainer["NullableBinaryProperty"] = null;
-      Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));
+      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
+      Assert.IsNull (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
     }
   }
 }

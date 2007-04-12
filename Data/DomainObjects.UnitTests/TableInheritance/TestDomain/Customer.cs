@@ -17,13 +17,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Customer) DomainObject.GetObject (id);
     }
 
-    public Customer (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    public static Customer Create ()
     {
+      return DomainObject.Create<Customer> ();
     }
 
-    protected Customer (DataContainer dataContainer)
-        : base (dataContainer)
+    public Customer (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
@@ -35,6 +35,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract Region Region { get; set; }
 
     [DBBidirectionalRelation ("Customer")]
-    public abstract ObjectList<Order> Orders { get; }
+    public virtual ObjectList<Order> Orders { get { return (ObjectList<Order>) GetRelatedObjects(); } }
   }
 }

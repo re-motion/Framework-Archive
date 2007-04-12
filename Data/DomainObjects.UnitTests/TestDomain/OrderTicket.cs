@@ -5,65 +5,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class OrderTicket : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class OrderTicket : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new OrderTicket GetObject (ObjectID id)
+    public static OrderTicket GetObject (ObjectID id)
     {
       return (OrderTicket) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    // Default constructor for testing purposes.
-    public OrderTicket ()
+    // New OrderTickets need an associated order for correct initialization.
+    public static OrderTicket Create ()
     {
+      return DomainObject.Create<OrderTicket> ();
     }
 
     // New OrderTickets need an associated order for correct initialization.
-    public OrderTicket (Order order)
-      : this (order, ClientTransaction.Current)
+    public static OrderTicket Create (Order order)
+    {
+      OrderTicket orderTicket = Create();
+      orderTicket.Initialize (order);
+      return orderTicket;
+    }
+
+    protected OrderTicket (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
-    // New OrderTickets need an associated order for correct initialization.
-    public OrderTicket (Order order, ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected virtual void Initialize (Order order) 
     {
       ArgumentUtility.CheckNotNull ("order", order);
       Order = order;
     }
 
-    public OrderTicket (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    protected OrderTicket (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
     [StringProperty (IsNullable = false, MaximumLength = 255)]
-    public string FileName
-    {
-      get { return DataContainer.GetString ("FileName"); }
-      set { DataContainer.SetValue ("FileName", value); }
-    }
+    public abstract string FileName { get; set; }
 
     [DBBidirectionalRelation ("OrderTicket", ContainsForeignKey = true)]
     [Mandatory]
-    public Order Order
-    {
-      get { return (Order) GetRelatedObject ("Order"); }
-      set { SetRelatedObject ("Order", value); }
-    }
+    public abstract Order Order { get; set; }
   }
 }

@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
+  [Serializable]
   class DomainObjectInterceptorSelector : IInterceptorSelector<DomainObject>
   {
     private DomainObjectTypeInterceptor _typeInterceptor = new DomainObjectTypeInterceptor ();

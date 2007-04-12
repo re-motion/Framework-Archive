@@ -6,20 +6,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   public class QueryDefinitionChecker
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public QueryDefinitionChecker ()
-    {
-    }
-
-    // methods and properties
-
     public void Check (QueryDefinitionCollection expectedQueries, QueryDefinitionCollection actualQueries)
     {
       Assert.AreEqual (expectedQueries.Count, actualQueries.Count,

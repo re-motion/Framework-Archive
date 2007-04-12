@@ -194,6 +194,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           classDefinition.ID);
 
       Assert.AreEqual (
+          expectedDefinition.IsNullable,
+          actualDefinition.IsNullable,
+          "IsNullable of property definition '{0}' (class definition: '{1}') does not match",
+          expectedDefinition.PropertyName,
+          classDefinition.ID);
+
+      Assert.AreEqual (
           expectedDefinition.MappingTypeName,
           actualDefinition.MappingTypeName,
           "PropertyTypeName of property definition '{0}' (class definition: '{1}') does not match.",

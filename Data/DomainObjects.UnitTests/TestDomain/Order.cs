@@ -4,84 +4,49 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class Order: TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class Order : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
     public new static Order GetObject (ObjectID id)
     {
       return (Order) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Order()
+    public static Order Create ()
     {
+      return DomainObject.Create<Order> ();
     }
 
-    public Order (ClientTransaction clientTransaction)
-        : base (clientTransaction)
+    public static Order Create (ClientTransaction clientTransaction)
     {
+      return DomainObject.Create<Order> (clientTransaction);
     }
 
-    protected Order (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
-    public Order (ClientTransaction clientTransaction, ObjectID objectID)
+    protected Order (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
     {
     }
 
-    // methods and properties
-
     [DBColumn ("OrderNo")]
-    public int OrderNumber
-    {
-      get { return (int) DataContainer["OrderNumber"]; }
-      set { DataContainer["OrderNumber"] = value; }
-    }
+    public abstract int OrderNumber { get; set; }
 
-    public DateTime DeliveryDate
-    {
-      get { return (DateTime) DataContainer["DeliveryDate"]; }
-      set { DataContainer["DeliveryDate"] = value; }
-    }
+    public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]
     [DBBidirectionalRelation ("Orders")]
-    public Official Official
-    {
-      get { return (Official) GetRelatedObject ("Official"); }
-      set { SetRelatedObject ("Official", value); }
-    }
+    public abstract Official Official { get; set; }
 
     [Mandatory]
     [DBBidirectionalRelation ("Order")]
-    public OrderTicket OrderTicket
-    {
-      get { return (OrderTicket) GetRelatedObject ("OrderTicket"); }
-      set { SetRelatedObject ("OrderTicket", value); }
-    }
+    public abstract OrderTicket OrderTicket { get; set; }
 
     [Mandatory]
     [DBBidirectionalRelation ("Orders")]
-    public Customer Customer
-    {
-      get { return (Customer) GetRelatedObject ("Customer"); }
-      set { SetRelatedObject ("Customer", value); }
-    }
+    public abstract Customer Customer { get; set; }
 
     [Mandatory]
     [DBBidirectionalRelation ("Order")]
-    public ObjectList<OrderItem> OrderItems
-    {
-      get { return (ObjectList<OrderItem>) GetRelatedObjects ("OrderItems"); }
-    }
+    public virtual ObjectList<OrderItem> OrderItems { get { return (ObjectList<OrderItem>) GetRelatedObjects(); } }
   }
 }

@@ -5,22 +5,8 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   [TestFixture]
-  public class QueryDefinitionTest : LegacyMappingTest
+  public class QueryDefinitionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public QueryDefinitionTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void InitializeCollectionType ()
     {

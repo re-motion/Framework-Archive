@@ -5,15 +5,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   public class OrderCollection : ObjectList<Order>
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    // standard constructor for collections
     public OrderCollection ()
     {
     }
@@ -23,8 +14,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       : base (collection, isCollectionReadOnly)
     {
     }
-
-    // methods and properties
 
     public new void SetIsReadOnly (bool isReadOnly)
     {

@@ -8,31 +8,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class CollectionEndPointTest : RelationEndPointBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private RelationEndPointID _customerEndPointID;
     private DomainObjectCollection _orders;
     private CollectionEndPoint _customerEndPoint;
     private DomainObject _order1;
     private DomainObject _order2;
 
-    // construction and disposing
-
     public CollectionEndPointTest ()
     {
     }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Orders");
+      _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _order2 = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
 
@@ -120,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Customer", _customerEndPoint.ObjectID));
+      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
       _customerEndPoint.PerformRelationChange ();
       _customerEndPoint.EndRelationChange ();
 
@@ -132,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.AreEqual (_customerEndPoint.OriginalOppositeDomainObjects.Count, _customerEndPoint.OppositeDomainObjects.Count);
 
-      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Customer", _customerEndPoint.ObjectID));
+      _customerEndPoint.BeginRelationChange (CreateObjectEndPoint (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _customerEndPoint.ObjectID));
       _customerEndPoint.PerformDelete ();
       _customerEndPoint.EndRelationChange ();
 

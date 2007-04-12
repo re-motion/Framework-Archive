@@ -138,7 +138,6 @@
     <Compile Include="CurrentPropertyManager.cs" />
     <Compile Include="Development\FakeDomainObjectsConfiguration.cs" />
     <Compile Include="Infrastructure\DomainObjectFactory.cs" />
-    <Compile Include="FactoryInstantiatedAttribute.cs" />
     <Compile Include="FactoryInstantiationScope.cs" />
     <Compile Include="Configuration\DomainObjectsConfiguration.cs" />
     <Compile Include="ObjectList.cs" />

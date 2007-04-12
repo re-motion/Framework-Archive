@@ -9,12 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class ClientTransactionExtensionCollectionTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private MockRepository _mockRepository;
     private ClientTransactionExtensionCollection _collection;
     private ClientTransactionExtensionCollection _collectionWithExtensions;
@@ -24,14 +18,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     private Order _order;
     private DataContainer _dataContainer;
     private PropertyValue _propertyValue;
-
-    // construction and disposing
-
-    public ClientTransactionExtensionCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -46,9 +32,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _collectionWithExtensions.Add ("Name1", _extension1);
       _collectionWithExtensions.Add ("Name2", _extension2);
 
-      _order = new Order ();
+      _order = Order.Create ();
       _dataContainer = _order.DataContainer;
-      _propertyValue = _dataContainer.PropertyValues["OrderNumber"];
+      _propertyValue = _dataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
     }
 
     [Test]
@@ -193,20 +179,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RelationChanging ()
     {
       OrderTicket orderTicket = _order.OrderTicket;
-      OrderTicket newOrderTicket = new OrderTicket ();
+      OrderTicket newOrderTicket = OrderTicket.Create ();
 
       _mockRepository.BackToRecord (_extension1);
       _mockRepository.BackToRecord (_extension2);
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationChanging (_order, "OrderNumber", orderTicket, newOrderTicket);
-        _extension2.RelationChanging (_order, "OrderNumber", orderTicket, newOrderTicket);
+        _extension1.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
+        _extension2.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationChanging (_order, "OrderNumber", orderTicket, newOrderTicket);
+      _collectionWithExtensions.RelationChanging (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", orderTicket, newOrderTicket);
 
       _mockRepository.VerifyAll ();
     }
@@ -216,13 +202,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationChanged (_order, "OrderNumber");
-        _extension2.RelationChanged (_order, "OrderNumber");
+        _extension1.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+        _extension2.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationChanged (_order, "OrderNumber");
+      _collectionWithExtensions.RelationChanged (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
 
       _mockRepository.VerifyAll ();
     }
@@ -386,13 +372,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationReading (_order, "OrderItems", ValueAccess.Current);
-        _extension2.RelationReading (_order, "OrderItems", ValueAccess.Current);
+        _extension1.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
+        _extension2.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationReading (_order, "OrderItems", ValueAccess.Current);
+      _collectionWithExtensions.RelationReading (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
 
       _mockRepository.VerifyAll ();
     }
@@ -404,13 +390,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
-        _extension2.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
+        _extension1.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
+        _extension2.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
+      _collectionWithExtensions.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }
@@ -422,13 +408,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension1.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
-        _extension2.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
+        _extension1.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
+        _extension2.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
+      _collectionWithExtensions.RelationRead (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItems, ValueAccess.Original);
 
       _mockRepository.VerifyAll ();
     }

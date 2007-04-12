@@ -10,10 +10,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       : base (clientTransaction, objectID)
     {
     }
-
-    protected DerivedClassWithInvalidRelationClassIDColumns (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

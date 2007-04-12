@@ -9,20 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderExecuteScalarQueryTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void ScalarQueryWithoutParameter ()
     {

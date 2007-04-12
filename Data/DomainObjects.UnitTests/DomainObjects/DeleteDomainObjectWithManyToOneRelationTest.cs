@@ -9,23 +9,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DeleteDomainObjectWithManyToOneRelationTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private OrderItem _orderItem;
     private Order _order;
     private SequenceEventReceiver _eventReceiver;
-
-    // construction and disposing
-
-    public DeleteDomainObjectWithManyToOneRelationTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -46,9 +32,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
       new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
-      new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order"),
+      new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order"),
       new CollectionChangeState (_order.OrderItems, _orderItem, "4. Removed event of order.OrderItems"),
-      new RelationChangeState (_order, "OrderItems", null, null, "5. Relation changed event of order"),
+      new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "5. Relation changed event of order"),
       new ObjectDeletionState (_orderItem, "6. Deleted event of orderItem"),
     };
 
@@ -111,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
             {
               new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
               new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
-              new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order")
+              new RelationChangeState (_order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order")
             };
 
         _eventReceiver.Check (expectedStates);
@@ -127,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNull (_orderItem.Order);
       Assert.AreEqual (numberOfOrderItemsBeforeDelete - 1, _order.OrderItems.Count);
       Assert.IsFalse (_order.OrderItems.Contains (_orderItem.ID));
-      Assert.IsNull (_orderItem.DataContainer["Order"]);
+      Assert.IsNull (_orderItem.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]);
       Assert.AreEqual (StateType.Changed, _order.State);
       Assert.AreEqual (StateType.Unchanged, _order.DataContainer.State);
     }
@@ -154,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _orderItem.Delete ();
 
-      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjects ("OrderItems");
+      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       Assert.IsNotNull (originalOrderItems);
       Assert.AreEqual (2, originalOrderItems.Count);

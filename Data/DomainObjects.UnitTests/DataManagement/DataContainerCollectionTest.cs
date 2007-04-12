@@ -7,22 +7,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class DataContainerCollectionTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private DataContainer _dataContainer;
     private DataContainerCollection _collection;
-
-    // construction and disposing
-
-    public DataContainerCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -189,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _collection.Add (_dataContainer);
       _collection.Add (TestDataContainerFactory.CreateCustomer1DataContainer ());
 
-      _dataContainer["OrderNumber"] = 10;
+      _dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
       DataContainerCollection changedContainers = _collection.GetByState (StateType.Changed);
 
@@ -330,6 +316,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (1, joinedCollection.Count);
       Assert.AreSame (dataContainer, joinedCollection[0]);
     }
-
   }
 }

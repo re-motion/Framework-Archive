@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetStorageSpecificIdentifier(),
           typeInfo.MappingType,
           true,
-          typeInfo.IsNullable,
+          IsNullable (typeInfo),
           GetMaxLength(),
           true);
     }
@@ -63,6 +63,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (IsRelationProperty())
         return PropertyInfo.Name + "ID";
       return PropertyInfo.Name;
+    }
+
+    private bool IsNullable (TypeInfo typeInfo)
+    {
+      if (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
+        return true;
+      return typeInfo.IsNullable;
     }
 
     private NaInt32 GetMaxLength()

@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   {
     public static ReflectionBasedClassDefinition CreateOrderDefinition()
     {
-      return new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProviderID", typeof (Order));
+      return new ReflectionBasedClassDefinition ((string) "Order", (string) "OrderTable", (string) "StorageProviderID", typeof (Order), (bool) false);
     }
 
     public static ReflectionBasedClassDefinition CreateOrderDefinitionWithResolvedCustomerProperty()

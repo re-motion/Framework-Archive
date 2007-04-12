@@ -7,20 +7,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class CommitDomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public CommitDomainObjectTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void CommitOneToManyRelation ()
     {
@@ -123,13 +109,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void OriginalDomainObjectCollectionIsSameAfterCommit ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("OrderItems");
-      OrderItem orderItem = new OrderItem (order);
+      DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      OrderItem orderItem = OrderItem.Create (order);
 
       ClientTransactionMock.Commit ();
 
-      Assert.AreSame (originalOrderItems, order.GetOriginalRelatedObjects ("OrderItems"));
-      Assert.IsTrue (order.GetOriginalRelatedObjects ("OrderItems").IsReadOnly);
+      Assert.AreSame (originalOrderItems, order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+      Assert.IsTrue (order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly);
     }
   }
 }

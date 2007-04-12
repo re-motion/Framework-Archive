@@ -8,20 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderLoadDataContainerTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void LoadDataContainerWithGuidID ()
     {
@@ -152,7 +138,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       DataContainer container = Provider.LoadDataContainer (id);
 
-      PropertyValue actualPropertyValue = container.PropertyValues["ClassWithGuidKeyOptional"];
+      PropertyValue actualPropertyValue = container.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"];
 
       Assert.IsNotNull (actualPropertyValue, "PropertyValue");
       Assert.IsNull (actualPropertyValue.Value, "PropertyValue.Value");
@@ -162,19 +148,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void LoadDataContainerWithRelation ()
     {
       DataContainer orderTicketContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1);
-      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetObjectID ("Order"));
+      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]
     public void LoadDataContainerWithRelationAndInheritance ()
     {
       DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo7);
-      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetObjectID ("Company"));
+      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException),
-        ExpectedMessage = "Error while reading property 'Distributor' of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumn.Distributor' "
+        + "of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumn' must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumn ()
@@ -185,8 +172,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException),
-       ExpectedMessage = "Error while reading property 'Company' of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutRelatedClassIDColumnAndDerivation.Company' "
+        + "of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumnAndDerivation' must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
@@ -198,8 +186,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: id")]
     public void LoadDataContainerWithObjectIDWithWrongStorageProviderID ()
     {
       ObjectID invalidID = new ObjectID (DomainObjectIDs.Official1.ClassID, (int) DomainObjectIDs.Official1.Value);
@@ -208,8 +196,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException),
-       ExpectedMessage = "Error while reading property 'ClassWithGuidKey' of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey' "
+        +"of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithRelatedClassIDColumnAndNoInheritance' must not contain column 'TableWithGuidKeyIDClassID',"
         + " because opposite class 'ClassWithGuidKey' is not part of an inheritance hierarchy.")]

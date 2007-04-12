@@ -7,25 +7,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class OneToOneRelationChangeWithNullTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public OneToOneRelationChangeWithNullTest ()
-    {
-    }
-
-    // methods and properties
-
-    public override void SetUp ()
-    {
-      base.SetUp ();
-    }
-
     [Test]
     public void OldRelatedObjectOfNewRelatedObjectIsNull ()
     {
@@ -63,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
       computerWithoutEmployee.Employee = employee;
 
-      Assert.AreEqual (employee.ID, computerWithoutEmployee.DataContainer.GetObjectID ("Employee"));
+      Assert.AreEqual (employee.ID, computerWithoutEmployee.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.AreSame (employee, computerWithoutEmployee.Employee);
       Assert.AreSame (computerWithoutEmployee, employee.Computer);
@@ -76,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       employeeWithoutComputer.Computer = computer;
 
-      Assert.AreEqual (employeeWithoutComputer.ID, computer.DataContainer.GetObjectID ("Employee"));
+      Assert.AreEqual (employeeWithoutComputer.ID, computer.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.AreSame (computer, employeeWithoutComputer.Computer);
       Assert.AreSame (employeeWithoutComputer, computer.Employee);
@@ -89,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       computer.Employee = null;
 
-      Assert.IsNull (computer.DataContainer.GetObjectID ("Employee"));
+      Assert.IsNull (computer.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.IsNull (computer.Employee);
       Assert.IsNull (employee.Computer);
@@ -102,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = employee.Computer;
       employee.Computer = null;
 
-      Assert.IsNull (computer.DataContainer.GetObjectID ("Employee"));
+      Assert.IsNull (computer.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
 
       Assert.IsNull (employee.Computer);
       Assert.IsNull (computer.Employee);

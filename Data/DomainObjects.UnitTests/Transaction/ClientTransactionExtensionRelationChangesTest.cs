@@ -13,12 +13,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class ClientTransactionExtensionRelationChangesTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private Order _order1;
     private OrderTicket _orderTicket1;
     private Location _location1;
@@ -31,14 +25,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private MockRepository _mockRepository;
     private IClientTransactionExtension _extension;
-
-    // construction and disposing
-
-    public ClientTransactionExtensionRelationChangesTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -77,19 +63,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (_order1, "OrderTicket", _orderTicket1, null);
-        _extension.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, null);
+        _extension.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderTicket", _orderTicket1, null);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, null);
 
-        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
 
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderTicket");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Order");
+        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -102,29 +88,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void OneToOneRelationFromVirtualEndPointWithOldNull ()
     {
-      Order order = new Order ();
-      OrderTicket orderTicket = new OrderTicket ();
+      Order order = Order.Create ();
+      OrderTicket orderTicket = OrderTicket.Create ();
 
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (order, "OrderTicket", null, orderTicket);
-        _extension.RelationChanging (orderTicket, "Order", null, order);
+        _extension.RelationChanging (order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, orderTicket);
+        _extension.RelationChanging (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, order);
 
         DomainObjectMockEventReceiver orderEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (order);
         DomainObjectMockEventReceiver orderTicketEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket);
 
-        orderEventReceiver.RelationChanging (order, "OrderTicket", null, orderTicket);
+        orderEventReceiver.RelationChanging (order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, orderTicket);
 
-        orderTicketEventReceiver.RelationChanging (orderTicket, "Order", null, order);
+        orderTicketEventReceiver.RelationChanging (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, order);
 
-        _extension.RelationChanged (order, "OrderTicket");
-        _extension.RelationChanged (orderTicket, "Order");
+        _extension.RelationChanged (order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+        _extension.RelationChanged (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        orderEventReceiver.RelationChanged (order, "OrderTicket");
+        orderEventReceiver.RelationChanged (order, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        orderTicketEventReceiver.RelationChanged (orderTicket, "Order");
+        orderTicketEventReceiver.RelationChanged (orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -146,31 +132,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
-        _extension.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
-        _extension.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
-        _extension.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _extension.RelationChanging (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", oldOrderOfOrderTicket3, _order1);
+        _extension.RelationChanging (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket3, null);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, orderTicket3);
+        _extension.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
 
-        orderTicket3EventReceiver.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
+        orderTicket3EventReceiver.RelationChanging (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", oldOrderOfOrderTicket3, _order1);
 
-        oldOrderOfOrderTicket3EventReceiver.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
+        oldOrderOfOrderTicket3EventReceiver.RelationChanging (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket3, null);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, orderTicket3);
 
-        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
 
-        _extension.RelationChanged (orderTicket3, "Order");
-        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
+        _extension.RelationChanged (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        orderTicket3EventReceiver.RelationChanged (orderTicket3, "Order");
+        orderTicket3EventReceiver.RelationChanged (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        oldOrderOfOrderTicket3EventReceiver.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+        oldOrderOfOrderTicket3EventReceiver.RelationChanged (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderTicket");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Order");
+        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       }
 
       _mockRepository.ReplayAll ();
@@ -204,31 +190,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
-        _extension.RelationChanging (_orderTicket1, "Order", _order1, null);
-        _extension.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
-        _extension.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, orderTicket3);
+        _extension.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
+        _extension.RelationChanging (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", oldOrderOfOrderTicket3, _order1);
+        _extension.RelationChanging (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket3, null);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _orderTicket1, orderTicket3);
 
-        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _orderTicket1EventReceiver.RelationChanging (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _order1, null);
 
-        orderTicket3EventReceiver.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
+        orderTicket3EventReceiver.RelationChanging (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", oldOrderOfOrderTicket3, _order1);
 
-        oldOrderOfOrderTicket3EventReceiver.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
+        oldOrderOfOrderTicket3EventReceiver.RelationChanging (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", orderTicket3, null);
 
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (_orderTicket1, "Order");
-        _extension.RelationChanged (orderTicket3, "Order");
-        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+        _extension.RelationChanged (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderTicket");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Order");
+        _orderTicket1EventReceiver.RelationChanged (_orderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        orderTicket3EventReceiver.RelationChanged (orderTicket3, "Order");
+        orderTicket3EventReceiver.RelationChanged (orderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-        oldOrderOfOrderTicket3EventReceiver.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+        oldOrderOfOrderTicket3EventReceiver.RelationChanged (oldOrderOfOrderTicket3, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       }
 
       _mockRepository.ReplayAll ();
@@ -255,13 +241,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (_location1, "Client", _client1, null);
+        _extension.RelationChanging (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _client1, null);
 
-        _location1EventReceiver.RelationChanging (_location1, "Client", _client1, null);
+        _location1EventReceiver.RelationChanging (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _client1, null);
 
-        _extension.RelationChanged (_location1, "Client");
+        _extension.RelationChanged (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
 
-        _location1EventReceiver.RelationChanged (_location1, "Client");
+        _location1EventReceiver.RelationChanged (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -274,20 +260,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void UnidirectionalRelationWithOldNull ()
     {
-      Location newLocation = new Location ();
+      Location newLocation = Location.Create ();
 
       DomainObjectMockEventReceiver newLocationEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newLocation);
 
       _mockRepository.BackToRecord (_extension);
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (newLocation, "Client", null, _client1);
+        _extension.RelationChanging (newLocation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, _client1);
 
-        newLocationEventReceiver.RelationChanging (newLocation, "Client", null, _client1);
+        newLocationEventReceiver.RelationChanging (newLocation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, _client1);
 
-        _extension.RelationChanged (newLocation, "Client");
+        _extension.RelationChanged (newLocation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
 
-        newLocationEventReceiver.RelationChanged (newLocation, "Client");
+        newLocationEventReceiver.RelationChanged (newLocation, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -300,20 +286,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void UnidirectionalRelationWithOldRelatedObject ()
     {
-      Client newClient = new Client ();
+      Client newClient = Client.Create ();
       DomainObjectMockEventReceiver newClientEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newClient);
 
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (_location1, "Client", _client1, newClient);
+        _extension.RelationChanging (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _client1, newClient);
 
-        _location1EventReceiver.RelationChanging (_location1, "Client", _client1, newClient);
+        _location1EventReceiver.RelationChanging (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _client1, newClient);
 
-        _extension.RelationChanged (_location1, "Client");
+        _extension.RelationChanged (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
 
-        _location1EventReceiver.RelationChanged (_location1, "Client");
+        _location1EventReceiver.RelationChanged (_location1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       }
 
       _mockRepository.ReplayAll ();
@@ -336,23 +322,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationReading (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
-        _extension.RelationChanging (orderItem, "Order", _order1, null);
-        _extension.RelationChanging (_order1, "OrderItems", orderItem, null);
+        _extension.RelationChanging (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItem, null);
 
-        orderItemEventReceiver.RelationChanging (orderItem, "Order", _order1, null);
+        orderItemEventReceiver.RelationChanging (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderItems", orderItem, null);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", orderItem, null);
 
-        _extension.RelationChanged (orderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        orderItemEventReceiver.RelationChanged (orderItem, "Order");
+        orderItemEventReceiver.RelationChanged (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderItems");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -366,30 +352,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void AddToOneToManyRelation ()
     {
       DomainObjectCollection preloadedOrderItems = _order1.OrderItems;
-      OrderItem orderItem = new OrderItem ();
+      OrderItem orderItem = OrderItem.Create ();
 
       _mockRepository.BackToRecord (_extension);
       DomainObjectMockEventReceiver orderItemEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderItem);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationReading (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
-        _extension.RelationChanging (orderItem, "Order", null, _order1);
-        _extension.RelationChanging (_order1, "OrderItems", null, orderItem);
+        _extension.RelationChanging (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, _order1);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, orderItem);
 
-        orderItemEventReceiver.RelationChanging (orderItem, "Order", null, _order1);
+        orderItemEventReceiver.RelationChanging (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, _order1);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderItems", null, orderItem);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, orderItem);
 
-        _extension.RelationChanged (orderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        orderItemEventReceiver.RelationChanged (orderItem, "Order");
+        orderItemEventReceiver.RelationChanged (orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderItems");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -413,29 +399,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationReading (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
 
-        _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
-        _extension.RelationChanging (_order1, "OrderItems", null, newOrderItem);
-        _extension.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
+        _extension.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", oldOrderOfNewOrderItem, _order1);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, newOrderItem);
+        _extension.RelationChanging (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", newOrderItem, null);
 
-        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
+        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", oldOrderOfNewOrderItem, _order1);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderItems", null, newOrderItem);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, newOrderItem);
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
+        oldOrderOfNewOrderItemEventReceiver.RelationChanging (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", newOrderItem, null);
 
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
-        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+        _extension.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+        _extension.RelationChanged (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Order");
+        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderItems");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+        oldOrderOfNewOrderItemEventReceiver.RelationChanged (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -469,7 +455,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderItem oldOrderItem = (OrderItem) _order1.OrderItems[0];
 
       DomainObjectCollection preloadedOrderItems = _order1.OrderItems;
-      OrderItem newOrderItem = new OrderItem ();
+      OrderItem newOrderItem = OrderItem.Create ();
 
       _mockRepository.BackToRecord (_extension);
       DomainObjectMockEventReceiver oldOrderItemEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (oldOrderItem);
@@ -477,29 +463,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationReading (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Mocks_Is.Equal (ValueAccess.Current));
 
-        _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
-        _extension.RelationChanging (newOrderItem, "Order", null, _order1);
-        _extension.RelationChanging (_order1, "OrderItems", oldOrderItem, newOrderItem);
+        _extension.RelationChanging (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
+        _extension.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, _order1);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oldOrderItem, newOrderItem);
 
-        oldOrderItemEventReceiver.RelationChanging (oldOrderItem, "Order", _order1, null);
+        oldOrderItemEventReceiver.RelationChanging (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
 
-        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Order", null, _order1);
+        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, _order1);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderItems", oldOrderItem, newOrderItem);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oldOrderItem, newOrderItem);
 
-        _extension.RelationChanged (oldOrderItem, "Order");
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        oldOrderItemEventReceiver.RelationChanged (oldOrderItem, "Order");
+        oldOrderItemEventReceiver.RelationChanged (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Order");
+        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderItems");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.ReplayAll ();
@@ -527,35 +513,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationReading (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", ValueAccess.Current);
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
+        LastCall.Constraints (Mocks_Is.Same (_order1), Mocks_Is.Equal ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Mocks_Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Mocks_Is.Equal (ValueAccess.Current));
 
-        _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
-        _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
-        _extension.RelationChanging (_order1, "OrderItems", oldOrderItem, newOrderItem);
-        _extension.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
+        _extension.RelationChanging (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
+        _extension.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", oldOrderOfNewOrderItem, _order1);
+        _extension.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oldOrderItem, newOrderItem);
+        _extension.RelationChanging (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", newOrderItem, null);
 
-        oldOrderItemEventReceiver.RelationChanging (oldOrderItem, "Order", _order1, null);
+        oldOrderItemEventReceiver.RelationChanging (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order1, null);
 
-        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
+        newOrderItemEventReceiver.RelationChanging (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", oldOrderOfNewOrderItem, _order1);
 
-        _order1EventReceiver.RelationChanging (_order1, "OrderItems", oldOrderItem, newOrderItem);
+        _order1EventReceiver.RelationChanging (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", oldOrderItem, newOrderItem);
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
+        oldOrderOfNewOrderItemEventReceiver.RelationChanging (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", newOrderItem, null);
 
-        _extension.RelationChanged (oldOrderItem, "Order");
-        _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (_order1, "OrderItems");
-        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+        _extension.RelationChanged (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
+        _extension.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+        _extension.RelationChanged (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        oldOrderItemEventReceiver.RelationChanged (oldOrderItem, "Order");
+        oldOrderItemEventReceiver.RelationChanged (oldOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Order");
+        newOrderItemEventReceiver.RelationChanged (newOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order");
 
-        _order1EventReceiver.RelationChanged (_order1, "OrderItems");
+        _order1EventReceiver.RelationChanged (_order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
+        oldOrderOfNewOrderItemEventReceiver.RelationChanged (oldOrderOfNewOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       }
 
       _mockRepository.ReplayAll ();

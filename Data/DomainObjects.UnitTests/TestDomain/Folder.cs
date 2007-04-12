@@ -2,57 +2,21 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class Folder : FileSystemItem
+  [NotAbstract]
+  public abstract class Folder : FileSystemItem
   {
-    // types
-
-    // static members and constants
-
-    public static new Folder GetObject (ObjectID id)
+    public static Folder Create ()
     {
-      return (Folder) DomainObject.GetObject (id);
+      return DomainObject.Create<Folder> ();
     }
 
-    public static new Folder GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (Folder) DomainObject.GetObject (id, includeDeleted);
-    }
-
-    public static new Folder GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Folder) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Folder GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Folder) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Folder ()
+    protected Folder (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public Folder (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    protected Folder (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [DBBidirectionalRelation ("ParentFolder")]
-    public ObjectList<FileSystemItem> FileSystemItems
-    {
-      get { return (ObjectList<FileSystemItem>) GetRelatedObjects ("FileSystemItems"); }
-    }
+    public virtual ObjectList<FileSystemItem> FileSystemItems { get { return (ObjectList<FileSystemItem>) GetRelatedObjects(); } }
 
   }
 }

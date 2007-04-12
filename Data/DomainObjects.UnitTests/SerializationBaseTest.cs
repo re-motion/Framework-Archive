@@ -6,20 +6,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 {
   public class SerializationBaseTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    protected SerializationBaseTest ()
-    {
-    }
-
-    // methods and properties
-
     protected object SerializeAndDeserialize (object graph)
     {
       using (MemoryStream stream = new MemoryStream ())

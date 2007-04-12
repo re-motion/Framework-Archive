@@ -11,33 +11,12 @@ namespace Rubicon.Data.DomainObjects.Mapping
   {
     private bool _isAbstract;
 
-    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType)
-        : this (id, entityName, storageProviderID, ArgumentUtility.CheckNotNull ("classType", classType), classType.IsAbstract)
-    {
-    }
-
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
         : this (id, entityName, storageProviderID, classType, isAbstract, null)
     {
     }
 
-    public ReflectionBasedClassDefinition (
-        string id,
-        string entityName,
-        string storageProviderID,
-        Type classType,
-        ReflectionBasedClassDefinition baseClass)
-        : this (id, entityName, storageProviderID, ArgumentUtility.CheckNotNull ("classType", classType), classType.IsAbstract, baseClass)
-    {
-    }
-
-    public ReflectionBasedClassDefinition (
-        string id,
-        string entityName,
-        string storageProviderID,
-        Type classType,
-        bool isAbstract,
-        ReflectionBasedClassDefinition baseClass)
+    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
         : base (id, entityName, storageProviderID, classType, (ClassDefinition) baseClass)
     {
       _isAbstract = isAbstract;

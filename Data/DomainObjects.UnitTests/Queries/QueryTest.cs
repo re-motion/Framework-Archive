@@ -7,22 +7,8 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
-  public class QueryTest : LegacyMappingTest
+  public class QueryTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public QueryTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void InitializeWithQueryID ()
     {

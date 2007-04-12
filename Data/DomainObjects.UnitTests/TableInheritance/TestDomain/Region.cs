@@ -7,13 +7,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [NotAbstract]
   public abstract class Region: DomainObject
   {
-    protected Region (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    public static Region Create ()
     {
+      return DomainObject.Create<Region> ();
     }
 
-    protected Region (DataContainer dataContainer)
-        : base (dataContainer)
+    protected Region (ClientTransaction clientTransaction, ObjectID id)
+        : base (clientTransaction, id)
     {
     }
 
@@ -21,6 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract string Name { get; set; }
 
     [DBBidirectionalRelation ("Region")]
-    public abstract ObjectList<Customer> Customers { get; }
+    public virtual ObjectList<Customer> Customers { get { return (ObjectList<Customer>) GetRelatedObjects(); } }
   }
 }

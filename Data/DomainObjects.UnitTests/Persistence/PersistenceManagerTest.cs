@@ -11,21 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
   [TestFixture]
   public class PersistenceManagerTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     PersistenceManager _persistenceManager;
-
-    // construction and disposing
-
-    public PersistenceManagerTest ()
-    {
-    }
-
-    // methods and properties
 
     [SetUp]
     public override void SetUp ()
@@ -53,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer orderTicketContainer = TestDataContainerFactory.CreateOrderTicket1DataContainer ();
 
       DataContainer orderContainer = _persistenceManager.LoadRelatedDataContainer (
-          orderTicketContainer, new RelationEndPointID (orderTicketContainer.ID, "Order"));
+          orderTicketContainer, new RelationEndPointID (orderTicketContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       DataContainerChecker checker = new DataContainerChecker ();
       checker.Check (TestDataContainerFactory.CreateOrder1DataContainer (), orderContainer);
@@ -65,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer orderContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
 
       DataContainer orderTicketContainer = _persistenceManager.LoadRelatedDataContainer (
-          orderContainer, new RelationEndPointID (orderContainer.ID, "OrderTicket"));
+          orderContainer, new RelationEndPointID (orderContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
 
       DataContainerChecker checker = new DataContainerChecker ();
       checker.Check (TestDataContainerFactory.CreateOrderTicket1DataContainer (), orderTicketContainer);
@@ -79,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
       DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-          dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithGuidKeyOptional"));
+          dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyOptional"));
 
       Assert.IsNull (relatedDataContainer);
     }
@@ -92,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
       DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer (
-          dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithValidRelationsOptional"));
+          dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional"));
 
       Assert.IsNull (relatedDataContainer);
     }
@@ -106,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       try
       {
         _persistenceManager.LoadRelatedDataContainer (
-            dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithGuidKeyNonOptional"));
+            dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional"));
 
         Assert.Fail ("Test expects a PersistenceException.");
       }
@@ -115,9 +101,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
         Assert.AreEqual (typeof (PersistenceException), e.GetType ());
 
         string expectedMessage = string.Format (
-            "Cannot load related DataContainer of object"
-            + " 'ClassWithValidRelations|{0}|System.Guid'"
-            + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.", dataContainer.ID.Value);
+            "Cannot load related DataContainer of object 'ClassWithValidRelations|{0}|System.Guid'"
+            + " over mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional'.", dataContainer.ID.Value);
 
         Assert.AreEqual (expectedMessage, e.Message);
       }
@@ -131,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
       try
       {
-        _persistenceManager.LoadRelatedDataContainer (dataContainer, new RelationEndPointID (dataContainer.ID, "ContactPerson"));
+        _persistenceManager.LoadRelatedDataContainer (dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"));
         Assert.Fail ("Test expects a PersistenceException.");
       }
       catch (PersistenceException e)
@@ -139,19 +124,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
         Assert.AreEqual (typeof (PersistenceException), e.GetType ());
 
         string expectedMessage = string.Format (
-            "Cannot load related DataContainer of object"
-            + " 'Distributor|{0}|System.Guid'"
-            + " over mandatory relation 'PartnerToPerson'.", dataContainer.ID.Value);
+            "Cannot load related DataContainer of object 'Distributor|{0}|System.Guid'"
+            + " over mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson'.", dataContainer.ID.Value);
 
         Assert.AreEqual (expectedMessage, e.Message);
       }
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Cannot load related DataContainer of object"
-        + " 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
-        + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Cannot load related DataContainer of object 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
+       + " over mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional'.")]
     public void LoadRelatedDataContainerByNonOptionalNullIDVirtual ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
@@ -159,20 +142,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
       _persistenceManager.LoadRelatedDataContainer (
-          dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithValidRelationsNonOptional"));
+          dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional"));
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Cannot load related DataContainer of object"
-        + " 'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid'"
-        + " over mandatory relation 'CompanyToCeo'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Cannot load related DataContainer of object 'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid'"
+       + " over mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company'.")]
     public void LoadRelatedDataContainerByNonOptionalNullIDVirtualWithInheritance ()
     {
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.PartnerWithoutCeo);
 
       _persistenceManager.LoadRelatedDataContainer (
-          dataContainer, new RelationEndPointID (dataContainer.ID, "Ceo"));
+          dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo"));
     }
 
     [Test]
@@ -183,7 +165,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
       DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
-          classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "ClassWithValidRelationsNonOptional"));
+          classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional"));
 
       ObjectID expectedID = new ObjectID ("ClassWithValidRelations", new Guid ("{6BE4FA61-E050-469c-9DBA-B47FFBB0F8AD}"));
 
@@ -192,10 +174,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Cannot load related DataContainer of object"
-        + " 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
-        + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Cannot load related DataContainer of object 'ClassWithGuidKey|672c8754-c617-4b7a-890c-bfef8ac86564|System.Guid'"
+        + " over mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithValidRelations.ClassWithGuidKeyNonOptional'.")]
     public void LoadRelatedDataContainerOverInvalidNonOptionalRelation ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
@@ -203,12 +184,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer classWithGuidKey = _persistenceManager.LoadDataContainer (id);
 
       DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer (
-          classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "ClassWithValidRelationsNonOptional"));
+          classWithGuidKey, new RelationEndPointID (classWithGuidKey.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional"));
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Property 'ClassWithGuidKey' of object 'ClassWithInvalidRelation|afa9cf46-8e77-4da8-9793-53caa86a277c|System.Guid' refers"
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation.ClassWithGuidKey' of object "
+        + "'ClassWithInvalidRelation|afa9cf46-8e77-4da8-9793-53caa86a277c|System.Guid' refers"
         + " to non-existing object 'ClassWithGuidKey|a53f679d-0e91-4504-aee8-59250de249b3|System.Guid'.")]
     public void LoadRelatedDataContainerByInvalidID ()
     {
@@ -217,7 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
 
       _persistenceManager.LoadRelatedDataContainer (
-          dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithGuidKey"));
+          dataContainer, new RelationEndPointID (dataContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithInvalidRelation.ClassWithGuidKey"));
     }
 
     [Test]
@@ -226,7 +208,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
 
       DataContainer officialContainer = _persistenceManager.LoadRelatedDataContainer (
-          orderContainer, new RelationEndPointID (orderContainer.ID, "Official"));
+          orderContainer, new RelationEndPointID (orderContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
 
       Assert.IsNotNull (officialContainer);
       Assert.AreEqual ("UnitTestStorageProviderStub", officialContainer.ID.StorageProviderID, "StorageProviderID");
@@ -238,7 +220,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainers ()
     {
       DataContainerCollection collection = _persistenceManager.LoadRelatedDataContainers (
-          new RelationEndPointID (DomainObjectIDs.Customer1, "Orders"));
+          new RelationEndPointID (DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.IsNotNull (collection);
       Assert.AreEqual (2, collection.Count, "DataContainerCollection.Count");
@@ -247,53 +229,54 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "A DataContainerCollection cannot be loaded for a relation with a non-virtual end point,"
-        + " relation: 'CustomerToOrder', property: 'Customer'. Check your mapping configuration.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "A DataContainerCollection cannot be loaded for a relation with a non-virtual end point, "
+        + "relation: 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer', "
+        + "property: 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer'. Check your mapping configuration.")]
     public void LoadRelatedDataContainersForNonVirtualEndPoint ()
     {
-      _persistenceManager.LoadRelatedDataContainers (new RelationEndPointID (DomainObjectIDs.Order1, "Customer"));
+      _persistenceManager.LoadRelatedDataContainers (new RelationEndPointID (DomainObjectIDs.Order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Collection for mandatory relation 'OrderToOrderItem' (property: 'OrderItems') contains no items.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage =
+       "Collection for mandatory relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
+        + "(property: 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems') contains no items.")]
     public void LoadEmptyRelatedDataContainersForMandatoryRelation ()
     {
       _persistenceManager.LoadRelatedDataContainers (
-          new RelationEndPointID (DomainObjectIDs.OrderWithoutOrderItem, "OrderItems"));
+          new RelationEndPointID (DomainObjectIDs.OrderWithoutOrderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
     }
 
     [Test]
     public void LoadEmptyRelatedDataContainersForMandatoryRelationWithOptionalOppositeEndPoint ()
     {
       DataContainerCollection orderContainers = _persistenceManager.LoadRelatedDataContainers (
-          new RelationEndPointID (DomainObjectIDs.Customer2, "Orders"));
+          new RelationEndPointID (DomainObjectIDs.Customer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.AreEqual (0, orderContainers.Count);
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Cannot load a single related data container for one-to-many relation 'OrderToOrderItem'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Cannot load a single related data container for one-to-many relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order'.")]
     public void LoadRelatedDataContainerForOneToManyRelation ()
     {
       DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
       _persistenceManager.LoadRelatedDataContainer (
-          orderContainer, new RelationEndPointID (orderContainer.ID, "OrderItems"));
+          orderContainer, new RelationEndPointID (orderContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Cannot load multiple related data containers for one-to-one relation 'OrderToOrderTicket'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "Cannot load multiple related data containers for one-to-one relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'.")]
     public void LoadRelatedDataContainersForOneToOneRelation ()
     {
-      _persistenceManager.LoadRelatedDataContainers (new RelationEndPointID (DomainObjectIDs.Order1, "OrderTicket"));
+      _persistenceManager.LoadRelatedDataContainers (new RelationEndPointID (DomainObjectIDs.Order1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "Save does not support multiple storage providers.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = "Save does not support multiple storage providers.")]
     public void SaveInDifferentStorageProviders ()
     {
       DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
@@ -303,8 +286,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       dataContainers.Add (orderContainer);
       dataContainers.Add (officialContainer);
 
-      orderContainer["OrderNumber"] = 42;
-      officialContainer["Name"] = "Zaphod";
+      orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
+      officialContainer["Name"] = "Zaphod"; //Stub implementation
 
       _persistenceManager.Save (dataContainers);
     }
@@ -342,52 +325,52 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "The property 'Customer' of the provided DataContainer 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
-        + " refers to ClassID 'Company', but the ClassID of the loaded DataContainer is 'Customer'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "The property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of the provided DataContainer "
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' refers to ClassID 'Company', but the ClassID of the loaded DataContainer is 'Customer'.")]
     public void LoadRelatedDataContainerWithInvalidClassIDOverEndPoint ()
     {
       DataContainer orderContainer = CreateOrder1DataContainerWithInvalidCustomer ();
-      RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Customer");
+      RelationEndPointID endPointID = new RelationEndPointID (orderContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
 
       _persistenceManager.LoadRelatedDataContainer (orderContainer, endPointID);
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "The property 'Company' of the loaded DataContainer 'Ceo|c3db20d6-138e-4ced-8576-e81bb4b7961f|System.Guid'"
-        + " refers to ClassID 'Customer', but the actual ClassID is 'Company'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage =
+        "The property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' of the loaded DataContainer "
+        + "'Ceo|c3db20d6-138e-4ced-8576-e81bb4b7961f|System.Guid' refers to ClassID 'Customer', but the actual ClassID is 'Company'.")]
     public void LoadRelatedDataContainerWithInvalidClassIDOverVirtualEndPoint ()
     {
       ObjectID companyID = new ObjectID ("Company", new Guid ("{C3DB20D6-138E-4ced-8576-E81BB4B7961F}"));
 
       DataContainer companyContainer = _persistenceManager.LoadDataContainer (companyID);
-      RelationEndPointID endPointID = new RelationEndPointID (companyContainer.ID, "Ceo");
+      RelationEndPointID endPointID = new RelationEndPointID (companyContainer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo");
 
       _persistenceManager.LoadRelatedDataContainer (companyContainer, endPointID);
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException),
-        ExpectedMessage = "The property 'Customer' of the loaded DataContainer 'Order|da658f26-8107-44ce-9dd0-1804503eccaf|System.Guid'"
-        + " refers to ClassID 'Company', but the actual ClassID is 'Customer'.")]
+    [ExpectedException (typeof (PersistenceException), ExpectedMessage = 
+        "The property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of the loaded DataContainer "
+        + "'Order|da658f26-8107-44ce-9dd0-1804503eccaf|System.Guid' refers to ClassID 'Company', but the actual ClassID is 'Customer'.")]
     public void LoadRelatedDataContainersWithInvalidClassID ()
     {
       ObjectID customerID = new ObjectID ("Customer", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}"));
 
-      RelationEndPointID endPointID = new RelationEndPointID (customerID, "Orders");
+      RelationEndPointID endPointID = new RelationEndPointID (customerID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
       _persistenceManager.LoadRelatedDataContainers (endPointID);
     }
 
     [Test]
-    [ExpectedException (typeof (PersistenceException), 
-        ExpectedMessage = "Multiple related DataContainers where found for property 'AssociatedPartnerCompany' of"
+    [ExpectedException (typeof (PersistenceException),
+       ExpectedMessage = "Multiple related DataContainers where found for property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany' of"
         + " DataContainer 'Person|911957d1-483c-4a8b-aa53-ff07464c58f9|System.Guid'.")]
     public void LoadRelatedDataContainersOverOneToOneRelationWithMultipleFound ()
     {
       DataContainer contactPersonInTwoOrganizations = _persistenceManager.LoadDataContainer (DomainObjectIDs.ContactPersonInTwoOrganizations);
-      RelationEndPointID endPointID = new RelationEndPointID (contactPersonInTwoOrganizations.ID, "AssociatedPartnerCompany");
+      RelationEndPointID endPointID = new RelationEndPointID (contactPersonInTwoOrganizations.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany");
 
       _persistenceManager.LoadRelatedDataContainer (contactPersonInTwoOrganizations, endPointID);
     }
@@ -397,10 +380,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       DataContainer dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null);
       ClassDefinition classDefinition = dataContainer.ClassDefinition;
 
-      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["OrderNumber"], 1));
-      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["DeliveryDate"], new DateTime (2005, 1, 1)));
-      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Official"], DomainObjectIDs.Official1));
-      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Customer"], new ObjectID ("Company", (Guid) DomainObjectIDs.Customer1.Value)));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"], 1));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate"], new DateTime (2005, 1, 1)));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"], DomainObjectIDs.Official1));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"], new ObjectID ("Company", (Guid) DomainObjectIDs.Customer1.Value)));
 
       ClientTransactionMock.SetClientTransaction (dataContainer);
 

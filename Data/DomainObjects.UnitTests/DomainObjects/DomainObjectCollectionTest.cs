@@ -11,24 +11,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DomainObjectCollectionTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private DomainObjectCollection _collection;
     private Customer _customer1;
     private Customer _customer2;
     private Customer _customer3NotInCollection;
-
-    // construction and disposing
-
-    public DomainObjectCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -909,7 +895,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "\r\nParameter name: index\r\nActual value was 2.")]
     public void SetInvalidNumericIndex ()
     {
-      _collection[_collection.Count] = new Customer ();
+      _collection[_collection.Count] = Customer.Create ();
     }
 
     [Test]
@@ -923,7 +909,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ArgumentException))]
     public void SetNumericIndexerWithInvalidType ()
     {
-      _collection[0] = new Order ();
+      _collection[0] = Order.Create ();
     }
 
     [Test]
@@ -1021,7 +1007,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ClearWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
-      Customer customer = new Customer ();
+      Customer customer = Customer.Create ();
       domainObjectCollection.Add (customer);
       customer.Delete ();
       Assert.IsTrue (customer.IsDiscarded);
@@ -1037,7 +1023,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void RemoveWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
-      Customer customer = new Customer ();
+      Customer customer = Customer.Create ();
       domainObjectCollection.Add (customer);
       customer.Delete ();
       Assert.IsTrue (customer.IsDiscarded);

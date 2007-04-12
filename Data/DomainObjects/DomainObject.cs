@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using System.Reflection;
 using Rubicon.Logging;
@@ -39,7 +40,7 @@ public class DomainObject
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
   /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
-  public static T Create<T> () where T : DomainObject
+  protected static T Create<T> () where T : DomainObject
   {
     return (T) GetCreator (typeof (T)).CreateWithCurrentTransaction (typeof (T));
   }
@@ -65,7 +66,7 @@ public class DomainObject
   /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
   /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
   /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
-  public static T Create<T> (ClientTransaction tx) where T : DomainObject
+  protected static T Create<T> (ClientTransaction tx) where T : DomainObject
   {
     ArgumentUtility.CheckNotNull ("tx", tx);
     return (T) GetCreator (typeof (T)).CreateWithTransaction (typeof(T), tx);
@@ -267,19 +268,19 @@ public class DomainObject
   // TODO: Change to use mapping instead of attribute later.
   public static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
   {
-    return FactoryInstantiationScope.WithinScope || domainObjectType.IsDefined (typeof (FactoryInstantiatedAttribute), true);
+    if (FactoryInstantiationScope.WithinScope)
+      return true;
+    
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (domainObjectType);
+    return classDefinition is ReflectionBasedClassDefinition;
   }
 
   private static IDomainObjectCreator GetCreator (Type domainObjectType)
   {
     if (ShouldUseFactoryForInstantiation (domainObjectType))
-    {
       return NewStyleDomainObjectCreator.Instance;
-    }
     else
-    {
       return LegacyDomainObjectCreator.Instance;
-    }
   }
 
   // member fields
@@ -437,7 +438,7 @@ public class DomainObject
   /// <returns>The public type representation of this domain object.</returns>
   /// <remarks>A domain object should override this method if it wants to impersonate one of its base types. The framework will handle this object
   /// as if it was of the type returned by this method and ignore its actual type.</remarks>
-  protected virtual Type GetPublicDomainObjectType ()
+  public virtual Type GetPublicDomainObjectType ()
   {
     return this.GetType ();
   }
@@ -639,14 +640,14 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     object value = DataContainer.GetValue(propertyName);
-    if (!(value is T))
-    {
-      throw new InvalidTypeException (propertyName, typeof (T), value.GetType ());
-    }
-    else
-    {
+
+    Assertion.DebugAssert (
+        !(value == null && typeof (T).IsValueType), "Property '{0}' is a value type but the DataContainer returned null.", propertyName);
+
+    if (value == null || value is T)
       return (T) value;
-    }
+
+    throw new InvalidTypeException (propertyName, typeof (T), value.GetType ());    
   }
 
   /// <summary>

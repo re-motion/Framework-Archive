@@ -2,53 +2,31 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class Distributor : Partner
+  [NotAbstract]
+  public abstract class Distributor : Partner
   {
-    // types
-
-    // static members and constants
-
     public static new Distributor GetObject (ObjectID id)
     {
       return (Distributor) DomainObject.GetObject (id);
     }
 
-    // member fields
+    public static Distributor Create ()
+    {
+      return DomainObject.Create<Distributor> ();
+    }
 
-    // construction and disposing
-
-    public Distributor ()
+    protected Distributor (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
 
-    public Distributor (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    public Distributor (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    protected Distributor (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
-
-    public int NumberOfShops
-    {
-      get { return (int) DataContainer["NumberOfShops"]; }
-      set { DataContainer["NumberOfShops"] = value; }
-    }
+    public abstract int NumberOfShops { get; set; }
 
     [DBBidirectionalRelation ("Distributor")]
     private ClassWithoutRelatedClassIDColumn ClassWithoutRelatedClassIDColumn
     {
-      get { return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("ClassWithoutRelatedClassIDColumn"); }
-      set { SetRelatedObject ("ClassWithoutRelatedClassIDColumn", value); }
+      get { return (ClassWithoutRelatedClassIDColumn) GetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn"); }
+      set { SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor.ClassWithoutRelatedClassIDColumn", value); }
     }
   }
 }

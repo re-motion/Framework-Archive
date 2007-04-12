@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), s_persistenceConfiguration));
 
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      LegacyTestMappingConfiguration.Reset();
+      TestMappingConfiguration.Reset();
 
       _domainObjectIDs = new DomainObjectIDs();
     }

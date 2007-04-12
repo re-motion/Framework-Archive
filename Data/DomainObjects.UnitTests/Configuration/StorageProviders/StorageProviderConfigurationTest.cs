@@ -8,22 +8,8 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 {
   [TestFixture]
-  public class StorageProviderConfigurationTest: LegacyMappingTest
+  public class StorageProviderConfigurationTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public StorageProviderConfigurationTest()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     [Obsolete]
     public void GetCurrent()

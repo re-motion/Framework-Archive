@@ -8,19 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class RollbackDomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public RollbackDomainObjectTest ()
-    {
-    }
-
-    // methods and properties
     [Test]
     public void RollbackPropertyChange ()
     {
@@ -93,15 +80,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "1111111111111";
 
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].OriginalValue);
-      Assert.AreEqual ("1111111111111", computer.DataContainer.PropertyValues["SerialNumber"].Value);
+      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].OriginalValue);
+      Assert.AreEqual ("1111111111111", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].Value);
 
       computer.Delete ();
       ClientTransactionMock.Rollback ();
 
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].OriginalValue);
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["SerialNumber"].Value);
-      Assert.IsFalse (computer.DataContainer.PropertyValues["SerialNumber"].HasChanged);
+      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].OriginalValue);
+      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].Value);
+      Assert.IsFalse (computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged);
     }
 
     [Test]
@@ -110,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       OrderTicket oldOrderTicket = order.OrderTicket;
-      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("OrderItems");
+      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       Customer oldCustomer = order.Customer;
       Official oldOfficial = order.Official;
 
@@ -135,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ObjectDiscardedException))]
     public void RollbackForNewObject ()
     {
-      Order newOrder = new Order ();
+      Order newOrder = Order.Create ();
 
       ClientTransactionMock.Rollback ();
 
@@ -145,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackForNewObjectWithRelations ()
     {
-      Order newOrder = new Order ();
+      Order newOrder = Order.Create ();
       ObjectID newOrderID = newOrder.ID;
 
       Order order1 = Order.GetObject (DomainObjectIDs.Order1);
@@ -169,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void SetOneToManyRelationForNewObjectAfterRollback ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderItem orderItem = new OrderItem (order);
+      OrderItem orderItem = OrderItem.Create (order);
       ObjectID orderItemID = orderItem.ID;
 
       Assert.AreSame (order, orderItem.Order);
@@ -179,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsFalse (order.OrderItems.Contains (orderItemID));
 
-      orderItem = new OrderItem (order);
+      orderItem = OrderItem.Create (order);
 
       Assert.AreSame (order, orderItem.Order);
       Assert.IsTrue (order.OrderItems.ContainsObject (orderItem));
@@ -190,7 +177,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
-      OrderItem orderItem = new OrderItem (order);
+      OrderItem orderItem = OrderItem.Create (order);
 
       ClientTransactionMock.Rollback ();
 

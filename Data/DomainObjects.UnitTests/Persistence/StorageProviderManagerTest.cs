@@ -6,23 +6,9 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class StorageProviderManagerTest : LegacyMappingTest
+  public class StorageProviderManagerTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private StorageProviderManager _storageProviderManager;
-
-    // construction and disposing
-
-    public StorageProviderManagerTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {

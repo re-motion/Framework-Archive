@@ -8,21 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class CommitEventsTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private Customer _customer;
-
-    // construction and disposing
-
-    public CommitEventsTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
@@ -277,7 +263,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private void Customer_CommittingForCommittedEventForObjectChangedBackToOriginal (object sender, EventArgs e)
     {
-      _customer.Name = (string) _customer.DataContainer.PropertyValues["Name"].OriginalValue;
+      _customer.Name = (string) _customer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].OriginalValue;
     }
   }
 }

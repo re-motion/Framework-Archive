@@ -5,24 +5,10 @@ using Rubicon.Data.DomainObjects.Queries;
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
-  public class QueryParameterCollectionTest : LegacyMappingTest
+  public class QueryParameterCollectionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private QueryParameterCollection _collection;
     private QueryParameter _parameter;
-
-    // construction and disposing
-
-    public QueryParameterCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {

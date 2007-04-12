@@ -1080,7 +1080,7 @@ namespace Rubicon.Data.DomainObjects
 
     private void CheckItemType (DomainObject domainObject, string argumentName)
     {
-      CheckItemType (_requiredItemType, domainObject.GetType(), argumentName);
+      CheckItemType (_requiredItemType, domainObject.GetPublicDomainObjectType(), argumentName);
     }
 
     private void CheckItemType (Type requiredType, Type itemType, string argumentName)

@@ -4,73 +4,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
   [DBTable]
-  public class Employee : TestDomainBase
+  [TestDomain]
+  [NotAbstract]
+  public abstract class Employee : TestDomainBase
   {
-    // types
-
-    // static members and constants
-
-    public static new Employee GetObject (ObjectID id)
+    public static Employee GetObject (ObjectID id)
     {
       return (Employee) DomainObject.GetObject (id);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Employee ()
+    public static Employee Create ()
     {
+      return DomainObject.Create<Employee> ();
     }
 
-    public Employee (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Employee (ClientTransaction clientTransaction, ObjectID objectID)
+        : base (clientTransaction, objectID)
     {
     }
-
-    public Employee (ClientTransaction clientTransaction, ObjectID objectID)
-      : base(clientTransaction, objectID)
-    {
-    }
-
-    protected Employee (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
-    // methods and properties
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    public abstract string Name { get; set; }
 
     [DBBidirectionalRelation ("Supervisor")]
-    public ObjectList<Employee> Subordinates
-    {
-      get { return (ObjectList<Employee>) GetRelatedObjects ("Subordinates"); }
-    }
+    public virtual ObjectList<Employee> Subordinates { get { return (ObjectList<Employee>) GetRelatedObjects(); } }
 
     [DBBidirectionalRelation ("Subordinates")]
-    public Employee Supervisor
-    {
-      get { return (Employee) GetRelatedObject ("Supervisor"); }
-      set { SetRelatedObject ("Supervisor", value); }
-    }
+    public abstract Employee Supervisor { get; set; }
 
     [DBBidirectionalRelation ("Employee")]
-    public Computer Computer
-    {
-      get { return (Computer) GetRelatedObject ("Computer"); }
-      set { SetRelatedObject ("Computer", value); }
-    }
+    public abstract Computer Computer { get; set; }
 
     public void DeleteWithSubordinates ()
     {
-      DomainObjectCollection subordinates = (DomainObjectCollection) Subordinates.Clone ();
-      foreach (Employee employee in subordinates)
+      foreach (Employee employee in Subordinates.Clone ())
         employee.Delete ();
 
       this.Delete ();

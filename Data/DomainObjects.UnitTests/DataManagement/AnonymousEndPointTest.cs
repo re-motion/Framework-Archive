@@ -9,33 +9,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class AnonymousEndPointTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private Client _client;
     private RelationDefinition _clientToLocationDefinition;
     private IRelationEndPointDefinition _clientEndPointDefinition;
     private IRelationEndPointDefinition _locationEndPointDefinition;
-
-    // construction and disposing
-
-    public AnonymousEndPointTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       _client = Client.GetObject (DomainObjectIDs.Client3);
-      _clientToLocationDefinition = MappingConfiguration.Current.ClassDefinitions["Location"].GetRelationDefinition ("Client");
+      _clientToLocationDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Location)].GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _clientEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Client", null);
-      _locationEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Location", "Client");
+      _locationEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Location", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
     }
 
     [Test]
@@ -77,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         ExpectedMessage = "The provided relation definition must contain a NullRelationEndPointDefinition.\r\nParameter name: relationDefinition")]
     public void InitializeWithInvalidRelationDefinition ()
     {
-      RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("OrderToOrderTicket");
+      RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, DomainObjectIDs.Order1, invalidRelationDefinition);
     }
   }

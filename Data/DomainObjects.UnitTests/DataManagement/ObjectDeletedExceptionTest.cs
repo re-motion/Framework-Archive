@@ -7,22 +7,8 @@ using Rubicon.Data.DomainObjects.DataManagement;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class ObjectDeletedExceptionTest : LegacyMappingTest
+  public class ObjectDeletedExceptionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public ObjectDeletedExceptionTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void Serialization ()
     {
