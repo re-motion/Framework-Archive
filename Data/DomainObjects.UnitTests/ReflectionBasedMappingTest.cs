@@ -55,6 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public override void SetUp()
     {
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (s_mappingLoaderConfiguration, s_persistenceConfiguration));
+      MappingConfiguration.SetCurrent (s_mappingConfiguration);
       base.SetUp ();
     }
 

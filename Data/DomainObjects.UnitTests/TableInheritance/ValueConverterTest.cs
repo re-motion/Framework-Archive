@@ -12,27 +12,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
   public class ValueConverterTest : SqlProviderBaseTest
   {
     ValueConverter _converter = new ValueConverter ();
-    StorageProviderManager _storageProviderManager;
-    IDbConnection _connection;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
       _converter = new ValueConverter ();
-
-      _storageProviderManager = new StorageProviderManager ();
-      RdbmsProvider provider = (RdbmsProvider) _storageProviderManager.GetMandatory ("TestDomain");
-      provider.Connect ();
-      _connection = provider.Connection;
-    }
-
-
-    public override void TearDown ()
-    {
-      base.TearDown ();
-
-      _storageProviderManager.Dispose ();
+      Provider.Connect ();
     }
 
     [Test]
@@ -57,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void GetIDWithAbstractClassID ()
     {
-      using (IDbCommand command = _connection.CreateCommand ())
+      using (IDbCommand command = Provider.Connection.CreateCommand ())
       {
         command.CommandText = string.Format ("SELECT '{0}' as ID, 'TI_DomainBase' as ClassID;", DomainObjectIDs.Person.Value);
         using (IDataReader reader = command.ExecuteReader ())
@@ -183,7 +169,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     private IDbCommand CreatePersonCommand (Guid id)
     {
-      return CreateCommand ("TableInheritance_Person", id, _connection);
+      return CreateCommand ("TableInheritance_Person", id, Provider.Connection);
     }
   }
 }

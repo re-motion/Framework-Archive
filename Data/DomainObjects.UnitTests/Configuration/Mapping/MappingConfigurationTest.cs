@@ -1,8 +1,8 @@
 using System;
-using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -10,57 +10,84 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class MappingConfigurationTest : ReflectionBasedMappingTest
+  public class MappingConfigurationTest: ReflectionBasedMappingTest
   {
-    [Test]
-    [Ignore]
-    public void InitializeWithFileNamesOnly ()
+    private MockRepository _mockRepository;
+    private IMappingLoader _mockMappingLoader;
+    private ClassDefinitionCollection _classDefinitionCollection = new ClassDefinitionCollection();
+    private RelationDefinitionCollection _relationDefinitionCollection = new RelationDefinitionCollection();
+
+    public override void SetUp()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml");
+      base.SetUp();
 
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
-
-      //Assert.IsNotNull (configuration.Loader);
-      //Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
-      //Assert.IsTrue (configuration.ResolveTypes);
+      _mockRepository = new MockRepository();
+      _mockMappingLoader = _mockRepository.CreateMock<IMappingLoader>();
     }
 
     [Test]
-    [Ignore]
-    public void InitializeWithFileNamesAndResolveTypes ()
+    public void Initialize()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", true);
+      Expect.Call (_mockMappingLoader.GetClassDefinitions()).Return (_classDefinitionCollection);
+      Expect.Call (_mockMappingLoader.GetRelationDefinitions (_classDefinitionCollection)).Return (_relationDefinitionCollection);
+      Expect.Call (_mockMappingLoader.ResolveTypes).Return (true);
 
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
+      _mockRepository.ReplayAll();
 
-      //Assert.IsNotNull (configuration.Loader);
-      //Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
-      //Assert.IsTrue (configuration.ResolveTypes);
+      MappingConfiguration configuration = new MappingConfiguration (_mockMappingLoader);
+      ClassDefinitionCollection actualClassDefinitionCollection = configuration.ClassDefinitions;
+      RelationDefinitionCollection actualRelationDefinitionCollection = configuration.RelationDefinitions;
+
+      _mockRepository.VerifyAll();
+
+      Assert.That (actualClassDefinitionCollection, Is.SameAs (_classDefinitionCollection));
+      Assert.That (actualRelationDefinitionCollection, Is.SameAs (_relationDefinitionCollection));
+      Assert.That (configuration.ResolveTypes, Is.True);
     }
 
     [Test]
-    [Ignore]
-    public void InitializeWithLoaderAndResolveTypes ()
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "IMappingLoader.GetClassDefinitions() evaluated and returned null.")]
+    public void Initialize_WithGetClassDefinitionsEvaluatesNull()
     {
-      //MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithMinimumData.xml", true));
+      SetupResult.For (_mockMappingLoader.GetClassDefinitions()).Return (null);
 
-      //string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
+      _mockRepository.ReplayAll();
 
-      //Assert.IsNotNull (configuration.Loader);
-      //Assert.AreEqual (configurationFile, ((MappingLoader) configuration.Loader).ConfigurationFile);
-      //Assert.IsTrue (configuration.ResolveTypes);
+      new MappingConfiguration (_mockMappingLoader);
+    
+      _mockRepository.VerifyAll ();
     }
 
     [Test]
-    [Ignore]
-    public void SetCurrent ()
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
+        "IMappingLoader.GetRelationDefinitions (ClassDefinitionCollection) evaluated and returned null.")]
+    public void Initialize_WithGetRelationDefinitionsEvaluatesNull ()
+    {
+      SetupResult.For (_mockMappingLoader.GetClassDefinitions ()).Return (_classDefinitionCollection);
+      SetupResult.For (_mockMappingLoader.GetRelationDefinitions (_classDefinitionCollection)).Return (null);
+
+      _mockRepository.ReplayAll ();
+
+      new MappingConfiguration (_mockMappingLoader);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void SetCurrent()
     {
       try
       {
-        //MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithMinimumData.xml", true));
-        //MappingConfiguration.SetCurrent (configuration);
+        SetupResult.For (_mockMappingLoader.GetClassDefinitions()).Return (_classDefinitionCollection);
+        SetupResult.For (_mockMappingLoader.GetRelationDefinitions (_classDefinitionCollection)).Return (_relationDefinitionCollection);
+        SetupResult.For (_mockMappingLoader.ResolveTypes).Return (true);
 
-        //Assert.AreSame (configuration, MappingConfiguration.Current);
+        _mockRepository.ReplayAll();
+
+        MappingConfiguration configuration = new MappingConfiguration (_mockMappingLoader);
+        MappingConfiguration.SetCurrent (configuration);
+
+        Assert.AreSame (configuration, MappingConfiguration.Current);
       }
       finally
       {
@@ -69,24 +96,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [Ignore]
-    [ExpectedException (typeof (ArgumentException), 
-        ExpectedMessage = "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
-    public void SetCurrentRejectsUnresolvedTypes ()
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
+        "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
+    public void SetCurrentRejectsUnresolvedTypes()
     {
-      //MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", false);
-      //MappingConfiguration.SetCurrent (configuration);
+      SetupResult.For (_mockMappingLoader.GetClassDefinitions()).Return (_classDefinitionCollection);
+      SetupResult.For (_mockMappingLoader.GetRelationDefinitions (_classDefinitionCollection)).Return (_relationDefinitionCollection);
+      SetupResult.For (_mockMappingLoader.ResolveTypes).Return (false);
+
+      _mockRepository.ReplayAll();
+
+      MappingConfiguration configuration = new MappingConfiguration (_mockMappingLoader);
+
+      _mockRepository.VerifyAll();
+
+      MappingConfiguration.SetCurrent (configuration);
     }
 
     [Test]
-    [Ignore]
-    public void ApplicationName ()
-    {
-      //Assert.AreEqual ("UnitTests", ((MappingLoader)MappingConfiguration.Current.Loader).GetApplicationName());
-    }
-
-    [Test]
-    public void ContainsClassDefinition ()
+    public void ContainsClassDefinition()
     {
       Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)]));
       Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions[typeof (Order)]));
@@ -94,106 +122,74 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (ArgumentNullException))]
-    public void ContainsNull ()
+    public void ContainsNull()
     {
       MappingConfiguration.Current.Contains ((ClassDefinition) null);
     }
 
     [Test]
-    public void ContainsPropertyDefinition ()
+    public void ContainsPropertyDefinition()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
+      Assert.IsFalse (
+          MappingConfiguration.Current.Contains (
+              TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
+      Assert.IsTrue (
+          MappingConfiguration.Current.Contains (
+              MappingConfiguration.Current.ClassDefinitions[typeof (Order)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
     [Test]
-    public void ContainsRelationDefinition ()
+    public void ContainsRelationDefinition()
     {
-
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
+      Assert.IsFalse (
+          MappingConfiguration.Current.Contains (
+              TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
+      Assert.IsTrue (
+          MappingConfiguration.Current.Contains (
+              MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"]));
     }
 
     [Test]
-    public void ContainsRelationEndPointDefinition ()
+    public void ContainsRelationEndPointDefinition()
     {
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
-      Assert.IsFalse (MappingConfiguration.Current.Contains (TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
+      Assert.IsFalse (
+          MappingConfiguration.Current.Contains (
+              TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].
+                  EndPointDefinitions[0]));
+      Assert.IsFalse (
+          MappingConfiguration.Current.Contains (
+              TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].
+                  EndPointDefinitions[1]));
 
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[0]));
-      Assert.IsTrue (MappingConfiguration.Current.Contains (MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[1]));
+      Assert.IsTrue (
+          MappingConfiguration.Current.Contains (
+              MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[
+                  0]));
+      Assert.IsTrue (
+          MappingConfiguration.Current.Contains (
+              MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].EndPointDefinitions[
+                  1]));
     }
 
     [Test]
-    public void ContainsRelationEndPointDefinitionNotInMapping ()
+    public void ContainsRelationEndPointDefinitionNotInMapping()
     {
-      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ((string) "Order", (string) "Order", (string) "TestDomain", typeof (Order), (bool) false);
-      ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ((string) "OrderTicket", (string) "OrderTicket", (string) "TestDomain", typeof (OrderTicket), (bool) false);
-      orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
+      ReflectionBasedClassDefinition orderTicketDefinition =
+          new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
+      orderTicketDefinition.MyPropertyDefinitions.Add (
+          new PropertyDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
-      RelationEndPointDefinition orderTicketEndPointdefinition = new RelationEndPointDefinition (orderTicketDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", true);
+      RelationEndPointDefinition orderTicketEndPointdefinition =
+          new RelationEndPointDefinition (orderTicketDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", true);
 
-      RelationDefinition relationDefinitionNotInMapping = new RelationDefinition (
-          "RelationIDNotInMapping",
-          orderEndPointDefinition,
-          orderTicketEndPointdefinition);
+      new RelationDefinition ("RelationIDNotInMapping", orderEndPointDefinition, orderTicketEndPointdefinition);
 
       Assert.IsFalse (MappingConfiguration.Current.Contains (orderEndPointDefinition));
-    }
-
-    [Test]
-    [Ignore]
-    public void MappingWithUnresolvedTypes ()
-    {
-      //MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithUnresolvedTypes.xml", false));
-
-      //Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
-    }
-
-    [Test]
-    [Ignore]
-    public void EntireMappingWithUnresolvedTypes ()
-    {
-      //MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"EntireMappingWithUnresolvedTypes.xml", false));
-
-      //Assert.IsNotNull (configuration.Loader);
-      //Assert.IsFalse (configuration.Loader.ResolveTypes);
-      //Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
-
-      //foreach (ClassDefinition classDefinition in configuration.ClassDefinitions)
-      //{
-      //  string classMessage = "Class: " + classDefinition.ID;
-      //  Assert.IsNull (classDefinition.ClassType, classMessage);
-      //  Assert.IsNotNull (classDefinition.ClassTypeName, classMessage);
-      //  Assert.IsFalse (classDefinition.IsClassTypeResolved, classMessage);
-
-      //  foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
-      //  {
-      //    string propertyMessage = classMessage + ", Property: " + propertyDefinition.PropertyName;
-      //    Assert.IsNull (propertyDefinition.PropertyType, propertyMessage);
-      //    Assert.IsNotNull (propertyDefinition.MappingTypeName, propertyMessage);
-      //    Assert.IsFalse (propertyDefinition.IsPropertyTypeResolved, propertyMessage);
-      //  }
-      //}
-
-      //foreach (RelationDefinition relationDefinition in configuration.RelationDefinitions)
-      //{
-      //  foreach (IRelationEndPointDefinition endPoint in relationDefinition.EndPointDefinitions)
-      //  {
-      //    string endPointMessage = "Relation: " + relationDefinition.ID + ", PropertyName: " + endPoint.PropertyName;
-      //    Assert.IsNull (endPoint.PropertyType, endPointMessage);
-
-      //    if (endPoint.IsNull)
-      //      Assert.IsNull (endPoint.PropertyTypeName, endPointMessage);
-      //    else
-      //      Assert.IsNotNull (endPoint.PropertyTypeName, endPointMessage);
-
-      //    Assert.IsFalse (endPoint.IsPropertyTypeResolved, endPointMessage);
-      //  }
-      //}
     }
   }
 }

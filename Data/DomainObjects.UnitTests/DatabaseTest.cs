@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     // static members and constants
 
-    public const string c_connectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost";
+    public const string c_connectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost; Max Pool Size=1;";
 
     public const string c_testDomainProviderID = "TestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";

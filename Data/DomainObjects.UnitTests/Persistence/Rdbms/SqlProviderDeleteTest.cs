@@ -10,31 +10,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderDeleteTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private SqlProvider _provider;
-
-    // construction and disposing
-
-    public SqlProviderDeleteTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      RdbmsProviderDefinition definition = new RdbmsProviderDefinition (
-          c_testDomainProviderID, typeof (SqlProvider), c_connectionString);
+      RdbmsProviderDefinition definition = new RdbmsProviderDefinition (c_testDomainProviderID, typeof (SqlProvider), c_connectionString);
 
       _provider = new SqlProvider (definition);
-      _provider.Connect ();
     }
 
     public override void TearDown ()
@@ -46,7 +30,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void DeleteSingleDataContainer ()
     {
-      _provider.Save (CreateDataContainerCollection (GetDeletedOrderTicketContainer ()));
+      DataContainerCollection containers = CreateDataContainerCollection (GetDeletedOrderTicketContainer());
+      _provider.Connect ();
+      _provider.Save (containers);
 
       Assert.IsNull (_provider.LoadDataContainer (DomainObjectIDs.OrderTicket1));
     }
@@ -55,6 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void SetTimestampOfDeletedDataContainer ()
     {
       DataContainerCollection containers = CreateDataContainerCollection (GetDeletedOrderTicketContainer ());
+      _provider.Connect ();
       _provider.Save (containers);
       _provider.SetTimestamp (containers);
 
@@ -72,9 +59,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       subordinate.Delete ();
       computer.Delete ();
 
-      DataContainerCollection containers =
-          CreateDataContainerCollection (supervisor.DataContainer, subordinate.DataContainer, computer.DataContainer);
+      DataContainerCollection containers = CreateDataContainerCollection (supervisor.DataContainer, subordinate.DataContainer, computer.DataContainer);
 
+      _provider.Connect ();
       _provider.Save (containers);
     }
 
@@ -91,6 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       OrderTicket deletedOrderTicket = (OrderTicket) clientTransaction2.GetObject (DomainObjectIDs.OrderTicket1);
       deletedOrderTicket.Delete ();
 
+      _provider.Connect ();
       _provider.Save (CreateDataContainerCollection (changedOrderTicket.DataContainer));
       _provider.Save (CreateDataContainerCollection (deletedOrderTicket.DataContainer));
     }
@@ -102,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      ClassWithAllDataTypes changedObject =
+      ClassWithAllDataTypes changedObject = 
           (ClassWithAllDataTypes) TestDomainBase.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction1);
 
       changedObject.StringProperty = "New text";
@@ -112,6 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       deletedObject.Delete ();
 
+      _provider.Connect ();
       _provider.Save (CreateDataContainerCollection (changedObject.DataContainer));
       _provider.Save (CreateDataContainerCollection (deletedObject.DataContainer));
     }

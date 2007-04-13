@@ -469,7 +469,6 @@
   <target name="Data.DomainObjects.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
 
     <property name="project.name" value="Data.DomainObjects.UnitTests" />

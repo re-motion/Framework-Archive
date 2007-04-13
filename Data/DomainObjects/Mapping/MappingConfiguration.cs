@@ -120,7 +120,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull ("loader", loader);
 
       _classDefinitions = loader.GetClassDefinitions();
+      if (_classDefinitions == null)
+        throw new InvalidOperationException (string.Format ("IMappingLoader.GetClassDefinitions() evaluated and returned null."));
+
       _relationDefinitions = loader.GetRelationDefinitions (_classDefinitions);
+      if (_relationDefinitions == null)
+        throw new InvalidOperationException (string.Format ("IMappingLoader.GetRelationDefinitions (ClassDefinitionCollection) evaluated and returned null."));
+      
       _resolveTypes = loader.ResolveTypes;
       
       Validate();

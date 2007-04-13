@@ -7,51 +7,17 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class DeleteCommandBuilderTest : ClientTransactionBaseTest
+  public class DeleteCommandBuilderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private SqlProvider _provider;
-
-    // construction and disposing
-
-    public DeleteCommandBuilderTest ()
-    {
-    }
-
-    // methods and properties
-
-    public override void SetUp ()
-    {
-      base.SetUp ();
-
-      RdbmsProviderDefinition definition = new RdbmsProviderDefinition (
-          c_testDomainProviderID, typeof (SqlProvider), c_connectionString);
-
-      _provider = new SqlProvider (definition);
-      _provider.Connect ();
-    }
-
-    public override void TearDown ()
-    {
-      base.TearDown ();
-
-      _provider.Dispose ();
-    }
-
     [Test]
     public void CreateWithoutForeignKeyColumn ()
     {
-      ClassWithAllDataTypes classWithAllDataTypes =
-          ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
       classWithAllDataTypes.Delete ();
       DataContainer deletedContainer = classWithAllDataTypes.DataContainer;
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, deletedContainer);
+      Provider.Connect ();
+      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedContainer);
 
       using (IDbCommand deleteCommand = commandBuilder.Create ())
       {
@@ -74,7 +40,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.Delete ();
       DataContainer deletedOrderContainer = order.DataContainer;
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, deletedOrderContainer);
+      Provider.Connect ();
+      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedOrderContainer);
 
       using (IDbCommand deleteCommand = commandBuilder.Create ())
       {
@@ -93,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException))]
     public void InitializeWithDataContainerOfInvalidState ()
     {
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (_provider, TestDataContainerFactory.CreateOrder1DataContainer ());
+      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, TestDataContainerFactory.CreateOrder1DataContainer ());
     }
   }
 }

@@ -18,9 +18,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void Save ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+        DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
         Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"]);
         classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"] = ClassWithAllDataTypes.EnumType.Value2;
@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -42,9 +42,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveAllSimpleDataTypes ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+        DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
         Assert.AreEqual (false, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
         Assert.AreEqual (85, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -109,9 +109,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveAllNullableTypes ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+        DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
         Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
         Assert.AreEqual (new NaByte (78), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -177,12 +177,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+        DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
         Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
         Assert.AreEqual (new NaByte (78), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
@@ -213,7 +213,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -238,13 +238,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveWithNoChanges ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+        DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (classWithAllDataTypes);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       // expectation: no exception
@@ -254,10 +254,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveMultipleDataContainers ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
-        DataContainer orderItemContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderItem1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderItemContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.OrderItem1);
 
         Assert.AreEqual (1, orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]);
         Assert.AreEqual ("Mainboard", orderItemContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"]);
@@ -269,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         collection.Add (orderContainer);
         collection.Add (orderItemContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
 
@@ -288,21 +288,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         "Concurrency violation encountered. Object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has already been changed by someone else.")]
     public void ConcurrentSave ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer1 = Provider.LoadDataContainer (DomainObjectIDs.Order1);
-        DataContainer orderContainer2 = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer1 = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer2 = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         orderContainer1["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         orderContainer2["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 11;
 
         DataContainerCollection collection1 = new DataContainerCollection ();
         collection1.Add (orderContainer1);
-        Provider.Save (collection1);
+        sqlProvider.Save (collection1);
 
         DataContainerCollection collection2 = new DataContainerCollection ();
         collection2.Add (orderContainer2);
-        Provider.Save (collection2);
+        sqlProvider.Save (collection2);
       }
     }
 
@@ -311,9 +311,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       DataContainerCollection collection = new DataContainerCollection ();
 
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
       }
@@ -334,10 +334,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException))]
     public void WrapSqlException ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainerCollection collection = new DataContainerCollection ();
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         PropertyDefinition newDefinition =
             TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderItem)]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"];
@@ -346,7 +346,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product"] = "Auto";
 
         collection.Add (orderContainer);
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
     }
 
@@ -354,17 +354,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void SetTimestamp ()
     {
       object oldTimestamp = null;
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainerCollection collection = new DataContainerCollection ();
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         oldTimestamp = orderContainer.Timestamp;
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.SetTimestamp (collection);
+        sqlProvider.Save (collection);
+        sqlProvider.SetTimestamp (collection);
 
         Assert.IsFalse (oldTimestamp.Equals (orderContainer.Timestamp));
       }
@@ -377,9 +377,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer orderContainer = null;
       object oldTimestamp = null;
 
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
         oldTimestamp = orderContainer.Timestamp;
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
         collection.Add (orderContainer);
@@ -402,10 +402,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer orderContainer = null;
       DataContainer orderItemContainer = null;
 
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
-        orderItemContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderItem1);
+        orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
+        orderItemContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.OrderItem1);
 
         oldOrderTimestamp = orderContainer.Timestamp;
         oldOrderItemTimestamp = orderItemContainer.Timestamp;
@@ -417,8 +417,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         collection.Add (orderContainer);
         collection.Add (orderItemContainer);
 
-        Provider.Save (collection);
-        Provider.SetTimestamp (collection);
+        sqlProvider.Save (collection);
+        sqlProvider.SetTimestamp (collection);
       }
 
       Assert.IsFalse (oldOrderTimestamp.Equals (orderContainer.Timestamp));
@@ -428,18 +428,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void TransactionalSave ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.BeginTransaction ();
-        Provider.Save (collection);
-        Provider.Commit ();
+        sqlProvider.BeginTransaction ();
+        sqlProvider.Save (collection);
+        sqlProvider.Commit ();
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -452,18 +452,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void TransactionalLoadDataContainerAndSave ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Provider.BeginTransaction ();
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        sqlProvider.BeginTransaction ();
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.Commit ();
+        sqlProvider.Save (collection);
+        sqlProvider.Commit ();
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -477,19 +477,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void TransactionalLoadDataContainersByRelatedIDAndSave ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Provider.BeginTransaction ();
+        sqlProvider.BeginTransaction ();
 
-        DataContainerCollection orderTicketContainers = Provider.LoadDataContainersByRelatedID (
+        DataContainerCollection orderTicketContainers = sqlProvider.LoadDataContainersByRelatedID (
             TestMappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)],
             "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
             DomainObjectIDs.Order1);
 
         orderTicketContainers[0]["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName"] = "C:\newFile.jpg";
 
-        Provider.Save (orderTicketContainers);
-        Provider.Commit ();
+        sqlProvider.Save (orderTicketContainers);
+        sqlProvider.Commit ();
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -503,10 +503,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void TransactionalSaveAndSetTimestamp ()
     {
       object oldTimestamp = null;
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Provider.BeginTransaction ();
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        sqlProvider.BeginTransaction ();
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         oldTimestamp = orderContainer.Timestamp;
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
@@ -514,9 +514,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.SetTimestamp (collection);
-        Provider.Commit ();
+        sqlProvider.Save (collection);
+        sqlProvider.SetTimestamp (collection);
+        sqlProvider.Commit ();
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -532,35 +532,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ExpectedMessage = "Commit cannot be called without calling BeginTransaction first.")]
     public void CommitWithoutBeginTransaction ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.Commit ();
+        sqlProvider.Save (collection);
+        sqlProvider.Commit ();
       }
     }
 
     [Test]
     public void SaveWithRollback ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Provider.BeginTransaction ();
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        sqlProvider.BeginTransaction ();
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
 
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.SetTimestamp (collection);
-        Provider.Rollback ();
+        sqlProvider.Save (collection);
+        sqlProvider.SetTimestamp (collection);
+        sqlProvider.Rollback ();
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -575,23 +575,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ExpectedMessage = "Rollback cannot be called without calling BeginTransaction first.")]
     public void RollbackWithoutBeginTransaction ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        DataContainer orderContainer = Provider.LoadDataContainer (DomainObjectIDs.Order1);
+        DataContainer orderContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Order1);
         orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 10;
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderContainer);
 
-        Provider.Save (collection);
-        Provider.Rollback ();
+        sqlProvider.Save (collection);
+        sqlProvider.Rollback ();
       }
     }
 
     [Test]
     public void SaveForeignKeyInSameStorageProvider ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
         orderTicket.Order = Order.GetObject (DomainObjectIDs.Order2);
@@ -599,7 +599,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderTicket.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       // expectation: no exception
@@ -608,7 +608,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveForeignKeyInOtherStorageProvider ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         Order order = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
         order.Official = (Official) ClientTransactionMock.GetObject (DomainObjectIDs.Official2);
@@ -616,7 +616,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (order.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -629,7 +629,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveForeignKeyWithClassIDColumnAndDerivedClass ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
         ceo.Company = Partner.GetObject (DomainObjectIDs.Partner1);
@@ -637,7 +637,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (ceo.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -650,7 +650,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveForeignKeyWithClassIDColumnAndBaseClass ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
         ceo.Company = Supplier.GetObject (DomainObjectIDs.Supplier1);
@@ -658,7 +658,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (ceo.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
@@ -671,7 +671,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveNullForeignKey ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
         computer.Employee = null;
@@ -679,7 +679,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (computer.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
 
@@ -693,7 +693,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void SaveNullForeignKeyWithInheritance ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
         ceo.Company = null;
@@ -701,7 +701,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (ceo.DataContainer);
 
-        Provider.Save (collection);
+        sqlProvider.Save (collection);
       }
 
       using (SqlConnection connection = new SqlConnection (c_connectionString))
@@ -725,10 +725,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ExpectedMessage = "Cannot call BeginTransaction when a transaction is already in progress.")]
     public void CallBeginTransactionTwice ()
     {
-      using (Provider)
+      using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Provider.BeginTransaction ();
-        Provider.BeginTransaction ();
+        sqlProvider.BeginTransaction ();
+        sqlProvider.BeginTransaction ();
       }
     }
   }
