@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateNewDataContainer ()
     {
-      ClassDefinition orderClass = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
       DataContainer newContainer = Provider.CreateNewDataContainer (orderClass);
 
       Assert.IsNotNull (newContainer, "New DataContainer is null.");
@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateClassWithAllDataTypes ()
     {
-      ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
+      ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
       DataContainer newContainer = Provider.CreateNewDataContainer (classDefinition);
 
       Assert.AreEqual (false, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
@@ -85,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ExpectedMessage = "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: classDefinition")]
     public void ClassDefinitionOfOtherStorageProvider ()
     {
-      ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions[typeof (Official)];
+      ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Official)];
       Provider.CreateNewDataContainer (classDefinition);
     }
   }

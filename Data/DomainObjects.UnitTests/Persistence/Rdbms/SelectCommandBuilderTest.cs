@@ -28,12 +28,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateWithOrderClause ()
     {
-      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       Provider.Connect ();
 
       SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
-          Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Customer"), DomainObjectIDs.Customer1);
+          Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
 
       using (IDbCommand command = builder.Create ())
       {
@@ -47,13 +47,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      ClassDefinition orderDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
       using (StorageProviderManager manager = new StorageProviderManager ())
       {
         RdbmsProvider provider = (RdbmsProvider) manager.GetMandatory (c_testDomainProviderID);
 
         SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
-            provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Customer"), DomainObjectIDs.Customer1);
+            provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
 
       }
     }

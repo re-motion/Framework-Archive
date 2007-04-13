@@ -22,17 +22,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     static ReflectionBasedMappingTest ()
     {
+      s_mappingLoaderConfiguration = new MappingLoaderConfiguration ();
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create();
       s_persistenceConfiguration = new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[c_testDomainProviderID]);
       s_persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new TestDomainAttribute(), c_testDomainProviderID));
       s_persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new StorageProviderStubAttribute(), c_unitTestStorageProviderStubID));
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), s_persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (s_mappingLoaderConfiguration, s_persistenceConfiguration));
 
       s_mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (ReflectionBasedMappingTest).Assembly));
     }
 
     private DomainObjectIDs _domainObjectIDs;
+    private static MappingLoaderConfiguration s_mappingLoaderConfiguration;
 
     protected ReflectionBasedMappingTest ()
         : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
@@ -42,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     [TestFixtureSetUp]
     public void TestFixtureSetUp()
     {
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), s_persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (s_mappingLoaderConfiguration, s_persistenceConfiguration));
 
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
       TestMappingConfiguration.Reset();
@@ -52,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     public override void SetUp()
     {
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), s_persistenceConfiguration));
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (s_mappingLoaderConfiguration, s_persistenceConfiguration));
       base.SetUp ();
     }
 

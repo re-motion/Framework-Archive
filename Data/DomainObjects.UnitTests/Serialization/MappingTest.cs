@@ -248,8 +248,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void SimpleClassDefinitionCollection ()
     {
       ClassDefinitionCollection definitions = new ClassDefinitionCollection ();
-      definitions.Add (LegacyTestMappingConfiguration.Current.ClassDefinitions[0]);
-      definitions.Add (LegacyTestMappingConfiguration.Current.ClassDefinitions[1]);
+      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[0]);
+      definitions.Add (TestMappingConfiguration.Current.ClassDefinitions[1]);
 
       ClassDefinitionCollection deserializedDefinitions = (ClassDefinitionCollection) SerializeAndDeserialize (definitions);
 
@@ -262,7 +262,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ClassDefinitionNotInMapping ()
     {
-      ClassDefinition classDefinition = LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
+      ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Partner");
 
       ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
 
@@ -295,7 +295,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void PropertyDefinitionWithEnumType ()
     {
       PropertyDefinition enumPropertyDefinition =
-          LegacyTestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
+          TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
 
       PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
 

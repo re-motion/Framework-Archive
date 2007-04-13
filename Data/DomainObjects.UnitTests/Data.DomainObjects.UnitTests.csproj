@@ -150,7 +150,6 @@
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
-    <Compile Include="Factories\LegacyTestMappingConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
     <Compile Include="ReflectionBasedMappingTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
@@ -532,7 +531,6 @@
     <Compile Include="Serialization\QueriesTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LegacyMappingTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -784,12 +782,6 @@
     <Content Include="Database\CreateTestData.sql">
     </Content>
     <Content Include="Database\SetupDB.sql" />
-    <Content Include="Mapping.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MappingWithMinimumData.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -802,8 +794,6 @@
     <Content Include="ScalarQueryWithCollectionType.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
-    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />

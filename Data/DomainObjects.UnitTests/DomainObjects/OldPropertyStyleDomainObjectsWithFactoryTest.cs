@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -16,14 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public override void SetUp ()
     {
       base.SetUp();
-      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
-    }
-
-    [TearDown]
-    public override void TearDown ()
-    {
-      DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory = null;
-      base.TearDown ();
+      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), DomainObjectsConfiguration.Current.Storage));
     }
 
     private bool WasCreatedByFactory (object o)
