@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       _loader = new TestDataLoader (DatabaseTest.c_connectionString);
       _loader.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
-      _loader.Load ("CreateTableInheritanceTestData.sql");
+      _loader.LoadTestData ("CreateTableInheritanceTestData.sql");
       _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
   }

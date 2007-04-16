@@ -18,7 +18,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
       SqlConnection.ClearAllPools();
       _loader = new StandardMappingTestDataLoader (DatabaseTest.c_connectionString);
-      _loader.Load ("CreateTestData.sql");
+      _loader.CreateDatabase ("CreateDB.sql");
+      _loader.CreateDatabase ("SetupDB.sql");
+      _loader.LoadTestData ("CreateTestData.sql");
       _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
 

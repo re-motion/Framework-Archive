@@ -20,59 +20,102 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
     public void SetDatabaseReadWrite (string database)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("database", database);
-
-      using (SqlConnection connection = new SqlConnection (_connectionString))
-      {
-        connection.Open ();
-        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database), connection))
-        {
-          command.ExecuteNonQuery ();
-        }
-      }
+      ExecuteCommand (string.Format ("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database));
     }
 
     public void SetDatabaseReadOnly (string database)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("database", database);
+      ExecuteCommand (string.Format ("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database));
+    }
 
-      using (SqlConnection connection = new SqlConnection (_connectionString))
+    public void CreateDatabase (string sqlFileName)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
+
+      using (SqlConnection connection = new SqlConnection ("Integrated Security=SSPI;Initial Catalog=master;Data Source=localhost; Max Pool Size=1;"))
       {
-        connection.Open ();
-        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database), connection))
+        connection.Open();
+        foreach (string commandText in GetCommandTextBatchesFromFile (sqlFileName))
         {
-          command.ExecuteNonQuery ();
+          using (SqlCommand command = new SqlCommand (commandText, connection))
+          {
+            command.ExecuteNonQuery();
+          }
         }
       }
     }
 
-    public void Load (string sqlFileName)
+    public void SetUpDatabase (string sqlFileName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
 
       using (SqlConnection connection = new SqlConnection (_connectionString))
       {
-        connection.Open ();
+        connection.Open();
 
-        using (SqlTransaction transaction = connection.BeginTransaction ())
+        foreach (string commandText in GetCommandTextBatchesFromFile (sqlFileName))
         {
-          PerformLoad (connection, transaction, sqlFileName);
-          transaction.Commit ();
+          using (SqlTransaction transaction = connection.BeginTransaction())
+          {
+            using (SqlCommand command = new SqlCommand (commandText, connection, transaction))
+            {
+              command.ExecuteNonQuery();
+            }
+          }
         }
       }
     }
 
-    protected virtual void PerformLoad (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
+    public void LoadTestData (string sqlFileName)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
+
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open();
+
+        using (SqlTransaction transaction = connection.BeginTransaction())
+        {
+          PerformLoadTestData (connection, transaction, sqlFileName);
+          transaction.Commit();
+        }
+      }
+    }
+
+    protected virtual void PerformLoadTestData (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
     {
       ExecuteSqlFile (connection, transaction, sqlFileName);
     }
 
     protected void ExecuteSqlFile (SqlConnection connection, SqlTransaction transaction, string sqlFile)
     {
-      string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFile);
-      using (SqlCommand command = new SqlCommand (File.ReadAllText (fullPath, Encoding.Default), connection, transaction))
+      using (SqlCommand command = new SqlCommand (GetCommandTextFromFile (sqlFile), connection, transaction))
       {
-        command.ExecuteNonQuery ();
+        command.ExecuteNonQuery();
       }
+    }
+
+    private void ExecuteCommand (string commandText)
+    {
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open();
+        using (SqlCommand command = new SqlCommand (commandText, connection))
+        {
+          command.ExecuteNonQuery();
+        }
+      }
+    }
+
+    private string GetCommandTextFromFile (string sqlFile)
+    {
+      return File.ReadAllText (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFile), Encoding.Default);
+    }
+
+    private string[] GetCommandTextBatchesFromFile (string sqlFile)
+    {
+      return GetCommandTextFromFile (sqlFile).Split (new string[] { "\r\nGO\r\n" }, StringSplitOptions.RemoveEmptyEntries);
     }
   }
 }

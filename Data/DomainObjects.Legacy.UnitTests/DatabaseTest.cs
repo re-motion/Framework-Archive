@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     {
       if (_isDatabaseModifyable)
       {
-        _loader.Load (_createTestDataFileName);
+        _loader.LoadTestData (_createTestDataFileName);
       }
     }
 

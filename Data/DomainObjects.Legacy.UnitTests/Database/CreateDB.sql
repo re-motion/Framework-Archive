@@ -2,7 +2,7 @@ USE master
 
 IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'TestDomain')
   DROP DATABASE TestDomain
-GO  
+GO
   
 CREATE DATABASE TestDomain
 ON PRIMARY (

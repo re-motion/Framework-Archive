@@ -22,9 +22,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Database
 
     // methods and properties
 
-    protected override void PerformLoad (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
+    protected override void PerformLoadTestData (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
     {
-      base.PerformLoad (connection, transaction, sqlFileName);
+      base.PerformLoadTestData (connection, transaction, sqlFileName);
       LoadBlobs (connection, transaction);
     }
 
