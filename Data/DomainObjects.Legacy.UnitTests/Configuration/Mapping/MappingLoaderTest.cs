@@ -50,9 +50,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithConfigurationFileFromAppSettings()
     {
-      _configSystemHelper.SetUpAppSetting ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", "MappingWithMinimumData.xml");
+      _configSystemHelper.SetUpAppSetting ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", "DataDomainObjectsLegacy_MappingWithMinimumData.xml");
       MappingLoader loader = new MappingLoader();
-      string configurationFile = Path.GetFullPath (@"MappingWithMinimumData.xml");
+      string configurationFile = Path.GetFullPath (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
 
       Assert.AreEqual (configurationFile, loader.ConfigurationFile);
       Assert.IsTrue (loader.ResolveTypes);
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void LoadWithUnresolvedTypes()
     {
-      MappingLoader loader = new MappingLoader ("MappingWithUnresolvedTypes.xml", false);
+      MappingLoader loader = new MappingLoader ("DataDomainObjectsLegacy_MappingWithUnresolvedTypes.xml", false);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
       Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' cannot refer to itself as base class.")]
     public void MappingWithInvalidBaseClass()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithInvalidDerivation.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithInvalidDerivation.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
     }
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void MappingWithInvalidDerivationAcrossStorageProviders()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithInvalidDerivationAcrossStorageProviders.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithInvalidDerivationAcrossStorageProviders.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
     }
@@ -176,7 +176,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Class 'Customer' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseAndDerivedClass()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithPropertyDefinedInBaseAndDerivedClass.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseAndDerivedClass.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
     }
@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Class 'Supplier' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
     }
@@ -194,7 +194,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void MappingWithMinimumData()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithMinimumData.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
       RelationDefinitionCollection relationDefinitions = loader.GetRelationDefinitions (classDefinitions);
@@ -210,7 +210,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Class 'Customer' refers to non-existing base class 'NonExistingClass'.")]
     public void MappingWithNonExistingBaseClass()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithNonExistingBaseClass.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithNonExistingBaseClass.xml", true);
 
       ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
     }
@@ -219,13 +219,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void MappingWithSchemaException()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithSchemaException.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithSchemaException.xml", true);
     }
 
     [Test]
     public void MappingWithXmlException()
     {
-      string configurationFile = "MappingWithXmlException.xml";
+      string configurationFile = "DataDomainObjectsLegacy_MappingWithXmlException.xml";
       try
       {
         MappingLoader loader = new MappingLoader (configurationFile, true);
@@ -248,7 +248,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " Element 'collectionType' is only valid for relation properties with cardinality equal to 'many'.")]
     public void MappingWithCollectionTypeAndOneToOneRelation()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithCollectionTypeAndOneToOneRelation.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithCollectionTypeAndOneToOneRelation.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -257,7 +257,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void MappingWithDuplicateColumnName()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithDuplicateColumnName.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDuplicateColumnName.xml", true);
 
       loader.GetClassDefinitions();
     }
@@ -266,7 +266,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void MappingWithDuplicateColumnNameAndRelationProperty()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithDuplicateColumnNameAndRelationProperty.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDuplicateColumnNameAndRelationProperty.xml", true);
 
       loader.GetClassDefinitions();
     }
@@ -277,7 +277,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         )]
     public void MappingWithOnlyOneEndPoint()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithOnlyOneEndPoint.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOnlyOneEndPoint.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -287,7 +287,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Property 'Order' of relation 'OrderToOrderTicket' defines a column and a cardinality equal to 'many', which is not valid.")]
     public void MappingWithColumnAndCardinalityMany()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithColumnAndCardinalityMany.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithColumnAndCardinalityMany.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -296,7 +296,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Both property names of relation 'OrderToOrderTicket' are 'OrderTicket', which is not valid.")]
     public void MappingWithRelationAndIdenticalPropertyNames()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithRelationAndIdenticalPropertyNames.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithRelationAndIdenticalPropertyNames.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -307,7 +307,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
     public void MappingWithDerivationAndDuplicateColumnName()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithDerivationAndDuplicateColumnName.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnName.xml", true);
 
       loader.GetClassDefinitions();
     }
@@ -318,7 +318,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
     public void MappingWithDerivationAndDuplicateColumnNameWithoutResolvedTypes()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithDerivationAndDuplicateColumnName.xml", false);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnName.xml", false);
 
       loader.GetClassDefinitions();
     }
@@ -329,7 +329,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
     public void MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml", true);
 
       loader.GetClassDefinitions();
     }
@@ -347,7 +347,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
             + " have an opposite class defined.")]
     public void MappingWithMoreThanTwoEndPoints()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithMoreThanTwoEndPoints.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithMoreThanTwoEndPoints.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -357,7 +357,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "The relation 'CustomerToOrder' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.")]
     public void MappingWithOppositeClassAndCardinalityMany()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithOppositeClassAndCardinalityMany.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOppositeClassAndCardinalityMany.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -368,7 +368,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         )]
     public void MappingWithOppositeClassAndTwoRelationProperties()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithOppositeClassAndTwoRelationProperties.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOppositeClassAndTwoRelationProperties.xml", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions());
     }
@@ -377,7 +377,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void MappingWithPropertyDefinedInTwoBaseClasses()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithPropertyDefinedInTwoBaseClasses.xml", true);
+      MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithPropertyDefinedInTwoBaseClasses.xml", true);
 
       loader.GetClassDefinitions();
     }
@@ -385,7 +385,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void MappingWithInvalidNamespace()
     {
-      string configurationFile = "MappingWithInvalidNamespace.xml";
+      string configurationFile = "DataDomainObjectsLegacy_MappingWithInvalidNamespace.xml";
       try
       {
         MappingLoader loader = new MappingLoader (configurationFile, true);
@@ -406,7 +406,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void MappingWithUnorderedElements()
     {
-      MappingLoader loader = new MappingLoader ("MappingWithUnorderedElements.xml", true);
+      MappingLoader loader = new MappingLoader ("DataDomainObjectsLegacy_MappingWithUnorderedElements.xml", true);
 
       loader.GetClassDefinitions();
 

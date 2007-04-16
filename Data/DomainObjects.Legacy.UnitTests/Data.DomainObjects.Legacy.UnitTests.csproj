@@ -201,44 +201,44 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithCollectionTypeAndOneToOneRelation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithColumnAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnNameAndRelationProperty.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivationAcrossStorageProviders.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidNamespace.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithMoreThanTwoEndPoints.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithNonExistingBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOnlyOneEndPoint.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndTwoRelationProperties.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassReferringToItself.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithoutColumnElement.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInTwoBaseClasses.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithRelationAndIdenticalPropertyNames.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithResolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithSchemaException.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\MappingWithXmlException.xml" />
-    <Content Include="Database\LegacyCreateDB.sql" />
-    <Content Include="Database\LegacyCreateTableInheritanceTestData.sql" />
-    <Content Include="Database\LegacyCreateTestData.sql" />
-    <Content Include="Database\LegacySetupDB.sql" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_EntireMappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithCollectionTypeAndOneToOneRelation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithColumnAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithDuplicateColumnNameAndRelationProperty.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithInvalidDerivation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithInvalidDerivationAcrossStorageProviders.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithInvalidNamespace.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithMoreThanTwoEndPoints.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithNonExistingBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithOnlyOneEndPoint.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithOppositeClassAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithOppositeClassAndTwoRelationProperties.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithOppositeClassReferringToItself.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithoutColumnElement.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithPropertyDefinedInTwoBaseClasses.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithRelationAndIdenticalPropertyNames.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithResolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithSchemaException.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithUnorderedElements.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\DataDomainObjectsLegacy_MappingWithXmlException.xml" />
+    <Content Include="Database\DataDomainObjectsLegacy_CreateDB.sql" />
+    <Content Include="Database\DataDomainObjectsLegacy_CreateTableInheritanceTestData.sql" />
+    <Content Include="Database\DataDomainObjectsLegacy_CreateTestData.sql" />
+    <Content Include="Database\DataDomainObjectsLegacy_SetupDB.sql" />
     <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="MappingWithMinimumData.xml">
+    <Content Include="DataDomainObjectsLegacy_MappingWithMinimumData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
-    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
+    <Content Include="TableInheritance\DataDomainObjectsLegacy_TableInheritanceMapping.xml" />
+    <Content Include="TableInheritance\DataDomainObjectsLegacy_TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\Image1.png" />

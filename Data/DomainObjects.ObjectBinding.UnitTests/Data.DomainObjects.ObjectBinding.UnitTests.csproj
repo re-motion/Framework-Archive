@@ -96,6 +96,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
       <Name>ObjectBinding</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
@@ -145,6 +149,7 @@
     <Compile Include="Serialization\SerializationTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SetupFixture.cs" />
     <Compile Include="TestDomain\Order.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,13 +174,13 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Data.DomainObjects.ObjectBinding.UnitTests.build" />
-    <Content Include="Database\CreateDB.sql" />
-    <Content Include="Database\CreateTestData.sql" />
-    <Content Include="Database\SetupDB.sql" />
-    <Content Include="Mapping.xml">
+    <Content Include="Database\DataDomainObjectsObjectBinding_CreateDB.sql" />
+    <Content Include="Database\DataDomainObjectsObjectBinding_CreateTestData.sql" />
+    <Content Include="Database\DataDomainObjectsObjectBinding_SetupDB.sql" />
+    <Content Include="DataDomainObjectsObjectBinding_Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Queries.xml">
+    <Content Include="DataDomainObjectsObjectBinding_Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -82,7 +82,9 @@ namespace Rubicon.Development.UnitTesting.Data.SqlClient
 
     private string[] GetCommandTextBatchesFromFile (string sqlFileName)
     {
-      string fileContent = File.ReadAllText (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFileName), Encoding.Default);
+      if (!Path.IsPathRooted (sqlFileName))
+        sqlFileName = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFileName);
+      string fileContent = File.ReadAllText (sqlFileName, Encoding.Default);
       return fileContent.Split (new string[] {"\r\nGO\r\n"}, StringSplitOptions.RemoveEmptyEntries);
     }
   }

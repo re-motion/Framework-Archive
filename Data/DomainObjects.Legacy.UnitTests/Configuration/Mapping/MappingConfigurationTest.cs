@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithFileNamesOnly ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml");
+      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
 
       Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithFileNamesAndResolveTypes ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", true);
+      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true);
 
       Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithLoaderAndResolveTypes ()
     {
-      MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithMinimumData.xml", true));
+      MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true));
 
       Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       try
       {
-        MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"MappingWithMinimumData.xml", true));
+        MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true));
         MappingConfiguration.SetCurrent (configuration);
 
         Assert.AreSame (configuration, MappingConfiguration.Current);
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
     public void SetCurrentRejectsUnresolvedTypes ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"MappingWithMinimumData.xml", false);
+      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", false);
       MappingConfiguration.SetCurrent (configuration);
     }
 
@@ -143,7 +143,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void MappingWithUnresolvedTypes ()
     {
       MappingConfiguration configuration = new MappingConfiguration (
-          new MappingLoader (@"MappingWithUnresolvedTypes.xml", false));
+          new MappingLoader (@"DataDomainObjectsLegacy_MappingWithUnresolvedTypes.xml", false));
 
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
     }
@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void EntireMappingWithUnresolvedTypes ()
     {
       MappingConfiguration configuration = new MappingConfiguration (
-          new MappingLoader (@"EntireMappingWithUnresolvedTypes.xml", false));
+          new MappingLoader (@"DataDomainObjectsLegacy_EntireMappingWithUnresolvedTypes.xml", false));
 
       Assert.IsFalse (configuration.ResolveTypes);
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);

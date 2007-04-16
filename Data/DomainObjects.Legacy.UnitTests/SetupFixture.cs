@@ -38,9 +38,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       SqlConnection.ClearAllPools();
 
       DatabaseAgent masterAgent = new DatabaseAgent (DatabaseTest.MasterConnectionString);
-      masterAgent.ExecuteBatch ("LegacyCreateDB.sql", false);
+      masterAgent.ExecuteBatch ("DataDomainObjectsLegacy_CreateDB.sql", false);
       DatabaseAgent testDomainAgent = new DatabaseAgent (DatabaseTest.TestDomainConnectionString);
-      testDomainAgent.ExecuteBatch ("LegacySetupDB.sql", true);
+      testDomainAgent.ExecuteBatch ("DataDomainObjectsLegacy_SetupDB.sql", true);
       
       _standardMappingAgent = new StandardMappingDatabaseAgent (DatabaseTest.TestDomainConnectionString);
       _standardMappingAgent.ExecuteBatch (StandardMappingTest.CreateTestDataFileName, true);

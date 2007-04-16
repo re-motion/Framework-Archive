@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     // static members and constants
 
-    public const string CreateTestDataFileName = "LegacyCreateTestData.sql";
+    public const string CreateTestDataFileName = "DataDomainObjectsLegacy_CreateTestData.sql";
 
     private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Mapping.xml");
 

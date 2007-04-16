@@ -18,9 +18,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     // static members and constants
 
-    public const string CreateTestDataFileName = "LegacyCreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "DataDomainObjectsLegacy_CreateTableInheritanceTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"TableInheritanceMapping.xml");
+    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"DataDomainObjectsLegacy_TableInheritanceMapping.xml");
 
     // member fields
 

@@ -775,11 +775,11 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Data.DomainObjects.UnitTests.build" />
-    <Content Include="Database\CreateTableInheritanceTestData.sql" />
-    <Content Include="Database\CreateDB.sql" />
-    <Content Include="Database\CreateTestData.sql">
+    <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
+    <Content Include="Database\DataDomainObjects_CreateDB.sql" />
+    <Content Include="Database\DataDomainObjects_CreateTestData.sql">
     </Content>
-    <Content Include="Database\SetupDB.sql" />
+    <Content Include="Database\DataDomainObjects_SetupDB.sql" />
     <Content Include="Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
