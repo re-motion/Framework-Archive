@@ -19,8 +19,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     public override void TearDown ()
     {
-      base.TearDown ();
       _provider.Dispose ();
+      base.TearDown ();
     }
 
     protected RdbmsProviderDefinition ProviderDefinition

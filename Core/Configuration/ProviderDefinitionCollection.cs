@@ -61,10 +61,11 @@ namespace Rubicon.Configuration
 
     public T GetMandatory (string name)
     {
-      if (this[name] == null)
+      T value = this[name];
+      if (value == null)
         throw new ArgumentException (string.Format ("Provider '{0}' does not exist.", name));
 
-      return this[name];
+      return value;
     }
     
   }

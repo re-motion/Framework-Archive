@@ -10,6 +10,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   {
     private Customer _customer;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();

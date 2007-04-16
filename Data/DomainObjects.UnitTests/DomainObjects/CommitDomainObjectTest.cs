@@ -7,6 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class CommitDomainObjectTest : ClientTransactionBaseTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void CommitOneToManyRelation ()
     {

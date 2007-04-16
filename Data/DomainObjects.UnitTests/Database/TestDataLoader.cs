@@ -8,15 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 {
   public class TestDataLoader
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private string _connectionString;
-
-    // construction and disposing
 
     public TestDataLoader (string connectionString)
     {
@@ -25,7 +17,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
       _connectionString = connectionString;
     }
 
-    // methods and properties
+    public void SetDatabaseReadWrite (string database)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
+
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open ();
+        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database), connection))
+        {
+          command.ExecuteNonQuery ();
+        }
+      }
+    }
+
+    public void SetDatabaseReadOnly (string database)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
+
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open ();
+        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database), connection))
+        {
+          command.ExecuteNonQuery ();
+        }
+      }
+    }
 
     public void Load (string sqlFileName)
     {
@@ -50,7 +68,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 
     protected void ExecuteSqlFile (SqlConnection connection, SqlTransaction transaction, string sqlFile)
     {
-      using (SqlCommand command = new SqlCommand (File.ReadAllText (sqlFile, Encoding.Default), connection, transaction))
+      string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFile);
+      using (SqlCommand command = new SqlCommand (File.ReadAllText (fullPath, Encoding.Default), connection, transaction))
       {
         command.ExecuteNonQuery ();
       }

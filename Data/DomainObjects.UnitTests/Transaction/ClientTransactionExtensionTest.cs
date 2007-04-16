@@ -23,6 +23,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private Order _order1;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -741,6 +747,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitWithEvents ()
     {
+      SetDatabaseModifyable ();
+
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "newSerialNumber";
       _mockRepository.BackToRecord (_extension);

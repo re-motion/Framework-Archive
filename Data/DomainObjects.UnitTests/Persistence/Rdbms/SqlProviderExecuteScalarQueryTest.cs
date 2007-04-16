@@ -9,6 +9,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderExecuteScalarQueryTest : SqlProviderBaseTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void ScalarQueryWithoutParameter ()
     {

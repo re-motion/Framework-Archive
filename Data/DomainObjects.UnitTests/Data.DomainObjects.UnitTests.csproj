@@ -146,6 +146,7 @@
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
+    <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
     <Compile Include="ReflectionBasedMappingTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
@@ -528,6 +529,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SetupFixture.cs" />
+    <Compile Include="Factories\StandardConfiguration.cs" />
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -558,12 +560,14 @@
     <Compile Include="TableInheritance\SelectCommandBuilderTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableInheritance\TableInheritanceSetupFixture.cs" />
     <Compile Include="TableInheritance\SqlProviderBaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableInheritance\SqlProviderTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableInheritance\TableInheritanceConfiguration.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs">
       <SubType>Code</SubType>
     </Compile>

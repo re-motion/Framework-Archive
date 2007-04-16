@@ -12,6 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     private Client _newClient;
     private Location _location;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -79,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CreateObjectsAndCommit ()
     {
-      Client client1 = Client.Create();
+      Client client1 = Client.Create ();
       Client client2 = Client.Create ();
       Location location = Location.Create ();
 

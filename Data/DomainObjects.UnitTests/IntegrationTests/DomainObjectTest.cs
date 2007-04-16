@@ -27,6 +27,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
     PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void RelationEventTestWithMockObject ()
     {

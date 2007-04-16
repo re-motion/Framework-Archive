@@ -12,6 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   {
     private SqlProvider _provider;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -23,8 +29,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     public override void TearDown ()
     {
-      base.TearDown ();
       _provider.Dispose ();
+      base.TearDown ();
     }
 
     [Test]

@@ -8,6 +8,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
   [TestFixture]
   public class DomainObjectTest : TableInheritanceMappingTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void OneToManyRelationToAbstractClass ()
     {
@@ -93,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void UpdateConcreteSingle ()
     {
-      Region expectedNewRegion = Region.Create();
+      Region expectedNewRegion = Region.Create ();
       expectedNewRegion.Name = "Wachau";
 
       Customer expectedCustomer = Customer.GetObject (DomainObjectIDs.Customer);
@@ -110,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void InsertConcreteSingle ()
     {
-      Customer expectedCustomer = Customer.Create();
+      Customer expectedCustomer = Customer.Create ();
       expectedCustomer.FirstName = "Franz";
       expectedCustomer.LastName = "Kameramann";
       expectedCustomer.DateOfBirth = new DateTime (1950, 1, 3);

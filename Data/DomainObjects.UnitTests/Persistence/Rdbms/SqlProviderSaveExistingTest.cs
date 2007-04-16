@@ -15,6 +15,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void Save ()
     {

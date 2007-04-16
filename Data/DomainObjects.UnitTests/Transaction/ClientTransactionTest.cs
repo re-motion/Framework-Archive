@@ -18,6 +18,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private ClientTransactionEventReceiver _eventReceiver;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();

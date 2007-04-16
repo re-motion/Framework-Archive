@@ -11,6 +11,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class NewDomainObjectTest : ClientTransactionBaseTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [Test]
     public void Creation ()
     {
@@ -318,7 +324,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DataContainerStateAfterCommit ()
     {
-      Computer computer = Computer.Create();
+      Computer computer = Computer.Create ();
 
       ClientTransactionMock.Commit ();
 

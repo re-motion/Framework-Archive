@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ArgumentUtility.CheckNotNull ("clientTransactionMock", clientTransactionMock);
       _clientTransactionMock = clientTransactionMock;
 
-      _domainObjectIDs = new DomainObjectIDs ();
+      _domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
     }
 
     // methods and properties

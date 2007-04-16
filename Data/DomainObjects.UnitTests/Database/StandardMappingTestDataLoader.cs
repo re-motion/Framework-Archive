@@ -7,20 +7,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 {
   public class StandardMappingTestDataLoader : TestDataLoader
   {
-    // types
-
-    // static members and constants
-
-
-    // member fields
-
-    // construction and disposing
-
     public StandardMappingTestDataLoader (string connectionString) : base (connectionString)
     {
     }
-
-    // methods and properties
 
     protected override void PerformLoad (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
     {
@@ -30,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 
     private void LoadBlobs (SqlConnection connection, SqlTransaction transaction)
     {
-      DomainObjectIDs domainObjectIDs = new DomainObjectIDs ();
+      DomainObjectIDs domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
       UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1 ());
       UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
     }

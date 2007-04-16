@@ -12,6 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     Order _order;
     OrderTicket _orderTicket;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();

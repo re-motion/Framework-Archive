@@ -85,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Resources
 
       if (expected == null)
         Assert.Fail ("Expected array is null, but actual array is not null.");
-
+      
       Assert.That (actual, Is.EqualTo (expected));
     }
   }

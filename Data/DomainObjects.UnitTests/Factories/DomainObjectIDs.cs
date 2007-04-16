@@ -2,12 +2,8 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
-  public class DomainObjectIDs
+  public sealed class DomainObjectIDs
   {
-    // types
-
-    // members and constants
-
     #region Employee
 
     // Supervisor: -
@@ -379,15 +375,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
     #endregion
 
-    // member fields
-
-    // construction and disposing
-
     public DomainObjectIDs ()
     {
     }
-
-    // methods and properties
-
   }
 }

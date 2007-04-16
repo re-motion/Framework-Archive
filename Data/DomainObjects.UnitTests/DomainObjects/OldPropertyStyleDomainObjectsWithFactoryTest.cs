@@ -14,6 +14,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class OldPropertyStyleDomainObjectsWithFactoryTest : ClientTransactionBaseTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+
     [SetUp]
     public override void SetUp ()
     {
