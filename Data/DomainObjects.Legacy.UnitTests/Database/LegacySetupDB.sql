@@ -1,4 +1,4 @@
-USE TestDomain
+USE TestDomainLegacy
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Location') 

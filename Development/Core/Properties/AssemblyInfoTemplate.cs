@@ -11,7 +11,8 @@ using System.Reflection;
 [assembly: AssemblyProduct("@productname@")]
 [assembly: AssemblyCopyright("@copyright@")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant (true)]
 
 //
 // Version information for an assembly consists of the following four values:

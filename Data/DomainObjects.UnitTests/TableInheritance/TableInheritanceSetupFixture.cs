@@ -1,23 +1,23 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.Database;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [SetUpFixture]
   public class TableInheritanceSetUpFixture
   {
-    private TestDataLoader _loader;
+    private DatabaseAgent _databaseAgent;
 
     [SetUp]
     public void SetUp()
     {
       TableInheritanceConfiguration.Initialize();
 
-      _loader = new TestDataLoader (DatabaseTest.c_connectionString);
-      _loader.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
-      _loader.LoadTestData ("CreateTableInheritanceTestData.sql");
-      _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
+      _databaseAgent = new DatabaseAgent (DatabaseTest.TestDomainConnectionString);
+      _databaseAgent.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
+      _databaseAgent.ExecuteBatch (TableInheritanceMappingTest.CreateTestDataFileName, true);
+      _databaseAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
   }
 }

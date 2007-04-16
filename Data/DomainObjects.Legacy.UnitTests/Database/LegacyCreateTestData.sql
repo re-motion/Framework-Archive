@@ -1,4 +1,4 @@
-use TestDomain
+use TestDomainLegacy
 
 delete from [FileSystemItem]
 delete from [Location]

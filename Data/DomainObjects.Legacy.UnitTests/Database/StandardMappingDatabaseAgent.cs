@@ -2,29 +2,20 @@ using System;
 using System.Data.SqlClient;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Database
 {
-  public class StandardMappingTestDataLoader : TestDataLoader
+  public class StandardMappingDatabaseAgent : DatabaseAgent
   {
-    // types
-
-    // static members and constants
-
-
-    // member fields
-
-    // construction and disposing
-
-    public StandardMappingTestDataLoader (string connectionString) : base (connectionString)
+    public StandardMappingDatabaseAgent (string connectionString)
+      : base (connectionString)
     {
     }
 
-    // methods and properties
-
-    protected override void PerformLoadTestData (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
+    protected override void ExecuteBatch (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
     {
-      base.PerformLoadTestData (connection, transaction, sqlFileName);
+      base.ExecuteBatch (connection, transaction, sqlFileName);
       LoadBlobs (connection, transaction);
     }
 

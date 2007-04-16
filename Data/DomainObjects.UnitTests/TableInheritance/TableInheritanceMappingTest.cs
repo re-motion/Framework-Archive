@@ -1,17 +1,17 @@
 using System;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Database;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   public class TableInheritanceMappingTest: DatabaseTest
   {
-    private const string c_createTestDataFileName = "CreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "CreateTableInheritanceTestData.sql";
 
     public TableInheritanceMappingTest()
-        : base (new TestDataLoader (c_connectionString), c_createTestDataFileName)
+      : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 

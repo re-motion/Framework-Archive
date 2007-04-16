@@ -710,7 +710,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         sqlProvider.Save (collection);
       }
 
-      using (SqlConnection connection = new SqlConnection (c_connectionString))
+      using (SqlConnection connection = new SqlConnection (TestDomainConnectionString))
       {
         connection.Open ();
         using (SqlCommand command = new SqlCommand ("select * from Ceo where ID = @id", connection))

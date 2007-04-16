@@ -1,41 +1,32 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.Database;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
   public abstract class DatabaseTest
   {
-    // types
-
-    // static members and constants
-
     public const string DatabaseName = "TestDomain";
-    public const string c_connectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost; Max Pool Size=1;";
+    public const string TestDomainConnectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost; Max Pool Size=1;";
+    public const string MasterConnectionString = "Integrated Security=SSPI;Initial Catalog=master;Data Source=localhost; Max Pool Size=1;";
 
     public const string c_testDomainProviderID = "TestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 
-    // member fields
-
-    private TestDataLoader _loader;
+    private DatabaseAgent _databaseAgent;
     private string _createTestDataFileName;
     private bool _isDatabaseModifyable;
 
-    // construction and disposing
-
-    protected DatabaseTest (TestDataLoader loader, string createTestDataFileName)
+    protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull ("loader", loader);
+      ArgumentUtility.CheckNotNull ("databaseAgent", databaseAgent);
       ArgumentUtility.CheckNotNullOrEmpty ("createTestDataFileName", createTestDataFileName);
 
-      _loader = loader;
+      _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;
     }
-
-    // methods and properties
 
     [SetUp]
     public virtual void SetUp ()
@@ -47,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       if (_isDatabaseModifyable)
       {
-        _loader.LoadTestData (_createTestDataFileName);
+        _databaseAgent.ExecuteBatch (_createTestDataFileName, true);
       }
     }
 
@@ -61,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       if (_isDatabaseModifyable)
       {
-        _loader.SetDatabaseReadOnly (DatabaseName);
+        _databaseAgent.SetDatabaseReadOnly (DatabaseName);
         _isDatabaseModifyable = false;
       }
     }
@@ -71,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       if (!_isDatabaseModifyable)
       {
         _isDatabaseModifyable = true;
-        _loader.SetDatabaseReadWrite (DatabaseName);
+        _databaseAgent.SetDatabaseReadWrite (DatabaseName);
       }
     }
 

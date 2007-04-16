@@ -3,11 +3,12 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 {
@@ -17,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     // static members and constants
 
-    private const string c_createTestDataFileName = "CreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "LegacyCreateTableInheritanceTestData.sql";
 
     private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"TableInheritanceMapping.xml");
 
@@ -28,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     // construction and disposing
 
-    public TableInheritanceMappingTest () : base (new TestDataLoader (c_connectionString), c_createTestDataFileName)
+    public TableInheritanceMappingTest () : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 

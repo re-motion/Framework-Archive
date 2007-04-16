@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
       
       storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (DatabaseTest.c_testDomainProviderID, typeof (SqlProvider), DatabaseTest.c_connectionString));
+          new RdbmsProviderDefinition (DatabaseTest.c_testDomainProviderID, typeof (SqlProvider), DatabaseTest.TestDomainConnectionString));
       
       storageProviderDefinitionCollection.Add (
           new UnitTestStorageProviderStubDefinition (

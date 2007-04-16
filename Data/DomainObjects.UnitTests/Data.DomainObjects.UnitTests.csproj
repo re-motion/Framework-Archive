@@ -245,9 +245,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\StandardMappingTestDataLoader.cs" />
-    <Compile Include="Database\TestDataLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DataManagement\AnonymousEndPointTest.cs">
       <SubType>Code</SubType>
     </Compile>

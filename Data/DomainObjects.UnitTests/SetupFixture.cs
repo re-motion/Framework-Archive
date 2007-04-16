@@ -3,13 +3,15 @@ using System.Data.SqlClient;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TableInheritance;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private StandardMappingTestDataLoader _loader;
+    private StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
 
     [SetUp]
     public void SetUp()
@@ -17,17 +19,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       StandardConfiguration.Initialize();
 
       SqlConnection.ClearAllPools();
-      _loader = new StandardMappingTestDataLoader (DatabaseTest.c_connectionString);
-      _loader.CreateDatabase ("CreateDB.sql");
-      _loader.CreateDatabase ("SetupDB.sql");
-      _loader.LoadTestData ("CreateTestData.sql");
-      _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
+
+      DatabaseAgent masterAgent = new DatabaseAgent (DatabaseTest.MasterConnectionString);
+      masterAgent.ExecuteBatch ("CreateDB.sql", false);
+      DatabaseAgent testDomainAgent = new DatabaseAgent (DatabaseTest.TestDomainConnectionString);
+      testDomainAgent.ExecuteBatch ("SetupDB.sql", true);
+
+      _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent (DatabaseTest.TestDomainConnectionString);
+      _standardMappingDatabaseAgent.ExecuteBatch (ReflectionBasedMappingTest.CreateTestDataFileName, true);
+      _standardMappingDatabaseAgent.ExecuteBatch (TableInheritanceMappingTest.CreateTestDataFileName, true);
+      _standardMappingDatabaseAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
 
     [TearDown]
     public void TearDown()
     {
-      _loader.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
+      _standardMappingDatabaseAgent.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
       SqlConnection.ClearAllPools();
     }
   }

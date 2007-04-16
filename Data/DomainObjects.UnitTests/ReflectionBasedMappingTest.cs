@@ -8,10 +8,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 {
   public class ReflectionBasedMappingTest: DatabaseTest
   {
-    private const string c_createTestDataFileName = "CreateTestData.sql";
+    public const string CreateTestDataFileName = "CreateTestData.sql";
 
     protected ReflectionBasedMappingTest()
-        : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
+      : base (new StandardMappingDatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 

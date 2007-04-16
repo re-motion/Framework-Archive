@@ -1,4 +1,4 @@
-use TestDomain
+use TestDomainLegacy
 
 delete from [TableInheritance_DerivedClassWithEntityWithHierarchy]
 delete from [TableInheritance_Order]

@@ -72,8 +72,7 @@
     <Compile Include="Configuration\Mapping\TypeInfoTest.cs" />
     <Compile Include="Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs" />
     <Compile Include="DatabaseTest.cs" />
-    <Compile Include="Database\StandardMappingTestDataLoader.cs" />
-    <Compile Include="Database\TestDataLoader.cs" />
+    <Compile Include="Database\StandardMappingDatabaseAgent.cs" />
     <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs" />
     <Compile Include="DomainObjects\NewDomainObjectTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
@@ -228,10 +227,10 @@
     <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithUnresolvedTypes.xml" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithXmlException.xml" />
-    <Content Include="Database\CreateDB.sql" />
-    <Content Include="Database\CreateTableInheritanceTestData.sql" />
-    <Content Include="Database\CreateTestData.sql" />
-    <Content Include="Database\SetupDB.sql" />
+    <Content Include="Database\LegacyCreateDB.sql" />
+    <Content Include="Database\LegacyCreateTableInheritanceTestData.sql" />
+    <Content Include="Database\LegacyCreateTestData.sql" />
+    <Content Include="Database\LegacySetupDB.sql" />
     <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

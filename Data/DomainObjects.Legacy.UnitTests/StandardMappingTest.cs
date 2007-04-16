@@ -8,7 +8,6 @@ using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 {
@@ -18,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     // static members and constants
 
-    private const string c_createTestDataFileName = "CreateTestData.sql";
+    public const string CreateTestDataFileName = "LegacyCreateTestData.sql";
 
     private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Mapping.xml");
 
@@ -29,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     // construction and disposing
 
     protected StandardMappingTest()
-        : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
+        : base (new StandardMappingDatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 

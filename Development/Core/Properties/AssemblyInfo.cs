@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 //
 // General Information about an assembly is controlled through the following 
@@ -11,7 +12,8 @@ using System.Reflection;
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant (true)]
 
 //
 // Version information for an assembly consists of the following four values:

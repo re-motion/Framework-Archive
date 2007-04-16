@@ -8,17 +8,18 @@ using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Development.UnitTesting.Data.SqlClient;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private StandardMappingTestDataLoader _loader;
+    private StandardMappingDatabaseAgent _standardMappingAgent;
 
     [SetUp]
     public void SetUp()
@@ -35,18 +36,22 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       TestMappingConfiguration.Reset ();
 
       SqlConnection.ClearAllPools();
-      _loader = new StandardMappingTestDataLoader (DatabaseTest.c_connectionString);
-      _loader.CreateDatabase ("CreateDB.sql");
-      _loader.CreateDatabase ("SetupDB.sql");
-      _loader.LoadTestData ("CreateTestData.sql");
-      _loader.LoadTestData ("CreateTableInheritanceTestData.sql");
-      _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
+
+      DatabaseAgent masterAgent = new DatabaseAgent (DatabaseTest.MasterConnectionString);
+      masterAgent.ExecuteBatch ("LegacyCreateDB.sql", false);
+      DatabaseAgent testDomainAgent = new DatabaseAgent (DatabaseTest.TestDomainConnectionString);
+      testDomainAgent.ExecuteBatch ("LegacySetupDB.sql", true);
+      
+      _standardMappingAgent = new StandardMappingDatabaseAgent (DatabaseTest.TestDomainConnectionString);
+      _standardMappingAgent.ExecuteBatch (StandardMappingTest.CreateTestDataFileName, true);
+      _standardMappingAgent.ExecuteBatch (TableInheritanceMappingTest.CreateTestDataFileName, true);
+      _standardMappingAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
 
     [TearDown]
     public void TearDown()
     {
-      _loader.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
+      _standardMappingAgent.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
       SqlConnection.ClearAllPools();
     }
   }
