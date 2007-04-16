@@ -40,11 +40,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     }
 
     [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
+    public virtual void TestFixtureSetUp ()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create ();
       PersistenceConfiguration persistenceConfiguration =
-          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
+          new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[DatabaseTest.c_testDomainProviderID]);
 
       _domainObjectsConfiguration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration);
       DomainObjectsConfiguration.SetCurrent (_domainObjectsConfiguration);
@@ -55,10 +55,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     public override void SetUp ()
     {
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
-  
       base.SetUp ();
-
+      MappingConfiguration.SetCurrent (s_mappingConfiguration);
       ClientTransaction.SetCurrent (null);
     }
   }

@@ -12,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     // static members and constants
 
+    public const string DatabaseName = "TestDomain";
     public const string c_connectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost";
 
     public const string c_testDomainProviderID = "TestDomain";
@@ -21,6 +22,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     private TestDataLoader _loader;
     private string _createTestDataFileName;
+    private bool _isDatabaseModifyable;
 
     // construction and disposing
 
@@ -38,12 +40,34 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _loader.Load (_createTestDataFileName);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
+      if (_isDatabaseModifyable)
+      {
+        _loader.Load (_createTestDataFileName);
+      }
+    }
+
+    [TestFixtureTearDown]
+    public virtual void TestFixtureTearDown ()
+    {
+      if (_isDatabaseModifyable)
+      {
+        _loader.SetDatabaseReadOnly (DatabaseName);
+        _isDatabaseModifyable = false;
+      }
+    }
+
+    protected void SetDatabaseModifyable ()
+    {
+      if (!_isDatabaseModifyable)
+      {
+        _isDatabaseModifyable = true;
+        _loader.SetDatabaseReadWrite (DatabaseName);
+      }
     }
 
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)

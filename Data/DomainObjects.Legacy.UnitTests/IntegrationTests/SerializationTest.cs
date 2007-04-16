@@ -11,19 +11,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
   [TestFixture]
   public class SerializationTest : SerializationBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SerializationTest ()
+    public override void TestFixtureSetUp ()
     {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
     }
-
-    // methods and properties
 
     [Test]
     public void ObjectsFromPartnerClassDefinition ()

@@ -8,19 +8,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
   [TestFixture]
   public class DomainObjectTest : TableInheritanceMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public DomainObjectTest ()
+    public override void TestFixtureSetUp ()
     {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
     }
-
-    // methods and properties
 
     [Test]
     public void OneToManyRelationToAbstractClass ()

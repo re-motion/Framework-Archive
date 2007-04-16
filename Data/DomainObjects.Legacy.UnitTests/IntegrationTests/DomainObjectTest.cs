@@ -16,12 +16,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
   [TestFixture]
   public class DomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     DataContainer _orderDataContainer;
     PropertyValueCollection _orderPropertyValues;
     PropertyValue _orderDeliveryDateProperty;
@@ -33,13 +27,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
     PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
 
-    // construction and disposing
-
-    public DomainObjectTest ()
+    public override void TestFixtureSetUp ()
     {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
     }
-
-    // methods and properties
 
     [Test]
     public void RelationEventTestWithMockObject ()

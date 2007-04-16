@@ -1,8 +1,11 @@
 using System;
+using System.Data.SqlClient;
+using System.IO;
 using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -12,31 +15,13 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 {
-  public class StandardMappingTest: DatabaseTest
+  [SetUpFixture]
+  public class SetUpFixture
   {
-    // types
+    private StandardMappingTestDataLoader _loader;
 
-    // static members and constants
-
-    private const string c_createTestDataFileName = "CreateTestData.sql";
-
-    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Mapping.xml");
-
-    // member fields
-
-    private DomainObjectIDs _domainObjectIDs;
-
-    // construction and disposing
-
-    protected StandardMappingTest()
-        : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
-    {
-    }
-
-    // methods and properties
-
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp()
+    [SetUp]
+    public void SetUp()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionFactory.Create ();
       PersistenceConfiguration persistenceConfiguration =
@@ -44,21 +29,23 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
 
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      TestMappingConfiguration.Reset();
+      MappingConfiguration mappingConfiguration =
+          MappingConfiguration.CreateConfigurationFromFileBasedLoader (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Mapping.xml"));
+      MappingConfiguration.SetCurrent (mappingConfiguration);
+      TestMappingConfiguration.Reset ();
 
-      _domainObjectIDs = new DomainObjectIDs();
+      SqlConnection.ClearAllPools();
+      _loader = new StandardMappingTestDataLoader (DatabaseTest.c_connectionString);
+      _loader.Load ("CreateTestData.sql");
+      _loader.Load ("CreateTableInheritanceTestData.sql");
+      _loader.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }
 
-    public override void SetUp ()
+    [TearDown]
+    public void TearDown()
     {
-      base.SetUp ();
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
-    }
-    
-    protected DomainObjectIDs DomainObjectIDs
-    {
-      get { return _domainObjectIDs; }
+      _loader.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
+      SqlConnection.ClearAllPools();
     }
   }
 }

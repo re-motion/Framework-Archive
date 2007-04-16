@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
@@ -16,9 +15,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
     }
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp()
+    public override void TestFixtureSetUp()
     {
+      base.TestFixtureSetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent (StandardConfiguration.Instance.GetMappingConfiguration());
     }

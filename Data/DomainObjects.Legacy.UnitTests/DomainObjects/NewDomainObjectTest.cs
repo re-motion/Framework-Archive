@@ -11,19 +11,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
   [TestFixture]
   public class NewDomainObjectTest : ClientTransactionBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public NewDomainObjectTest ()
+    public override void TestFixtureSetUp ()
     {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable();
     }
-
-    // methods and properties
 
     [Test]
     public void Creation ()

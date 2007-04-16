@@ -51,6 +51,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       }
     }
 
+    [TestFixtureSetUp]
+    public virtual void TestFixtureSetUp ()
+    {
+    }
+
     [TestFixtureTearDown]
     public virtual void TestFixtureTearDown ()
     {

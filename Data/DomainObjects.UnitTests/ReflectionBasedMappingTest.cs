@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Database;
@@ -16,10 +15,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
     }
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp()
+    public override void TestFixtureSetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent (StandardConfiguration.Instance.GetDomainObjectsConfiguration());
+      base.TestFixtureSetUp ();
+      DomainObjectsConfiguration.SetCurrent (StandardConfiguration.Instance.GetDomainObjectsConfiguration ());
       MappingConfiguration.SetCurrent (StandardConfiguration.Instance.GetMappingConfiguration());
       TestMappingConfiguration.Reset();
     }

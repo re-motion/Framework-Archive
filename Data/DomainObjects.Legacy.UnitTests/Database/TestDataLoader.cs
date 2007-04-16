@@ -27,6 +27,34 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Database
 
     // methods and properties
 
+    public void SetDatabaseReadWrite (string database)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
+
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open ();
+        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database), connection))
+        {
+          command.ExecuteNonQuery ();
+        }
+      }
+    }
+
+    public void SetDatabaseReadOnly (string database)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
+
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open ();
+        using (SqlCommand command = new SqlCommand (string.Format ("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database), connection))
+        {
+          command.ExecuteNonQuery ();
+        }
+      }
+    }
+
     public void Load (string sqlFileName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
@@ -50,7 +78,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Database
 
     protected void ExecuteSqlFile (SqlConnection connection, SqlTransaction transaction, string sqlFile)
     {
-      using (SqlCommand command = new SqlCommand (File.ReadAllText (sqlFile, Encoding.Default), connection, transaction))
+      string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, sqlFile);
+      using (SqlCommand command = new SqlCommand (File.ReadAllText (fullPath, Encoding.Default), connection, transaction))
       {
         command.ExecuteNonQuery ();
       }

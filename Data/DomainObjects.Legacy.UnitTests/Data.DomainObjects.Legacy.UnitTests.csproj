@@ -107,6 +107,7 @@
     <Compile Include="Schemas\LegacySchemaLoaderTest.cs" />
     <Compile Include="SerializationBaseTest.cs" />
     <Compile Include="Serialization\MappingTest.cs" />
+    <Compile Include="SetupFixture.cs" />
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
