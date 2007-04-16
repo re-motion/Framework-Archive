@@ -2,7 +2,7 @@ USE master
 
 IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RubiconSecurityManager')
   DROP DATABASE RubiconSecurityManager
-GO  
+GO
 
 CREATE DATABASE RubiconSecurityManager
 ON PRIMARY (

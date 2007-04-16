@@ -387,14 +387,6 @@
     <property name="project.output" value="Rubicon.Core.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Development.CoreTest">
@@ -405,14 +397,6 @@
     <property name="project.output" value="Rubicon.Development.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Web.UnitTests">
@@ -425,14 +409,6 @@
     <property name="project.output" value="Rubicon.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="ObjectBinding.Reflection" depends="Core, ObjectBinding, ObjectBinding.Web, Web">
@@ -456,14 +432,6 @@
     <property name="project.output" value="Rubicon.ObjectBinding.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Data.DomainObjects.UnitTests">
@@ -476,40 +444,26 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Data.DomainObjects.Legacy.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.Legacy" cascade="false"/>
+    <call target="Development.Core" cascade="false"/>
 
     <property name="project.name" value="Data.DomainObjects.Legacy.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="Development.Core" cascade="false"/>
     <call target="ObjectBinding" cascade="false"/>
 
     <property name="project.name" value="Data.DomainObjects.ObjectBinding.UnitTests" />
@@ -517,14 +471,6 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Data.DomainObjects.CodeGenerator.UnitTests">
@@ -538,16 +484,6 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-
-    </if>
   </target>
 
   <target name="Security.UnitTests.TestDomain" depends="Core, Security">
@@ -569,14 +505,6 @@
     <property name="project.output" value="Rubicon.Security.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Security.Web.UnitTests">
@@ -592,14 +520,6 @@
     <property name="project.output" value="Rubicon.Security.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="Security.Data.DomainObjects.UnitTests">
@@ -616,14 +536,6 @@
     <property name="project.output" value="Rubicon.Security.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-
-    <if test="${build.step.run-tests}">
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
   <target name="SecurityManager.Core.UnitTests">
@@ -638,33 +550,6 @@
     <property name="project.output" value="Rubicon.SecurityManager.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-    <if test="${build.step.run-tests}">
-
-      <exec program="${sql.exe}">
-        <arg line="-S ${sql.instance}" />
-        <arg value="-E" />
-        <arg value="-n" />
-        <arg line="-i ${build.test.outputdir}\SecurityManagerCreateDB.sql" />
-      </exec>
-      <exec program="${sql.exe}">
-        <arg line="-S ${sql.instance}" />
-        <arg value="-E" />
-        <arg value="-n" />
-        <arg line="-i ${build.test.outputdir}\SecurityManagerSetupDB.sql" />
-      </exec>
-      <exec program="${sql.exe}">
-        <arg line="-S ${sql.instance}" />
-        <arg value="-E" />
-        <arg value="-n" />
-        <arg line="-i ${build.test.outputdir}\SecurityManagerSetupConstraints.sql" />
-      </exec>
-
-      <echo message="Running unit tests..." />
-      <nunit2>
-        <formatter type="Plain" />
-        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-      </nunit2>
-    </if>
   </target>
 
 </project>

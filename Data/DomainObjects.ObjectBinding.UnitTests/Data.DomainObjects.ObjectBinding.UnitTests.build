@@ -19,7 +19,7 @@
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Development.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.ObjectBinding.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>

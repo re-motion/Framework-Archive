@@ -33,17 +33,6 @@ namespace Rubicon.SecurityManager.UnitTests
     [TestFixtureSetUp]
     public virtual void TestFixtureSetUp()
     {
-      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"SecurityManagerMapping.xml"));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (@"SecurityManagerQueries.xml"));
-
-      ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
-      providers.Add (
-          new RdbmsProviderDefinition (
-              "SecurityManager",
-              typeof (SecurityManagerSqlProvider),
-              "Integrated Security=SSPI;Initial Catalog=RubiconSecurityManager;Data Source=localhost"));
-      PersistenceConfiguration persistenceConfiguration = new PersistenceConfiguration (providers, providers["SecurityManager"]);
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
     }
 
     [SetUp]
