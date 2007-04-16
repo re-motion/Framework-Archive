@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithFileNamesOnly ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
+      MappingConfiguration configuration = XmlBasedMappingConfiguration.Create(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
 
       Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithFileNamesAndResolveTypes ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true);
+      MappingConfiguration configuration = XmlBasedMappingConfiguration.Create(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", true);
 
       Assert.AreEqual (0, configuration.ClassDefinitions.Count);
       Assert.IsTrue (configuration.ResolveTypes);
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
     public void SetCurrentRejectsUnresolvedTypes ()
     {
-      MappingConfiguration configuration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", false);
+      MappingConfiguration configuration = XmlBasedMappingConfiguration.Create(@"DataDomainObjectsLegacy_MappingWithMinimumData.xml", false);
       MappingConfiguration.SetCurrent (configuration);
     }
 

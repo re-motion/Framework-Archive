@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {

@@ -1,6 +1,6 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.Legacy.Schemas

@@ -543,6 +543,7 @@
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.Legacy" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="Development.Core" cascade="false"/>
     <call target="SecurityManager.Core" cascade="false"/>
 
     <property name="project.name" value="SecurityManager.Core.UnitTests" />

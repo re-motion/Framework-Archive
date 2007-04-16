@@ -2,8 +2,8 @@ using System;
 using System.Xml;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {

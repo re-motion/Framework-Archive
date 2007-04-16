@@ -4,7 +4,7 @@ using System.Xml;
 using Rubicon.Data.DomainObjects.Schemas;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
 // TODO for all configuration loaders: Check if every field is trimmed during loading.
   public class BaseFileLoader

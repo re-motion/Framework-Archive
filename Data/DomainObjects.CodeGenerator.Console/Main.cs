@@ -3,6 +3,8 @@ using System.IO;
 using System.Collections;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Legacy;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -35,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
       {
         PersistenceConfiguration persistenceConfiguration = DomainObjectsConfiguration.Current.Storage;
 
-        MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader(Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
+        MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create(Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
         {

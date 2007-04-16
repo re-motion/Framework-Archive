@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -19,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 
     public const string CreateTestDataFileName = "DataDomainObjectsLegacy_CreateTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Mapping.xml");
+    private static readonly MappingConfiguration s_mappingConfiguration = XmlBasedMappingConfiguration.Create (@"Mapping.xml");
 
     // member fields
 

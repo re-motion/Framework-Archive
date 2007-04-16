@@ -3,14 +3,15 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.Schemas;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Schemas;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader
+namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public class MappingLoader : BaseFileLoader, IMappingLoader
   {
@@ -19,12 +20,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigu
     // static members and constants
 
     [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public const string ConfigurationAppSettingKey = MappingConfiguration.ConfigurationAppSettingKey;
+    public const string ConfigurationAppSettingKey = XmlBasedMappingConfiguration.ConfigurationAppSettingKey;
  
     [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public const string DefaultConfigurationFile = MappingConfiguration.DefaultConfigurationFile;
+    public const string DefaultConfigurationFile = XmlBasedMappingConfiguration.DefaultConfigurationFile;
 
-    [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (). (Version 1.7.42", true)]
+    [Obsolete ("Use MappingConfiguration.Create (). (Version 1.7.42", true)]
     public static MappingLoader Create ()
     {
       return new MappingLoader (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile), true);

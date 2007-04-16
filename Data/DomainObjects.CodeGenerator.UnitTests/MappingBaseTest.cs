@@ -1,6 +1,8 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Configuration;
+using Rubicon.Data.DomainObjects.Legacy;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -65,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     [SetUp]
     public virtual void SetUp()
     {
-      _mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader ("Mapping.xml", false);
+      _mappingConfiguration = XmlBasedMappingConfiguration.Create ("Mapping.xml", false);
 
       _orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
       _orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");

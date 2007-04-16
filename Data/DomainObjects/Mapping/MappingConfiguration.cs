@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -12,12 +12,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     // types
 
     // static members and constants
-
-    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
-
-    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public const string DefaultConfigurationFile = "Mapping.xml";
 
 
     private static MappingConfiguration s_mappingConfiguration;
@@ -31,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           lock (typeof (MappingConfiguration))
           {
             if (s_mappingConfiguration == null)
-              s_mappingConfiguration = new MappingConfiguration(DomainObjectsConfiguration.Current.MappingLoader.MappingLoader);
+              s_mappingConfiguration = new MappingConfiguration (DomainObjectsConfiguration.Current.MappingLoader.MappingLoader);
           }
         }
 
@@ -63,28 +57,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public static MappingConfiguration CreateConfigurationFromFileBasedLoader ()
-    {
-      return CreateConfigurationFromFileBasedLoader (
-          LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
-          true);
-    }
-
-    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public static MappingConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile)
-    {
-      return CreateConfigurationFromFileBasedLoader (configurationFile, true);
-    }
-
-    [Obsolete ("Check after Refactoring. (Version 1.7.42)")]
-    public static MappingConfiguration CreateConfigurationFromFileBasedLoader (string configurationFile, bool resolveTypes)
-    {
-      Type mappingLoaderType = TypeUtility.GetType ("Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.FileBasedConfigurationLoader.MappingLoader", true, false);
-      IMappingLoader mappingLoader = (IMappingLoader) Activator.CreateInstance (mappingLoaderType, configurationFile, resolveTypes);
-      return new MappingConfiguration (mappingLoader);
-    }
-
     private static ArgumentException CreateArgumentException (Exception innerException, string argumentName, string message, params object[] args)
     {
       return new ArgumentException (string.Format (message, args), argumentName, innerException);
@@ -103,16 +75,16 @@ namespace Rubicon.Data.DomainObjects.Mapping
     
     // construction and disposing
 
-    [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string). (Version 1.7.42)", true)]
+    [Obsolete ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile)
     {
-      throw new InvalidOperationException ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string).");
+      throw new InvalidOperationException ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string).");
     }
 
-    [Obsolete ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string, bool). (Version 1.7.42)", true)]
+    [Obsolete ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool). (Version 1.7.42)", true)]
     public MappingConfiguration (string configurationFile, bool resolveTypes)
     {
-      throw new InvalidOperationException ("Use MappingConfiguration.CreateConfigurationFromFileBasedLoader (string, bool).");
+      throw new InvalidOperationException ("Use Rubicon.Data.DomainObjects.Legacy.Mapping.XmlBasedMappingConfiguration.Create (string, bool).");
     }
 
     public MappingConfiguration (IMappingLoader loader)
@@ -142,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     /// <summary>
     /// Gets the application name that is specified in the XML configuration file. 
     /// </summary>
-    [Obsolete ("Use Loader.GetApplicationName() instead. (Version 1.7.42)", true)]
+    [Obsolete ("Querying the ApplicationName after the loading has completed is no longer supported. (Version 1.7.42)", true)]
     public string ApplicationName
     {
       get { throw new NotImplementedException ("Use Loader.GetApplicationName() instead."); }
@@ -151,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     /// <summary>
     /// Gets the XML configuration file.
     /// </summary>
-    [Obsolete ("Use Loader.ConfigurationFile instead. (Version 1.7.42)", true)]
+    [Obsolete ("Querying the ConfigurationFile after the loading has completed is no longer supported. (Version 1.7.42)", true)]
     public string ConfigurationFile
     {
       get { throw new NotImplementedException ("Use Loader.ConfigurationFile instead."); }
@@ -218,3 +190,4 @@ namespace Rubicon.Data.DomainObjects.Mapping
     }
   }
 }
+

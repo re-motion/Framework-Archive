@@ -1,13 +1,13 @@
 1.7.42.0
 ========
 
-- Klassen ClassDefinitionLoader, MappingLoader, RelationDefinitionLoader StorageProviderConfigurationLoader vom Namespace 
+- Klassen ClassDefinitionLoader, MappingLoader, RelationDefinitionLoader vom Namespace 
   Rubicon.Data.DomainObjects.ConfigurationLoader in Assembly Rubicon.Data.DomainObjects in den Namespace 
-  Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader in Assembly Rubicon.Data.DomainObjects.Legacy verschoben.
+  Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader in Assembly Rubicon.Data.DomainObjects.Legacy verschoben.
 
 - Klassen BaseFileLoader, ConfigurationNamespaceManager, LoaderUtility, PrefixNamespace, QueryConfigurationLoader vom Namespace 
   Rubicon.Data.DomainObjects.ConfigurationLoader in Assembly Rubicon.Data.DomainObjects in den Namespace 
-  Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader verschoben.
+  Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader verschoben.
 
 - Contructor Interface der Klasse SchemaLoader wurde verändert: Statt dem Constructor mit SchemaType sind nun die well-known Instanzen
   SchemaLoader.Queries, LegacySchemaLoader.Mapping, und LegacySchemaLoader.StorageProviders zu verwenden.

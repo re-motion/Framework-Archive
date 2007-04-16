@@ -5,6 +5,7 @@ using System.IO;
 using System.Web.UI;
 using System.Xml;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 using Rubicon.Data.DomainObjects.ObjectBinding.Web.Design;
@@ -57,7 +58,7 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     try
     {
       mappingFile = GetMappingFilePath (projectPath);
-      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (mappingFile, true));
+      MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (mappingFile, true));
     }
     catch (Exception e)
     {
@@ -88,8 +89,8 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     //TODO: use MappingLoader.DefaultConfigurationFile here
     return GetFilePathFromWebConfig (
         projectPath,
-        MappingConfiguration.ConfigurationAppSettingKey,
-        projectPath + @"\bin\" + MappingConfiguration.DefaultConfigurationFile);
+        XmlBasedMappingConfiguration.ConfigurationAppSettingKey,
+        projectPath + @"\bin\" + XmlBasedMappingConfiguration.DefaultConfigurationFile);
   }
 
   private string GetFilePathFromWebConfig (string projectPath, string configurationKey, string defaultPath)

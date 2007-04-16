@@ -4,7 +4,7 @@ using System.IO;
 using System.Xml;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public sealed class LoaderUtility
   {

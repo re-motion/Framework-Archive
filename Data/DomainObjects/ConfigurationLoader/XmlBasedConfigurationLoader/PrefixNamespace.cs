@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.ConfigurationLoader.FileBasedConfigurationLoader
+namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
   public class PrefixNamespace
   {

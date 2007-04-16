@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Database;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
@@ -31,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
 
       MappingConfiguration mappingConfiguration =
-          MappingConfiguration.CreateConfigurationFromFileBasedLoader (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Mapping.xml"));
+          XmlBasedMappingConfiguration.Create (Path.Combine (AppDomain.CurrentDomain.BaseDirectory, "Mapping.xml"));
       MappingConfiguration.SetCurrent (mappingConfiguration);
       TestMappingConfiguration.Reset ();
 

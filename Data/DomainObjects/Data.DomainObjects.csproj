@@ -175,19 +175,19 @@
     <Compile Include="ConfigurationException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\BaseFileLoader.cs">
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\BaseFileLoader.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\ConfigurationNamespaceManager.cs">
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\ConfigurationNamespaceManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\LoaderUtility.cs">
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\LoaderUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\PrefixNamespace.cs">
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\PrefixNamespace.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader\FileBasedConfigurationLoader\QueryConfigurationLoader.cs">
+    <Compile Include="ConfigurationLoader\XmlBasedConfigurationLoader\QueryConfigurationLoader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataContainer.cs">

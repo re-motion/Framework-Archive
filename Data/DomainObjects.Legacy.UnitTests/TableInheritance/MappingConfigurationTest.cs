@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       XmlBasedClassDefinition personClass = new XmlBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader ("DataDomainObjectsLegacy_MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create ("DataDomainObjectsLegacy_MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       XmlBasedClassDefinition personClass = new XmlBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader ("DataDomainObjectsLegacy_MappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create ("DataDomainObjectsLegacy_MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     [Test]
     public void TableInheritanceMapping ()
     {
-      MappingConfiguration mappingConfiguration = MappingConfiguration.CreateConfigurationFromFileBasedLoader ("DataDomainObjectsLegacy_TableInheritanceMapping.xml");
+      MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create ("DataDomainObjectsLegacy_TableInheritanceMapping.xml");
       ClassDefinition domainBaseClass = mappingConfiguration.ClassDefinitions.GetMandatory (typeof (DomainBase));
       Assert.IsNull (domainBaseClass.MyEntityName);
     }
@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     [ExpectedException (typeof (MappingException))]
     public void ConstructorValidates ()
     {
-      MappingConfiguration.CreateConfigurationFromFileBasedLoader ("DataDomainObjectsLegacy_TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
+      XmlBasedMappingConfiguration.Create ("DataDomainObjectsLegacy_TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml");
     }
   }
 }

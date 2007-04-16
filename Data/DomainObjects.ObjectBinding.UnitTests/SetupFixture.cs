@@ -5,6 +5,8 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -33,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
           new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection["TestDomain"]);
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), persistenceConfiguration));
-      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (GetFullPath (@"DataDomainObjectsObjectBinding_Mapping.xml")));
+      MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (GetFullPath (@"DataDomainObjectsObjectBinding_Mapping.xml")));
       QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"DataDomainObjectsObjectBinding_Queries.xml")));
 
       SqlConnection.ClearAllPools();

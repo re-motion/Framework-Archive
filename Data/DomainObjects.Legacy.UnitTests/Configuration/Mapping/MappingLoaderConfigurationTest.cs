@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.FileBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Development.UnitTesting.Configuration;
 
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       string xmlFragment =
           @"<mapping>
-            <loader type=""Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.FileBasedConfigurationLoader.MappingLoader""/>
+            <loader type=""Rubicon.Data.DomainObjects.Legacy::ConfigurationLoader.XmlBasedConfigurationLoader.MappingLoader""/>
           </mapping>";
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
