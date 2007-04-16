@@ -7,7 +7,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
-  class DomainObjectPropertyInterceptorSelector : IInterceptorSelector<DomainObject>
+	[Serializable]
+	class DomainObjectPropertyInterceptorSelector : IInterceptorSelector<DomainObject>
   {
     private DomainObjectPropertyInterceptor _interceptor;
 
