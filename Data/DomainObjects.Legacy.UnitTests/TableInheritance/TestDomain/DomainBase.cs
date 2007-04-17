@@ -44,13 +44,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public string CreatedBy
     {
-      get { return DataContainer.GetString ("CreatedBy"); }
+      get { return (string) DataContainer.GetValue ("CreatedBy"); }
       set { DataContainer.SetValue ("CreatedBy", value); }
     }
 
     public DateTime CreatedAt
     {
-      get { return DataContainer.GetDateTime ("CreatedAt"); }
+      get { return (DateTime) DataContainer.GetValue ("CreatedAt"); }
       set { DataContainer.SetValue ("CreatedAt", value); }
     }
 

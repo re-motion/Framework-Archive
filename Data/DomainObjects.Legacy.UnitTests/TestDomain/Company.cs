@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public string Name
     {
-      get { return DataContainer.GetString ("Name"); }
+      get { return (string) DataContainer.GetValue ("Name"); }
       set { DataContainer.SetValue ("Name", value); }
     }
 

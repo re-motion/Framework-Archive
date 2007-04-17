@@ -102,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Unchanged, _oldCustomerOfNewOrder.State);
       Assert.AreEqual (StateType.Changed, _oldOrder.State);
       Assert.AreEqual (StateType.New, newOrder.State);
-      Assert.AreEqual (_customer.ID, newOrder.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreEqual (_customer.ID, newOrder.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
 
       Assert.AreSame (newOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, newOrder.Customer);

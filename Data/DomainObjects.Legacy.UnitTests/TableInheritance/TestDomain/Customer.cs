@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public DateTime CustomerSince
     {
-      get { return DataContainer.GetDateTime ("CustomerSince"); }
+      get { return (DateTime) DataContainer.GetValue ("CustomerSince"); }
       set { DataContainer.SetValue ("CustomerSince", value); }
     }
 

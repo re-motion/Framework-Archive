@@ -209,7 +209,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Subordinates.Add (_subordinate);
 
-      Assert.AreEqual (_supervisor.ID, _subordinate.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
+      Assert.AreEqual (_supervisor.ID, _subordinate.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
     }
 
     [Test]

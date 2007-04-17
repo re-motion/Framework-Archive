@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public DateTime CreatedAt
     {
-      get { return DataContainer.GetDateTime ("CreatedAt"); }
+      get { return (DateTime) DataContainer.GetValue ("CreatedAt"); }
       set { DataContainer.SetValue ("CreatedAt", value); }
     }
   }

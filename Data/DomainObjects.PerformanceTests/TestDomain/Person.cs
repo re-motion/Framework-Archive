@@ -43,13 +43,13 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     public string FirstName
     {
-      get { return DataContainer.GetString ("FirstName"); }
+      get { return (string) DataContainer.GetValue ("FirstName"); }
       set { DataContainer.SetValue ("FirstName", value); }
     }
 
     public string LastName
     {
-      get { return DataContainer.GetString ("LastName"); }
+      get { return (string) DataContainer.GetValue ("LastName"); }
       set { DataContainer.SetValue ("LastName", value); }
     }
   }

@@ -39,25 +39,25 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public string Street
     {
-      get { return DataContainer.GetString ("Street"); }
+      get { return (string) DataContainer.GetValue ("Street"); }
       set { DataContainer.SetValue ("Street", value); }
     }
 
     public string Zip
     {
-      get { return DataContainer.GetString ("Zip"); }
+      get { return (string) DataContainer.GetValue ("Zip"); }
       set { DataContainer.SetValue ("Zip", value); }
     }
 
     public string City
     {
-      get { return DataContainer.GetString ("City"); }
+      get { return (string) DataContainer.GetValue ("City"); }
       set { DataContainer.SetValue ("City", value); }
     }
 
     public string Country
     {
-      get { return DataContainer.GetString ("Country"); }
+      get { return (string) DataContainer.GetValue ("Country"); }
       set { DataContainer.SetValue ("Country", value); }
     }
 

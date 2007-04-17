@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public string Name
     {
-      get { return DataContainer.GetString ("Name"); }
+      get { return (string) DataContainer.GetValue ("Name"); }
       set { DataContainer.SetValue ("Name", value); }
     }
 

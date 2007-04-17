@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (6789.321, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
         Assert.AreEqual ("abcdeföäü", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
         Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
-        ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
 
         classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = true;
         classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"] = (byte) 42;
@@ -108,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (42.42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
         Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
         Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
-        ResourceManager.IsEqualToImage2 (classWithAllDataTypes.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+        ResourceManager.IsEqualToImage2 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
       }
     }
 
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (new NaInt32 (-42), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
         Assert.AreEqual (new NaInt64 (-41), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
         Assert.AreEqual (new NaSingle (-40F), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
       }
     }
 
@@ -201,7 +201,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"]);
         Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"]);
         Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty"]);
-        ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
 
         classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"] = NaBoolean.Null;
         classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"] = NaByte.Null;
@@ -692,7 +692,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer computerContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Computer1);
-        Assert.IsNull (computerContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
+        Assert.IsNull (computerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
       }
     }
 

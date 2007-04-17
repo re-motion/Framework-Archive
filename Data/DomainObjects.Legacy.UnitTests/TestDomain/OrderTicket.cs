@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public string FileName
     {
-      get { return DataContainer.GetString ("FileName"); }
+      get { return (string) DataContainer.GetValue ("FileName"); }
       set { DataContainer.SetValue ("FileName", value); }
     }
 

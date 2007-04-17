@@ -39,19 +39,19 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public string FirstName
     {
-      get { return DataContainer.GetString ("FirstName"); }
+      get { return (string) DataContainer.GetValue ("FirstName"); }
       set { DataContainer.SetValue ("FirstName", value); }
     }
 
     public string LastName
     {
-      get { return DataContainer.GetString ("LastName"); }
+      get { return (string) DataContainer.GetValue ("LastName"); }
       set { DataContainer.SetValue ("LastName", value); }
     }
 
     public DateTime DateOfBirth
     {
-      get { return DataContainer.GetDateTime ("DateOfBirth"); }
+      get { return (DateTime) DataContainer.GetValue ("DateOfBirth"); }
       set { DataContainer.SetValue ("DateOfBirth", value); }
     }
 

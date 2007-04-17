@@ -16,8 +16,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DataContainer customerContainer = Provider.LoadDataContainer (DomainObjectIDs.Customer);
       Assert.IsNotNull (customerContainer);
       Assert.AreEqual (DomainObjectIDs.Customer, customerContainer.ID);
-      Assert.AreEqual ("UnitTests", customerContainer.GetString ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.CreatedBy"));
-      Assert.AreEqual ("Zaphod", customerContainer.GetString ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person.FirstName"));
+      Assert.AreEqual ("UnitTests", customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.CreatedBy"));
+      Assert.AreEqual ("Zaphod", customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person.FirstName"));
       Assert.AreEqual (CustomerType.Premium, customerContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer.CustomerType"));
     }
 

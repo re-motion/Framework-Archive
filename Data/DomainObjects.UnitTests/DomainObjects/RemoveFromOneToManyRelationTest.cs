@@ -208,7 +208,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Subordinates.Remove (_subordinate);
 
-      Assert.IsNull (_subordinate.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
+      Assert.IsNull ((ObjectID) _subordinate.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
     }
 
     [Test]

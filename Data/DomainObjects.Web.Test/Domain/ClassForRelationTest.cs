@@ -41,7 +41,7 @@ public class ClassForRelationTest : BindableDomainObject
 
   public string Name
   {
-    get { return DataContainer.GetString ("Name"); }
+    get { return (string) DataContainer.GetValue ("Name"); }
     set { DataContainer.SetValue ("Name", value); }
   } 
 

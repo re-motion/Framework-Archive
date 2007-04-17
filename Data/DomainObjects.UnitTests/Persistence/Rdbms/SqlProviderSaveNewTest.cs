@@ -98,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (42.42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"]);
         Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"]);
         Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"]);
-        ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+        ResourceManager.IsEqualToImage1 ((byte[]) classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"]);
 
         Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"]);
         Assert.AreEqual (new NaByte (21), classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"]);
@@ -148,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer existingSubordinateContainer = Provider.LoadDataContainer (existingSubordinate.ID);
 
       Assert.IsNotNull (newSupervisorContainer);
-      Assert.AreEqual (newSupervisorContainer.ID, existingSubordinateContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
+      Assert.AreEqual (newSupervisorContainer.ID, existingSubordinateContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
     }
 
     [Test]
@@ -169,8 +169,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       DataContainer loadedDataContainer = Provider.LoadDataContainer (newObjectID);
 
       Assert.IsNotNull (loadedDataContainer);
-      Assert.AreEqual (DomainObjectIDs.Customer1, loadedDataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.AreEqual (DomainObjectIDs.Official1, loadedDataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
+      Assert.AreEqual (DomainObjectIDs.Customer1, loadedDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreEqual (DomainObjectIDs.Official1, loadedDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
     }
 
     [Test]
@@ -195,8 +195,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Assert.IsNotNull (newCustomerContainer);
       Assert.IsNotNull (newOrderContainer);
-      Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
-      Assert.AreEqual (DomainObjectIDs.Official1, newOrderContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
+      Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
+      Assert.AreEqual (DomainObjectIDs.Official1, newOrderContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
     }
 
     [Test]
@@ -245,7 +245,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
-        ResourceManager.IsEmptyImage (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+        ResourceManager.IsEmptyImage ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
       }
     }
 
@@ -270,7 +270,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
-        ResourceManager.IsEqualToImageLarger1MB (dataContainer.GetBytes ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
+        ResourceManager.IsEqualToImageLarger1MB ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
       }
     }
 

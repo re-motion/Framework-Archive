@@ -336,8 +336,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order.OrderTicket = _newOrderTicket;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsNull (_oldOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
       Assert.AreSame (_order, _newOrderTicket.Order);
@@ -350,8 +350,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newOrderTicket.Order = _order;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.IsNull (_oldOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_order, _newOrderTicket.Order);
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);

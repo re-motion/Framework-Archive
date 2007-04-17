@@ -30,13 +30,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public int Size
     {
-      get { return DataContainer.GetInt32 ("Size"); }
+      get { return (int) DataContainer.GetValue ("Size"); }
       set { DataContainer.SetValue ("Size", value); }
     }
 
     public DateTime CreatedAt
     {
-      get { return DataContainer.GetDateTime ("CreatedAt"); }
+      get { return (DateTime) DataContainer.GetValue ("CreatedAt"); }
       set { DataContainer.SetValue ("CreatedAt", value); }
     }
   }

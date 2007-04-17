@@ -58,8 +58,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.RegisterExistingDataContainer (container2);
 
       container1.SetValue (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber", 
-          container1.GetInt32 ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber") + 1);
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+          (int) container1.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber") + 1);
 
       DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed });
       Assert.IsNotNull (domainObjects);

@@ -92,8 +92,9 @@
   Find what: public {.*}\n:b*\{:b*\n:b*get.*\n:b*\}*\n
   Replace with: public abstract \1 { get; }\n
 
-- Removed QueryDefinition.QueryID
-- Removed Query.QueryID
+- QueryDefinition.QueryID entfernt.
+- Query.QueryID entfernt.
+- Strong-Typed Get-Mehoden auf DataContainer entfernt. Statt dessen ist der Indexer mit einem Cast zu verwenden.
 
 1.7.37.0
 ========

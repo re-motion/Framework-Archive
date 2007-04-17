@@ -39,13 +39,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
 
     public DateTime HistoryDate
     {
-      get { return DataContainer.GetDateTime ("HistoryDate"); }
+      get { return (DateTime) DataContainer.GetValue ("HistoryDate"); }
       set { DataContainer.SetValue ("HistoryDate", value); }
     }
 
     public string Text
     {
-      get { return DataContainer.GetString ("Text"); }
+      get { return (string) DataContainer.GetValue ("Text"); }
       set { DataContainer.SetValue ("Text", value); }
     }
 

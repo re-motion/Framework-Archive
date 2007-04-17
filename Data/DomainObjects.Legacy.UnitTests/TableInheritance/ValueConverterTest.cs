@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
 
@@ -11,13 +10,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
   [TestFixture]
   public class ValueConverterTest : SqlProviderBaseTest
   {
-    ValueConverter _converter = new ValueConverter ();
+    ValueConverter _converter;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _converter = new ValueConverter ();
+      _converter = new ValueConverter (false);
       Provider.Connect ();
     }
 

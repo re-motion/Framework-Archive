@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public int SupplierQuality
     {
-      get { return DataContainer.GetInt32 ("SupplierQuality"); }
+      get { return (int) DataContainer.GetValue ("SupplierQuality"); }
       set { DataContainer.SetValue ("SupplierQuality", value); }
     }
   }

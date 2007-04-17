@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public string SerialNumber
     {
-      get { return DataContainer.GetString ("SerialNumber"); }
+      get { return (string) DataContainer.GetValue ("SerialNumber"); }
       set { DataContainer.SetValue ("SerialNumber", value); }
     }
 

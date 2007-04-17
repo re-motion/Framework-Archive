@@ -150,14 +150,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void LoadDataContainerWithRelation ()
     {
       DataContainer orderTicketContainer = Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1);
-      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      Assert.AreEqual (DomainObjectIDs.Order1, orderTicketContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
     }
 
     [Test]
     public void LoadDataContainerWithRelationAndInheritance ()
     {
       DataContainer ceoContainer = Provider.LoadDataContainer (DomainObjectIDs.Ceo7);
-      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetObjectID ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
+      Assert.AreEqual (DomainObjectIDs.Partner2, ceoContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company"));
     }
 
     [Test]

@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     public NaDateTime CustomerSince
     {
-      get { return DataContainer.GetNaDateTime ("CustomerSince"); }
+      get { return (NaDateTime) DataContainer.GetValue ("CustomerSince"); }
       set { DataContainer.SetValue ("CustomerSince", value); }
     }
 
