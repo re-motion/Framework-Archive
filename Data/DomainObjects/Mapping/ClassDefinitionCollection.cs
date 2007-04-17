@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -182,7 +183,7 @@ public class ClassDefinitionCollection : CommonCollection
   private void ValidateRootClass (ClassDefinition rootClass)
   {
     ValidateEntireInheritanceHierarchyIsPartOfCollection (rootClass);
-    rootClass.ValidateInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
+    rootClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     ValidateConcreteEntityNames (rootClass);
   }
 

@@ -77,9 +77,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition (
-          (string) "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation",
-          (string) "ClassWithInvalidBidirectionalRelation",
-          (string) "TestDomain", type, (bool) false);
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation",
+          "ClassWithInvalidBidirectionalRelation",
+          "TestDomain", type, false);
       _classDefinitions.Add (classDefinition);
       PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);

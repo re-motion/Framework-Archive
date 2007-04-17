@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [Ignore]
+    [Ignore ("Not implemented: All assemblies must be available during start-up.")]
     public void LazyLoadReferencedAssembly()
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomain.GetType (

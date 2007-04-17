@@ -305,9 +305,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
       // Expectation: no exception
     }
-
+    
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+       "Proeprty 'Name' cannot be added to class 'Company', because it already defines a property with the same name.")]
     public void AddDuplicateProperty ()
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
@@ -317,31 +318,28 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Customer' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Proeprty 'Name' cannot be added to class 'Customer', because base class 'Company' already defines a property with the same name.")]
     public void AddDuplicatePropertyBaseClass ()
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      XmlBasedClassDefinition customerClass = new XmlBasedClassDefinition (
-          "Customer", "Company", "TestDomain", typeof (Customer), companyClass);
-
+      XmlBasedClassDefinition customerClass = new XmlBasedClassDefinition ("Customer", "Company", "TestDomain", typeof (Customer), companyClass);
       customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Supplier' already contains the property 'Name'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Proeprty 'Name' cannot be added to class 'Supplier', because base class 'Company' already defines a property with the same name.")]
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
       companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
-      XmlBasedClassDefinition partnerClass = new XmlBasedClassDefinition (
-          "Partner", "Company", "TestDomain", typeof (Partner), companyClass);
+      XmlBasedClassDefinition partnerClass = new XmlBasedClassDefinition ("Partner", "Company", "TestDomain", typeof (Partner), companyClass);
 
-      XmlBasedClassDefinition supplierClass = new XmlBasedClassDefinition (
-          "Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);
-
+      XmlBasedClassDefinition supplierClass = new XmlBasedClassDefinition ("Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);
       supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     }
 

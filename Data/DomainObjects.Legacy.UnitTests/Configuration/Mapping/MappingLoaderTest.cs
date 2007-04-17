@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting.Configuration;
 
@@ -153,12 +154,24 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' cannot refer to itself as base class.")]
+    [ExpectedException (typeof (MappingException))]
     public void MappingWithInvalidBaseClass()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithInvalidDerivation.xml", true);
 
-      ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
+      try
+      {
+        ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
+      }
+      catch (MappingException ex)
+      {
+        string expectedMessage = string.Format (
+            "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.", 
+            typeof (Company).AssemblyQualifiedName, "Company", typeof (Company).AssemblyQualifiedName, "Company");
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+        throw;
+      }
     }
 
     [Test]
@@ -172,8 +185,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Class 'Customer' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Class 'Customer' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseAndDerivedClass()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseAndDerivedClass.xml", true);
@@ -182,8 +195,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Class 'Supplier' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Class 'Supplier' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", true);
@@ -272,9 +285,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The relation 'CustomerToOrder' is not correctly defined. For relations with only one relation property the relation property must define the opposite class."
-        )]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "The relation 'CustomerToOrder' is not correctly defined. "
+        + "For relations with only one relation property the relation property must define the opposite class.")]
     public void MappingWithOnlyOneEndPoint()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOnlyOneEndPoint.xml", true);
@@ -283,8 +296,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'Order' of relation 'OrderToOrderTicket' defines a column and a cardinality equal to 'many', which is not valid.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Property 'Order' of relation 'OrderToOrderTicket' defines a column and a cardinality equal to 'many', which is not valid.")]
     public void MappingWithColumnAndCardinalityMany()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithColumnAndCardinalityMany.xml", true);
@@ -293,7 +306,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Both property names of relation 'OrderToOrderTicket' are 'OrderTicket', which is not valid.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Both property names of relation 'OrderToOrderTicket' are 'OrderTicket', which is not valid.")]
     public void MappingWithRelationAndIdenticalPropertyNames()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithRelationAndIdenticalPropertyNames.xml", true);
@@ -342,9 +356,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The relation 'CustomerToCustomer' is not correctly defined. A relation must either have exactly two relation properties or the relation property must"
-            + " have an opposite class defined.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "The relation 'CustomerToCustomer' is not correctly defined. "
+        + "A relation must either have exactly two relation properties or the relation property must have an opposite class defined.")]
     public void MappingWithMoreThanTwoEndPoints()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithMoreThanTwoEndPoints.xml", true);
@@ -353,8 +367,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The relation 'CustomerToOrder' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "The relation 'CustomerToOrder' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.")]
     public void MappingWithOppositeClassAndCardinalityMany()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOppositeClassAndCardinalityMany.xml", true);
@@ -363,9 +377,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The relation 'CustomerToOrder' is not correctly defined. Because the relation is bidirectional the relation property 'Customer' must not define its opposite class."
-        )]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "The relation 'CustomerToOrder' is not correctly defined. "
+        + "Because the relation is bidirectional the relation property 'Customer' must not define its opposite class.")]
     public void MappingWithOppositeClassAndTwoRelationProperties()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithOppositeClassAndTwoRelationProperties.xml", true);

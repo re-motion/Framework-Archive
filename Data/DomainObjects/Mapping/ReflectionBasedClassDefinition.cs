@@ -16,7 +16,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
     }
 
-    public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
+    public ReflectionBasedClassDefinition (
+        string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
         : base (id, entityName, storageProviderID, classType, (ClassDefinition) baseClass)
     {
       _isAbstract = isAbstract;
@@ -37,12 +38,52 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _isAbstract; }
     }
 
-    //TODO: checks
-    protected internal override void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
+    public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
     {
       ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
 
       base.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
+
+      foreach (PropertyDefinition myPropertyDefinition in MyPropertyDefinitions)
+      {
+        List<PropertyDefinition> basePropertyDefinitions;
+        if (!allPropertyDefinitionsInInheritanceHierarchy.TryGetValue (myPropertyDefinition.StorageSpecificName, out basePropertyDefinitions))
+        {
+          basePropertyDefinitions = new List<PropertyDefinition>();
+          allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, basePropertyDefinitions);
+        }
+
+        foreach (PropertyDefinition basePropertyDefinition in basePropertyDefinitions)
+        {
+          bool isEntityDefined = GetEntityName() != null;
+          bool isEntityDefinedForBaseProperty = basePropertyDefinition.ClassDefinition.GetEntityName() != null;
+          bool isBasePropertyPersistedInSameEntity = basePropertyDefinition.ClassDefinition.GetEntityName() == GetEntityName();
+          
+          if (!isEntityDefined && !isEntityDefinedForBaseProperty
+              || isBasePropertyPersistedInSameEntity
+              || isEntityDefined && !isEntityDefinedForBaseProperty && !isBasePropertyPersistedInSameEntity)
+          {
+            throw CreateMappingException (
+                "Property '{0}' of class '{1}' must not define storage specific name '{2}', because class '{3}', "
+                + "persisted in the same entity, already defines property '{4}' with the same storage specific name.",
+                myPropertyDefinition.PropertyName,
+                ID,
+                myPropertyDefinition.StorageSpecificName,
+                basePropertyDefinition.ClassDefinition.ID,
+                basePropertyDefinition.PropertyName);
+          }
+        }
+
+        basePropertyDefinitions.Add (myPropertyDefinition);
+      }
+
+      foreach (ClassDefinition derivedClassDefinition in DerivedClasses)
+        derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
+    }
+
+    private MappingException CreateMappingException (string message, params object[] args)
+    {
+      return new MappingException (string.Format (message, args));
     }
   }
 }

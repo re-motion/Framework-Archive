@@ -19,7 +19,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
       set { }
     }
 
-    [AutomaticProperty]
     public abstract int Int32 { get; set; }
 
     public virtual string String
@@ -32,10 +31,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
       set { SetPropertyValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String", value); }
     }
 
-    [AutomaticProperty]
     public abstract ClassWithOneSideRelationProperties UnidirectionalOneToOne { get; set; }
 
-    [AutomaticProperty]
     public abstract ObjectList<ClassWithOneSideRelationProperties> UnidirectionalOneToMany { get; }
 
     private string PrivateString

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -52,33 +53,19 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       }
     }
 
-    protected override void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
+    public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
     {
       ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
 
       base.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
 
-      if (BaseClass != null)
-      {
-        PropertyDefinitionCollection basePropertyDefinitions = BaseClass.GetPropertyDefinitions ();
-        foreach (PropertyDefinition propertyDefinition in MyPropertyDefinitions)
-        {
-          if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
-          {
-            throw CreateMappingException (
-                "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
-                ID,
-                propertyDefinition.PropertyName,
-                basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
-          }
-        }
-      }
-
       foreach (PropertyDefinition myPropertyDefinition in MyPropertyDefinitions)
       {
-        if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.StorageSpecificName))
+        List<PropertyDefinition> basePropertyDefinitions;
+        if (allPropertyDefinitionsInInheritanceHierarchy.TryGetValue (myPropertyDefinition.StorageSpecificName, out basePropertyDefinitions) 
+            && basePropertyDefinitions != null && basePropertyDefinitions.Count > 0)
         {
-          PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName];
+          PropertyDefinition basePropertyDefinition = basePropertyDefinitions[0];
 
           throw CreateMappingException (
               "Property '{0}' of class '{1}' must not define column name '{2}',"
@@ -90,7 +77,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
               basePropertyDefinition.PropertyName);
         }
 
-        allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, myPropertyDefinition);
+        allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName] = 
+            new List<PropertyDefinition> (new PropertyDefinition[] { myPropertyDefinition });
       }
 
       foreach (XmlBasedClassDefinition derivedClassDefinition in DerivedClasses)

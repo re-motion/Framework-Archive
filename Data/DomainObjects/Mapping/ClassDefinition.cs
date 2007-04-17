@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -491,14 +492,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
-      if (baseClass == this)
-        throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
-
       CheckBaseClass (baseClass, _id, _storageProviderID, _classType);
       PerformSetBaseClass (baseClass);
     }
 
-    protected internal virtual void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
+    public virtual void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
     {
       ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
 
@@ -522,43 +520,21 @@ namespace Rubicon.Data.DomainObjects.Mapping
             _baseClass.GetEntityName());
       }
 
-      //if (_baseClass != null)
-      //{
-      //  PropertyDefinitionCollection basePropertyDefinitions = _baseClass.GetPropertyDefinitions();
-      //  foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
-      //  {
-      //    if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
-      //    {
-      //      throw CreateMappingException (
-      //          "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
-      //          _id,
-      //          propertyDefinition.PropertyName,
-      //          basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
-      //    }
-      //  }
-      //}
-
-      //foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
-      //{
-      //  if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.StorageSpecificName))
-      //  {
-      //    PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName];
-
-      //    throw CreateMappingException (
-      //        "Property '{0}' of class '{1}' must not define column name '{2}',"
-      //        + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
-      //        myPropertyDefinition.PropertyName,
-      //        _id,
-      //        myPropertyDefinition.StorageSpecificName,
-      //        basePropertyDefinition.ClassDefinition.ID,
-      //        basePropertyDefinition.PropertyName);
-      //  }
-
-      //  allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, myPropertyDefinition);
-      //}
-
-      //foreach (ClassDefinition derivedClassDefinition in _derivedClasses)
-      //  derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
+      if (BaseClass != null)
+      {
+        PropertyDefinitionCollection basePropertyDefinitions = BaseClass.GetPropertyDefinitions ();
+        foreach (PropertyDefinition propertyDefinition in MyPropertyDefinitions)
+        {
+          if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
+          {
+            throw CreateMappingException (
+                "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
+                ID,
+                propertyDefinition.PropertyName,
+                basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
+          }
+        }
+      }
     }
 
     internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
@@ -586,10 +562,18 @@ namespace Rubicon.Data.DomainObjects.Mapping
       PropertyDefinitionCollection allPropertyDefinitions = GetPropertyDefinitions();
       if (allPropertyDefinitions.Contains (args.PropertyDefinition.PropertyName))
       {
+        PropertyDefinition basePropertyDefinition = allPropertyDefinitions[args.PropertyDefinition.PropertyName];
+        string definingClass;
+        if (basePropertyDefinition.ClassDefinition == this)
+          definingClass = "it";
+        else
+          definingClass = string.Format ("base class '{0}'", basePropertyDefinition.ClassDefinition.ID);
+
         throw CreateMappingException (
-            "Class '{0}' already contains the property '{1}'.",
+            "Proeprty '{0}' cannot be added to class '{1}', because {2} already defines a property with the same name.",
+            args.PropertyDefinition.PropertyName,
             _id,
-            args.PropertyDefinition.PropertyName);
+            definingClass);
       }
     }
 

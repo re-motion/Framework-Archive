@@ -5,18 +5,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [DBTable]
   [TestDomain]
   [NotAbstract]
-  public abstract class ClassWithBothEndPointsOnSameClass : ReflectionBasedMappingTestDomainBase
+  public abstract class ClassWithBothEndPointsOnSameClass : DomainObject
   {
     protected ClassWithBothEndPointsOnSameClass (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
     {
     }
 
-    [AutomaticProperty]
     [DBBidirectionalRelation ("Children")]
     public abstract ClassWithBothEndPointsOnSameClass Parent { get; set; }
 
-    [AutomaticProperty]
     [DBBidirectionalRelation ("Parent")]
     public abstract ObjectList<ClassWithBothEndPointsOnSameClass> Children { get; }
   }

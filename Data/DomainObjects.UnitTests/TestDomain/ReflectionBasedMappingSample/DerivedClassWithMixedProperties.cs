@@ -1,10 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  [NotAbstractAttribute]
-  public abstract class DerivedClassWithMixedProperties: ClassWithMixedProperties
+  [NotAbstract]
+  public abstract class DerivedClassWithMixedProperties : ClassWithMixedProperties
   {
     protected DerivedClassWithMixedProperties (ClientTransaction clientTransaction, ObjectID objectID)
         : base (clientTransaction, objectID)
@@ -17,10 +16,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
       set { }
     }
 
-    [AutomaticProperty]
     public abstract string OtherString { get; set; }
 
-    [AutomaticProperty]
     [DBColumn ("NewString")]
     public new abstract string String { get; set; }
 

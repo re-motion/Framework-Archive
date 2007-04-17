@@ -71,7 +71,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [Ignore ("TODO: Implement")]
     [ExpectedException (typeof (MappingException), 
         ExpectedMessage = "Class 'Customer' must not specify an entity name 'DifferentEntityNameThanBaseClass'"
         + " which is different from inherited entity name 'TableInheritance_Person'.")]
@@ -140,10 +139,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [Ignore ("TODO: Implement")]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define column name 'NameColumn',"
-        + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same column name.")]
+    //[ExpectedException (typeof (MappingException),
+    //    ExpectedMessage = "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define column name 'NameColumn',"
+    //    + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same column name.")]
     public void ValidateWithSameColumnNameInDifferentInheritanceBranches ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase), true);
@@ -166,7 +164,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    [Ignore("TODO: Implement")]
     [ExpectedException (typeof (MappingException), 
         ExpectedMessage = "At least two classes in different inheritance branches derived from abstract class 'DomainBase'"
         + " specify the same entity name 'TableInheritance_Person', which is not allowed.")]

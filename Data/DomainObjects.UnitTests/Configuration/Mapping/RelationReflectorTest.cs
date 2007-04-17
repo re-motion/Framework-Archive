@@ -20,11 +20,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp();
       _classWithManySideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
-          (string) "ClassWithManySideRelationProperties", (string) "ClassWithManySideRelationProperties", (string) "TestDomain", typeof (ClassWithManySideRelationProperties), (bool) false);
+          "ClassWithManySideRelationProperties", "ClassWithManySideRelationProperties", "TestDomain", typeof (ClassWithManySideRelationProperties), false);
       _classWithOneSideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
-          (string) "ClassWithOneSideRelationProperties", (string) "ClassWithOneSideRelationProperties", (string) "TestDomain", typeof (ClassWithOneSideRelationProperties), (bool) false);
+          "ClassWithOneSideRelationProperties", "ClassWithOneSideRelationProperties", "TestDomain", typeof (ClassWithOneSideRelationProperties), false);
       _classWithBothEndPointsOnSameClassClassDefinition = new ReflectionBasedClassDefinition (
-          (string) "ClassWithBothEndPointsOnSameClass", (string) "ClassWithBothEndPointsOnSameClass", (string) "TestDomain", typeof (ClassWithBothEndPointsOnSameClass), (bool) false);
+          "ClassWithBothEndPointsOnSameClass", "ClassWithBothEndPointsOnSameClass", "TestDomain", typeof (ClassWithBothEndPointsOnSameClass), false);
 
       _classDefinitions = new ClassDefinitionCollection();
       _classDefinitions.Add (_classWithManySideRelationPropertiesClassDefinition);

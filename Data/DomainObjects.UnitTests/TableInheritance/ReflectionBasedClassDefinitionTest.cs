@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Utilities;
@@ -25,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       _addressClass = new ReflectionBasedClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address), false);
 
       _organizationalUnitClass = new ReflectionBasedClassDefinition (
-          "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, _domainBaseClass);  
+          "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, _domainBaseClass);
     }
 
     [Test]
@@ -111,6 +113,81 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Assert.IsNotNull (entityNames);
       Assert.AreEqual (1, entityNames.Length);
       Assert.AreEqual ("TableInheritance_Person", entityNames[0]);
+    }
+
+    [Test]
+    public void ValidateMappingWithDerivationInDifferentEntitiesAndMatchingColumnNames ()
+    {
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
+      ReflectionBasedClassDefinition organizationalUnit = new ReflectionBasedClassDefinition ("OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
+
+      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      organizationalUnit.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+
+      domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Property 'OtherName' of class 'OrganizationalUnit' must not define storage specific name 'NameColumn', because class 'Person', "
+        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+    public void ValidateMappingWithParallelDerivationInSameEntitiesAndMatchingColumnNames ()
+    {
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", "TableInheritance_DomainBase", c_testDomainProviderID, typeof (DomainBase), true);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false, domainBaseClass);
+      ReflectionBasedClassDefinition organizationalUnit = new ReflectionBasedClassDefinition ("OrganizationalUnit", null, c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
+
+      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      organizationalUnit.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+
+      domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase', "
+        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+    public void ValidateMappingWithDerivationInSameEntityAndDuplicateColumnName ()
+    {
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
+
+      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+
+      domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Property 'OtherName' of class 'Customer' must not define storage specific name 'NameColumn', because class 'DomainBase', "
+        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+    public void ValidateMappingWithDerivationInSameEntityAndDuplicateColumnNameInBaseOfBaseClass ()
+    {
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), false, personClass);
+
+      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+
+      domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase', "
+        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+    public void ValidateMappingWithDerivationInUndefinedEntityAndDuplicateColumnName ()
+    {
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), true, domainBaseClass);
+
+      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+
+      domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
   }
 }
