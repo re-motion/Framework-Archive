@@ -201,8 +201,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         }
         catch (Exception e)
         {
-          throw CreateRdbmsProviderException (
-              e, "Error while executing SQL command for query '{0}'.", query.ID);
+          throw CreateRdbmsProviderException (e, "Error while executing SQL command for query '{0}'.", query.ID);
         }
       }
     }
@@ -248,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader, commandBuilder.UsesView);
           return dataContainerFactory.CreateDataContainer();
         }
       }
@@ -340,7 +339,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader, commandBuilder.UsesView);
           return dataContainerFactory.CreateCollection();
         }
       }
@@ -510,9 +509,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     }
 
     /// <summary> Gets a value converter that converts database types to .NET types according to the providers type mapping rules. </summary>
-    public virtual ValueConverter ValueConverter
+    public ValueConverter CreateValueConverter (bool usesView)
     {
-      get { return new ValueConverter(); }
+      return new ValueConverter (usesView);
     }
 
     /// <summary> Surrounds an identifier with delimiters according to the database's syntax. </summary>

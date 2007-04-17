@@ -51,6 +51,11 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     // methods and properties
 
+    public override bool UsesView
+    {
+      get { return false; }
+    }
+
     public override IDbCommand Create ()
     {
       string[] allConcreteEntityNames = _classDefinition.GetAllConcreteEntityNames ();
@@ -95,6 +100,11 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         return string.Empty;
 
       return ", " + Provider.GetColumnsFromSortExpression (sortExpression);
+    }
+
+    protected override void AppendColumn (string columnName, string parameterName)
+    {
+      throw new NotSupportedException ("'AppendColumn' is not supported by 'QueryCommandBuilder'.");
     }
   }
 }

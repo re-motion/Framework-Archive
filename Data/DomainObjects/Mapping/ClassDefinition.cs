@@ -482,9 +482,9 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return (_baseClass != null || _derivedClasses.Count > 0); }
     }
 
-    public abstract bool IsAbstract
-    {
-      get; }
+    public abstract bool IsAbstract { get; }
+
+    public abstract string StorageSpecificPrefix { get;}
 
     [Obsolete ("Check after Refactoring. (Version 1.7.42")]
     [EditorBrowsable (EditorBrowsableState.Never)]

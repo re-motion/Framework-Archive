@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ObjectID id = new ObjectID ("ClassWithoutClassIDColumn", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
 
-      DataContainer container = Provider.LoadDataContainer (id);
+      Provider.LoadDataContainer (id);
     }
 
     [Test]
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ObjectID id = new ObjectID ("ClassWithoutTimestampColumn", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
 
-      DataContainer container = Provider.LoadDataContainer (id);
+      Provider.LoadDataContainer (id);
     }
 
     [Test]
@@ -78,16 +78,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{C9F16F93-CF42-4357-B87B-7493882AAEAF}"));
 
-      DataContainer container = Provider.LoadDataContainer (id);
+      Provider.LoadDataContainer (id);
     }
 
     [Test]
-    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = "The mandatory column 'OrderNo' could not be found.")]
+    [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
+        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
+        + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The mandatory column 'OrderNo' could not be found.")]
     public void LoadDataContainerWithClassIDFromOtherClass ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));
 
-      DataContainer container = Provider.LoadDataContainer (id);
+      Provider.LoadDataContainer (id);
     }
 
     [Test]

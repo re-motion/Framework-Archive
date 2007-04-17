@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
   public class ReflectionBasedClassDefinition: ClassDefinition
   {
     private bool _isAbstract;
+    private string _storageSpecificPrefix;
 
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
         : this (id, entityName, storageProviderID, classType, isAbstract, null)
@@ -20,7 +21,10 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
         : base (id, entityName, storageProviderID, classType, (ClassDefinition) baseClass)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+
       _isAbstract = isAbstract;
+      _storageSpecificPrefix = id + "_";
     }
 
     protected ReflectionBasedClassDefinition (SerializationInfo info, StreamingContext context)
@@ -36,6 +40,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override bool IsAbstract
     {
       get { return _isAbstract; }
+    }
+
+    public override string StorageSpecificPrefix
+    {
+      get { return _storageSpecificPrefix; }
     }
 
     public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
@@ -58,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           bool isEntityDefined = GetEntityName() != null;
           bool isEntityDefinedForBaseProperty = basePropertyDefinition.ClassDefinition.GetEntityName() != null;
           bool isBasePropertyPersistedInSameEntity = basePropertyDefinition.ClassDefinition.GetEntityName() == GetEntityName();
-          
+
           if (!isEntityDefined && !isEntityDefinedForBaseProperty
               || isBasePropertyPersistedInSameEntity
               || isEntityDefined && !isEntityDefinedForBaseProperty && !isBasePropertyPersistedInSameEntity)

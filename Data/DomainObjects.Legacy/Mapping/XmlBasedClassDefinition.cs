@@ -53,6 +53,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       }
     }
 
+    public override string StorageSpecificPrefix
+    {
+      get { return string.Empty; }
+    }
+
     public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
     {
       ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);

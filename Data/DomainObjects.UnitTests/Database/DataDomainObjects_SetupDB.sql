@@ -1,32 +1,45 @@
 USE TestDomain
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[OrderView]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CustomerView]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TableWithAllDataTypesView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[TableWithAllDataTypesView]
+GO
+
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Location') 
-DROP TABLE [Location]
+  DROP TABLE [Location]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Client') 
-DROP TABLE [Client]
+  DROP TABLE [Client]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Computer') 
-DROP TABLE [Computer]
+  DROP TABLE [Computer]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Employee') 
-DROP TABLE [Employee]
+  DROP TABLE [Employee]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithAllDataTypes') 
-DROP TABLE [TableWithAllDataTypes]
+  DROP TABLE [TableWithAllDataTypes]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutRelatedClassIDColumnAndDerivation') 
-DROP TABLE [TableWithoutRelatedClassIDColumnAndDerivation]
+  DROP TABLE [TableWithoutRelatedClassIDColumnAndDerivation]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithOptionalOneToOneRelationAndOppositeDerivedClass') 
-DROP TABLE [TableWithOptionalOneToOneRelationAndOppositeDerivedClass]
+  DROP TABLE [TableWithOptionalOneToOneRelationAndOppositeDerivedClass]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutRelatedClassIDColumn') 
@@ -34,119 +47,119 @@ DROP TABLE [TableWithoutRelatedClassIDColumn]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Ceo') 
-DROP TABLE [Ceo]
+  DROP TABLE [Ceo]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderTicket') 
-DROP TABLE [OrderTicket]
+  DROP TABLE [OrderTicket]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderItem') 
-DROP TABLE [OrderItem]
+  DROP TABLE [OrderItem]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Order') 
-DROP TABLE [Order]
+  DROP TABLE [Order]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderItemWithNewPropertyAccess') 
-DROP TABLE [OrderItemWithNewPropertyAccess]
+  DROP TABLE [OrderItemWithNewPropertyAccess]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'OrderWithNewPropertyAccess') 
-DROP TABLE [OrderWithNewPropertyAccess]
+  DROP TABLE [OrderWithNewPropertyAccess]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Company') 
-DROP TABLE [Company]
+  DROP TABLE [Company]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'IndustrialSector') 
-DROP TABLE [IndustrialSector]
+  DROP TABLE [IndustrialSector]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Person') 
-DROP TABLE [Person]
+  DROP TABLE [Person]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'FileSystemItem')
-DROP TABLE [FileSystemItem]
+  DROP TABLE [FileSystemItem]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithValidRelations') 
-DROP TABLE [TableWithValidRelations]
+  DROP TABLE [TableWithValidRelations]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithInvalidRelation') 
-DROP TABLE [TableWithInvalidRelation]
+  DROP TABLE [TableWithInvalidRelation]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithRelatedClassIDColumnAndNoInheritance') 
-DROP TABLE [TableWithRelatedClassIDColumnAndNoInheritance]
+  DROP TABLE [TableWithRelatedClassIDColumnAndNoInheritance]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithGuidKey') 
-DROP TABLE [TableWithGuidKey]
+  DROP TABLE [TableWithGuidKey]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithKeyOfInvalidType') 
-DROP TABLE [TableWithKeyOfInvalidType]
+  DROP TABLE [TableWithKeyOfInvalidType]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutIDColumn') 
-DROP TABLE [TableWithoutIDColumn]
+  DROP TABLE [TableWithoutIDColumn]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutClassIDColumn') 
-DROP TABLE [TableWithoutClassIDColumn]
+  DROP TABLE [TableWithoutClassIDColumn]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutTimestampColumn') 
-DROP TABLE [TableWithoutTimestampColumn]
+  DROP TABLE [TableWithoutTimestampColumn]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Order') 
-DROP TABLE [TableInheritance_Order]
+  DROP TABLE [TableInheritance_Order]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Address') 
-DROP TABLE [TableInheritance_Address]
+  DROP TABLE [TableInheritance_Address]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_HistoryEntry') 
-DROP TABLE [TableInheritance_HistoryEntry]
+  DROP TABLE [TableInheritance_HistoryEntry]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Person') 
-DROP TABLE [TableInheritance_Person]
+  DROP TABLE [TableInheritance_Person]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Region') 
-DROP TABLE [TableInheritance_Region]
+  DROP TABLE [TableInheritance_Region]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_OrganizationalUnit') 
-DROP TABLE [TableInheritance_OrganizationalUnit]
+  DROP TABLE [TableInheritance_OrganizationalUnit]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_DerivedClassWithEntityWithHierarchy') 
-DROP TABLE [TableInheritance_DerivedClassWithEntityWithHierarchy]
+  DROP TABLE [TableInheritance_DerivedClassWithEntityWithHierarchy]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Client') 
-DROP TABLE [TableInheritance_Client]
+  DROP TABLE [TableInheritance_Client]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns') 
-DROP TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
+  DROP TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_File') 
-DROP TABLE [TableInheritance_File]
+  DROP TABLE [TableInheritance_File]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Folder') 
-DROP TABLE [TableInheritance_Folder]
+  DROP TABLE [TableInheritance_Folder]
 GO
 
 
@@ -731,13 +744,13 @@ GO
 
 CREATE PROCEDURE rpf_testSPQuery
 AS
-  SELECT * FROM [Order] WHERE [Order].[OrderNo] = 1 OR [Order].[OrderNo] = 3 ORDER BY OrderNo ASC
+  SELECT * FROM [OrderView] WHERE [Order_OrderNo] = 1 OR [Order_OrderNo] = 3 ORDER BY [Order_OrderNo] ASC
 GO
 
 CREATE PROCEDURE rpf_testSPQueryWithParameter
   @customerID uniqueidentifier
 AS
-  SELECT * FROM [Order] WHERE [Order].[CustomerID] = @customerID ORDER BY OrderNo ASC
+  SELECT * FROM [OrderView] WHERE [Order_CustomerID] = @customerID ORDER BY [Order_OrderNo] ASC
 GO
 
 
@@ -761,4 +774,119 @@ CREATE TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns] (
   -- Note: This table does not need to have foreign keys, because rows cannot be read because of invalid ClassID column structure
   CONSTRAINT [PK_TableInheritance_BaseClassWithInvalidRelationClassIDColumns] PRIMARY KEY CLUSTERED ([ID])
 ) 
+GO
+
+-- Views
+CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [Order_OrderNo], [Order_DeliveryDate], [Order_CustomerID], [Order_CustomerIDClassID], [Order_OfficialID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [OrderNo], [DeliveryDate], [CustomerID], [CustomerIDClassID], [OfficialID]
+    FROM [dbo].[Order]
+    WHERE [ClassID] IN ('Order')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Company_Name], [Company_IndustrialSectorID], [Customer_CustomerSince], [Customer_CustomerType])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType]
+    FROM [dbo].[Company]
+    WHERE [ClassID] IN ('Customer')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[TableWithAllDataTypesView] (
+  [ID],
+  [ClassID],
+  [Timestamp],
+  
+  [ClassWithAllDataTypes_Boolean],
+  [ClassWithAllDataTypes_Byte],
+  [ClassWithAllDataTypes_Date],
+  [ClassWithAllDataTypes_DateTime],
+  [ClassWithAllDataTypes_Decimal],
+  [ClassWithAllDataTypes_Double],
+  [ClassWithAllDataTypes_Enum],
+  [ClassWithAllDataTypes_Guid],
+  [ClassWithAllDataTypes_Int16],
+  [ClassWithAllDataTypes_Int32],
+  [ClassWithAllDataTypes_Int64],
+  [ClassWithAllDataTypes_Single],
+  [ClassWithAllDataTypes_String],
+  [ClassWithAllDataTypes_StringWithoutMaxLength],
+  [ClassWithAllDataTypes_Binary],
+  
+  [ClassWithAllDataTypes_NaBoolean],
+  [ClassWithAllDataTypes_NaByte],
+  [ClassWithAllDataTypes_NaDate],
+  [ClassWithAllDataTypes_NaDateTime],
+  [ClassWithAllDataTypes_NaDecimal],
+  [ClassWithAllDataTypes_NaDouble],
+  [ClassWithAllDataTypes_NaGuid],
+  [ClassWithAllDataTypes_NaInt16],
+  [ClassWithAllDataTypes_NaInt32],
+  [ClassWithAllDataTypes_NaInt64],
+  [ClassWithAllDataTypes_NaSingle],
+  
+  [ClassWithAllDataTypes_StringWithNullValue],
+  [ClassWithAllDataTypes_NaBooleanWithNullValue],
+  [ClassWithAllDataTypes_NaByteWithNullValue],
+  [ClassWithAllDataTypes_NaDateWithNullValue],
+  [ClassWithAllDataTypes_NaDateTimeWithNullValue],
+  [ClassWithAllDataTypes_NaDecimalWithNullValue],
+  [ClassWithAllDataTypes_NaDoubleWithNullValue],
+  [ClassWithAllDataTypes_NaGuidWithNullValue],
+  [ClassWithAllDataTypes_NaInt16WithNullValue],
+  [ClassWithAllDataTypes_NaInt32WithNullValue],
+  [ClassWithAllDataTypes_NaInt64WithNullValue],
+  [ClassWithAllDataTypes_NaSingleWithNullValue],
+  [ClassWithAllDataTypes_NullableBinary]) 
+  WITH SCHEMABINDING AS
+  SELECT 
+    [ID],
+    [ClassID],
+    [Timestamp],
+    
+    [Boolean],
+    [Byte],
+    [Date],
+    [DateTime],
+    [Decimal],
+    [Double],
+    [Enum],
+    [Guid],
+    [Int16],
+    [Int32],
+    [Int64],
+    [Single],
+    [String],
+    [StringWithoutMaxLength],
+    [Binary],
+    
+    [NaBoolean],
+    [NaByte],
+    [NaDate],
+    [NaDateTime],
+    [NaDecimal],
+    [NaDouble],
+    [NaGuid],
+    [NaInt16],
+    [NaInt32],
+    [NaInt64],
+    [NaSingle],
+    
+    [StringWithNullValue],
+    [NaBooleanWithNullValue],
+    [NaByteWithNullValue],
+    [NaDateWithNullValue],
+    [NaDateTimeWithNullValue],
+    [NaDecimalWithNullValue],
+    [NaDoubleWithNullValue],
+    [NaGuidWithNullValue],
+    [NaInt16WithNullValue],
+    [NaInt32WithNullValue],
+    [NaInt64WithNullValue],
+    [NaSingleWithNullValue],
+    [NullableBinary]
+    FROM [dbo].[TableWithAllDataTypes]
+    WHERE [ClassID] IN ('ClassWithAllDataTypes')
+  WITH CHECK OPTION
 GO

@@ -25,11 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException))]
     public void InvalidScalarQuery ()
     {
-      QueryDefinition definition = new QueryDefinition (
-          "InvalidQuery",
-          c_testDomainProviderID,
-          "This is not T-SQL",
-          QueryType.Scalar);
+      QueryDefinition definition = new QueryDefinition ("InvalidQuery", c_testDomainProviderID, "This is not T-SQL", QueryType.Scalar);
 
       Provider.ExecuteScalarQuery (new Query (definition));
     }

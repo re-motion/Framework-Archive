@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
@@ -26,7 +27,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (Provider, _builder.Provider);
+      Assert.That (_builder.Provider, Is.SameAs (Provider));
+      Assert.That (((CommandBuilder) _builder).UsesView, Is.False);
     }
 
     [Test]

@@ -31,29 +31,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       _connectionString = connectionString;
     }
 
-    public RdbmsProviderDefinition (
-        string name,
-        Type storageProviderType,
-        XmlNode configurationNode)
-      : base (name, storageProviderType)
-    {
-      ArgumentUtility.CheckNotNull ("configurationNode", configurationNode);
-
-      XmlNamespaceManager namespaceManager = new XmlNamespaceManager (configurationNode.OwnerDocument.NameTable);
-      namespaceManager.AddNamespace ("r", c_rdbmsConfigurationNamespace);
-
-      XmlNode connectionStringNode = configurationNode.SelectSingleNode ("r:connectionString", namespaceManager);
-      if (connectionStringNode != null)
-        _connectionString = connectionStringNode.InnerText;
-      else
-      {
-        throw new StorageProviderConfigurationException (
-            string.Format (
-                "Configuration node must contain a 'connectionString' element from namespace '{0}'.",
-                c_rdbmsConfigurationNamespace));
-      }
-    }
-
     public RdbmsProviderDefinition (string name, NameValueCollection config)
         : base (name, config)
     {

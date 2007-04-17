@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -11,19 +12,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SelectCommandBuilderTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SelectCommandBuilderTest ()
+    [Test]
+    public void UsesViewForRelatedIDLookUp ()
     {
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+
+      Provider.Connect ();
+      SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (
+          Provider, 
+          orderDefinition, 
+          orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), 
+          DomainObjectIDs.Customer1);
+
+      Assert.That (commandBuilder.UsesView, Is.False);
     }
 
-    // methods and properties
+    [Test]
+    public void UsesViewForIDLookUp ()
+    {
+      Provider.Connect ();
+      SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (Provider, "*", "Order", DomainObjectIDs.Order1);
+
+      Assert.That (commandBuilder.UsesView, Is.False);
+    }
 
     [Test]
     public void CreateWithOrderClause ()
@@ -31,7 +42,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
       Provider.Connect ();
-
       SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
           Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
 
@@ -48,14 +58,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ConstructorChecksForConnectedProvider ()
     {
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
-      using (StorageProviderManager manager = new StorageProviderManager ())
-      {
-        RdbmsProvider provider = (RdbmsProvider) manager.GetMandatory (c_testDomainProviderID);
-
-        SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
-            provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), DomainObjectIDs.Customer1);
-
-      }
+      SelectCommandBuilder.CreateForRelatedIDLookup (
+          Provider, 
+          orderDefinition, 
+          orderDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"), 
+          DomainObjectIDs.Customer1);
     }
   }
 }

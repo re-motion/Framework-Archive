@@ -132,16 +132,6 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// Gets the unique ID for this <b>QueryDefinition</b>.
   /// </summary>
-  [Obsolete ("Use property ID instead.", true)]
-  // TODO: Remove this property after 1.6.2006.
-  public string QueryID
-  {
-    get { return _id; }
-  }
-
-  /// <summary>
-  /// Gets the unique ID for this <b>QueryDefinition</b>.
-  /// </summary>
   public string ID
   {
     get { return _id; }

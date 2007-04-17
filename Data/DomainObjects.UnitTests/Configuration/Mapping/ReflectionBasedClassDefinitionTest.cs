@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -28,14 +27,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithType()
     {
-      ReflectionBasedClassDefinition actual =
-          new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order), false);
+      ClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order), false);
 
       Assert.That (actual.ID, Is.EqualTo ("Order"));
       Assert.That (actual.MyEntityName, Is.EqualTo ("OrderTable"));
       Assert.That (actual.StorageProviderID, Is.EqualTo ("StorageProvider"));
       Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
       Assert.That (actual.BaseClass, Is.Null);
+      Assert.That (actual.StorageSpecificPrefix, Is.EqualTo ("Order_"));
     }
 
     [Test]

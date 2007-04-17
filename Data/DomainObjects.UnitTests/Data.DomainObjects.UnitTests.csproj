@@ -148,6 +148,9 @@
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
+    <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
+    <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
+    <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
     <Compile Include="ReflectionBasedMappingTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />

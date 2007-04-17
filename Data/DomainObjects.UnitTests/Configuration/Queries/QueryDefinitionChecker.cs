@@ -8,9 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
   {
     public void Check (QueryDefinitionCollection expectedQueries, QueryDefinitionCollection actualQueries)
     {
-      Assert.AreEqual (expectedQueries.Count, actualQueries.Count,
-          string.Format ("Number of queries does not match. Expected: {0}, actual: {1}",
-          expectedQueries.Count, actualQueries.Count));
+      Assert.AreEqual (expectedQueries.Count, actualQueries.Count, "Number of queries does not match.");
 
       foreach (QueryDefinition expectedQuery in expectedQueries)
       {
@@ -21,29 +19,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     private void CheckQuery (QueryDefinition expectedQuery, QueryDefinition actualQuery)
     {
-      Assert.AreEqual (expectedQuery.StorageProviderID, actualQuery.StorageProviderID,
-          string.Format ("ProviderID of query definitions does not match. Expected: {0}, actual: {1}",
-          expectedQuery.ID,
+      Assert.AreEqual (
           expectedQuery.StorageProviderID,
-          actualQuery.StorageProviderID));
+          actualQuery.StorageProviderID,
+          "ProviderID of query definition {0} does not match.",
+          expectedQuery.ID);
 
-      Assert.AreEqual (expectedQuery.Statement, actualQuery.Statement,
-          string.Format ("Statement of query definitions does not match. Expected: {0}, actual: {1}",
-          expectedQuery.ID,
-          expectedQuery.Statement,
-          actualQuery.Statement));
+      Assert.AreEqual (expectedQuery.Statement, actualQuery.Statement, "Statement of query definition {0} does not match.", expectedQuery.ID);
 
-      Assert.AreEqual (expectedQuery.QueryType, actualQuery.QueryType,
-          string.Format ("QueryType of query definitions does not match. Expected: {0}, actual: {1}",
-          expectedQuery.ID,
-          expectedQuery.QueryType,
-          actualQuery.QueryType));
+      Assert.AreEqual (expectedQuery.QueryType, actualQuery.QueryType, "QueryType of query definition {0} does not match.", expectedQuery.ID);
 
-      Assert.AreEqual (expectedQuery.CollectionType, actualQuery.CollectionType,
-          string.Format ("CollectionType of query definitions does not match. Expected: {0}, actual: {1}",
-          expectedQuery.ID,
+      Assert.AreEqual (
           expectedQuery.CollectionType,
-          actualQuery.CollectionType));
+          actualQuery.CollectionType,
+          "CollectionType of query definition {0} does not match.",
+          expectedQuery.ID);
     }
   }
 }

@@ -4,58 +4,69 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class DeleteCommandBuilder : CommandBuilder
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private DataContainer _dataContainer;
-
-  // construction and disposing
-
-  public DeleteCommandBuilder (RdbmsProvider provider, DataContainer dataContainer) : base (provider)
+  public class DeleteCommandBuilder: CommandBuilder
   {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    // types
 
-    if (dataContainer.State != StateType.Deleted)
-      throw CreateArgumentException ("dataContainer", "State of provided DataContainer must be 'Deleted', but is '{0}'.", dataContainer.State);
+    // static members and constants
 
-    _dataContainer = dataContainer;
-  }
+    // member fields
 
-  // methods and properties
+    private DataContainer _dataContainer;
 
-  public override System.Data.IDbCommand Create ()
-  {
-    IDbCommand command = Provider.CreateDbCommand ();
+    // construction and disposing
 
-    WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
-    whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);
-
-    if (MustAddTimestampToWhereClause ())
-      whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
-
-    command.CommandText = string.Format (
-        "DELETE FROM {0} WHERE {1}{2}",
-        Provider.DelimitIdentifier (_dataContainer.ClassDefinition.GetEntityName ()), 
-        whereClauseBuilder.ToString (),
-        Provider.StatementDelimiter);
-
-    return command;
-  }
-
-  private bool MustAddTimestampToWhereClause ()
-  {
-    foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)
+    public DeleteCommandBuilder (RdbmsProvider provider, DataContainer dataContainer)
+        : base (provider)
     {
-      if (propertyValue.PropertyType == typeof (ObjectID))
-        return false;
+      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+      if (dataContainer.State != StateType.Deleted)
+        throw CreateArgumentException ("dataContainer", "State of provided DataContainer must be 'Deleted', but is '{0}'.", dataContainer.State);
+
+      _dataContainer = dataContainer;
     }
 
-    return true;
+    // methods and properties
+
+    public override bool UsesView
+    {
+      get { return false; }
+    }
+
+    public override IDbCommand Create()
+    {
+      IDbCommand command = Provider.CreateDbCommand();
+
+      WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
+      whereClauseBuilder.Add ("ID", _dataContainer.ID.Value);
+
+      if (MustAddTimestampToWhereClause())
+        whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
+
+      command.CommandText = string.Format (
+          "DELETE FROM {0} WHERE {1}{2}",
+          Provider.DelimitIdentifier (_dataContainer.ClassDefinition.GetEntityName()),
+          whereClauseBuilder.ToString(),
+          Provider.StatementDelimiter);
+
+      return command;
+    }
+
+    private bool MustAddTimestampToWhereClause()
+    {
+      foreach (PropertyValue propertyValue in _dataContainer.PropertyValues)
+      {
+        if (propertyValue.PropertyType == typeof (ObjectID))
+          return false;
+      }
+
+      return true;
+    }
+
+    protected override void AppendColumn (string columnName, string parameterName)
+    {
+      throw new NotSupportedException ("'AppendColumn' is not supported by 'QueryCommandBuilder'.");
+    }
   }
-}
 }

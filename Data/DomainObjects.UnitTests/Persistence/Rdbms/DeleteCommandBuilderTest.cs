@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -10,12 +11,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class DeleteCommandBuilderTest : SqlProviderBaseTest
   {
     [Test]
+    public void UsesView ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+
+      order.Delete ();
+      
+      Provider.Connect ();
+      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, order.DataContainer);
+      
+      Assert.That (commandBuilder.UsesView, Is.False);
+    }
+
+    [Test]
     public void CreateWithoutForeignKeyColumn ()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
       classWithAllDataTypes.Delete ();
       DataContainer deletedContainer = classWithAllDataTypes.DataContainer;
+
       Provider.Connect ();
       CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedContainer);
 
@@ -40,6 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.Delete ();
       DataContainer deletedOrderContainer = order.DataContainer;
+      
       Provider.Connect ();
       CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedOrderContainer);
 
@@ -57,10 +73,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
+    public void ConstructorChecksForConnectedProvider ()
+    {
+      new DeleteCommandBuilder (Provider, TestDataContainerFactory.CreateOrder1DataContainer ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+        "State of provided DataContainer must be 'Deleted', but is 'Unchanged'.\r\nParameter name: dataContainer")]
     public void InitializeWithDataContainerOfInvalidState ()
     {
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, TestDataContainerFactory.CreateOrder1DataContainer ());
+      Provider.Connect ();
+      new DeleteCommandBuilder (Provider, TestDataContainerFactory.CreateOrder1DataContainer ());
     }
   }
 }

@@ -1,6 +1,7 @@
 USE master
 
 IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'TestDomain')
+  ALTER DATABASE TestDomain SET SINGLE_USER WITH ROLLBACK IMMEDIATE
   DROP DATABASE TestDomain
 GO
   

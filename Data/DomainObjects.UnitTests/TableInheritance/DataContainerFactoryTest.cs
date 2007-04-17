@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       {
         using (IDataReader reader = command.ExecuteReader ())
         {
-          DataContainerFactory factory = new DataContainerFactory (Provider, reader);
+          DataContainerFactory factory = new DataContainerFactory (Provider, reader, false);
 
           try
           {

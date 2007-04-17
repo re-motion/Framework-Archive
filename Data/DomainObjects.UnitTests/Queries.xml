@@ -13,44 +13,44 @@
   <query id="OrderNoSumByCustomerNameQuery" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-	    select sum(OrderNo) 
-	      from [Order] inner join Company on [Order].CustomerID = Company.ID
-	      where Company.Name = @customerName;
-	    </statement>
+      select sum([Order_OrderNo])
+      from [OrderView] inner join [CustomerView] on [Order_CustomerID] = [CustomerView].[ID]
+      where Company_Name = @customerName;
+    </statement>
   </query>
 
   <query id="OrderNoSumForMultipleCustomers" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-	    select sum(OrderNo) 
-	      from [Order] inner join Company on [Order].CustomerID = Company.ID
-	      where Company.Name in ({companyNames});
-	    </statement>
+      select sum([Order_OrderNo])
+      from [OrderView] inner join [CustomerView] on [Order_CustomerID] = [CustomerView].[ID]
+      where [Company_Name] in ({companyNames});
+    </statement>
   </query>
 
   <query id="BulkUpdateQuery" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-	    update [Order] set DeliveryDate = '2006/01/01' where CustomerID = @customerID;
-	    select @@ROWCOUNT;
-	  </statement>
+      update [OrderView] set [Order_DeliveryDate] = '2006/01/01' where [Order_CustomerID] = @customerID;
+      select @@ROWCOUNT;
+    </statement>
   </query>
 
   <query id="OrderQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select [Order].* from [Order] where [Order].CustomerID = @customerID order by OrderNo asc;</statement>
+    <statement>select [OrderView].* from [OrderView] where [Order_CustomerID] = @customerID order by [Order_OrderNo] asc;</statement>
     <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="OrderByOfficialQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select [Order].* from [Order] where [Order].OfficialID = @officialID order by OrderNo asc;</statement>
+    <statement>select [OrderView].* from [OrderView] where [Order_OfficialID] = @officialID order by [Order_OrderNo] asc;</statement>
     <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select * from Company where CustomerType = @customerType order by Name asc;</statement>
+    <statement>select * from [CustomerView] where [Customer_CustomerType] = @customerType order by [Company_Name] asc;</statement>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">
@@ -59,44 +59,44 @@
     <statement>
     	 <![CDATA[
 	      set ANSI_NULLS OFF;
-	      select * from TableWithAllDataTypes where 
-	        [Boolean] = @boolean and
-	        [Byte] = @byte and
-	        [Date] = @date and
-	        [DateTime] = @dateTime and
-	        [Decimal] = @decimal and
-	        [Double] > @doubleLowerBound and [Double] < @doubleUpperBound and
-	        [Enum] = @enum and
-	        [Guid] = @guid and
-	        [Int16] = @int16 and
-	        [Int32] = @int32 and
-	        [Int64] = @int64 and
-	        [Single] > @singleLowerBound and [Single] < @singleUpperBound and
-	        [String] = @string and
+	      select * from TableWithAllDataTypesView where 
+	        [ClassWithAllDataTypes_Boolean] = @boolean and
+	        [ClassWithAllDataTypes_Byte] = @byte and
+	        [ClassWithAllDataTypes_Date] = @date and
+	        [ClassWithAllDataTypes_DateTime] = @dateTime and
+	        [ClassWithAllDataTypes_Decimal] = @decimal and
+	        [ClassWithAllDataTypes_Double] > @doubleLowerBound and [ClassWithAllDataTypes_Double] < @doubleUpperBound and
+	        [ClassWithAllDataTypes_Enum] = @enum and
+	        [ClassWithAllDataTypes_Guid] = @guid and
+	        [ClassWithAllDataTypes_Int16] = @int16 and
+	        [ClassWithAllDataTypes_Int32] = @int32 and
+	        [ClassWithAllDataTypes_Int64] = @int64 and
+	        [ClassWithAllDataTypes_Single] > @singleLowerBound and [ClassWithAllDataTypes_Single] < @singleUpperBound and
+	        [ClassWithAllDataTypes_String] = @string and
           -- Note: StringWithoutMaxLength cannot be used here, because it is of type 'text'.
-	        [NaBoolean] = @naBoolean and
-	        [NaByte] = @naByte and
-	        [NaDate] = @naDate and
-	        [NaDateTime] = @naDateTime and
-	        [NaDecimal] = @naDecimal and
-	        [NaDouble] > @naDoubleLowerBound and [NaDouble] < @naDoubleUpperBound and
-	        [NaGuid] = @naGuid and
-	        [NaInt16] = @naInt16 and
-	        [NaInt32] = @naInt32 and
-	        [NaInt64] = @naInt64 and
-	        [NaSingle] > @naSingleLowerBound and [NaSingle] < @naSingleUpperBound and
-	        [StringWithNullValue] = @stringWithNullValue and
-	        [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
-	        [NaByteWithNullValue] = @naByteWithNullValue and 
-	        [NaDateWithNullValue] = @naDateWithNullValue and
-	        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
-	        [NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
-	        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
-	        [NaGuidWithNullValue] = @naGuidWithNullValue and
-	        [NaInt16WithNullValue] = @naInt16WithNullValue and
-	        [NaInt32WithNullValue] = @naInt32WithNullValue and
-	        [NaInt64WithNullValue] = @naInt64WithNullValue and
-	        [NaSingleWithNullValue] = @naSingleWithNullValue;
+	        [ClassWithAllDataTypes_NaBoolean] = @naBoolean and
+	        [ClassWithAllDataTypes_NaByte] = @naByte and
+	        [ClassWithAllDataTypes_NaDate] = @naDate and
+	        [ClassWithAllDataTypes_NaDateTime] = @naDateTime and
+	        [ClassWithAllDataTypes_NaDecimal] = @naDecimal and
+	        [ClassWithAllDataTypes_NaDouble] > @naDoubleLowerBound and [ClassWithAllDataTypes_NaDouble] < @naDoubleUpperBound and
+	        [ClassWithAllDataTypes_NaGuid] = @naGuid and
+	        [ClassWithAllDataTypes_NaInt16] = @naInt16 and
+	        [ClassWithAllDataTypes_NaInt32] = @naInt32 and
+	        [ClassWithAllDataTypes_NaInt64] = @naInt64 and
+	        [ClassWithAllDataTypes_NaSingle] > @naSingleLowerBound and [ClassWithAllDataTypes_NaSingle] < @naSingleUpperBound and
+	        [ClassWithAllDataTypes_StringWithNullValue] = @stringWithNullValue and
+	        [ClassWithAllDataTypes_NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+	        [ClassWithAllDataTypes_NaByteWithNullValue] = @naByteWithNullValue and 
+	        [ClassWithAllDataTypes_NaDateWithNullValue] = @naDateWithNullValue and
+	        [ClassWithAllDataTypes_NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+	        [ClassWithAllDataTypes_NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
+	        [ClassWithAllDataTypes_NaDoubleWithNullValue] = @naDoubleWithNullValue and
+	        [ClassWithAllDataTypes_NaGuidWithNullValue] = @naGuidWithNullValue and
+	        [ClassWithAllDataTypes_NaInt16WithNullValue] = @naInt16WithNullValue and
+	        [ClassWithAllDataTypes_NaInt32WithNullValue] = @naInt32WithNullValue and
+	        [ClassWithAllDataTypes_NaInt64WithNullValue] = @naInt64WithNullValue and
+	        [ClassWithAllDataTypes_NaSingleWithNullValue] = @naSingleWithNullValue;
 	    ]]>      
     </statement>
   </query>

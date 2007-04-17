@@ -8,26 +8,19 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
 public class DataContainerFactory
 {
-  // types
+  private readonly IDataReader _dataReader;
+  private readonly RdbmsProvider _provider;
+  private readonly bool _usesView;
 
-  // static members and constants
-
-  // member fields
-
-  private IDataReader _dataReader;
-  private RdbmsProvider _provider;
-
-  // construction and disposing
-
-  public DataContainerFactory (RdbmsProvider provider, IDataReader dataReader)
+  public DataContainerFactory (RdbmsProvider provider, IDataReader dataReader, bool usesView)
   {
     ArgumentUtility.CheckNotNull ("provider", provider);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+
     _dataReader = dataReader;
     _provider = provider;
+    _usesView = usesView;
   }
-
-  // methods and properties
 
   public virtual DataContainer CreateDataContainer ()
   {
@@ -49,7 +42,7 @@ public class DataContainerFactory
 
   protected virtual DataContainer CreateDataContainerFromReader ()
   {
-    ValueConverter valueConverter = _provider.ValueConverter;
+    ValueConverter valueConverter = _provider.CreateValueConverter (_usesView);
     
     ObjectID id = valueConverter.GetID (_dataReader);
     object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
@@ -58,17 +51,15 @@ public class DataContainerFactory
 
     foreach (PropertyDefinition propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ())
     {
-      int columnOrdinal = valueConverter.GetMandatoryOrdinal (_dataReader, propertyDefinition.StorageSpecificName);
-
       object dataValue;
 
       try
       {
-        dataValue = valueConverter.GetValue (id.ClassDefinition, propertyDefinition, _dataReader, columnOrdinal);
+        dataValue = valueConverter.GetValue (id.ClassDefinition, propertyDefinition, _dataReader);
       }
       catch (Exception e)
       {
-        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' of object '{1}': {2}",
+        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' of object '{1}': {2}", 
             propertyDefinition.PropertyName, id, e.Message);
       }
 

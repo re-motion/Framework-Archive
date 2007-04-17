@@ -11,13 +11,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
   [TestFixture]
   public class ValueConverterTest : SqlProviderBaseTest
   {
-    ValueConverter _converter = new ValueConverter ();
+    ValueConverter _converter;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _converter = new ValueConverter ();
+      _converter = new ValueConverter (false);
       Provider.Connect ();
     }
 
@@ -33,9 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         using (IDataReader reader = command.ExecuteReader ())
         {
           Assert.IsTrue (reader.Read ());
-
-          int columnOrdinal = _converter.GetMandatoryOrdinal (reader, clientProperty.StorageSpecificName);
-          Assert.AreEqual (expectedID, _converter.GetValue (personClass, clientProperty, reader, columnOrdinal));
+          Assert.AreEqual (expectedID, _converter.GetValue (personClass, clientProperty, reader));
         }
       }
     }
@@ -86,8 +84,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBase"),
-              reader, reader.GetOrdinal ("DomainBaseID"));
+              classDefinition, 
+              classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBase"),
+              reader);
         }
       }
     }
@@ -111,8 +110,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.Client"),
-              reader, reader.GetOrdinal ("ClientID"));
+              classDefinition, 
+              classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.Client"),
+              reader);
         }
       }
     }
@@ -136,8 +136,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDValue"),
-              reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDValueID"));
+              classDefinition, 
+              classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDValue"),
+              reader);
         }
       }
     }
@@ -161,8 +162,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
           Assert.IsTrue (reader.Read ());
 
           _converter.GetValue (
-              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDNullValue"),
-              reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDNullValueID"));
+              classDefinition, 
+              classDefinition.GetMandatoryPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns.DomainBaseWithInvalidClassIDNullValue"),
+              reader);
         }
       }
     }

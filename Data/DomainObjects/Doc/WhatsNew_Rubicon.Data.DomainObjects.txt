@@ -92,6 +92,9 @@
   Find what: public {.*}\n:b*\{:b*\n:b*get.*\n:b*\}*\n
   Replace with: public abstract \1 { get; }\n
 
+- Removed QueryDefinition.QueryID
+- Removed Query.QueryID
+
 1.7.37.0
 ========
 

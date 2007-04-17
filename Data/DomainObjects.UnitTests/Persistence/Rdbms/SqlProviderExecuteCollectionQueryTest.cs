@@ -11,20 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public SqlProviderExecuteCollectionQueryTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void ExecuteCollectionQuery ()
     {

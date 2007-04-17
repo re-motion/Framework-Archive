@@ -5,172 +5,171 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public abstract class CommandBuilder
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private RdbmsProvider _provider;
-
-  // construction and disposing
-
-  protected CommandBuilder (RdbmsProvider provider)
+  public abstract class CommandBuilder
   {
-    ArgumentUtility.CheckNotNull ("provider", provider);
+    // types
 
-    if (!provider.IsConnected)
-      throw new ArgumentException ("Provider must be connected first.", "provider");
+    // static members and constants
 
-    _provider = provider;
-  }
+    // member fields
 
-  // abstract methods and properties
+    private RdbmsProvider _provider;
 
-  public abstract IDbCommand Create ();
+    // construction and disposing
 
-  // methods and properties
-
-  public RdbmsProvider Provider
-  {
-    get { return _provider; }
-  }
-
-  public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, PropertyValue propertyValue)
-  {
-    ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
-    IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.GetFieldValue (ValueAccess.Current));
-
-    if (propertyValue.PropertyType == typeof (byte[]))
-      commandParameter.DbType = DbType.Binary;
-
-    return commandParameter;
-  }
-
-  /// <remarks>
-  /// This method cannot be used for binary (BLOB) <paramref name="parameterValues"/>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
-  /// </remarks>
-  public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
-  {
-    // Note: UpdateCommandBuilder implicitly uses this method through WhereClauseBuilder.Add for Timestamp values.
-    // Although Timestamp values are represented as byte arrays in ADO.NET with SQL Server they are no BLOB data type.
-    // Therefore this usage is still valid.
-
-    ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-
-    IDataParameter commandParameter = command.CreateParameter ();
-    commandParameter.ParameterName = Provider.GetParameterName (parameterName);
-
-    ValueConverter valueConverter = Provider.ValueConverter;
-    if (parameterValue != null && parameterValue.GetType () == typeof (ObjectID))
-      commandParameter.Value = valueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
-    else
-      commandParameter.Value = valueConverter.GetDBValue (parameterValue);
-
-    command.Parameters.Add (commandParameter);
-    return commandParameter;
-  }
-
-  protected void AddObjectIDAndClassIDParameters (      
-      IDbCommand command, 
-      ClassDefinition classDefinition,
-      PropertyValue propertyValue)
-  {
-    ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
-    ClassDefinition relatedClassDefinition = null;
-    object relatedIDValue = null;
-    if (propertyValue.GetFieldValue(ValueAccess.Current) != null)
+    protected CommandBuilder (RdbmsProvider provider)
     {
-      ObjectID relatedID = (ObjectID) propertyValue.GetFieldValue (ValueAccess.Current);
-      relatedClassDefinition = relatedID.ClassDefinition;
-      relatedIDValue = GetObjectIDValueForParameter (relatedID);
-    }
-    else
-    {
-      relatedClassDefinition = classDefinition.GetOppositeClassDefinition (propertyValue.Name);
-      relatedIDValue = null;
+      ArgumentUtility.CheckNotNull ("provider", provider);
+
+      if (!provider.IsConnected)
+        throw new ArgumentException ("Provider must be connected first.", "provider");
+
+      _provider = provider;
     }
 
-    AddCommandParameter (command, propertyValue.Definition.StorageSpecificName, relatedIDValue);
+    // abstract methods and properties
 
-    if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
-      AddClassIDParameter (command, relatedClassDefinition, propertyValue);
-  }
+    public abstract IDbCommand Create();
 
-  protected void AddClassIDParameter (
-      IDbCommand command, 
-      ClassDefinition relatedClassDefinition,
-      PropertyValue propertyValue)
-  {
-    ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckNotNull ("relatedClassDefinition", relatedClassDefinition);
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+    // methods and properties
 
-    if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
+    public abstract bool UsesView { get; }
+
+    public RdbmsProvider Provider
     {
-      string classIDColumnName = RdbmsProvider.GetClassIDColumnName (propertyValue.Definition.StorageSpecificName);
-      AppendColumn (classIDColumnName, classIDColumnName);
+      get { return _provider; }
+    }
 
-      string classID = null;
+    public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, PropertyValue propertyValue)
+    {
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
+      ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+
+      IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.GetFieldValue (ValueAccess.Current));
+
+      if (propertyValue.PropertyType == typeof (byte[]))
+        commandParameter.DbType = DbType.Binary;
+
+      return commandParameter;
+    }
+
+    /// <remarks>
+    /// This method cannot be used for binary (BLOB) <paramref name="parameterValues"/>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
+    /// </remarks>
+    public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
+    {
+      // Note: UpdateCommandBuilder implicitly uses this method through WhereClauseBuilder.Add for Timestamp values.
+      // Although Timestamp values are represented as byte arrays in ADO.NET with SQL Server they are no BLOB data type.
+      // Therefore this usage is still valid.
+
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
+
+      IDataParameter commandParameter = command.CreateParameter();
+      commandParameter.ParameterName = Provider.GetParameterName (parameterName);
+
+      ValueConverter valueConverter = Provider.CreateValueConverter (UsesView);
+      if (parameterValue != null && parameterValue.GetType() == typeof (ObjectID))
+        commandParameter.Value = valueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
+      else
+        commandParameter.Value = valueConverter.GetDBValue (parameterValue);
+
+      command.Parameters.Add (commandParameter);
+      return commandParameter;
+    }
+
+    protected void AddObjectIDAndClassIDParameters (
+        IDbCommand command,
+        ClassDefinition classDefinition,
+        PropertyValue propertyValue)
+    {
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+
+      ClassDefinition relatedClassDefinition = null;
+      object relatedIDValue = null;
       if (propertyValue.GetFieldValue (ValueAccess.Current) != null)
-        classID = relatedClassDefinition.ID;
+      {
+        ObjectID relatedID = (ObjectID) propertyValue.GetFieldValue (ValueAccess.Current);
+        relatedClassDefinition = relatedID.ClassDefinition;
+        relatedIDValue = GetObjectIDValueForParameter (relatedID);
+      }
+      else
+      {
+        relatedClassDefinition = classDefinition.GetOppositeClassDefinition (propertyValue.Name);
+        relatedIDValue = null;
+      }
 
-      AddCommandParameter (command, classIDColumnName, classID);
-    }  
+      AddCommandParameter (command, propertyValue.Definition.StorageSpecificName, relatedIDValue);
+
+      if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
+        AddClassIDParameter (command, relatedClassDefinition, propertyValue);
+    }
+
+    protected void AddClassIDParameter (
+        IDbCommand command,
+        ClassDefinition relatedClassDefinition,
+        PropertyValue propertyValue)
+    {
+      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull ("relatedClassDefinition", relatedClassDefinition);
+      ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+
+      if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
+      {
+        string classIDColumnName = RdbmsProvider.GetClassIDColumnName (propertyValue.Definition.StorageSpecificName);
+        AppendColumn (classIDColumnName, classIDColumnName);
+
+        string classID = null;
+        if (propertyValue.GetFieldValue (ValueAccess.Current) != null)
+          classID = relatedClassDefinition.ID;
+
+        AddCommandParameter (command, classIDColumnName, classID);
+      }
+    }
+
+    protected object GetValueForParameter (object value)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      if (value.GetType() == typeof (ObjectID))
+        return GetObjectIDValueForParameter ((ObjectID) value);
+      else
+        return value;
+    }
+
+    protected abstract void AppendColumn (string columnName, string parameterName);
+
+    protected object GetObjectIDValueForParameter (ObjectID id)
+    {
+      ArgumentUtility.CheckNotNull ("id", id);
+
+      if (IsOfSameStorageProvider (id))
+        return id.Value;
+      else
+        return id.ToString();
+    }
+
+    protected bool IsOfSameStorageProvider (ObjectID id)
+    {
+      ArgumentUtility.CheckNotNull ("id", id);
+
+      return id.StorageProviderID == _provider.ID;
+    }
+
+    protected string GetOrderClause (string orderExpression)
+    {
+      if (orderExpression != null && orderExpression != string.Empty)
+        return " ORDER BY " + orderExpression;
+
+      return string.Empty;
+    }
+
+    protected ArgumentException CreateArgumentException (string parameterName, string message, params object[] args)
+    {
+      return new ArgumentException (string.Format (message, args), parameterName);
+    }
   }
-
-  protected object GetValueForParameter (object value)
-  {
-    ArgumentUtility.CheckNotNull ("value", value);
-
-    if (value.GetType () == typeof (ObjectID))
-      return GetObjectIDValueForParameter ((ObjectID) value);
-    else
-      return value;
-  }
-
-  protected virtual void AppendColumn (string columnName, string parameterName)
-  {
-    throw new InvalidOperationException ("AppendColumn must be overridden in derived class.");
-  }
-
-  protected object GetObjectIDValueForParameter (ObjectID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    if (IsOfSameStorageProvider (id))
-      return id.Value;
-    else
-      return id.ToString ();
-  }
-
-  protected bool IsOfSameStorageProvider (ObjectID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    return id.StorageProviderID == _provider.ID;
-  }
-
-  protected string GetOrderClause (string orderExpression)
-  {
-    if (orderExpression != null && orderExpression != string.Empty)
-      return " ORDER BY " + orderExpression;
-
-    return string.Empty;
-  }
-
-  protected ArgumentException CreateArgumentException (string parameterName, string message, params object[] args)
-  {
-    return new ArgumentException (string.Format (message, args), parameterName);
-  }
-}
 }

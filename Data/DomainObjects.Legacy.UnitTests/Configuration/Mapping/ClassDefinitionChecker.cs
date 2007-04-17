@@ -24,33 +24,35 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     public void Check (XmlBasedClassDefinition expectedDefinition, XmlBasedClassDefinition actualDefinition)
     {
-      Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID,
-          string.Format ("IDs of class definitions do not match. Expected: {0}, actual: {1}",
-          expectedDefinition.ID, actualDefinition.ID));
+      Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID, "IDs of class definitions do not match");
 
       Assert.AreEqual (expectedDefinition.ClassType, actualDefinition.ClassType,
-          string.Format ("ClassType of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.ClassType, actualDefinition.ClassType));
+          "ClassType of class definition '{0}' does not match.",
+          expectedDefinition.ID);
 
       Assert.AreEqual (expectedDefinition.ClassTypeName, actualDefinition.ClassTypeName,
-          string.Format ("ClassTypeName of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.ClassTypeName, actualDefinition.ClassTypeName));
+          "ClassTypeName of class definition '{0}' does not match. ",
+          expectedDefinition.ID);
 
       Assert.AreEqual (expectedDefinition.IsClassTypeResolved, actualDefinition.IsClassTypeResolved,
-          string.Format ("IsClassTypeResolved of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.IsClassTypeResolved, actualDefinition.IsClassTypeResolved));
+          "IsClassTypeResolved of class definition '{0}' does not match.",
+          expectedDefinition.ID);
 
       Assert.AreEqual (expectedDefinition.IsAbstract, actualDefinition.IsAbstract,
-          string.Format ("IsAbstract of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.IsAbstract, actualDefinition.IsAbstract));
+          "IsAbstract of class definition '{0}' does not match. ",
+          expectedDefinition.ID);
 
       Assert.AreEqual (expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID,
-          string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID));
+          "StorageProviderID of class definition '{0}' does not match.",
+          expectedDefinition.ID);
 
       Assert.AreEqual (expectedDefinition.MyEntityName, actualDefinition.MyEntityName,
-          string.Format ("EntityName of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.MyEntityName, actualDefinition.MyEntityName));
+          "EntityName of class definition '{0}' does not match.",
+          expectedDefinition.ID);
+
+      Assert.IsEmpty (actualDefinition.StorageSpecificPrefix,
+          "StorageSpecificPrefix of class definition '{0}' does not match.",
+          expectedDefinition.ID);
 
       if (expectedDefinition.BaseClass == null)
       {
