@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -24,7 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [SetUp]
     public void SetUp()
     {
-      MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (GetFullPath (@"SecurityManagerMapping.xml")));
+      MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (GetFullPath (@"SecurityManagerMapping.xml")));
       QueryConfiguration.SetCurrent (new QueryConfiguration (GetFullPath (@"SecurityManagerQueries.xml")));
 
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition> ();

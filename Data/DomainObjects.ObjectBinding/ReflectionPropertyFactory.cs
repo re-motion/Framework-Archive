@@ -110,6 +110,10 @@ public class ReflectionPropertyFactory
             + "must be 'Rubicon.Data.DomainObjects.ObjectBinding.BindableDomainObject' or a subclass of it.", propertyInfo.Name));
       }
     }
+    else if (propertyInfo.PropertyType.IsGenericType)
+    {
+      itemType = propertyInfo.PropertyType.GetGenericArguments ()[0];
+    }
 
     return itemType;
   }

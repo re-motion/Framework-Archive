@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -17,8 +18,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
     [TestFixtureSetUp]
     public virtual void TestFixtureSetUp()
     {
-      MappingConfiguration.SetCurrent (
-          MappingConfiguration.CreateConfigurationFromFileBasedLoader (@"Rubicon.Security.Data.DomainObjects.UnitTests.Mapping.xml"));
+      MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (@"Rubicon.Security.Data.DomainObjects.UnitTests.Mapping.xml"));
       QueryConfiguration.SetCurrent (new QueryConfiguration (@"Rubicon.Security.Data.DomainObjects.UnitTests.Queries.xml"));
 
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();

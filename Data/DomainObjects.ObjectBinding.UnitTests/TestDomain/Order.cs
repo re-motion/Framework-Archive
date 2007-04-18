@@ -51,9 +51,9 @@ public class Order : TestDomainBase
   }
 
   [IsReadOnly]
-  public DomainObjectCollection OrderItems
+  public ObjectList<OrderItem> OrderItems
   {
-    get { return GetRelatedObjects ("OrderItems"); }
+    get { return (ObjectList<OrderItem>) GetRelatedObjects ("OrderItems"); }
   }
 }
 }

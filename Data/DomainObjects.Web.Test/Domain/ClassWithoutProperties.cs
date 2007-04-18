@@ -1,42 +1,26 @@
 using System;
-
-using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
-
-using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
-[Serializable]
-public class ClassWithoutProperties : BindableDomainObject
-{
-  // types
-
-  // static members and constants
-  
-  public static new ClassWithoutProperties GetObject (ObjectID id)
+  [Serializable]
+  [DBTable (Name = "TableWithoutColumns")]
+  [RpaTest]
+  [NotAbstract]
+  public abstract class ClassWithoutProperties: BindableDomainObject
   {
-    return (ClassWithoutProperties) BindableDomainObject.GetObject (id);
+    public static ClassWithoutProperties NewObject()
+    {
+      return DomainObject.NewObject<ClassWithoutProperties> ().With ();
+    }
+
+    protected ClassWithoutProperties()
+    {
+    }
+
+    protected ClassWithoutProperties (DataContainer dataContainer)
+        : base (dataContainer)
+    {
+    }
   }
-
-  // member fields
-
-  // construction and disposing
-  
-  public ClassWithoutProperties ()
-  {
-  }
-
-  public ClassWithoutProperties (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
-  protected ClassWithoutProperties (DataContainer dataContainer) : base (dataContainer)
-  {
-  }
-
-  // methods and properties
-
-}
 }

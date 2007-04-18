@@ -1,45 +1,40 @@
 using System;
-
-using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 {
-[Serializable]
-public class AutoCommitTestTransactedFunction : WxeTransactedFunction
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public AutoCommitTestTransactedFunction (WxeTransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
-      : base (transactionMode, objectWithAllDataTypes)
+  [Serializable]
+  public class AutoCommitTestTransactedFunction: WxeTransactedFunction
   {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    // construction and disposing
+
+    public AutoCommitTestTransactedFunction (WxeTransactionMode transactionMode, ObjectID objectWithAllDataTypes)
+        : base (transactionMode, objectWithAllDataTypes)
+    {
+    }
+
+    // methods and properties
+
+    [WxeParameter (1, true, WxeParameterDirection.In)]
+    public ObjectID ObjectWithAllDataTypes
+    {
+      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
+      set { Variables["ObjectWithAllDataTypes"] = value; }
+    }
+
+    private void Step1()
+    {
+      ClassWithAllDataTypes objectWithAllDataTypes = DomainObject.GetObject<ClassWithAllDataTypes> (ObjectWithAllDataTypes);
+
+      objectWithAllDataTypes.Int32Property = 10;
+    }
   }
-
-  // methods and properties
-
-  [WxeParameter (1, true, WxeParameterDirection.In)]
-  public ObjectID ObjectWithAllDataTypes
-  {
-    get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
-    set { Variables["ObjectWithAllDataTypes"] = value; }
-  }
-
-  private void Step1 ()
-  {
-    ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (ObjectWithAllDataTypes);
-
-    objectWithAllDataTypes.Int32Property = 10;
-  }
-
-}
 }

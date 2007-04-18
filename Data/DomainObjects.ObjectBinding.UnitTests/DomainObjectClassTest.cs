@@ -1,5 +1,8 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;
 
@@ -28,6 +31,44 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     {
       base.SetUp();
       _domainObjectClass = new DomainObjectClass (typeof (Order));
+    }
+
+    [Test]
+    public void GetPropertyDefinitionForValueTypeProperty()
+    {
+      IBusinessObjectProperty orderNumberProperty = _domainObjectClass.GetPropertyDefinition ("OrderNumber");
+      Assert.That (orderNumberProperty, Is.InstanceOfType (typeof (Int32Property)));
+      Assert.That (orderNumberProperty.Identifier, Is.EqualTo ("OrderNumber"));
+      Assert.That (orderNumberProperty.ItemType, Is.SameAs (typeof (int)));
+    }
+
+    [Test]
+    public void GetPropertyDefinitionForOneSideRelationProperty ()
+    {
+      IBusinessObjectProperty orderItemsProperty = _domainObjectClass.GetPropertyDefinition ("OrderItems");
+      Assert.That (orderItemsProperty, Is.InstanceOfType (typeof (ReferenceProperty)));
+      Assert.That (orderItemsProperty.Identifier, Is.EqualTo ("OrderItems"));
+      Assert.That (orderItemsProperty.ItemType, Is.SameAs (typeof (OrderItem)));
+    }
+
+    [Test]
+    public void GetProperty ()
+    {
+      Order order = new Order();
+      order.OrderNumber = 1;
+      
+      Assert.That (((IBusinessObject) order).GetProperty("OrderNumber"), Is.EqualTo (1));
+    }
+
+    [Test]
+    public void SetProperty ()
+    {
+      Order order = new Order ();
+      order.OrderNumber = 0;
+      
+      ((IBusinessObject) order).SetProperty ("OrderNumber", 1);
+
+      Assert.That (order.OrderNumber, Is.EqualTo (1));
     }
 
     [Test]

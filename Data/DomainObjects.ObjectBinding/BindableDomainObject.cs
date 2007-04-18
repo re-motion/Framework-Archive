@@ -146,6 +146,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with CurrentTransactionScope instead.")]
 	protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
+    Initialize ();
   }
 
   #endregion
@@ -163,9 +164,10 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// Gets a <see cref="DomainObjectClass"/> representing the <see cref="BindableDomainObject"/>.
   /// </summary>
   // TODO Doc: exceptions
+  [StorageClassNone]
   IBusinessObjectClass IBusinessObject.BusinessObjectClass
   {
-    get { return new DomainObjectClass (this.GetType()); }
+    get { return new DomainObjectClass (this.GetPublicDomainObjectType()); }
   }
 
   /// <summary>
@@ -176,7 +178,8 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> has an invalid type for the property.</exception>
   // TODO Doc: returns null if it is equal to the MinValue of the type
-  object IBusinessObject.this [IBusinessObjectProperty property]
+  [StorageClassNone]
+  object IBusinessObject.this[IBusinessObjectProperty property]
   {
     get { return ((IBusinessObject) this).GetProperty (property); }
     set { ((IBusinessObject) this).SetProperty (property, value); }
@@ -192,7 +195,8 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
-  object IBusinessObject.this [string property]
+  [StorageClassNone]
+  object IBusinessObject.this[string property]
   {
     get { return ((IBusinessObject) this).GetProperty (property); }
     set { ((IBusinessObject) this).SetProperty (property, value); }
@@ -293,6 +297,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
   /// </summary>
+  [StorageClassNone]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public virtual string DisplayName
   {
@@ -303,6 +308,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   ///   Gets the value of <see cref="DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
   ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
   /// </summary>
+  [StorageClassNone]
   string IBusinessObjectWithIdentity.DisplayNameSafe
   {
     get
@@ -319,6 +325,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
   /// </summary>
+  [StorageClassNone]
   string IBusinessObjectWithIdentity.UniqueIdentifier
   {
     get { return ID.ToString (); }

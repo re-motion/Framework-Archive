@@ -38,11 +38,6 @@ namespace Rubicon.Data.DomainObjects.Web.Legacy.Test
 
 		protected void Application_BeginRequest(Object sender, EventArgs e)
 		{
-      MappingLoaderConfiguration mappingloader = (MappingLoaderConfiguration) ConfigurationManager.GetSection ("rubicon.data.domainObjects/mapping");
-      PersistenceConfiguration storage = (PersistenceConfiguration) ConfigurationManager.GetSection ("rubicon.data.domainObjects/storage");
-		  IDomainObjectsConfiguration group = DomainObjectsConfiguration.Current;
-		  PersistenceConfiguration s2 = group.Storage;
-		  MappingLoaderConfiguration m2 = group.MappingLoader;
     }
 
 		protected void Application_EndRequest(Object sender, EventArgs e)

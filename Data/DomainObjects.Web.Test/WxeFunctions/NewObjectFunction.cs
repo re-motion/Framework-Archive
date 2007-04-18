@@ -33,16 +33,16 @@ public class NewObjectFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    ObjectWithAllDataTypes = new ClassWithAllDataTypes ();
+    ObjectWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
 
     ClassWithAllDataTypes objectWithAllDataTypes2 = CreateTestObjectWithAllDataTypes ();
 
-    ClassForRelationTest objectForRelationTest1 = new ClassForRelationTest ();
+    ClassForRelationTest objectForRelationTest1 = ClassForRelationTest.NewObject ();
     objectForRelationTest1.Name = "ObjectForRelationTest1";
     objectForRelationTest1.ClassWithAllDataTypesMandatory = ObjectWithAllDataTypes;
     objectWithAllDataTypes2.ClassForRelationTestMandatory = objectForRelationTest1;
 
-    ClassForRelationTest objectForRelationTest2 = new ClassForRelationTest ();
+    ClassForRelationTest objectForRelationTest2 = ClassForRelationTest.NewObject ();
     objectForRelationTest2.Name = "ObjectForRelationTest2";
     ObjectWithAllDataTypes.ClassForRelationTestMandatory = objectForRelationTest2;
     objectForRelationTest2.ClassWithAllDataTypesMandatory = objectWithAllDataTypes2;
@@ -53,7 +53,7 @@ public class NewObjectFunction : WxeTransactedFunction
 
   private ClassWithAllDataTypes CreateTestObjectWithAllDataTypes ()
   {
-    ClassWithAllDataTypes test = new ClassWithAllDataTypes ();
+    ClassWithAllDataTypes test = ClassWithAllDataTypes.NewObject ();
 
     test.ByteProperty = 23;
     test.DateProperty = DateTime.Now;

@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Rubicon.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -59,6 +60,10 @@ using System.Runtime.CompilerServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
-[assembly: AssemblyDelaySign(false)]
+#pragma warning disable 1699
+[assembly: AssemblyDelaySign (false)]
 [assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
+#pragma warning enable 1699
+
+[assembly: MappingAssembly]

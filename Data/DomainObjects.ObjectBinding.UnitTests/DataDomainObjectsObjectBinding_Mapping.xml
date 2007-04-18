@@ -15,10 +15,12 @@
           <column>DeliveryDate</column>
         </property>
         <relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true"/>
-        <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true"/>
+        <relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true">
+          <collectionType>Rubicon.Data.DomainObjects.ObjectList`1[[Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests]], Rubicon.Data.DomainObjects</collectionType>
+        </relationProperty>
       </properties>
     </class>
-    <class id="SecurableOrder" baseClass="Order"> 
+    <class id="SecurableOrder" baseClass="Order">
       <type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SecurableOrder, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>TestDomain</storageProviderID>
