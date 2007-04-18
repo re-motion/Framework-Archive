@@ -139,6 +139,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Development.Core", "..\Deve
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.Legacy.Test", "DomainObjects.Web.Legacy.Test\Data.DomainObjects.Web.Legacy.Test.csproj", "{FC03706A-039A-40CB-8859-FB887352646E}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -217,6 +223,10 @@ Global
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
