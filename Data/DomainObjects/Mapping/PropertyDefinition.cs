@@ -178,20 +178,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-    public string FullyQualifiedStorageSpecificName
-    {
-      get
-      {
-        if (_classDefinition == null)
-        {
-          throw new InvalidOperationException (string.Format (
-              "The FullyQualifiedStorageSpecificName cannot be evaluated because the PropertyDefinition '{0}' is not part of a class definition.",
-              _propertyName));
-        }
-        return _classDefinition.StorageSpecificPrefix + _storageSpecificName;
-      }
-    }
-
     public Type PropertyType
     {
       get { return _typeInfo != null ? _typeInfo.Type : null; }

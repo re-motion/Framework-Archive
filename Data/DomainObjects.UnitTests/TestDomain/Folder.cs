@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+  [Serializable]
   [NotAbstract]
   public abstract class Folder : FileSystemItem
   {

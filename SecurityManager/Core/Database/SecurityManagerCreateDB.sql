@@ -1,6 +1,7 @@
 USE master
 
 IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RubiconSecurityManager')
+  ALTER DATABASE RubiconSecurityManager SET SINGLE_USER WITH ROLLBACK IMMEDIATE
   DROP DATABASE RubiconSecurityManager
 GO
 

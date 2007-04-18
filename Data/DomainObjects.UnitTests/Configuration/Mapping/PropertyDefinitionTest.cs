@@ -96,25 +96,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
     }
-
-    [Test]
-    public void GetFullyQualifiedStorageSpecificName()
-    {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null, true);
-      ClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassDefinition", "Table", "StorageProvider", typeof (Company), false);
-      propertyDefinition.SetClassDefinition (classDefinition);
-
-      Assert.AreEqual ("ClassDefinition_ColumnName", propertyDefinition.FullyQualifiedStorageSpecificName);
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "The FullyQualifiedStorageSpecificName cannot be evaluated because the PropertyDefinition 'PropertyName' is not part of a class definition.")]
-    public void GetFullyQualifiedStorageSpecificName_WithoutClassDefintion ()
-    {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null, true);
-
-      Dev.Null = propertyDefinition.FullyQualifiedStorageSpecificName;
-    }
   }
 }

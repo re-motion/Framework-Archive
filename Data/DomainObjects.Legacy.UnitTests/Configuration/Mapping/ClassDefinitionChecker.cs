@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
           "EntityName of class definition '{0}' does not match.",
           expectedDefinition.ID);
 
-      Assert.IsEmpty (actualDefinition.StorageSpecificPrefix,
+      Assert.IsEmpty (actualDefinition.MyStorageSpecificPrefix,
           "StorageSpecificPrefix of class definition '{0}' does not match.",
           expectedDefinition.ID);
 

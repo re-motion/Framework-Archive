@@ -50,7 +50,7 @@
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select * from [CustomerView] where [Customer_CustomerType] = @customerType order by [Company_Name] asc;</statement>
+    <statement>select * from [CustomerView] where [Company_CustomerType] = @customerType order by [Company_Name] asc;</statement>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">
@@ -60,43 +60,43 @@
     	 <![CDATA[
 	      set ANSI_NULLS OFF;
 	      select * from TableWithAllDataTypesView where 
-	        [ClassWithAllDataTypes_Boolean] = @boolean and
-	        [ClassWithAllDataTypes_Byte] = @byte and
-	        [ClassWithAllDataTypes_Date] = @date and
-	        [ClassWithAllDataTypes_DateTime] = @dateTime and
-	        [ClassWithAllDataTypes_Decimal] = @decimal and
-	        [ClassWithAllDataTypes_Double] > @doubleLowerBound and [ClassWithAllDataTypes_Double] < @doubleUpperBound and
-	        [ClassWithAllDataTypes_Enum] = @enum and
-	        [ClassWithAllDataTypes_Guid] = @guid and
-	        [ClassWithAllDataTypes_Int16] = @int16 and
-	        [ClassWithAllDataTypes_Int32] = @int32 and
-	        [ClassWithAllDataTypes_Int64] = @int64 and
-	        [ClassWithAllDataTypes_Single] > @singleLowerBound and [ClassWithAllDataTypes_Single] < @singleUpperBound and
-	        [ClassWithAllDataTypes_String] = @string and
+	        [TableWithAllDataTypes_Boolean] = @boolean and
+	        [TableWithAllDataTypes_Byte] = @byte and
+	        [TableWithAllDataTypes_Date] = @date and
+	        [TableWithAllDataTypes_DateTime] = @dateTime and
+	        [TableWithAllDataTypes_Decimal] = @decimal and
+	        [TableWithAllDataTypes_Double] > @doubleLowerBound and [TableWithAllDataTypes_Double] < @doubleUpperBound and
+	        [TableWithAllDataTypes_Enum] = @enum and
+	        [TableWithAllDataTypes_Guid] = @guid and
+	        [TableWithAllDataTypes_Int16] = @int16 and
+	        [TableWithAllDataTypes_Int32] = @int32 and
+	        [TableWithAllDataTypes_Int64] = @int64 and
+	        [TableWithAllDataTypes_Single] > @singleLowerBound and [TableWithAllDataTypes_Single] < @singleUpperBound and
+	        [TableWithAllDataTypes_String] = @string and
           -- Note: StringWithoutMaxLength cannot be used here, because it is of type 'text'.
-	        [ClassWithAllDataTypes_NaBoolean] = @naBoolean and
-	        [ClassWithAllDataTypes_NaByte] = @naByte and
-	        [ClassWithAllDataTypes_NaDate] = @naDate and
-	        [ClassWithAllDataTypes_NaDateTime] = @naDateTime and
-	        [ClassWithAllDataTypes_NaDecimal] = @naDecimal and
-	        [ClassWithAllDataTypes_NaDouble] > @naDoubleLowerBound and [ClassWithAllDataTypes_NaDouble] < @naDoubleUpperBound and
-	        [ClassWithAllDataTypes_NaGuid] = @naGuid and
-	        [ClassWithAllDataTypes_NaInt16] = @naInt16 and
-	        [ClassWithAllDataTypes_NaInt32] = @naInt32 and
-	        [ClassWithAllDataTypes_NaInt64] = @naInt64 and
-	        [ClassWithAllDataTypes_NaSingle] > @naSingleLowerBound and [ClassWithAllDataTypes_NaSingle] < @naSingleUpperBound and
-	        [ClassWithAllDataTypes_StringWithNullValue] = @stringWithNullValue and
-	        [ClassWithAllDataTypes_NaBooleanWithNullValue] = @naBooleanWithNullValue and 
-	        [ClassWithAllDataTypes_NaByteWithNullValue] = @naByteWithNullValue and 
-	        [ClassWithAllDataTypes_NaDateWithNullValue] = @naDateWithNullValue and
-	        [ClassWithAllDataTypes_NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
-	        [ClassWithAllDataTypes_NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
-	        [ClassWithAllDataTypes_NaDoubleWithNullValue] = @naDoubleWithNullValue and
-	        [ClassWithAllDataTypes_NaGuidWithNullValue] = @naGuidWithNullValue and
-	        [ClassWithAllDataTypes_NaInt16WithNullValue] = @naInt16WithNullValue and
-	        [ClassWithAllDataTypes_NaInt32WithNullValue] = @naInt32WithNullValue and
-	        [ClassWithAllDataTypes_NaInt64WithNullValue] = @naInt64WithNullValue and
-	        [ClassWithAllDataTypes_NaSingleWithNullValue] = @naSingleWithNullValue;
+	        [TableWithAllDataTypes_NaBoolean] = @naBoolean and
+	        [TableWithAllDataTypes_NaByte] = @naByte and
+	        [TableWithAllDataTypes_NaDate] = @naDate and
+	        [TableWithAllDataTypes_NaDateTime] = @naDateTime and
+	        [TableWithAllDataTypes_NaDecimal] = @naDecimal and
+	        [TableWithAllDataTypes_NaDouble] > @naDoubleLowerBound and [TableWithAllDataTypes_NaDouble] < @naDoubleUpperBound and
+	        [TableWithAllDataTypes_NaGuid] = @naGuid and
+	        [TableWithAllDataTypes_NaInt16] = @naInt16 and
+	        [TableWithAllDataTypes_NaInt32] = @naInt32 and
+	        [TableWithAllDataTypes_NaInt64] = @naInt64 and
+	        [TableWithAllDataTypes_NaSingle] > @naSingleLowerBound and [TableWithAllDataTypes_NaSingle] < @naSingleUpperBound and
+	        [TableWithAllDataTypes_StringWithNullValue] = @stringWithNullValue and
+	        [TableWithAllDataTypes_NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+	        [TableWithAllDataTypes_NaByteWithNullValue] = @naByteWithNullValue and 
+	        [TableWithAllDataTypes_NaDateWithNullValue] = @naDateWithNullValue and
+	        [TableWithAllDataTypes_NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+	        [TableWithAllDataTypes_NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
+	        [TableWithAllDataTypes_NaDoubleWithNullValue] = @naDoubleWithNullValue and
+	        [TableWithAllDataTypes_NaGuidWithNullValue] = @naGuidWithNullValue and
+	        [TableWithAllDataTypes_NaInt16WithNullValue] = @naInt16WithNullValue and
+	        [TableWithAllDataTypes_NaInt32WithNullValue] = @naInt32WithNullValue and
+	        [TableWithAllDataTypes_NaInt64WithNullValue] = @naInt64WithNullValue and
+	        [TableWithAllDataTypes_NaSingleWithNullValue] = @naSingleWithNullValue;
 	    ]]>      
     </statement>
   </query>

@@ -21,10 +21,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string id, string entityName, string storageProviderID, Type classType, bool isAbstract, ReflectionBasedClassDefinition baseClass)
         : base (id, entityName, storageProviderID, classType, (ClassDefinition) baseClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-
       _isAbstract = isAbstract;
-      _storageSpecificPrefix = id + "_";
+      _storageSpecificPrefix = string.IsNullOrEmpty (entityName) ? null : (entityName + "_");
     }
 
     protected ReflectionBasedClassDefinition (SerializationInfo info, StreamingContext context)
@@ -42,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _isAbstract; }
     }
 
-    public override string StorageSpecificPrefix
+    public override string MyStorageSpecificPrefix
     {
       get { return _storageSpecificPrefix; }
     }

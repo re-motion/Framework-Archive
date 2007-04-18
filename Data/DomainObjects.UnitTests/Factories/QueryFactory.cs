@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return new QueryDefinition (
           "CustomerTypeQuery",
           "TestDomain",
-          "select [CustomerView].* from [CustomerView] where [Customer_CustomerType] = @customerType order by [Company_Name] asc;",
+          "select [CustomerView].* from [CustomerView] where [Company_CustomerType] = @customerType order by [Company_Name] asc;",
           QueryType.Collection,
           typeof (DomainObjectCollection));
     }

@@ -3,7 +3,6 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [StorageProviderStub]
   public abstract class StorageProviderStubDomainBase : DomainObject
   {
     protected StorageProviderStubDomainBase (ClientTransaction clientTransaction, ObjectID objectID)

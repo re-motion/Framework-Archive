@@ -3,7 +3,6 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [TestDomain]
   public abstract class TestDomainBase : DomainObject
   {
     public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)

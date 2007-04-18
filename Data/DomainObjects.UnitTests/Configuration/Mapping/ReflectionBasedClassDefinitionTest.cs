@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -34,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (actual.StorageProviderID, Is.EqualTo ("StorageProvider"));
       Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
       Assert.That (actual.BaseClass, Is.Null);
-      Assert.That (actual.StorageSpecificPrefix, Is.EqualTo ("Order_"));
+      Assert.That (actual.MyStorageSpecificPrefix, Is.EqualTo ("OrderTable_"));
     }
 
     [Test]
@@ -459,12 +460,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.IsTrue (companyDefinition.IsPartOfInheritanceHierarchy);
       Assert.IsTrue (_distributorClass.IsPartOfInheritanceHierarchy);
-    }
-
-    [Test]
-    [Ignore ("Currently all classes inherit from layer super type, which defines the storage group, implicitly stopping the inheritence hierachy.")]
-    public void IsPartOfInheritanceHierarchy2()
-    {
       Assert.IsFalse (_orderClass.IsPartOfInheritanceHierarchy);
     }
 
@@ -834,6 +829,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsTrue (companyClass.IsSameOrBaseClassOf (_distributorClass));
     }
 
+    [Test]
+    public void GetFullyQualifiedStorageSpecificName_WithPropertyInLeafClass ()
+    {
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
+      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSinceColumn", "dateTime", false));
+
+      Assert.AreEqual ("CompanyTable_CustomerSinceColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("CustomerSince"));
+    }
+
+    [Test]
+    public void GetFullyQualifiedStorageSpecificName_WithPropertyInBaseClass ()
+    {
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
+      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", false));
+      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
+
+      Assert.AreEqual ("CompanyTable_NameColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("Name"));
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' does not contain the property 'InvalidPropertyName'.")]
+    public void GetFullyQualifiedStorageSpecificName_WithInvalidPropertyName ()
+    {
+      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
+
+      companyClass.GetFullyQualifiedStorageSpecificNameForProperty ("InvalidPropertyName");
+    }
+
     private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
     {
       foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
@@ -843,12 +867,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       }
 
       return false;
-    }
-
-    private ReflectionBasedClassDefinition CreatePartnerClass()
-    {
-      return
-          new ReflectionBasedClassDefinition ("Partner", "Company",c_testDomainProviderID, typeof (Partner), false);
     }
   }
 }

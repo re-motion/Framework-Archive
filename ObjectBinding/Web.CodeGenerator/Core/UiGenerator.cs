@@ -12,6 +12,7 @@ using System.Collections;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
@@ -52,7 +53,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 			Placeholder.Postfix = _configuration.PlaceholderPostfix;
 
       AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler (CurrentDomain_AssemblyResolve);
-			MappingConfiguration.SetCurrent (MappingConfiguration.CreateConfigurationFromFileBasedLoader (_configuration.MappingXml, true));
+			MappingConfiguration.SetCurrent (XmlBasedMappingConfiguration.Create (_configuration.MappingXml, true));
 		}
 
     public void Dispose()

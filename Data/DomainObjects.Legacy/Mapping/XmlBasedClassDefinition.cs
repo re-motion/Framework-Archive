@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       }
     }
 
-    public override string StorageSpecificPrefix
+    public override string MyStorageSpecificPrefix
     {
       get { return string.Empty; }
     }

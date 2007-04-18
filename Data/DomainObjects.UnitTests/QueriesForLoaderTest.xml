@@ -13,7 +13,7 @@
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select [CustomerView].* from [CustomerView] where [Customer_CustomerType] = @customerType order by [Company_Name] asc;</statement>
+    <statement>select [CustomerView].* from [CustomerView] where [Company_CustomerType] = @customerType order by [Company_Name] asc;</statement>
   </query>
 
   <query id="OrderSumQuery" type="scalar">

@@ -202,6 +202,17 @@ namespace Rubicon.Data.DomainObjects.Mapping
       return _baseClass.GetEntityName();
     }
 
+    public string GetStorageSpecificPrefix ()
+    {
+      if (MyStorageSpecificPrefix != null)
+        return MyStorageSpecificPrefix;
+
+      if (_baseClass == null)
+        return null;
+
+      return _baseClass.GetStorageSpecificPrefix ();
+    }
+
     public bool Contains (PropertyDefinition propertyDefinition)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
@@ -427,6 +438,20 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
+    public string GetFullyQualifiedStorageSpecificNameForProperty (string propertyName)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+      PropertyDefinition propertyDefinition = GetMandatoryPropertyDefinition (propertyName);
+
+      if (GetEntityName () == null)
+      {
+        throw CreateInvalidOperationException (
+            "The fully qualified storage specific property name cannot be evaluated because class '{0}' does not know its entity.", _id);
+      }
+      return GetStorageSpecificPrefix () + propertyDefinition.StorageSpecificName;
+    }
+
     public string ID
     {
       get { return _id; }
@@ -484,7 +509,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     public abstract bool IsAbstract { get; }
 
-    public abstract string StorageSpecificPrefix { get;}
+    public abstract string MyStorageSpecificPrefix { get;}
 
     [Obsolete ("Check after Refactoring. (Version 1.7.42")]
     [EditorBrowsable (EditorBrowsableState.Never)]

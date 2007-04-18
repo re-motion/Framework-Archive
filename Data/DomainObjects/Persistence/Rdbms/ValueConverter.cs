@@ -82,9 +82,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
       if (propertyDefinition.PropertyType != typeof (ObjectID))
-        return GetValue (classDefinition, propertyDefinition, GetValue(dataReader, GetColumnName(propertyDefinition)));
+        return GetValue (classDefinition, propertyDefinition, GetValue(dataReader, GetColumnName(classDefinition, propertyDefinition)));
       else
-        return GetObjectID (classDefinition, propertyDefinition, dataReader, GetColumnName (propertyDefinition));
+        return GetObjectID (classDefinition, propertyDefinition, dataReader, GetColumnName (classDefinition, propertyDefinition));
     }
 
     public override object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, object dataValue)
@@ -186,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         int classIDColumnOrdinal;
         try
         {
-          classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (propertyDefinition)));
+          classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (classDefinition, propertyDefinition)));
         }
         catch (IndexOutOfRangeException)
         {
@@ -231,7 +231,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
           {
             try
             {
-              dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (propertyDefinition)));
+              dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (classDefinition, propertyDefinition)));
               s_hasClassIDColumn[hashKey] = true;
             }
             catch (IndexOutOfRangeException)
@@ -264,9 +264,12 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
           ^ propertyDefinition.StorageSpecificName.GetHashCode ();
     }
 
-    private string GetColumnName (PropertyDefinition propertyDefinition)
+    private string GetColumnName (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
     {
-      return _usesView ? propertyDefinition.FullyQualifiedStorageSpecificName : propertyDefinition.StorageSpecificName;
+      if (_usesView)
+        return classDefinition.GetFullyQualifiedStorageSpecificNameForProperty (propertyDefinition.PropertyName);
+      else
+        return propertyDefinition.StorageSpecificName;
     }
 
     protected RdbmsProviderException CreateRdbmsProviderException (

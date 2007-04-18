@@ -55,8 +55,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           expectedDefinition.ID);
 
       Assert.AreEqual (
-          expectedDefinition.StorageSpecificPrefix,
-          actualDefinition.StorageSpecificPrefix,
+          expectedDefinition.MyStorageSpecificPrefix,
+          actualDefinition.MyStorageSpecificPrefix,
           "StorageSpecificPrefix of class definition '{0}' does not match.",
           expectedDefinition.ID);
 
