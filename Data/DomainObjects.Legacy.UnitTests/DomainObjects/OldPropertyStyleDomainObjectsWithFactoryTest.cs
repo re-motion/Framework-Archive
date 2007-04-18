@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
 
     private bool WasCreatedByFactory (object o)
     {
-      return DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.WasCreatedByFactory (o);
+      return DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.WasCreatedByFactory (o.GetType());
     }
 
     [Test]

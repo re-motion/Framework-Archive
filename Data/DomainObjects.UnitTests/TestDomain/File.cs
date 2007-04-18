@@ -6,13 +6,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class File : FileSystemItem
   {
-    public static File Create ()
+    public static new File NewObject ()
     {
-      return DomainObject.Create<File> ();
+      return DomainObject.NewObject<File> ().With();
     }
 
-    protected File (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected File()
+    {
+    }
+
+    protected File (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
   }

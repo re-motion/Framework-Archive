@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [TestDomain]
   public abstract class ClassWithMixedPropertiesNotInMapping : DomainObject
   {
-    protected ClassWithMixedPropertiesNotInMapping (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected ClassWithMixedPropertiesNotInMapping ()
+    {
+    }
+
+    protected ClassWithMixedPropertiesNotInMapping (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

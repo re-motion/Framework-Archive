@@ -14,27 +14,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (OrderItem) DomainObject.GetObject (id);
     }
 
-    public static OrderItem Create ()
+    public static OrderItem NewObject ()
     {
-      return DomainObject.Create<OrderItem> ();
+      return DomainObject.NewObject<OrderItem> ().With();
     }
 
-    public static OrderItem Create (Order order)
+    public static OrderItem NewObject (Order order)
     {
-      OrderItem orderItem = Create ();
-      orderItem.Initialize (order);
+      OrderItem orderItem = DomainObject.NewObject<OrderItem> ().With (order);
       return orderItem;
     }
 
-    protected OrderItem (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected OrderItem()
     {
     }
 
-    protected virtual void Initialize (Order order)
+    protected OrderItem (Order order)
     {
       ArgumentUtility.CheckNotNull ("order", order);
       Order = order;
+    }
+
+    protected OrderItem (DataContainer dataContainer)
+        : base (dataContainer)
+    {
     }
 
     public abstract int Position { get; set; }

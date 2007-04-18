@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
 {
   public abstract class BaseClass: DomainObject
   {
-    protected BaseClass (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected BaseClass ()
+    {
+    }
+
+    protected BaseClass (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

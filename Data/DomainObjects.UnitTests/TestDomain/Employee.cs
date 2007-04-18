@@ -8,18 +8,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Employee : TestDomainBase
   {
-    public static Employee GetObject (ObjectID id)
+    public static new Employee GetObject (ObjectID id)
     {
       return (Employee) DomainObject.GetObject (id);
     }
 
-    public static Employee Create ()
+    public static Employee NewObject ()
     {
-      return DomainObject.Create<Employee> ();
+      return DomainObject.NewObject<Employee> ().With();
     }
 
-    protected Employee (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Employee ()
+    {
+    }
+
+    protected Employee (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

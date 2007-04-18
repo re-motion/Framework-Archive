@@ -36,23 +36,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void RelationEventTestWithMockObject ()
     {
-      Customer newCustomer1 = Customer.Create ();
+      Customer newCustomer1 = Customer.NewObject ();
       newCustomer1.Name = "NewCustomer1";
 
-      Customer newCustomer2 = Customer.Create ();
+      Customer newCustomer2 = Customer.NewObject ();
       newCustomer2.Name = "NewCustomer2";
 
       Official official2 = Official.GetObject (DomainObjectIDs.Official2);
-      Ceo newCeo1 = Ceo.Create ();
-      Ceo newCeo2 = Ceo.Create ();
-      Order newOrder1 = Order.Create ();
+      Ceo newCeo1 = Ceo.NewObject ();
+      Ceo newCeo2 = Ceo.NewObject ();
+      Order newOrder1 = Order.NewObject ();
       newOrder1.DeliveryDate = new DateTime (2006, 1, 1);
 
-      Order newOrder2 = Order.Create ();
+      Order newOrder2 = Order.NewObject ();
       newOrder2.DeliveryDate = new DateTime (2006, 2, 2);
 
-      OrderItem newOrderItem1 = OrderItem.Create ();
-      OrderItem newOrderItem2 = OrderItem.Create ();
+      OrderItem newOrderItem1 = OrderItem.NewObject ();
+      OrderItem newOrderItem2 = OrderItem.NewObject ();
 
       MockRepository mockRepository = new MockRepository ();
 
@@ -315,7 +315,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
 
         //13
-        //OrderTicket newOrderTicket1 = OrderTicket.Create (newOrder1);
+        //OrderTicket newOrderTicket1 = OrderTicket.NewObject (newOrder1);
 
         extension.NewObjectCreating (typeof (OrderTicket));
 
@@ -362,7 +362,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       //12
       newOrder1.Official = official2;
       //13
-      OrderTicket newOrderTicket1 = OrderTicket.Create (newOrder1);
+      OrderTicket newOrderTicket1 = OrderTicket.NewObject (newOrder1);
 
       mockRepository.VerifyAll ();
 
@@ -629,19 +629,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [ExpectedException (typeof (MandatoryRelationNotSetException))]
     public void NewCustomerAndCEOTest ()
     {
-      IndustrialSector industrialSector = IndustrialSector.Create ();
-      Customer customer = Customer.Create ();
-      customer.Ceo = Ceo.Create ();
+      IndustrialSector industrialSector = IndustrialSector.NewObject ();
+      Customer customer = Customer.NewObject ();
+      customer.Ceo = Ceo.NewObject ();
 
       industrialSector.Companies.Add (customer);
 
-      Order order1 = Order.Create ();
-      OrderTicket.Create (order1);
+      Order order1 = Order.NewObject ();
+      OrderTicket.NewObject (order1);
 
       //getting an SQL Exception without this line
       order1.DeliveryDate = DateTime.Now;
 
-      OrderItem orderItem = OrderItem.Create ();
+      OrderItem orderItem = OrderItem.NewObject ();
       order1.OrderItems.Add (orderItem);
       order1.Official = Official.GetObject (DomainObjectIDs.Official2);
       customer.Orders.Add (order1);
@@ -663,7 +663,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [ExpectedException (typeof (RdbmsProviderException))]
     public void AddInvalidPropertyValueTest ()
     {
-      Employee employee = Employee.Create ();
+      Employee employee = Employee.NewObject ();
 
       PropertyDefinition propertyDefinition = new PropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
@@ -682,7 +682,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [ExpectedException (typeof (ArgumentException))]
     public void AddPropertyValueWithExistingNameTest ()
     {
-      Employee employee = Employee.Create ();
+      Employee employee = Employee.NewObject ();
 
       PropertyDefinition propertyDefinition = new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
@@ -695,7 +695,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyEventsOfNewObjectPropertyChangeTest ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
 
       InitializeEventReceivers (newOrder);
       CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
@@ -708,7 +708,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyEventsOfNewObjectRelationChangeTest ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
 
       InitializeEventReceivers (newOrder);
       CheckNoEvents (_orderCustomerPropertyEventReceiver);
@@ -747,8 +747,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void SaveObjectWithNonMandatoryOneToManyRelation ()
     {
-      Customer newCustomer = Customer.Create ();
-      newCustomer.Ceo = Ceo.Create ();
+      Customer newCustomer = Customer.NewObject ();
+      newCustomer.Ceo = Ceo.NewObject ();
 
       Customer existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
       Assert.AreEqual (1, existingCustomer.Orders.Count);

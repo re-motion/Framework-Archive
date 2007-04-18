@@ -22,11 +22,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _newOrder = Order.Create ();
+      _newOrder = Order.NewObject ();
       _newOrderContainer = _newOrder.DataContainer;
       _newOrderPropertyValues = _newOrderContainer.PropertyValues;
       _orderNumberValue = _newOrderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
-      _newOrderTicket = OrderTicket.Create (_newOrder);
+      _newOrderTicket = OrderTicket.NewObject (_newOrder);
     }
 
     [Test]
@@ -478,7 +478,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DeleteFromManyToOneRelation ()
     {
-      Customer newCustomer = Customer.Create ();
+      Customer newCustomer = Customer.NewObject ();
 
       _newOrder.Customer = newCustomer;
 
@@ -492,7 +492,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DeleteFromOneToManyRelation ()
     {
-      Customer newCustomer = Customer.Create ();
+      Customer newCustomer = Customer.NewObject ();
 
       _newOrder.Customer = newCustomer;
 

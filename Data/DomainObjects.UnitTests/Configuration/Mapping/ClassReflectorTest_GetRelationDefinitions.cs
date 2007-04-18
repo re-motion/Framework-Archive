@@ -28,28 +28,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _classDefinitions.Add (_classWithOneSideRelationPropertiesClassDefinition);
     }
 
-  	[Test]
-  	public void GetRelationDefinitions_ForManySide()
-  	{
-  		ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
+    [Test]
+    public void GetRelationDefinitions_ForManySide()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
 
-  		List<RelationDefinition> actualList = classReflector.GetRelationDefinitions (_classDefinitions);
-  		Assert.IsNotNull (actualList);
+      List<RelationDefinition> actualList = classReflector.GetRelationDefinitions (_classDefinitions);
+      Assert.IsNotNull (actualList);
 
-  		RelationDefinitionCollection actualDefinitions = new RelationDefinitionCollection();
-  		foreach (RelationDefinition definition in actualList)
-  			actualDefinitions.Add (definition);
+      RelationDefinitionCollection actualDefinitions = new RelationDefinitionCollection();
+      foreach (RelationDefinition definition in actualList)
+        actualDefinitions.Add (definition);
 
-  		RelationDefinitionCollection expectedDefinitions = new RelationDefinitionCollection();
-  		expectedDefinitions.Add (CreateNoAttributeRelationDefinition());
-  		expectedDefinitions.Add (CreateNotNullableRelationDefinition());
-  		expectedDefinitions.Add (CreateUnidirectionalOneToOneRelationDefinition());
-  		expectedDefinitions.Add (CreateUnidirectionalOneToManyRelationDefinition());
-  		expectedDefinitions.Add (CreateBidirectionalOneToOneRelationDefinition());
-  		expectedDefinitions.Add (CreateBidirectionalOneToManyRelationDefinition());
+      RelationDefinitionCollection expectedDefinitions = new RelationDefinitionCollection();
+      expectedDefinitions.Add (CreateNoAttributeRelationDefinition());
+      expectedDefinitions.Add (CreateNotNullableRelationDefinition());
+      expectedDefinitions.Add (CreateUnidirectionalOneToOneRelationDefinition());
+      expectedDefinitions.Add (CreateUnidirectionalOneToManyRelationDefinition());
+      expectedDefinitions.Add (CreateBidirectionalOneToOneRelationDefinition());
+      expectedDefinitions.Add (CreateBidirectionalOneToManyRelationDefinition());
 
-  		_relationDefinitionChecker.Check (expectedDefinitions, actualDefinitions);
-  	}
+      _relationDefinitionChecker.Check (expectedDefinitions, actualDefinitions);
+    }
 
     [Test]
     public void GetRelationDefinitions_ForOneSide()

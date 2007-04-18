@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ReferencedT
 {
   public abstract class ClassInOtherAssembly: DomainObject
   {
-    protected ClassInOtherAssembly (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected ClassInOtherAssembly ()
+    {
+    }
+
+    protected ClassInOtherAssembly (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
   }

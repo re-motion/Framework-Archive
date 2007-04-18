@@ -13,13 +13,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (Company) DomainObject.GetObject (id);
     }
 
-    public static Company Create ()
+    public static Company NewObject ()
     {
-      return DomainObject.Create<Company> ();
+      return DomainObject.NewObject<Company> ().With();
     }
 
-    protected Company (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Company ()
+    {
+    }
+
+    protected Company (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

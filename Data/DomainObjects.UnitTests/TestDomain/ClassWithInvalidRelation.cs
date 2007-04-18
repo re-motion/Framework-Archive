@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithInvalidRelation : TestDomainBase
   {
-    protected ClassWithInvalidRelation (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithInvalidRelation ()
+    {
+    }
+
+    protected ClassWithInvalidRelation (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

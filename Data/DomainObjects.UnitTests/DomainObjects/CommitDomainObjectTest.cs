@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
-      OrderItem orderItem = OrderItem.Create (order);
+      OrderItem orderItem = OrderItem.NewObject (order);
 
       ClientTransactionMock.Commit ();
 

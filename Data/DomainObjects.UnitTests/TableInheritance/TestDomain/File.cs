@@ -12,13 +12,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (File) DomainObject.GetObject (id);
     }
 
-    public static File Create()
+    public static File NewObject()
     {
-      return Create<File>();
+      return NewObject<File>().With();
     }
 
-    protected File (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected File ()
+    {
+    }
+
+    protected File (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

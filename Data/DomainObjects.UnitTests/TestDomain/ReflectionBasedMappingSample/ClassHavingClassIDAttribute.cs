@@ -8,8 +8,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassHavingClassIDAttribute : DomainObject
   {
-    protected ClassHavingClassIDAttribute (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassHavingClassIDAttribute ()
+    {
+    }
+
+    protected ClassHavingClassIDAttribute (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

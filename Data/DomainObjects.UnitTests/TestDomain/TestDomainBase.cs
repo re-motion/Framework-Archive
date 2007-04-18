@@ -20,8 +20,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
     }
 
-    protected TestDomainBase (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected TestDomainBase()
+    {
+    }
+
+    protected TestDomainBase (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

@@ -13,18 +13,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (Order) DomainObject.GetObject (id);
     }
 
-    public static Order Create ()
+    public static Order NewObject ()
     {
-      return DomainObject.Create<Order> ();
+      return DomainObject.NewObject<Order> ().With();
     }
 
-    public static Order Create (ClientTransaction clientTransaction)
+    public static Order NewObject (ClientTransaction clientTransaction)
     {
-      return DomainObject.Create<Order> (clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Order>().With();
+      }
     }
 
-    protected Order (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Order ()
+    {
+    }
+
+    protected Order (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

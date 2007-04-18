@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithoutIDColumn : TestDomainBase
   {
-    protected ClassWithoutIDColumn (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithoutIDColumn()
+    {
+    }
+
+    protected ClassWithoutIDColumn (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
   }

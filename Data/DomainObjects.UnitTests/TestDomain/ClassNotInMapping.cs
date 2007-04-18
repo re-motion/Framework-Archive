@@ -6,8 +6,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [TestDomain]
   public class ClassNotInMapping : DomainObject
   {
-    protected ClassNotInMapping (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected ClassNotInMapping ()
+    {
+    }
+
+    protected ClassNotInMapping (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

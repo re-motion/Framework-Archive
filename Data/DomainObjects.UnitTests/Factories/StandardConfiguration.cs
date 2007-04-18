@@ -11,7 +11,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       get
       {
         if (s_instance == null)
+        {
+          System.Diagnostics.Debugger.Break ();
           throw new InvalidOperationException ("StandardConfiguration has not been Initialized by invoking Initialize()");
+        }
         return s_instance;
       }
     }

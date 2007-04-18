@@ -85,9 +85,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CreateObjectsAndCommit ()
     {
-      Client client1 = Client.Create ();
-      Client client2 = Client.Create ();
-      Location location = Location.Create ();
+      Client client1 = Client.NewObject ();
+      Client client2 = Client.NewObject ();
+      Location location = Location.NewObject();
 
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { location, client1, client2 }, new DomainObjectCollection[0]);
 
@@ -163,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Rollback ()
     {
       _location.Delete ();
-      Location newLocation = Location.Create ();
+      Location newLocation = Location.NewObject();
       newLocation.Client = _newClient;
 
       ClientTransactionMock.Rollback ();
@@ -174,8 +174,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CreateHierarchy ()
     {
-      Client newClient1 = Client.Create ();
-      Client newClient2 = Client.Create ();
+      Client newClient1 = Client.NewObject ();
+      Client newClient2 = Client.NewObject ();
       newClient2.ParentClient = newClient1;
 
       ObjectID newClientID1 = newClient1.ID;

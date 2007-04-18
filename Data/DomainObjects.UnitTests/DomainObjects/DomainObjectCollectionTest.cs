@@ -895,7 +895,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "\r\nParameter name: index\r\nActual value was 2.")]
     public void SetInvalidNumericIndex ()
     {
-      _collection[_collection.Count] = Customer.Create ();
+      _collection[_collection.Count] = Customer.NewObject ();
     }
 
     [Test]
@@ -909,7 +909,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ArgumentException))]
     public void SetNumericIndexerWithInvalidType ()
     {
-      _collection[0] = Order.Create ();
+      _collection[0] = Order.NewObject ();
     }
 
     [Test]
@@ -1007,7 +1007,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void ClearWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
-      Customer customer = Customer.Create ();
+      Customer customer = Customer.NewObject ();
       domainObjectCollection.Add (customer);
       customer.Delete ();
       Assert.IsTrue (customer.IsDiscarded);
@@ -1023,7 +1023,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void RemoveWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
-      Customer customer = Customer.Create ();
+      Customer customer = Customer.NewObject ();
       domainObjectCollection.Add (customer);
       customer.Delete ();
       Assert.IsTrue (customer.IsDiscarded);

@@ -20,15 +20,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (ClassWithAllDataTypes) DomainObject.GetObject (id);
     }
 
-    public static ClassWithAllDataTypes Create ()
+    public static ClassWithAllDataTypes NewObject ()
     {
-      return DomainObject.Create<ClassWithAllDataTypes> ();
+      return DomainObject.NewObject<ClassWithAllDataTypes> ().With();
     }
 
     private bool _onLoadedHasBeenCalled;
 
-    protected ClassWithAllDataTypes (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithAllDataTypes ()
+    {
+    }
+
+    protected ClassWithAllDataTypes (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

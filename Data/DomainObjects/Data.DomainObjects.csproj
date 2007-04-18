@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassIDAttribute.cs" />
+    <Compile Include="CurrentTransactionScope.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />

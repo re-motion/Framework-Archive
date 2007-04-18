@@ -13,13 +13,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (IndustrialSector) DomainObject.GetObject (id);
     }
 
-    public static IndustrialSector Create ()
+    public static IndustrialSector NewObject ()
     {
-      return DomainObject.Create<IndustrialSector> ();
+      return DomainObject.NewObject<IndustrialSector> ().With ();
     }
 
-    protected IndustrialSector (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected IndustrialSector ()
+    {
+    }
+
+    protected IndustrialSector (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

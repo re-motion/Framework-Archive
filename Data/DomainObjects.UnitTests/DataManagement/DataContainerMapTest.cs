@@ -119,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     private DataContainer CreateNewOrderDataContainer ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
       order.OrderNumber = 10;
       order.DeliveryDate = new DateTime (2006, 1, 1);
       order.Official = Official.GetObject (DomainObjectIDs.Official1);

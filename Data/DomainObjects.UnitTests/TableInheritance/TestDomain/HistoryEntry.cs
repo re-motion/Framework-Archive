@@ -12,13 +12,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (HistoryEntry) DomainObject.GetObject (id);
     }
 
-    public static HistoryEntry Create()
+    public static HistoryEntry NewObject()
     {
-      return Create<HistoryEntry>();
+      return NewObject<HistoryEntry>().With();
     }
 
-    protected HistoryEntry (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected HistoryEntry()
+    {
+    }
+
+    protected HistoryEntry (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

@@ -260,6 +260,8 @@
     </Compile>
     <Compile Include="PermanentGuidAttribute.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
+    <Compile Include="Reflection\IInvokeWith.cs" />
+    <Compile Include="Reflection\InvokeWithBoundFirst.cs" />
     <Compile Include="Reflection\EmitUtility.cs" />
     <Compile Include="Reflection\GetDelegateWith.cs" />
     <Compile Include="Reflection\InvokeWith.cs" />

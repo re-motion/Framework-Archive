@@ -7,14 +7,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithGuidKey : TestDomainBase
   {
-    public static ClassWithGuidKey Create ()
+    public static ClassWithGuidKey NewObject ()
     {
-      return DomainObject.Create<ClassWithGuidKey> ();
+      return DomainObject.NewObject<ClassWithGuidKey> ().With();
     }
 
+    protected ClassWithGuidKey()
+    {
+    }
 
-    protected ClassWithGuidKey (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithGuidKey (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

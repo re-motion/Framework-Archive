@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [TestDomain]
   public abstract class AbstractClassWithoutDerivations : DomainObject
   {
-    protected AbstractClassWithoutDerivations (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected AbstractClassWithoutDerivations ()
+    {
+    }
+
+    protected AbstractClassWithoutDerivations (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

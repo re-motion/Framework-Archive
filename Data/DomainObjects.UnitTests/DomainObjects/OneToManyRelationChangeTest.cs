@@ -329,17 +329,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
 
-      orderItems.Add (Customer.Create ());
+      orderItems.Add (Customer.NewObject ());
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException))]
     public void CheckRequiredItemTypeForNew ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
       DomainObjectCollection orderItems = order.OrderItems;
 
-      orderItems.Add (Customer.Create ());
+      orderItems.Add (Customer.NewObject ());
     }
 
     [Test]

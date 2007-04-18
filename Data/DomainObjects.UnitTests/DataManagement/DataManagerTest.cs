@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetNewAndUnchangedDomainObjects ()
     {
-      DataContainer container1 = Order.Create ().DataContainer;
+      DataContainer container1 = Order.NewObject ().DataContainer;
       DataContainer container2 = TestDataContainerFactory.CreateOrder2DataContainer ();
       _dataManager.RegisterExistingDataContainer (container2);
 
@@ -229,7 +229,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void RollbackDataContainerMap ()
     {
-      Computer computer = Computer.Create ();
+      Computer computer = Computer.NewObject ();
       ObjectID id = computer.ID;
 
       Assert.AreSame (computer.DataContainer, _dataManager.DataContainerMap[id]);
@@ -242,8 +242,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void RollbackObjectEndPoint ()
     {
-      Computer computer = Computer.Create ();
-      Employee employee = Employee.Create ();
+      Computer computer = Computer.NewObject ();
+      Employee employee = Employee.NewObject ();
 
       computer.Employee = employee;
 
@@ -265,8 +265,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void RollbackCollectionEndPoint ()
     {
-      Order order = Order.Create ();
-      OrderItem orderItem = OrderItem.Create ();
+      Order order = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       orderItem.Order = order;
 

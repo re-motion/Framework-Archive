@@ -15,28 +15,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     // New OrderTickets need an associated order for correct initialization.
-    public static OrderTicket Create ()
+    public static OrderTicket NewObject ()
     {
-      return DomainObject.Create<OrderTicket> ();
+      return DomainObject.NewObject<OrderTicket> ().With();
     }
 
     // New OrderTickets need an associated order for correct initialization.
-    public static OrderTicket Create (Order order)
+    public static OrderTicket NewObject (Order order)
     {
-      OrderTicket orderTicket = Create();
-      orderTicket.Initialize (order);
+      OrderTicket orderTicket = DomainObject.NewObject<OrderTicket>().With (order);
       return orderTicket;
     }
 
-    protected OrderTicket (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected OrderTicket ()
     {
     }
 
-    protected virtual void Initialize (Order order) 
+    protected OrderTicket (Order order)
     {
       ArgumentUtility.CheckNotNull ("order", order);
       Order = order;
+    }
+
+    protected OrderTicket (DataContainer dataContainer)
+      : base (dataContainer)
+    {
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 255)]

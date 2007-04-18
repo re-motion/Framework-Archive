@@ -9,13 +9,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [TestDomain]
   public abstract class OrderItemWithNewPropertyAccess : DomainObject
   {
-    public static OrderItemWithNewPropertyAccess Create ()
+    public static OrderItemWithNewPropertyAccess NewObject ()
     {
-      return DomainObject.Create<OrderItemWithNewPropertyAccess> ();
+      return DomainObject.NewObject<OrderItemWithNewPropertyAccess> ().With();
     }
 
-    protected OrderItemWithNewPropertyAccess (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected OrderItemWithNewPropertyAccess()
+    {
+    }
+
+    protected OrderItemWithNewPropertyAccess (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

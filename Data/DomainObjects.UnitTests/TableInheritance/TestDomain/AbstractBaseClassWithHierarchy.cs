@@ -12,8 +12,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (AbstractBaseClassWithHierarchy) DomainObject.GetObject (id);
     }
 
-    protected AbstractBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected AbstractBaseClassWithHierarchy ()
+    {
+    }
+
+    protected AbstractBaseClassWithHierarchy (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

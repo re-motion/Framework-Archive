@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithKeyOfInvalidType : TestDomainBase
   {
-    protected ClassWithKeyOfInvalidType (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithKeyOfInvalidType ()
+    {
+    }
+
+    protected ClassWithKeyOfInvalidType (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

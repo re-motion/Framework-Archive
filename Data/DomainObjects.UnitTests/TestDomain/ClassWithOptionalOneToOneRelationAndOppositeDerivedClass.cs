@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithOptionalOneToOneRelationAndOppositeDerivedClass : TestDomainBase
   {
-    protected ClassWithOptionalOneToOneRelationAndOppositeDerivedClass (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithOptionalOneToOneRelationAndOppositeDerivedClass ()
+    {
+    }
+
+    protected ClassWithOptionalOneToOneRelationAndOppositeDerivedClass (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

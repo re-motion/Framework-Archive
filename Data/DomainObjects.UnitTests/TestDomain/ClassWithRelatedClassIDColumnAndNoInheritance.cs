@@ -7,13 +7,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
   {
-    public static ClassWithRelatedClassIDColumnAndNoInheritance Create ()
+    public static ClassWithRelatedClassIDColumnAndNoInheritance NewObject ()
     {
-      return DomainObject.Create<ClassWithRelatedClassIDColumnAndNoInheritance> ();
+      return DomainObject.NewObject<ClassWithRelatedClassIDColumnAndNoInheritance> ().With();
     }
 
-    protected ClassWithRelatedClassIDColumnAndNoInheritance (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithRelatedClassIDColumnAndNoInheritance()
+    {
+    }
+
+    protected ClassWithRelatedClassIDColumnAndNoInheritance (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

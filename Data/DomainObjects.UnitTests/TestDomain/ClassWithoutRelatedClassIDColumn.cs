@@ -7,16 +7,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithoutRelatedClassIDColumn : TestDomainBase
   {
-    public static ClassWithoutRelatedClassIDColumn Create ()
+        public static ClassWithoutRelatedClassIDColumn NewObject ()
     {
-      return DomainObject.Create<ClassWithoutRelatedClassIDColumn> ();
+      return DomainObject.NewObject<ClassWithoutRelatedClassIDColumn> ().With();
     }
 
-    protected ClassWithoutRelatedClassIDColumn (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithoutRelatedClassIDColumn()
     {
     }
 
+    protected ClassWithoutRelatedClassIDColumn (DataContainer dataContainer)
+        : base (dataContainer)
+    {
+    }
+  
     [DBBidirectionalRelation ("ClassWithoutRelatedClassIDColumn", ContainsForeignKey = true)]
     public abstract Distributor Distributor { get; set; }
   }

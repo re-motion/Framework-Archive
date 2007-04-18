@@ -12,13 +12,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Folder) DomainObject.GetObject (id);
     }
 
-    public static Folder Create()
+    public static Folder NewObject()
     {
-      return Create<Folder>();
+      return DomainObject.NewObject<Folder>().With();
     }
 
-    protected Folder (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected Folder()
+    {
+    }
+
+    protected Folder (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

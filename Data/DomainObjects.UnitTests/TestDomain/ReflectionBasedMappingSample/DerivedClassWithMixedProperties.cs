@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class DerivedClassWithMixedProperties : ClassWithMixedProperties
   {
-    protected DerivedClassWithMixedProperties (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected DerivedClassWithMixedProperties()
+    {
+    }
+
+    protected DerivedClassWithMixedProperties (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

@@ -4,8 +4,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
 {
   public abstract class ClassWithInvalidBidirectionalRelation: DomainObject
   {
-    protected ClassWithInvalidBidirectionalRelation (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected ClassWithInvalidBidirectionalRelation ()
+    {
+    }
+
+    protected ClassWithInvalidBidirectionalRelation (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

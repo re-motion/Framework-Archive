@@ -11,13 +11,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (Partner) DomainObject.GetObject (id);
     }
 
-    public static Partner Create ()
+    public static new Partner NewObject ()
     {
-      return DomainObject.Create<Partner>();
+      return DomainObject.NewObject<Partner>().With();
     }
 
-    protected Partner (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Partner ()
+    {
+    }
+
+    protected Partner (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

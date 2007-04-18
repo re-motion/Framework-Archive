@@ -90,11 +90,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
-		..\build\buildversion.xml = ..\build\buildversion.xml
 		..\Commons.build = ..\Commons.build
-		..\build\Commons.Doc.include.build = ..\build\Commons.Doc.include.build
-		..\build\Commons.include.build = ..\build\Commons.include.build
-		..\build\properties.include.build = ..\build\properties.include.build
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.CodeGenerator.UnitTests", "DomainObjects.CodeGenerator.UnitTests\Data.DomainObjects.CodeGenerator.UnitTests.csproj", "{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}"

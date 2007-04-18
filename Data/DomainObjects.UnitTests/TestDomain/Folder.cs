@@ -6,13 +6,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Folder : FileSystemItem
   {
-    public static Folder Create ()
+    public static Folder NewObject ()
     {
-      return DomainObject.Create<Folder> ();
+      return DomainObject.NewObject<Folder> ().With();
     }
 
-    protected Folder (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Folder ()
+    {
+    }
+
+    protected Folder (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

@@ -7,13 +7,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class ClassWithValidRelations : TestDomainBase
   {
-    public static ClassWithValidRelations Create ()
+    public static ClassWithValidRelations NewObject ()
     {
-      return DomainObject.Create<ClassWithValidRelations> ();
+      return DomainObject.NewObject<ClassWithValidRelations> ().With();
     }
 
-    protected ClassWithValidRelations (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithValidRelations()
+    {
+    }
+
+    protected ClassWithValidRelations (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

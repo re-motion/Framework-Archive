@@ -11,13 +11,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (DerivedClassWithEntityFromBaseClassWithHierarchy) DomainObject.GetObject (id);
     }
 
-    public static DerivedClassWithEntityFromBaseClassWithHierarchy Create ()
+    public new static DerivedClassWithEntityFromBaseClassWithHierarchy NewObject ()
     {
-      return DomainObject.Create<DerivedClassWithEntityFromBaseClassWithHierarchy> ();
+      return DomainObject.NewObject<DerivedClassWithEntityFromBaseClassWithHierarchy> ().With ();
     }
 
-    protected DerivedClassWithEntityFromBaseClassWithHierarchy (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected DerivedClassWithEntityFromBaseClassWithHierarchy ()
+    {
+    }
+
+    protected DerivedClassWithEntityFromBaseClassWithHierarchy (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassWithBinaryProperties : DomainObject
   {
-    protected ClassWithBinaryProperties (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected ClassWithBinaryProperties ()
+    {
+    }
+
+    protected ClassWithBinaryProperties (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

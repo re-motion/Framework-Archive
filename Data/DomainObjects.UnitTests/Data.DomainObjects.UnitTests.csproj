@@ -146,6 +146,7 @@
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
+    <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
@@ -682,7 +683,7 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithDefaultStorageProvider.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
-    <Compile Include="TestDomain\StorageProviderStubTestDomainBase.cs" />
+    <Compile Include="TestDomain\StorageProviderStubDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />
     <Compile Include="TestDomain\OrderWithNewPropertyAccess.cs" />
     <Compile Include="TestDomain\Customer.cs">
@@ -765,6 +766,7 @@
     <Compile Include="EventReceiver\DomainObjectMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueCollectionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
+    <Compile Include="Transaction\CurrentTransactionScopeTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">

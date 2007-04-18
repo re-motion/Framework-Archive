@@ -6,13 +6,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class SpecialOfficial : Official
   {
-    public static SpecialOfficial Create ()
+    public static new SpecialOfficial NewObject ()
     {
-      return DomainObject.Create<SpecialOfficial>();
+      return DomainObject.NewObject<SpecialOfficial>().With();
     }
 
-    protected SpecialOfficial (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected SpecialOfficial()
+    {
+    }
+
+    protected SpecialOfficial (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
   }

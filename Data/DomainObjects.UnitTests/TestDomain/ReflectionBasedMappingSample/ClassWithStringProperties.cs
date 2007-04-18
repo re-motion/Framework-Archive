@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassWithStringProperties : DomainObject
   {
-    protected ClassWithStringProperties (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected ClassWithStringProperties ()
+    {
+    }
+
+    protected ClassWithStringProperties (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

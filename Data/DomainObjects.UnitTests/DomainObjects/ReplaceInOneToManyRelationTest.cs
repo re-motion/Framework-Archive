@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void EventsWithoutOldCustomerOfNewOrder ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
       DomainObject[] domainObjectEventSources = new DomainObject[] { _customer, _oldCustomerOfNewOrder, _oldOrder, newOrder };
       DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] { _customer.Orders, _oldCustomerOfNewOrder.Orders };
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources);

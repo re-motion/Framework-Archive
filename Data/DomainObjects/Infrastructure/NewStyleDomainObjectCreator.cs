@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 using System.Reflection;
 using Rubicon.Logging;
@@ -11,46 +12,24 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   // Creates new domain object instances via the DomainObjectFactory.
   // Needed constructors:
-  // MyDomainObject (ClientTransaction, ObjectID) -- for all constructions
+  // MyDomainObject (DataContainer) -- for loading
+  // (any constructor) -- for new objects
   class NewStyleDomainObjectCreator : IDomainObjectCreator
   {
     public readonly static NewStyleDomainObjectCreator Instance = new NewStyleDomainObjectCreator ();
-    private static ILog s_log = LogManager.GetLogger (typeof (NewStyleDomainObjectCreator));
 
-    public DomainObject CreateWithCurrentTransaction (Type type)
+    public DomainObject CreateWithDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return Create (type, new object[] { ClientTransaction.Current, null });
+      IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
+      Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
+      return factory.GetTypesafeConstructorInvoker<DomainObject> (concreteType).With (dataContainer);
     }
 
-    public DomainObject CreateWithTransaction (Type type, ClientTransaction clientTransaction)
+    public IInvokeWith<T> GetTypesafeConstructorInvoker<T> ()
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      return Create (type, new object[] { clientTransaction, null });
-    }
-
-    public DomainObject CreateWithDataContainer (DataContainer dataContainer, ObjectID objectID)
-    {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-      DomainObject obj = Create (dataContainer.DomainObjectType, new object[] { null, objectID });
-      obj.DataContainer = dataContainer;
-      return obj;
-    }
-
-    private DomainObject Create (Type type, object[] constructorArgs)
-    {
-      try
-      {
-        return (DomainObject) DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.Create (type, constructorArgs);
-      }
-      catch (TargetInvocationException ex)
-      {
-        s_log.Error ("TargetInvocationException in constructor call, inner exception is unwrapped and rethrown.", ex);
-        throw ex.InnerException;
-      }
+      IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
+      Type concreteType = factory.GetConcreteDomainObjectType(typeof (T));
+      return factory.GetTypesafeConstructorInvoker<T> (concreteType);
     }
   }
 }

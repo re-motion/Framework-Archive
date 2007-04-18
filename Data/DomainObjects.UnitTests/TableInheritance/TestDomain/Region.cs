@@ -7,13 +7,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [NotAbstract]
   public abstract class Region: DomainObject
   {
-    public static Region Create ()
+    public static Region NewObject ()
     {
-      return DomainObject.Create<Region> ();
+      return DomainObject.NewObject<Region> ().With();
     }
 
-    protected Region (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected Region()
+    {
+    }
+
+    protected Region (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

@@ -473,7 +473,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (DataManagementException))]
     public void SetRelatedObjectWithInvalidObjectClassOnVirtualRelationEndPoint ()
     {
-      _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", Ceo.Create ());
+      _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", Ceo.NewObject ());
     }
 
   }

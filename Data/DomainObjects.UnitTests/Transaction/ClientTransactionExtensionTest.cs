@@ -56,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      Order.Create ();
+      Order.NewObject ();
 
       _mockRepository.VerifyAll ();
     }

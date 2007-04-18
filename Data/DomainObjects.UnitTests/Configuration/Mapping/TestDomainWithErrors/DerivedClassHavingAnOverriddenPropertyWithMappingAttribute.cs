@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
 {
   public abstract class DerivedClassHavingAnOverriddenPropertyWithMappingAttribute: BaseClass
   {
-    protected DerivedClassHavingAnOverriddenPropertyWithMappingAttribute (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected DerivedClassHavingAnOverriddenPropertyWithMappingAttribute ()
+    {
+    }
+
+    protected DerivedClassHavingAnOverriddenPropertyWithMappingAttribute (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

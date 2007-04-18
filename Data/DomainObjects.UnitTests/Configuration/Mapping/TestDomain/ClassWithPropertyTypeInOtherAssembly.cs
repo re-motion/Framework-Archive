@@ -6,8 +6,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain
 {
   public abstract class ClassWithPropertyTypeInOtherAssembly: DomainObject
   {
-    protected ClassWithPropertyTypeInOtherAssembly (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected ClassWithPropertyTypeInOtherAssembly ()
+    {
+    }
+
+    protected ClassWithPropertyTypeInOtherAssembly (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

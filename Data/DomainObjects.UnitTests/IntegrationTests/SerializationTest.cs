@@ -138,23 +138,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void EventsAfterDeserializationWithRegisteredEvents ()
     {
-      Customer newCustomer1 = Customer.Create ();
+      Customer newCustomer1 = Customer.NewObject ();
       newCustomer1.Name = "NewCustomer1";
 
-      Customer newCustomer2 = Customer.Create ();
+      Customer newCustomer2 = Customer.NewObject ();
       newCustomer2.Name = "NewCustomer2";
 
       Official official2 = Official.GetObject (DomainObjectIDs.Official2);
-      Ceo newCeo1 = Ceo.Create ();
-      Ceo newCeo2 = Ceo.Create ();
-      Order newOrder1 = Order.Create ();
+      Ceo newCeo1 = Ceo.NewObject ();
+      Ceo newCeo2 = Ceo.NewObject ();
+      Order newOrder1 = Order.NewObject ();
       newOrder1.DeliveryDate = new DateTime (2006, 1, 1);
 
-      Order newOrder2 = Order.Create ();
+      Order newOrder2 = Order.NewObject ();
       newOrder2.DeliveryDate = new DateTime (2006, 2, 2);
 
-      OrderItem newOrderItem1 = OrderItem.Create ();
-      OrderItem newOrderItem2 = OrderItem.Create ();
+      OrderItem newOrderItem1 = OrderItem.NewObject ();
+      OrderItem newOrderItem2 = OrderItem.NewObject ();
 
       DomainObject[] domainObjects = new DomainObject[] 
     { 
@@ -232,7 +232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       desNewOrder1.Official = desOfficial2;
 
       //13
-      OrderTicket desNewOrderTicket1 = OrderTicket.Create (desNewOrder1);
+      OrderTicket desNewOrderTicket1 = OrderTicket.NewObject (desNewOrder1);
 
       ChangeState[] expectedChangeStates = new ChangeState[]
     { 

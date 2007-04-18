@@ -2,17 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   public class FakeDomainObjectFactory : IDomainObjectFactory
   {
-    public object Create (Type type, params object[] args)
+    public Type GetConcreteDomainObjectType (Type baseType)
     {
       throw new Exception ("The method or operation is not implemented.");
     }
 
-    public bool WasCreatedByFactory (object o)
+    public bool WasCreatedByFactory (Type t)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
+
+    public IInvokeWith<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
     {
       throw new Exception ("The method or operation is not implemented.");
     }

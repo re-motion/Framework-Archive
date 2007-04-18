@@ -1,0 +1,54 @@
+using System;
+using NUnit.Framework;
+
+namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
+{
+  [TestFixture]
+  public class ConstructionTest : ReflectionBasedMappingTest
+  {
+    [DBTable]
+    public class DomainObjectWithSpecialConstructor : DomainObject
+    {
+      public string S;
+      public object O;
+
+      protected DomainObjectWithSpecialConstructor (string s)
+      {
+        S = s;
+      }
+
+      protected DomainObjectWithSpecialConstructor (object o)
+      {
+        O = o;
+      }
+
+      protected DomainObjectWithSpecialConstructor (DataContainer dataContainer)
+          : base (dataContainer)
+      {
+      }
+
+      public static DomainObjectWithSpecialConstructor NewObject (string s)
+      {
+        return DomainObject.NewObject<DomainObjectWithSpecialConstructor>().With(s);
+      }
+
+      public static DomainObjectWithSpecialConstructor NewObject (object o)
+      {
+        return DomainObject.NewObject<DomainObjectWithSpecialConstructor> ().With (o);
+      }
+    }
+
+    [Test]
+    public void ConstructorSelection ()
+    {
+      DomainObjectWithSpecialConstructor d1 = DomainObjectWithSpecialConstructor.NewObject ("string");
+      Assert.AreEqual ("string", d1.S);
+      Assert.IsNull (d1.O);
+
+      object obj = new object ();
+      DomainObjectWithSpecialConstructor d2 = DomainObjectWithSpecialConstructor.NewObject (obj);
+      Assert.IsNull (d2.S);
+      Assert.AreSame (obj, d2.O);
+    }
+  }
+}

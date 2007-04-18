@@ -88,8 +88,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void OneToOneRelationFromVirtualEndPointWithOldNull ()
     {
-      Order order = Order.Create ();
-      OrderTicket orderTicket = OrderTicket.Create ();
+      Order order = Order.NewObject ();
+      OrderTicket orderTicket = OrderTicket.NewObject ();
 
       _mockRepository.BackToRecord (_extension);
 
@@ -260,7 +260,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void UnidirectionalRelationWithOldNull ()
     {
-      Location newLocation = Location.Create ();
+      Location newLocation = Location.NewObject ();
 
       DomainObjectMockEventReceiver newLocationEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newLocation);
 
@@ -286,7 +286,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void UnidirectionalRelationWithOldRelatedObject ()
     {
-      Client newClient = Client.Create ();
+      Client newClient = Client.NewObject ();
       DomainObjectMockEventReceiver newClientEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newClient);
 
       _mockRepository.BackToRecord (_extension);
@@ -352,7 +352,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void AddToOneToManyRelation ()
     {
       DomainObjectCollection preloadedOrderItems = _order1.OrderItems;
-      OrderItem orderItem = OrderItem.Create ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       _mockRepository.BackToRecord (_extension);
       DomainObjectMockEventReceiver orderItemEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderItem);
@@ -455,7 +455,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderItem oldOrderItem = (OrderItem) _order1.OrderItems[0];
 
       DomainObjectCollection preloadedOrderItems = _order1.OrderItems;
-      OrderItem newOrderItem = OrderItem.Create ();
+      OrderItem newOrderItem = OrderItem.NewObject ();
 
       _mockRepository.BackToRecord (_extension);
       DomainObjectMockEventReceiver oldOrderItemEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (oldOrderItem);

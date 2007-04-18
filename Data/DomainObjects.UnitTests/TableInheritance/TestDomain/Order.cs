@@ -12,13 +12,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Order) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static Order Create()
+    public static Order NewObject()
     {
-      return Create<Order>();
+      return NewObject<Order>().With();
     }
 
-    protected Order (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected Order()
+    {
+    }
+
+    protected Order (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

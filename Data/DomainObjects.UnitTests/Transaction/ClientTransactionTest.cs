@@ -554,7 +554,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void MandatoryRelationNotSetExceptionForOneToOneRelation ()
     {
-      OrderTicket newOrderTicket = OrderTicket.Create ();
+      OrderTicket newOrderTicket = OrderTicket.NewObject ();
 
       try
       {
@@ -573,7 +573,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void MandatoryRelationNotSetExceptionForOneToManyRelation ()
     {
-      IndustrialSector newIndustrialSector = IndustrialSector.Create ();
+      IndustrialSector newIndustrialSector = IndustrialSector.NewObject ();
 
       try
       {

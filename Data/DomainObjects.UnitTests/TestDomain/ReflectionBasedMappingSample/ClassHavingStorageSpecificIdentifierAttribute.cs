@@ -7,8 +7,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassHavingStorageSpecificIdentifierAttribute : DomainObject
   {
-    protected ClassHavingStorageSpecificIdentifierAttribute (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+
+    protected ClassHavingStorageSpecificIdentifierAttribute ()
+    {
+    }
+
+    protected ClassHavingStorageSpecificIdentifierAttribute (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

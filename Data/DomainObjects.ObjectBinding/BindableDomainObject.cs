@@ -109,40 +109,16 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   private BusinessObjectReflector _objectReflector;
 
   // construction and disposing
-  
-  /// <summary>
-  /// Initializes a new <see cref="BindableDomainObject"/>.
-  /// </summary>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/> should be part of.
-  /// Must not be <see langword="null"/>, unless an <paramref name="objectID"/> is given.</param>
-  /// <param name="objectID">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
-  /// If it has a value, the constructor assumes that it is invoked as part of a loading process.</param>
-  /// <remarks>Implement a protected constructor with the same signature on concrete domain objects, delegate to this base constructor, and only use
-  /// the <see cref="DomainObject.Create{T}(ClientTransaction)"/> and <see cref="DomainObject.GetObject{T}(ObjectID)"/> factory methods to invoke it.
-  /// Domain objects generally should not be constructed via the <c>new</c> operator.</remarks>
-  /// <exception cref="ArgumentNullException">Both the <paramref name="clientTransaction"/> and <paramref name="objectID"/> arguments are <see langword="null"/>.</exception>
-  protected BindableDomainObject (ClientTransaction clientTransaction, ObjectID objectID)
-    : base (clientTransaction, objectID)
-  {
-    Initialize ();
-  }
 
-  /// <summary>
-  /// Initializes a new <b>BindableDomainObject</b>.
-  /// </summary>
-  // TODO: [Obsolete ("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
+	/// <summary>
+	/// Initializes a new <see cref="BindableDomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
+	/// </summary>
+	/// <remarks>Any constructors implemented on concrete domain objects should delegate to this base constructor, apart from the infrastructure
+	/// constructor (see <see cref="BindableDomainObject(DataContainer)"/>). As domain objects generally should not be constructed via the
+	/// <c>new</c> operator, these constructors should remain protected, and the concrete domain objects should have a static "NewObject" method,
+	/// which delegates to <see cref="DomainObject.NewObject"/>, passing it the required constructor arguments.</remarks>
   protected BindableDomainObject ()
-  {
-    Initialize ();
-  }
-
-  /// <summary>
-  /// Initializes a new <b>BindableDomainObject</b>.
-  /// </summary>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>BindableDomainObject</b> should be part of.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  // TODO: [Obsolete("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
-  protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
+    : base ()
   {
     Initialize ();
   }
@@ -155,11 +131,24 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
   /// </remarks>
   /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
-  // TODO: [Obsolete ("This constructor is obsolete, use the (ClientTransaction, ObjectID) one instead.")]
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
     Initialize ();
   }
+
+	#region Obsolete legacy constructor
+  /// <summary>
+  /// Initializes a new <see cref="BindableDomainObject"/>.
+  /// </summary>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/>
+	/// should be part of. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
+  [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with CurrentTransactionScope instead.")]
+	protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
+  #endregion
 
   private void Initialize ()
   {

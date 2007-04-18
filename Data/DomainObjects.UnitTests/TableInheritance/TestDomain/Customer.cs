@@ -17,13 +17,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Customer) DomainObject.GetObject (id);
     }
 
-    public static Customer Create ()
+    public static Customer NewObject ()
     {
-      return DomainObject.Create<Customer> ();
+      return DomainObject.NewObject<Customer> ().With ();
     }
 
-    public Customer (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Customer()
+    {
+    }
+
+    protected Customer (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

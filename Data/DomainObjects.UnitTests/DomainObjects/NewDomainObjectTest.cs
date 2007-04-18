@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Creation ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
 
       Assert.IsNotNull (order.ID);
       Assert.AreEqual (StateType.New, order.State);
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObject ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
       Order sameOrder = Order.GetObject (order.ID);
 
       Assert.AreSame (order, sameOrder);
@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObject ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
 
       Assert.IsNull (order.OrderTicket);
     }
@@ -47,8 +47,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObject ()
     {
-      Partner partner = Partner.Create ();
-      Ceo ceo = Ceo.Create ();
+      Partner partner = Partner.NewObject ();
+      Ceo ceo = Ceo.NewObject ();
 
       Assert.IsNull (partner.Ceo);
       Assert.IsNull (ceo.Company);
@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObjects ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
 
       Assert.IsNotNull (order.OrderItems);
       Assert.AreEqual (0, order.OrderItems.Count);
@@ -71,8 +71,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjects ()
     {
-      Order order = Order.Create ();
-      OrderItem orderItem = OrderItem.Create ();
+      Order order = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       order.OrderItems.Add (orderItem);
 
@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateForPropertyChange ()
     {
-      Customer customer = Customer.Create ();
+      Customer customer = Customer.NewObject ();
       customer.Name = "Arthur Dent";
 
       Assert.AreEqual ("Arthur Dent", customer.Name);
@@ -95,8 +95,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateForOneToOneRelationChange ()
     {
-      Partner partner = Partner.Create();
-      Ceo ceo = Ceo.Create ();
+      Partner partner = Partner.NewObject();
+      Ceo ceo = Ceo.NewObject ();
 
       partner.Ceo = ceo;
 
@@ -107,8 +107,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void StateForOneToManyRelationChange ()
     {
-      Order order = Order.Create ();
-      OrderItem orderItem = OrderItem.Create ();
+      Order order = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       order.OrderItems.Add (orderItem);
 
@@ -119,8 +119,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Events ()
     {
-      Order order = Order.Create ();
-      OrderItem orderItem = OrderItem.Create ();
+      Order order = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       DomainObjectEventReceiver orderEventReceiver = new DomainObjectEventReceiver (order);
       DomainObjectEventReceiver orderItemEventReceiver = new DomainObjectEventReceiver (orderItem);
@@ -155,8 +155,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Partner partner = Partner.Create();
-      Ceo ceo = Ceo.Create ();
+      Partner partner = Partner.NewObject();
+      Ceo ceo = Ceo.NewObject ();
 
       partner.Ceo = ceo;
 
@@ -167,8 +167,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObjects ()
     {
-      Order order = Order.Create ();
-      OrderItem orderItem = OrderItem.Create ();
+      Order order = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
 
       order.OrderItems.Add (orderItem);
 
@@ -182,11 +182,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SaveNewRelatedObjects ()
     {
-      Ceo ceo = Ceo.Create ();
-      Customer customer = Customer.Create ();
-      Order order = Order.Create ();
-      OrderTicket orderTicket = OrderTicket.Create (order);
-      OrderItem orderItem = OrderItem.Create ();
+      Ceo ceo = Ceo.NewObject ();
+      Customer customer = Customer.NewObject ();
+      Order order = Order.NewObject ();
+      OrderTicket orderTicket = OrderTicket.NewObject (order);
+      OrderItem orderItem = OrderItem.NewObject ();
 
       ObjectID ceoID = ceo.ID;
       ObjectID customerID = customer.ID;
@@ -266,8 +266,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SaveHierarchy ()
     {
-      Employee supervisor = Employee.Create ();
-      Employee subordinate = Employee.Create ();
+      Employee supervisor = Employee.NewObject ();
+      Employee subordinate = Employee.NewObject ();
 
       ObjectID supervisorID = supervisor.ID;
       ObjectID subordinateID = subordinate.ID;
@@ -296,7 +296,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (MandatoryRelationNotSetException))]
     public void CheckMandatoryRelation ()
     {
-      OrderItem orderItem = OrderItem.Create ();
+      OrderItem orderItem = OrderItem.NewObject ();
       ClientTransactionMock.Commit ();
     }
 
@@ -304,7 +304,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void SaveExistingObjectWithRelatedNew ()
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      Employee newEmployee = Employee.Create ();
+      Employee newEmployee = Employee.NewObject ();
       ObjectID newEmployeeID = newEmployee.ID;
 
       newEmployee.Computer = computer;
@@ -324,7 +324,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DataContainerStateAfterCommit ()
     {
-      Computer computer = Computer.Create ();
+      Computer computer = Computer.NewObject ();
 
       ClientTransactionMock.Commit ();
 
@@ -334,7 +334,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyValueHasChangedAfterCommit ()
     {
-      Employee employee = Employee.Create ();
+      Employee employee = Employee.NewObject ();
       employee.Name = "Mr. Prosser";
 
       Assert.IsTrue (employee.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
@@ -347,10 +347,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OneToOneRelationHasChangedAfterCommit ()
     {
-      Employee employee = Employee.Create ();
+      Employee employee = Employee.NewObject ();
       employee.Name = "Jeltz";
 
-      Computer computer = Computer.Create ();
+      Computer computer = Computer.NewObject ();
       computer.SerialNumber = "42";
 
       employee.Computer = computer;
@@ -367,8 +367,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OneToManyRelationHasChangedAfterCommit ()
     {
-      Employee supervisor = Employee.Create ();
-      Employee subordinate = Employee.Create ();
+      Employee supervisor = Employee.NewObject ();
+      Employee subordinate = Employee.NewObject ();
 
       supervisor.Name = "Slartibartfast";
       subordinate.Name = "Zarniwoop";

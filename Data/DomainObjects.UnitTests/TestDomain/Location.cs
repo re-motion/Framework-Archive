@@ -13,13 +13,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (Location) DomainObject.GetObject (id);
     }
 
-    public static Location Create ()
+    public static Location NewObject ()
     {
-      return DomainObject.Create<Location> ();
+      return DomainObject.NewObject<Location> ().With();
     }
 
-    protected Location (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected Location()
+    {
+    }
+
+    protected Location (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

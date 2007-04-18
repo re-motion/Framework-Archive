@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void UsesView ()
     {
-      Order order = Order.Create();
+      Order order = Order.NewObject ();
 
       Provider.Connect ();
       CommandBuilder commandBuilder = new InsertCommandBuilder (Provider, order.DataContainer);
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
       new InsertCommandBuilder (Provider, order.DataContainer);
     }
 

@@ -66,7 +66,7 @@ namespace Rubicon.Core.UnitTests.Xml.XmlSerializationUtilityTests
     private Type CreateType (string typeName, params CustomAttributeBuilder[] attributeBuilders)
     {
       ModuleScope moduleScope = new ModuleScope();
-      ClassEmitter classEmitter = new ClassEmitter (moduleScope, typeName, typeof (object), null, false);
+      ClassEmitter classEmitter = new ClassEmitter (moduleScope, typeName, typeof (object), new Type [0], false);
       foreach (CustomAttributeBuilder attributeBuilder in attributeBuilders)
         classEmitter.TypeBuilder.SetCustomAttribute (attributeBuilder);
 

@@ -7,13 +7,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [TestDomain]
   public abstract class DomainBase: DomainObject
   {
-    protected DomainBase (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected DomainBase()
     {
-      if (objectID == null)
         InitializeNew();
     }
 
+    protected DomainBase (DataContainer dataContainer)
+        : base (dataContainer)
+    {
+    }
+  
     private void InitializeNew()
     {
       CreatedBy = "UnitTests";

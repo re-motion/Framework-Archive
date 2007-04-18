@@ -122,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ObjectDiscardedException))]
     public void RollbackForNewObject ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
 
       ClientTransactionMock.Rollback ();
 
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackForNewObjectWithRelations ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
       ObjectID newOrderID = newOrder.ID;
 
       Order order1 = Order.GetObject (DomainObjectIDs.Order1);
@@ -156,7 +156,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void SetOneToManyRelationForNewObjectAfterRollback ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderItem orderItem = OrderItem.Create (order);
+      OrderItem orderItem = OrderItem.NewObject (order);
       ObjectID orderItemID = orderItem.ID;
 
       Assert.AreSame (order, orderItem.Order);
@@ -166,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsFalse (order.OrderItems.Contains (orderItemID));
 
-      orderItem = OrderItem.Create (order);
+      orderItem = OrderItem.NewObject (order);
 
       Assert.AreSame (order, orderItem.Order);
       Assert.IsTrue (order.OrderItems.ContainsObject (orderItem));
@@ -177,7 +177,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
-      OrderItem orderItem = OrderItem.Create (order);
+      OrderItem orderItem = OrderItem.NewObject (order);
 
       ClientTransactionMock.Rollback ();
 

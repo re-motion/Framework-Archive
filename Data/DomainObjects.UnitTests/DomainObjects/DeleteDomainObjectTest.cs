@@ -110,10 +110,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CascadedDeleteForNewObjects ()
     {
-      Order newOrder = Order.Create ();
-      OrderTicket newOrderTicket = OrderTicket.Create (newOrder);
+      Order newOrder = Order.NewObject ();
+      OrderTicket newOrderTicket = OrderTicket.NewObject (newOrder);
       Assert.AreSame (newOrderTicket, newOrder.OrderTicket);
-      OrderItem newOrderItem = OrderItem.Create (newOrder);
+      OrderItem newOrderItem = OrderItem.NewObject (newOrder);
       Assert.Contains (newOrderItem, newOrder.OrderItems);
 
       newOrder.Deleted += delegate

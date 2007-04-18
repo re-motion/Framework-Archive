@@ -7,13 +7,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [NotAbstract]
   public abstract class OrganizationalUnit: DomainBase
   {
-    public static OrganizationalUnit Create()
+    public static OrganizationalUnit NewObject()
     {
-      return Create<OrganizationalUnit>();
+      return NewObject<OrganizationalUnit>().With();
     }
 
-    public OrganizationalUnit (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected OrganizationalUnit()
+    {
+    }
+
+    protected OrganizationalUnit (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

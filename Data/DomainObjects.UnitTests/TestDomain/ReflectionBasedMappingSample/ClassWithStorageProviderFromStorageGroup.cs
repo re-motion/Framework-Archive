@@ -7,8 +7,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassWithStorageProviderFromStorageGroup : DomainObject
   {
-    protected ClassWithStorageProviderFromStorageGroup (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithStorageProviderFromStorageGroup ()
+    {
+    }
+
+    protected ClassWithStorageProviderFromStorageGroup (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

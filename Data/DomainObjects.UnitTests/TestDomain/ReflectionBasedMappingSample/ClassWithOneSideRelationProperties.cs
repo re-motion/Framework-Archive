@@ -8,8 +8,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassWithOneSideRelationProperties : DomainObject
   {
-    protected ClassWithOneSideRelationProperties (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassWithOneSideRelationProperties ()
+    {
+    }
+
+    protected ClassWithOneSideRelationProperties (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

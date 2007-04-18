@@ -2,15 +2,19 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  public abstract class AbstractClassNotInMapping : DomainObject
+  public abstract class AbstractClassNotInMapping: DomainObject
   {
-    public static AbstractClassNotInMapping Create ()
+    public static AbstractClassNotInMapping NewObject()
     {
-      return DomainObject.Create<AbstractClassNotInMapping> ();
+      return DomainObject.NewObject<AbstractClassNotInMapping>().With();
     }
 
-    protected AbstractClassNotInMapping (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected AbstractClassNotInMapping()
+    {
+    }
+
+    protected AbstractClassNotInMapping (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
   }

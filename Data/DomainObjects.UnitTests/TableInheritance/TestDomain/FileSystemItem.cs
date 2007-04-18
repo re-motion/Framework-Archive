@@ -5,10 +5,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_FileSystemItem")]
   [TestDomain]
-  public abstract class FileSystemItem : DomainObject
+  public abstract class FileSystemItem: DomainObject
   {
-    protected FileSystemItem (ClientTransaction clientTransaction, ObjectID id)
-        : base (clientTransaction, id)
+    protected FileSystemItem()
+    {
+    }
+
+    protected FileSystemItem (DataContainer dataContainer)
+        : base (dataContainer)
     {
     }
 

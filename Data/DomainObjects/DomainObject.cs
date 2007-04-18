@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 using System.Reflection;
 using Rubicon.Logging;
@@ -19,57 +20,39 @@ public class DomainObject
 
   // static members and constants
 
-  #region Creation factory methods
+  #region Creation and GetObject factory methods
   /// <summary>
-  /// Creates a new instance of a domain object for the current transaction.
+  /// Creates a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
-  /// <typeparam name="T">The type to be supported by the object.</typeparam>
-  /// <returns>A new domain object instance.</returns>
+  /// <typeparam name="T">The concrete type to be implemented by the object.</typeparam>
+  /// <returns>An <see cref="InvokeWith{T}"/> object used to create a new domain object instance.</returns>
   /// <remarks>
-  /// <para>This method supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
-  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their default constructor.
-  /// Objects created by the factory are not directly instantiated; instead a proxy is dynamically created that 
-  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
-  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they automatically support the new property syntax.</para>
+  /// <para>
+  /// This method's return value is an <see cref="InvokeWith{T}"/> object, which can be used to specify the required constructor and 
+  /// pass it the necessary arguments in order to create a new domain object. Depending on the mapping being used by the object (and
+  /// on whether <see cref="FactoryInstantiationScope"/> is being used), one of two methods of object creation is used: legacy or via factory.
+  /// </para>
+  /// <para>
+  /// Legacy objects are created by simply invoking the constructor matching the arguments passed to the <see cref="InvokeWith{T}"/>
+  /// object returned by this method.
+  /// </para>
+  /// <para>
+  /// Objects created by the factory are not directly instantiated; instead a proxy is dynamically created for performing management tasks.
+  /// </para>
+  /// <para>This method should not be directly invoked by a user, but instead by static factory methods of classes derived from
+  /// <see cref="DomainObject"/>.</para>
+  /// <para>For more information, also see the constructor documentation (<see cref="DomainObject()"/>).</para>
   /// </remarks>
-  /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-  /// properties).</exception>
-  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required public or protected constructor
-  /// (see Remarks section).
+  /// <seealso cref="DomainObject()"/>
+  /// <exception cref="ArgumentException">The type <typeparamref name="T"/> cannot be extended to a proxy, for example because it is sealed
+  /// or abstract (apart from automatic properties).</exception>
+  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required public or protected
+  /// constructor (see Remarks section).
   /// </exception>
-  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
-  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
-  /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
-  protected static T Create<T> () where T : DomainObject
+  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller.</exception>
+  protected static IInvokeWith<T> NewObject<T> () where T : DomainObject
   {
-    return (T) GetCreator (typeof (T)).CreateWithCurrentTransaction (typeof (T));
-  }
-
-  /// <summary>
-  /// Creates a new instance of a domain object.
-  /// </summary>
-  /// <typeparam name="T">The type to be supported by the object.</typeparam>
-  /// <param name="tx">The client transaction to be passed to the domain object's constructor.</param>
-  /// <returns>A new domain object instance.</returns>
-  /// <remarks>
-  /// <para>This method supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
-  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their constructor taking a single
-  /// <see cref="ClientTransaction"/> parameter. Objects created by the factory are not directly instantiated; instead a subclass is dynamically created that 
-  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
-  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they  and automatically support the new property syntax.</para>
-  /// </remarks>
-  /// <exception cref="ArgumentNullException">The <paramref name="clientTransaction"/> parameter is <see langword="null"/>.</exception>
-  /// <exception cref="ArgumentException">The type <typeparamref name="T"/> is sealed or contains abstract methods (apart from automatic
-  /// properties).</exception>
-  /// <exception cref="MissingMethodException">The given type <typeparamref name="T"/> does not implement the required public or protected constructor
-  /// (see Remarks section).</exception>
-  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
-  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
-  /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
-  protected static T Create<T> (ClientTransaction tx) where T : DomainObject
-  {
-    ArgumentUtility.CheckNotNull ("tx", tx);
-    return (T) GetCreator (typeof (T)).CreateWithTransaction (typeof(T), tx);
+    return GetCreator (typeof (T)).GetTypesafeConstructorInvoker<T>();
   }
 
   /// <summary>
@@ -78,28 +61,20 @@ public class DomainObject
   /// <param name="dataContainer">The data container for the new domain object.</param>
   /// <returns>A new <see cref="DomainObject"/> for the given data container.</returns>
   /// <remarks>
-  /// <para>This method is used by the <see cref="DataContainer"/> class when it is asked to load an object.</para>
-  /// <para>It supports two methods of object creation: legacy and via factory, determined via <see cref="FactoryInstantiatedAttribute"/>
-  /// and <see cref="FactoryInstantiationScope"/>. Legacy objects are created by simply invoking their constructor taking a single
-  /// <see cref="DataContainer"/> parameter. Objects created by the factory are not directly instantiated; instead a subclass is dynamically created that 
-  /// intercepts certain method calls in order to perform management tasks. Factory-created objects need to have a constructor taking a
-  /// <see cref="ClientTransaction"/> and an <see cref="ObjectID"/> argument, and they automatically support the new property syntax.</para>
+  /// <para>This method is used by the <see cref="DataContainer"/> class when it is asked to load an object. It requires an infrastructure
+  /// constructor taking a single <see cref="DataContainer"/> argument on the domain object's class (see <see cref="DomainObject(DataContainer)"/>).
+  /// </para>
   /// </remarks>
   /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="MissingMethodException">The instantiated type does not implement the required public or protected constructor
   /// (see Remarks section).</exception>
-  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller. (Note that this is different to
-  /// <see cref="DomainObjectFactory.Create"/>, where a <see cref="TargetInvocationException"/>  is thrown. For this method, the
-  /// <see cref="TargetInvocationException"/> is logged and its inner exception is rethrown.)</exception>
+  /// <exception cref="Exception">Any exception thrown by the constructor is propagated to the caller.</exception>
   internal static DomainObject CreateWithDataContainer (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    return GetCreator (dataContainer.DomainObjectType).CreateWithDataContainer (dataContainer, dataContainer.ID);
+    return GetCreator (dataContainer.DomainObjectType).CreateWithDataContainer (dataContainer);
   }
 
-  #endregion
-
-  #region GetObject factory methods
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
@@ -356,51 +331,44 @@ public class DomainObject
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new <see cref="DomainObject"/>.
+  /// Initializes a new <see cref="DomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of.
-  /// Must not be <see langword="null"/>, unless an <paramref name="id"/> is given.</param>
-  /// <param name="id">The <see cref="ObjectID"/> of the object. If this is a <see langword="null"/>, the object is considered to be newly created.
-  /// If it has a value, the constructor assumes that it is invoked as part of a loading process.</param>
-  /// <remarks>Implement a protected constructor with the same signature on concrete domain objects, delegate to this base constructor, and only use
-  /// the <see cref="Create"/> and <see cref="GetObject"/> factory methods to invoke it. Domain objects generally should not be constructed via the
-  /// <c>new</c> operator.</remarks>
-  /// <exception cref="ArgumentNullException">Both the <paramref name="clientTransaction"/> and <paramref name="id"/> arguments are <see langword="null"/>.</exception>
-  protected DomainObject (ClientTransaction clientTransaction, ObjectID id)
+  /// <remarks>Any constructors implemented on concrete domain objects should delegate to this base constructor, apart from the infrastructure
+  /// constructor (see <see cref="DomainObject(DataContainer)"/>). As domain objects generally should not be constructed via the
+  /// <c>new</c> operator, these constructors should remain protected, and the concrete domain objects should have a static "NewObject" method,
+  /// which delegates to <see cref="DomainObject.NewObject"/>, passing it the required constructor arguments.</remarks>
+  protected DomainObject ()
   {
-    if (clientTransaction == null && id == null)
-    {
-      throw new ArgumentNullException ("clientTransaction, id", "One of the arguments must be non-null.");
-    }
-    if (id != null)
-    {
-      // assume loading, _dataContainer is set by the NewStyleDomainObjectCreator
-    }
-    else
-    {
-      // assume creation
-      clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
+    ClientTransaction clientTransaction = ClientTransaction.Current;
+    clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
 
-      _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
-      _dataContainer.SetDomainObject (this);
-    }
+    _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
+    _dataContainer.SetDomainObject (this);
+  }
+
+    /// <summary>
+  /// Infrastructure constructor necessary to load a <see cref="DomainObject"/> from a datasource.
+  /// </summary>
+  /// <remarks>
+  /// All derived classes have to implement an (empty) constructor with this signature.
+  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
+  /// </remarks>
+  /// <param name="dataContainer">The <see cref="DataContainer"/> to be associated with the loaded domain object.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null</exception>
+  protected DomainObject (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    _dataContainer = dataContainer;
   }
 
   #region Obsolete legacy constructors
   /// <summary>
   /// Initializes a new <see cref="DomainObject"/>.
   /// </summary>
-  // TODO: [Obsolete("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
-  protected DomainObject () : this (ClientTransaction.Current)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new <see cref="DomainObject"/>.
-  /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  // TODO: [Obsolete ("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
+  [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with CurrentTransactionScope instead.")]
   protected DomainObject (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -409,23 +377,6 @@ public class DomainObject
 
     _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     _dataContainer.SetDomainObject (this);
-  }
-
-
-  /// <summary>
-  /// Infrastructure constructor necessary to load a <see cref="DomainObject"/> from a datasource.
-  /// </summary>
-  /// <remarks>
-  /// All derived classes have to implement an (empty) constructor with this signature.
-  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
-  /// </remarks>
-  /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
-  // TODO: [Obsolete ("This constructor is obsolete, use the DomainObject (ClientTransaction, ObjectID) one instead.")]
-  protected DomainObject (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    _dataContainer = dataContainer;
   }
 
   #endregion

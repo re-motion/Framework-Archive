@@ -6,8 +6,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [NotAbstract]
   public abstract class DerivedClassWithInvalidRelationClassIDColumns : BaseClassWithInvalidRelationClassIDColumns
   {
-    protected DerivedClassWithInvalidRelationClassIDColumns (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected DerivedClassWithInvalidRelationClassIDColumns ()
+    {
+    }
+
+    protected DerivedClassWithInvalidRelationClassIDColumns (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

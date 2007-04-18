@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _collectionWithExtensions.Add ("Name1", _extension1);
       _collectionWithExtensions.Add ("Name2", _extension2);
 
-      _order = Order.Create ();
+      _order = Order.NewObject ();
       _dataContainer = _order.DataContainer;
       _propertyValue = _dataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
     }
@@ -179,7 +179,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void RelationChanging ()
     {
       OrderTicket orderTicket = _order.OrderTicket;
-      OrderTicket newOrderTicket = OrderTicket.Create ();
+      OrderTicket newOrderTicket = OrderTicket.NewObject ();
 
       _mockRepository.BackToRecord (_extension1);
       _mockRepository.BackToRecord (_extension2);

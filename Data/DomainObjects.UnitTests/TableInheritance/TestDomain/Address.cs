@@ -9,14 +9,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [TestDomain]
   public abstract class Address : DomainObject
   {
-    public Address (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    public static Address NewObject ()
+    {
+      return DomainObject.NewObject<Address> ().With();
+    }
+
+    protected Address ()
     {
     }
 
-    public static Address Create ()
+    protected Address (DataContainer dataContainer)
+      : base (dataContainer)
     {
-      return DomainObject.Create<Address> ();
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

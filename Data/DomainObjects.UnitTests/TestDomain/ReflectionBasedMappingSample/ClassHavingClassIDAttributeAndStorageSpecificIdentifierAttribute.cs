@@ -8,8 +8,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [NotAbstract]
   public abstract class ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute : DomainObject
   {
-    protected ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute (ClientTransaction clientTransaction, ObjectID objectID)
-        : base (clientTransaction, objectID)
+    protected ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute ()
+    {
+    }
+
+    protected ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
   }

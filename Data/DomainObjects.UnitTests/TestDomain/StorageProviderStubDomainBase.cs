@@ -5,8 +5,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   public abstract class StorageProviderStubDomainBase : DomainObject
   {
-    protected StorageProviderStubDomainBase (ClientTransaction clientTransaction, ObjectID objectID)
-      : base (clientTransaction, objectID)
+    protected StorageProviderStubDomainBase ()
+    {
+    }
+
+    protected StorageProviderStubDomainBase (DataContainer dataContainer)
+      : base (dataContainer)
     {
     }
 

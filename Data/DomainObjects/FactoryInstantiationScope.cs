@@ -8,13 +8,13 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Causes all domain objects instantiated by <see cref="DomainObject.Create"/> or <see cref="DomainObject.GetObject"/> to be created with
+  /// Causes all domain objects instantiated by <see cref="DomainObject.NewObject"/> or <see cref="DomainObject.GetObject"/> to be created with
   /// the <see cref="DomainObjectFactory"/>.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// Usually, domain objects instantiated by <see cref="DomainObject.Create"/> or <see cref="DomainObject.GetObject"/> are allocated
-  /// via an ordinary constructor invocation. They are only created with the <see cref="DomainObjectFactory"/> if the mapping is reflection based. 
+  /// Usually, domain objects instantiated by <see cref="DomainObject.NewObject"/> or <see cref="DomainObject.GetObject"/> are allocated
+  /// via an ordinary constructor invocation. They are only created with the <see cref="DomainObjectFactory"/> if the mapping is reflection-based. 
   /// You can use this class in a using-scope in order to force <see cref="DomainObject"/> to create all domain objects via the factory while 
   /// within the scope.
   /// </para>

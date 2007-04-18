@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ExistingObjectRelatesToNew ()
     {
       ClassDefinition employeeClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Employee)];
-      Employee newSupervisor = Employee.Create ();
+      Employee newSupervisor = Employee.NewObject ();
       Employee existingSubordinate = Employee.GetObject (DomainObjectIDs.Employee1);
 
       newSupervisor.Name = "Supervisor";
@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void NewObjectRelatesToExisting ()
     {
-      Order order = Order.Create ();
+      Order order = Order.NewObject ();
       order.DeliveryDate = new DateTime (2005, 12, 24);
       order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
       order.Official = Official.GetObject (DomainObjectIDs.Official1);
@@ -176,8 +176,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void NewRelatedObjects ()
     {
-      Customer newCustomer = Customer.Create ();
-      Order newOrder = Order.Create ();
+      Customer newCustomer = Customer.NewObject ();
+      Order newOrder = Order.NewObject ();
       Official existingOfficial = Official.GetObject (DomainObjectIDs.Official1);
 
       newOrder.DeliveryDate = new DateTime (2005, 12, 24);

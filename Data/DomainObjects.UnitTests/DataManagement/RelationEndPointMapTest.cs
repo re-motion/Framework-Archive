@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void DeleteNew ()
     {
-      Order newOrder = Order.Create ();
+      Order newOrder = Order.NewObject ();
       Assert.IsTrue (_map.Count > 0);
 
       _map.PerformDelete (newOrder);
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void SetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.SetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), OrderItem.Create ());
+      _map.SetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), OrderItem.NewObject ());
     }
 
     [Test]
