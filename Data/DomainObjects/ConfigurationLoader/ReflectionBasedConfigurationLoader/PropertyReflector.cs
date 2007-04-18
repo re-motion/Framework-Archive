@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="PropertyDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
-  //TODO: Validation: check only non-virtual relation endpoints are returned as propertydefinition.
+  //TODO: Validation: check that only non-virtual relation endpoints are returned as propertydefinition.
   //TODO: Test for null or empty StorageSpecificIdentifier
   public class PropertyReflector: MemberReflectorBase
   {
