@@ -10,10 +10,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithOneToOneRelationAndNonVirtualProperty ()
     {
-      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
       orderTicket.Delete ();
 
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
 
       Assert.IsNull (orderTicket.Order);
       Assert.IsNull (order.OrderTicket);
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithOneToOneRelationAndNonVirtualNullProperty ()
     {
-      Computer computerWithoutEmployee = Computer.GetObject (DomainObjectIDs.Computer4);
+      Computer computerWithoutEmployee = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
       computerWithoutEmployee.Delete ();
 
       Assert.IsNull (computerWithoutEmployee.Employee);
@@ -35,10 +35,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithOneToOneRelationAndVirtualProperty ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       order.Delete ();
 
-      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
 
       Assert.IsNull (orderTicket.Order);
       Assert.IsNull (order.OrderTicket);
@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithOneToOneRelationAndVirtualNullProperty ()
     {
-      Employee employeeWithoutComputer = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee employeeWithoutComputer = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       employeeWithoutComputer.Delete ();
 
       Assert.IsNull (employeeWithoutComputer.Computer);
@@ -58,11 +58,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithOneToManyRelation ()
     {
-      Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       supervisor.Delete ();
 
-      Employee subordinate1 = Employee.GetObject (DomainObjectIDs.Employee4);
-      Employee subordinate2 = Employee.GetObject (DomainObjectIDs.Employee5);
+      Employee subordinate1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
+      Employee subordinate2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee5);
 
       Assert.AreEqual (0, supervisor.Subordinates.Count);
       Assert.IsNull (subordinate1.Supervisor);
@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithEmptyOneToManyRelation ()
     {
-      Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee3);
+      Employee supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
       supervisor.Delete ();
 
       Assert.AreEqual (0, supervisor.Subordinates.Count);
@@ -85,10 +85,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectWithManyToOneRelation ()
     {
-      OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+      OrderItem orderItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem1);
       orderItem.Delete ();
 
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
 
       Assert.IsNull (orderItem.Order);
       Assert.AreEqual (1, order.OrderItems.Count);

@@ -219,7 +219,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetRelatedObjects ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
@@ -236,7 +236,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetRelatedObjectsTwice ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders1 = ClientTransactionMock.GetRelatedObjects (
@@ -255,8 +255,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetRelatedObjectsWithAlreadyLoadedObject ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
@@ -269,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void LoadedEventDoesNotFireWithEmptyDomainObjectCollection ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer2);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
       _eventReceiver.Clear ();
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
@@ -282,12 +282,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetRelatedObjectsWithLazyLoad ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
           new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
 
       Assert.IsTrue (object.ReferenceEquals (order, orders[DomainObjectIDs.Order1]));
     }
@@ -295,7 +295,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetRelatedObjectsAndNavigateBack ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
       DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (
           new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
@@ -342,8 +342,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null.")]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      OrderTicket newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
 
       order.OrderTicket = newOrderTicket;
 
@@ -353,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitWithOptionalOneToOneRelationNotSet ()
     {
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
       employee.Computer = null;
 
       ClientTransactionMock.Commit ();
@@ -367,7 +367,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
        + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items.")]
     public void CommitWithMandatoryOneToManyRelationNotSet ()
     {
-      IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector2);
+      IndustrialSector industrialSector = DomainObject.GetObject<IndustrialSector> (DomainObjectIDs.IndustrialSector2);
       industrialSector.Companies.Clear ();
 
       ClientTransactionMock.Commit ();
@@ -376,9 +376,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitTwice ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderTicket oldOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      OrderTicket oldOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      OrderTicket newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
 
       oldOrderTicket.Order = newOrderTicket.Order;
       order.OrderTicket = newOrderTicket;
@@ -399,10 +399,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitTwiceWithChange ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderTicket oldOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
-      Order oldOrderOfNewOrderTicket = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      OrderTicket oldOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      OrderTicket newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
+      Order oldOrderOfNewOrderTicket = DomainObject.GetObject<Order> (DomainObjectIDs.OrderWithoutOrderItem);
 
       oldOrderTicket.Order = newOrderTicket.Order;
       order.OrderTicket = newOrderTicket;
@@ -428,9 +428,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void OppositeDomainObjectsTypeAfterCommit ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
 
-      customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
+      customer.Orders.Add (DomainObject.GetObject<Order> (DomainObjectIDs.Order2));
       ClientTransactionMock.Commit ();
 
       DomainObjectCollection originalOrders = customer.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
@@ -443,8 +443,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void RollbackReadOnlyOppositeDomainObjects ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
-      customer.Orders.Add (Order.GetObject (DomainObjectIDs.Order2));
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      customer.Orders.Add (DomainObject.GetObject<Order> (DomainObjectIDs.Order2));
 
       customer.Orders.SetIsReadOnly (true);
       ClientTransactionMock.Rollback ();
@@ -457,18 +457,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [ExpectedException (typeof (ObjectNotFoundException))]
     public void CommitDeletedObject ()
     {
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer1);
       computer.Delete ();
       ClientTransactionMock.Commit ();
 
-      Computer.GetObject (DomainObjectIDs.Computer1);
+      DomainObject.GetObject<Computer> (DomainObjectIDs.Computer1);
     }
 
     [Test]
     [ExpectedException (typeof (ObjectDiscardedException))]
     public void AccessDeletedObjectAfterCommit ()
     {
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer1);
       computer.Delete ();
       ClientTransactionMock.Commit ();
 
@@ -593,7 +593,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void HasChanged ()
     {
       Assert.IsFalse (ClientTransaction.Current.HasChanged ());
-      Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+      Order order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       order1.OrderNumber = order1.OrderNumber + 1;
       Assert.IsTrue (ClientTransaction.Current.HasChanged ());
     }

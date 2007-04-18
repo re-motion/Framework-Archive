@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObjectInHierarchy ()
     {
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
 
       Assert.IsNotNull (employee);
       Assert.AreEqual (DomainObjectIDs.Employee1, employee.ID);
@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetChildren ()
     {
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       DomainObjectCollection subordinates = employee.Subordinates;
 
       Assert.IsNotNull (subordinates);
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetChildrenTwice ()
     {
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       DomainObjectCollection subordinates = employee.Subordinates;
 
       Assert.IsTrue (object.ReferenceEquals (subordinates, employee.Subordinates));
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetParent ()
     {
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee4);
+      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
       Employee supervisor = employee.Supervisor;
 
       Assert.IsNotNull (supervisor);
@@ -64,8 +64,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetParentTwice ()
     {
-      Employee employee1 = Employee.GetObject (DomainObjectIDs.Employee4);
-      Employee employee2 = Employee.GetObject (DomainObjectIDs.Employee5);
+      Employee employee1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
+      Employee employee2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee5);
 
       Assert.IsTrue (object.ReferenceEquals (employee1.Supervisor, employee2.Supervisor));
     }

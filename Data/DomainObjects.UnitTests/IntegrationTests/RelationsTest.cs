@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void OneToOneRelationChangeTest ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       OrderTicket orderTicket = order.OrderTicket;
 
       DomainObjectRelationCheckEventReceiver orderEventReceiver = new DomainObjectRelationCheckEventReceiver (order);

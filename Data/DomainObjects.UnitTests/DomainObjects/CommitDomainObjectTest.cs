@@ -16,8 +16,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CommitOneToManyRelation ()
     {
-      Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-      Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+      Customer customer1 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer2 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
       Order order = customer1.Orders[DomainObjectIDs.Order1];
 
       customer2.Orders.Add (order);
@@ -36,9 +36,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CommitOneToOneRelation ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
-      OrderTicket oldOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      OrderTicket oldOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      OrderTicket newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
 
       object orderTimestamp = order.DataContainer.Timestamp;
       object oldOrderTicketTimestamp = oldOrderTicket.DataContainer.Timestamp;
@@ -57,8 +57,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CommitHierarchy ()
     {
-      Employee supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
-      Employee supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
+      Employee supervisor1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      Employee supervisor2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
       Employee subordinate = (Employee) supervisor1.Subordinates[DomainObjectIDs.Employee4];
 
       subordinate.Supervisor = supervisor2;
@@ -66,8 +66,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      supervisor1 = Employee.GetObject (DomainObjectIDs.Employee1);
-      supervisor2 = Employee.GetObject (DomainObjectIDs.Employee2);
+      supervisor1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      supervisor2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
 
       Assert.IsNull (supervisor1.Subordinates[DomainObjectIDs.Employee4]);
       Assert.IsNotNull (supervisor2.Subordinates[DomainObjectIDs.Employee4]);
@@ -76,10 +76,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CommitPolymorphicRelation ()
     {
-      Ceo companyCeo = Ceo.GetObject (DomainObjectIDs.Ceo1);
-      Ceo distributorCeo = Ceo.GetObject (DomainObjectIDs.Ceo10);
+      Ceo companyCeo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
+      Ceo distributorCeo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo10);
       Company company = companyCeo.Company;
-      Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor1);
+      Distributor distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor1);
 
       distributor.Ceo = companyCeo;
       company.Ceo = distributorCeo;
@@ -87,10 +87,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      companyCeo = Ceo.GetObject (DomainObjectIDs.Ceo1);
-      distributorCeo = Ceo.GetObject (DomainObjectIDs.Ceo10);
-      company = Company.GetObject (DomainObjectIDs.Company1);
-      distributor = Distributor.GetObject (DomainObjectIDs.Distributor1);
+      companyCeo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
+      distributorCeo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo10);
+      company = DomainObject.GetObject<Company> (DomainObjectIDs.Company1);
+      distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor1);
 
       Assert.AreSame (companyCeo, distributor.Ceo);
       Assert.AreSame (distributor, companyCeo.Company);
@@ -101,20 +101,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CommitPropertyChange ()
     {
-      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
       customer.Name = "Arthur Dent";
 
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
       Assert.AreEqual ("Arthur Dent", customer.Name);
     }
 
     [Test]
     public void OriginalDomainObjectCollectionIsSameAfterCommit ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       OrderItem orderItem = OrderItem.NewObject (order);
 

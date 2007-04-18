@@ -23,8 +23,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       base.SetUp ();
 
       _customerEndPointID = new RelationEndPointID (DomainObjectIDs.Customer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
-      _order1 = Order.GetObject (DomainObjectIDs.Order1);
-      _order2 = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
+      _order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      _order2 = DomainObject.GetObject<Order> (DomainObjectIDs.OrderWithoutOrderItem);
 
       _orders = new OrderCollection ();
       _orders.Add (_order1);
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (DataManagementException), ExpectedMessage = "Internal error: CollectionEndPoint must have an ILinkChangeDelegate registered.")]
     public void AddToOppositeDomainObjects ()
     {
-      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
+      Order newOrder = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
 
       CollectionEndPoint collectionEndPoint = new CollectionEndPoint (
           ClientTransactionMock, _customerEndPointID, _orders);

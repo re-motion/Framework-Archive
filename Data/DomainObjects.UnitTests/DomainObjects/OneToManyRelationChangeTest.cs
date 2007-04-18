@@ -17,9 +17,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _oldCustomer = Customer.GetObject (DomainObjectIDs.Customer1);
-      _newCustomer = Customer.GetObject (DomainObjectIDs.Customer2);
-      _order = Order.GetObject (DomainObjectIDs.Order1);
+      _oldCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      _newCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
+      _order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
     }
 
     [Test]
@@ -252,8 +252,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ChangeWithInheritance ()
     {
-      IndustrialSector industrialSector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector1);
-      Partner partner = Partner.GetObject (DomainObjectIDs.Partner2);
+      IndustrialSector industrialSector = DomainObject.GetObject<IndustrialSector> (DomainObjectIDs.IndustrialSector1);
+      Partner partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner2);
 
       Assert.IsNull (industrialSector.Companies[partner.ID]);
       Assert.IsFalse (object.ReferenceEquals (industrialSector, partner.IndustrialSector));
@@ -316,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
-      Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       DomainObjectCollection subordinates = supervisor.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
 
       Assert.AreEqual (2, subordinates.Count);
@@ -326,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (ArgumentException))]
     public void CheckRequiredItemTypeForExisting ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
 
       orderItems.Add (Customer.NewObject ());
@@ -346,7 +346,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (DataManagementException))]
     public void SetRelatedObjectWithInvalidObjectClass ()
     {
-      _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", Company.GetObject (DomainObjectIDs.Company1));  
+      _order.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", DomainObject.GetObject<Company> (DomainObjectIDs.Company1));  
     }
   }
 }

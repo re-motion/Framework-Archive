@@ -14,16 +14,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       Gold = 2
     }
 
-    public new static Customer GetObject (ObjectID id)
-    {
-      return (Customer) DomainObject.GetObject (id);
-    }
-
-    public new static Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Customer) DomainObject.GetObject (id, clientTransaction);
-    }
-
     public new static Customer NewObject ()
     {
       return DomainObject.NewObject<Customer> ().With ();

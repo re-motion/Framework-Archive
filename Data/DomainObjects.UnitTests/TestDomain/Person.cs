@@ -8,11 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Person : TestDomainBase
   {
-    public static new Person GetObject (ObjectID id)
-    {
-      return (Person) DomainObject.GetObject (id);
-    }
-
     public static Person NewObject ()
     {
       return DomainObject.NewObject<Person>().With();

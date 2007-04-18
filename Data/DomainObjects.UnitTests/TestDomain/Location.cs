@@ -8,11 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Location : TestDomainBase
   {
-    public static new Location GetObject (ObjectID id)
-    {
-      return (Location) DomainObject.GetObject (id);
-    }
-
     public static Location NewObject ()
     {
       return DomainObject.NewObject<Location> ().With();

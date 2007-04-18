@@ -9,12 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class OrderTicket : TestDomainBase
   {
-    public static OrderTicket GetObject (ObjectID id)
-    {
-      return (OrderTicket) DomainObject.GetObject (id);
-    }
-
-    // New OrderTickets need an associated order for correct initialization.
     public static OrderTicket NewObject ()
     {
       return DomainObject.NewObject<OrderTicket> ().With();

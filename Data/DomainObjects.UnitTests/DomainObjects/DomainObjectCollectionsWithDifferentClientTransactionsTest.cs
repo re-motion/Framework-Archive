@@ -33,8 +33,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
-      _customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+      _customer1 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      _customer2 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
 
       _collection = CreateCustomerCollection ();
 

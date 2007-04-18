@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return (TestDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
+    public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
       return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
     }

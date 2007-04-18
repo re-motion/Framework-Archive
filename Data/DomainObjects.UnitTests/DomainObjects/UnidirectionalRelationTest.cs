@@ -22,9 +22,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _oldClient = Client.GetObject (DomainObjectIDs.Client1);
-      _newClient = Client.GetObject (DomainObjectIDs.Client2);
-      _location = Location.GetObject (DomainObjectIDs.Location1);
+      _oldClient = DomainObject.GetObject<Client> (DomainObjectIDs.Client1);
+      _newClient = DomainObject.GetObject<Client> (DomainObjectIDs.Client2);
+      _location = DomainObject.GetObject<Location> (DomainObjectIDs.Location1);
     }
 
     [Test]
@@ -147,13 +147,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _oldClient.Delete ();
       _newClient.Delete ();
 
-      Client client3 = Client.GetObject (DomainObjectIDs.Client3);
+      Client client3 = DomainObject.GetObject<Client> (DomainObjectIDs.Client3);
       client3.Delete ();
 
-      Location location2 = Location.GetObject (DomainObjectIDs.Location2);
+      Location location2 = DomainObject.GetObject<Location> (DomainObjectIDs.Location2);
       location2.Delete ();
 
-      Location location3 = Location.GetObject (DomainObjectIDs.Location3);
+      Location location3 = DomainObject.GetObject<Location> (DomainObjectIDs.Location3);
       location3.Delete ();
 
       ClientTransactionMock.Commit ();

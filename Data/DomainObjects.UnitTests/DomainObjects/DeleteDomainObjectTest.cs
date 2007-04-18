@@ -22,8 +22,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _order = Order.GetObject (DomainObjectIDs.Order2);
-      _orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      _order = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      _orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _orderTicket.Delete ();
 
-      OrderTicket.GetObject (_orderTicket.ID);
+      DomainObject.GetObject<OrderTicket> (_orderTicket.ID);
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _orderTicket.Delete ();
 
-      Assert.IsNotNull (OrderTicket.GetObject (_orderTicket.ID, true));
+      Assert.IsNotNull (DomainObject.GetObject<OrderTicket> (_orderTicket.ID, true));
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CascadedDelete ()
     {
-      Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       supervisor.DeleteWithSubordinates ();
 
       DomainObject deletedSubordinate4 = TestDomainBase.GetObject (DomainObjectIDs.Employee4, true);

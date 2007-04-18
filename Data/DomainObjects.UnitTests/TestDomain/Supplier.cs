@@ -6,11 +6,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Supplier : Partner
   {
-    public static new Supplier GetObject (ObjectID id)
-    {
-      return (Supplier) DomainObject.GetObject (id);
-    }
-
     public new static Supplier NewObject ()
     {
       return DomainObject.NewObject<Supplier> ().With();

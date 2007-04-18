@@ -8,11 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class IndustrialSector : TestDomainBase
   {
-    public static new IndustrialSector GetObject (ObjectID id)
-    {
-      return (IndustrialSector) DomainObject.GetObject (id);
-    }
-
     public static IndustrialSector NewObject ()
     {
       return DomainObject.NewObject<IndustrialSector> ().With ();

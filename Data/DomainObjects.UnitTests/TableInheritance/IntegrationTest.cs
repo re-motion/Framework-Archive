@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Folder rootFolder = Folder.GetObject (_rootFolderID);
       Assert.AreEqual (new DateTime (2006, 2, 1), rootFolder.CreatedAt);
 
-      File fileInRootFolder = File.GetObject (_fileInRootFolderID);
+      File fileInRootFolder = DomainObject.GetObject<File> (_fileInRootFolderID);
       Assert.AreEqual (new DateTime (2006, 2, 3), fileInRootFolder.CreatedAt);
     }
 
@@ -70,10 +70,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Folder folder1 = Folder.GetObject (_folder1ID);
       Assert.AreEqual (_rootFolderID, folder1.ParentFolder.ID);
 
-      File fileInRootFolder = File.GetObject (_fileInRootFolderID);
+      File fileInRootFolder = DomainObject.GetObject<File> (_fileInRootFolderID);
       Assert.AreEqual (_rootFolderID, fileInRootFolder.ParentFolder.ID);
 
-      File fileInFolder1 = File.GetObject (_fileInFolder1ID);
+      File fileInFolder1 = DomainObject.GetObject<File> (_fileInFolder1ID);
       Assert.AreEqual (_folder1ID, fileInFolder1.ParentFolder.ID);
     }
 

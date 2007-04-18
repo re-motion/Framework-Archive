@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class OrderItem : TestDomainBase
   {
-    public static OrderItem GetObject (ObjectID id)
-    {
-      return (OrderItem) DomainObject.GetObject (id);
-    }
-
     public static OrderItem NewObject ()
     {
       return DomainObject.NewObject<OrderItem> ().With();

@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [NotAbstract]
   public abstract class Folder : FileSystemItem
   {
-    public static Folder NewObject ()
+    public new static Folder NewObject ()
     {
       return DomainObject.NewObject<Folder> ().With();
     }

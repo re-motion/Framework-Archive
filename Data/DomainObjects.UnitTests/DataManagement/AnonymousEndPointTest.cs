@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp ();
 
-      _client = Client.GetObject (DomainObjectIDs.Client3);
+      _client = DomainObject.GetObject<Client> (DomainObjectIDs.Client3);
       _clientToLocationDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Location)].GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
       _clientEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Client", null);
       _locationEndPointDefinition = _clientToLocationDefinition.GetEndPointDefinition ("Location", "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
