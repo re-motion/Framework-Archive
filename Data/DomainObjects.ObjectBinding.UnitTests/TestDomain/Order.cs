@@ -50,6 +50,7 @@ public class Order : TestDomainBase
     set { SetRelatedObject ("OrderTicket", value); }
   }
 
+  [IsReadOnly]
   public DomainObjectCollection OrderItems
   {
     get { return GetRelatedObjects ("OrderItems"); }

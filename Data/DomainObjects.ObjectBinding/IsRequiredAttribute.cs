@@ -3,10 +3,9 @@ using System;
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
-/// Specifies if a property of fiels is required.
+/// Specifies if a property or field is required.
 /// </summary>
-[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
-[Serializable]
+[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class IsRequiredAttribute : Attribute
 {
   private bool _isRequired;

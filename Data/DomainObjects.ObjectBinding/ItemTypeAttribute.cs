@@ -7,8 +7,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// Specifies the type of items for properties returning a <see cref="DomainObjectCollection"/>.
 /// </summary>
 /// <remarks>Use this attribute to specify the item type on computed properties or other properties, where the type cannot be detected in the mapping.</remarks>
-[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
-[Serializable]
+[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class ItemTypeAttribute : Attribute
 {
   private Type _itemType;

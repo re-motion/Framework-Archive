@@ -53,10 +53,10 @@ public class ClassForRelationTest : BindableDomainObject
   public ClassWithAllDataTypes.EnumType EnumProperty
   {
     get { return ClassWithAllDataTypes.EnumType.Value0; }
-    set { }
   }
 
   [ItemType(typeof(ClassWithAllDataTypes))]
+  [IsReadOnly]
   public DomainObjectCollection ComputedList
   {
     get { return null; }
@@ -74,11 +74,13 @@ public class ClassForRelationTest : BindableDomainObject
     set { SetRelatedObject ("ClassWithAllDataTypesOptional", value); }
   }
 
+  [IsReadOnly]
   public DomainObjectCollection ClassesWithAllDataTypesMandatoryNavigateOnly
   {
     get { return GetRelatedObjects ("ClassesWithAllDataTypesMandatoryNavigateOnly"); }
   }
 
+  [IsReadOnly]
   public DomainObjectCollection ClassesWithAllDataTypesOptionalNavigateOnly
   {
     get { return GetRelatedObjects ("ClassesWithAllDataTypesOptionalNavigateOnly"); }

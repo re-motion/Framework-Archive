@@ -348,11 +348,13 @@ public class ClassWithAllDataTypes : BindableDomainObject
     set { SetRelatedObject ("ClassForRelationTestOptional", value); }
   }
 
+  [IsReadOnly]
   public DomainObjectCollection ClassesForRelationTestMandatoryNavigateOnly
   {
     get { return GetRelatedObjects ("ClassesForRelationTestMandatoryNavigateOnly"); }
   }
 
+  [IsReadOnly]
   public DomainObjectCollection ClassesForRelationTestOptionalNavigateOnly
   {
     get { return GetRelatedObjects ("ClassesForRelationTestOptionalNavigateOnly"); }

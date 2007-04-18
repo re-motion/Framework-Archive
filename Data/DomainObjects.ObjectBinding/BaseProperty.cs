@@ -4,6 +4,7 @@ using System.Reflection;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.Security;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -17,6 +18,7 @@ public class BaseProperty : IBusinessObjectProperty
   private bool _isRequired;
   private Type _itemType;
   private bool _isList;
+  private bool _isReadOnly;
 
   //TODO: missing ArgumentUtility?!
   /// <summary>
@@ -32,6 +34,17 @@ public class BaseProperty : IBusinessObjectProperty
     _isRequired = isRequired;
     _itemType = itemType;
     _isList = isList;
+
+    //TODO: Remove this code once the Data.DomainObjects.ObjectBinding.Legacy assembly has been extracted.
+    if (propertyInfo.CanWrite || (isList && typeof (IList).IsAssignableFrom (propertyInfo.PropertyType)))
+    {
+      IsReadOnlyAttribute isReadOnlyAttribute = AttributeUtility.GetCustomAttribute<IsReadOnlyAttribute> (propertyInfo, true);
+      _isReadOnly = isReadOnlyAttribute != null;
+    }
+    else
+    {
+      _isReadOnly = true;
+    }
   }
 
   /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -138,7 +151,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <returns><see langword="true"/> if the user can set this property; otherwise <see langword="false"/>.</returns>
   public bool IsReadOnly (IBusinessObject obj)
   {
-    if (!_propertyInfo.CanWrite)
+    if (_isReadOnly)
       return true;
 
     ISecurableObject securableObject = obj as ISecurableObject;

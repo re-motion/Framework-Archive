@@ -100,11 +100,10 @@ public class ReflectionPropertyFactory
   protected virtual Type GetItemTypeForDomainObjectCollection (PropertyInfo propertyInfo)
   {
     Type itemType = typeof (BindableDomainObject);
-    object[] itemTypeAttributes = propertyInfo.GetCustomAttributes (typeof (ItemTypeAttribute), true);
-
-    if (itemTypeAttributes.Length > 0)
+    ItemTypeAttribute itemTypeAttribute = AttributeUtility.GetCustomAttribute<ItemTypeAttribute> (propertyInfo, true);
+    if (itemTypeAttribute != null)
     {
-      itemType = ((ItemTypeAttribute) itemTypeAttributes[0]).ItemType;
+      itemType = itemTypeAttribute.ItemType;
       if (itemType != typeof (BindableDomainObject) && !itemType.IsSubclassOf (typeof (BindableDomainObject)))
       {
         throw new InvalidOperationException (string.Format ("The ItemType defined for the collection property '{0}' "
@@ -127,10 +126,9 @@ public class ReflectionPropertyFactory
 
   protected virtual bool IsPropertyRequired (PropertyInfo propertyInfo)
   {
-    object[] isRequiredAttributes = propertyInfo.GetCustomAttributes (typeof (IsRequiredAttribute), true);
-
-    if (isRequiredAttributes.Length > 0)
-      return ((IsRequiredAttribute) isRequiredAttributes[0]).IsRequired;
+    IsRequiredAttribute isRequiredAttribute = AttributeUtility.GetCustomAttribute<IsRequiredAttribute> (propertyInfo, true);
+    if (isRequiredAttribute != null)
+      return isRequiredAttribute.IsRequired;
       
     if (NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType) || propertyInfo.PropertyType == typeof (string))
       return false;
@@ -148,10 +146,9 @@ public class ReflectionPropertyFactory
 
   protected virtual bool IsDateType (PropertyInfo propertyInfo)
   {
-    object[] dateTypeAttributes = propertyInfo.GetCustomAttributes (typeof (DateTypeAttribute), true);
-
-    if (dateTypeAttributes.Length > 0)
-      return ((DateTypeAttribute) dateTypeAttributes[0]).DateType == DateTypeEnum.Date;
+    DateTypeAttribute dateTypeAttribute = AttributeUtility.GetCustomAttribute<DateTypeAttribute> (propertyInfo, true);
+    if (dateTypeAttribute != null)
+      return dateTypeAttribute.DateType == DateTypeEnum.Date;
 
     return false;
   }

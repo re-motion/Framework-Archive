@@ -37,6 +37,10 @@ public class DomainObjectPropertyFactory : ReflectionPropertyFactory
 
   protected override bool IsDateType (PropertyInfo propertyInfo)
   {
+    //TODO: Remove this test once the Data.DomainObjects.ObjectBinding.Legacy assembly has been extracted.
+    if (_classDefinition is ReflectionBasedClassDefinition)
+      return base.IsDateType (propertyInfo);
+
     PropertyDefinition propertyDefinition = _classDefinition.GetPropertyDefinition (propertyInfo.Name);
     return propertyDefinition != null && propertyDefinition.MappingTypeName == "date";
   }
