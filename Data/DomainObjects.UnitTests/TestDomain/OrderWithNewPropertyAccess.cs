@@ -22,7 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    [AutomaticProperty]
     [DBColumn( ("OrderNo"))]
     public abstract int OrderNumber { get; set; }
 
@@ -68,12 +67,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public virtual int NotInMapping
     {
       get { return GetPropertyValue<int> (); }
+      set { SetPropertyValue (value); }
     }
 
     [StorageClassNone]
     public virtual OrderWithNewPropertyAccess NotInMappingRelated
     {
       get { return (OrderWithNewPropertyAccess) GetRelatedObject (); }
+      set { SetRelatedObject (value); }
+    }
+
+    [StorageClassNone]
+    public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
+    {
+      get { return (ObjectList<OrderItem>) GetRelatedObjects (); }
     }
   }
 }

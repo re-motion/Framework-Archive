@@ -147,6 +147,7 @@
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
+    <Compile Include="DomainObjects\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
     <Compile Include="Factories\TestDomainCompiler.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />

@@ -49,6 +49,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     [Mandatory]
     [DBBidirectionalRelation ("Order")]
-    public virtual ObjectList<OrderItem> OrderItems { get { return (ObjectList<OrderItem>) GetRelatedObjects(); } }
+    public abstract ObjectList<OrderItem> OrderItems { get; }
   }
 }

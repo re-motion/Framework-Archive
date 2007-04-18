@@ -59,9 +59,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         return DomainObject.NewObject<NonInstantiableSealedClass> ().With();
       }
 
-      protected NonInstantiableSealedClass()
+      public NonInstantiableSealedClass()
       {
       }
+    }
+
+    [DBTable]
+    [NotAbstract]
+    public abstract class NonInstantiableClassWithAutomaticRelatedCollectionSetter : DomainObject
+    {
+      public static NonInstantiableClassWithAutomaticRelatedCollectionSetter NewObject ()
+      {
+        return DomainObject.NewObject<NonInstantiableClassWithAutomaticRelatedCollectionSetter> ().With ();
+      }
+
+      protected NonInstantiableClassWithAutomaticRelatedCollectionSetter()
+      {
+      }
+
+      [DBBidirectionalRelation ("RelatedObjects")]
+      public abstract NonInstantiableClassWithAutomaticRelatedCollectionSetter Parent { get; }
+
+      [DBBidirectionalRelation ("Parent")]
+      public abstract ObjectList<NonInstantiableClassWithAutomaticRelatedCollectionSetter> RelatedObjects { get; set; }
     }
 
     public class NonInstantiableNonDomainClass
@@ -261,6 +281,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
+        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, the setter "
+        + "of property RelatedObjects cannot be automatically implemented (property id: Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter.RelatedObjects).\r\n"
+        + "Parameter name: type")]
+    public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
+    {
+      NonInstantiableClassWithAutomaticRelatedCollectionSetter.NewObject();
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
         + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
@@ -396,6 +427,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void GetRelatedObjects_WithAutomaticProperties ()
+    {
+      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Assert.IsNotNull (order.OrderItems);
+      Assert.AreEqual (2, order.OrderItems.Count);
+
+      Assert.IsTrue (order.OrderItems.Contains (DomainObjectIDs.OrderItem1));
+      Assert.IsTrue (order.OrderItems.Contains (DomainObjectIDs.OrderItem2));
+
+      OrderItem newItem = OrderItem.NewObject ();
+      order.OrderItems.Add (newItem);
+
+      Assert.IsTrue (order.OrderItems.ContainsObject (newItem));
+    }
+
+    [Test]
     [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
@@ -412,6 +459,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    public void RelatedObjectsAccessWithoutBeingInMappingThrows ()
+    {
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      Dev.Null = order.NotInMappingRelatedObjects;
+    }
+
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    public void PropertySetAccessWithoutBeingInMappingThrows ()
+    {
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      order.NotInMapping = 0;
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    public void RelatedSetAccessWithoutBeingInMappingThrows ()
+    {
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
+      order.NotInMappingRelated = null;
+    }
+
+    [Test]
     public void DefaultRelatedObject ()
     {
       OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
@@ -423,32 +495,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       item.Order = newOrder;
       Assert.AreNotSame (order, item.Order);
       Assert.AreSame (newOrder, item.Order);
-    }
-
-    [Test]
-    public void IsRelatedObject ()
-    {
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"));
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderItems"));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderNumber"));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.DeliveryDate"));
-    }
-
-    [Test]
-    public void IsPropertyValue ()
-    {
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderItems"));
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.OrderNumber"));
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess),
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.DeliveryDate"));
     }
 
     [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."

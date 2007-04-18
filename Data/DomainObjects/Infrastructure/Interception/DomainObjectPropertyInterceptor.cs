@@ -16,16 +16,29 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       return ReflectionUtility.GetPropertyName (property);
     }
 
-    public static bool IsRelatedObject (Type type, string propertyID)
-    {
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
-      return classDefinition.GetRelationEndPointDefinition (propertyID) != null;
-    }
-
     public static bool IsPropertyValue (Type type, string propertyID)
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
-      return classDefinition.GetPropertyDefinition (propertyID) != null && !IsRelatedObject (type, propertyID);
+      return classDefinition.GetPropertyDefinition (propertyID) != null && classDefinition.GetRelationEndPointDefinition (propertyID) == null;
+    }
+
+    public static bool IsRelatedObject (Type type, string propertyID)
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+      IRelationEndPointDefinition endPoint = classDefinition.GetRelationEndPointDefinition (propertyID);
+      return endPoint != null && endPoint.Cardinality == CardinalityType.One;
+    }
+
+    public static bool IsRelatedObjectCollection (Type type, string propertyID)
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+      IRelationEndPointDefinition endPoint = classDefinition.GetRelationEndPointDefinition (propertyID);
+      return endPoint != null && endPoint.Cardinality == CardinalityType.Many;
+    }
+
+    public static bool IsInterceptable (Type type, string propertyID)
+    {
+      return IsPropertyValue (type, propertyID) || IsRelatedObject (type, propertyID) || IsRelatedObjectCollection (type, propertyID);
     }
 
     public readonly IInterceptorSelector<DomainObject> Selector;
@@ -44,6 +57,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
       PropertyInfo property = ReflectionUtility.GetPropertyForMethod (invocation.Method);
       string id = GetIdentifierFromProperty (property);
+      Assertion.DebugAssert (IsInterceptable (invocation.TargetType, id));
 
       target.PreparePropertyAccess (id);
       try
@@ -72,7 +86,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void HandleAutomaticSetter (IInvocation<DomainObject> invocation, DomainObject target, string id)
     {
-      if (IsRelatedObject (invocation.TargetType, id))
+      if (IsRelatedObjectCollection (invocation.TargetType, id))
+      {
+        string message = string.Format ("There is no automatic implementation for properties that set related object collections (type {0}, "
+          + "property ID {1}).", invocation.TargetType, id);
+        throw new NotSupportedException (message);
+      }
+      else if (IsRelatedObject (invocation.TargetType, id))
         DefaultRelatedSetterImplementation (target, invocation);
       else
       {
@@ -83,7 +103,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void HandleAutomaticGetter (IInvocation<DomainObject> invocation, DomainObject target, string id)
     {
-      if (IsRelatedObject (invocation.TargetType, id))
+      if (IsRelatedObjectCollection (invocation.TargetType, id))
+        DefaultRelatedCollectionGetterImplementation (target, invocation);
+      else if (IsRelatedObject (invocation.TargetType, id))
         DefaultRelatedGetterImplementation (target, invocation);
       else
       {
@@ -114,6 +136,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     {
       Assertion.Assert (invocation.Arguments.Length == 0);
       invocation.ReturnValue = target.GetRelatedObject();
+    }
+
+    private void DefaultRelatedCollectionGetterImplementation (DomainObject target, IInvocation<DomainObject> invocation)
+    {
+      Assertion.Assert (invocation.Arguments.Length == 0);
+      invocation.ReturnValue = target.GetRelatedObjects ();
     }
   }
 }
