@@ -35,5 +35,49 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (ObjectFactory.Create<BaseType4> ());
       Assert.IsNotNull (ObjectFactory.Create<BaseType5> ());
     }
+
+    [ApplyMixin(typeof (NullMixin))]
+    public class ClassWithCtors
+    {
+      public object O;
+
+      public ClassWithCtors (int i)
+      {
+        O = i;
+      }
+
+      public ClassWithCtors (string s)
+      {
+        O = s;
+      }
+    }
+
+    [Test]
+    [ExpectedException(typeof (MissingMethodException), ExpectedMessage = "constructor with the following", MatchType = MessageMatch.Contains)]
+    public void ConstructorsAreReplicated1 ()
+    {
+      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with the following", MatchType = MessageMatch.Contains)]
+    public void ConstructorsAreReplicated2 ()
+    {
+      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With (2.0);
+    }
+
+    [Test]
+    public void ConstructorsAreReplicated3 ()
+    {
+      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With (3);
+      Assert.AreEqual(3, c.O);
+    }
+
+    [Test]
+    public void ConstructorsAreReplicated4 ()
+    {
+      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ("a");
+      Assert.AreEqual ("a", c.O);
+    }
   }
 }

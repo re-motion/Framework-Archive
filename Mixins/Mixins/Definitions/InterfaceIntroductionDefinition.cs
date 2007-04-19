@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
     private Type _type;

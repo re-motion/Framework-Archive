@@ -13,10 +13,13 @@ namespace Mixins.CodeGeneration
       _moduleManager = moduleManager;
     }
 
-    public TypeBuilder BuildConcreteType (BaseClassDefinition configuration)
+    // TODO: Add caching
+    public Type GetConcreteType (BaseClassDefinition configuration)
     {
       ITypeGenerator generator = _moduleManager.CreateTypeGenerator (configuration);
-      return generator.GetTypeBuilder ();
+      Type finishedType = generator.GetBuiltType().CreateType();
+      generator.InitializeStaticFields (finishedType);
+      return finishedType;
     }
 
     public string SaveScopeToFile ()

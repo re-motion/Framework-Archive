@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public abstract class MemberDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, MemberDefinition> Overrides =

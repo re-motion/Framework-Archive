@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public class MethodDefinition : MemberDefinition, IVisitableDefinition
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker ();

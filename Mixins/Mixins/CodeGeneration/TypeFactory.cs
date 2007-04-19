@@ -22,7 +22,7 @@ namespace Mixins.CodeGeneration
       BaseClassDefinition classConfig = _configuration.BaseClasses[baseType];
       if (classConfig != null)
       {
-        return _typeBuilder.BuildConcreteType (classConfig).CreateType ();
+        return _typeBuilder.GetConcreteType (classConfig);
       }
       else
       {

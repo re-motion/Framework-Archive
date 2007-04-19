@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
   {
     public RequiredBaseCallTypeDefinition (BaseClassDefinition baseClass, Type type)

@@ -1,5 +1,8 @@
 using System;
 using Mixins.CodeGeneration;
+using Rubicon.Reflection;
+using Mixins.Definitions;
+using System.Reflection;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -12,9 +15,18 @@ namespace Mixins.UnitTests.Mixins
       _typeFactory = typeFactory;
     }
 
-    public T Create<T> (params object[] args)
+    public IInvokeWith<T> Create<T> ()
     {
-      return (T) Create (typeof (T), args);
+      const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+      Type concreteType = _typeFactory.GetConcreteType (typeof (T));
+      GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
+          concreteType,
+          delegate (Type[] argumentTypes, Type delegateType)
+          {
+            return ConstructorWrapper.CreateConstructorDelegate (concreteType, bindingFlags, null, CallingConventions.Any, argumentTypes, null, delegateType);
+          });
+      return new InvokeWith<T> (constructionDelegateCreator);
     }
 
     public object Create (Type t, params object[] args)

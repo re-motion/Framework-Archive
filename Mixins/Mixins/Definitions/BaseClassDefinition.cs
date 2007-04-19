@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public class BaseClassDefinition : ClassDefinition, IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, MixinDefinition> Mixins =
@@ -17,6 +18,7 @@ namespace Mixins.Definitions
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
 
+    [NonSerialized]
     private ApplicationDefinition _application;
 
     public BaseClassDefinition (ApplicationDefinition application, Type type)
@@ -28,6 +30,7 @@ namespace Mixins.Definitions
       _application = application;
     }
 
+    // Will be null if the class definition is deserialized.
     public ApplicationDefinition Application
     {
       get { return _application; }

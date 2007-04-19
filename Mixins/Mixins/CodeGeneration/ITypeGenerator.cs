@@ -5,6 +5,8 @@ namespace Mixins.CodeGeneration
 {
   public interface ITypeGenerator
   {
-    TypeBuilder GetTypeBuilder ();
+    TypeBuilder GetBuiltType ();
+
+    void InitializeStaticFields (Type finishedType);
   }
 }

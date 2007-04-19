@@ -4,7 +4,8 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
-  public abstract class RequirementDefinitionBase<TSelf, TDependency>: IVisitableDefinition
+  [Serializable]
+  public abstract class RequirementDefinitionBase<TSelf, TDependency> : IVisitableDefinition
       where TDependency : DependencyDefinitionBase<TSelf, TDependency>
       where TSelf : RequirementDefinitionBase<TSelf, TDependency>
   {

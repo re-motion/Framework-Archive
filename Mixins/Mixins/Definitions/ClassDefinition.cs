@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public abstract class ClassDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<MemberInfo, MemberDefinition> Members =

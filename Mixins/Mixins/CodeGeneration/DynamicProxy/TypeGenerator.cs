@@ -16,6 +16,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
 
+    private FieldReference _configurationField;
+
     public TypeGenerator (ModuleManager module, BaseClassDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("module", module);
@@ -25,47 +27,124 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _configuration = configuration;
 
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
-      _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, /*new Type[] { typeof (ISerializable) }*/ Type.EmptyTypes,
-        configuration.Type.IsSerializable);
+      Type[] interfaces = new Type[] { typeof (ISerializable) };
+      _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, interfaces, configuration.Type.IsSerializable);
+
+      AddConfigurationField ();
+      ReplicateConstructors ();
+      ImplementGetObjectData ();
     }
 
-    public TypeBuilder GetTypeBuilder()
+    private TypeBuilder TypeBuilder
     {
-      return _emitter.TypeBuilder;
+      get { return _emitter.TypeBuilder; }
     }
 
-    /*public void ImplementISerializable ()
+    public TypeBuilder GetBuiltType()
+    {
+      return TypeBuilder;
+    }
+
+    public void InitializeStaticFields (Type finishedType)
+    {
+      finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
+    }
+
+    public void AddConfigurationField()
+    {
+      _configurationField = _emitter.CreateStaticField("__configuration", typeof (BaseClassDefinition));
+    }
+
+    public void ImplementISerializable ()
     {
       ImplementGetObjectData ();
-      ImplementSerializationConstructor ();
+      // serialization constructor not needed
     }
 
     private void ImplementGetObjectData ()
     {
-      Assertion.DebugAssert(Array.IndexOf(GetTypeBuilder().GetInterfaces(), typeof(ISerializable)) != 0);
+      Assertion.DebugAssert (Array.IndexOf(TypeBuilder.GetInterfaces(), typeof(ISerializable)) != 0);
       bool baseIsISerializable = typeof(ISerializable).IsAssignableFrom(_emitter.BaseType);
       
       MethodInfo getObjectDataMethod = typeof(ISerializable).GetMethod("GetObjectData", new Type[] {typeof (SerializationInfo), typeof(StreamingContext)});
-      MethodEmitter method = _emitter.CreateInterfaceImplementationMethod (getObjectDataMethod);
-            method.CodeBuilder.AddStatement (new ExpressionStatement (new MethodInvocationExpression (        typeof (SerializationHelper).GetMethod ("GetObjectDataHelper"),         new ReferenceExpression(method.Arguments[0]), new ReferenceExpression(method.Arguments[1]),        new ReferenceExpression(SelfReference.Self), new ReferenceExpression(configurationField),        new ReferenceExpression(extensions), !baseIsISerializable)));
+      MethodEmitter newMethod = _emitter.CreateInterfaceImplementationMethod (getObjectDataMethod);
+
+      newMethod.CodeBuilder.AddStatement (new ExpressionStatement (new MethodInvocationExpression (null, 
+        typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"), 
+        new ReferenceExpression(newMethod.Arguments[0]), new ReferenceExpression(newMethod.Arguments[1]),
+        new ReferenceExpression(SelfReference.Self), new ReferenceExpression(_configurationField),
+        NullExpression.Instance, new ReferenceExpression(new ConstReference(!baseIsISerializable)))));
 
       if (baseIsISerializable)
       {
-        MethodInfo baseGetObjectDataMethod = _emitter.BaseType.GetMethod("GetObjectData");
-        if (baseGetObjectDataMethod == null)
+        ConstructorInfo baseConstructor = _emitter.BaseType.GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+            null, CallingConventions.Any, new Type[] { typeof (SerializationInfo), typeof (StreamingContext) }, null);
+        if (baseConstructor == null || (!baseConstructor.IsPublic && !baseConstructor.IsFamily))
         {
-          string message = string.Format("{0}.GetObjectData is not public - this is not supported.", _emitter.BaseType.FullName);
+          string message = string.Format ("No public or protected deserialization constructor in type {0} - this is not supported.",
+              _emitter.BaseType.FullName);
           throw new NotSupportedException (message);
         }
-        method.CodeBuilder.AddStatement (new ExpressionStatement (new MethodInvocationExpression (SelfReference.Self,
-          baseGetObjectDataMethod, new ReferenceExpression (method.Arguments[0]), new ReferenceExpression (method.Arguments[1]))));
+
+        MethodInfo baseGetObjectDataMethod = _emitter.BaseType.GetMethod("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (baseGetObjectDataMethod == null || (!baseGetObjectDataMethod.IsPublic && !baseGetObjectDataMethod.IsFamily))
+        {
+          string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", _emitter.BaseType.FullName);
+          throw new NotSupportedException (message);
+        }
+        newMethod.CodeBuilder.AddStatement (new ExpressionStatement (new MethodInvocationExpression (SelfReference.Self,
+          baseGetObjectDataMethod, new ReferenceExpression (newMethod.Arguments[0]), new ReferenceExpression (newMethod.Arguments[1]))));
       }
-      method.CodeBuilder.AddStatement (new ReturnStatement ());
+      newMethod.CodeBuilder.AddStatement (new ReturnStatement ());
+      newMethod.Generate ();
     }
 
-    private void ImplementSerializationConstructor ()
+    /*private void ImplementDelegatingISerializableConstructor ()
     {
-      // throw new Exception ("The method or operation is not implemented.");
+      Assertion.DebugAssert (Array.IndexOf(TypeBuilder.GetInterfaces(), typeof(ISerializable)) != 0);
+      ConstructorInfo baseCtor = _emitter.BaseType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
+          CallingConventions.Any, new Type[] {typeof (SerializationInfo), typeof (StreamingContext)}, null);
+
+      if (baseCtor == null || (!baseCtor.IsPublic && !baseCtor.IsFamily))
+      {
+        string message = string.Format ("No public or protected deserialization constructor found in type {0} - this is not supported.",
+            _emitter.BaseType.FullName);
+        throw new NotSupportedException (message);
+      }
+
+      ArgumentReference[] newCtorArguments = new ArgumentReference[] {
+              new ArgumentReference (typeof (SerializationInfo)),
+              new ArgumentReference (typeof (StreamingContext))
+          };
+      ConstructorEmitter newCtor = _emitter.CreateConstructor (newCtorArguments);
+      newCtor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (baseCtor, new ReferenceExpression (newCtorArguments[0]),
+          new ReferenceExpression (newCtorArguments[1])));
+      newCtor.CodeBuilder.AddStatement (new ReturnStatement ());
+      newCtor.Generate ();
     }*/
+
+    private void ReplicateConstructors ()
+    {
+      ConstructorInfo[] constructors = _emitter.BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      foreach (ConstructorInfo constructor in constructors)
+      {
+        if (constructor.IsPublic | constructor.IsFamily)
+        {
+          ReplicateConstructor (constructor);
+        }
+      }
+    }
+
+    private void ReplicateConstructor (ConstructorInfo constructor)
+    {
+      ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters ());
+      ConstructorEmitter newConstructor = _emitter.CreateConstructor (arguments);
+
+      Expression[] argumentExpressions = ArgumentsUtil.ConvertArgumentReferenceToExpression (arguments);
+      newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
+
+      newConstructor.CodeBuilder.AddStatement (new ReturnStatement ());
+      newConstructor.Generate ();
+    }
   }
 }

@@ -81,6 +81,7 @@ namespace Mixins.UnitTests.Mixins
         process.WaitForExit ();
 
         string result = string.Format ("PEVerify returned {0}\n{1}", process.ExitCode, process.StandardOutput.ReadToEnd ());
+        Console.WriteLine ("PEVerify: " + process.ExitCode);
         if (process.ExitCode != 0)
         {
           Assert.Fail (result);

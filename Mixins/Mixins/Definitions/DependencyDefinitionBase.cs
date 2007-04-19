@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
+  [Serializable]
   public abstract class DependencyDefinitionBase<TRequirement, TSelf> : IVisitableDefinition
       where TRequirement : RequirementDefinitionBase<TRequirement, TSelf>
       where TSelf : DependencyDefinitionBase<TRequirement, TSelf>

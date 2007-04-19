@@ -3,7 +3,8 @@ using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
-  public class RequiredFaceTypeDefinition: RequirementDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
+  [Serializable]
+  public class RequiredFaceTypeDefinition : RequirementDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
   {
     public RequiredFaceTypeDefinition(BaseClassDefinition baseClass, Type type)
         : base(baseClass, type)
