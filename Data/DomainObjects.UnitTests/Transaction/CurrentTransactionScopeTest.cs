@@ -31,6 +31,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void ScopeSetsNullTransaction ()
+    {
+      ClientTransaction.SetCurrent (new ClientTransaction ());
+      Assert.IsTrue (ClientTransaction.HasCurrent);
+      using (new CurrentTransactionScope (null))
+      {
+        Assert.IsFalse (ClientTransaction.HasCurrent);
+      }
+      Assert.IsTrue (ClientTransaction.HasCurrent);
+    }
+
+    [Test]
     public void NestedScopes ()
     {
       ClientTransaction clientTransaction1 = new ClientTransaction ();
