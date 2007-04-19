@@ -27,6 +27,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelationAttribute ("IndustrialSector")]
     [Mandatory]
-    public virtual ObjectList<Company> Companies { get { return (ObjectList<Company>) GetRelatedObjects(); } }
+    public abstract ObjectList<Company> Companies { get; }
   }
 }

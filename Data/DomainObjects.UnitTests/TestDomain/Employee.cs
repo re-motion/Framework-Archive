@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public abstract string Name { get; set; }
 
     [DBBidirectionalRelation ("Supervisor")]
-    public virtual ObjectList<Employee> Subordinates { get { return (ObjectList<Employee>) GetRelatedObjects(); } }
+    public abstract ObjectList<Employee> Subordinates { get; }
 
     [DBBidirectionalRelation ("Subordinates")]
     public abstract Employee Supervisor { get; set; }

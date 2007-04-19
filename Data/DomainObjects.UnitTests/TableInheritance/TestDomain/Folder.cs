@@ -27,10 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     }
 
     [DBBidirectionalRelation ("ParentFolder", SortExpression = "Name ASC")]
-    public virtual ObjectList<FileSystemItem> FileSystemItems
-    {
-      get { return (ObjectList<FileSystemItem>) GetRelatedObjects(); }
-    }
+    public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
 
     [DBColumn ("FolderCreatedAt")]
     public abstract DateTime CreatedAt { get; set; }

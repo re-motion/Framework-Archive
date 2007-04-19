@@ -25,6 +25,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract string Name { get; set; }
 
     [DBBidirectionalRelation ("Region")]
-    public virtual ObjectList<Customer> Customers { get { return (ObjectList<Customer>) GetRelatedObjects(); } }
+    public abstract ObjectList<Customer> Customers { get; }
   }
 }

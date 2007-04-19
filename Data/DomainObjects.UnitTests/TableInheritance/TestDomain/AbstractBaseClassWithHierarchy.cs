@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract AbstractBaseClassWithHierarchy ParentAbstractBaseClassWithHierarchy { get; set; }
 
     [DBBidirectionalRelation ("ParentAbstractBaseClassWithHierarchy", SortExpression = "Name DESC")]
-    public virtual ObjectList<AbstractBaseClassWithHierarchy> ChildAbstractBaseClassesWithHierarchy { get { return (ObjectList<AbstractBaseClassWithHierarchy>) GetRelatedObjects(); } }
+    public abstract ObjectList<AbstractBaseClassWithHierarchy> ChildAbstractBaseClassesWithHierarchy { get;}
 
     public abstract Client ClientFromAbstractBaseClass { get; set; }
 

@@ -34,6 +34,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public abstract CustomerType Type { get; set; }
 
     [DBBidirectionalRelation ("Customer", SortExpression = "OrderNo asc")]
-    public virtual OrderCollection Orders { get { return (OrderCollection) GetRelatedObjects(); } }
+    public abstract OrderCollection Orders { get; }
   }
 }

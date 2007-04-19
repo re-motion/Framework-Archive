@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     [DBBidirectionalRelation ("ParentFolder")]
-    public virtual ObjectList<FileSystemItem> FileSystemItems { get { return (ObjectList<FileSystemItem>) GetRelatedObjects(); } }
+    public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
 
   }
 }

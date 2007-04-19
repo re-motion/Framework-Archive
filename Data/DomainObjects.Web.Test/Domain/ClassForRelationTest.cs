@@ -60,16 +60,10 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [DBBidirectionalRelation ("ClassForRelationTestMandatory")]
     [Mandatory]
     [IsReadOnly]
-    public virtual ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesMandatoryNavigateOnly
-    {
-      get { return (ObjectList<ClassWithAllDataTypes>) GetRelatedObjects(); }
-    }
+    public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesMandatoryNavigateOnly { get; }
 
     [DBBidirectionalRelation ("ClassForRelationTestOptional")]
     [IsReadOnly]
-    public virtual ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesOptionalNavigateOnly
-    {
-      get { return (ObjectList<ClassWithAllDataTypes>)GetRelatedObjects(); }
-    }
+    public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesOptionalNavigateOnly { get; }
   }
 }

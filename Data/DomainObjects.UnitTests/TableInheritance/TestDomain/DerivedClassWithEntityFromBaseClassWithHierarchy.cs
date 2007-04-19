@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract DerivedClassWithEntityFromBaseClassWithHierarchy ParentDerivedClassWithEntityFromBaseClassWithHierarchy { get; set; }
 
     [DBBidirectionalRelation ("ParentDerivedClassWithEntityFromBaseClassWithHierarchy", SortExpression = "Name ASC")]
-    public virtual ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get { return (ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy>) GetRelatedObjects(); } }
+    public abstract ObjectList<DerivedClassWithEntityFromBaseClassWithHierarchy> ChildDerivedClassesWithEntityFromBaseClassWithHierarchy { get; }
 
     public abstract Client ClientFromDerivedClassWithEntityFromBaseClass { get; set; }
 

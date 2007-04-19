@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     // Note: This property always returns an empty collection.
     [DBBidirectionalRelation ("DomainBase")]
-    public virtual ObjectList<AbstractClassWithoutDerivations> AbstractClassesWithoutDerivations { get { return (ObjectList<AbstractClassWithoutDerivations>) GetRelatedObjects(); } }
+    public abstract ObjectList<AbstractClassWithoutDerivations> AbstractClassesWithoutDerivations { get; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string CreatedBy { get; set; }
@@ -36,6 +36,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     public abstract Client Client { get; }
 
     [DBBidirectionalRelation ("Owner", SortExpression = "HistoryDate desc")]
-    public virtual ObjectList<HistoryEntry> HistoryEntries { get { return (ObjectList<HistoryEntry>) GetRelatedObjects(); } }
+    public abstract ObjectList<HistoryEntry> HistoryEntries { get; }
   }
 }
