@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Mixins.Definitions;
 using NUnit.Framework;
 using Mixins.UnitTests.SampleTypes;
 using System.IO;
@@ -53,14 +54,14 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException(typeof (MissingMethodException), ExpectedMessage = "constructor with the following", MatchType = MessageMatch.Contains)]
+    [ExpectedException(typeof (MissingMethodException), ExpectedMessage = "constructor with signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated1 ()
     {
       ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ();
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with the following", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated2 ()
     {
       ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With (2.0);
@@ -78,6 +79,36 @@ namespace Mixins.UnitTests.Mixins
     {
       ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ("a");
       Assert.AreEqual ("a", c.O);
+    }
+
+    [Test]
+    public void IMixinTarget()
+    {
+      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
+      IMixinTarget mixinTarget = bt1 as IMixinTarget;
+      Assert.IsNotNull (mixinTarget);
+
+      BaseClassDefinition configuration = mixinTarget.Configuration;
+      Assert.IsNotNull (configuration);
+      Assert.AreSame (Configuration.BaseClasses[typeof (BaseType1)], configuration);
+
+      object[] mixins = mixinTarget.Mixins;
+      Assert.IsNotNull (mixins);
+      Assert.AreEqual (configuration.Mixins.Count, mixins.Length);
+    }
+
+    [Test]
+    [Ignore("TODO")]
+    public void IntroducedInterfacesAreImplementedViaDelegation ()
+    {
+      Assert.Fail ();
+    }
+
+    [Test]
+    [Ignore("TODO")]
+    public void MixinsAreInitializedWithTargetAndBase ()
+    {
+      Assert.Fail ();
     }
   }
 }

@@ -17,6 +17,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private ExtendedClassEmitter _emitter;
 
     private FieldReference _configurationField;
+    private FieldReference _extensionsField;
 
     public TypeGenerator (ModuleManager module, BaseClassDefinition configuration)
     {
@@ -26,14 +27,29 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _module = module;
       _configuration = configuration;
 
+      bool isSerializable = configuration.Type.IsSerializable;
+
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
-      Type[] interfaces = new Type[] { typeof (ISerializable) };
-      _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, interfaces, configuration.Type.IsSerializable);
+      List<Type> interfaces = new List<Type> ();
+      interfaces.Add (typeof (IMixinTarget));
+      if (isSerializable)
+      {
+        interfaces.Add (typeof (ISerializable));
+      }
+      _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray (), isSerializable);
 
       AddConfigurationField ();
+      AddExtensionsField ();
       ReplicateConstructors ();
-      ImplementGetObjectData ();
+
+      if (isSerializable)
+      {
+        ImplementGetObjectData();
+      }
+
+      ImplementIMixinTarget ();
     }
+
 
     private TypeBuilder TypeBuilder
     {
@@ -50,15 +66,14 @@ namespace Mixins.CodeGeneration.DynamicProxy
       finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
     }
 
-    public void AddConfigurationField()
+    private void AddConfigurationField ()
     {
       _configurationField = _emitter.CreateStaticField("__configuration", typeof (BaseClassDefinition));
     }
 
-    public void ImplementISerializable ()
+    private void AddExtensionsField ()
     {
-      ImplementGetObjectData ();
-      // serialization constructor not needed
+      _extensionsField = _emitter.CreateField ("__extensions", typeof (object[]), true);
     }
 
     private void ImplementGetObjectData ()
@@ -73,7 +88,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
         typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"), 
         new ReferenceExpression(newMethod.Arguments[0]), new ReferenceExpression(newMethod.Arguments[1]),
         new ReferenceExpression(SelfReference.Self), new ReferenceExpression(_configurationField),
-        NullExpression.Instance, new ReferenceExpression(new ConstReference(!baseIsISerializable)))));
+        new ReferenceExpression(_extensionsField), new ReferenceExpression(new ConstReference(!baseIsISerializable)))));
 
       if (baseIsISerializable)
       {
@@ -99,30 +114,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       newMethod.Generate ();
     }
 
-    /*private void ImplementDelegatingISerializableConstructor ()
-    {
-      Assertion.DebugAssert (Array.IndexOf(TypeBuilder.GetInterfaces(), typeof(ISerializable)) != 0);
-      ConstructorInfo baseCtor = _emitter.BaseType.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
-          CallingConventions.Any, new Type[] {typeof (SerializationInfo), typeof (StreamingContext)}, null);
-
-      if (baseCtor == null || (!baseCtor.IsPublic && !baseCtor.IsFamily))
-      {
-        string message = string.Format ("No public or protected deserialization constructor found in type {0} - this is not supported.",
-            _emitter.BaseType.FullName);
-        throw new NotSupportedException (message);
-      }
-
-      ArgumentReference[] newCtorArguments = new ArgumentReference[] {
-              new ArgumentReference (typeof (SerializationInfo)),
-              new ArgumentReference (typeof (StreamingContext))
-          };
-      ConstructorEmitter newCtor = _emitter.CreateConstructor (newCtorArguments);
-      newCtor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (baseCtor, new ReferenceExpression (newCtorArguments[0]),
-          new ReferenceExpression (newCtorArguments[1])));
-      newCtor.CodeBuilder.AddStatement (new ReturnStatement ());
-      newCtor.Generate ();
-    }*/
-
     private void ReplicateConstructors ()
     {
       ConstructorInfo[] constructors = _emitter.BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -145,6 +136,19 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       newConstructor.CodeBuilder.AddStatement (new ReturnStatement ());
       newConstructor.Generate ();
+    }
+
+    private void ImplementIMixinTarget ()
+    {
+      Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces (), typeof (IMixinTarget)) != 0);
+
+      PropertyEmitter configurationProperty = _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Configuration"));
+      _emitter.ImplementPropertyWithField (configurationProperty, _configurationField);
+      configurationProperty.Generate ();
+
+      PropertyEmitter mixinsProperty = _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Mixins"));
+      _emitter.ImplementPropertyWithField (mixinsProperty, _extensionsField);
+      mixinsProperty.Generate ();
     }
   }
 }

@@ -5,6 +5,7 @@ using System.Text;
 namespace Mixins.UnitTests.SampleTypes
 {
   [MixinFor (typeof (BaseType1))]
+  [Serializable]
   public class BT1Mixin2
   {
     [Override]

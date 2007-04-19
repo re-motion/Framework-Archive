@@ -48,6 +48,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\ExtensionFieldAttribute.cs" />
+    <Compile Include="CodeGeneration\GeneratedClassInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\IModuleManager.cs" />
     <Compile Include="CodeGeneration\ITypeGenerator.cs" />
     <Compile Include="CodeGeneration\SerializationHelper.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />
     <Compile Include="Context\MixinContext.cs" />
+    <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="MixinForAttribute.cs" />
     <Compile Include="MixinInitializationMethodAttribute.cs" />

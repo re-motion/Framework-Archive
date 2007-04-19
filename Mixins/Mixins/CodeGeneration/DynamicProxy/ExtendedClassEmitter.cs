@@ -47,19 +47,34 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return methodDefinition;
     }
 
-    public MethodEmitter ImplementInterfaceMethodByDelegation (MethodInfo interfaceMethod, FieldReference implementer)
+    public PropertyEmitter CreateInterfaceImplementationProperty (PropertyInfo interfaceProperty)
     {
-      MethodEmitter methodDefinition = CreateInterfaceImplementationMethod (interfaceMethod);
-      Debug.Assert (interfaceMethod.DeclaringType.IsAssignableFrom (implementer.Reference.FieldType));
-      EmitDelegatingCall (methodDefinition, interfaceMethod, implementer, true);
-      return methodDefinition;
+      string propertyName = string.Format ("{0}.{1}", interfaceProperty.DeclaringType.FullName, interfaceProperty.Name);
+      PropertyEmitter newProperty = CreateProperty (propertyName, PropertyAttributes.None, interfaceProperty.PropertyType);
+
+      MethodInfo getMethod = interfaceProperty.GetGetMethod ();
+      if (getMethod != null)
+      {
+        newProperty.GetMethod = CreateInterfaceImplementationMethod (getMethod);
+      }
+
+      MethodInfo setMethod = interfaceProperty.GetSetMethod ();
+      if (setMethod != null)
+      {
+        newProperty.SetMethod = CreateInterfaceImplementationMethod (setMethod);
+      }
+
+      return newProperty;
     }
 
-    public MethodEmitter ImplementInterfaceMethodByBaseCall (MethodInfo interfaceMethod, MethodInfo baseMethod)
+    public void ImplementMethodByDelegation (MethodEmitter methodDefinition, Reference implementer, MethodInfo methodToCall)
     {
-      MethodEmitter methodDefinition = CreateInterfaceImplementationMethod (interfaceMethod);
+      EmitDelegatingCall (methodDefinition, methodToCall, implementer, true);
+    }
+
+    public void ImplementMethodByBaseCall (MethodEmitter methodDefinition, MethodInfo baseMethod)
+    {
       EmitDelegatingCall (methodDefinition, baseMethod, SelfReference.Self, false);
-      return methodDefinition;
     }
 
     public void EmitDelegatingCall (MethodEmitter methodDefinition, MethodInfo methodToCall, Reference owner, bool callVirtual)
@@ -81,6 +96,19 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
 
       methodDefinition.CodeBuilder.AddStatement (new ReturnStatement (delegatingCall));
+    }
+
+    public void ImplementPropertyWithField (PropertyEmitter propertyDefinition, FieldReference backingField)
+    {
+      if (propertyDefinition.GetMethod != null)
+      {
+        propertyDefinition.GetMethod.CodeBuilder.AddStatement (new ReturnStatement (backingField));
+      }
+      if (propertyDefinition.SetMethod != null)
+      {
+        propertyDefinition.SetMethod.CodeBuilder.AddStatement (
+            new AssignStatement (backingField, propertyDefinition.SetMethod.Arguments[0].ToExpression()));
+      }
     }
   }
 }

@@ -92,7 +92,7 @@ namespace Mixins.CodeGeneration
 
       if (extensions != null)
       {
-        throw new NotImplementedException ();
+        GeneratedClassInstanceInitializer.InitializeInstanceFields (_deserializedObject, extensions);
       }
     }
 

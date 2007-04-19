@@ -30,6 +30,14 @@ namespace Mixins.CodeGeneration
       }
     }
 
+    public static void InitializeInstance (object instance)
+    {
+      if (instance is IMixinTarget)
+      {
+        GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
+      }
+    }
+
     public ConcreteTypeBuilder TypeBuilder
     {
       get { return _typeBuilder; }

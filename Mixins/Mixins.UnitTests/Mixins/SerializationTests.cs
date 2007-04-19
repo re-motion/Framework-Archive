@@ -103,6 +103,23 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void ExtensionsAndConfigurationSerialized ()
+    {
+      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
+      IMixinTarget mixinTarget = (IMixinTarget) bt1;
+
+      BaseType1 bt1a = SerializeAndDeserialize (bt1);
+      IMixinTarget mixinTargeta = (IMixinTarget) bt1a;
+
+      Assert.IsNotNull (mixinTargeta.Configuration);
+      Assert.AreEqual (mixinTarget.Configuration.Type, mixinTargeta.Configuration.Type);
+
+      Assert.IsNotNull (mixinTargeta.Mixins);
+      Assert.AreEqual (mixinTarget.Mixins.Length, mixinTargeta.Mixins.Length);
+      Assert.AreEqual (mixinTarget.Mixins[0].GetType(), mixinTargeta.Mixins[0].GetType());
+    }
+
+    [Test]
     public void RespectsISerializable ()
     {
       ClassImplementingISerializable c = ObjectFactory.Create<ClassImplementingISerializable> ().With();

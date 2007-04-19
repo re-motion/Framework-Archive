@@ -10,6 +10,7 @@ namespace Mixins.UnitTests.SampleTypes
   }
 
   [MixinFor (typeof (BaseType1))]
+  [Serializable]
   public class BT1Mixin1 : IBT1Mixin1
   {
     [Override]
