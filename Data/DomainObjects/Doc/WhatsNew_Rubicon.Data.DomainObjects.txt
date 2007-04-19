@@ -29,7 +29,7 @@
       </sectionGroup>
     </configSections>
 
-    <rubicon.data.domainObjects xmlns="http://www.rubicon-it.com/Data/DomainObjects/Configuration">
+    <rubicon.data.domainObjects xmlns="http://www.rubicon-it.com/Data/DomainObjects/Configuration/2.0">
       <storage defaultProviderDefinition="TheSqlProvider">
         <providerDefinitions>
           <add type="Rubicon.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"
@@ -95,6 +95,9 @@
 - QueryDefinition.QueryID entfernt.
 - Query.QueryID entfernt.
 - Strong-Typed Get-Mehoden auf DataContainer entfernt. Statt dessen ist der Indexer mit einem Cast zu verwenden.
+
+- Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction
+  CreateWxeTransaction () ist nun sealed. Es ist nur noch CreateWxeTransaction (bool, bool) zu überschreiben.
 
 1.7.37.0
 ========

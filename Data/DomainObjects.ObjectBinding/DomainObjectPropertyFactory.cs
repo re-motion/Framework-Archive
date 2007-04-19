@@ -23,11 +23,11 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 
       if (itemType == typeof (BindableDomainObject))
       {
-        IRelationEndPointDefinition relationEndPointDefinition = _classDefinition.GetRelationEndPointDefinition (GetPropertyName (propertyInfo));
+        IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition (propertyInfo);
 
         if (relationEndPointDefinition != null)
         {
-          IRelationEndPointDefinition oppositeRelationEndPointDefinition = _classDefinition.GetMandatoryOppositeEndPointDefinition (GetPropertyName (propertyInfo));
+          IRelationEndPointDefinition oppositeRelationEndPointDefinition = GetMandatoryOppositeEndPointDefinition (propertyInfo);
           itemType = oppositeRelationEndPointDefinition.ClassDefinition.ClassType;
         }
       }
@@ -41,34 +41,52 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       if (_classDefinition is ReflectionBasedClassDefinition)
         return base.IsDateType (propertyInfo);
 
-      PropertyDefinition propertyDefinition = _classDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
+      PropertyDefinition propertyDefinition = GetPropertyDefinition (propertyInfo);
       return propertyDefinition != null && propertyDefinition.MappingTypeName == "date";
     }
 
     protected override bool IsPropertyRequired (PropertyInfo propertyInfo)
     {
-      PropertyDefinition propertyDefinition = _classDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
+      PropertyDefinition propertyDefinition = GetPropertyDefinition (propertyInfo);
       return (propertyDefinition != null) ? !propertyDefinition.IsNullable : base.IsPropertyRequired (propertyInfo);
     }
 
     protected override NaInt32 GetMaxStringLength (PropertyInfo propertyInfo)
     {
-      PropertyDefinition propertyDefinition = _classDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
+      PropertyDefinition propertyDefinition = GetPropertyDefinition(propertyInfo);
       return (propertyDefinition != null) ? propertyDefinition.MaxLength : base.GetMaxStringLength (propertyInfo);
     }
 
     protected override bool IsRelationMandatory (PropertyInfo propertyInfo)
     {
-      IRelationEndPointDefinition relationEndPointDefinition = _classDefinition.GetRelationEndPointDefinition (GetPropertyName (propertyInfo));
+      IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition(propertyInfo);
       if (relationEndPointDefinition != null)
         return relationEndPointDefinition.IsMandatory;
 
       return base.IsRelationMandatory (propertyInfo);
     }
 
-    private static string GetPropertyName (PropertyInfo propertyInfo)
+    private PropertyDefinition GetPropertyDefinition(PropertyInfo propertyInfo)
     {
-      return ReflectionUtility.GetPropertyName (propertyInfo);
+      return _classDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
+    }
+
+    private IRelationEndPointDefinition GetRelationEndPointDefinition(PropertyInfo propertyInfo)
+    {
+      return _classDefinition.GetRelationEndPointDefinition (GetPropertyName (propertyInfo));
+    }
+
+    private IRelationEndPointDefinition GetMandatoryOppositeEndPointDefinition (PropertyInfo propertyInfo)
+    {
+      return _classDefinition.GetMandatoryOppositeEndPointDefinition (GetPropertyName (propertyInfo));
+    }
+
+    private string GetPropertyName (PropertyInfo propertyInfo)
+    {
+      if (_classDefinition is ReflectionBasedClassDefinition)
+        return ReflectionUtility.GetPropertyName (propertyInfo);
+      else
+        return propertyInfo.Name;
     }
   }
 }

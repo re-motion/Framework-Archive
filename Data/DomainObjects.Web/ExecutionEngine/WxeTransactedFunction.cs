@@ -73,10 +73,9 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase<ClientTransaction
 
   /// <summary>
   /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="WxeTransactionMode"/>. 
-  /// Derived classes should not override this method. Use the overloaded version instead.
   /// </summary>
   /// <returns>A new WxeTransaction, if <see cref="WxeTransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
-  protected override WxeTransactionBase<ClientTransaction> CreateWxeTransaction ()
+  protected override sealed WxeTransactionBase<ClientTransaction> CreateWxeTransaction ()
   {
     if (_transactionMode == WxeTransactionMode.CreateRoot)
       return CreateWxeTransaction (AutoCommit, true);
