@@ -30,12 +30,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
       bool isSerializable = configuration.Type.IsSerializable;
 
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
-      List<Type> interfaces = new List<Type> ();
-      interfaces.Add (typeof (IMixinTarget));
-      if (isSerializable)
-      {
-        interfaces.Add (typeof (ISerializable));
-      }
+
+      List<Type> interfaces = GetInterfacesToImplement(configuration, isSerializable);
       _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray (), isSerializable);
 
       AddConfigurationField ();
@@ -48,8 +44,24 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
 
       ImplementIMixinTarget ();
+      ImplementIntroducedInterfaces();
     }
 
+    private static List<Type> GetInterfacesToImplement(BaseClassDefinition configuration, bool isSerializable)
+    {
+      List<Type> interfaces = new List<Type> ();
+      interfaces.Add (typeof (IMixinTarget));
+      foreach (InterfaceIntroductionDefinition introduction in configuration.IntroducedInterfaces)
+      {
+        interfaces.Add (introduction.Type);
+      }
+
+      if (isSerializable)
+      {
+        interfaces.Add (typeof (ISerializable));
+      }
+      return interfaces;
+    }
 
     private TypeBuilder TypeBuilder
     {
@@ -149,6 +161,17 @@ namespace Mixins.CodeGeneration.DynamicProxy
       PropertyEmitter mixinsProperty = _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Mixins"));
       _emitter.ImplementPropertyWithField (mixinsProperty, _extensionsField);
       mixinsProperty.Generate ();
+    }
+
+    private void ImplementIntroducedInterfaces ()
+    {
+      foreach (InterfaceIntroductionDefinition introduction in _configuration.IntroducedInterfaces)
+      {
+        Expression implementerExpression = new CastClassExpression(introduction.Type,
+          new LoadArrayElementExpression (introduction.Implementer.MixinIndex, _extensionsField, typeof (object)));
+        _emitter.GenerateInterfaceImplementationByDelegation (introduction.Type, implementerExpression);
+        // TODO: copy attributes from implementer to delegating
+      }
     }
   }
 }

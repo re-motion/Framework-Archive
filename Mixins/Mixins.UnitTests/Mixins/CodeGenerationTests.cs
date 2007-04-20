@@ -1,10 +1,12 @@
 using System;
 using System.Runtime.Serialization;
+using Mixins.CodeGeneration;
 using Mixins.Definitions;
 using NUnit.Framework;
 using Mixins.UnitTests.SampleTypes;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -53,6 +55,44 @@ namespace Mixins.UnitTests.Mixins
       }
     }
 
+    public interface IMixinWithPropsEventsAtts
+    {
+      int Property { get; set; }
+      event EventHandler Event;
+    }
+
+    public class ReplicatableAttribute : Attribute
+    {
+      public readonly int I;
+      public readonly string S;
+
+      public ReplicatableAttribute(int i)
+      {
+        I = i;
+      }
+
+      public ReplicatableAttribute (string s)
+      {
+        S = s;
+      }
+    }
+
+    [Replicatable(4)]
+    public class MixinWithPropsEventAtts : IMixinWithPropsEventsAtts
+    {
+      private int _property; 
+
+      [Replicatable("bla")]
+      public int Property
+      {
+        get { return _property; }
+        set { _property = value; }
+      }
+
+      [Replicatable("blo")]
+      public event EventHandler Event;
+    }
+
     [Test]
     [ExpectedException(typeof (MissingMethodException), ExpectedMessage = "constructor with signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated1 ()
@@ -98,17 +138,56 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO")]
-    public void IntroducedInterfacesAreImplementedViaDelegation ()
+    public void MixinsAreInitializedWithTarget ()
     {
-      Assert.Fail ();
+      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));
+      BaseType3 bt3 = factory.Create<BaseType3>().With();
+      BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
+      Assert.IsNotNull (mixin);
+      Assert.AreSame (bt3, mixin.This);
+      Assert.IsNull (mixin.Base);
     }
 
     [Test]
     [Ignore("TODO")]
-    public void MixinsAreInitializedWithTargetAndBase ()
+    public void MixinsAreInitializedWithBase ()
     {
-      Assert.Fail ();
+      Assert.Fail();
+    }
+
+    [Test]
+    public void IntroducedInterfacesAreImplementedViaDelegation ()
+    {
+      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
+      IBT1Mixin1 bt1AsMixedIface = bt1 as IBT1Mixin1;
+      Assert.IsNotNull (bt1AsMixedIface);
+      Assert.AreEqual ("BT1Mixin1.IntroducedMethod", bt1AsMixedIface.IntroducedMethod());
+    }
+
+    [Test]
+    [Ignore ("TODO - Add properties, events, and attributes to definition class structure and implement it in code generation.")]
+    public void PropertiesEventsAndAttributesAreReplicated()
+    {
+      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));
+      BaseType1 bt1 = factory.Create<BaseType1>().With();
+      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (ReplicatableAttribute), false));
+      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (BT1Attribute), false));
+
+      ReplicatableAttribute[] atts = (ReplicatableAttribute[]) bt1.GetType().GetCustomAttributes (typeof (ReplicatableAttribute), false);
+      Assert.AreEqual (1, atts.Length);
+      Assert.AreEqual (4, atts[0].I);
+
+      PropertyInfo property = bt1.GetType().GetProperty ("Property");
+      Assert.IsNotNull (property);
+      atts = (ReplicatableAttribute[]) property.GetCustomAttributes (typeof (ReplicatableAttribute), false);
+      Assert.AreEqual (1, atts.Length);
+      Assert.AreEqual ("Bla", atts[0].S);
+
+      EventInfo eventInfo = bt1.GetType ().GetEvent ("Event");
+      Assert.IsNotNull (eventInfo);
+      atts = (ReplicatableAttribute[]) eventInfo.GetCustomAttributes (typeof (ReplicatableAttribute), false);
+      Assert.AreEqual (1, atts.Length);
+      Assert.AreEqual ("Blo", atts[0].S);
     }
   }
 }

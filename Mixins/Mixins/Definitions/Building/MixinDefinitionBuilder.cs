@@ -27,7 +27,7 @@ namespace Mixins.Definitions.Building
       get { return _baseClass; }
     }
 
-    public void Apply (MixinContext mixinContext)
+    public MixinDefinition Apply (MixinContext mixinContext)
     {
       ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
 
@@ -45,6 +45,8 @@ namespace Mixins.Definitions.Building
 
       BaseDependencyDefinitionBuilder baseDependencyBuilder = new BaseDependencyDefinitionBuilder (mixin);
       baseDependencyBuilder.Apply (_baseRequirementsAnalyzer.Analyze (mixin));
+
+      return mixin;
     }
 
     private void InitializeMembers (MixinDefinition mixin)
@@ -62,9 +64,12 @@ namespace Mixins.Definitions.Building
     {
       foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
-        InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
-        mixin.InterfaceIntroductions.Add (introducedInterface);
-        BaseClass.IntroducedInterfaces.Add (introducedInterface);
+        if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
+        {
+          InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
+          mixin.InterfaceIntroductions.Add (introducedInterface);
+          BaseClass.IntroducedInterfaces.Add (introducedInterface);
+        }
       }
     }
 

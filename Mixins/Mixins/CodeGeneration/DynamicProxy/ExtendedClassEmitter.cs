@@ -110,5 +110,25 @@ namespace Mixins.CodeGeneration.DynamicProxy
             new AssignStatement (backingField, propertyDefinition.SetMethod.Arguments[0].ToExpression()));
       }
     }
+
+    public void GenerateInterfaceImplementationByDelegation (Type interfaceType, Expression implementer)
+    {
+      foreach (MethodInfo interfaceMethod in interfaceType.GetMethods ())
+      {
+        MethodEmitter methodDefinition = CreateInterfaceImplementationMethod (interfaceMethod);
+        LocalReference localForImplementer = EmitMakeReferenceOfExpression (methodDefinition, interfaceType, implementer);
+        ImplementMethodByDelegation (methodDefinition, localForImplementer, interfaceMethod);
+        methodDefinition.Generate();
+      }
+
+      // TODO: copy events, properties
+    }
+
+    public LocalReference EmitMakeReferenceOfExpression (MethodEmitter methodDefinition, Type referenceType, Expression expression)
+    {
+      LocalReference reference = methodDefinition.CodeBuilder.DeclareLocal (referenceType);
+      methodDefinition.CodeBuilder.AddStatement (new AssignStatement (reference, expression));
+      return reference;
+    }
   }
 }

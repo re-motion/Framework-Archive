@@ -35,8 +35,27 @@ namespace Mixins.UnitTests.Configuration
     {
     }
 
+    private class MixinWithUnidentifiedInitializationArgument
+    {
+      [MixinInitializationMethod]
+      public void Initialize (object whatever)
+      {
+      }
+    }
 
-    private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
+    private class MixinImplementingIMixinTarget : IMixinTarget
+    {
+      public BaseClassDefinition Configuration
+      {
+        get { throw new Exception ("The method or operation is not implemented."); }
+      }
+
+      public object[] Mixins
+      {
+        get { throw new Exception ("The method or operation is not implemented."); }
+      }
+    }
+private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
     {
       ApplicationContext assemblyContext = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
       return DefinitionBuilder.CreateApplicationDefinition (assemblyContext);
@@ -273,7 +292,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType2), typeof (DoubleImplementer));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType2)].Mixins[typeof (DoubleImplementer)].InterfaceIntroductions[typeof (IBaseType2)]);
 
-      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceShouldNotBeImplementedTwice", log));
+      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceWillShadowBaseClassInterface", log));
     }
 
     [Test]
@@ -389,6 +408,23 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.BaseCallTypeMustBeIntroducedOrImplemented", log));
     }
-   
+
+    [Test]
+    public void FailsIfUnidentifiedInitializationMethodArgument()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithUnidentifiedInitializationArgument));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodCanOnlyHaveThisBaseAndNulLArguments", log));
+    }
+
+    [Test]
+    public void FailsIfImplementingIMixinTarget()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinImplementingIMixinTarget));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IMixinTargetCannotBeIntroduced", log));
+    }
   }
 }

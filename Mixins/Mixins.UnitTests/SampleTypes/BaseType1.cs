@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
+  public class BT1Attribute : Attribute { }
+
   [Serializable]
+  [BT1Attribute]
   public class BaseType1
   {
     public int I;

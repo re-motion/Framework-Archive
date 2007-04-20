@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mixins.Definitions;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Mixins.CodeGeneration
 {
@@ -30,17 +31,60 @@ namespace Mixins.CodeGeneration
       IEnumerator<MixinDefinition> enumerator = configuration.Mixins.GetEnumerator ();
       for (int i = 0; enumerator.MoveNext (); ++i)
       {
-        extensions[i] = InstantiateMixin (enumerator.Current);
+        extensions[i] = InstantiateMixin (enumerator.Current, instance);
       }
 
       InitializeInstanceFields (instance, extensions);
     }
 
-    private static object InstantiateMixin (MixinDefinition mixinDefinition)
+    private static object InstantiateMixin (MixinDefinition mixinDefinition, object mixinTargetInstance)
     {
-      object instance = Activator.CreateInstance (mixinDefinition.Type);
-      // TODO: call initialization methods
-      return instance;
+      Type mixinType = mixinDefinition.Type;
+      if (mixinType.ContainsGenericParameters)
+      {
+        Type[] mixinParameters = Array.FindAll (mixinType.GetGenericArguments(), delegate (Type t) { return t.IsGenericParameter; });
+        Type[] assignedTypes =
+            Array.ConvertAll<Type, Type> (mixinParameters, delegate (Type parameter) { return FindAssignedType (parameter, mixinTargetInstance); });
+        mixinType = mixinType.MakeGenericType (assignedTypes);
+      }
+      object mixinInstance = Activator.CreateInstance (mixinType);
+      InitializeMixin (mixinDefinition, mixinInstance, mixinTargetInstance);
+      return mixinInstance;
+    }
+
+    private static Type FindAssignedType (Type parameter, object mixinTargetInstance)
+    {
+      if (parameter.IsDefined (typeof (ThisAttribute), false))
+      {
+        return mixinTargetInstance.GetType();
+      }
+      else
+      {
+        throw new NotImplementedException ("Base parameter types are not implemented.");
+      }
+    }
+
+    private static void InitializeMixin(MixinDefinition mixinDefinition, object mixinInstance, object mixinTargetInstance)
+    {
+      foreach (MethodDefinition initializationMethod in mixinDefinition.InitializationMethods)
+      {
+        ParameterInfo[] methodArguments = initializationMethod.MethodInfo.GetParameters();
+        object[] argumentValues = Array.ConvertAll<ParameterInfo, object> (methodArguments,
+            delegate (ParameterInfo p) { return GetMixinArgumentInitialization (p, mixinTargetInstance); });
+        initializationMethod.MethodInfo.Invoke (mixinInstance, argumentValues);
+      }
+    }
+
+    private static object GetMixinArgumentInitialization (ParameterInfo p, object mixinTargetInstance)
+    {
+      if (p.ParameterType.Equals (typeof (INull)))
+        return null;
+      else if (p.IsDefined (typeof (ThisAttribute), false))
+        return mixinTargetInstance;
+      else if (p.IsDefined (typeof (BaseAttribute), false))
+        throw new NotImplementedException ("Base parameter types are not implemented.");
+      else
+        throw new NotSupportedException ("Initialization methods can only contain this, base, or null arguments.");
     }
   }
 }

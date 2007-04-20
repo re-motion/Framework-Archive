@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\LoadArrayElementExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ModuleManager.cs" />
     <Compile Include="CodeGeneration\ConcreteTypeBuilder.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Mixin.cs" />
     <Compile Include="MixinForAttribute.cs" />
     <Compile Include="MixinInitializationMethodAttribute.cs" />
+    <Compile Include="MixinReflectionHelper.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\DefaultLog\ConsoleDumper.cs" />

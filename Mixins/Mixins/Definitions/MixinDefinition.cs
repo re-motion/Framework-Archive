@@ -18,7 +18,8 @@ namespace Mixins.Definitions
         new DefinitionItemCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
 
     private BaseClassDefinition _baseClass;
-    
+    private int _mixinIndex;
+
 
     public MixinDefinition (Type type, BaseClassDefinition baseClass)
         : base (type)
@@ -49,6 +50,12 @@ namespace Mixins.Definitions
     public override IVisitableDefinition Parent
     {
       get { return BaseClass; }
+    }
+
+    public int MixinIndex
+    {
+      get { return _mixinIndex; }
+      internal set { _mixinIndex = value; }
     }
 
     public override void Accept (IDefinitionVisitor visitor)

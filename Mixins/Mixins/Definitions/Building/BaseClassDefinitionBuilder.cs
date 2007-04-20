@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Mixins.Context;
 using System.Reflection;
 using Rubicon.Utilities;
@@ -51,9 +52,10 @@ namespace Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
-      foreach (MixinContext mixinContext in classContext.MixinContexts)
-      {
-        mixinDefinitionBuilder.Apply (mixinContext);
+      IEnumerator<MixinContext> enumerator = classContext.MixinContexts.GetEnumerator();
+      for (int i = 0; enumerator.MoveNext(); ++i) {
+        MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
+        mixin.MixinIndex = i;
       }
     }
   }

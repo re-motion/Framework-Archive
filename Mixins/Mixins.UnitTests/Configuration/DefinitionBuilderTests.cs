@@ -6,12 +6,34 @@ using Mixins.Context;
 using System.Reflection;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
+using System.Runtime.Serialization;
 
 namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class DefinitionBuilderTests
   {
+    private class MixinWithCustomInitializationMethod
+    {
+      [MixinInitializationMethod]
+      public void Init([This]object @this)
+      {
+      }
+    }
+
+    private class MixinImplementingISerializable : ISerializable, IDisposable
+    {
+      public void Dispose ()
+      {
+        throw new Exception ("The method or operation is not implemented.");
+      }
+
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
+        throw new Exception ("The method or operation is not implemented.");
+      }
+    }
+
     public static ApplicationDefinition GetApplicationDefinition ()
     {
       ApplicationContext assemblyContext = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
@@ -43,6 +65,14 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue(baseClass.IntroducedInterfaces.HasItem(typeof(IBT1Mixin1)));
       Assert.AreSame(baseClass.IntroducedInterfaces[typeof (IBT1Mixin1)], introducedInterface);
       Assert.AreSame (baseClass, introducedInterface.BaseClass);
+    }
+
+    [Test]
+    public void ISerializableIsNotIntroduced ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinImplementingISerializable));
+      Assert.IsNull (application.BaseClasses[typeof (BaseType1)].Mixins[typeof (MixinImplementingISerializable)].InterfaceIntroductions[typeof (ISerializable)]);
+      Assert.IsNotNull (application.BaseClasses[typeof (BaseType1)].Mixins[typeof (MixinImplementingISerializable)].InterfaceIntroductions[typeof (IDisposable)]);
     }
 
     [Test]
@@ -174,70 +204,6 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (baseClass, mixin.BaseClass);
     }
 
-    /*// [Test]
-    [Ignore("Merge not yet implemented")]
-    public void MergeNoMixins ()
-    {
-      ApplicationDefinition application = GetApplicationDefinition ();
-      Assert.IsFalse (application.BaseClasses.HasItem (typeof (DateTime)));
-
-      BaseClassDefinition baseClass = DefinitionBuilder.GetMergedBaseClassDefinition (typeof (DateTime), application);
-      Assert.IsNull (baseClass);
-    }
-
-    // [Test]
-    [Ignore ("Merge not yet implemented")]
-    public void MergeStandardMixins ()
-    {
-      ApplicationDefinition application = GetApplicationDefinition ();
-      Assert.IsTrue (application.BaseClasses.HasItem (typeof (BaseType1)));
-
-      BaseClassDefinition baseClass = DefinitionBuilder.GetMergedBaseClassDefinition (typeof (BaseType1), application);
-      Assert.IsNotNull (baseClass);
-      Assert.AreSame (baseClass, application.BaseClasses[typeof (BaseType1)]);
-    }
-
-    // [Test]
-    [Ignore ("Merge not yet implemented")]
-    public void MergeInterfaceMixins ()
-    {
-      ApplicationDefinition application = GetApplicationDefinition ();
-      Assert.IsFalse (application.BaseClasses.HasItem (typeof (BaseType2)));
-      Assert.IsTrue (application.BaseClasses.HasItem (typeof (IBaseType2)));
-
-      BaseClassDefinition interfaceDefinition = application.BaseClasses[typeof (IBaseType2)];
-      Assert.IsTrue (interfaceDefinition.IsInterface);
-      Assert.AreEqual (typeof (IBaseType2), interfaceDefinition.Type);
-
-      BaseClassDefinition baseClass = DefinitionBuilder.GetMergedBaseClassDefinition (typeof (BaseType2), application);
-      Assert.IsNotNull (baseClass);
-      Assert.AreNotSame (interfaceDefinition, baseClass);
-
-      List<BaseClassDefinition> originalDefinitions = new List<BaseClassDefinition> (application.BaseClasses);
-      Assert.IsFalse (originalDefinitions.Contains (baseClass));
-
-      Assert.AreEqual (typeof (BaseType2), baseClass.Type);
-
-      MethodInfo methodOfInterface = typeof (IBaseType2).GetMethod ("IfcMethod");
-      MethodInfo methodOfClass = typeof (BaseType2).GetMethod ("IfcMethod");
-
-      Assert.IsTrue (interfaceDefinition.Members.HasItem (methodOfInterface));
-      Assert.IsFalse (interfaceDefinition.Members.HasItem (methodOfClass));
-
-      Assert.IsTrue (baseClass.Members.HasItem (methodOfClass));
-      Assert.IsFalse (baseClass.Members.HasItem (methodOfInterface));
-
-      Assert.Contains (typeof (IBaseType2), new List<Type> (baseClass.ImplementedInterfaces));
-      Assert.IsTrue (baseClass.RequiredBaseCallTypes.HasItem (typeof (IBaseType2)));
-    }
-
-    // [Test]
-    [Ignore ("Merge not yet implemented")]
-    public void MergeSeveralInterfaceAndStandardMixins ()
-    {
-      Assert.Fail ();
-    }*/
-
     [Test]
     public void InitializationMethod ()
     {
@@ -263,6 +229,16 @@ namespace Mixins.UnitTests.Configuration
       initializationMethods[0].MethodInfo.Invoke (mixinInstance, new object[] { @this, @base });
       Assert.AreSame (@this, mixinInstance.This);
       Assert.AreSame (@base, mixinInstance.Base);
+    }
+
+    [Test]
+    public void CustomInitializationMethod ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithCustomInitializationMethod));
+      MixinDefinition mixin = application.BaseClasses[typeof (BaseType1)].Mixins[typeof (MixinWithCustomInitializationMethod)];
+      Assert.IsNotNull (mixin);
+      Assert.AreEqual (1, mixin.InitializationMethods.Count);
+      Assert.IsTrue (mixin.InitializationMethods.HasItem (typeof (MixinWithCustomInitializationMethod).GetMethod ("Init")));
     }
 
     [Test]
@@ -419,6 +395,16 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3)));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType31)));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBT3Mixin4)));
+    }
+
+    [Test]
+    public void MixinIndicesCorrespondToPositionInArray()
+    {
+      BaseClassDefinition bt3 = GetApplicationDefinition ().BaseClasses[typeof (BaseType3)];
+      for (int i = 0; i< bt3.Mixins.Count; ++i)
+      {
+        Assert.AreEqual (i, bt3.Mixins[i].MixinIndex);
+      }
     }
   }
 }
