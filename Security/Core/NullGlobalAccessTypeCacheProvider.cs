@@ -29,7 +29,7 @@ namespace Rubicon.Security
       return _cache;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return true; }
     }

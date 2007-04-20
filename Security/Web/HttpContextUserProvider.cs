@@ -37,7 +37,7 @@ namespace Rubicon.Security.Web
         return HttpContext.Current.User;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

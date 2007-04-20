@@ -33,7 +33,7 @@ namespace Rubicon.Security
       return Thread.CurrentPrincipal;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

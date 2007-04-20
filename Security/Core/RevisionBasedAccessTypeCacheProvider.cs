@@ -70,7 +70,7 @@ namespace Rubicon.Security
       return revision.Value;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

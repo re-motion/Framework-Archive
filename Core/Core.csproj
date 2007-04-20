@@ -100,7 +100,7 @@
     <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
     <Compile Include="Configuration\ProviderHelperBase.cs" />
     <Compile Include="DoubleCheckedLockingContainer.cs" />
-    <Compile Include="INullableObject.cs" />
+    <Compile Include="INullObject.cs" />
     <Compile Include="Collections\ArrayComparer.cs" />
     <Compile Include="Collections\LazyInterlockedCache.cs" />
     <Compile Include="Logging\ILog.cs" />

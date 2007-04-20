@@ -57,7 +57,7 @@ namespace Rubicon.Collections
       return value;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

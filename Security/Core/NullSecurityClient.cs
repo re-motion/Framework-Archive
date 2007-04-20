@@ -9,7 +9,7 @@ namespace Rubicon.Security
   /// <summary>
   /// Represents a nullable <see cref="SecurityClient"/> according to the "Null Object Pattern".
   /// </summary>
-  public class NullSecurityClient : SecurityClient, INullableObject
+  public class NullSecurityClient : SecurityClient, INullObject
   {
     public NullSecurityClient ()
         : base (
@@ -91,7 +91,7 @@ namespace Rubicon.Security
       return true;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return true; }
     }

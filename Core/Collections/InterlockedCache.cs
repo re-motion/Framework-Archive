@@ -63,7 +63,7 @@ namespace Rubicon.Collections
         _cache.Clear ();
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

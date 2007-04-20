@@ -5,7 +5,7 @@ namespace Rubicon
   /// <summary>
   /// Represents a nullable object according to the "Null Object Pattern".
   /// </summary>
-  public interface INullableObject
+  public interface INullObject
   {
     /// <summary>
     /// Gets a value indicating whether the object is a "Null Object".

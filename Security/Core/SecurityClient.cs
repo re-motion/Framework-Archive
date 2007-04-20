@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public class SecurityClient:INullableObject
+  public class SecurityClient:INullObject
   {
     public static SecurityClient CreateSecurityClientFromConfiguration()
     {
@@ -348,7 +348,7 @@ namespace Rubicon.Security
       return new PermissionDeniedException (string.Format (message, args));
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return false; }
     }

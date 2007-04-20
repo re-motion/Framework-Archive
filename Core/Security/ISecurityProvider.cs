@@ -10,7 +10,7 @@ namespace Rubicon.Security
 
   /// <summary>Provides access to the permission management functionality.</summary>
   /// <remarks>This service interface enables a plugable security system architecture, acting as single point of access to the permission management functionality.</remarks>
-  public interface ISecurityProvider : INullableObject
+  public interface ISecurityProvider : INullObject
   {
     /// <summary>Determines permission for a user.</summary>
     /// <param name="context">The <see cref="SecurityContext"/> gouping all object-specific security information of the current permission check.</param>

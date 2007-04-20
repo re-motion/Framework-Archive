@@ -27,7 +27,7 @@ namespace Rubicon.Security
       return _principal;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return true; }
     }

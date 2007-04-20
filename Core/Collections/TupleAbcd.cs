@@ -6,18 +6,10 @@ namespace Rubicon.Collections
   // TODO: Doc
   public class Tuple<TA, TB, TC, TD> : IEquatable<Tuple<TA, TB, TC, TD>>
   {
-    // types
-
-    // static members
-
-    // member fields
-
-    private TA _a;
-    private TB _b;
-    private TC _c;
-    private TD _d;
-
-    // construction and disposing
+    private readonly TA _a;
+    private readonly TB _b;
+    private readonly TC _c;
+    private readonly TD _d;
 
     public Tuple (TA a, TB b, TC c, TD d)
     {
@@ -26,9 +18,6 @@ namespace Rubicon.Collections
       _c = c;
       _d = d;
     }
-
-    // methods and properties
-
 
     public TA A
     {

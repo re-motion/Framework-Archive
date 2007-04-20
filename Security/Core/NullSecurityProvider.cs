@@ -40,7 +40,7 @@ namespace Rubicon.Security
       return 0;
     }
 
-    bool INullableObject.IsNull
+    bool INullObject.IsNull
     {
       get { return true; }
     }

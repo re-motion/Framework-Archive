@@ -8,7 +8,7 @@ namespace Rubicon.Security
   /// These are used as parameters for each call to the <see cref="ISecurityProvider.GetAccess"/> method of <see cref="ISecurityProvider"/>.
   /// </summary>
   /// <remarks><note type="implementnotes">Implementations are free to implement their own best practice for keeping the cache up to date.</note></remarks>
-  public interface IGlobalAccessTypeCacheProvider : INullableObject
+  public interface IGlobalAccessTypeCacheProvider : INullObject
   {
     /// <summary>
     /// Gets the <see cref="ICache{T, S}"/> for the <see cref="SecurityContext"/> and user name (<see cref="string"/>) key pair.

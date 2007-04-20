@@ -39,7 +39,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       
       _mocks.VerifyAll();
       Assert.IsInstanceOfType (typeof (SecurityClient), securityClient);
-      Assert.IsFalse (((INullableObject) securityClient).IsNull);
+      Assert.IsFalse (((INullObject) securityClient).IsNull);
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       _mocks.VerifyAll ();
       Assert.IsInstanceOfType (typeof (NullSecurityClient), securityClient);
-      Assert.IsTrue (((INullableObject) securityClient).IsNull);
+      Assert.IsTrue (((INullObject) securityClient).IsNull);
     }
   }
 }
