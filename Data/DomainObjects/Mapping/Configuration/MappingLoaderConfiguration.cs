@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Configuration;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping.Configuration
 {
@@ -20,7 +22,6 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
 
     private readonly ConfigurationProperty _mappingLoaderProperty;
-    private readonly DoubleCheckedLockingContainer<IMappingLoader> _mappingLoader;
 
     private readonly ConfigurationProperty _domainObjectFactoryProperty;
     private readonly DoubleCheckedLockingContainer<IDomainObjectFactory> _domainObjectFactory;
@@ -29,16 +30,13 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
 
     public MappingLoaderConfiguration()
     {
-      _mappingLoader = new DoubleCheckedLockingContainer<IMappingLoader> (
-          delegate { return MappingLoaderElement.CreateInstance(); });
       _mappingLoaderProperty = new ConfigurationProperty (
           "loader",
           typeof (TypeElement<IMappingLoader, MappingReflector>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _domainObjectFactory = new DoubleCheckedLockingContainer<IDomainObjectFactory> (
-          delegate { return DomainObjectFactoryElement.CreateInstance (); });
+      _domainObjectFactory = new DoubleCheckedLockingContainer<IDomainObjectFactory> (delegate { return DomainObjectFactoryElement.CreateInstance (); });
       _domainObjectFactoryProperty = new ConfigurationProperty (
           "domainObjectFactory",
           typeof (TypeElement<IDomainObjectFactory, DomainObjectFactory>),
@@ -56,10 +54,23 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
       get { return _properties; }
     }
 
-    public IMappingLoader MappingLoader
+    public IMappingLoader CreateMappingLoader ()
     {
-      get { return _mappingLoader.Value; }
-      set { _mappingLoader.Value = value; }
+      return MappingLoaderElement.CreateInstance();
+    }
+
+    public IMappingLoader CreateDesignTimeMappingLoader (System.Configuration.Configuration configuration, ISite site)
+    {
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull ("site", site);
+
+      return (IMappingLoader) Activator.CreateInstance (MappingLoaderElement.Type, configuration, site);
+    }
+
+    public Type MappingLoaderType
+    {
+      get { return MappingLoaderElement.Type; }
+      set { MappingLoaderElement.Type = value; }
     }
 
     protected TypeElement<IMappingLoader> MappingLoaderElement

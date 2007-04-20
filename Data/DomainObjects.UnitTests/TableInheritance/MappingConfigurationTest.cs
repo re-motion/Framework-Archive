@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
@@ -15,7 +17,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector ());
+      MappingConfiguration mappingConfiguration = 
+          new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -25,7 +28,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector ());
+      MappingConfiguration mappingConfiguration = 
+          new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try
@@ -47,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void TableInheritanceMapping ()
     {
-      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (ReflectionBasedMappingTest).Assembly));
+      MappingConfiguration mappingConfiguration = new MappingConfiguration (new MappingReflector (GetType().Assembly));
       ClassDefinition domainBaseClass = mappingConfiguration.ClassDefinitions.GetMandatory (typeof (DomainBase));
       Assert.IsNull (domainBaseClass.MyEntityName);
     }

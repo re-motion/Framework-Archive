@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (FakeMappingLoader), _configuration.MappingLoader);
+      Assert.IsInstanceOfType (typeof (FakeMappingLoader), _configuration.CreateMappingLoader());
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
 
-      Assert.IsInstanceOfType (typeof (MappingReflector), _configuration.MappingLoader);
+      Assert.IsInstanceOfType (typeof (MappingReflector), _configuration.CreateMappingLoader());
     }
 
     [Test]

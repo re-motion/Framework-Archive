@@ -3,7 +3,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-public interface IEndPoint : INullableObject
+public interface IEndPoint : INullObject
 {
   ClientTransaction ClientTransaction { get; }
   DomainObject GetDomainObject ();

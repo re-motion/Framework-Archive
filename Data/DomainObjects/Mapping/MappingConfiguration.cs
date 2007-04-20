@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
           lock (typeof (MappingConfiguration))
           {
             if (s_mappingConfiguration == null)
-              s_mappingConfiguration = new MappingConfiguration (DomainObjectsConfiguration.Current.MappingLoader.MappingLoader);
+              s_mappingConfiguration = new MappingConfiguration (DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader());
           }
         }
 

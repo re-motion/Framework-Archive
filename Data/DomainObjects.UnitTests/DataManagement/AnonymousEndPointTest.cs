@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       AnonymousEndPoint endPoint = new AnonymousEndPoint (_client, _clientToLocationDefinition);
 
-      Assert.IsNotNull (endPoint as INullableObject);
+      Assert.IsNotNull (endPoint as INullObject);
       Assert.IsNotNull (endPoint as IEndPoint);
       Assert.IsFalse (endPoint.IsNull);
       Assert.AreSame (ClientTransactionMock, endPoint.ClientTransaction);

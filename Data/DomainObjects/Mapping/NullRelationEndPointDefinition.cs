@@ -48,7 +48,7 @@ public class NullRelationEndPointDefinition : IRelationEndPointDefinition, ISeri
 
   // methods and properties
 
-  #region INullableObject Members
+  #region INullObject Members
   
   public bool IsNull
   {

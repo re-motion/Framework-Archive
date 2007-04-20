@@ -97,7 +97,7 @@ public class AnonymousEndPoint : IEndPoint
 
   #endregion
 
-  #region INullableObject Members
+  #region INullObject Members
 
   public virtual bool IsNull
   {

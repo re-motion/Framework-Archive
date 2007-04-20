@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-public interface IRelationEndPointDefinition : INullableObject
+public interface IRelationEndPointDefinition : INullObject
 {
   RelationDefinition RelationDefinition { get; }
   ClassDefinition ClassDefinition { get; }

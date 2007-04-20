@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsNull ()
     {
-      Assert.IsNotNull (_customerEndPoint as INullableObject);
+      Assert.IsNotNull (_customerEndPoint as INullObject);
       Assert.IsFalse (_customerEndPoint.IsNull);
     }
 

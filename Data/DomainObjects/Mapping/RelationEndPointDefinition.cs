@@ -74,7 +74,7 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
 
   // methods and properties
 
-  #region INullableObject Members
+  #region INullObject Members
   
   public bool IsNull
   {

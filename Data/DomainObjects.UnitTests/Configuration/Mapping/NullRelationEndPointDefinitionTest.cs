@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
 
       Assert.IsNotNull (_definition as IRelationEndPointDefinition);
-      Assert.IsNotNull (_definition as INullableObject);
+      Assert.IsNotNull (_definition as INullObject);
       Assert.AreSame (_clientDefinition, _definition.ClassDefinition);
       Assert.AreEqual (CardinalityType.Many, _definition.Cardinality);
       Assert.AreEqual (false, _definition.IsMandatory);

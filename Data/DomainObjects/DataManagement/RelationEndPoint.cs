@@ -206,7 +206,7 @@ public abstract class RelationEndPoint : IEndPoint
     return new MandatoryRelationNotSetException (domainObject, propertyName, string.Format (formatString, args));
   }
 
-  #region INullableObject Members
+  #region INullObject Members
 
   public virtual bool IsNull
   {

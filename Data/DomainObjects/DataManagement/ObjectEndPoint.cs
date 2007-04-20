@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 [Serializable]
-public class ObjectEndPoint : RelationEndPoint, INullableObject
+public class ObjectEndPoint : RelationEndPoint, INullObject
 {
   // types
 

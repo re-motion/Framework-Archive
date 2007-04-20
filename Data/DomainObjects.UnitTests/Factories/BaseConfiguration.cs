@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _persistenceConfiguration));
 
-      _mappingConfiguration = new MappingConfiguration (new MappingReflector (typeof (ReflectionBasedMappingTest).Assembly));
+      _mappingConfiguration = new MappingConfiguration (new MappingReflector (GetType().Assembly));
       MappingConfiguration.SetCurrent (_mappingConfiguration);
     }
 
