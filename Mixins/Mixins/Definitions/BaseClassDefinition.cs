@@ -52,7 +52,9 @@ namespace Mixins.Definitions
 
       visitor.Visit (this);
 
-      Members.Accept (visitor);
+      Methods.Accept (visitor);
+      Properties.Accept (visitor);
+      Events.Accept (visitor);
       Mixins.Accept (visitor);
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);

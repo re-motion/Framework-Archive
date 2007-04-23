@@ -4,6 +4,7 @@ using Mixins;
 using Mixins.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
@@ -13,6 +14,7 @@ namespace Mixins.Definitions.Building
     private BaseClassDefinition _baseClass;
     private RequirementsAnalyzer _faceRequirementsAnalyzer; 
     private RequirementsAnalyzer _baseRequirementsAnalyzer;
+    private OverridesAnalyzer _overridesAnalyzer;
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
@@ -20,6 +22,7 @@ namespace Mixins.Definitions.Building
       _baseClass = baseClass;
       _faceRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (ThisAttribute));
       _baseRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (BaseAttribute));
+      _overridesAnalyzer = new OverridesAnalyzer();
     }
 
     public BaseClassDefinition BaseClass
@@ -34,73 +37,65 @@ namespace Mixins.Definitions.Building
       MixinDefinition mixin = new MixinDefinition (mixinContext.MixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 
-      InitializeMembers (mixin);
+      ClassDefinitionBuilderHelper.InitializeMembers (mixin, delegate (MethodInfo m) { return m.IsPublic; });
 
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
       AnalyzeInitializationMethods (mixin);
 
-      ThisDependencyDefinitionBuilder thisDependencyBuilder = new ThisDependencyDefinitionBuilder (mixin);
-      thisDependencyBuilder.Apply (_faceRequirementsAnalyzer.Analyze (mixin));
-
-      BaseDependencyDefinitionBuilder baseDependencyBuilder = new BaseDependencyDefinitionBuilder (mixin);
-      baseDependencyBuilder.Apply (_baseRequirementsAnalyzer.Analyze (mixin));
+      AnalyzeDependencies(mixin);
 
       return mixin;
     }
 
-    private void InitializeMembers (MixinDefinition mixin)
-    {
-      foreach (MethodInfo method in mixin.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-      {
-        if (method.IsPublic)
-        {
-          mixin.Members.Add (new MethodDefinition (method, mixin));
-        }
-      }
-    }
-
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
     {
+      InterfaceIntroductionBuilder introductionBuilder = new InterfaceIntroductionBuilder (mixin);
+
       foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
         if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
         {
-          InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, mixin);
-          mixin.InterfaceIntroductions.Add (introducedInterface);
-          BaseClass.IntroducedInterfaces.Add (introducedInterface);
+          introductionBuilder.Apply (implementedInterface);
         }
       }
     }
 
     private void AnalyzeOverrides (MixinDefinition mixin)
     {
-      foreach (MemberDefinition member in mixin.Members)
-      {
-        if (member.MemberInfo.IsDefined (typeof (OverrideAttribute), true))
-        {
-          MemberDefinition baseMember = FindBaseMember (member);
-          if (baseMember == null)
-          {
-            string message = string.Format ("Could not find base member for overrider {0}.", member.FullName);
-            throw new ConfigurationException (message);
-          }
-          member.Base = baseMember;
-          baseMember.Overrides.Add (member);
-        }
-      }
+      foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in _overridesAnalyzer.Analyze(mixin.Methods, _baseClass.Methods))
+        InitializeMethodOverride (methodOverride.A, methodOverride.B);
+      foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in _overridesAnalyzer.Analyze (mixin.Properties, _baseClass.Properties))
+        InitializePropertyOverride (propertyOverride.A, propertyOverride.B);
+      foreach (Tuple<EventDefinition, EventDefinition> eventOverride in _overridesAnalyzer.Analyze (mixin.Events, _baseClass.Events))
+        InitializeEventOverride (eventOverride.A, eventOverride.B);
     }
 
-    private MemberDefinition FindBaseMember (MemberDefinition overrider)
+    private void InitializeMemberOverride (MemberDefinition overrider, MemberDefinition baseMember)
     {
-      foreach (MemberDefinition classMember in BaseClass.Members)
-      {
-        if (classMember.Name == overrider.Name && classMember.CanBeOverriddenBy (overrider))
-        {
-          return classMember;
-        }
-      }
-      return null;
+      overrider.Base = baseMember;
+      baseMember.AddOverride (overrider);
+    }
+
+    private void InitializeMethodOverride (MethodDefinition overrider, MethodDefinition baseMember)
+    {
+      InitializeMemberOverride (overrider, baseMember);
+    }
+
+    private void InitializePropertyOverride (PropertyDefinition overrider, PropertyDefinition baseMember)
+    {
+      InitializeMemberOverride (overrider, baseMember);
+      if (overrider.GetMethod != null && baseMember.GetMethod != null)
+        InitializeMethodOverride (overrider.GetMethod, baseMember.GetMethod);
+      if (overrider.SetMethod != null && baseMember.SetMethod != null)
+        InitializeMethodOverride (overrider.SetMethod, baseMember.SetMethod);
+    }
+
+    private void InitializeEventOverride (EventDefinition overrider, EventDefinition baseMember)
+    {
+      InitializeMemberOverride (overrider, baseMember);
+      InitializeMethodOverride (overrider.AddMethod, baseMember.AddMethod);
+      InitializeMethodOverride (overrider.RemoveMethod, baseMember.RemoveMethod);
     }
 
     private void AnalyzeInitializationMethods (MixinDefinition mixin)
@@ -121,6 +116,15 @@ namespace Mixins.Definitions.Building
           yield return method;
         }
       }
+    }
+
+    private void AnalyzeDependencies (MixinDefinition mixin)
+    {
+      ThisDependencyDefinitionBuilder thisDependencyBuilder = new ThisDependencyDefinitionBuilder (mixin);
+      thisDependencyBuilder.Apply (_faceRequirementsAnalyzer.Analyze (mixin));
+
+      BaseDependencyDefinitionBuilder baseDependencyBuilder = new BaseDependencyDefinitionBuilder (mixin);
+      baseDependencyBuilder.Apply (_baseRequirementsAnalyzer.Analyze (mixin));
     }
   }
 }

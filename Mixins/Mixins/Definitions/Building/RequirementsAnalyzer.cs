@@ -7,7 +7,6 @@ namespace Mixins.Definitions.Building
 {
   public class RequirementsAnalyzer
   {
-    private Dictionary<Type, Type> _requirements; // used as a set type
     private Type _filterAttribute;
     private BaseClassDefinition _baseClass;
 
@@ -24,7 +23,8 @@ namespace Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("mixin", mixin);
 
-      _requirements = new Dictionary<Type, Type> ();
+      Dictionary<Type, Type> requirements = new Dictionary<Type, Type> ();
+
       Type mixinBase = GetMixinBase (mixin);
       if (mixinBase != null)
       {
@@ -38,10 +38,10 @@ namespace Mixins.Definitions.Building
 
         foreach (Type genericArgument in GetFilteredGenericArguments (mixinBase))
         {
-          AnalyzeRequirementsForMixinBaseArgument (genericArgument);
+          AnalyzeRequirementsForMixinBaseArgument (genericArgument, requirements);
         }
       }
-      return _requirements.Keys;
+      return requirements.Keys;
     }
 
     private IEnumerable<Type> GetFilteredGenericArguments (Type mixinBase)
@@ -89,23 +89,23 @@ namespace Mixins.Definitions.Building
 
     // The generic arguments used for MixinBase<,> are bound to either to real types or to new type parameters
     // The real types are directly taken as required interfaces; the type parameters have constraints which are taken as required interfaces
-    private void AnalyzeRequirementsForMixinBaseArgument (Type genericArgument)
+    private void AnalyzeRequirementsForMixinBaseArgument (Type genericArgument, Dictionary<Type, Type> requirements)
     {
       if (genericArgument.IsGenericParameter)
       {
         Type[] constraints = genericArgument.GetGenericParameterConstraints ();
         foreach (Type constraint in constraints)
         {
-          AnalyzeRequirementForType (constraint);
+          AnalyzeRequirementForType (constraint, requirements);
         }
       }
       else
       {
-        AnalyzeRequirementForType (genericArgument);
+        AnalyzeRequirementForType (genericArgument, requirements);
       }
     }
 
-    private void AnalyzeRequirementForType (Type requiredType)
+    private void AnalyzeRequirementForType (Type requiredType, Dictionary<Type, Type> requirements)
     {
       Debug.Assert (!requiredType.IsGenericParameter);
       if (requiredType.Equals (typeof (INull)))
@@ -113,9 +113,9 @@ namespace Mixins.Definitions.Building
         return;
       }
 
-      if (!_requirements.ContainsKey (requiredType))
+      if (!requirements.ContainsKey (requiredType))
       {
-        _requirements.Add (requiredType, requiredType);
+        requirements.Add (requiredType, requiredType);
       }
     }
   }

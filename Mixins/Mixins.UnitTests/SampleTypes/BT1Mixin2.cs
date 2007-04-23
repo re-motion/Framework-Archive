@@ -13,5 +13,21 @@ namespace Mixins.UnitTests.SampleTypes
     {
       return "Mixin2ForBT1.VirtualMethod";
     }
+
+    [Override]
+    public string VirtualProperty
+    {
+      get { return "Mixin2ForBT1.VirtualProperty"; }
+      // no setter
+    }
+
+    public EventHandler BackingEventField;
+
+    [Override]
+    public virtual event EventHandler VirtualEvent
+    {
+      add { BackingEventField += value; }
+      remove { BackingEventField -= value; }
+    }
   }
 }

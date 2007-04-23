@@ -12,5 +12,14 @@ namespace Mixins.UnitTests.SampleTypes
     {
       return Base.NonVirtualMethod () + "Overridden";
     }
+
+    [Override]
+    public string NonVirtualProperty
+    {
+      get { return Base.NonVirtualProperty + "Overridden"; }
+    }
+
+    [Override]
+    public event EventHandler NonVirtualEvent;
   }
 }

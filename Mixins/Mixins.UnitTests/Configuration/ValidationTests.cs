@@ -55,7 +55,25 @@ namespace Mixins.UnitTests.Configuration
         get { throw new Exception ("The method or operation is not implemented."); }
       }
     }
-private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
+
+    private class BaseWithGetterOnly
+    {
+      public virtual int Property
+      {
+        get { return 5; }
+      }
+    }
+
+    private class MixinOverridingSetterOnly
+    {
+      [Override]
+      public virtual int Property
+      {
+        set { }
+      }
+    }
+
+    private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
     {
       ApplicationContext assemblyContext = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
       return DefinitionBuilder.CreateApplicationDefinition (assemblyContext);
@@ -208,17 +226,41 @@ private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
       MixinDefinition bt3m5 = bt3.Mixins[typeof (BT3Mixin5)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m5));
 
-      MemberDefinition m1 = bt1.Members[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
+      MethodDefinition m1 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", Type.EmptyTypes)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (m1));
-      MemberDefinition m2 = bt1.Members[typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] { typeof (string) })];
+      MethodDefinition m2 = bt1.Methods[typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] { typeof (string) })];
       Assert.IsTrue (visitedDefinitions.ContainsKey (m2));
-      MemberDefinition m3 = bt1m1.Members[typeof (BT1Mixin1).GetMethod ("VirtualMethod")];
+      MethodDefinition m3 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("VirtualMethod")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (m3));
-      MemberDefinition m4 = bt1m1.Members[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")];
+      MethodDefinition m4 = bt1m1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (m4));
+
+      PropertyDefinition p1 = bt1.Properties[typeof (BaseType1).GetProperty ("VirtualProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (p1));
+      MethodDefinition m5 = p1.GetMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m5));
+      MethodDefinition m6 = p1.SetMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m6));
+      PropertyDefinition p2 = bt1m1.Properties[typeof (BT1Mixin1).GetProperty ("VirtualProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (p2));
+
+      EventDefinition e1 = bt1.Events[typeof (BaseType1).GetEvent ("VirtualEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (e1));
+      MethodDefinition m7 = e1.AddMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m7));
+      MethodDefinition m8 = e1.RemoveMethod;
+      Assert.IsTrue (visitedDefinitions.ContainsKey (m8));
+      EventDefinition e2 = bt1m1.Events[typeof (BT1Mixin1).GetEvent ("VirtualEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (e2));
 
       InterfaceIntroductionDefinition i1 = bt1m1.InterfaceIntroductions[typeof (IBT1Mixin1)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (i1));
+      MemberIntroductionDefinition im1 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im1));
+      MemberIntroductionDefinition im2 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im2));
+      MemberIntroductionDefinition im3 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
+      Assert.IsTrue (visitedDefinitions.ContainsKey (im3));
 
       RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
@@ -272,9 +314,37 @@ private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
     public void FailsIfOverriddenMethodNotVirtual ()
     {
       ApplicationDefinition application = DefBuilder.Build(typeof(BaseType4), typeof (BT4Mixin1));
-      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType4)].Members[typeof(BaseType4).GetMethod("NonVirtualMethod")]);
+      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType4)].Methods[typeof (BaseType4).GetMethod ("NonVirtualMethod")]);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+    }
+
+    [Test]
+    public void FailsIfOverriddenPropertyMethodNotVirtual ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType4), typeof (BT4Mixin1));
+      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType4)].Properties[typeof (BaseType4).GetProperty ("NonVirtualProperty")]);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+    }
+
+    [Test]
+    public void FailsIfOverriddenEventMethodNotVirtual ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType4), typeof (BT4Mixin1));
+      DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType4)].Events[typeof (BaseType4).GetEvent ("NonVirtualEvent")]);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+    }
+
+    [Test]
+    public void WarnsIfPropertyOverrideAddsMethods()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseWithGetterOnly), typeof (MixinOverridingSetterOnly));
+      DefaultValidationLog log =
+          Validator.Validate (application.BaseClasses[typeof (BaseWithGetterOnly)].Properties[typeof (BaseWithGetterOnly).GetProperty ("Property")].Overrides[0]);
+
+      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultPropertyRules.NewMemberAddedByOverride", log));
     }
 
     [Test]

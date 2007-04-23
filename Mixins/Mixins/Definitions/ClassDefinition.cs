@@ -8,8 +8,13 @@ namespace Mixins.Definitions
   [Serializable]
   public abstract class ClassDefinition : IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<MemberInfo, MemberDefinition> Members =
-        new DefinitionItemCollection<MemberInfo, MemberDefinition> (delegate (MemberDefinition m) { return m.MemberInfo; });
+    public readonly DefinitionItemCollection<MethodInfo, MethodDefinition> Methods =
+        new DefinitionItemCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
+    public readonly DefinitionItemCollection<PropertyInfo, PropertyDefinition> Properties =
+        new DefinitionItemCollection<PropertyInfo, PropertyDefinition> (delegate (PropertyDefinition p) { return p.PropertyInfo; });
+    public readonly DefinitionItemCollection<EventInfo, EventDefinition> Events =
+        new DefinitionItemCollection<EventInfo, EventDefinition> (delegate (EventDefinition p) { return p.EventInfo; });
+
     private Type _type;
 
     public ClassDefinition (Type type)
@@ -38,6 +43,16 @@ namespace Mixins.Definitions
     public IList<Type> ImplementedInterfaces
     {
       get { return Type.GetInterfaces(); }
+    }
+
+    public IEnumerable<MemberDefinition> GetAllMembers()
+    {
+      foreach (MethodDefinition method in Methods)
+        yield return method;
+      foreach (PropertyDefinition property in Properties)
+        yield return property;
+      foreach (EventDefinition eventDefinition in Events)
+        yield return eventDefinition;
     }
 
     public abstract void Accept (IDefinitionVisitor visitor);

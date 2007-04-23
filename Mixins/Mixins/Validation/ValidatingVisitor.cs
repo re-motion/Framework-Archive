@@ -14,7 +14,10 @@ namespace Mixins.Validation
     private List<IValidationRule<BaseClassDefinition>> _baseClassRules = new List<IValidationRule<BaseClassDefinition>> ();
     private List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
     private List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
+    private List<IValidationRule<MemberIntroductionDefinition>> _memberIntroductionRules = new List<IValidationRule<MemberIntroductionDefinition>> ();
     private List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>> ();
+    private List<IValidationRule<PropertyDefinition>> _propertyRules = new List<IValidationRule<PropertyDefinition>> ();
+    private List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>> ();
     private List<IValidationRule<RequiredFaceTypeDefinition>> _requiredFaceTypeRules = new List<IValidationRule<RequiredFaceTypeDefinition>> ();
     private List<IValidationRule<RequiredBaseCallTypeDefinition>> _requiredBaseCallTypeRules = new List<IValidationRule<RequiredBaseCallTypeDefinition>> ();
     private List<IValidationRule<ThisDependencyDefinition>> _thisDependencyRules = new List<IValidationRule<ThisDependencyDefinition>> ();
@@ -46,9 +49,24 @@ namespace Mixins.Validation
       get { return _interfaceIntroductionRules; }
     }
 
+    public IList<IValidationRule<MemberIntroductionDefinition>> MemberIntroductionRules
+    {
+      get { return _memberIntroductionRules; }
+    }
+
     public IList<IValidationRule<MethodDefinition>> MethodRules
     {
       get { return _methodRules; }
+    }
+
+    public IList<IValidationRule<PropertyDefinition>> PropertyRules
+    {
+      get { return _propertyRules; }
+    }
+
+    public IList<IValidationRule<EventDefinition>> EventRules
+    {
+      get { return _eventRules; }
     }
 
     public IList<IValidationRule<RequiredFaceTypeDefinition>> RequiredFaceTypeRules
@@ -95,10 +113,28 @@ namespace Mixins.Validation
       CheckRules (_interfaceIntroductionRules, interfaceIntroduction);
     }
 
+    public void Visit (MemberIntroductionDefinition memberIntroduction)
+    {
+      ArgumentUtility.CheckNotNull ("memberIntroduction", memberIntroduction);
+      CheckRules (_memberIntroductionRules, memberIntroduction);
+    }
+
     public void Visit (MethodDefinition method)
     {
       ArgumentUtility.CheckNotNull ("method", method);
       CheckRules (_methodRules, method);
+    }
+
+    public void Visit (PropertyDefinition property)
+    {
+      ArgumentUtility.CheckNotNull ("property", property);
+      CheckRules (_propertyRules, property);
+    }
+
+    public void Visit (EventDefinition eventDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("event", eventDefinition);
+      CheckRules (_eventRules, eventDefinition);
     }
 
     public void Visit (RequiredFaceTypeDefinition requiredFaceType)

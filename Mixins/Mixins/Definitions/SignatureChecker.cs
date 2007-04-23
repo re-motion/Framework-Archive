@@ -6,7 +6,24 @@ namespace Mixins.Definitions
 {
   public class SignatureChecker
   {
-    public bool SignatureMatch (MethodInfo methodOne, MethodInfo methodTwo)
+    public bool PropertySignaturesMatch (PropertyInfo propertyOne, PropertyInfo propertyTwo)
+    {
+      ArgumentUtility.CheckNotNull ("propertyOne", propertyOne);
+      ArgumentUtility.CheckNotNull ("propertyTwo", propertyTwo);
+
+      return TypeEquals (propertyOne.PropertyType, propertyTwo.PropertyType);
+    }
+
+    public bool EventSignaturesMatch (EventInfo eventOne, EventInfo eventTwo)
+    {
+      ArgumentUtility.CheckNotNull ("eventOne", eventOne);
+      ArgumentUtility.CheckNotNull ("eventTwo", eventTwo);
+
+      return TypeEquals (eventOne.EventHandlerType, eventTwo.EventHandlerType);
+    }
+
+
+    public bool MethodSignaturesMatch (MethodInfo methodOne, MethodInfo methodTwo)
     {
       ArgumentUtility.CheckNotNull ("methodOne", methodOne);
       ArgumentUtility.CheckNotNull ("methodTwo", methodTwo);

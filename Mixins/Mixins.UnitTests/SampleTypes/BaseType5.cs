@@ -11,5 +11,12 @@ namespace Mixins.UnitTests.SampleTypes
     {
       return "BaseType4.NonVirtualMethod";
     }
+
+    public int Property
+    {
+      set { }
+    }
+
+    public event Action<string> Event;
   }
 }

@@ -33,16 +33,13 @@ namespace Mixins.Definitions
       get { return _baseClass; }
     }
 
-    public IEnumerable<MemberDefinition> Overrides
+    public IEnumerable<MemberDefinition> GetAllOverrides()
     {
-      get
+      foreach (MemberDefinition member in GetAllMembers())
       {
-        foreach (MemberDefinition member in Members)
+        if (member.Base != null)
         {
-          if (member.Base != null)
-          {
-            yield return member;
-          }
+          yield return member;
         }
       }
     }
@@ -64,7 +61,9 @@ namespace Mixins.Definitions
 
       visitor.Visit (this);
 
-      Members.Accept (visitor);
+      Methods.Accept (visitor);
+      Properties.Accept (visitor);
+      Events.Accept (visitor);
       InterfaceIntroductions.Accept (visitor);
       InitializationMethods.Accept (visitor);
       ThisDependencies.Accept (visitor);

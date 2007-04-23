@@ -74,6 +74,8 @@
     <Compile Include="SampleTypes\BT3Mixin7.cs" />
     <Compile Include="Configuration\SignatureCheckerTests.cs" />
     <Compile Include="Configuration\ValidationTests.cs" />
+    <Compile Include="SampleTypes\BT5Mixin4.cs" />
+    <Compile Include="SampleTypes\BT5Mixin5.cs" />
     <Compile Include="SampleTypes\NullMixin.cs" />
   </ItemGroup>
   <ItemGroup>

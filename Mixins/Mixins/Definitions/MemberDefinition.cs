@@ -7,9 +7,6 @@ namespace Mixins.Definitions
   [Serializable]
   public abstract class MemberDefinition : IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<Type, MemberDefinition> Overrides =
-        new DefinitionItemCollection<Type, MemberDefinition> (delegate (MemberDefinition m) { return m.DeclaringClass.Type; });
-
     private MemberInfo _memberInfo;
     private ClassDefinition _declaringClass;
 
@@ -75,11 +72,13 @@ namespace Mixins.Definitions
       set { _base = value; }
     }
 
-    public bool CanBeOverriddenBy (MemberDefinition overrider)
+    public virtual bool CanBeOverriddenBy (MemberDefinition overrider)
     {
       ArgumentUtility.CheckNotNull ("overrider", overrider);
       return MemberType == overrider.MemberType && IsSignatureCompatibleWith (overrider);
     }
+
+    public abstract void AddOverride (MemberDefinition member);
 
     protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);
 

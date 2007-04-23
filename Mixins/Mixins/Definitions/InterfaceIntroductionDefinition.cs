@@ -1,11 +1,15 @@
 using System;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Mixins.Definitions
 {
   [Serializable]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
+    public readonly DefinitionItemCollection<MemberInfo, MemberIntroductionDefinition> IntroducedMembers =
+        new DefinitionItemCollection<MemberInfo, MemberIntroductionDefinition> (delegate (MemberIntroductionDefinition m) { return m.InterfaceMember; });
+
     private Type _type;
     private MixinDefinition _implementer;
 
@@ -47,6 +51,7 @@ namespace Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
+      IntroducedMembers.Accept (visitor);
     }
   }
 }

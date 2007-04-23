@@ -9,6 +9,9 @@ namespace Mixins.Definitions
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker ();
 
+    public readonly DefinitionItemCollection<Type, MethodDefinition> Overrides =
+        new DefinitionItemCollection<Type, MethodDefinition> (delegate (MethodDefinition m) { return m.DeclaringClass.Type; });
+
     public MethodDefinition (MethodInfo memberInfo, ClassDefinition declaringClass)
         : base (memberInfo, declaringClass)
     {
@@ -39,7 +42,21 @@ namespace Mixins.Definitions
     private bool IsSignatureCompatibleWithMethod (MethodDefinition overrider)
     {
       ArgumentUtility.CheckNotNull ("overrider", overrider);
-      return s_signatureChecker.SignatureMatch (MethodInfo, overrider.MethodInfo);
+      return s_signatureChecker.MethodSignaturesMatch (MethodInfo, overrider.MethodInfo);
+    }
+
+    public override void AddOverride (MemberDefinition member)
+    {
+      ArgumentUtility.CheckNotNull ("member", member);
+
+      MethodDefinition method = member as MethodDefinition;
+      if (method == null)
+      {
+        string message = string.Format ("Member {0} cannot override method {1} - it is not a method.", member.FullName, FullName);
+        throw new ArgumentException (message);
+      }
+
+      Overrides.Add (method);
     }
 
     public override void Accept (IDefinitionVisitor visitor)

@@ -79,6 +79,36 @@ namespace Mixins.UnitTests.Configuration
       return default (R);
     }
 
+    public int SimpleProperty1
+    {
+      get { return 1; }
+    }
+
+    public int SimpleProperty2
+    {
+      get { return 2; }
+    }
+
+    public object SimpleProperty3
+    {
+      get { return 3; }
+    }
+
+    public Dictionary<int, string> ComplexProperty1
+    {
+      get { return null; }
+    }
+
+    public Dictionary<int, string> ComplexProperty2
+    {
+      get { return null; }
+    }
+
+    public Dictionary<string, int> ComplexProperty3
+    {
+      get { return null; }
+    }
+
     [Test]
     public void SimpleMethods()
     {
@@ -88,8 +118,8 @@ namespace Mixins.UnitTests.Configuration
 
       SignatureChecker sc = new SignatureChecker();
 
-      Assert.IsTrue (sc.SignatureMatch (m1, m2));
-      Assert.IsFalse (sc.SignatureMatch (m1, c1));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m2));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, c1));
     }
 
     [Test]
@@ -104,11 +134,11 @@ namespace Mixins.UnitTests.Configuration
 
       SignatureChecker sc = new SignatureChecker ();
 
-      Assert.IsTrue (sc.SignatureMatch (m1, m2));
-      Assert.IsFalse (sc.SignatureMatch (m1, m3));
-      Assert.IsFalse (sc.SignatureMatch (m1, m4));
-      Assert.IsFalse (sc.SignatureMatch (m1, m5));
-      Assert.IsFalse (sc.SignatureMatch (m1, m6));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m2));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m3));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m4));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m5));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m6));
     }
 
     [Test]
@@ -121,10 +151,40 @@ namespace Mixins.UnitTests.Configuration
 
       SignatureChecker sc = new SignatureChecker ();
 
-      Assert.IsTrue (sc.SignatureMatch (m1, m1));
-      Assert.IsFalse (sc.SignatureMatch (m1, m2));
-      Assert.IsTrue (sc.SignatureMatch (m1, m3));
-      Assert.IsFalse (sc.SignatureMatch (m1, m4));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m1));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m2));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m3));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m4));
+    }
+
+    [Test]
+    public void SimpleProperties ()
+    {
+      PropertyInfo p1 = typeof (SignatureCheckerTests).GetProperty ("SimpleProperty1");
+      PropertyInfo p2 = typeof (SignatureCheckerTests).GetProperty ("SimpleProperty2");
+      PropertyInfo p3 = typeof (SignatureCheckerTests).GetProperty ("SimpleProperty3");
+
+      SignatureChecker sc = new SignatureChecker();
+
+      Assert.IsTrue (sc.PropertySignaturesMatch (p1, p1));
+      Assert.IsTrue (sc.PropertySignaturesMatch (p1, p2));
+      Assert.IsFalse (sc.PropertySignaturesMatch (p1, p3));
+      Assert.IsTrue (sc.PropertySignaturesMatch (p3, p3));
+    }
+
+    [Test]
+    public void ComplexProperties ()
+    {
+      PropertyInfo p1 = typeof (SignatureCheckerTests).GetProperty ("ComplexProperty1");
+      PropertyInfo p2 = typeof (SignatureCheckerTests).GetProperty ("ComplexProperty2");
+      PropertyInfo p3 = typeof (SignatureCheckerTests).GetProperty ("ComplexProperty3");
+
+      SignatureChecker sc = new SignatureChecker ();
+
+      Assert.IsTrue (sc.PropertySignaturesMatch (p1, p1));
+      Assert.IsTrue (sc.PropertySignaturesMatch (p1, p2));
+      Assert.IsFalse (sc.PropertySignaturesMatch (p1, p3));
+      Assert.IsTrue (sc.PropertySignaturesMatch (p3, p3));
     }
   }
 }

@@ -21,5 +21,31 @@ namespace Mixins.UnitTests.SampleTypes
     {
       return "BaseType1.VirtualMethod(" + text + ")";
     }
+
+    private string _backingField = "BaseType1.BackingField";
+
+    public virtual string VirtualProperty
+    {
+      get { return _backingField; }
+      set { _backingField = value; }
+    }
+
+    public object this [int index]
+    {
+      get { return null; }
+    }
+
+    public object this[string index]
+    {
+      set { }
+    }
+
+    public virtual event EventHandler VirtualEvent;
+
+    public event EventHandler ExplicitEvent
+    {
+      add { VirtualEvent += value; }
+      remove { VirtualEvent -= value; }
+    }
   }
 }

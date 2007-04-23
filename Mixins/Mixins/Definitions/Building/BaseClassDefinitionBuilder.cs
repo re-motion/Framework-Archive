@@ -28,32 +28,25 @@ namespace Mixins.Definitions.Building
       BaseClassDefinition classDefinition = new BaseClassDefinition (_application, classContext.Type);
       Application.BaseClasses.Add (classDefinition);
 
-      InitializeMembers (classDefinition);
+      ClassDefinitionBuilderHelper.InitializeMembers (classDefinition, IsVisibleToInheritors);
       ApplyMixins(classDefinition, classContext);
 
     }
 
-    private void InitializeMembers (BaseClassDefinition classDefinition)
+    private static bool IsVisibleToInheritors (MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      foreach (MethodInfo method in classDefinition.Type.GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
-      {
-        if (method.IsPublic || method.IsFamily)
-        {
-          classDefinition.Members.Add (new MethodDefinition (method, classDefinition));
-        }
-      }
+      return method.IsPublic || method.IsFamily;
     }
 
-    private static void ApplyMixins(BaseClassDefinition classDefinition, ClassContext classContext)
+    private static void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
       IEnumerator<MixinContext> enumerator = classContext.MixinContexts.GetEnumerator();
-      for (int i = 0; enumerator.MoveNext(); ++i) {
+      for (int i = 0; enumerator.MoveNext(); ++i)
+      {
         MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
         mixin.MixinIndex = i;
       }

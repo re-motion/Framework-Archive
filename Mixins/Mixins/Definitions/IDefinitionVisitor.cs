@@ -10,7 +10,10 @@ namespace Mixins.Definitions
     void Visit (BaseClassDefinition baseClass);
     void Visit (MixinDefinition mixin);
     void Visit (InterfaceIntroductionDefinition interfaceIntroduction);
+    void Visit (MemberIntroductionDefinition definition);
     void Visit (MethodDefinition method);
+    void Visit (PropertyDefinition property);
+    void Visit (EventDefinition eventDefintion);
     void Visit (RequiredFaceTypeDefinition requiredFaceType);
     void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType);
     void Visit (ThisDependencyDefinition thisDependency);
