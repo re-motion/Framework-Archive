@@ -15,6 +15,7 @@
         <include name="*.cs" />
         <include name="Collections/**/*.cs" />
         <include name="Configuration/**/*.cs" />
+        <include name="Design/**/*.cs" />
         <include name="Logging/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
         <include name="ObjectBinding/**/*.cs" />

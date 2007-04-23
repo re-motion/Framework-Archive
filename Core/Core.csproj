@@ -95,6 +95,9 @@
   <ItemGroup>
     <Compile Include="Collections\InterlockedCache.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\ConfigurationWrapper.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />
+    <Compile Include="Configuration\ConfigurationWrapperFromConfigurationManager.cs" />
     <Compile Include="Configuration\ExtendedConfigurationSection.cs" />
     <Compile Include="Configuration\ExtendedProviderBase.cs" />
     <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
