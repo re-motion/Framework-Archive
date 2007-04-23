@@ -10,6 +10,7 @@
 - Upgrade auf Rhino-Mocks 3.0.1
 - ArgumentUtility bietet nun bei den Check-Methoden den ActualValue als Rückgabewert an.
 - Interface INullableObject zu INullObject umbenannt
+- Neues Interface Rubicon.Design.IDesignModeHelper: Facade für Design-Mode Eigenschaften.
 
 1.7.41
 ======

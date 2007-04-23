@@ -91,6 +91,7 @@
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Web">
       <Name>system.web</Name>
     </Reference>
@@ -262,6 +263,7 @@
     <Compile Include="UI\Controls\WebTabCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Design\WebDesignModeHelperTest.cs" />
     <Compile Include="UI\SiteMock.cs">
       <SubType>Code</SubType>
     </Compile>

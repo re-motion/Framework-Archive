@@ -99,6 +99,9 @@
     <Compile Include="Configuration\ExtendedProviderBase.cs" />
     <Compile Include="Configuration\ProviderDefinitionCollection.cs" />
     <Compile Include="Configuration\ProviderHelperBase.cs" />
+    <Compile Include="Design\DesignModeHelperBase.cs" />
+    <Compile Include="Design\EnvDteDesignModeHelper.cs" />
+    <Compile Include="Design\IDesignModeHelper.cs" />
     <Compile Include="DoubleCheckedLockingContainer.cs" />
     <Compile Include="INullObject.cs" />
     <Compile Include="Collections\ArrayComparer.cs" />

@@ -11,12 +11,8 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.Utilities
 {
 
-  public class ControlHelper
+  public static class ControlHelper
   {
-    // types
-
-    // static members
-
     public static string PostEventSourceID
     { get { return "__EVENTTARGET"; } }
 
@@ -200,49 +196,6 @@ namespace Rubicon.Web.Utilities
       }
     }
 
-    public static object GetDesignTimePropertyValue (Control control, string propertyName)
-    {
-      if (!IsDesignMode (control))
-        return null;
-
-      try
-      {
-        ISite site = control.Site;
-
-        //EnvDTE._DTE environment = (EnvDTE._DTE) ((IServiceProvider)site).GetService (typeof (EnvDTE._DTE));
-        Type _DTEType = Type.GetType ("EnvDTE._DTE, EnvDTE");
-        object environment = ((IServiceProvider) site).GetService (_DTEType);
-
-        if (environment != null)
-        {
-          //EnvDTE.Project project = environment.ActiveDocument.ProjectItem.ContainingProject;
-          object activeDocument = _DTEType.InvokeMember ("ActiveDocument", BindingFlags.GetProperty, null, environment, null);
-          object projectItem = activeDocument.GetType ().InvokeMember ("ProjectItem", BindingFlags.GetProperty, null, activeDocument, null);
-          object project = projectItem.GetType ().InvokeMember ("ContainingProject", BindingFlags.GetProperty, null, projectItem, null);
-
-          ////project.Properties uses a 1-based index
-          //foreach (EnvDTE.Property property in project.Properties)
-          object properties = project.GetType ().InvokeMember ("Properties", BindingFlags.GetProperty, null, project, null);
-          foreach (object property in (IEnumerable) properties)
-          {
-            //if (property.Name == propertyName)
-            string projectPropertyName = (string) property.GetType ().InvokeMember ("Name", BindingFlags.GetProperty, null, property, null);
-            if (projectPropertyName == propertyName)
-            {
-              //return property.Value;
-              return property.GetType ().InvokeMember ("Value", BindingFlags.GetProperty, null, property, null);
-            }
-          }
-        }
-      }
-      catch
-      {
-        return null;
-      }
-
-      return null;
-    }
-
     /// <summary> Encapsulates the invokation of <see cref="Control"/>'s LoadViewStateRecursive method. </summary>
     /// <param name="target"> The <see cref="Control"/> to be restored. </param>
     /// <param name="viewState"> The view state object used for restoring. </param>
@@ -292,12 +245,6 @@ namespace Rubicon.Web.Utilities
       //  protected PageStatePersister System.Web.UI.Page.PageStatePersister
       return (PageStatePersister) typeof (Page).InvokeMember ("PageStatePersister", bindingFlags, null, target, new object[0]);
     }
-
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
   }
 
 }

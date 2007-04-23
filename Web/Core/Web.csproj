@@ -307,6 +307,7 @@
     <Compile Include="UI\Controls\IValidatableControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Design\WebDesginModeHelper.cs" />
     <Compile Include="UI\IWebSecurityAdapter.cs" />
     <Compile Include="UI\Controls\LazyContainer.cs">
       <SubType>Code</SubType>

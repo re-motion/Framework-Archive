@@ -129,6 +129,8 @@
     <Compile Include="Collections\LazyInterlockedCacheTest.cs" />
     <Compile Include="Configuration\SampleType.cs" />
     <Compile Include="Configuration\TypeElementTest.cs" />
+    <Compile Include="Design\DesignModeHelperBaseTest.cs" />
+    <Compile Include="Design\StubDesignModeHelper.cs" />
     <Compile Include="DoubleCheckedLockingContainerTest.cs" />
     <Compile Include="Logging\Log4NetLogManagerTest.cs" />
     <Compile Include="Logging\Log4NetLogTests\BaseTest.cs" />

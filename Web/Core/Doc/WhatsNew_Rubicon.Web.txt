@@ -1,3 +1,8 @@
+1.7.42
+======
+- Rubicon.Web.UI.Design
+  WebDesignModeHelper: Implementierung von IDesignModeHelper für Web-Projekte.
+
 1.7.41
 ======
 - Security:
