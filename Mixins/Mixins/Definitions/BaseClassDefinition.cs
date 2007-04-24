@@ -51,10 +51,9 @@ namespace Mixins.Definitions
       ArgumentUtility.CheckNotNull ("visitor", visitor);
 
       visitor.Visit (this);
-
-      Methods.Accept (visitor);
-      Properties.Accept (visitor);
-      Events.Accept (visitor);
+      
+      base.AcceptForChildren (visitor);
+      
       Mixins.Accept (visitor);
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);

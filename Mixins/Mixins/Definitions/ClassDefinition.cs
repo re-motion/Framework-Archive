@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Mixins.Definitions
 {
   [Serializable]
-  public abstract class ClassDefinition : IVisitableDefinition
+  public abstract class ClassDefinition : IVisitableDefinition, IAttributableDefinition
   {
     public readonly DefinitionItemCollection<MethodInfo, MethodDefinition> Methods =
         new DefinitionItemCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
@@ -14,6 +14,9 @@ namespace Mixins.Definitions
         new DefinitionItemCollection<PropertyInfo, PropertyDefinition> (delegate (PropertyDefinition p) { return p.PropertyInfo; });
     public readonly DefinitionItemCollection<EventInfo, EventDefinition> Events =
         new DefinitionItemCollection<EventInfo, EventDefinition> (delegate (EventDefinition p) { return p.EventInfo; });
+
+    private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
+        new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
     private Type _type;
 
@@ -45,6 +48,11 @@ namespace Mixins.Definitions
       get { return Type.GetInterfaces(); }
     }
 
+    public MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes
+    {
+      get { return _customAttributes; }
+    }
+
     public IEnumerable<MemberDefinition> GetAllMembers()
     {
       foreach (MethodDefinition method in Methods)
@@ -56,5 +64,13 @@ namespace Mixins.Definitions
     }
 
     public abstract void Accept (IDefinitionVisitor visitor);
+
+    protected void AcceptForChildren (IDefinitionVisitor visitor)
+    {
+      Methods.Accept (visitor);
+      Properties.Accept (visitor);
+      Events.Accept (visitor);
+      CustomAttributes.Accept (visitor);
+    }
   }
 }

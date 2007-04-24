@@ -56,10 +56,12 @@
     <Compile Include="CodeGeneration\SerializationHelper.cs" />
     <Compile Include="CodeGeneration\TypeFactory.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />
+    <Compile Include="Definitions\AttributeDefinition.cs" />
     <Compile Include="Definitions\BaseClassDefinition.cs" />
     <Compile Include="Definitions\Building\ApplicationDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
-    <Compile Include="Definitions\Building\ClassDefinitionBuilderHelper.cs" />
+    <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
+    <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\ConfigurationException.cs" />
     <Compile Include="Definitions\Building\BaseDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
@@ -72,8 +74,11 @@
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
+    <Compile Include="Definitions\DefinitionItemCollectionBase.cs" />
+    <Compile Include="Definitions\IAttributableDefinition.cs" />
     <Compile Include="Definitions\MemberIntroductionDefinition.cs" />
     <Compile Include="Definitions\EventDefinition.cs" />
+    <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
@@ -108,6 +113,7 @@
     <Compile Include="Validation\DelegateValidationRule.cs" />
     <Compile Include="Validation\IValidationLog.cs" />
     <Compile Include="Validation\IValidationRule.cs" />
+    <Compile Include="Validation\Rules\DefaultAttributeRules.cs" />
     <Compile Include="Validation\Rules\DefaultMemberIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaulEventRules.cs" />
     <Compile Include="Validation\Rules\DefaultPropertyRules.cs" />

@@ -61,9 +61,8 @@ namespace Mixins.Definitions
 
       visitor.Visit (this);
 
-      Methods.Accept (visitor);
-      Properties.Accept (visitor);
-      Events.Accept (visitor);
+      base.AcceptForChildren (visitor);
+
       InterfaceIntroductions.Accept (visitor);
       InitializationMethods.Accept (visitor);
       ThisDependencies.Accept (visitor);

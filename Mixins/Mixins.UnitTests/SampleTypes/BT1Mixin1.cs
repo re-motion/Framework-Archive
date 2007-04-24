@@ -9,8 +9,11 @@ namespace Mixins.UnitTests.SampleTypes
     event EventHandler IntroducedEvent;
   }
 
+  public class BT1M1Attribute : Attribute {}
+
   [MixinFor (typeof (BaseType1))]
   [Serializable]
+  [BT1M1Attribute]
   public class BT1Mixin1 : IBT1Mixin1
   {
     [Override]
@@ -31,16 +34,19 @@ namespace Mixins.UnitTests.SampleTypes
     public virtual event EventHandler VirtualEvent;
 
 
+    [BT1M1Attribute]
     public string IntroducedMethod ()
     {
       return "BT1Mixin1.IntroducedMethod";
     }
 
+    [BT1M1Attribute]
     public string IntroducedProperty
     {
       get { return "BT1Mixin1.IntroducedProperty"; }
     }
 
+    [BT1M1Attribute]
     public event EventHandler IntroducedEvent;
   }
 }

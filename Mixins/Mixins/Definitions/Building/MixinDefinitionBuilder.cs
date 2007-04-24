@@ -37,7 +37,13 @@ namespace Mixins.Definitions.Building
       MixinDefinition mixin = new MixinDefinition (mixinContext.MixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 
-      ClassDefinitionBuilderHelper.InitializeMembers (mixin, delegate (MethodInfo m) { return m.IsPublic; });
+      const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m) { return m.IsPublic; });
+      membersBuilder.Apply (mixin.Type.GetProperties (bindingFlags), mixin.Type.GetEvents (bindingFlags),
+        mixin.Type.GetMethods (bindingFlags));
+
+      AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
+      attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (mixin.Type));
 
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);

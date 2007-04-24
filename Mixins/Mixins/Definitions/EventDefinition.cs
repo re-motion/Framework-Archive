@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
 
@@ -75,10 +76,20 @@ namespace Mixins.Definitions
       Overrides.Add (Event);
     }
 
+    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ()
+    {
+      foreach (EventDefinition overrider in Overrides)
+      {
+        yield return overrider;
+      }
+    }
+
     public override void Accept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
+      base.AcceptForChildren (visitor);
+
       if (AddMethod != null)
       {
         AddMethod.Accept (visitor);

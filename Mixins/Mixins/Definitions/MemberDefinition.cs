@@ -1,16 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
-  public abstract class MemberDefinition : IVisitableDefinition
+  public abstract class MemberDefinition : IVisitableDefinition, IAttributableDefinition
   {
     private MemberInfo _memberInfo;
     private ClassDefinition _declaringClass;
 
     private MemberDefinition _base = null;
+    private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
+        new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
     public MemberDefinition (MemberInfo memberInfo, ClassDefinition declaringClass)
     {
@@ -72,6 +75,11 @@ namespace Mixins.Definitions
       set { _base = value; }
     }
 
+    public MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes
+    {
+      get { return _customAttributes; }
+    }
+
     public virtual bool CanBeOverriddenBy (MemberDefinition overrider)
     {
       ArgumentUtility.CheckNotNull ("overrider", overrider);
@@ -79,9 +87,15 @@ namespace Mixins.Definitions
     }
 
     public abstract void AddOverride (MemberDefinition member);
+    public abstract IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ();
 
     protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);
 
     public abstract void Accept (IDefinitionVisitor visitor);
+
+    protected void AcceptForChildren (IDefinitionVisitor visitor)
+    {
+      _customAttributes.Accept (visitor);
+    }
   }
 }

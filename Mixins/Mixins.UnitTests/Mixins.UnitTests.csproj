@@ -43,6 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\DoubleImplementer.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingAllowMultipleToClassAndMember.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1Attribute.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1AttributeToMember.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinImplementingIMixinTarget.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSetterOnly.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassBase.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MultiAttribute.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="DefBuilder.cs" />
     <Compile Include="Configuration\DefinitionBuilderTests.cs" />
     <Compile Include="Configuration\DefaultContextBuilderTests.cs" />

@@ -12,6 +12,7 @@ namespace Mixins.UnitTests.SampleTypes
   {
     public int I;
 
+    [BT1Attribute]
     public virtual string VirtualMethod ()
     {
       return "BaseType1.VirtualMethod";
@@ -24,6 +25,7 @@ namespace Mixins.UnitTests.SampleTypes
 
     private string _backingField = "BaseType1.BackingField";
 
+    [BT1Attribute]
     public virtual string VirtualProperty
     {
       get { return _backingField; }
@@ -40,6 +42,7 @@ namespace Mixins.UnitTests.SampleTypes
       set { }
     }
 
+    [BT1Attribute]
     public virtual event EventHandler VirtualEvent;
 
     public event EventHandler ExplicitEvent

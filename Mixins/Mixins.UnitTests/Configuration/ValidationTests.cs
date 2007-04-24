@@ -3,76 +3,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using Mixins.Context;
 using Mixins.Definitions.Building;
+using Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Mixins.UnitTests.SampleTypes;
 using Mixins.Validation.DefaultLog;
 using NUnit.Framework;
 using Mixins.Definitions;
 using Mixins.Validation;
-using Mixins.Validation.Rules;
 
 namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ValidationTests
   {
-    private class ThrowingRuleSet : IRuleSet
-    {
-      public void Install (ValidatingVisitor visitor)
-      {
-        visitor.BaseClassRules.Add (new DelegateValidationRule<BaseClassDefinition> (delegate { throw new InvalidOperationException (); }));
-      }
-    }
-
-    private class DoubleImplementer : IBaseType2
-    {
-      public string IfcMethod ()
-      {
-        throw new Exception ("The method or operation is not implemented.");
-      }
-    }
-
-    private class MixinWithClassBase : Mixin<BaseType1, BaseType1>
-    {
-    }
-
-    private class MixinWithUnidentifiedInitializationArgument
-    {
-      [MixinInitializationMethod]
-      public void Initialize (object whatever)
-      {
-      }
-    }
-
-    private class MixinImplementingIMixinTarget : IMixinTarget
-    {
-      public BaseClassDefinition Configuration
-      {
-        get { throw new Exception ("The method or operation is not implemented."); }
-      }
-
-      public object[] Mixins
-      {
-        get { throw new Exception ("The method or operation is not implemented."); }
-      }
-    }
-
-    private class BaseWithGetterOnly
-    {
-      public virtual int Property
-      {
-        get { return 5; }
-      }
-    }
-
-    private class MixinOverridingSetterOnly
-    {
-      [Override]
-      public virtual int Property
-      {
-        set { }
-      }
-    }
-
     private static ApplicationDefinition GetApplicationDefinitionForAssembly ()
     {
       ApplicationContext assemblyContext = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
@@ -261,6 +203,23 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (visitedDefinitions.ContainsKey (im2));
       MemberIntroductionDefinition im3 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (im3));
+
+      AttributeDefinition a1 = bt1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a1));
+      AttributeDefinition a2 = bt1m1.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a2));
+      AttributeDefinition a3 = m1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a3));
+      AttributeDefinition a4 = p1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a4));
+      AttributeDefinition a5 = e1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a5));
+      AttributeDefinition a6 = im1.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a6));
+      AttributeDefinition a7 = im2.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a7));
+      AttributeDefinition a8 = im3.ImplementingMember.CustomAttributes.GetFirstItem (typeof (BT1M1Attribute));
+      Assert.IsTrue (visitedDefinitions.ContainsKey (a8));
 
       RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
@@ -495,6 +454,38 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IMixinTargetCannotBeIntroduced", log));
+    }
+
+    [Test]
+    public void FailsTwiceIfDuplicateAttributeAddedByMixin ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
+      Assert.AreEqual (2, TotalFailures(log.Results));
+    }
+
+    [Test]
+    public void FailsTwiceIfDuplicateAttributeAddedByMixinToMember ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
+      Assert.AreEqual (2, TotalFailures (log.Results));
+    }
+
+    [Test]
+    public void SucceedsIfDuplicateAttributeAddedByMixinAllowsMultiple ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      ConsoleDumper.DumpLog (log);
+
+      Assert.AreEqual (0, TotalFailures (log.Results));
+      Assert.AreEqual (0, TotalWarnings (log.Results));
     }
   }
 }
