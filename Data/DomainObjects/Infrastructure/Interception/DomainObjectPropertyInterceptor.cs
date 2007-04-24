@@ -16,22 +16,25 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       return ReflectionUtility.GetPropertyName (property);
     }
 
+    //TODO: Test for GetMandatory
     public static bool IsPropertyValue (Type type, string propertyID)
     {
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
       return classDefinition.GetPropertyDefinition (propertyID) != null && classDefinition.GetRelationEndPointDefinition (propertyID) == null;
     }
 
+    //TODO: Test for GetMandatory
     public static bool IsRelatedObject (Type type, string propertyID)
     {
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
       IRelationEndPointDefinition endPoint = classDefinition.GetRelationEndPointDefinition (propertyID);
       return endPoint != null && endPoint.Cardinality == CardinalityType.One;
     }
 
+    //TODO: Test for GetMandatory
     public static bool IsRelatedObjectCollection (Type type, string propertyID)
     {
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
       IRelationEndPointDefinition endPoint = classDefinition.GetRelationEndPointDefinition (propertyID);
       return endPoint != null && endPoint.Cardinality == CardinalityType.Many;
     }

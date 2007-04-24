@@ -3,23 +3,16 @@ using Rubicon.ObjectBinding.Web.UI.Design;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Design
 {
-
-public class DomainObjectDataSourceDesigner: BocDataSourceDesigner
-{
-  public override string GetDesignTimeHtml()
+  public class DomainObjectDataSourceDesigner: BocDataSourceDesigner
   {
-    DomainObjectDataSourceControl dataSourceControl = (DomainObjectDataSourceControl) Component;
-    
-    ApplicationException designTimeException = dataSourceControl.GetDesignTimeException();
-    if (designTimeException != null)
+    public override string GetDesignTimeHtml()
     {
-#if NET11
-      return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException, Component);
-#else
-      return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException);
-#endif
+      DomainObjectDataSourceControl dataSourceControl = (DomainObjectDataSourceControl) Component;
+
+      Exception designTimeException = dataSourceControl.GetDesignTimeException();
+      if (designTimeException != null)
+        return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException);
+      return CreatePlaceHolderDesignTimeHtml();
     }
-    return CreatePlaceHolderDesignTimeHtml ();
   }
-}
 }

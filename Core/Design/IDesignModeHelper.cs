@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Rubicon.Design
 {
   /// <summary>
@@ -6,6 +8,7 @@ namespace Rubicon.Design
   /// </summary>
   public interface IDesignModeHelper
   {
+    ISite Site { get; }
     string GetProjectPath();
     System.Configuration.Configuration GetConfiguration();
   }

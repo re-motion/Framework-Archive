@@ -7,10 +7,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Resources
 {
   public static class ResourceManager
   {
+    public const string DomainObjectsConfigurationWithFakeMappingLoader = "DomainObjectsConfigurationWithFakeMappingLoader.xml";
+    public const string DomainObjectsConfigurationWithCustomSectionGroupName = "DomainObjectsConfigurationWithCustomSectionGroupName.xml";
+    public const string DomainObjectsConfigurationWithMinimumSettings = "DomainObjectsConfigurationWithMinimumSettings.xml";
+    
     public static byte[] GetResource (string resourceID)
     {
-      Type resourceManagerType = typeof (ResourceManager);
-      using (Stream resourceStream = resourceManagerType.Assembly.GetManifestResourceStream (resourceID))
+      using (Stream resourceStream = GetResourceStream (resourceID))
       {
         byte[] buffer = new byte[resourceStream.Length];
         resourceStream.Read (buffer, 0, buffer.Length);
@@ -18,19 +21,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Resources
       }
     }
 
+    public static Stream GetResourceStream (string resourceID)
+    {
+      Type resourceManagerType = typeof (ResourceManager);
+      Stream stream = resourceManagerType.Assembly.GetManifestResourceStream (resourceManagerType, resourceID);
+      Rubicon.Utilities.Assertion.Assert (stream != null, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
+
+      return stream;
+    }
+
     public static byte[] GetImage1()
     {
-      return GetResource ("Rubicon.Data.DomainObjects.UnitTests.Resources.Image1.png");
+      return GetResource ("Image1.png");
     }
 
     public static byte[] GetImage2()
     {
-      return GetResource ("Rubicon.Data.DomainObjects.UnitTests.Resources.Image2.png");
+      return GetResource ("Image2.png");
     }
 
     public static byte[] GetImageLarger1MB()
     {
-      return GetResource ("Rubicon.Data.DomainObjects.UnitTests.Resources.ImageLarger1MB.bmp");
+      return GetResource ("ImageLarger1MB.bmp");
     }
 
     public static void IsEqualToImage1 (byte[] actual)

@@ -53,6 +53,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       try
       {
+        //TODO: Check: only DomainObject-derived classes are valid for null endpoint definitions.
         if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
           return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments()[0]);
         return classDefinitions.GetMandatory (PropertyInfo.PropertyType);

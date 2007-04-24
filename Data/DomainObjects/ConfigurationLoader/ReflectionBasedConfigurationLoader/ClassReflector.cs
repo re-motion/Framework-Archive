@@ -36,8 +36,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      if (classDefinitions[Type] != null)
-        return (ReflectionBasedClassDefinition) classDefinitions[Type];
+      if (classDefinitions.Contains (Type))
+        return (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (Type);
 
       ReflectionBasedClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
       classDefinitions.Add (classDefiniton);

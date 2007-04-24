@@ -14,22 +14,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
   public class PersistenceConfigurationTest
   {
     private PersistenceConfiguration _configuration;
-    private ConfigSystemHelper _configSystemHelper;
 
     [SetUp]
     public void SetUp()
     {
       _configuration = new PersistenceConfiguration();
-      _configSystemHelper = new ConfigSystemHelper();
-      _configSystemHelper.SetUpConfigSystem();
 
-      _configSystemHelper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
+      FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper ();
+      configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent (configurationWrapper);
     }
 
     [TearDown]
     public void TearDown()
     {
-      _configSystemHelper.TearDownConfigSystem();
+      ConfigurationWrapper.SetCurrent (null);      
     }
 
     [Test]

@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// A <see cref="DomainObject"/> that supports 2-way data binding of user controls.
 /// </summary>
 [Serializable]
-public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, IDeserializationCallback
+public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, IDeserializationCallback
 {
   // types
 

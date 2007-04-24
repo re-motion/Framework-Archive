@@ -1,32 +1,20 @@
 using System;
-using System.ComponentModel;
 using System.Configuration;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Infrastructure;
-using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping.Configuration
 {
   public class MappingLoaderConfiguration: ExtendedConfigurationSection
   {
-    // constants
-
-    // types
-
-    // static members
-
-    // member fields
-
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
 
     private readonly ConfigurationProperty _mappingLoaderProperty;
 
     private readonly ConfigurationProperty _domainObjectFactoryProperty;
     private readonly DoubleCheckedLockingContainer<IDomainObjectFactory> _domainObjectFactory;
-
-    // construction and disposing
 
     public MappingLoaderConfiguration()
     {
@@ -36,7 +24,8 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
           null,
           ConfigurationPropertyOptions.None);
 
-      _domainObjectFactory = new DoubleCheckedLockingContainer<IDomainObjectFactory> (delegate { return DomainObjectFactoryElement.CreateInstance (); });
+      _domainObjectFactory =
+          new DoubleCheckedLockingContainer<IDomainObjectFactory> (delegate { return DomainObjectFactoryElement.CreateInstance(); });
       _domainObjectFactoryProperty = new ConfigurationProperty (
           "domainObjectFactory",
           typeof (TypeElement<IDomainObjectFactory, DomainObjectFactory>),
@@ -47,24 +36,14 @@ namespace Rubicon.Data.DomainObjects.Mapping.Configuration
       _properties.Add (_domainObjectFactoryProperty);
     }
 
-    // methods and properties
-
     protected override ConfigurationPropertyCollection Properties
     {
       get { return _properties; }
     }
 
-    public IMappingLoader CreateMappingLoader ()
+    public IMappingLoader CreateMappingLoader()
     {
       return MappingLoaderElement.CreateInstance();
-    }
-
-    public IMappingLoader CreateDesignTimeMappingLoader (System.Configuration.Configuration configuration, ISite site)
-    {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      ArgumentUtility.CheckNotNull ("site", site);
-
-      return (IMappingLoader) Activator.CreateInstance (MappingLoaderElement.Type, configuration, site);
     }
 
     public Type MappingLoaderType

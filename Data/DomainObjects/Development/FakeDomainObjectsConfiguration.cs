@@ -6,6 +6,10 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Development
 {
+  /// <summary>
+  /// Fake implementation of the <see cref="IDomainObjectsConfiguration"/> interface. Use this class for programmatically setting up the configuration 
+  /// in unit test scenarios.
+  /// </summary>
   public class FakeDomainObjectsConfiguration: IDomainObjectsConfiguration
   {
     private PersistenceConfiguration _storage;

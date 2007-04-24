@@ -4,6 +4,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Development.UnitTesting.Configuration
 {
+  /// <summary>
+  /// The <see cref="ConfigurationHelper"/> is a ulitilty class designed to deserialize xml-fragments into configuration elements.
+  /// </summary>
   public static class ConfigurationHelper
   {
     public static void DeserializeElement (ConfigurationElement configurationElement, string xmlFragment)

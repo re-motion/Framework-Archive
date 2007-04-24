@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects
 {
   //TODO: Doc
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-  public class NotAbstractAttribute: Attribute
+  public sealed class NotAbstractAttribute: Attribute
   {
     public NotAbstractAttribute()
     {

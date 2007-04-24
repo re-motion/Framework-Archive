@@ -30,6 +30,14 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
     s_frameworkPropertyNames.Add ("ID");
   }
 
+  public static DomainObjectClass CreateForDesignMode (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type.Name);
+    return new DomainObjectClass (classDefinition.ClassType);
+  }
+
   private BusinessObjectClassReflector _classReflector;
 
   /// <summary>

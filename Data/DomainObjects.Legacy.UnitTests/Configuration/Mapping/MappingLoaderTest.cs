@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
@@ -15,43 +16,24 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
   [TestFixture]
   public class MappingLoaderTest: StandardMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private ConfigSystemHelper _configSystemHelper;
     private MappingLoader _loader;
-
-    // construction and disposing
-
-    public MappingLoaderTest()
-    {
-    }
-
-    // methods and properties
+    private FakeConfigurationWrapper _configurationWrapper;
 
     public override void SetUp()
     {
       base.SetUp();
 
-      _configSystemHelper = new ConfigSystemHelper();
-      _configSystemHelper.SetUpConfigSystem();
       _loader = new MappingLoader (@"Mapping.xml", true);
-    }
 
-    public override void TearDown()
-    {
-      base.TearDown();
-
-      _configSystemHelper.TearDownConfigSystem();
+      _configurationWrapper = new FakeConfigurationWrapper ();
+      _configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent (_configurationWrapper);
     }
 
     [Test]
     public void InitializeWithConfigurationFileFromAppSettings()
     {
-      _configSystemHelper.SetUpAppSetting ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", "DataDomainObjectsLegacy_MappingWithMinimumData.xml");
+      _configurationWrapper.SetUpAppSetting ("Rubicon.Data.DomainObjects.Mapping.ConfigurationFile", "DataDomainObjectsLegacy_MappingWithMinimumData.xml");
       MappingLoader loader = new MappingLoader();
       string configurationFile = Path.GetFullPath (@"DataDomainObjectsLegacy_MappingWithMinimumData.xml");
 

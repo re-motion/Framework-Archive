@@ -27,6 +27,7 @@
         <include asis="true" name="${build.outputdir}/Rubicon.ObjectBinding.Web.dll"/>
         <include asis="true" name="${build.outputdir}/Rubicon.Web.dll"/>
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
         <include asis="true" name="System.Web.dll"/>

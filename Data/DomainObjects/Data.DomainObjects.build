@@ -20,6 +20,7 @@
         <include name="*.cs"/>
         <include name="Configuration/**/*.cs"/>
         <include name="ConfigurationLoader/**/*.cs"/>
+        <include name="Design/**/*.cs"/>
         <include name="Development/**/*.cs"/>
         <include name="Infrastructure/**/*.cs"/>
         <include name="Mapping/**/*.cs"/>

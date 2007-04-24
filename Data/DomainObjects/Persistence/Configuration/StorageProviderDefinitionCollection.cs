@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 {
 [Obsolete("(Version (1.7.42)", true)]
-public class StorageProviderDefinitionCollection : CommonCollection
+public sealed class StorageProviderDefinitionCollection : CommonCollection
 {
   // types
 
@@ -14,12 +14,12 @@ public class StorageProviderDefinitionCollection : CommonCollection
 
   // construction and disposing
 
-  public StorageProviderDefinitionCollection ()
+  private StorageProviderDefinitionCollection ()
   {
   }
 
   // standard constructor for collections
-  public StorageProviderDefinitionCollection (
+  private StorageProviderDefinitionCollection (
       StorageProviderDefinitionCollection collection,
       bool makeCollectionReadOnly)
   {

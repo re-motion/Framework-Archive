@@ -147,6 +147,10 @@
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />
+    <Compile Include="Design\DesignModeMappingLoaderAttributeTest.cs" />
+    <Compile Include="Design\DesignModeMappingReflectorTest.cs" />
+    <Compile Include="Design\DomainObjectsDesignModeHelperTest.cs" />
+    <Compile Include="Design\FakeDesignModeMappingLoader.cs" />
     <Compile Include="DomainObjects\ConstructionTest.cs" />
     <Compile Include="DomainObjects\InterceptorsTest.cs" />
     <Compile Include="Factories\BaseConfiguration.cs" />
@@ -781,6 +785,9 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Data.DomainObjects.UnitTests.build" />
+    <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithFakeMappingLoader.xml" />
+    <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithMinimumSettings.xml" />
+    <EmbeddedResource Include="Resources\DomainObjectsConfigurationWithCustomSectionGroupName.xml" />
     <Content Include="Database\DataDomainObjects_CreateTableInheritanceTestData.sql" />
     <Content Include="Database\DataDomainObjects_CreateDB.sql" />
     <Content Include="Database\DataDomainObjects_CreateTestData.sql">

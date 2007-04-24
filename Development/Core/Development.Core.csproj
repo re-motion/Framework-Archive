@@ -95,9 +95,11 @@
     </Compile>
     <Compile Include="UnitTesting\Configuration\ConfigSystemHelper.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigurationHelper.cs" />
+    <Compile Include="UnitTesting\Configuration\FakeConfigurationWrapper.cs" />
     <Compile Include="UnitTesting\Data\SqlClient\DatabaseAgent.cs" />
     <Compile Include="UnitTesting\Dev.cs" />
     <Compile Include="UnitTesting\Configuration\FakeInternalConfigSystem.cs" />
+    <Compile Include="UnitTesting\IO\TempFile.cs" />
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>

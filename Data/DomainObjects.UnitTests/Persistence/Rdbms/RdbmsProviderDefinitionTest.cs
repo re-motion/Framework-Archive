@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using NUnit.Framework;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Development.UnitTesting;
@@ -13,7 +14,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class RdbmsProviderDefinitionTest : ReflectionBasedMappingTest
   {
     private StorageProviderDefinition _definition;
-    private ConfigSystemHelper _configSystemHelper;
 
     public override void SetUp()
     {
@@ -21,15 +21,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _definition = new RdbmsProviderDefinition ("StorageProviderID", typeof (SqlProvider), "ConnectionString");
 
-      _configSystemHelper = new ConfigSystemHelper();
-      _configSystemHelper.SetUpConfigSystem();
-      _configSystemHelper.SetUpConnectionString ("SqlProvider", "ConnectionString", null);
-    }
-
-    public override void TearDown()
-    {
-      base.TearDown();
-      _configSystemHelper.TearDownConfigSystem();
+      FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
+      configurationWrapper.SetUpConnectionString ("SqlProvider", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent (configurationWrapper);
     }
 
     [Test]

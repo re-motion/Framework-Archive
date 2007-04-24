@@ -1,29 +1,140 @@
 using System;
+using System.Configuration;
+using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
+using Rubicon.Development.UnitTesting.IO;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {
   [TestFixture]
   public class DomainObjectsConfigurationTest
   {
-    [Test]
-    public void GetAndSet()
+    [SetUp]
+    public void SetUp()
     {
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration (), new PersistenceConfiguration ());
-      DomainObjectsConfiguration.SetCurrent (configuration);
-      
-      Assert.AreSame (configuration, DomainObjectsConfiguration.Current);
+      DomainObjectsConfiguration.SetCurrent (null);
     }
 
     [Test]
-    public void Get ()
+    public void GetAndSet()
     {
-      DomainObjectsConfiguration.SetCurrent (null);
-      Assert.IsNotNull (DomainObjectsConfiguration.Current);
+      IDomainObjectsConfiguration configuration =
+          new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), new PersistenceConfiguration());
+      DomainObjectsConfiguration.SetCurrent (configuration);
+
+      Assert.That (DomainObjectsConfiguration.Current, Is.SameAs (configuration));
+    }
+
+    [Test]
+    public void Get()
+    {
+      Assert.That (DomainObjectsConfiguration.Current, Is.Not.Null);
+    }
+
+    [Test]
+    public void Initialize()
+    {
+      DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
+
+      Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+      Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
+    }
+
+    [Test]
+    public void Initialize_WithConfigurationHavingMinimumSettings()
+    {
+      using (TempFile configFile = new TempFile())
+      {
+        SetUpConfigurationWrapper(LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithMinimumSettings));
+
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
+
+        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinition, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
+        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+      }
+    }
+
+    [Test]
+    public void Initialize_WithConfigurationHavingCustomMappingLoader ()
+    {
+      using (TempFile configFile = new TempFile ())
+      {
+        SetUpConfigurationWrapper (LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithFakeMappingLoader));
+
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration ();
+
+        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs (typeof (FakeMappingLoader)));
+        
+        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinition, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
+        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+      }
+    }
+
+    [Test]
+    public void Initialize_WithConfigurationHavingCustomSectionGroupName ()
+    {
+      using (TempFile configFile = new TempFile ())
+      {
+        System.Configuration.Configuration configuration = 
+            LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithCustomSectionGroupName);
+        SetUpConfigurationWrapper (configuration);
+
+        DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration) configuration.GetSectionGroup ("domainObjects");
+
+        Assert.That (domainObjectsConfiguration.SectionGroupName, Is.EqualTo ("domainObjects"));
+        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinition, Is.Not.Null);
+        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
+        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+      }
+    }
+
+    [Test]
+    public void GetMappingLoader_SameInstanceTwice()
+    {
+      DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
+
+      Assert.That (domainObjectsConfiguration.MappingLoader, Is.SameAs (domainObjectsConfiguration.MappingLoader));
+    }
+
+    [Test]
+    public void GetStorage_SameInstanceTwice()
+    {
+      DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
+
+      Assert.That (domainObjectsConfiguration.Storage, Is.SameAs (domainObjectsConfiguration.Storage));
+    }
+
+    private void SetUpConfigurationWrapper (System.Configuration.Configuration configuration)
+    {
+      ConfigurationWrapper.SetCurrent (ConfigurationWrapper.CreateFromConfigurationObject (configuration));
+    }
+
+    public static System.Configuration.Configuration LoadConfigurationFromFile (TempFile tempFile, string resourceName)
+    {
+      using (Stream stream = ResourceManager.GetResourceStream (resourceName))
+      {
+        tempFile.SaveStream (stream);
+      }
+
+      ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap ();
+      fileMap.ExeConfigFilename = tempFile.FileName;
+      return ConfigurationManager.OpenMappedExeConfiguration (fileMap, ConfigurationUserLevel.None);
     }
   }
 }

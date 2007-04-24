@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
@@ -26,20 +27,42 @@ namespace Rubicon.Data.DomainObjects.Configuration
       s_current.Value = configuration;
     }
 
-    private DomainObjectsConfiguration()
+    public DomainObjectsConfiguration()
     {
+      _mappingLoaderConfiguration =
+          new DoubleCheckedLockingContainer<MappingLoaderConfiguration> (delegate { return GetMappingLoaderConfiguration(); });
+
+      _persistenceConfiguration =
+          new DoubleCheckedLockingContainer<PersistenceConfiguration> (delegate { return GetPersistenceConfiguration(); });
     }
+
+    private DoubleCheckedLockingContainer<MappingLoaderConfiguration> _mappingLoaderConfiguration;
+    private DoubleCheckedLockingContainer<PersistenceConfiguration> _persistenceConfiguration;
 
     [ConfigurationProperty (MappingLoaderPropertyName)]
     public MappingLoaderConfiguration MappingLoader
     {
-      get { return (MappingLoaderConfiguration) ConfigurationManager.GetSection (ConfigKey + "/" + MappingLoaderPropertyName); }
+      get { return _mappingLoaderConfiguration.Value; }
     }
 
     [ConfigurationProperty (StoragePropertyName)]
     public PersistenceConfiguration Storage
     {
-      get { return (PersistenceConfiguration) ConfigurationManager.GetSection (ConfigKey + "/" + StoragePropertyName); }
+      get { return _persistenceConfiguration.Value; }
+    }
+
+    private MappingLoaderConfiguration GetMappingLoaderConfiguration()
+    {
+      return
+          (MappingLoaderConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + MappingLoaderPropertyName, false)
+          ?? new MappingLoaderConfiguration();
+    }
+
+    private PersistenceConfiguration GetPersistenceConfiguration()
+    {
+      return
+          (PersistenceConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + StoragePropertyName, false) 
+          ?? new PersistenceConfiguration();
     }
 
     private string ConfigKey

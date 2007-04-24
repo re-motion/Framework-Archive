@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{
-		  MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (ClassWithAllDataTypes).Assembly)));
+		 // MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (ClassWithAllDataTypes).Assembly)));
 		}
  
 		protected void Session_Start(Object sender, EventArgs e)

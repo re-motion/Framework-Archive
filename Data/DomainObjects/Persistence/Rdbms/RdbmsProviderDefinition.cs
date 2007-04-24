@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Xml;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
@@ -9,17 +9,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
   public class RdbmsProviderDefinition: StorageProviderDefinition
   {
-    // types
-
-    // static members and constants
-
-    private static string c_rdbmsConfigurationNamespace = "http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms";
-
-    // member fields
-
     private string _connectionString;
-
-    // construction and disposing
 
     public RdbmsProviderDefinition (
         string name,
@@ -37,10 +27,8 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNull ("config", config);
 
       string connectionStringName = GetAndRemoveNonEmptyStringAttribute (config, "connectionString", name, true);
-      _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+      _connectionString = ConfigurationWrapper.Current.GetConnectionString (connectionStringName, true).ConnectionString;
     }
-
-    // methods and properties
 
     public string ConnectionString
     {

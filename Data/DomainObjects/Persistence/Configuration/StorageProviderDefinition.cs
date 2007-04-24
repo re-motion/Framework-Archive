@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
         throw new IdentityTypeNotSupportedException (_storageProviderType, identityType);
     }
 
-    [Obsolete ("Use property Identifier instead. (Version: 1.7.42)")]
+    [Obsolete ("Use property Name instead. (Version: 1.7.42)")]
     public string ID
     {
       get { return Name; }

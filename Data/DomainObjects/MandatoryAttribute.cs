@@ -7,7 +7,7 @@ namespace Rubicon.Data.DomainObjects
   /// Apply the <see cref="MandatoryAttribute"/> to properties of type <see cref="DomainObject"/>.
   /// </summary>
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-  public class MandatoryAttribute: Attribute, INullablePropertyAttribute
+  public sealed class MandatoryAttribute : Attribute, INullablePropertyAttribute
   {
     public MandatoryAttribute()
     {

@@ -1,10 +1,21 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Configuration.Internal;
+using Rubicon.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Development.UnitTesting.Configuration
 {
+  /// <summary>
+  /// The <see cref="ConfigSystemHelper"/> class is intended to inject a fake implementation of the <see cref="IInternalConfigSystem"/> interface
+  /// into the <see cref="ConfigurationManager"/> class. The feature can be used to override the config system with custom settings during unit tests.
+  /// </summary>
+  /// <remarks>
+  /// The <see cref="ConfigSystemHelper"/> should only be used in cases where it is necesarry to inject configuration settings into third party code.
+  /// The preferred solution is to use the <see cref="ConfigurationWrapper"/>'s well-known instance to access the configuration, thus allowing for 
+  /// easy faking of the configuration during unit tests through changing the well-known instance to a test specific configuration object.
+  /// </remarks>
   public class ConfigSystemHelper
   {
     private Enum _notStarted;

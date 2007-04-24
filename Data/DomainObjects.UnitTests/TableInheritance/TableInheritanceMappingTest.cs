@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -20,6 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       base.TestFixtureSetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent (StandardConfiguration.Instance.GetMappingConfiguration());
+      ConfigurationWrapper.SetCurrent (null);
     }
 
     public override void SetUp()
@@ -27,6 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       base.SetUp();
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration ());
       MappingConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetMappingConfiguration ());
+      ConfigurationWrapper.SetCurrent (null);
       ClientTransaction.SetCurrent (null);
     }
 

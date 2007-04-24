@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects
 {
   //TODO: Doc
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-  public class ClassIDAttribute: Attribute
+  public sealed class ClassIDAttribute : Attribute
   {
     private string _classID;
 

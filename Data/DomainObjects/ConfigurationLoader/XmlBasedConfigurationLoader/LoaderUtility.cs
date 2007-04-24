@@ -1,17 +1,15 @@
 using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Xml;
+using Rubicon.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
 {
-  public sealed class LoaderUtility
+  public static class LoaderUtility
   {
-    // types
-
-    // static members and constants
-
     public static Type GetType (string typeName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
@@ -54,22 +52,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLo
       ArgumentUtility.CheckNotNullOrEmpty ("appSettingKey", appSettingKey);
       ArgumentUtility.CheckNotNullOrEmpty ("defaultFileName", defaultFileName);
 
-      string fileName = ConfigurationManager.AppSettings[appSettingKey];
+      string fileName = ConfigurationWrapper.Current.GetAppSetting (appSettingKey, false);
       if (fileName != null)
         return fileName;
 
       return Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), defaultFileName);
     }
-
-    // member fields
-
-    // construction and disposing
-
-    private LoaderUtility ()
-    {
-    }
-
-    // methods and properties
-
   }
 }

@@ -20,9 +20,14 @@ namespace Rubicon.Data.DomainObjects
     /// <returns>The path of the current executing assembly</returns>
     public static string GetExecutingAssemblyPath()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+      return GetAssemblyPath (Assembly.GetExecutingAssembly());
+    }
 
-      Uri codeBaseUri = new Uri (assemblyName.CodeBase);
+    public static string GetAssemblyPath(Assembly assembly)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+
+      Uri codeBaseUri = new Uri (assembly.CodeBase);
       return Path.GetDirectoryName (codeBaseUri.LocalPath);
     }
 
@@ -182,7 +187,7 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Returns the RPF property identifier for a given property member.
+    /// Returns the reflection based property identifier for a given property member.
     /// </summary>
     /// <param name="propertyInfo">The property whose identifier should be returned. Must not be <see langword="null" />.</param>
     /// <returns>The property identifier for the given property.</returns>
@@ -191,6 +196,7 @@ namespace Rubicon.Data.DomainObjects
     /// property's name (e.g. MyNamespace.MyType.MyProperty). However, this might change in the future, so this API should be used whenever the
     /// identifier must be retrieved programmatically.
     /// </remarks>
+    // TODO: Move to reflection based mapping
     public static string GetPropertyName (PropertyInfo propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);

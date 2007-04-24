@@ -1,52 +1,54 @@
 using System;
-using System.Configuration;
 using System.IO;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Development.UnitTesting.Configuration;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
 {
   [TestFixture]
   public class LoaderUtilityTest
   {
-    // types
+    private FakeConfigurationWrapper _configurationWrapper;
 
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public LoaderUtilityTest ()
+    [SetUp]
+    public void SetUp()
     {
+      _configurationWrapper = new FakeConfigurationWrapper();
+      _configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent (_configurationWrapper);
     }
 
-    // methods and properties
+    [TearDown]
+    public void TearDown()
+    {
+      ConfigurationWrapper.SetCurrent (null);
+    }
 
     [Test]
-    public void GetConfigurationFileName ()
+    public void GetConfigurationFileName()
     {
-      ConfigurationManager.AppSettings["ConfigurationFileThatDoesNotExist"] = @"C:\NonExistingConfigurationFile.xml";
+      _configurationWrapper.SetUpAppSetting ("ConfigurationFileThatDoesNotExist", @"C:\NonExistingConfigurationFile.xml");
 
       Assert.AreEqual (
-          ConfigurationManager.AppSettings["ConfigurationFileThatDoesNotExist"],
+          @"C:\NonExistingConfigurationFile.xml",
           LoaderUtility.GetConfigurationFileName ("ConfigurationFileThatDoesNotExist", "Mapping.xml"));
     }
 
     [Test]
-    public void GetEmptyConfigurationFileName ()
+    public void GetEmptyConfigurationFileName()
     {
-      ConfigurationManager.AppSettings["EmptyConfigurationFileName"] = string.Empty;
+      _configurationWrapper.SetUpAppSetting ("EmptyConfigurationFileName", string.Empty);
 
       Assert.AreEqual (string.Empty, LoaderUtility.GetConfigurationFileName ("EmptyConfigurationFileName", "Mapping.xml"));
     }
 
     [Test]
-    public void GetConfigurationFileNameForNonExistingAppSettingsKey ()
+    public void GetConfigurationFileNameForNonExistingAppSettingsKey()
     {
       Assert.AreEqual (
-          Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), "Mapping.xml"),
+          Path.Combine (ReflectionUtility.GetExecutingAssemblyPath(), "Mapping.xml"),
           LoaderUtility.GetConfigurationFileName ("AppSettingKeyDoesNotExist", "Mapping.xml"));
     }
   }

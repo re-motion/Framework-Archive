@@ -4,7 +4,8 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
-
+<rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager>
+<dob:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></dob:domainobjectdatasourcecontrol>
 <P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
 die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich 
 diese gegenseitig beim Zurückspeichern der Werte. Dies bitte bei Tests 
@@ -356,4 +357,4 @@ beachten!</FONT></STRONG></P>
 </TABLE>
 <P><br>
   <asp:button id="SaveButton" Text="Speichern" Runat="server"></asp:button></P>
-<P><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><dob:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></dob:domainobjectdatasourcecontrol></P>
+

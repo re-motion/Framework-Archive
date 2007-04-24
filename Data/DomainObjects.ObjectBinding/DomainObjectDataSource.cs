@@ -54,7 +54,13 @@ public class DomainObjectDataSource : BusinessObjectDataSource
     get 
     { 
       Type type = Type;
-      return (type == null) ? null : new DomainObjectClass (type); 
+      if (type == null)
+        return null;
+
+      if (Site != null && Site.DesignMode)
+        return DomainObjectClass.CreateForDesignMode (type);
+
+      return new DomainObjectClass (type); 
     }
   }
 

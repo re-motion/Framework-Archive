@@ -19,6 +19,7 @@
       <sources failonempty="true">
         <include name="*.cs"/>
         <include name="ConfigurationLoader/**/*.cs"/>
+        <include name="Design/**/*.cs" />
         <include name="Properties/**/*.cs" />
         <include name="Mapping/**/*.cs"/>
         <include name="Schemas/**/*.cs"/>
