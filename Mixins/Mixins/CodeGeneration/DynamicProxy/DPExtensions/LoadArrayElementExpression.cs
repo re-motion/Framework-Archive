@@ -3,7 +3,7 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public class LoadArrayElementExpression : Expression
   {

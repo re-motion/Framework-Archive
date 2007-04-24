@@ -65,6 +65,7 @@ namespace Mixins.UnitTests.Mixins
     {
       public readonly int I;
       public readonly string S;
+      public double Named;
 
       public ReplicatableAttribute(int i)
       {
@@ -74,6 +75,18 @@ namespace Mixins.UnitTests.Mixins
       public ReplicatableAttribute (string s)
       {
         S = s;
+      }
+
+      public double Named2
+      {
+        get
+        {
+          return Named;
+        }
+        set
+        {
+          Named = value;
+        }
       }
     }
 
@@ -85,12 +98,20 @@ namespace Mixins.UnitTests.Mixins
       [Replicatable("bla")]
       public int Property
       {
+        [Replicatable(5, Named = 1.0)]
         get { return _property; }
+        [Replicatable (5, Named2 = 2.0)]
         set { _property = value; }
       }
 
       [Replicatable("blo")]
-      public event EventHandler Event;
+      public event EventHandler Event
+      {
+        [Replicatable(1)]
+        add {}
+        [Replicatable (2)]
+        remove { }
+      }
     }
 
     [Test]
@@ -149,29 +170,43 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO - Add properties, events, and attributes to definition class structure and implement it in code generation.")]
     public void PropertiesEventsAndAttributesAreReplicated()
     {
-      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));
-      BaseType1 bt1 = factory.Create<BaseType1>().With();
-      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (ReplicatableAttribute), false));
+      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType1), typeof (MixinWithPropsEventAtts)));
+      ObjectFactory = new ObjectFactory (TypeFactory);
+
+      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
       Assert.IsTrue (bt1.GetType ().IsDefined (typeof (BT1Attribute), false));
+      Assert.IsTrue (bt1.GetType ().IsDefined (typeof (ReplicatableAttribute), false));
 
       ReplicatableAttribute[] atts = (ReplicatableAttribute[]) bt1.GetType().GetCustomAttributes (typeof (ReplicatableAttribute), false);
       Assert.AreEqual (1, atts.Length);
       Assert.AreEqual (4, atts[0].I);
 
-      PropertyInfo property = bt1.GetType().GetProperty ("Property");
+      PropertyInfo property = bt1.GetType().GetProperty (typeof (IMixinWithPropsEventsAtts).FullName + ".Property",
+          BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.IsNotNull (property);
       atts = (ReplicatableAttribute[]) property.GetCustomAttributes (typeof (ReplicatableAttribute), false);
       Assert.AreEqual (1, atts.Length);
-      Assert.AreEqual ("Bla", atts[0].S);
+      Assert.AreEqual ("bla", atts[0].S);
+      Assert.IsTrue (property.GetGetMethod (true).IsSpecialName);
+      atts = (ReplicatableAttribute[]) property.GetGetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);
+      Assert.AreEqual( 1.0, atts[0].Named);
 
-      EventInfo eventInfo = bt1.GetType ().GetEvent ("Event");
+      Assert.IsTrue (property.GetSetMethod (true).IsSpecialName);
+      atts = (ReplicatableAttribute[]) property.GetSetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);
+      Assert.AreEqual (2.0, atts[0].Named2);
+
+      EventInfo eventInfo = bt1.GetType ().GetEvent (typeof (IMixinWithPropsEventsAtts).FullName + ".Event",
+          BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.IsNotNull (eventInfo);
       atts = (ReplicatableAttribute[]) eventInfo.GetCustomAttributes (typeof (ReplicatableAttribute), false);
       Assert.AreEqual (1, atts.Length);
-      Assert.AreEqual ("Blo", atts[0].S);
+      Assert.AreEqual ("blo", atts[0].S);
+      Assert.IsTrue (eventInfo.GetAddMethod (true).IsSpecialName);
+      Assert.IsTrue (eventInfo.GetAddMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
+      Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsSpecialName);
+      Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
     }
   }
 }

@@ -42,13 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\CastClassExpression.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomEventEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomMethodEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomPropertyEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IAttributableEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\LoadArrayElementExpression.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\LoadArrayElementExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ModuleManager.cs" />
     <Compile Include="CodeGeneration\ConcreteTypeBuilder.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\VirtualMethodInvocationExpression.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\ExtensionFieldAttribute.cs" />
     <Compile Include="CodeGeneration\GeneratedClassInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\IModuleManager.cs" />

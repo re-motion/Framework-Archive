@@ -6,13 +6,12 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
-  public class ExtendedClassEmitter : ClassEmitter
+  public class ExtendedClassEmitter : ClassEmitter, IAttributableEmitter
   {
-    private Dictionary<MethodEmitter, MethodInfo> _interfaceImplementationMethods = new Dictionary<MethodEmitter, MethodInfo> ();
-
     public ExtendedClassEmitter (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, bool serializable)
         : base (modulescope, name, baseType, interfaces, serializable)
     {
@@ -23,48 +22,41 @@ namespace Mixins.CodeGeneration.DynamicProxy
       get { return TypeBuilder.BaseType; }
     }
 
-    public IDictionary<MethodEmitter, MethodInfo> InterfaceImplementationMethods
-    {
-      get { return _interfaceImplementationMethods; }
-    }
-
-    public void RegisterInterfaceImplementationMethod (MethodInfo interfaceMethod, MethodEmitter implementingMethod)
-    {
-      _interfaceImplementationMethods.Add (implementingMethod, interfaceMethod);
-    }
-
-    public MethodEmitter CreateInterfaceImplementationMethod (MethodInfo interfaceMethod)
+    public CustomMethodEmitter CreateInterfaceImplementationMethod (MethodInfo interfaceMethod)
     {
       MethodAttributes methodDefinitionAttributes = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.NewSlot
           | MethodAttributes.Virtual | MethodAttributes.Final;
+      if (interfaceMethod.IsSpecialName)
+      {
+        methodDefinitionAttributes |= MethodAttributes.SpecialName;
+      }
       string methodName = string.Format ("{0}.{1}", interfaceMethod.DeclaringType.FullName, interfaceMethod.Name);
-      MethodEmitter methodDefinition = CreateMethod (methodName, methodDefinitionAttributes);
+      CustomMethodEmitter methodDefinition = new CustomMethodEmitter (this, methodName, methodDefinitionAttributes);
       methodDefinition.CopyParametersAndReturnTypeFrom (interfaceMethod, this);
 
       TypeBuilder.DefineMethodOverride (methodDefinition.MethodBuilder, interfaceMethod);
-      RegisterInterfaceImplementationMethod (interfaceMethod, methodDefinition);
 
       return methodDefinition;
     }
 
-    public PropertyEmitter CreateInterfaceImplementationProperty (PropertyInfo interfaceProperty)
+    // does not create the property's methods
+    public CustomPropertyEmitter CreateInterfaceImplementationProperty (PropertyInfo interfaceProperty)
     {
       string propertyName = string.Format ("{0}.{1}", interfaceProperty.DeclaringType.FullName, interfaceProperty.Name);
-      PropertyEmitter newProperty = CreateProperty (propertyName, PropertyAttributes.None, interfaceProperty.PropertyType);
+      Type[] indexParameterTypes =
+          Array.ConvertAll<ParameterInfo, Type> (interfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
-      MethodInfo getMethod = interfaceProperty.GetGetMethod ();
-      if (getMethod != null)
-      {
-        newProperty.GetMethod = CreateInterfaceImplementationMethod (getMethod);
-      }
-
-      MethodInfo setMethod = interfaceProperty.GetSetMethod ();
-      if (setMethod != null)
-      {
-        newProperty.SetMethod = CreateInterfaceImplementationMethod (setMethod);
-      }
+      CustomPropertyEmitter newProperty = new CustomPropertyEmitter (this, propertyName, PropertyAttributes.None, interfaceProperty.PropertyType,
+        indexParameterTypes);
 
       return newProperty;
+    }
+
+    public CustomEventEmitter CreateInterfaceImplementationEvent (EventInfo interfaceEvent)
+    {
+      string eventName = string.Format ("{0}.{1}", interfaceEvent.DeclaringType.FullName, interfaceEvent.Name);
+      CustomEventEmitter newEvent = new CustomEventEmitter (this, eventName, EventAttributes.None, interfaceEvent.EventHandlerType);
+      return newEvent;
     }
 
     public void ImplementMethodByDelegation (MethodEmitter methodDefinition, Reference implementer, MethodInfo methodToCall)
@@ -98,7 +90,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       methodDefinition.CodeBuilder.AddStatement (new ReturnStatement (delegatingCall));
     }
 
-    public void ImplementPropertyWithField (PropertyEmitter propertyDefinition, FieldReference backingField)
+    public void ImplementPropertyWithField (CustomPropertyEmitter propertyDefinition, FieldReference backingField)
     {
       if (propertyDefinition.GetMethod != null)
       {
@@ -111,24 +103,16 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    public void GenerateInterfaceImplementationByDelegation (Type interfaceType, Expression implementer)
-    {
-      foreach (MethodInfo interfaceMethod in interfaceType.GetMethods ())
-      {
-        MethodEmitter methodDefinition = CreateInterfaceImplementationMethod (interfaceMethod);
-        LocalReference localForImplementer = EmitMakeReferenceOfExpression (methodDefinition, interfaceType, implementer);
-        ImplementMethodByDelegation (methodDefinition, localForImplementer, interfaceMethod);
-        methodDefinition.Generate();
-      }
-
-      // TODO: copy events, properties
-    }
-
     public LocalReference EmitMakeReferenceOfExpression (MethodEmitter methodDefinition, Type referenceType, Expression expression)
     {
       LocalReference reference = methodDefinition.CodeBuilder.DeclareLocal (referenceType);
       methodDefinition.CodeBuilder.AddStatement (new AssignStatement (reference, expression));
       return reference;
+    }
+
+    public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
+    {
+      base.TypeBuilder.SetCustomAttribute (customAttribute);
     }
   }
 }

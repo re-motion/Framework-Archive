@@ -7,11 +7,47 @@ using Mixins.Definitions;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+
+using LoadArrayElementExpression = Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
   public class TypeGenerator: ITypeGenerator
   {
+    private static CustomAttributeBuilder CreateAttributeBuilderFromData (CustomAttributeData attributeData)
+    {
+      object[] constructorArgs = new object[attributeData.ConstructorArguments.Count];
+      for (int i = 0; i < constructorArgs.Length; ++i)
+        constructorArgs[i] = attributeData.ConstructorArguments[i].Value;
+
+      List<PropertyInfo> namedProperties = new List<PropertyInfo> ();
+      List<object> propertyValues = new List<object> ();
+      List<FieldInfo> namedFields = new List<FieldInfo> ();
+      List<object> fieldValues = new List<object> ();
+
+      foreach (CustomAttributeNamedArgument namedArgument in attributeData.NamedArguments)
+      {
+        switch (namedArgument.MemberInfo.MemberType)
+        {
+          case MemberTypes.Field:
+            namedFields.Add ((FieldInfo) namedArgument.MemberInfo);
+            fieldValues.Add (namedArgument.TypedValue.Value);
+            break;
+          case MemberTypes.Property:
+            namedProperties.Add ((PropertyInfo) namedArgument.MemberInfo);
+            propertyValues.Add (namedArgument.TypedValue.Value);
+            break;
+          default:
+            Assertion.Assert (false);
+            break;
+        }
+      }
+
+      return new CustomAttributeBuilder (attributeData.Constructor, constructorArgs, namedProperties.ToArray (),
+                                        propertyValues.ToArray (), namedFields.ToArray (), fieldValues.ToArray ());
+    }
+
     private ModuleManager _module;
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
@@ -45,6 +81,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       ImplementIMixinTarget ();
       ImplementIntroducedInterfaces();
+
+      ReplicateClassAttributes();
     }
 
     private static List<Type> GetInterfacesToImplement(BaseClassDefinition configuration, bool isSerializable)
@@ -94,7 +132,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       bool baseIsISerializable = typeof(ISerializable).IsAssignableFrom(_emitter.BaseType);
       
       MethodInfo getObjectDataMethod = typeof(ISerializable).GetMethod("GetObjectData", new Type[] {typeof (SerializationInfo), typeof(StreamingContext)});
-      MethodEmitter newMethod = _emitter.CreateInterfaceImplementationMethod (getObjectDataMethod);
+      MethodEmitter newMethod = _emitter.CreateInterfaceImplementationMethod (getObjectDataMethod).InnerEmitter;
 
       newMethod.CodeBuilder.AddStatement (new ExpressionStatement (new MethodInvocationExpression (null, 
         typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"), 
@@ -154,11 +192,17 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces (), typeof (IMixinTarget)) != 0);
 
-      PropertyEmitter configurationProperty = _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Configuration"));
+      CustomPropertyEmitter configurationProperty = 
+          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Configuration"));
+      configurationProperty.GetMethod =
+          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
       _emitter.ImplementPropertyWithField (configurationProperty, _configurationField);
       configurationProperty.Generate ();
 
-      PropertyEmitter mixinsProperty = _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Mixins"));
+      CustomPropertyEmitter mixinsProperty =
+          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Mixins"));
+      mixinsProperty.GetMethod =
+          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
       _emitter.ImplementPropertyWithField (mixinsProperty, _extensionsField);
       mixinsProperty.Generate ();
     }
@@ -169,9 +213,76 @@ namespace Mixins.CodeGeneration.DynamicProxy
       {
         Expression implementerExpression = new CastClassExpression(introduction.Type,
           new LoadArrayElementExpression (introduction.Implementer.MixinIndex, _extensionsField, typeof (object)));
-        _emitter.GenerateInterfaceImplementationByDelegation (introduction.Type, implementerExpression);
-        // TODO: copy attributes from implementer to delegating
+
+        foreach (MethodIntroductionDefinition method in introduction.IntroducedMethods)
+          ImplementIntroducedMethod (implementerExpression, method.ImplementingMember, method.InterfaceMember).InnerEmitter.Generate();
+
+        foreach (PropertyIntroductionDefinition property in introduction.IntroducedProperties)
+          ImplementIntroducedProperty (implementerExpression, property).Generate ();
+
+        foreach (EventIntroductionDefinition eventIntro in introduction.IntroducedEvents)
+          ImplementIntroducedEvent (eventIntro, implementerExpression).Generate ();
       }
+    }
+
+    private CustomMethodEmitter ImplementIntroducedMethod (Expression implementerExpression, MethodDefinition implementingMember,
+        MethodInfo interfaceMember)
+    {
+      CustomMethodEmitter customMethodEmitter = _emitter.CreateInterfaceImplementationMethod (interfaceMember);
+      MethodEmitter methodEmitter = customMethodEmitter.InnerEmitter;
+
+      LocalReference localImplementer = _emitter.EmitMakeReferenceOfExpression (methodEmitter, interfaceMember.DeclaringType, implementerExpression);
+      _emitter.ImplementMethodByDelegation (methodEmitter, localImplementer, interfaceMember);
+
+      ReplicateAttributes (implementingMember.CustomAttributes, customMethodEmitter);
+      return customMethodEmitter;
+    }
+
+    private CustomPropertyEmitter ImplementIntroducedProperty (Expression implementerExpression, PropertyIntroductionDefinition property)
+    {
+      CustomPropertyEmitter propertyEmitter = _emitter.CreateInterfaceImplementationProperty (property.InterfaceMember);
+
+      if (property.ImplementingMember.GetMethod != null)
+        propertyEmitter.GetMethod = ImplementIntroducedMethod (implementerExpression, property.ImplementingMember.GetMethod,
+            property.InterfaceMember.GetGetMethod ()).InnerEmitter;
+
+      if (property.ImplementingMember.SetMethod != null)
+        propertyEmitter.SetMethod = ImplementIntroducedMethod (implementerExpression, property.ImplementingMember.SetMethod,
+            property.InterfaceMember.GetSetMethod ()).InnerEmitter;
+
+      ReplicateAttributes (property.ImplementingMember.CustomAttributes, propertyEmitter);
+      return propertyEmitter;
+    }
+
+    private CustomEventEmitter ImplementIntroducedEvent (EventIntroductionDefinition eventIntro, Expression implementerExpression)
+    {
+      Assertion.Assert (eventIntro.ImplementingMember.AddMethod != null);
+      Assertion.Assert (eventIntro.ImplementingMember.RemoveMethod != null);
+
+      CustomEventEmitter eventEmitter = _emitter.CreateInterfaceImplementationEvent (eventIntro.InterfaceMember);
+      eventEmitter.AddMethod = ImplementIntroducedMethod (implementerExpression, eventIntro.ImplementingMember.AddMethod,
+          eventIntro.InterfaceMember.GetAddMethod ()).InnerEmitter;
+      eventEmitter.RemoveMethod = ImplementIntroducedMethod (implementerExpression, eventIntro.ImplementingMember.RemoveMethod,
+          eventIntro.InterfaceMember.GetRemoveMethod ()).InnerEmitter;
+
+      ReplicateAttributes (eventIntro.ImplementingMember.CustomAttributes, eventEmitter);
+      return eventEmitter;
+    }
+
+    private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
+    {
+      foreach (AttributeDefinition attribute in attributes)
+      {
+        CustomAttributeBuilder builder = CreateAttributeBuilderFromData (attribute.Data);
+        target.AddCustomAttribute (builder);
+      }
+    }
+
+    private void ReplicateClassAttributes ()
+    {
+      ReplicateAttributes (_configuration.CustomAttributes, _emitter);
+      foreach (MixinDefinition mixin in _configuration.Mixins)
+        ReplicateAttributes (mixin.CustomAttributes, _emitter);
     }
   }
 }
