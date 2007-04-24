@@ -48,7 +48,7 @@ CREATE TABLE [File]
 
   -- File columns
   [Number] nvarchar (100) NOT NULL,
-  [Client] uniqueidentifier NULL,
+  [ClientID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_File] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -88,7 +88,7 @@ CREATE TABLE [Company]
 GO
 
 ALTER TABLE [File] ADD
-  CONSTRAINT [FK_ClientToFile] FOREIGN KEY ([Client]) REFERENCES [Client] ([ID])
+  CONSTRAINT [FK_ClientToFile] FOREIGN KEY ([ClientID]) REFERENCES [Client] ([ID])
 GO
 
 ALTER TABLE [Person] ADD

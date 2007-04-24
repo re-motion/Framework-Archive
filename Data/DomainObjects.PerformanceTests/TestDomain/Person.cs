@@ -1,56 +1,29 @@
 using System;
 
-using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
-
 namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 {
-  public class Person : ClientBoundBaseClass
+  [NotAbstract]
+  [DBTable]
+  public abstract class Person: ClientBoundBaseClass
   {
-    // types
-
-    // static members and constants
-
-    public static new Person GetObject (ObjectID id)
+    public static Person NewObject()
     {
-      return (Person) DomainObject.GetObject (id);
+      return NewObject<Person>().With();
     }
 
-    public static new Person GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Person) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Person ()
-    {
-    }
-
-    public Person (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Person()
     {
     }
 
     protected Person (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
     }
 
-    // methods and properties
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string FirstName { get; set; }
 
-    public string FirstName
-    {
-      get { return (string) DataContainer.GetValue ("FirstName"); }
-      set { DataContainer.SetValue ("FirstName", value); }
-    }
-
-    public string LastName
-    {
-      get { return (string) DataContainer.GetValue ("LastName"); }
-      set { DataContainer.SetValue ("LastName", value); }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string LastName { get; set; }
   }
 }

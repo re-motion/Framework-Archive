@@ -25,12 +25,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     // construction and disposing
 
-    public ClientBoundBaseClass ()
-    {
-    }
-
-    public ClientBoundBaseClass (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected ClientBoundBaseClass ()
     {
     }
 
@@ -41,11 +36,8 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     // methods and properties
 
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
-    }
-
+    [DBBidirectionalRelation ("ClientBoundBaseClasses")]
+    [Mandatory]
+    public abstract Client Client { get; set;}
   }
 }

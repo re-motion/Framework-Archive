@@ -17,7 +17,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rubicon.Data.DomainObjects.PerformanceTests</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -120,6 +120,7 @@
     <Compile Include="Root.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StandardConfiguration.cs" />
     <Compile Include="TestDomain\Client.cs">
       <SubType>Code</SubType>
     </Compile>
