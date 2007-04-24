@@ -25,33 +25,46 @@ namespace Mixins.Definitions.Building
 
     private void AnalyzeIntroducedMembers (InterfaceIntroductionDefinition introducedInterface)
     {
-      InterfaceMapping mapping = _mixin.Type.GetInterfaceMap (introducedInterface.Type);
       SpecialMethodSet specialMethods = new SpecialMethodSet();
 
+      AnalyzeProperties(introducedInterface, specialMethods);
+      AnalyzeEvents(introducedInterface, specialMethods);
+      AnalyzeMethods(introducedInterface, specialMethods);
+    }
+
+    private void AnalyzeProperties(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    {
       foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties ())
       {
         PropertyInfo correspondingMixinProperty = _mixin.Type.GetProperty (interfaceProperty.Name);
         CheckMemberImplementationFound (correspondingMixinProperty, interfaceProperty);
         PropertyDefinition implementer = _mixin.Properties[correspondingMixinProperty];
         CheckMemberImplementationFound (implementer, interfaceProperty);
-        introducedInterface.IntroducedMembers.Add (new MemberIntroductionDefinition (introducedInterface, interfaceProperty, implementer));
+        introducedInterface.IntroducedProperties.Add (new PropertyIntroductionDefinition (introducedInterface, interfaceProperty, implementer));
 
         specialMethods.Add (interfaceProperty.GetGetMethod());
         specialMethods.Add (interfaceProperty.GetSetMethod());
       }
+    }
 
+    private void AnalyzeEvents(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    {
       foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents ())
       {
         EventInfo correspondingMixinEvent = _mixin.Type.GetEvent (interfaceEvent.Name);
         CheckMemberImplementationFound (correspondingMixinEvent, interfaceEvent);
         EventDefinition implementer = _mixin.Events[correspondingMixinEvent];
         CheckMemberImplementationFound (implementer, interfaceEvent);
-        introducedInterface.IntroducedMembers.Add (new MemberIntroductionDefinition (introducedInterface, interfaceEvent, implementer));
+        introducedInterface.IntroducedEvents.Add (new EventIntroductionDefinition (introducedInterface, interfaceEvent, implementer));
 
         specialMethods.Add (interfaceEvent.GetAddMethod());
         specialMethods.Add (interfaceEvent.GetRemoveMethod());
       }
+    }
 
+    private void AnalyzeMethods(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    {
+      InterfaceMapping mapping = _mixin.Type.GetInterfaceMap (introducedInterface.Type);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = mapping.InterfaceMethods[i];
@@ -59,7 +72,7 @@ namespace Mixins.Definitions.Building
         {
           MethodDefinition implementer = _mixin.Methods[mapping.TargetMethods[i]];
           CheckMemberImplementationFound (implementer, mapping.InterfaceMethods[i]);
-          introducedInterface.IntroducedMembers.Add (new MemberIntroductionDefinition (introducedInterface, mapping.InterfaceMethods[i], implementer));
+          introducedInterface.IntroducedMethods.Add (new MethodIntroductionDefinition (introducedInterface, mapping.InterfaceMethods[i], implementer));
         }
       }
     }

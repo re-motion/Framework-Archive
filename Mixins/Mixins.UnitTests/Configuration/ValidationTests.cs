@@ -197,11 +197,11 @@ namespace Mixins.UnitTests.Configuration
 
       InterfaceIntroductionDefinition i1 = bt1m1.InterfaceIntroductions[typeof (IBT1Mixin1)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (i1));
-      MemberIntroductionDefinition im1 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
+      MethodIntroductionDefinition im1 = i1.IntroducedMethods[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (im1));
-      MemberIntroductionDefinition im2 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
+      PropertyIntroductionDefinition im2 = i1.IntroducedProperties[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (im2));
-      MemberIntroductionDefinition im3 = i1.IntroducedMembers[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
+      EventIntroductionDefinition im3 = i1.IntroducedEvents[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (im3));
 
       AttributeDefinition a1 = bt1.CustomAttributes.GetFirstItem (typeof (BT1Attribute));

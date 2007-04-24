@@ -102,23 +102,23 @@ namespace Mixins.UnitTests.Configuration
       MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
       InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
 
-      Assert.IsTrue (introducedInterface.IntroducedMembers.HasItem (typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")));
-      Assert.IsTrue (introducedInterface.IntroducedMembers.HasItem (typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")));
-      Assert.IsTrue (introducedInterface.IntroducedMembers.HasItem (typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")));
+      Assert.IsTrue (introducedInterface.IntroducedMethods.HasItem (typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")));
+      Assert.IsTrue (introducedInterface.IntroducedProperties.HasItem (typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")));
+      Assert.IsTrue (introducedInterface.IntroducedEvents.HasItem (typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")));
 
-      MemberIntroductionDefinition method = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
+      MethodIntroductionDefinition method = introducedInterface.IntroducedMethods[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
       Assert.AreNotEqual (mixin1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")], method);
       Assert.AreSame (mixin1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")], method.ImplementingMember);
       Assert.AreSame (introducedInterface, method.DeclaringInterface);
       Assert.AreSame (introducedInterface, method.Parent);
 
-      MemberIntroductionDefinition property = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
+      PropertyIntroductionDefinition property = introducedInterface.IntroducedProperties[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
       Assert.AreNotEqual (mixin1.Properties[typeof (BT1Mixin1).GetProperty ("IntroducedProperty")], property);
       Assert.AreSame (mixin1.Properties[typeof (BT1Mixin1).GetProperty ("IntroducedProperty")], property.ImplementingMember);
       Assert.AreSame (introducedInterface, property.DeclaringInterface);
       Assert.AreSame (introducedInterface, method.Parent);
 
-      MemberIntroductionDefinition eventDefinition = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
+      EventIntroductionDefinition eventDefinition = introducedInterface.IntroducedEvents[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
       Assert.AreNotEqual (mixin1.Events[typeof (BT1Mixin1).GetEvent ("IntroducedEvent")], eventDefinition);
       Assert.AreSame (mixin1.Events[typeof (BT1Mixin1).GetEvent ("IntroducedEvent")], eventDefinition.ImplementingMember);
       Assert.AreSame (introducedInterface, eventDefinition.DeclaringInterface);

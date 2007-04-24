@@ -74,10 +74,13 @@
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
+    <Compile Include="Definitions\EventIntroductionDefinition.cs" />
+    <Compile Include="Definitions\PropertyIntroductionDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollectionBase.cs" />
     <Compile Include="Definitions\IAttributableDefinition.cs" />
     <Compile Include="Definitions\MemberIntroductionDefinition.cs" />
     <Compile Include="Definitions\EventDefinition.cs" />
+    <Compile Include="Definitions\MethodIntroductionDefinition.cs" />
     <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
@@ -114,9 +117,11 @@
     <Compile Include="Validation\DelegateValidationRule.cs" />
     <Compile Include="Validation\IValidationLog.cs" />
     <Compile Include="Validation\IValidationRule.cs" />
+    <Compile Include="Validation\Rules\DefaultEventIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultPropertyIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultAttributeRules.cs" />
-    <Compile Include="Validation\Rules\DefaultMemberIntroductionRules.cs" />
-    <Compile Include="Validation\Rules\DefaulEventRules.cs" />
+    <Compile Include="Validation\Rules\DefaultMethodIntroductionRules.cs" />
+    <Compile Include="Validation\Rules\DefaultEventRules.cs" />
     <Compile Include="Validation\Rules\DefaultPropertyRules.cs" />
     <Compile Include="Validation\Rules\DefaultBaseDependencyRules.cs" />
     <Compile Include="Validation\Rules\DefaultDependencyRulesBase.cs" />

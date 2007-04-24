@@ -63,6 +63,10 @@ namespace Mixins.Validation.Rules
 
         throw new NotSupportedException ("Attributable definition is neither base class, mixin, not member.");
       }
+      else
+      {
+        args.Log.Succeed (args.Self);
+      }
     }
 
     private bool BaseClassHasAttributeDuplicates (AttributeDefinition attributeDefinition, BaseClassDefinition baseClass)

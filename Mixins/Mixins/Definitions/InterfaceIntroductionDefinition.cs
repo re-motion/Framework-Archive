@@ -7,8 +7,12 @@ namespace Mixins.Definitions
   [Serializable]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<MemberInfo, MemberIntroductionDefinition> IntroducedMembers =
-        new DefinitionItemCollection<MemberInfo, MemberIntroductionDefinition> (delegate (MemberIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly DefinitionItemCollection<MethodInfo, MethodIntroductionDefinition> IntroducedMethods =
+        new DefinitionItemCollection<MethodInfo, MethodIntroductionDefinition> (delegate (MethodIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly DefinitionItemCollection<PropertyInfo, PropertyIntroductionDefinition> IntroducedProperties =
+        new DefinitionItemCollection<PropertyInfo, PropertyIntroductionDefinition> (delegate (PropertyIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly DefinitionItemCollection<EventInfo, EventIntroductionDefinition> IntroducedEvents =
+        new DefinitionItemCollection<EventInfo, EventIntroductionDefinition> (delegate (EventIntroductionDefinition m) { return m.InterfaceMember; });
 
     private Type _type;
     private MixinDefinition _implementer;
@@ -51,7 +55,9 @@ namespace Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
-      IntroducedMembers.Accept (visitor);
+      IntroducedMethods.Accept (visitor);
+      IntroducedProperties.Accept (visitor);
+      IntroducedEvents.Accept (visitor);
     }
   }
 }

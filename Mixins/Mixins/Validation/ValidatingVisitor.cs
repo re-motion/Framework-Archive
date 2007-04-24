@@ -14,7 +14,9 @@ namespace Mixins.Validation
     private List<IValidationRule<BaseClassDefinition>> _baseClassRules = new List<IValidationRule<BaseClassDefinition>> ();
     private List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
     private List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
-    private List<IValidationRule<MemberIntroductionDefinition>> _memberIntroductionRules = new List<IValidationRule<MemberIntroductionDefinition>> ();
+    private List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new List<IValidationRule<MethodIntroductionDefinition>> ();
+    private List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new List<IValidationRule<PropertyIntroductionDefinition>> ();
+    private List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new List<IValidationRule<EventIntroductionDefinition>> ();
     private List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>> ();
     private List<IValidationRule<PropertyDefinition>> _propertyRules = new List<IValidationRule<PropertyDefinition>> ();
     private List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>> ();
@@ -50,9 +52,19 @@ namespace Mixins.Validation
       get { return _interfaceIntroductionRules; }
     }
 
-    public IList<IValidationRule<MemberIntroductionDefinition>> MemberIntroductionRules
+    public IList<IValidationRule<MethodIntroductionDefinition>> MethodIntroductionRules
     {
-      get { return _memberIntroductionRules; }
+      get { return _methodIntroductionRules; }
+    }
+
+    public IList<IValidationRule<PropertyIntroductionDefinition>> PropertyIntroductionRules
+    {
+      get { return _propertyIntroductionRules; }
+    }
+
+    public IList<IValidationRule<EventIntroductionDefinition>> EventIntroductionRules
+    {
+      get { return _eventIntroductionRules; }
     }
 
     public IList<IValidationRule<MethodDefinition>> MethodRules
@@ -119,10 +131,22 @@ namespace Mixins.Validation
       CheckRules (_interfaceIntroductionRules, interfaceIntroduction);
     }
 
-    public void Visit (MemberIntroductionDefinition memberIntroduction)
+    public void Visit (MethodIntroductionDefinition methodIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("memberIntroduction", memberIntroduction);
-      CheckRules (_memberIntroductionRules, memberIntroduction);
+      ArgumentUtility.CheckNotNull ("methodIntroduction", methodIntroduction);
+      CheckRules (_methodIntroductionRules, methodIntroduction);
+    }
+
+    public void Visit (PropertyIntroductionDefinition propertyIntroduction)
+    {
+      ArgumentUtility.CheckNotNull ("propertyIntroduction", propertyIntroduction);
+      CheckRules (_propertyIntroductionRules, propertyIntroduction);
+    }
+
+    public void Visit (EventIntroductionDefinition eventIntroduction)
+    {
+      ArgumentUtility.CheckNotNull ("eventIntroduction", eventIntroduction);
+      CheckRules (_eventIntroductionRules, eventIntroduction);
     }
 
     public void Visit (MethodDefinition method)

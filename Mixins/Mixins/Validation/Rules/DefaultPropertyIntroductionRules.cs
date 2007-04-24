@@ -6,7 +6,7 @@ using Mixins.Validation;
 
 namespace Mixins.Validation.Rules
 {
-  public class DefaultMemberIntroductionRules: RuleSetBase
+  public class DefaultPropertyIntroductionRules: RuleSetBase
   {
     public override void Install (ValidatingVisitor visitor)
     {

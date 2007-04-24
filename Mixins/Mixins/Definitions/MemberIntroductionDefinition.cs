@@ -5,14 +5,16 @@ using System.Reflection;
 namespace Mixins.Definitions
 {
   [Serializable]
-  public class MemberIntroductionDefinition: IVisitableDefinition
+  public abstract class MemberIntroductionDefinition<TMemberInfo, TMemberDefinition>: IVisitableDefinition
+      where TMemberInfo : MemberInfo
+      where TMemberDefinition : MemberDefinition
   {
     private InterfaceIntroductionDefinition _declaringInterface;
-    private MemberInfo _interfaceMember;
-    private MemberDefinition _implementingMember;
+    private TMemberInfo _interfaceMember;
+    private TMemberDefinition _implementingMember;
 
     public MemberIntroductionDefinition (
-        InterfaceIntroductionDefinition declaringInterface, MemberInfo interfaceMember, MemberDefinition implementingMember)
+        InterfaceIntroductionDefinition declaringInterface, TMemberInfo interfaceMember, TMemberDefinition implementingMember)
     {
       ArgumentUtility.CheckNotNull ("interfaceMember", interfaceMember);
       ArgumentUtility.CheckNotNull ("declaringInterface", declaringInterface);
@@ -28,12 +30,12 @@ namespace Mixins.Definitions
       get { return _declaringInterface; }
     }
 
-    public MemberInfo InterfaceMember
+    public TMemberInfo InterfaceMember
     {
       get { return _interfaceMember; }
     }
 
-    public MemberDefinition ImplementingMember
+    public TMemberDefinition ImplementingMember
     {
       get { return _implementingMember; }
     }
@@ -48,10 +50,6 @@ namespace Mixins.Definitions
       get { return DeclaringInterface; }
     }
 
-    public void Accept (IDefinitionVisitor visitor)
-    {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
-    }
+    public abstract void Accept (IDefinitionVisitor visitor);
   }
 }
