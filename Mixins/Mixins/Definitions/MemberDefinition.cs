@@ -86,7 +86,7 @@ namespace Mixins.Definitions
       return MemberType == overrider.MemberType && IsSignatureCompatibleWith (overrider);
     }
 
-    public abstract void AddOverride (MemberDefinition member);
+    internal abstract void AddOverride (MemberDefinition member);
     public abstract IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ();
 
     protected abstract bool IsSignatureCompatibleWith (MemberDefinition overrider);

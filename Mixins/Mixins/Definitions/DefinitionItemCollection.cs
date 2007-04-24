@@ -11,7 +11,11 @@ namespace Mixins.Definitions
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();
 
-    public DefinitionItemCollection (KeyMaker keyMaker) : base (keyMaker)
+    public DefinitionItemCollection (KeyMaker keyMaker, Predicate<TValue> guardian) : base (keyMaker, guardian)
+    {
+    }
+
+    public DefinitionItemCollection (KeyMaker keyMaker) : base (keyMaker, null)
     {
     }
 

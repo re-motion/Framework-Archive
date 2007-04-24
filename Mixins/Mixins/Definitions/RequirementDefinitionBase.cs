@@ -53,27 +53,12 @@ namespace Mixins.Definitions
 
     public IEnumerable<MixinDefinition> FindRequiringMixins()
     {
-      return FindRequiringMixins (RequiringDependencies);
-    }
-
-    private IEnumerable<MixinDefinition> FindRequiringMixins (IEnumerable<TDependency> requiringDependencies)
-    {
-      Dictionary<MixinDefinition, MixinDefinition> mixins = new Dictionary<MixinDefinition, MixinDefinition> (); // used as set
-      foreach (TDependency dependency in requiringDependencies)
+      Set<MixinDefinition> mixins = new Set<MixinDefinition>();
+      foreach (TDependency dependency in RequiringDependencies)
       {
-        if (!mixins.ContainsKey (dependency.Depender))
-        {
-          mixins.Add (dependency.Depender, dependency.Depender);
-        }
-        foreach (MixinDefinition mixin in FindRequiringMixins (dependency.AggregatedDependencies))
-        {
-          if (!mixins.ContainsKey (mixin))
-          {
-            mixins.Add (mixin, mixin);
-          }
-        }
+        mixins.Add (dependency.Depender);
       }
-      return mixins.Keys;
+      return mixins;
     }
   }
 }

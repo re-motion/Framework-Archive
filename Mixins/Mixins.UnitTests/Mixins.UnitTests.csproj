@@ -60,6 +60,7 @@
     <Compile Include="Configuration\DefaultContextBuilderTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
     <Compile Include="Mixins\CodeGenerationTests.cs" />
+    <Compile Include="Mixins\MixinReflectionTests.cs" />
     <Compile Include="Mixins\MixinTestBase.cs" />
     <Compile Include="Mixins\ObjectFactory.cs" />
     <Compile Include="Mixins\SerializationTests.cs" />

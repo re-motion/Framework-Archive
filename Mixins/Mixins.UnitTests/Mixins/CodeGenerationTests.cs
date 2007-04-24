@@ -122,22 +122,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void IMixinTarget()
-    {
-      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
-      IMixinTarget mixinTarget = bt1 as IMixinTarget;
-      Assert.IsNotNull (mixinTarget);
-
-      BaseClassDefinition configuration = mixinTarget.Configuration;
-      Assert.IsNotNull (configuration);
-      Assert.AreSame (Configuration.BaseClasses[typeof (BaseType1)], configuration);
-
-      object[] mixins = mixinTarget.Mixins;
-      Assert.IsNotNull (mixins);
-      Assert.AreEqual (configuration.Mixins.Count, mixins.Length);
-    }
-
-    [Test]
     public void MixinsAreInitializedWithTarget ()
     {
       ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));

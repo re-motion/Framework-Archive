@@ -30,7 +30,7 @@ namespace Mixins.Definitions
       ArgumentUtility.CheckNotNull ("overrider", overrider);
 
       MethodDefinition overriderMethod = overrider as MethodDefinition;
-      if (overrider == null)
+      if (overriderMethod == null)
       {
         return false;
       }
@@ -46,7 +46,7 @@ namespace Mixins.Definitions
       return s_signatureChecker.MethodSignaturesMatch (MethodInfo, overrider.MethodInfo);
     }
 
-    public override void AddOverride (MemberDefinition member)
+    internal override void AddOverride (MemberDefinition member)
     {
       ArgumentUtility.CheckNotNull ("member", member);
 

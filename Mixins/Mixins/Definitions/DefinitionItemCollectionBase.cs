@@ -12,14 +12,16 @@ namespace Mixins.Definitions
   {
     private List<TValue> _orderedItems = new List<TValue> ();
 
+    public delegate TKey KeyMaker (TValue value);
     private KeyMaker _keyMaker;
 
-    public delegate TKey KeyMaker (TValue value);
+    private Predicate<TValue> _guardian;
 
-    public DefinitionItemCollectionBase (KeyMaker keyMaker)
+    public DefinitionItemCollectionBase (KeyMaker keyMaker, Predicate<TValue> guardian)
     {
       ArgumentUtility.CheckNotNull ("keyMaker", keyMaker);
       _keyMaker = keyMaker;
+      _guardian = guardian;
     }
 
     public IEnumerator<TValue> GetEnumerator ()
@@ -42,6 +44,10 @@ namespace Mixins.Definitions
     protected internal void Add (TValue newItem)
     {
       ArgumentUtility.CheckNotNull ("newItem", newItem);
+      if (_guardian != null && !_guardian (newItem))
+        throw new ArgumentException (string.Format ("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
+            "newItem");
+
       TKey key = _keyMaker (newItem);
 
       CustomizedAdd (key, newItem);

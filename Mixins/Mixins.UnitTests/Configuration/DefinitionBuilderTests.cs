@@ -65,12 +65,17 @@ namespace Mixins.UnitTests.Configuration
     public void CorrectlyCopiesContext ()
     {
       ApplicationDefinition application = GetApplicationDefinition ();
+      Assert.IsNull (application.Parent);
 
       Assert.IsTrue(application.BaseClasses.HasItem(typeof(BaseType1)));
       BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType1)];
+      Assert.AreSame (application, baseClass.Parent);
+      Assert.AreSame (application, baseClass.Application);
+      Assert.AreEqual ("BaseType1", baseClass.Name);
       
       Assert.IsTrue(baseClass.Mixins.HasItem(typeof(BT1Mixin1)));
       Assert.IsTrue(baseClass.Mixins.HasItem(typeof(BT1Mixin2)));
+      Assert.AreSame (baseClass, baseClass.Mixins[typeof(BT1Mixin1)].Parent);
     }
 
     [Test]
@@ -82,6 +87,7 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (mixin1.InterfaceIntroductions.HasItem (typeof (IBT1Mixin1)));
       InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
+      Assert.AreSame (mixin1, introducedInterface.Parent);
       Assert.AreSame (mixin1, introducedInterface.Implementer);
       Assert.IsTrue(baseClass.IntroducedInterfaces.HasItem(typeof(IBT1Mixin1)));
       Assert.AreSame(baseClass.IntroducedInterfaces[typeof (IBT1Mixin1)], introducedInterface);
@@ -103,17 +109,20 @@ namespace Mixins.UnitTests.Configuration
       MemberIntroductionDefinition method = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
       Assert.AreNotEqual (mixin1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")], method);
       Assert.AreSame (mixin1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")], method.ImplementingMember);
-      Assert.AreSame (mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)], method.DeclaringInterface);
+      Assert.AreSame (introducedInterface, method.DeclaringInterface);
+      Assert.AreSame (introducedInterface, method.Parent);
 
       MemberIntroductionDefinition property = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")];
       Assert.AreNotEqual (mixin1.Properties[typeof (BT1Mixin1).GetProperty ("IntroducedProperty")], property);
       Assert.AreSame (mixin1.Properties[typeof (BT1Mixin1).GetProperty ("IntroducedProperty")], property.ImplementingMember);
-      Assert.AreSame (mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)], property.DeclaringInterface);
+      Assert.AreSame (introducedInterface, property.DeclaringInterface);
+      Assert.AreSame (introducedInterface, method.Parent);
 
       MemberIntroductionDefinition eventDefinition = introducedInterface.IntroducedMembers[typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")];
       Assert.AreNotEqual (mixin1.Events[typeof (BT1Mixin1).GetEvent ("IntroducedEvent")], eventDefinition);
       Assert.AreSame (mixin1.Events[typeof (BT1Mixin1).GetEvent ("IntroducedEvent")], eventDefinition.ImplementingMember);
-      Assert.AreSame (mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)], eventDefinition.DeclaringInterface);
+      Assert.AreSame (introducedInterface, eventDefinition.DeclaringInterface);
+      Assert.AreSame (introducedInterface, method.Parent);
     }
 
     [Test]
@@ -148,6 +157,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsFalse (member.IsProperty);
       Assert.IsFalse (member.IsEvent);
       Assert.AreSame (baseClass, member.DeclaringClass);
+      Assert.AreSame (baseClass, member.Parent);
 
       Assert.IsTrue (baseClass.Methods.HasItem (baseMethod2));
       Assert.AreNotSame (member, baseClass.Methods[baseMethod2]);
@@ -547,6 +557,11 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreEqual (2, requirers.Count);
 
       Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
+
+      baseClass = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7)).BaseClasses[typeof (BaseType3)];
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
+      requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (ICBaseType3BT3Mixin4)].FindRequiringMixins ());
+      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin7)], requirers);
     }
 
     [Test]
@@ -641,6 +656,8 @@ namespace Mixins.UnitTests.Configuration
 
       ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer());
+      Assert.AreEqual ("Mixins.UnitTests.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
+      Assert.AreSame (m7, d1.Parent);
 
       BaseDependencyDefinition d2 = m7.BaseDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d2.GetImplementer ());
@@ -660,6 +677,8 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (d1, d1.AggregatedDependencies[typeof (IBT3Mixin4)].Aggregator);
 
       Assert.IsTrue (d2.AggregatedDependencies[typeof (ICBaseType3)].IsAggregate);
+      Assert.AreSame (d2, d2.AggregatedDependencies[typeof (ICBaseType3)].Parent);
+
       Assert.IsFalse (d2.AggregatedDependencies[typeof (ICBaseType3)]
                           .AggregatedDependencies[typeof (IBaseType31)].IsAggregate);
       Assert.AreSame (bt3, d2.AggregatedDependencies[typeof (ICBaseType3)]
@@ -710,8 +729,14 @@ namespace Mixins.UnitTests.Configuration
     private static void CheckAttributes (IAttributableDefinition attributableDefinition)
     {
       Assert.IsTrue (attributableDefinition.CustomAttributes.HasItem (typeof (TagAttribute)));
-      Assert.AreEqual (2, attributableDefinition.CustomAttributes.GetItemCount(typeof (TagAttribute)));
+      Assert.AreEqual (2, attributableDefinition.CustomAttributes.GetItemCount (typeof (TagAttribute)));
+
       List<AttributeDefinition> attributes = new List<AttributeDefinition> (attributableDefinition.CustomAttributes);
+      List<AttributeDefinition> attributes2 = new List<AttributeDefinition> (attributableDefinition.CustomAttributes[typeof (TagAttribute)]);
+      foreach (AttributeDefinition attribute in attributes2)
+      {
+        Assert.IsTrue (attributes.Contains (attribute));
+      }
 
       AttributeDefinition attribute1 = attributes.Find (
           delegate (AttributeDefinition a)
@@ -739,6 +764,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreEqual (typeof (int), attribute2.Data.NamedArguments[0].TypedValue.ArgumentType);
       Assert.AreEqual (5, attribute2.Data.NamedArguments[0].TypedValue.Value);
       Assert.AreSame (attributableDefinition, attribute2.DeclaringDefinition);
+      Assert.AreSame (attributableDefinition, attribute2.Parent);
     }
 
     [Test]

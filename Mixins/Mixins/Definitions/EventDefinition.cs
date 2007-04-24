@@ -46,7 +46,7 @@ namespace Mixins.Definitions
       ArgumentUtility.CheckNotNull ("overrider", overrider);
 
       EventDefinition overriderEvent = overrider as EventDefinition;
-      if (overrider == null)
+      if (overriderEvent == null)
       {
         return false;
       }
@@ -62,14 +62,14 @@ namespace Mixins.Definitions
       return s_signatureChecker.EventSignaturesMatch (EventInfo, overrider.EventInfo);
     }
 
-    public override void AddOverride (MemberDefinition member)
+    internal override void AddOverride (MemberDefinition member)
     {
       ArgumentUtility.CheckNotNull ("member", member);
 
       EventDefinition Event = member as EventDefinition;
       if (Event == null)
       {
-        string message = string.Format ("Member {0} cannot override Event {1} - it is not a Event.", member.FullName, FullName);
+        string message = string.Format ("Member {0} cannot override event {1} - it is not an event.", member.FullName, FullName);
         throw new ArgumentException (message);
       }
 

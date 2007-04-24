@@ -8,12 +8,11 @@ namespace Mixins.Definitions
       where TRequirement : RequirementDefinitionBase<TRequirement, TSelf>
       where TSelf : DependencyDefinitionBase<TRequirement, TSelf>
   {
-    public readonly DefinitionItemCollection<Type, TSelf> AggregatedDependencies =
-        new DefinitionItemCollection<Type, TSelf> (delegate (TSelf d) { return d.RequiredType.Type; });
+    public readonly DefinitionItemCollection<Type, TSelf> AggregatedDependencies;
 
-    private TRequirement _requirement;
-    private MixinDefinition _depender;
-    private TSelf _aggregator;
+    private TRequirement _requirement; // the required face or base interface
+    private MixinDefinition _depender; // the mixin (directly or indirectly) defining the requirement
+    private TSelf _aggregator; // the outer dependency containing this dependency, if defined indirectly
 
     public DependencyDefinitionBase (TRequirement requirement, MixinDefinition depender, TSelf aggregator)
     {
@@ -23,6 +22,15 @@ namespace Mixins.Definitions
       _requirement = requirement;
       _depender = depender;
       _aggregator = aggregator;
+
+      AggregatedDependencies = new DefinitionItemCollection<Type, TSelf> (
+          delegate (TSelf d) { return d.RequiredType.Type; },
+          MustHaveSameDependerAsAggregator);
+    }
+
+    private bool MustHaveSameDependerAsAggregator (TSelf newAggregatedDependency)
+    {
+      return newAggregatedDependency.Depender == _depender;
     }
 
     public TRequirement RequiredType
@@ -49,7 +57,7 @@ namespace Mixins.Definitions
     {
       get
       {
-        if (AggregatedDependencies != null)
+        if (Aggregator != null)
         {
           return Aggregator;
         }
@@ -60,6 +68,7 @@ namespace Mixins.Definitions
       }
     }
 
+    // aggregates hold nested dependencies
     public bool IsAggregate
     {
       get { return AggregatedDependencies.Count > 0; }

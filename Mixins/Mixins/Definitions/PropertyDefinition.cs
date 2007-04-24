@@ -43,7 +43,7 @@ namespace Mixins.Definitions
       ArgumentUtility.CheckNotNull ("overrider", overrider);
 
       PropertyDefinition overriderProperty = overrider as PropertyDefinition;
-      if (overrider == null)
+      if (overriderProperty == null)
       {
         return false;
       }
@@ -59,7 +59,7 @@ namespace Mixins.Definitions
       return s_signatureChecker.PropertySignaturesMatch (PropertyInfo, overrider.PropertyInfo);
     }
 
-    public override void AddOverride (MemberDefinition member)
+    internal override void AddOverride (MemberDefinition member)
     {
       ArgumentUtility.CheckNotNull ("member", member);
 

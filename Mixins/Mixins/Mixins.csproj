@@ -82,6 +82,7 @@
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
+    <Compile Include="Definitions\Set.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollection.cs" />

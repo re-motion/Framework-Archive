@@ -11,7 +11,7 @@ namespace Mixins.Definitions
     private MultiDictionary<TKey, TValue> _items = new MultiDictionary<TKey, TValue>();
 
     public MultiDefinitionItemCollection (KeyMaker keyMaker)
-        : base (keyMaker)
+        : base (keyMaker, null)
     {
     }
 
