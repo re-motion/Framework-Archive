@@ -78,13 +78,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     public void Check (ClassDefinitionCollection expectedDefinitions, ClassDefinitionCollection actualDefinitions, bool checkRelations)
     {
-      Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count,
-          string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}",
-          expectedDefinitions.Count, actualDefinitions.Count));
+      Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, "Number of class definitions does not match.");
 
       Assert.AreEqual (expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired,
-          string.Format ("AreResolvedTypesRequired does not match. Expected: {0}, actual: {1}",
-          expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired));
+          "AreResolvedTypesRequired does not match.");
 
       foreach (XmlBasedClassDefinition expectedDefinition in expectedDefinitions)
       {
@@ -106,8 +103,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ClassDefinition expectedClassDefinition)
     {
       Assert.AreEqual (expectedDerivedClasses.Count, actualDerivedClasses.Count,
-          string.Format ("Number of derived classes of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedClassDefinition.ID, expectedDerivedClasses.Count, actualDerivedClasses.Count));
+          "Number of derived classes of class definition '{0}' does not match",
+          expectedClassDefinition.ID);
+
+      Assert.AreEqual (expectedDerivedClasses.AreResolvedTypesRequired, actualDerivedClasses.AreResolvedTypesRequired,
+          "AreResolvedTypeNamesRequired of DerivedClasses collection of class definition '{0}' does not match",
+          expectedClassDefinition.ID);
 
       foreach (ClassDefinition expectedDerivedClass in expectedDerivedClasses)
       {

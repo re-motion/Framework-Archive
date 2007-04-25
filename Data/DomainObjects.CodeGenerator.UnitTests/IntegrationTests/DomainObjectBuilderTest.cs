@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using System.IO;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
@@ -27,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildCompanyWithSerializableAttribute ()
     {
-      ClassDefinition companyClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Company");
+      XmlBasedClassDefinition companyClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("Company");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, companyClass, DomainObjectBuilder.DefaultBaseClass, true, false);
@@ -38,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildCustomer () //TODO: WithMultilingualResourceAttribute
     {
-      ClassDefinition customerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
+      XmlBasedClassDefinition customerClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, customerClass, DomainObjectBuilder.DefaultBaseClass, false, false);
@@ -49,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildCeo ()
     {
-      ClassDefinition ceoClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Ceo");
+      XmlBasedClassDefinition ceoClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("Ceo");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, ceoClass, DomainObjectBuilder.DefaultBaseClass, false, false);
@@ -60,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildOfficial ()
     {
-      ClassDefinition officialClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Official");
+      XmlBasedClassDefinition officialClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("Official");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, officialClass, DomainObjectBuilder.DefaultBaseClass, false, false);
@@ -71,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildOrder ()
     {
-      ClassDefinition orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");
+      XmlBasedClassDefinition orderClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("Order");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, orderClass, DomainObjectBuilder.DefaultBaseClass, false, false);
@@ -82,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildOrderItem ()
     {
-      ClassDefinition orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
+      XmlBasedClassDefinition orderItemClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, orderItemClass, DomainObjectBuilder.DefaultBaseClass, false, false);
@@ -93,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildClassWithAllDataTypes ()
     {
-      ClassDefinition classWithAllDataTypesClass = MappingConfiguration.ClassDefinitions.GetMandatory ("ClassWithAllDataTypes");
+      XmlBasedClassDefinition classWithAllDataTypesClass = (XmlBasedClassDefinition) MappingConfiguration.ClassDefinitions.GetMandatory ("ClassWithAllDataTypes");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, classWithAllDataTypesClass, DomainObjectBuilder.DefaultBaseClass, false, false);

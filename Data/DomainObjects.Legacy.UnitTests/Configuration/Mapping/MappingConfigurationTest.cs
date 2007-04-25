@@ -157,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.IsFalse (configuration.ResolveTypes);
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
 
-      foreach (ClassDefinition classDefinition in configuration.ClassDefinitions)
+      foreach (XmlBasedClassDefinition classDefinition in configuration.ClassDefinitions)
       {
         string classMessage = "Class: " + classDefinition.ID;
         Assert.IsNull (classDefinition.ClassType, classMessage);

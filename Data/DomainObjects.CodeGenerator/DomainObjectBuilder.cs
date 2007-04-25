@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     public static void Build (
         MappingConfiguration mappingConfiguration,
         string filename, 
-        ClassDefinition classDefinition, 
+        XmlBasedClassDefinition classDefinition, 
         string baseClass, 
         bool serializableAttribute, 
         bool multiLingualResourcesAttribute)
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     public static void Build (
         MappingConfiguration mappingConfiguration,
         TextWriter writer, 
-        ClassDefinition classDefinition, 
+        XmlBasedClassDefinition classDefinition, 
         string baseClass, 
         bool serializableAttribute, 
         bool multiLingualResourcesAttribute)
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
       get { return _mappingConfiguration; }
     }
 
-    private void Build (ClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
+    private void Build (XmlBasedClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
     {
       TypeName typeName = new TypeName (classDefinition.ClassTypeName);
 
@@ -173,7 +173,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
       {
         if (endPointDefinition.Cardinality == CardinalityType.One)
         {
-          TypeName propertyTypeName = new TypeName (classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassTypeName);
+          TypeName propertyTypeName = new TypeName (
+              ((XmlBasedClassDefinition) classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
           WriteProperty (endPointDefinition.PropertyName, GetTypeName (typeName, propertyTypeName), s_relationPropertyCardinalityOneGetStatement, s_relationPropertyCardinalityOneSetStatement);
         }
         else

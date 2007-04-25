@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
-
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     {
       ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
 
-      foreach (ClassDefinition classDefinition in mappingConfiguration.ClassDefinitions)
+      foreach (XmlBasedClassDefinition classDefinition in mappingConfiguration.ClassDefinitions)
       {
         DomainObjectBuilder.Build (
             mappingConfiguration, GetFileName (outputFolder, new TypeName (classDefinition.ClassTypeName)),
@@ -37,7 +37,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
           if (DomainObjectCollectionBuilder.DefaultBaseTypeName.CompareTo (propertyTypeName) == 0)
             continue;
 
-          TypeName requiredItemTypeName = new TypeName (classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassTypeName);
+          TypeName requiredItemTypeName = new TypeName (
+              ((XmlBasedClassDefinition)classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
 
           DomainObjectCollectionBuilder.Build (
               GetFileName (outputFolder, propertyTypeName),

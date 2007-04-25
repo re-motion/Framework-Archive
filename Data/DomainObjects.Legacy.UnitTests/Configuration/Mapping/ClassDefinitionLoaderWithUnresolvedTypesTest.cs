@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
@@ -54,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
       Assert.AreEqual (4, classDefinitions.Count);
 
-      ClassDefinition classDefinition = classDefinitions.GetMandatory ("Customer");
+      XmlBasedClassDefinition classDefinition = (XmlBasedClassDefinition ) classDefinitions.GetMandatory ("Customer");
       Assert.IsFalse (classDefinition.IsClassTypeResolved);
       Assert.AreEqual ("UnresolvedCustomerType, UnknownAssembly", classDefinition.ClassTypeName);
 

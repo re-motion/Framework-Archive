@@ -6,7 +6,6 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -36,13 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
       Assert.That (actual.BaseClass, Is.Null);
       Assert.That (actual.MyStorageSpecificPrefix, Is.EqualTo ("OrderTable_"));
-    }
-
-    [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void InitializeWithTypeNotDerivedFromDomainObject()
-    {
-      new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", GetType(), false);
+      Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
     }
 
     [Test]
@@ -210,19 +203,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassNotDerivedFromDomainObject'"
-                          + " of class 'Company' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassNotDerivedFromDomainObject' of class 'Company' is not derived from "
+        + "'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeWithInvalidDerivation()
     {
-      new ReflectionBasedClassDefinition (
-          "Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject), false);
+      new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject), false);
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Type 'Rubicon.Data.DomainObjects.DomainObject' of class 'Company' is not derived from"
-                          + " 'Rubicon.Data.DomainObjects.DomainObject'.")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "Type 'Rubicon.Data.DomainObjects.DomainObject' of class 'Company' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
     public void ClassTypeDomainObject()
     {
       new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (DomainObject), false);

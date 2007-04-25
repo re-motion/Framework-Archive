@@ -19,8 +19,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     private string _id;
     private string _entityName;
-    private Type _classType;
-    private string _classTypeName;
     private string _storageProviderID;
     private ClassDefinition _baseClass;
     private ClassDefinitionCollection _derivedClasses;
@@ -33,79 +31,20 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     // construction and disposing
 
-    protected ClassDefinition (string id, string entityName, string storageProviderID, string classTypeName, bool resolveClassTypeName)
-        : this (id, entityName, storageProviderID, classTypeName, resolveClassTypeName, null)
-    {
-    }
-
-    protected ClassDefinition (
-        string id,
-        string entityName,
-        string storageProviderID,
-        string classTypeName,
-        bool resolveClassTypeName,
-        ClassDefinition baseClass)
+    protected ClassDefinition (string id, string entityName, string storageProviderID, bool areResolvedTypesRequired)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       if (entityName == string.Empty)
         throw new ArgumentEmptyException ("entityName");
       ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      ArgumentUtility.CheckNotNullOrEmpty ("classTypeName", classTypeName);
-
-      Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassTypeName, baseClass);
-    }
-
-    protected ClassDefinition (string id, string entityName, string storageProviderID, Type classType)
-        : this (id, entityName, storageProviderID, classType, null)
-    {
-    }
-
-    protected ClassDefinition (string id, string entityName, string storageProviderID, Type classType, ClassDefinition baseClass)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      if (entityName == string.Empty)
-        throw new ArgumentEmptyException ("entityName");
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      ArgumentUtility.CheckNotNull ("classType", classType);
-
-      Initialize (id, entityName, storageProviderID, classType, null, false, baseClass);
-    }
-
-    private void Initialize (
-        string id, 
-        string entityName, 
-        string storageProviderID, 
-        Type classType, 
-        string classTypeName, 
-        bool resolveClassTypeName, 
-        ClassDefinition baseClass)
-    {
-      if (resolveClassTypeName)
-        classType = Type.GetType (classTypeName, true);
-
-      if (classType != null)
-      {
-        CheckClassType (id, classType);
-        classTypeName = classType.AssemblyQualifiedName;
-      }
 
       _id = id;
       _entityName = entityName;
-      _classType = classType;
-      _classTypeName = classTypeName;
       _storageProviderID = storageProviderID;
 
-      _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (resolveClassTypeName), true);
+      _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (areResolvedTypesRequired), true);
       _propertyDefinitions = new PropertyDefinitionCollection (this);
       _relationDefinitions = new RelationDefinitionCollection();
-
-      if (baseClass != null)
-      {
-        // Note: CheckBasePropertyDefinitions does not have to be called, because member _propertyDefinitions is
-        //       initialized to an empty collection during construction.
-        CheckBaseClass (baseClass, id, storageProviderID, classType);
-        PerformSetBaseClass (baseClass);
-      }
     }
 
     protected ClassDefinition (SerializationInfo info, StreamingContext context)
@@ -116,25 +55,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
       if (!_isPartOfMappingConfiguration)
       {
         _entityName = info.GetString ("EntityName");
-        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
-        _classTypeName = info.GetString ("ClassTypeName");
         _storageProviderID = info.GetString ("StorageProviderID");
         _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
         _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
         _propertyDefinitions = (PropertyDefinitionCollection) info.GetValue ("PropertyDefinitions", typeof (PropertyDefinitionCollection));
         _relationDefinitions = (RelationDefinitionCollection) info.GetValue ("RelationDefinitions", typeof (RelationDefinitionCollection));
-      }
-    }
-
-    private void CheckClassType (string classID, Type classType)
-    {
-      if (!classType.IsSubclassOf (typeof (DomainObject)))
-      {
-        throw CreateMappingException (
-            "Type '{0}' of class '{1}'"
-            + " is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.",
-            classType,
-            classID);
       }
     }
 
@@ -177,8 +102,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     public ClassDefinitionCollection GetAllDerivedClasses()
     {
-      bool areResolvedTypeNamesRequired = (_classType != null);
-      ClassDefinitionCollection allDerivedClasses = new ClassDefinitionCollection (areResolvedTypeNamesRequired);
+      ClassDefinitionCollection allDerivedClasses = new ClassDefinitionCollection (IsClassTypeResolved);
       FillAllDerivedClasses (allDerivedClasses);
       return allDerivedClasses;
     }
@@ -462,20 +386,9 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _entityName; }
     }
 
-    public Type ClassType
-    {
-      get { return _classType; }
-    }
+    public abstract Type ClassType { get; }
 
-    public string ClassTypeName
-    {
-      get { return _classTypeName; }
-    }
-
-    public bool IsClassTypeResolved
-    {
-      get { return (_classType != null); }
-    }
+    public abstract bool IsClassTypeResolved { get; }
 
     public string StorageProviderID
     {
@@ -511,13 +424,23 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     public abstract string MyStorageSpecificPrefix { get;}
 
+
+    /// <summary>
+    /// IsPartOfMappingConfiguration is used only during the deserialization process. 
+    /// It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+    /// </summary>
+    protected bool IsPartOfMappingConfiguration
+    {
+      get { return _isPartOfMappingConfiguration; }
+    }
+
     [Obsolete ("Check after Refactoring. (Version 1.7.42")]
     [EditorBrowsable (EditorBrowsableState.Never)]
     public void SetBaseClass (ClassDefinition baseClass)
     {
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
-      CheckBaseClass (baseClass, _id, _storageProviderID, _classType);
+      CheckBaseClass (baseClass, _id, _storageProviderID, ClassType);
       PerformSetBaseClass (baseClass);
     }
 
@@ -525,13 +448,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
 
-      if (_classType != null)
+      if (IsClassTypeResolved)
       {
         if (GetEntityName() == null && !IsAbstract)
         {
           throw CreateMappingException (
               "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",
-              _classType.AssemblyQualifiedName,
+              ClassType.AssemblyQualifiedName,
               _id);
         }
       }
@@ -676,27 +599,22 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
+      info.AddValue ("ID", _id);
+
+      bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
+      info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
+      
       GetObjectData (info, context);
     }
 
     protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("ID", _id);
-
-      bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
-      info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
-
-      if (!isPartOfMappingConfiguration)
-      {
-        info.AddValue ("EntityName", _entityName);
-        info.AddValue ("ClassType", _classType);
-        info.AddValue ("ClassTypeName", _classTypeName);
-        info.AddValue ("StorageProviderID", _storageProviderID);
-        info.AddValue ("BaseClass", _baseClass);
-        info.AddValue ("DerivedClasses", _derivedClasses);
-        info.AddValue ("PropertyDefinitions", _propertyDefinitions);
-        info.AddValue ("RelationDefinitions", _relationDefinitions);
-      }
+      info.AddValue ("EntityName", _entityName);
+      info.AddValue ("StorageProviderID", _storageProviderID);
+      info.AddValue ("BaseClass", _baseClass);
+      info.AddValue ("DerivedClasses", _derivedClasses);
+      info.AddValue ("PropertyDefinitions", _propertyDefinitions);
+      info.AddValue ("RelationDefinitions", _relationDefinitions);
     }
 
     #endregion

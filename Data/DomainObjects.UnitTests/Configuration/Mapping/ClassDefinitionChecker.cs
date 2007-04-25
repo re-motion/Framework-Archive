@@ -25,12 +25,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           expectedDefinition.ID);
 
       Assert.AreEqual (
-          expectedDefinition.ClassTypeName,
-          actualDefinition.ClassTypeName,
-          "ClassTypeName of class definition '{0}' does not match.",
-          expectedDefinition.ID);
-
-      Assert.AreEqual (
           expectedDefinition.IsClassTypeResolved,
           actualDefinition.IsClassTypeResolved,
           "IsClassTypeResolved of class definition '{0}' does not match.",
@@ -128,9 +122,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual (
           expectedDerivedClasses.Count,
           actualDerivedClasses.Count,
-          string.Format (
-              "Number of derived classes of class definition '{0}' does not match.",
-              expectedClassDefinition.ID));
+          "Number of derived classes of class definition '{0}' does not match.",
+          expectedClassDefinition.ID);
+
+      Assert.AreEqual (
+          expectedDerivedClasses.AreResolvedTypesRequired,
+          actualDerivedClasses.AreResolvedTypesRequired,
+          "AreResolvedTypeNamesRequired of DerivedClasses collection of class definition '{0}' does not match",
+          expectedClassDefinition.ID);
 
       foreach (ClassDefinition expectedDerivedClass in expectedDerivedClasses)
       {

@@ -312,7 +312,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
         Assert.IsNull (actual.BaseClass);
 
       Assert.AreEqual (expected.ClassType, actual.ClassType);
-      Assert.AreEqual (expected.ClassTypeName, actual.ClassTypeName);
       Assert.AreEqual (expected.MyEntityName, actual.MyEntityName);
       Assert.AreEqual (expected.StorageProviderID, actual.StorageProviderID);
 
