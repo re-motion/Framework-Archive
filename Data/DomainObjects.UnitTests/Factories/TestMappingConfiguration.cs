@@ -676,7 +676,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     {
       ClassDefinition clientClass = _classDefinitions[typeof (Client)];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (clientClass);
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (clientClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", false);
       RelationDefinition relation = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient", endPoint1, endPoint2);
 
@@ -690,7 +690,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition clientClass = _classDefinitions[typeof (Client)];
       ClassDefinition locationClass = _classDefinitions[typeof (Location)];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (clientClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           locationClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", true);
@@ -773,7 +773,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinition companyClass = _classDefinitions[typeof (Company)];
       ClassDefinition classWithOptionalOneToOneRelationAndOppositeDerivedClass = _classDefinitions[typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass)];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (companyClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (companyClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           classWithOptionalOneToOneRelationAndOppositeDerivedClass, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.Company", false);

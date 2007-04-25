@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
     {
       XmlNode oppositeClassNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:oppositeClass"), _namespaceManager);
       if (oppositeClassNode != null)
-        return new NullRelationEndPointDefinition (_classDefinitions.GetMandatory (oppositeClassNode.InnerText));
+        return new AnonymousRelationEndPointDefinition (_classDefinitions.GetMandatory (oppositeClassNode.InnerText));
 
       XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
       string oppositePropertyName = GetPropertyName (oppositeRelationPropertyNode);

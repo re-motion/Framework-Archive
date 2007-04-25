@@ -184,44 +184,44 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     }
 
     [Test]
-    public void NullRelationEndPointDefinitionWithoutRelationDefinition ()
+    public void AnonymousRelationEndPointDefinitionWithoutRelationDefinition ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
 
-      NullRelationEndPointDefinition endPointdefinition = new NullRelationEndPointDefinition (classDefinition);
+      AnonymousRelationEndPointDefinition endPointdefinition = new AnonymousRelationEndPointDefinition (classDefinition);
 
-      NullRelationEndPointDefinition deserializedEndPointDefinition = (NullRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
+      AnonymousRelationEndPointDefinition deserializedEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
 
       Assert.IsFalse (object.ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
       AreEqual (endPointdefinition, deserializedEndPointDefinition);
     }
 
     [Test]
-    public void NullRelationEndPointDefinitionWithRelationDefinition ()
+    public void AnonymousRelationEndPointDefinitionWithRelationDefinition ()
     {
       XmlBasedClassDefinition clientDefinition = new XmlBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
       XmlBasedClassDefinition locationDefinition = new XmlBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location));
 
       locationDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, false));
 
-      NullRelationEndPointDefinition clientEndPointDefinition = new NullRelationEndPointDefinition (clientDefinition);
+      AnonymousRelationEndPointDefinition clientEndPointDefinition = new AnonymousRelationEndPointDefinition (clientDefinition);
       RelationEndPointDefinition locationEndPointDefinition = new RelationEndPointDefinition (locationDefinition, "Client", true);
 
       RelationDefinition relationDefinition = new RelationDefinition ("ClientToLocation", clientEndPointDefinition, locationEndPointDefinition);
 
-      NullRelationEndPointDefinition deserializedClientEndPointDefinition = (NullRelationEndPointDefinition) SerializeAndDeserialize (clientEndPointDefinition);
+      AnonymousRelationEndPointDefinition deserializedClientEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (clientEndPointDefinition);
 
       Assert.IsFalse (object.ReferenceEquals (clientEndPointDefinition, deserializedClientEndPointDefinition));
       AreEqual (clientEndPointDefinition, deserializedClientEndPointDefinition);
     }
 
     [Test]
-    public void NullRelationEndPointDefinitionInMapping ()
+    public void AnonymousRelationEndPointDefinitionInMapping ()
     {
       RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["ClientToLocation"];
-      NullRelationEndPointDefinition endPointDefinition = (NullRelationEndPointDefinition) relationDefinition.GetOppositeEndPointDefinition ("Location", "Client");
+      AnonymousRelationEndPointDefinition endPointDefinition = (AnonymousRelationEndPointDefinition) relationDefinition.GetOppositeEndPointDefinition ("Location", "Client");
 
-      NullRelationEndPointDefinition deserializedEndPointDefinition = (NullRelationEndPointDefinition) SerializeAndDeserialize (endPointDefinition);
+      AnonymousRelationEndPointDefinition deserializedEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (endPointDefinition);
       Assert.AreSame (endPointDefinition, deserializedEndPointDefinition);
     }
 

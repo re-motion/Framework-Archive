@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Mapping
 {
 [Serializable]
-public class NullRelationEndPointDefinition : IRelationEndPointDefinition, ISerializable, IObjectReference
+public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition, ISerializable, IObjectReference
 {
   // types
 
@@ -22,13 +22,13 @@ public class NullRelationEndPointDefinition : IRelationEndPointDefinition, ISeri
 
   // construction and disposing
 
-  public NullRelationEndPointDefinition (ClassDefinition classDefinition)
+  public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     _classDefinition = classDefinition;
   }
 
-  protected NullRelationEndPointDefinition (SerializationInfo info, StreamingContext context)
+  protected AnonymousRelationEndPointDefinition (SerializationInfo info, StreamingContext context)
   {
     bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
 

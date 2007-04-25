@@ -306,7 +306,7 @@
     <Compile Include="Mapping\MappingException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mapping\NullRelationEndPointDefinition.cs">
+    <Compile Include="Mapping\AnonymousRelationEndPointDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mapping\PropertyDefinition.cs">

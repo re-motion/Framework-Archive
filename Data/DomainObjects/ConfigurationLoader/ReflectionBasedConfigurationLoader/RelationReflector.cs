@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return relationEndPointReflector.GetMetadata (classDefinitions);
     }
 
-    private NullRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (ClassDefinitionCollection classDefinitions)
+    private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (ClassDefinitionCollection classDefinitions)
     {
       if (!typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
       {
@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       try
       {
-        return new NullRelationEndPointDefinition (classDefinitions.GetMandatory (PropertyInfo.PropertyType));
+        return new AnonymousRelationEndPointDefinition (classDefinitions.GetMandatory (PropertyInfo.PropertyType));
       }
       catch (MappingException e)
       {

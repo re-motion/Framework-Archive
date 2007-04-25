@@ -208,7 +208,7 @@
     <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs">
+    <Compile Include="Configuration\Mapping\AnonymousRelationEndPointDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs">
@@ -229,7 +229,7 @@
     <Compile Include="Configuration\Mapping\RelationDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs">
+    <Compile Include="Configuration\Mapping\RelationDefinitionWithAnonymousRelationEndPointTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\RelationEndPointDefinitionTest.cs">

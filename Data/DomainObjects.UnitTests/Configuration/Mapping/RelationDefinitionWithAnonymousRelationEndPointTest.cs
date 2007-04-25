@@ -7,10 +7,10 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationDefinitionWithNullEndPointTest : ReflectionBasedMappingTest
+  public class RelationDefinitionWithAnonymousRelationEndPointTest : ReflectionBasedMappingTest
   {
     private RelationDefinition _relation;
-    private NullRelationEndPointDefinition _clientEndPoint;
+    private AnonymousRelationEndPointDefinition _clientEndPoint;
     private RelationEndPointDefinition _locationEndPoint;
 
     public override void SetUp ()
@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       _relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
-      _clientEndPoint = (NullRelationEndPointDefinition) _relation.EndPointDefinitions[0];
+      _clientEndPoint = (AnonymousRelationEndPointDefinition) _relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];
     }
 

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class NullRelationEndPointDefinitionTest : StandardMappingTest
+  public class AnonymousRelationEndPointDefinitionTest : StandardMappingTest
   {
     // types
 
@@ -14,11 +14,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // member fields
 
     private ClassDefinition _clientDefinition;
-    private NullRelationEndPointDefinition _definition;
+    private AnonymousRelationEndPointDefinition _definition;
 
     // construction and disposing
 
-    public NullRelationEndPointDefinitionTest ()
+    public AnonymousRelationEndPointDefinitionTest ()
     {
     }
 
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       _clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
-      _definition = new NullRelationEndPointDefinition (_clientDefinition);
+      _definition = new AnonymousRelationEndPointDefinition (_clientDefinition);
     }
 
     [Test]
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void RelationDefinitionNull ()
     {
-      NullRelationEndPointDefinition definition = new NullRelationEndPointDefinition (
+      AnonymousRelationEndPointDefinition definition = new AnonymousRelationEndPointDefinition (
           MappingConfiguration.Current.ClassDefinitions["Client"]);
 
       Assert.IsNull (definition.RelationDefinition);

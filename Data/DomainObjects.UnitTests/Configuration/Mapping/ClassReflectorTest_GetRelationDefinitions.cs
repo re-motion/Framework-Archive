@@ -262,7 +262,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToOne",
               false),
-          CreateNullRelationEndPointDefinition());
+          CreateAnonymousRelationEndPointDefinition());
     }
 
     private RelationDefinition CreateUnidirectionalOneToManyRelationDefinition()
@@ -272,7 +272,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           CreateRelationEndPointDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToMany",
               false),
-          CreateNullRelationEndPointDefinition());
+          CreateAnonymousRelationEndPointDefinition());
     }
 
     private RelationDefinition CreateBidirectionalOneToOneRelationDefinition()
@@ -327,9 +327,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           sortExpression);
     }
 
-    private NullRelationEndPointDefinition CreateNullRelationEndPointDefinition()
+    private AnonymousRelationEndPointDefinition CreateAnonymousRelationEndPointDefinition()
     {
-      return new NullRelationEndPointDefinition (_classWithOneSideRelationPropertiesClassDefinition);
+      return new AnonymousRelationEndPointDefinition (_classWithOneSideRelationPropertiesClassDefinition);
     }
   }
 }

@@ -13,7 +13,7 @@ public class AnonymousEndPoint : IEndPoint
   // member fields
 
   private RelationDefinition _relationDefinition;
-  private NullRelationEndPointDefinition _definition;
+  private AnonymousRelationEndPointDefinition _definition;
   private ClientTransaction _clientTransaction;
   private ObjectID _objectID;
 
@@ -35,7 +35,7 @@ public class AnonymousEndPoint : IEndPoint
     ArgumentUtility.CheckNotNull ("objectID", objectID);
     ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
 
-    _definition = GetNullRelationEndPointDefinition (relationDefinition);
+    _definition = GetAnonymousRelationEndPointDefinition (relationDefinition);
     _relationDefinition = relationDefinition;
     _clientTransaction = clientTransaction;
     _objectID = objectID;
@@ -45,19 +45,19 @@ public class AnonymousEndPoint : IEndPoint
   {
     ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
     
-    _definition = GetNullRelationEndPointDefinition (relationDefinition);
+    _definition = GetAnonymousRelationEndPointDefinition (relationDefinition);
     _relationDefinition = relationDefinition;
   }
 
-  private NullRelationEndPointDefinition GetNullRelationEndPointDefinition (RelationDefinition relationDefinition)
+  private AnonymousRelationEndPointDefinition GetAnonymousRelationEndPointDefinition (RelationDefinition relationDefinition)
   {
     foreach (IRelationEndPointDefinition endPointDefinition in relationDefinition.EndPointDefinitions)
     {
       if (endPointDefinition.IsNull)
-        return (NullRelationEndPointDefinition) endPointDefinition;
+        return (AnonymousRelationEndPointDefinition) endPointDefinition;
     }
 
-    throw new ArgumentException ("The provided relation definition must contain a NullRelationEndPointDefinition.", "relationDefinition");
+    throw new ArgumentException ("The provided relation definition must contain a AnonymousRelationEndPointDefinition.", "relationDefinition");
   }
 
   // methods and properties

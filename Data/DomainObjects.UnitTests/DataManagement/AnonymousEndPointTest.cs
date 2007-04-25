@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.AreSame (_clientToLocationDefinition, endPoint.RelationDefinition);
       Assert.AreSame (_clientEndPointDefinition, endPoint.Definition);
-      Assert.IsNotNull (endPoint.Definition as NullRelationEndPointDefinition);
+      Assert.IsNotNull (endPoint.Definition as AnonymousRelationEndPointDefinition);
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The provided relation definition must contain a NullRelationEndPointDefinition.\r\nParameter name: relationDefinition")]
+        ExpectedMessage = "The provided relation definition must contain a AnonymousRelationEndPointDefinition.\r\nParameter name: relationDefinition")]
     public void InitializeWithInvalidRelationDefinition ()
     {
       RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");

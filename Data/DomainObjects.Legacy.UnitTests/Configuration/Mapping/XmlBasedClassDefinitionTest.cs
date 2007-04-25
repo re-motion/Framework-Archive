@@ -478,14 +478,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void IsRelationEndPointWithNullRelationEndPointDefinition ()
+    public void IsRelationEndPointWithAnonymousRelationEndPointDefinition ()
     {
       ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
 
-      NullRelationEndPointDefinition clientNullEndPointDefinition = (NullRelationEndPointDefinition)
+      AnonymousRelationEndPointDefinition clientAnonymousEndPointDefinition = (AnonymousRelationEndPointDefinition)
           MappingConfiguration.Current.RelationDefinitions["ParentClientToChildClient"].GetEndPointDefinition ("Client", null);
 
-      Assert.IsFalse (clientDefinition.IsRelationEndPoint (clientNullEndPointDefinition));
+      Assert.IsFalse (clientDefinition.IsRelationEndPoint (clientAnonymousEndPointDefinition));
     }
 
     [Test]

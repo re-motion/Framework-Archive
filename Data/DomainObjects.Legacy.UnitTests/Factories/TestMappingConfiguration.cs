@@ -658,7 +658,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
     {
       ClassDefinition clientClass = _classDefinitions["Client"];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (clientClass);
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (clientClass, "ParentClient", false);
       RelationDefinition relation = new RelationDefinition ("ParentClientToChildClient", endPoint1, endPoint2);
 
@@ -672,7 +672,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       ClassDefinition clientClass = _classDefinitions["Client"];
       ClassDefinition locationClass = _classDefinitions["Location"];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (clientClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (clientClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           locationClass, "Client", true);
@@ -757,7 +757,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       ClassDefinition companyClass = _classDefinitions["Company"];
       ClassDefinition classWithOptionalOneToOneRelationAndOppositeDerivedClass = _classDefinitions["ClassWithOptionalOneToOneRelationAndOppositeDerivedClass"];
 
-      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (companyClass);
+      AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition (companyClass);
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
           classWithOptionalOneToOneRelationAndOppositeDerivedClass, "Company", false);

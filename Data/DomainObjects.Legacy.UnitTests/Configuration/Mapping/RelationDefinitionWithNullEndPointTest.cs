@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // member fields
 
     private RelationDefinition _relation;
-    private NullRelationEndPointDefinition _clientEndPoint;
+    private AnonymousRelationEndPointDefinition _clientEndPoint;
     private RelationEndPointDefinition _locationEndPoint;
 
     // construction and disposing
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       _relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
-      _clientEndPoint = (NullRelationEndPointDefinition) _relation.EndPointDefinitions[0];
+      _clientEndPoint = (AnonymousRelationEndPointDefinition) _relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];
     }
 

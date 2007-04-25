@@ -60,8 +60,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreSame (actualRelationDefinition, endPointDefinition.RelationDefinition);
       Assert.That (_classWithManySideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
 
-      Assert.IsInstanceOfType (typeof (NullRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
-      NullRelationEndPointDefinition oppositeEndPointDefinition = (NullRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      Assert.IsInstanceOfType (typeof (AnonymousRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
+      AnonymousRelationEndPointDefinition oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
       Assert.That (_classWithOneSideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Not.Contains (actualRelationDefinition));
@@ -89,8 +89,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreSame (actualRelationDefinition, endPointDefinition.RelationDefinition);
       Assert.That (_classWithManySideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
 
-      Assert.IsInstanceOfType (typeof (NullRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
-      NullRelationEndPointDefinition oppositeEndPointDefinition = (NullRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      Assert.IsInstanceOfType (typeof (AnonymousRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
+      AnonymousRelationEndPointDefinition oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
       Assert.That (_classWithOneSideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Not.Contains (actualRelationDefinition));

@@ -99,10 +99,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'InvalidRelation' cannot have two null end points.")]
-    public void InitializeWithTwoNullRelationEndPointDefinitions ()
+    public void InitializeWithTwoAnonymousRelationEndPointDefinitions ()
     {
-      NullRelationEndPointDefinition nullEndPointDefinition = new NullRelationEndPointDefinition (_customerClass);
-      RelationDefinition definition = new RelationDefinition ("InvalidRelation", nullEndPointDefinition, nullEndPointDefinition);
+      AnonymousRelationEndPointDefinition anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition (_customerClass);
+      RelationDefinition definition = new RelationDefinition ("InvalidRelation", anonymousEndPointDefinition, anonymousEndPointDefinition);
     }
 
     [Test]

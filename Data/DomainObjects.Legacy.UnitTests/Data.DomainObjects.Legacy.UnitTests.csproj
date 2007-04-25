@@ -58,7 +58,7 @@
     <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\MappingLoaderTest.cs" />
-    <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs" />
+    <Compile Include="Configuration\Mapping\AnonymousRelationEndPointDefinitionTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyDefinitionFactory.cs" />
     <Compile Include="Configuration\Mapping\PropertyDefinitionTest.cs" />

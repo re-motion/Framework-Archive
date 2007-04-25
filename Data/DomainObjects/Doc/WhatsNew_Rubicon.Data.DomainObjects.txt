@@ -99,6 +99,8 @@
 - Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction
   CreateWxeTransaction () ist nun sealed. Es ist nur noch CreateWxeTransaction (bool, bool) zu überschreiben.
 
+- Rubicon.Data.DomainObjects.Mapping.NullRelationEndPointDefinition: umbenannt zu AnonymousRelationEndPointDefinition.
+
 1.7.37.0
 ========
 
