@@ -94,10 +94,6 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj">
-      <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
-      <Name>Data.DomainObjects.Legacy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
@@ -137,9 +133,6 @@
     <None Include="Database\SetupDB.sql" />
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Doc\readme.txt" />
-    <Content Include="Mapping.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
