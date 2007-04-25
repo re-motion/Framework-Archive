@@ -6,11 +6,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace Rubicon.Data.DomainObjects.UnitTests.Resources
 {
   public static class ResourceManager
-  {
-    public const string DomainObjectsConfigurationWithFakeMappingLoader = "DomainObjectsConfigurationWithFakeMappingLoader.xml";
-    public const string DomainObjectsConfigurationWithCustomSectionGroupName = "DomainObjectsConfigurationWithCustomSectionGroupName.xml";
-    public const string DomainObjectsConfigurationWithMinimumSettings = "DomainObjectsConfigurationWithMinimumSettings.xml";
-    
+  {    
     public static byte[] GetResource (string resourceID)
     {
       using (Stream resourceStream = GetResourceStream (resourceID))
@@ -28,6 +24,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Resources
       Rubicon.Utilities.Assertion.Assert (stream != null, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
 
       return stream;
+    }
+
+    public static byte[] GetDomainObjectsConfigurationWithFakeMappingLoader ()
+    {
+      return GetResource ("DomainObjectsConfigurationWithFakeMappingLoader.xml");
+    }
+
+    public static byte[] GetDomainObjectsConfigurationWithCustomSectionGroupName ()
+    {
+      return GetResource ("DomainObjectsConfigurationWithCustomSectionGroupName.xml");
+    }
+
+    public static byte[] GetDomainObjectsConfigurationWithMinimumSettings ()
+    {
+      return GetResource ("DomainObjectsConfigurationWithMinimumSettings.xml");
     }
 
     public static byte[] GetImage1()

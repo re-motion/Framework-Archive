@@ -1,6 +1,4 @@
 using System;
-using System.Configuration;
-using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Configuration;
@@ -9,6 +7,7 @@ using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Development.UnitTesting.IO;
 
@@ -53,7 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     {
       using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper(LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithMinimumSettings));
+        SetUpConfigurationWrapper (ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithMinimumSettings()));
 
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
@@ -66,17 +65,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingCustomMappingLoader ()
+    public void Initialize_WithConfigurationHavingCustomMappingLoader()
     {
-      using (TempFile configFile = new TempFile ())
+      using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper (LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithFakeMappingLoader));
+        SetUpConfigurationWrapper (ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithFakeMappingLoader()));
 
-        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration ();
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
         Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
         Assert.That (domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs (typeof (FakeMappingLoader)));
-        
+
         Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
         Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinition, Is.Not.Null);
         Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
@@ -85,12 +84,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingCustomSectionGroupName ()
+    public void Initialize_WithConfigurationHavingCustomSectionGroupName()
     {
-      using (TempFile configFile = new TempFile ())
+      using (TempFile configFile = new TempFile())
       {
-        System.Configuration.Configuration configuration = 
-            LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithCustomSectionGroupName);
+        System.Configuration.Configuration configuration =
+            ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithCustomSectionGroupName());
         SetUpConfigurationWrapper (configuration);
 
         DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration) configuration.GetSectionGroup ("domainObjects");
@@ -123,18 +122,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     private void SetUpConfigurationWrapper (System.Configuration.Configuration configuration)
     {
       ConfigurationWrapper.SetCurrent (ConfigurationWrapper.CreateFromConfigurationObject (configuration));
-    }
-
-    public static System.Configuration.Configuration LoadConfigurationFromFile (TempFile tempFile, string resourceName)
-    {
-      using (Stream stream = ResourceManager.GetResourceStream (resourceName))
-      {
-        tempFile.SaveStream (stream);
-      }
-
-      ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap ();
-      fileMap.ExeConfigFilename = tempFile.FileName;
-      return ConfigurationManager.OpenMappedExeConfiguration (fileMap, ConfigurationUserLevel.None);
     }
   }
 }

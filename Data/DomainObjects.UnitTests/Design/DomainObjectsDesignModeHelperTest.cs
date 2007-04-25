@@ -10,6 +10,7 @@ using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Design;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Design;
 using Rubicon.Development.UnitTesting.IO;
@@ -24,8 +25,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Design
     {
       using (TempFile configFile = new TempFile ())
       {
-        System.Configuration.Configuration configuration =
-            DomainObjectsConfigurationTest.LoadConfigurationFromFile (configFile, ResourceManager.DomainObjectsConfigurationWithFakeMappingLoader);
+        System.Configuration.Configuration configuration = ConfigurationFactory.LoadConfigurationFromFile (
+            configFile, ResourceManager.GetDomainObjectsConfigurationWithFakeMappingLoader());
 
         MockRepository mockRepository = new MockRepository();
         IDesignModeHelper mockDesignModeHelper = mockRepository.CreateMock<IDesignModeHelper>();
