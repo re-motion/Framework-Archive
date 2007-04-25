@@ -37,10 +37,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       BidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<BidirectionalRelationAttribute> (PropertyInfo, true);
       if (attribute == null)
-        return new NullRelationEndPointDefinition (GetClassDefinition (classDefinitions));
+        return CreateOppositeAnonymousRelationEndPointDefinition (classDefinitions);
 
-      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo (attribute);
-      return CreateEndPointDefinition (classDefinitions, oppositePropertyInfo);
+      return CreateEndPointDefinition (classDefinitions, GetOppositePropertyInfo (attribute));
     }
 
     private IRelationEndPointDefinition CreateEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
@@ -49,14 +48,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return relationEndPointReflector.GetMetadata (classDefinitions);
     }
 
-    private ClassDefinition GetClassDefinition (ClassDefinitionCollection classDefinitions)
+    private NullRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (ClassDefinitionCollection classDefinitions)
     {
+      if (!typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
+      {
+        throw CreateMappingException (
+            null, PropertyInfo, "The property type of an uni-directional relation property must be assignable to {0}.", typeof (DomainObject).FullName);
+      }
+
       try
       {
-        //TODO: Check: only DomainObject-derived classes are valid for null endpoint definitions.
-        if (typeof (ObjectList<>).IsAssignableFrom (PropertyInfo.PropertyType))
-          return classDefinitions.GetMandatory (PropertyInfo.PropertyType.GetGenericArguments()[0]);
-        return classDefinitions.GetMandatory (PropertyInfo.PropertyType);
+        return new NullRelationEndPointDefinition (classDefinitions.GetMandatory (PropertyInfo.PropertyType));
       }
       catch (MappingException e)
       {

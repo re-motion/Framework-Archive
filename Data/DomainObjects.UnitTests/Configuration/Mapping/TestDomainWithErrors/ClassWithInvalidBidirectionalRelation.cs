@@ -13,10 +13,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
     {
     }
 
-    [DBBidirectionalRelation ("RightSide")]
-    public abstract ClassWithInvalidBidirectionalRelation LeftSide { get; set; }
+    [DBBidirectionalRelation ("NoContainsKeyRightSide")]
+    public abstract ClassWithInvalidBidirectionalRelation NoContainsKeyLeftSide { get; set; }
 
-    [DBBidirectionalRelation ("LeftSide")]
-    public abstract ClassWithInvalidBidirectionalRelation RightSide { get; set; }
+    [DBBidirectionalRelation ("NoContainsKeyLeftSide")]
+    public abstract ClassWithInvalidBidirectionalRelation NoContainsKeyRightSide { get; set; }
+
+    [DBBidirectionalRelation ("Invalid")]
+    public abstract ClassWithInvalidBidirectionalRelation InvalidOppositePropertyNameLeftSide { get; set; }
   }
 }

@@ -109,6 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidUnidirectionalRelation.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
@@ -122,7 +123,7 @@
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\StorageSpecificName.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\PropertyWithStorageClass.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\Common.cs" />
-    <Compile Include="Configuration\Mapping\PropertyReflectorTests\ManySideRelationProperty.cs">
+    <Compile Include="Configuration\Mapping\PropertyReflectorTests\RelationProperty.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\StringProperty.cs" />

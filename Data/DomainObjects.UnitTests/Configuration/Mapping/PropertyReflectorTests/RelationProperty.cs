@@ -8,7 +8,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class ManySideRelationProperty: BaseTest
+  public class RelationProperty: BaseTest
   {
     [Test]
     public void GetMetadata_WithNoAttribute()
@@ -48,11 +48,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
         + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.ManySideRelationProperty, "
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.RelationProperty, "
         + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ManySideRelationProperty> ("Int32Property");
+      PropertyReflector propertyReflector = CreatePropertyReflector<RelationProperty> ("Int32Property");
 
       propertyReflector.GetMetadata();
     }

@@ -66,22 +66,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
       relationEndPointReflector.GetMetadata (_classDefinitions);
     }
+
     [Test]
     [Ignore("Not sure if this test is required, since a relation with 2 virtual end points is already covered by the RelationDefinition ctor.")]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n  "
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation, "
-        + "property: LeftSide")]
+        + "property: NoContainsKeyLeftSide")]
     public void GetMetadata_WithNeitherSideContainingTheKey ()
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation",
+          "ClassWithInvalidBidirectionalRelation",
           "ClassWithInvalidBidirectionalRelation",
           "TestDomain", type, false);
       _classDefinitions.Add (classDefinition);
-      PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
+      PropertyInfo propertyInfo = type.GetProperty ("NoContainsKeyLeftSide");
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
       relationEndPointReflector.GetMetadata (_classDefinitions);
