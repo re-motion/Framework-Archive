@@ -42,8 +42,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
         if (ReflectionUtility.IsPropertySetter(memberInfo) && DomainObjectPropertyInterceptor.IsRelatedObjectCollection (property.DeclaringType, id))
         {
-          throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, the setter of property {1} cannot "
-              + "be automatically implemented (property id: {2}).", property.DeclaringType.FullName, property.Name, id), type);
+          throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, automatic properties for related object collections "
+              + "cannot have setters: property '{1}', property id '{2}'.", property.DeclaringType.FullName, property.Name, id), type);
         }
 
         return isDefined;

@@ -121,6 +121,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
     }
 
+    public interface IPropertyInterface
+    {
+      int Property { get; set; }
+    }
+
+    [DBTable]
+    public class ClassWithExplicitInterfaceProperty : DomainObject, IPropertyInterface
+    {
+      public static ClassWithExplicitInterfaceProperty NewObject()
+      {
+        return DomainObject.NewObject<ClassWithExplicitInterfaceProperty>().With();
+      }
+
+      protected ClassWithExplicitInterfaceProperty ()
+      {
+      }
+
+      int IPropertyInterface.Property
+      {
+        get { return GetPropertyValue<int>(); }
+        set { SetPropertyValue (value); }
+      }
+    }
+
     [SetUp]
     public override void SetUp ()
     {
@@ -282,10 +306,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, the setter "
-        + "of property RelatedObjects cannot be automatically implemented (property id: Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter.RelatedObjects).\r\n"
-        + "Parameter name: type")]
+        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
+        + "UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "RelatedObjects'.\r\nParameter name: type")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
       NonInstantiableClassWithAutomaticRelatedCollectionSetter.NewObject();
@@ -505,6 +529,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         AbstractClassNotInMapping.NewObject ();
       }
+    }
+
+    [Test]
+    [ExpectedException(typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    public void ExplicitInterfaceProperty ()
+    {
+      IPropertyInterface domainObject = ClassWithExplicitInterfaceProperty.NewObject();
+      domainObject.Property = 5;
+      Assert.AreEqual (5, domainObject.Property);
     }
   }
 }
