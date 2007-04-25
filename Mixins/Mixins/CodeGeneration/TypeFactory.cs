@@ -6,30 +6,6 @@ namespace Mixins.CodeGeneration
 {
   public class TypeFactory
   {
-    private ApplicationDefinition _configuration;
-    private ConcreteTypeBuilder _typeBuilder;
-
-    public TypeFactory(ApplicationDefinition configuration)
-    {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      _configuration = configuration;
-      _typeBuilder = new ConcreteTypeBuilder(new DynamicProxy.ModuleManager());
-    }
-
-    public Type GetConcreteType (Type baseType)
-    {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      BaseClassDefinition classConfig = _configuration.BaseClasses[baseType];
-      if (classConfig != null)
-      {
-        return _typeBuilder.GetConcreteType (classConfig);
-      }
-      else
-      {
-        return baseType;
-      }
-    }
-
     public static void InitializeInstance (object instance)
     {
       if (instance is IMixinTarget)
@@ -38,9 +14,27 @@ namespace Mixins.CodeGeneration
       }
     }
 
-    public ConcreteTypeBuilder TypeBuilder
+    private ApplicationDefinition _configuration;
+
+    public TypeFactory(ApplicationDefinition configuration)
     {
-      get { return _typeBuilder; }
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      _configuration = configuration;
+    }
+
+    // Instances returned by this method must be initialized with <see cref="InitializeInstance"/>
+    public Type GetConcreteType (Type baseType)
+    {
+      ArgumentUtility.CheckNotNull ("baseType", baseType);
+      BaseClassDefinition classConfig = _configuration.BaseClasses[baseType];
+      if (classConfig != null)
+      {
+        return ConcreteTypeBuilder.Instance.Current.GetConcreteType (classConfig);
+      }
+      else
+      {
+        return baseType;
+      }
     }
   }
 }

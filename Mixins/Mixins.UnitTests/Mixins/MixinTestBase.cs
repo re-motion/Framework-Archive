@@ -21,6 +21,8 @@ namespace Mixins.UnitTests.Mixins
     [SetUp]
     public virtual void SetUp()
     {
+      ConcreteTypeBuilder.Scope.SetCurrent (null);
+
       Configuration = CreateConfiguration();
       TypeFactory = new TypeFactory (Configuration);
       ObjectFactory = new ObjectFactory (TypeFactory);
@@ -38,7 +40,7 @@ namespace Mixins.UnitTests.Mixins
       string path;
       try
       {
-        path = TypeFactory.TypeBuilder.SaveScopeToFile ();
+        path = ConcreteTypeBuilder.Scope.Current.SaveAssembly ();
       }
       catch (Exception ex)
       {
@@ -49,6 +51,7 @@ namespace Mixins.UnitTests.Mixins
       Configuration = null;
       TypeFactory = null;
       ObjectFactory = null;
+      ConcreteTypeBuilder.Scope.SetCurrent (null);
 
       if (path != null || !File.Exists(path))
       {

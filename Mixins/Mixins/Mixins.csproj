@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
+    <Compile Include="CodeGeneration\CallContextSingleton.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomEventEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomMethodEmitter.cs" />

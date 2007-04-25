@@ -11,7 +11,6 @@ namespace Mixins.CodeGeneration
   [Serializable]
   public class SerializationHelper : IObjectReference, ISerializable
   {
-    public static ConcreteTypeBuilder TypeBuilderForDeserialization = new ConcreteTypeBuilder (new DynamicProxy.ModuleManager ());
     private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter s_formatter = new BinaryFormatter (); // hack: this is used to circumvent serialization bug
 
     public static void GetObjectDataForGeneratedTypes (SerializationInfo info, StreamingContext context, object concreteObject,
@@ -73,7 +72,7 @@ namespace Mixins.CodeGeneration
         configuration = (BaseClassDefinition) s_formatter.Deserialize (stream);
       }
 
-      Type concreteType = TypeBuilderForDeserialization.GetConcreteType (configuration);
+      Type concreteType = ConcreteTypeBuilder.Instance.Current.GetConcreteType (configuration);
 
       object[] extensions = DeserializeArray<object> ("__extension", info);
       object[] baseMemberValues = DeserializeArray<object> ("__baseMemberValue", info);
