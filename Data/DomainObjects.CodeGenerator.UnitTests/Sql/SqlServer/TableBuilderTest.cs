@@ -38,22 +38,22 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     [Test]
     public void GetSqlDataType ()
     {
-      Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "boolean", false, false, NaInt32.Null)));
-      Assert.AreEqual ("tinyint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "byte", false, false, NaInt32.Null)));
-      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "date", false, false, NaInt32.Null)));
-      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "dateTime", false, false, NaInt32.Null)));
-      Assert.AreEqual ("decimal (38, 3)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "decimal", false, false, NaInt32.Null)));
-      Assert.AreEqual ("float", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "double", false, false, NaInt32.Null)));
-      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "guid", false, false, NaInt32.Null)));
-      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int16", false, false, NaInt32.Null)));
-      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int32", false, false, NaInt32.Null)));
-      Assert.AreEqual ("bigint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int64", false, false, NaInt32.Null)));
-      Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "single", false, false, NaInt32.Null)));
+      Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "boolean", false, false, null)));
+      Assert.AreEqual ("tinyint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "byte", false, false, null)));
+      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "date", false, false, null)));
+      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "dateTime", false, false, null)));
+      Assert.AreEqual ("decimal (38, 3)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "decimal", false, false, null)));
+      Assert.AreEqual ("float", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "double", false, false, null)));
+      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "guid", false, false, null)));
+      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int16", false, false, null)));
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int32", false, false, null)));
+      Assert.AreEqual ("bigint", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "int64", false, false, null)));
+      Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "single", false, false, null)));
       Assert.AreEqual ("nvarchar (100)", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string", false, false, 100)));
 
       Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "string")));
 
-      Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, NaInt32.Null)));
+      Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", "binary", false, false, null)));
       Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
       Assert.AreEqual ("varchar (255)", _tableBuilder.GetSqlDataType (CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
     }
@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     public void GetSqlDataTypeWithDotNetType ()
     {
       string mappingTypeName = "Namespace.TypeName, AssemblyName";
-      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", mappingTypeName, false, false, NaInt32.Null)));
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new PropertyDefinition ("Name", "ColumnName", mappingTypeName, false, false, null)));
     }
 
     [Test]

@@ -72,12 +72,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return typeInfo.IsNullable;
     }
 
-    private NaInt32 GetMaxLength()
+    private int? GetMaxLength()
     {
       ILengthConstrainedPropertyAttribute attribute = AttributeUtility.GetCustomAttribute<ILengthConstrainedPropertyAttribute> (PropertyInfo, true);
       if (attribute != null)
-        return NaInt32.FromBoxedInt32 (attribute.MaximumLength);
-      return NaInt32.Null;
+        return attribute.MaximumLength;
+      return null;
     }
   }
 }

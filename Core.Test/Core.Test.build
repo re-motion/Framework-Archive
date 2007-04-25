@@ -12,18 +12,8 @@
       <nowarn>
       </nowarn> 
       <sources failonempty="true">
-        <include name="*.cs" />
-        <include name="Collections/**/*.cs" />
-        <include name="Configuration/**/*.cs" />
-        <include name="Design/**/*.cs" />
-        <include name="Logging/**/*.cs" />
-        <include name="NullableValueTypes/**/*.cs" />
-        <include name="ObjectBinding/**/*.cs" />
-        <include name="Properties/**/*.cs" />
-        <include name="Reflection/**/*.cs" />
-        <include name="Text/**/*.cs" />
-        <include name="Utilities/**/*.cs" />
-        <include name="Xml/**/*.cs" />
+        <include name="**/*.cs" />
+        <exclude name="bin/**" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">

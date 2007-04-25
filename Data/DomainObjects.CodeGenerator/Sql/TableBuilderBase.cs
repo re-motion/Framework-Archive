@@ -95,10 +95,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
       if (propertyDefinition.MappingTypeName == "string")
       {
-        if (propertyDefinition.MaxLength.IsNull)
-          return GetSqlDataType ("stringWithoutMaxLength");
+        if (propertyDefinition.MaxLength.HasValue)
+          return GetSqlDataType (propertyDefinition.MappingTypeName) + " (" + propertyDefinition.MaxLength + ")";
         else
-          return GetSqlDataType (propertyDefinition.MappingTypeName) + " (" + propertyDefinition.MaxLength.ToString () + ")";
+          return GetSqlDataType ("stringWithoutMaxLength");
       }
 
       return GetSqlDataType (propertyDefinition.MappingTypeName);

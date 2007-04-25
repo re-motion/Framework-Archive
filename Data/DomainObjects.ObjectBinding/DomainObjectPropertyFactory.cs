@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       return (propertyDefinition != null) ? !propertyDefinition.IsNullable : base.IsPropertyRequired (propertyInfo);
     }
 
-    protected override NaInt32 GetMaxStringLength (PropertyInfo propertyInfo)
+    protected override int? GetMaxStringLength (PropertyInfo propertyInfo)
     {
       PropertyDefinition propertyDefinition = GetPropertyDefinition(propertyInfo);
       return (propertyDefinition != null) ? propertyDefinition.MaxLength : base.GetMaxStringLength (propertyInfo);

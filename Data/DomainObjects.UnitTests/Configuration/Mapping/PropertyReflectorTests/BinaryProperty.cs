@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
     }
 
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
     }
 
@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (new byte[0], actual.DefaultValue);
     }
 
@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
-      Assert.AreEqual (new NaInt32 (100), actual.MaxLength);
+      Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
     }
 
@@ -91,7 +91,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
       Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
-      Assert.AreEqual (new NaInt32 (100), actual.MaxLength);
+      Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (new byte[0], actual.DefaultValue);
     }
 

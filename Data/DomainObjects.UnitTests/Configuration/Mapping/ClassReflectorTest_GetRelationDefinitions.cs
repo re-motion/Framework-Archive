@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -185,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               false,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -195,7 +195,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -205,7 +205,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -225,7 +225,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
     }
 

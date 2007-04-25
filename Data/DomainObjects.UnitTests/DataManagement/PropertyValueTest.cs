@@ -257,7 +257,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheckInConstructor ()
     {
-      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", new NaInt32 (10));
+      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, 123);
     }
 
@@ -265,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheck ()
     {
-      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", new NaInt32 (10));
+      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "123");
       propertyValue.Value = 123;
     }
@@ -274,7 +274,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableStringToNull ()
     {
-      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", true, false, new NaInt32 (10));
+      PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", true, false, 10);
       PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
       propertyValue.Value = null;
@@ -362,9 +362,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     private PropertyDefinition CreatePropertyDefinition (string name, string mappingType, bool isNullable)
     {
-      NaInt32 maxLength = NaInt32.Null;
+      int? maxLength = null;
       if (mappingType == "string")
-        maxLength = new NaInt32 (100);
+        maxLength = 100;
 
       return new PropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
     }

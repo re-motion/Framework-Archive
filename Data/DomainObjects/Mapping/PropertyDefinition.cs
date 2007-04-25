@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
     private TypeInfo _typeInfo;
     private string _mappingTypeName;
     private bool _isNullable;
-    private NaInt32 _maxLength;
+    private int? _maxLength;
     private bool _isPersistent;
 
     // Note: _mappingClassID is used only during the deserialization process. 
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string columnName,
         string mappingTypeName,
         bool isNullable)
-        : this (propertyName, columnName, mappingTypeName, true, isNullable, NaInt32.Null)
+        : this (propertyName, columnName, mappingTypeName, true, isNullable, null)
     {
     }
 
@@ -50,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string propertyName,
         string columnName,
         string mappingTypeName,
-        NaInt32 maxLength)
+        int? maxLength)
         : this (propertyName, columnName, mappingTypeName, true, false, maxLength)
     {
     }
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string mappingTypeName,
         bool resolveMappingType,
         bool isNullable,
-        NaInt32 maxLength)
+        int? maxLength)
         : this (propertyName, columnName, mappingTypeName, resolveMappingType, isNullable, maxLength, true)
     {
     }
@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         string mappingTypeName,
         bool resolveMappingType,
         bool isNullable,
-        NaInt32 maxLength,
+        int? maxLength,
         bool isPersistent)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -83,7 +83,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       {
         TypeInfo typeInfo = GetTypeInfo (mappingTypeName, isNullable);
 
-        if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && !maxLength.IsNull)
+        if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && maxLength.HasValue)
           throw CreateMappingException ("MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
 
         _typeInfo = typeInfo;
@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
         if (info.GetBoolean ("HasTypeInfo"))
           _typeInfo = GetTypeInfo (_mappingTypeName, _isNullable);
 
-        _maxLength = (NaInt32) info.GetValue ("MaxLength", typeof (NaInt32));
+        _maxLength = (int?) info.GetValue ("MaxLength", typeof (int?));
         _isPersistent = info.GetBoolean ("IsPersistent");
       }
     }
@@ -198,7 +198,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _isNullable; }
     }
 
-    public NaInt32 MaxLength
+    public int? MaxLength
     {
       get { return _maxLength; }
     }
@@ -221,11 +221,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     private MappingException CreateMappingException (string message, params object[] args)
     {
       return new MappingException (string.Format (message, args));
-    }
-
-    private MappingException CreateMappingException (Exception innerException, string message, params object[] args)
-    {
-      return new MappingException (string.Format (message, args), innerException);
     }
 
     #region ISerializable Members

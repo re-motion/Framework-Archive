@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithUnresolvedNativePropertyType ()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
+      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, null);
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, NaInt32.Null);
+      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, null);
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);

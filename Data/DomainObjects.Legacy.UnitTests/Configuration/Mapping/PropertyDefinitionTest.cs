@@ -25,13 +25,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithResolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
@@ -40,13 +40,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithUnresolvedPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", false, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("int32", actual.MappingTypeName);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
@@ -55,13 +55,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "UnknownMappingType", false, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "UnknownMappingType", false, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual ("UnknownMappingType", actual.MappingTypeName);
-      Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+      Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
@@ -71,7 +71,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void StringPropertyWithoutMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string");
-      Assert.AreEqual (NaInt32.Null, definition.MaxLength);
+      Assert.IsNull (definition.MaxLength);
     }
 
     [Test]
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
     public void IntPropertyWithMaxLength ()
     {
-      PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", new NaInt32 (10));
+      PropertyDefinition definition = new PropertyDefinition ("test", "test", "int32", 10);
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Obsolete]
     public void GetColumnName ()
     {
-      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, NaInt32.Null);
+      PropertyDefinition actual = new PropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.AreEqual (actual.StorageSpecificName, actual.ColumnName);

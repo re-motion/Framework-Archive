@@ -81,10 +81,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           "FirstClass", "FirstEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
 
       firstClass.MyPropertyDefinitions.Add (
-          new PropertyDefinition ("SecondClass", "SecondClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+          new PropertyDefinition ("SecondClass", "SecondClassID", TypeInfo.ObjectIDMappingTypeName, false, true, null));
 
       firstClass.MyPropertyDefinitions.Add (
-          new PropertyDefinition ("ThirdClass", "ThirdClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+          new PropertyDefinition ("ThirdClass", "ThirdClassID", TypeInfo.ObjectIDMappingTypeName, false, true, null));
 
       XmlBasedClassDefinition secondClass = new XmlBasedClassDefinition (
           "SecondClass", "SecondEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
           "DerivedClass", "BaseClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, baseClass);
 
       derivedClass.MyPropertyDefinitions.Add (
-          new PropertyDefinition ("OtherClass", "OtherClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+          new PropertyDefinition ("OtherClass", "OtherClassID", TypeInfo.ObjectIDMappingTypeName, false, true, null));
 
       XmlBasedClassDefinition otherClass = new XmlBasedClassDefinition (
           "OtherClass", "OtherClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);

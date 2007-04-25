@@ -34,7 +34,7 @@ public class ReflectionPropertyFactory
 
     if (itemType == typeof (string))
     {
-      return new StringProperty (propertyInfo, isRequired, itemType, isList, GetMaxStringLength (propertyInfo));
+      return new StringProperty (propertyInfo, isRequired, itemType, isList, NaInt32.FromBoxedInt32 (GetMaxStringLength (propertyInfo)));
     }
     else if (itemType == typeof (Guid))
     {
@@ -143,9 +143,9 @@ public class ReflectionPropertyFactory
     return true;
   }
 
-  protected virtual NaInt32 GetMaxStringLength (PropertyInfo propertyInfo)
+  protected virtual int? GetMaxStringLength (PropertyInfo propertyInfo)
   {
-    return NaInt32.Null;
+    return null;
   }
 
   protected virtual bool IsDateType (PropertyInfo propertyInfo)

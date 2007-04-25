@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "boolean",
               true,
               false,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "int32",
               true,
               false,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "string",
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "string",
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               TypeInfo.ObjectIDMappingTypeName,
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
     }
 
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "string",
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -78,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "string",
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
@@ -88,7 +88,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
               "string",
               true,
               true,
-              NaInt32.Null,
+              null,
               true));
     }
   }

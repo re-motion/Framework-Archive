@@ -146,10 +146,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
       if (isNullableNode != null)
         isNullable = bool.Parse (isNullableNode.InnerText);
 
-      NaInt32 maxLength = NaInt32.Null;
+      int? maxLength = null;
       XmlNode maxLengthNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:maxLength"), _namespaceManager);
       if (maxLengthNode != null)
-        maxLength = NaInt32.Parse (maxLengthNode.InnerText);
+        maxLength = int.Parse (maxLengthNode.InnerText);
 
       return new PropertyDefinition (propertyName, columnName, mappingType, _resolveTypes, isNullable, maxLength);
     }
@@ -159,7 +159,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
       string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
       string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-      return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypes, true, NaInt32.Null);
+      return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypes, true, null);
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

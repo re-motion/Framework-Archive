@@ -196,7 +196,7 @@ public class PropertyValue
     get 
     {
       CheckDiscarded ();
-      return _definition.MaxLength; 
+      return NaInt32.FromBoxedInt32 (_definition.MaxLength); 
     }
   }
 
@@ -348,7 +348,7 @@ public class PropertyValue
 
   private void CheckStringValue (string value, PropertyDefinition definition)
   {
-    if (!definition.MaxLength.IsNull && value.Length > definition.MaxLength.Value)
+    if (definition.MaxLength.HasValue && value.Length > definition.MaxLength.Value)
     {
       string message = string.Format (
           "Value for property '{0}' is too long. Maximum number of characters: {1}.",
@@ -360,7 +360,7 @@ public class PropertyValue
 
   private void CheckByteArrayValue (byte[] value, PropertyDefinition definition)
   {
-    if (!definition.MaxLength.IsNull && value.Length > definition.MaxLength.Value)
+    if (definition.MaxLength.HasValue && value.Length > definition.MaxLength.Value)
     {
       string message = string.Format (
           "Value for property '{0}' is too large. Maximum size: {1}.", 

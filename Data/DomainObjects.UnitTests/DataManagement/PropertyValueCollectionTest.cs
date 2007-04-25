@@ -165,9 +165,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
     {
-      NaInt32 maxLength = NaInt32.Null;
+      int? maxLength = null;
       if (mappingType == "string")
-        maxLength = new NaInt32 (100);
+        maxLength = 100;
 
       PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
       return new PropertyValue (definition, value);
