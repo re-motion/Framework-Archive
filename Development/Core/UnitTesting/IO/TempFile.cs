@@ -27,10 +27,16 @@ namespace Rubicon.Development.UnitTesting.IO
 
     public string FileName
     {
-      get { return _fileName; }
+      get
+      {
+        //TODO: Use AssertNotDisposed once new DisposableBase is commited
+        if (Disposed)
+          throw new InvalidOperationException ("Object disposed.");
+        return _fileName;
+      }
     }
 
-    public void SaveStream (Stream stream)
+    public void WriteStream (Stream stream)
     {
       ArgumentUtility.CheckNotNull ("stream", stream);
 
@@ -39,9 +45,19 @@ namespace Rubicon.Development.UnitTesting.IO
         using (StreamWriter streamWriter = new StreamWriter (_fileName))
         {
           while (!streamReader.EndOfStream)
-            streamWriter.WriteLine (streamReader.ReadLine ());
+          {
+            char[] buffer = new char[100];
+            streamWriter.Write (buffer, 0, streamReader.Read (buffer, 0, buffer.Length));
+          }
         }
       }
+    }
+
+    public void WriteAllBytes (byte[] bytes)
+    {
+      ArgumentUtility.CheckNotNull ("bytes", bytes);
+
+      File.WriteAllBytes (_fileName, bytes);
     }
   }
 }
