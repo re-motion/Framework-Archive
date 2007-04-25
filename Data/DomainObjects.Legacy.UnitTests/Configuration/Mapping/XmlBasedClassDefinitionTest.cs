@@ -313,8 +313,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
     }
 
     [Test]
@@ -323,10 +323,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void AddDuplicatePropertyBaseClass ()
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
 
       XmlBasedClassDefinition customerClass = new XmlBasedClassDefinition ("Customer", "Company", "TestDomain", typeof (Customer), companyClass);
-      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      customerClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
     }
 
     [Test]
@@ -335,12 +335,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void AddDuplicatePropertyBaseOfBaseClass ()
     {
       XmlBasedClassDefinition companyClass = new XmlBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
 
       XmlBasedClassDefinition partnerClass = new XmlBasedClassDefinition ("Partner", "Company", "TestDomain", typeof (Partner), companyClass);
 
       XmlBasedClassDefinition supplierClass = new XmlBasedClassDefinition ("Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);
-      supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      supplierClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
     }
 
     [Test]
@@ -350,7 +350,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "StorageSpecificName", "string", true, false, 100);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "string", true, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }
@@ -362,7 +362,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
 
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }
@@ -721,7 +721,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void SetClassDefinitionOfPropertyDefinition ()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("Test", "Test", "int32");
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
       // Note: Never use a XmlBasedClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
@@ -735,7 +735,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void CancelAddingOfPropertyDefinition ()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("Test", "Test", "int32");
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
       // Note: Never use a XmlBasedClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
@@ -757,7 +757,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void Contains ()
     {
-      Assert.IsFalse (_orderClass.Contains (new PropertyDefinition ("PropertyName", "ColumnName", "int32")));
+      Assert.IsFalse (_orderClass.Contains (new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32")));
       Assert.IsTrue (_orderClass.Contains (_orderClass["OrderNumber"]));
     }
 

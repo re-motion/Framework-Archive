@@ -21,7 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (string), actual.PropertyType);
-      Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -38,7 +37,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (string), actual.PropertyType);
-      Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -55,7 +53,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (string), actual.PropertyType);
-      Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (string.Empty, actual.DefaultValue);
@@ -72,7 +69,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (string), actual.PropertyType);
-      Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -89,7 +85,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (string), actual.PropertyType);
-      Assert.AreEqual ("string", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (string.Empty, actual.DefaultValue);

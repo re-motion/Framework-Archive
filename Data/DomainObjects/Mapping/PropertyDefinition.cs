@@ -1,12 +1,11 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
   [Serializable]
-  public class PropertyDefinition: ISerializable, IObjectReference
+  public abstract class PropertyDefinition: ISerializable, IObjectReference
   {
     // types
 
@@ -17,9 +16,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     private ClassDefinition _classDefinition;
     private string _propertyName;
     private string _storageSpecificName;
-    private TypeInfo _typeInfo;
-    private string _mappingTypeName;
-    private bool _isNullable;
     private int? _maxLength;
     private bool _isPersistent;
 
@@ -29,125 +25,15 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     // construction and disposing
 
-    public PropertyDefinition (
-        string propertyName,
-        string columnName,
-        string mappingTypeName)
-        : this (propertyName, columnName, mappingTypeName, false)
-    {
-    }
-
-    public PropertyDefinition (
-        string propertyName,
-        string columnName,
-        string mappingTypeName,
-        bool isNullable)
-        : this (propertyName, columnName, mappingTypeName, true, isNullable, null)
-    {
-    }
-
-    public PropertyDefinition (
-        string propertyName,
-        string columnName,
-        string mappingTypeName,
-        int? maxLength)
-        : this (propertyName, columnName, mappingTypeName, true, false, maxLength)
-    {
-    }
-
-    public PropertyDefinition (
-        string propertyName,
-        string columnName,
-        string mappingTypeName,
-        bool resolveMappingType,
-        bool isNullable,
-        int? maxLength)
-        : this (propertyName, columnName, mappingTypeName, resolveMappingType, isNullable, maxLength, true)
-    {
-    }
-
-    public PropertyDefinition (
-        string propertyName,
-        string columnName,
-        string mappingTypeName,
-        bool resolveMappingType,
-        bool isNullable,
-        int? maxLength,
-        bool isPersistent)
+    protected PropertyDefinition (string propertyName, string columnName, int? maxLength, bool isPersistent)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
-      ArgumentUtility.CheckNotNullOrEmpty ("mappingTypeName", mappingTypeName);
-
-      if (resolveMappingType)
-      {
-        TypeInfo typeInfo = GetTypeInfo (mappingTypeName, isNullable);
-
-        if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && maxLength.HasValue)
-          throw CreateMappingException ("MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
-
-        _typeInfo = typeInfo;
-      }
 
       _propertyName = propertyName;
       _storageSpecificName = columnName;
-      _mappingTypeName = mappingTypeName;
-      _isNullable = isNullable;
       _maxLength = maxLength;
       _isPersistent = isPersistent;
-    }
-
-    protected PropertyDefinition (SerializationInfo info, StreamingContext context)
-    {
-      _propertyName = info.GetString ("PropertyName");
-      bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
-
-      if (ispartOfMappingConfiguration)
-      {
-        // Note: If this object was part of MappingConfiguration.Current during the serialization process,
-        // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
-        // Therefore only the information needed in IObjectReference.GetRealObject is deserialized here.
-        _mappingClassID = info.GetString ("MappingClassID");
-      }
-      else
-      {
-        _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
-        _storageSpecificName = info.GetString ("StorageSpecificName");
-
-        // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
-        _mappingTypeName = info.GetString ("MappingTypeName");
-        _isNullable = info.GetBoolean ("IsNullable");
-
-        if (info.GetBoolean ("HasTypeInfo"))
-          _typeInfo = GetTypeInfo (_mappingTypeName, _isNullable);
-
-        _maxLength = (int?) info.GetValue ("MaxLength", typeof (int?));
-        _isPersistent = info.GetBoolean ("IsPersistent");
-      }
-    }
-
-    private TypeInfo GetTypeInfo (string mappingTypeName, bool isNullable)
-    {
-      TypeInfo typeInfo = TypeInfo.GetInstance (mappingTypeName, isNullable);
-
-      if (typeInfo != null)
-        return typeInfo;
-
-      Type type = Type.GetType (mappingTypeName, false);
-      if (type != null && type.IsEnum)
-      {
-        TypeInfo enumTypeInfo = new TypeInfo (type, mappingTypeName, isNullable, TypeInfo.GetDefaultEnumValue (type));
-        TypeInfo.AddInstance (enumTypeInfo);
-        return enumTypeInfo;
-      }
-
-      string message;
-      if (isNullable)
-        message = string.Format ("Cannot map nullable type '{0}'.", mappingTypeName);
-      else
-        message = string.Format ("Cannot map not-nullable type '{0}'.", mappingTypeName);
-
-      throw CreateMappingException (message);
     }
 
     // methods and properties
@@ -178,39 +64,37 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-    public Type PropertyType
-    {
-      get { return _typeInfo != null ? _typeInfo.Type : null; }
-    }
+    public abstract string MappingTypeName { get; }
 
-    public bool IsPropertyTypeResolved
-    {
-      get { return (_typeInfo != null); }
-    }
+    public abstract Type PropertyType { get; }
 
-    public string MappingTypeName
+    public abstract bool IsPropertyTypeResolved
     {
-      get { return _mappingTypeName; }
-    }
+      get; }
 
-    public bool IsNullable
+    public abstract bool IsNullable
     {
-      get { return _isNullable; }
-    }
+      get; }
 
     public int? MaxLength
     {
       get { return _maxLength; }
     }
 
-    public object DefaultValue
-    {
-      get { return _typeInfo != null ? _typeInfo.DefaultValue : null; }
-    }
+    public abstract object DefaultValue { get; }
 
     public bool IsPersistent
     {
       get { return _isPersistent; }
+    }
+
+    /// <summary>
+    /// IsPartOfMappingConfiguration is used only during the deserialization process. 
+    /// It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+    /// </summary>
+    protected bool IsPartOfMappingConfiguration
+    {
+      get { return _mappingClassID != null; }
     }
 
     public void SetClassDefinition (ClassDefinition classDefinition)
@@ -218,19 +102,31 @@ namespace Rubicon.Data.DomainObjects.Mapping
       _classDefinition = classDefinition;
     }
 
-    private MappingException CreateMappingException (string message, params object[] args)
-    {
-      return new MappingException (string.Format (message, args));
-    }
-
     #region ISerializable Members
 
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+    protected PropertyDefinition (SerializationInfo info, StreamingContext context)
     {
-      GetObjectData (info, context);
+      _propertyName = info.GetString ("PropertyName");
+      bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+      if (ispartOfMappingConfiguration)
+      {
+        // Note: If this object was part of MappingConfiguration.Current during the serialization process,
+        // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
+        // Therefore only the information needed in IObjectReference.GetRealObject is deserialized here.
+        _mappingClassID = info.GetString ("MappingClassID");
+      }
+      else
+      {
+        _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
+        _storageSpecificName = info.GetString ("StorageSpecificName");
+
+        _maxLength = (int?) info.GetValue ("MaxLength", typeof (int?));
+        _isPersistent = info.GetBoolean ("IsPersistent");
+      }
     }
 
-    protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
       info.AddValue ("PropertyName", _propertyName);
 
@@ -246,14 +142,16 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
       else
       {
-        info.AddValue ("ClassDefinition", _classDefinition);
-        info.AddValue ("StorageSpecificName", _storageSpecificName);
-        info.AddValue ("HasTypeInfo", _typeInfo != null);
-        info.AddValue ("MappingTypeName", _mappingTypeName);
-        info.AddValue ("IsNullable", _isNullable);
-        info.AddValue ("MaxLength", _maxLength);
-        info.AddValue ("IsPersistent", _isPersistent);
+        GetObjectData (info, context);
       }
+    }
+
+    protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      info.AddValue ("ClassDefinition", _classDefinition);
+      info.AddValue ("StorageSpecificName", _storageSpecificName);
+      info.AddValue ("MaxLength", _maxLength);
+      info.AddValue ("IsPersistent", _isPersistent);
     }
 
     #endregion

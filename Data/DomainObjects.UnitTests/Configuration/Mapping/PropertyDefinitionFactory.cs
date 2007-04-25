@@ -12,12 +12,12 @@ public sealed class PropertyDefinitionFactory
 
   public static PropertyDefinition CreateCustomerDefinition ()
   {
-    return new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, null);
+    return new ReflectionBasedPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", typeof (ObjectID), false, null);
   }
 
   public static PropertyDefinition CreateWithUnresolvedRelationPropertyType ()
   {
-    return new PropertyDefinition ("PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName, false, false, null);
+    return new ReflectionBasedPropertyDefinition ("PropertyName", "StorageSpecificName", typeof (ObjectID), false, null);
   }
 
   // member fields

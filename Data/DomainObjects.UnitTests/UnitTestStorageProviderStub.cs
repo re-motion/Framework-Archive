@@ -3,7 +3,6 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
@@ -27,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public override DataContainer LoadDataContainer (ObjectID id)
     {
       DataContainer container = DataContainer.CreateForExisting (id, null);
-      PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", 100);
+      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
       container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
       return container;
     }

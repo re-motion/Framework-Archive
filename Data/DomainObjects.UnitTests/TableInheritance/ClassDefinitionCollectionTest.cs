@@ -149,12 +149,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
 
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("PersonName", "NameColumn", "string", true, false, 100));
+      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("PersonName", "NameColumn", typeof (string), false, 100));
 
       ReflectionBasedClassDefinition organizationalUnitClass = new ReflectionBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
-      organizationalUnitClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OrganizationalUnitName", "NameColumn", "string", true, false, 100));
+      organizationalUnitClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("OrganizationalUnitName", "NameColumn", typeof (string), false, 100));
 
       _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);

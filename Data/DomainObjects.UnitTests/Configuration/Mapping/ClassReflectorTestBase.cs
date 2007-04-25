@@ -9,51 +9,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     protected void CreatePropertyDefinitionsForClassWithMixedProperties (ClassDefinition classDefinition)
     {
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.Boolean",
               "Boolean",
-              "boolean",
-              true,
-              false,
+              typeof (bool),
+              null,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.Int32",
               "Int32",
-              "int32",
-              true,
-              false,
+              typeof (int),
+              null,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.String",
               "String",
-              "string",
-              true,
+              typeof (string),
               true,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.PrivateString",
               "PrivateString",
-              "string",
-              true,
+              typeof (string),
               true,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties.UnidirectionalOneToOne",
               "UnidirectionalOneToOneID",
-              TypeInfo.ObjectIDMappingTypeName,
-              true,
+              typeof (ObjectID),
               true,
               null,
               true));
@@ -62,31 +57,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     protected void CreatePropertyDefinitionsForDerivedClassWithMixedProperties (ClassDefinition classDefinition)
     {
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.String",
               "NewString",
-              "string",
-              true,
+              typeof (string),
               true,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.PrivateString",
               "DerivedPrivateString",
-              "string",
-              true,
+              typeof (string),
               true,
               null,
               true));
 
       classDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new ReflectionBasedPropertyDefinition (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties.OtherString",
               "OtherString",
-              "string",
-              true,
+              typeof (string),
               true,
               null,
               true));

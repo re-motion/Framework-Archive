@@ -47,22 +47,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       _relationDefinitions = new RelationDefinitionCollection();
     }
 
-    protected ClassDefinition (SerializationInfo info, StreamingContext context)
-    {
-      _id = info.GetString ("ID");
-      _isPartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
-
-      if (!_isPartOfMappingConfiguration)
-      {
-        _entityName = info.GetString ("EntityName");
-        _storageProviderID = info.GetString ("StorageProviderID");
-        _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
-        _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
-        _propertyDefinitions = (PropertyDefinitionCollection) info.GetValue ("PropertyDefinitions", typeof (PropertyDefinitionCollection));
-        _relationDefinitions = (RelationDefinitionCollection) info.GetValue ("RelationDefinitions", typeof (RelationDefinitionCollection));
-      }
-    }
-
     // methods and properties
 
     public bool IsSameOrBaseClassOf (ClassDefinition classDefinition)
@@ -597,6 +581,22 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     #region ISerializable Members
 
+    protected ClassDefinition (SerializationInfo info, StreamingContext context)
+    {
+      _id = info.GetString ("ID");
+      _isPartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+      if (!_isPartOfMappingConfiguration)
+      {
+        _entityName = info.GetString ("EntityName");
+        _storageProviderID = info.GetString ("StorageProviderID");
+        _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
+        _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
+        _propertyDefinitions = (PropertyDefinitionCollection) info.GetValue ("PropertyDefinitions", typeof (PropertyDefinitionCollection));
+        _relationDefinitions = (RelationDefinitionCollection) info.GetValue ("RelationDefinitions", typeof (RelationDefinitionCollection));
+      }
+    }
+
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
       info.AddValue ("ID", _id);
@@ -604,7 +604,8 @@ namespace Rubicon.Data.DomainObjects.Mapping
       bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
       info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
       
-      GetObjectData (info, context);
+      if (!isPartOfMappingConfiguration)
+        GetObjectData (info, context);
     }
 
     protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)

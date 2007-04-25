@@ -177,12 +177,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
       XmlBasedClassDefinition personClass = new XmlBasedClassDefinition (
           "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
 
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("PersonName", "NameColumn", "string", true, false, 100));
+      personClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("PersonName", "NameColumn", "string", true, false, 100));
 
       XmlBasedClassDefinition organizationalUnitClass = new XmlBasedClassDefinition (
           "OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
 
-      organizationalUnitClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OrganizationalUnitName", "NameColumn", "string", true, false, 100));
+      organizationalUnitClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("OrganizationalUnitName", "NameColumn", "string", true, false, 100));
 
       _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);

@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _propertyDefinition = new PropertyDefinition ("Name", "Name", "string", 100);
+      _propertyDefinition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
       _collection = new PropertyDefinitionCollection ();
     }
 
@@ -110,8 +110,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       _collection.Add (_propertyDefinition);
 
-      PropertyDefinition copy = new PropertyDefinition (
-          _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.MappingTypeName, true,
+      PropertyDefinition copy = new ReflectionBasedPropertyDefinition (
+          _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.PropertyType,
           _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
 
       Assert.IsFalse (_collection.Contains (copy));
@@ -146,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsColumName ()
     {
-      _collection.Add (new PropertyDefinition ("PropertyName", "ColumnName", "int32"));
+      _collection.Add (new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int)));
 
       Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
     }

@@ -21,11 +21,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       Validate();
       TypeInfo typeInfo = GetTypeInfo();
 
-      return new PropertyDefinition (
+      return new ReflectionBasedPropertyDefinition (
           GetPropertyName(),
           GetStorageSpecificIdentifier(),
-          typeInfo.MappingType,
-          true,
+          typeInfo.Type,
           IsNullable (typeInfo),
           GetMaxLength(),
           true);
@@ -65,11 +64,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return PropertyInfo.Name;
     }
 
-    private bool IsNullable (TypeInfo typeInfo)
+    private bool? IsNullable (TypeInfo typeInfo)
     {
       if (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
         return true;
-      return typeInfo.IsNullable;
+      if (typeInfo.Type.IsClass)
+        return typeInfo.IsNullable;
+      return null;
     }
 
     private int? GetMaxLength()

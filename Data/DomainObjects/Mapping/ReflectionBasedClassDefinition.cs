@@ -38,15 +38,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-    protected ReflectionBasedClassDefinition (SerializationInfo info, StreamingContext context)
-        : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
-      }
-    }
-
     public new ReflectionBasedClassDefinition BaseClass
     {
       get { return (ReflectionBasedClassDefinition) base.BaseClass; }
@@ -120,10 +111,23 @@ namespace Rubicon.Data.DomainObjects.Mapping
       return new MappingException (string.Format (message, args));
     }
 
+    #region ISerializable Members
+    
+    protected ReflectionBasedClassDefinition (SerializationInfo info, StreamingContext context)
+      : base (info, context)
+    {
+      if (!IsPartOfMappingConfiguration)
+      {
+        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
+      }
+    }
+
     protected override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       base.GetObjectData (info, context);
       info.AddValue ("ClassType", _classType);
     }
+
+    #endregion
   }
 }

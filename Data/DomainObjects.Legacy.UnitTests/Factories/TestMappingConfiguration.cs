@@ -125,8 +125,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition company = new XmlBasedClassDefinition (
           "Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company));
 
-      company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      company.MyPropertyDefinitions.Add (new PropertyDefinition (
+      company.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
+      company.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return company;
@@ -137,10 +137,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition customer = new XmlBasedClassDefinition (
           "Customer", "Company", DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
 
-      customer.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
+      customer.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
 
       customer.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
+          new XmlBasedPropertyDefinition (
               "Type",
               "CustomerType",
               "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.Legacy.UnitTests"));
@@ -153,7 +153,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition partner = new XmlBasedClassDefinition (
           "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
-      partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName, true));
+      partner.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return partner;
     }
@@ -163,7 +163,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition supplier = new XmlBasedClassDefinition (
           "Supplier", "Company", DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
 
-      supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
+      supplier.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
 
       return supplier;
     }
@@ -173,7 +173,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition distributor = new XmlBasedClassDefinition (
           "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
 
-      distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
+      distributor.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
 
       return distributor;
     }
@@ -183,10 +183,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName, true));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("OrderNumber", "OrderNo", "int32"));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return order;
     }
@@ -196,7 +196,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition official = new XmlBasedClassDefinition (
           "Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official));
 
-      official.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      official.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
 
       return official;
     }
@@ -212,8 +212,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition orderTicket = new XmlBasedClassDefinition (
           "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
 
-      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
-      orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
+      orderTicket.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("FileName", "FileName", "string", 255));
+      orderTicket.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return orderTicket;
     }
@@ -223,9 +223,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition orderItem = new XmlBasedClassDefinition (
           "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
 
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
-      orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", "string", 100));
+      orderItem.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, true));
+      orderItem.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Position", "Position", "int32"));
+      orderItem.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Product", "Product", "string", 100));
 
       return orderItem;
     }
@@ -235,8 +235,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return order;
     }
@@ -246,7 +246,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition order = new XmlBasedClassDefinition (
           "Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person));
 
-      order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      order.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
 
       return order;
     }
@@ -256,7 +256,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition clientClass = new XmlBasedClassDefinition (
           "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
-      clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName, true));
+      clientClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return clientClass;
     }
@@ -266,7 +266,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition location = new XmlBasedClassDefinition (
           "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
 
-      location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, true));
+      location.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return location;
     }
@@ -276,7 +276,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition fileSystemItem = new XmlBasedClassDefinition (
           "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
 
-      fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName, true));
+      fileSystemItem.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return fileSystemItem;
     }
@@ -302,52 +302,52 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition classWithAllDataTypes = new XmlBasedClassDefinition (
           "ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DateProperty", "Date", "date"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DateTimeProperty", "DateTime", "dateTime"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DecimalProperty", "Decimal", "decimal"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("DoubleProperty", "Double", "double"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("ByteProperty", "Byte", "byte"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("DateProperty", "Date", "date"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("DateTimeProperty", "DateTime", "dateTime"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("DecimalProperty", "Decimal", "decimal"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("DoubleProperty", "Double", "double"));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "EnumProperty",
           "Enum",
           "Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Legacy.UnitTests"));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("GuidProperty", "Guid", "guid"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int16Property", "Int16", "int16"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int32Property", "Int32", "int32"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", "int64"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("SingleProperty", "Single", "single"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringProperty", "String", "string", 100));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringPropertyWithoutMaxLength", "StringWithoutMaxLength", "string"));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BinaryProperty", "Binary", "binary"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("GuidProperty", "Guid", "guid"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Int16Property", "Int16", "int16"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Int32Property", "Int32", "int32"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Int64Property", "Int64", "int64"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("SingleProperty", "Single", "single"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("StringProperty", "String", "string", 100));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("StringPropertyWithoutMaxLength", "StringWithoutMaxLength", "string"));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("BinaryProperty", "Binary", "binary"));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanProperty", "NaBoolean", "boolean", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaByteProperty", "NaByte", "byte", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateProperty", "NaDate", "date", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeProperty", "NaDateTime", "dateTime", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDecimalProperty", "NaDecimal", "decimal", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDoubleProperty", "NaDouble", "double", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaGuidProperty", "NaGuid", "guid", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt16Property", "NaInt16", "int16", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt32Property", "NaInt32", "int32", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64Property", "NaInt64", "int64", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleProperty", "NaSingle", "single", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaBooleanProperty", "NaBoolean", "boolean", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaByteProperty", "NaByte", "byte", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDateProperty", "NaDate", "date", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDateTimeProperty", "NaDateTime", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDecimalProperty", "NaDecimal", "decimal", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDoubleProperty", "NaDouble", "double", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaGuidProperty", "NaGuid", "guid", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt16Property", "NaInt16", "int16", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt32Property", "NaInt32", "int32", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt64Property", "NaInt64", "int64", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaSingleProperty", "NaSingle", "single", true));
 
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, true, 100));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDecimalWithNullValueProperty", "NaDecimalWithNullValue", "decimal", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaGuidWithNullValueProperty", "NaGuidWithNullValue", "guid", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt16WithNullValueProperty", "NaInt16WithNullValue", "int16", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
-      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NullableBinaryProperty", "NullableBinary", "binary", true, true, 1000000));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, true, 100));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDateTimeWithNullValueProperty", "NaDateTimeWithNullValue", "dateTime", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDecimalWithNullValueProperty", "NaDecimalWithNullValue", "decimal", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaDoubleWithNullValueProperty", "NaDoubleWithNullValue", "double", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaGuidWithNullValueProperty", "NaGuidWithNullValue", "guid", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt16WithNullValueProperty", "NaInt16WithNullValue", "int16", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("NullableBinaryProperty", "NullableBinary", "binary", true, true, 1000000));
 
       return classWithAllDataTypes;
     }
@@ -397,10 +397,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName, true));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
@@ -411,7 +411,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition (
           "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
@@ -425,7 +425,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           DatabaseTest.c_testDomainProviderID,
           typeof (ClassWithoutRelatedClassIDColumn));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
@@ -439,7 +439,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           DatabaseTest.c_testDomainProviderID,
           typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
@@ -453,7 +453,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           DatabaseTest.c_testDomainProviderID,
           typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (
           "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
@@ -464,7 +464,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition industrialSector = new XmlBasedClassDefinition (
         "IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector));
 
-      industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      industrialSector.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
 
       return industrialSector;
     }
@@ -474,8 +474,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition employee = new XmlBasedClassDefinition (
           "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
 
-      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName, true));
+      employee.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Name", "Name", "string", 100));
+      employee.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return employee;
     }
@@ -485,8 +485,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
       XmlBasedClassDefinition computer = new XmlBasedClassDefinition (
           "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
 
-      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
-      computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName, true));
+      computer.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
+      computer.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return computer;
     }
@@ -497,7 +497,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories
           "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance",
           DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
-      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName, true));
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName, true));
 
       return classDefinition;
     }

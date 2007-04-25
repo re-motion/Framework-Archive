@@ -665,7 +665,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     {
       Employee employee = Employee.NewObject ();
 
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("testproperty", "testproperty", typeof (string), true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -684,7 +684,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     {
       Employee employee = Employee.NewObject ();
 
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", typeof (string), true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsTrue (propertyValues.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"));

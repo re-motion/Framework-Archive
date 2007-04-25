@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);
 
-      _nameDefinition = new PropertyDefinition ("Name", "Name", "string", 100);
+      _nameDefinition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
     }
 
@@ -162,8 +162,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       ObjectID id = new ObjectID ("Official", 1);
       DataContainer container = DataContainer.CreateNew (id);
 
-      PropertyDefinition reportsToDefinition = new PropertyDefinition (
-          "ReportsTo", "ReportsTo", "string", true, true, 100);
+      PropertyDefinition reportsToDefinition = new ReflectionBasedPropertyDefinition (
+          "ReportsTo", "ReportsTo", typeof (string), true, 100);
 
       container.PropertyValues.Add (new PropertyValue (reportsToDefinition, null));
 

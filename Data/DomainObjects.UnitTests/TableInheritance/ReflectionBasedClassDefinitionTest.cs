@@ -128,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         "The fully qualified storage specific property name cannot be evaluated because class 'DomainBase' does not know its entity.")]
     public void GetFullyQualifiedStorageSpecificName_WithAbstractClass ()
     {
-      _domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("CreatedBy", "CreatedByColumn", "string", 100));
+      _domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("CreatedBy", "CreatedByColumn", typeof (string), 100));
       _domainBaseClass.GetFullyQualifiedStorageSpecificNameForProperty ("CreatedBy");
     }
 
@@ -139,8 +139,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
       ReflectionBasedClassDefinition organizationalUnit = new ReflectionBasedClassDefinition ("OrganizationalUnit", "TableInheritance_OrganizationalUnit", c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
-      organizationalUnit.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
+      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
+      organizationalUnit.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
@@ -155,8 +155,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false, domainBaseClass);
       ReflectionBasedClassDefinition organizationalUnit = new ReflectionBasedClassDefinition ("OrganizationalUnit", null, c_testDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
-      organizationalUnit.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
+      organizationalUnit.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("OtherName", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
@@ -170,8 +170,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+      domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
+      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("OtherName", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
@@ -186,8 +186,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
       ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), false, personClass);
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
-      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+      domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
+      customerClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("OtherName", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
@@ -201,8 +201,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), true);
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), true, domainBaseClass);
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", 100));
-      personClass.MyPropertyDefinitions.Add (new PropertyDefinition ("OtherName", "NameColumn", "string", 100));
+      domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), 100));
+      personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("OtherName", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }

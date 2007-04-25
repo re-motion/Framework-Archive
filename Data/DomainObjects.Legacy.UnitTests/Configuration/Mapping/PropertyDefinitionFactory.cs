@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 
@@ -12,12 +13,12 @@ public sealed class PropertyDefinitionFactory
 
   public static PropertyDefinition CreateCustomerDefinition ()
   {
-    return new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, null);
+    return new XmlBasedPropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, null);
   }
 
   public static PropertyDefinition CreateWithUnresolvedRelationPropertyType ()
   {
-    return new PropertyDefinition ("PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName, false, false, null);
+    return new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName, false, false, null);
   }
 
   // member fields

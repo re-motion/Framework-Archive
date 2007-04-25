@@ -41,6 +41,7 @@
     <Compile Include="Design\DesignModeMappingLoader.cs" />
     <Compile Include="Mapping\XmlBasedClassDefinition.cs" />
     <Compile Include="Mapping\XmlBasedMappingConfiguration.cs" />
+    <Compile Include="Mapping\XmlBasedPropertyDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schemas\LegacySchemaLoader.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />

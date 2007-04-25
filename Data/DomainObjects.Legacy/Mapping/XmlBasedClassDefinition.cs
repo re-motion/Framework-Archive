@@ -69,16 +69,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
         throw CreateMappingException ("Type '{0}' of class '{1}' is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, classID);
     }
 
-    public XmlBasedClassDefinition (SerializationInfo info, StreamingContext context)
-      : base (info, context)
-    {
-      if (!IsPartOfMappingConfiguration)
-      {
-        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
-        _classTypeName = info.GetString ("ClassTypeName");
-      }
-    }
-
     public new XmlBasedClassDefinition BaseClass
     {
       get { return (XmlBasedClassDefinition) base.BaseClass; }
@@ -157,11 +147,25 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       return new MappingException (string.Format (message, args));
     }
 
+    #region ISerializable Members
+
+    public XmlBasedClassDefinition (SerializationInfo info, StreamingContext context)
+      : base (info, context)
+    {
+      if (!IsPartOfMappingConfiguration)
+      {
+        _classType = (Type) info.GetValue ("ClassType", typeof (Type));
+        _classTypeName = info.GetString ("ClassTypeName");
+      }
+    }
+
     protected override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       base.GetObjectData (info, context);
       info.AddValue ("ClassType", _classType);
       info.AddValue ("ClassTypeName", _classTypeName);
     }
+
+    #endregion
   }
 }

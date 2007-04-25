@@ -105,6 +105,7 @@
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
+    <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
     <Compile Include="NotAbstractAttribute.cs" />
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />

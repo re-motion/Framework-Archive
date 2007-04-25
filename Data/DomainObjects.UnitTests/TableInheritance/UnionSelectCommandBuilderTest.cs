@@ -45,7 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       ReflectionBasedClassDefinition clientClass = new ReflectionBasedClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client), false);
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
+      domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", "ClientID", typeof (ObjectID)));
 
       RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", false);
 

@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
       XmlBasedClassDefinition clientClass = new XmlBasedClassDefinition ("Client", "TableInheritance_Client", c_testDomainProviderID, typeof (Client));
 
-      domainBaseClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
+      domainBaseClass.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition domainBaseEndPointDefinition = new RelationEndPointDefinition (domainBaseClass, "Client", false);
 

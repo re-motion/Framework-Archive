@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
@@ -27,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     public override DataContainer LoadDataContainer (ObjectID id)
     {
       DataContainer container = DataContainer.CreateForExisting (id, null);
-      PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", 100);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("Name", "Name", "string", 100);
       container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
       return container;
     }

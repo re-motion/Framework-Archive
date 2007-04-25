@@ -178,8 +178,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition orderTicketDefinition =
           new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
       orderTicketDefinition.MyPropertyDefinitions.Add (
-          new PropertyDefinition (
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+          new ReflectionBasedPropertyDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", typeof (ObjectID), false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", true, CardinalityType.One, typeof (OrderTicket));

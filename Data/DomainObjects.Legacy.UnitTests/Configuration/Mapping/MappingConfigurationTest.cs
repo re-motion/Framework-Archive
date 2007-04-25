@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
       XmlBasedClassDefinition orderTicketDefinition = new XmlBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
-      orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));

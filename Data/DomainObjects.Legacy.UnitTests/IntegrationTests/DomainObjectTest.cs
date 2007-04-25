@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -665,7 +666,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       Employee employee = new Employee ();
 
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -684,7 +685,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       Employee employee = new Employee ();
 
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Name", "Name", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("Name", "Name", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsTrue (propertyValues.Contains ("Name"));

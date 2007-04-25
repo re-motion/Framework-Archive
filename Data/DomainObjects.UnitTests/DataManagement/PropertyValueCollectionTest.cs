@@ -21,9 +21,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Events ()
     {
-      PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
-      PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
-      PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
+      PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", typeof (int), 42);
+      PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", typeof (string), "Arthur Dent");
+      PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", typeof (string), true, null);
 
       _collection.Add (propertyValue1);
       _collection.Add (propertyValue2);
@@ -45,9 +45,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void CancelEvents ()
     {
-      PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
-      PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
-      PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
+      PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", typeof (int), 42);
+      PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", typeof (string), "Arthur Dent");
+      PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", typeof (string), true, null);
 
       _collection.Add (propertyValue1);
       _collection.Add (propertyValue2);
@@ -73,8 +73,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Property 'DoesNotExist' does not exist.\r\nParameter name: propertyName")]
     public void NonExistingPropertyName ()
     {
-      _collection.Add (CreatePropertyValue ("PropertyName 1", "int32", 42));
-      _collection.Add (CreatePropertyValue ("PropertyName 2", "int32", 43));
+      _collection.Add (CreatePropertyValue ("PropertyName 1", typeof (int), 42));
+      _collection.Add (CreatePropertyValue ("PropertyName 2", typeof (int), 43));
 
       PropertyValue propertyValue = _collection["DoesNotExist"];
     }
@@ -83,14 +83,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Property 'PropertyName' already exists in collection.\r\nParameter name: value")]
     public void DuplicatePropertyNames ()
     {
-      _collection.Add (CreatePropertyValue ("PropertyName", "int32", 42));
-      _collection.Add (CreatePropertyValue ("PropertyName", "int32", 43));
+      _collection.Add (CreatePropertyValue ("PropertyName", typeof (int), 42));
+      _collection.Add (CreatePropertyValue ("PropertyName", typeof (int), 43));
     }
 
     [Test]
     public void PreviousEventCancels ()
     {
-      PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+      PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
       PropertyValueEventReceiver valueEventReceiver = new PropertyValueEventReceiver (value, true);
 
       _collection.Add (value);
@@ -110,7 +110,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueInTwoCollections ()
     {
-      PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+      PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
       PropertyValueCollection collection1 = new PropertyValueCollection ();
       PropertyValueCollection collection2 = new PropertyValueCollection ();
 
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void ContainsPropertyValueTrue ()
     {
-      PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+      PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
 
       _collection.Add (value);
 
@@ -142,10 +142,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void ContainsPropertyValueFalse ()
     {
-      PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+      PropertyValue value = CreatePropertyValue ("PropertyName", typeof (int), 42);
       _collection.Add (value);
 
-      PropertyValue copy = CreatePropertyValue ("PropertyName", "int32", 42);
+      PropertyValue copy = CreatePropertyValue ("PropertyName", typeof (int), 42);
 
       Assert.IsFalse (_collection.Contains (copy));
 
@@ -158,18 +158,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _collection.Contains ((PropertyValue) null);
     }
 
-    private PropertyValue CreatePropertyValue (string name, string mappingType, object value)
+    private PropertyValue CreatePropertyValue (string name, Type propertyType, object value)
     {
-      return CreatePropertyValue (name, mappingType, false, value);
+      return CreatePropertyValue (name, propertyType, null, value);
     }
 
-    private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
+    private PropertyValue CreatePropertyValue (string name, Type propertyType, bool? isNullable, object value)
     {
-      int? maxLength = null;
-      if (mappingType == "string")
-        maxLength = 100;
+      int? maxLength = (propertyType == typeof (string)) ? (int?) 100 : null;
 
-      PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
+      PropertyDefinition definition = new ReflectionBasedPropertyDefinition (name, name, propertyType, isNullable, maxLength);
       return new PropertyValue (definition, value);
     }
   }

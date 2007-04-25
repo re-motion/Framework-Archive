@@ -19,7 +19,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (bool), actual.PropertyType);
-      Assert.AreEqual ("boolean", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (false, actual.DefaultValue);
@@ -34,7 +33,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
       Assert.AreSame (typeof (NaBoolean), actual.PropertyType);
-      Assert.AreEqual ("boolean", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (NaBoolean.Null, actual.DefaultValue);
@@ -49,9 +47,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty", actual.PropertyName);
       Assert.AreSame (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
-      Assert.AreEqual (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.UnitTests",
-          actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, actual.DefaultValue);
@@ -66,7 +61,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional", actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
-      Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);

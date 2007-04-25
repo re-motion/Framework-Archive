@@ -21,7 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
-      Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -38,7 +37,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NullableFromAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
-      Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -55,7 +53,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
-      Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (new byte[0], actual.DefaultValue);
@@ -72,7 +69,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
-      Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -89,7 +85,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBinaryProperties.NotNullableAndMaximumLength",
           actual.PropertyName);
       Assert.AreSame (typeof (byte[]), actual.PropertyType);
-      Assert.AreEqual ("binary", actual.MappingTypeName);
       Assert.IsFalse (actual.IsNullable);
       Assert.AreEqual (100, actual.MaxLength);
       Assert.AreEqual (new byte[0], actual.DefaultValue);

@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
@@ -30,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _propertyDefinition = new PropertyDefinition ("Name", "Name", "string", 100);
+      _propertyDefinition = new XmlBasedPropertyDefinition ("Name", "Name", "string", 100);
       _collection = new PropertyDefinitionCollection ();
     }
 
@@ -110,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       _collection.Add (_propertyDefinition);
 
-      PropertyDefinition copy = new PropertyDefinition (
+      PropertyDefinition copy = new XmlBasedPropertyDefinition (
           _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.MappingTypeName, true,
           _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
 
@@ -146,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsColumName ()
     {
-      _collection.Add (new PropertyDefinition ("PropertyName", "ColumnName", "int32"));
+      _collection.Add (new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32"));
 
       Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
     }

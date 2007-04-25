@@ -258,8 +258,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
 
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
     }
 
     [Test]
@@ -268,11 +268,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void AddDuplicatePropertyBaseClass()
     {
       ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
 
       ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition (
           "Customer", "Company", "TestDomain", typeof (Customer), false, companyClass);
-      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      customerClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
     }
 
     [Test]
@@ -281,7 +281,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void AddDuplicatePropertyBaseOfBaseClass()
     {
       ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "Company", "TestDomain", typeof (Company), false);
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
 
       ReflectionBasedClassDefinition partnerClass = new ReflectionBasedClassDefinition (
           "Partner", "Company", "TestDomain", typeof (Partner), false, companyClass);
@@ -289,7 +289,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition supplierClass = new ReflectionBasedClassDefinition (
           "Supplier", "Company", "TestDomain", typeof (Supplier), false, partnerClass);
 
-      supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      supplierClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
     }
 
     [Test]
@@ -302,8 +302,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition partnerClass = new ReflectionBasedClassDefinition (
           "Partner", "Company", "TestDomain", typeof (Partner), false, companyClass);
 
-      partnerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      partnerClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
 
       companyClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
@@ -321,23 +321,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition supplierClass = new ReflectionBasedClassDefinition (
           "Supplier", "Company", "TestDomain", typeof (Supplier), false, partnerClass);
 
-      supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
+      supplierClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100));
 
       companyClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
-    }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
-                          + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.")]
-    public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType()
-    {
-      ReflectionBasedClassDefinition classDefinition = 
-          new ReflectionBasedClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order), false);
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
-
-      classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     }
 
     [Test]
@@ -731,7 +718,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void SetClassDefinitionOfPropertyDefinition()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("Test", "Test", typeof (int));
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
       // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
@@ -746,7 +733,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void CancelAddingOfPropertyDefinition()
     {
-      PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("Test", "Test", typeof (int));
       Assert.IsNull (propertyDefinition.ClassDefinition);
 
       // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
@@ -769,7 +756,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void Contains()
     {
-      Assert.IsFalse (_orderClass.Contains (new PropertyDefinition ("PropertyName", "ColumnName", "int32")));
+      Assert.IsFalse (_orderClass.Contains (new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int))));
       Assert.IsTrue (_orderClass.Contains (_orderClass["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"]));
     }
 
@@ -825,7 +812,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
       ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
-      customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSinceColumn", "dateTime", false));
+      customerClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("CustomerSince", "CustomerSinceColumn", typeof (DateTime)));
 
       Assert.AreEqual ("CompanyTable_CustomerSinceColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("CustomerSince"));
     }
@@ -834,7 +821,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetFullyQualifiedStorageSpecificName_WithPropertyInBaseClass ()
     {
       ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
-      companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "NameColumn", "string", false));
+      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Name", "NameColumn", typeof (string), false));
       ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
 
       Assert.AreEqual ("CompanyTable_NameColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("Name"));
