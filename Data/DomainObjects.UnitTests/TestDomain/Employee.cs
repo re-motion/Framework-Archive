@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Employee NewObject ()
     {
-      return DomainObject.NewObject<Employee> ().With();
+      return NewObject<Employee> ().With();
     }
 
     protected Employee ()

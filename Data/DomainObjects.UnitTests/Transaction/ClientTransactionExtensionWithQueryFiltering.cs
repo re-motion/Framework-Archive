@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -61,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
     }
 
-    public virtual void FilterQueryResult (DomainObjectCollection queryResult, Rubicon.Data.DomainObjects.Queries.IQuery query)
+    public virtual void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
     {
       if (queryResult.Count >0)
         queryResult.Remove (queryResult[0]);

@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       QueryDefinition deserializedQueryDefinition = (QueryDefinition) SerializeAndDeserialize (queryDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (queryDefinition, deserializedQueryDefinition));
+      Assert.IsFalse (ReferenceEquals (queryDefinition, deserializedQueryDefinition));
       AreEqual (queryDefinition, deserializedQueryDefinition);
     }
 
@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
     private void AreEqual (Query expected, Query actual)
     {
-      Assert.IsFalse (object.ReferenceEquals (expected, actual));
+      Assert.IsFalse (ReferenceEquals (expected, actual));
       Assert.IsNotNull (actual);
 
       Assert.AreEqual (expected.ID, actual.ID);
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
     private void AreEqual (QueryDefinitionCollection expected, QueryDefinitionCollection actual)
     {
-      Assert.IsFalse (object.ReferenceEquals (expected, actual));
+      Assert.IsFalse (ReferenceEquals (expected, actual));
       Assert.IsNotNull (actual);
       Assert.AreEqual (expected.Count, actual.Count);
 
@@ -113,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
     private void AreEqual (QueryParameter expected, QueryParameter actual)
     {
-      Assert.IsFalse (object.ReferenceEquals (expected, actual));
+      Assert.IsFalse (ReferenceEquals (expected, actual));
       Assert.AreEqual (expected.Name, actual.Name);
       Assert.AreEqual (expected.ParameterType, actual.ParameterType);
       Assert.AreEqual (expected.Value, actual.Value);
@@ -121,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
     private void AreEqual (QueryParameterCollection expected, QueryParameterCollection actual)
     {
-      Assert.IsFalse (object.ReferenceEquals (expected, actual));
+      Assert.IsFalse (ReferenceEquals (expected, actual));
       Assert.AreEqual (expected.Count, actual.Count);
       Assert.AreEqual (expected.IsReadOnly, actual.IsReadOnly);
 

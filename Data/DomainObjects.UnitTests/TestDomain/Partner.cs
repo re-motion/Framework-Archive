@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static new Partner NewObject ()
     {
-      return DomainObject.NewObject<Partner>().With();
+      return NewObject<Partner>().With();
     }
 
     protected Partner ()

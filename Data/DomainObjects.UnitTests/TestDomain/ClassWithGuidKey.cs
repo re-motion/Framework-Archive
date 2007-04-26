@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static ClassWithGuidKey NewObject ()
     {
-      return DomainObject.NewObject<ClassWithGuidKey> ().With();
+      return NewObject<ClassWithGuidKey> ().With();
     }
 
     protected ClassWithGuidKey()

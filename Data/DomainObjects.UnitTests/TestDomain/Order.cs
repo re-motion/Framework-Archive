@@ -10,14 +10,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Order NewObject ()
     {
-      return DomainObject.NewObject<Order> ().With();
+      return NewObject<Order> ().With();
     }
 
     public static Order NewObject (ClientTransaction clientTransaction)
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Order>().With();
+        return NewObject<Order>().With();
       }
     }
 

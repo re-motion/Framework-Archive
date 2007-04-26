@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp ();
 
-      _providerDefinition = new RdbmsProviderDefinition (c_testDomainProviderID, typeof (SqlProvider), DatabaseTest.TestDomainConnectionString);
+      _providerDefinition = new RdbmsProviderDefinition (c_testDomainProviderID, typeof (SqlProvider), TestDomainConnectionString);
 
       _provider = new SqlProvider (_providerDefinition);
     }

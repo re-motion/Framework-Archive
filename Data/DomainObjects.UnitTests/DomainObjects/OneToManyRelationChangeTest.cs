@@ -256,7 +256,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Partner partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner2);
 
       Assert.IsNull (industrialSector.Companies[partner.ID]);
-      Assert.IsFalse (object.ReferenceEquals (industrialSector, partner.IndustrialSector));
+      Assert.IsFalse (ReferenceEquals (industrialSector, partner.IndustrialSector));
 
       industrialSector.Companies.Add (partner);
 

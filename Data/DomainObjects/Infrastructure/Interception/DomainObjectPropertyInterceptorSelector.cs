@@ -18,6 +18,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       _interceptor = interceptor;
     }
 
+    //TODO: Write tests that verfiy that type is used instead of property.PropertyType
     public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
     {
       ArgumentUtility.CheckNotNull ("type", type);
@@ -33,17 +34,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
         PropertyInfo property = ReflectionUtility.GetPropertyForMethod (memberInfo);
         string id = DomainObjectPropertyInterceptor.GetIdentifierFromProperty (property);
 
-        bool isDefined = DomainObjectPropertyInterceptor.IsInterceptable (property.DeclaringType, id);
+        bool isDefined = DomainObjectPropertyInterceptor.IsInterceptable (type, id);
         if (!isDefined && memberInfo.IsAbstract)
         {
           throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, property {1} is abstract "
-              + "but not defined in the mapping (assumed property id: {2}).", property.DeclaringType.FullName, property.Name, id), type);
+              + "but not defined in the mapping (assumed property id: {2}).", type.FullName, property.Name, id), type);
         }
 
-        if (ReflectionUtility.IsPropertySetter(memberInfo) && DomainObjectPropertyInterceptor.IsRelatedObjectCollection (property.DeclaringType, id))
+        if (ReflectionUtility.IsPropertySetter(memberInfo) && DomainObjectPropertyInterceptor.IsRelatedObjectCollection (type, id))
         {
           throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, automatic properties for related object collections "
-              + "cannot have setters: property '{1}', property id '{2}'.", property.DeclaringType.FullName, property.Name, id), type);
+              + "cannot have setters: property '{1}', property id '{2}'.", type.FullName, property.Name, id), type);
         }
 
         return isDefined;

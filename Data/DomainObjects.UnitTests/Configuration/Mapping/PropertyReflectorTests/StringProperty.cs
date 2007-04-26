@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {

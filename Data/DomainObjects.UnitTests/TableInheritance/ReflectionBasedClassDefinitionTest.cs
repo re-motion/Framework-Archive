@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain;
 using Rubicon.Utilities;
@@ -21,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       base.SetUp ();
 
-      _domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase), false);
+      _domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), false);
       _personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, _domainBaseClass);
       _customerClass = new ReflectionBasedClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), false, _personClass);
       _addressClass = new ReflectionBasedClassDefinition ("Address", "TableInheritance_Address", c_testDomainProviderID, typeof (Address), false);
@@ -105,7 +104,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void GetAllConcreteEntityNamesForAbstractClassWithSameEntityNameInInheritanceHierarchy ()
     {
-      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase), false);
+      ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase), false);
       ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), false, domainBaseClass);
       ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", "TableInheritance_Person", c_testDomainProviderID, typeof (Customer), false, personClass);
 

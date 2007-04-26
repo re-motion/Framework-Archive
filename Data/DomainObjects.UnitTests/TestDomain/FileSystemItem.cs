@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static FileSystemItem NewObject ()
     {
-      return DomainObject.NewObject<FileSystemItem> ().With ();
+      return NewObject<FileSystemItem> ().With ();
     }
 
     protected FileSystemItem()

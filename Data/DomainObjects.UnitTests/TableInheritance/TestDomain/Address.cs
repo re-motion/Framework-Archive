@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   {
     public static Address NewObject ()
     {
-      return DomainObject.NewObject<Address> ().With();
+      return NewObject<Address> ().With();
     }
 
     protected Address ()

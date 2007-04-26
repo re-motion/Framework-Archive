@@ -1,13 +1,15 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
+using Rubicon.NullableValueTypes;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
+namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
 {
   [TestFixture]
-  public class PropertyValueTest : ReflectionBasedMappingTest
+  public class PropertyValueTest : StandardMappingTest
   {
     [Test]
     public void TestEquals ()
@@ -94,32 +96,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SettingOfNullValueForNullableValueType ()
     {
-      PropertyValue propertyValue = CreateNullableIntPropertyValue ("test", null);
+      PropertyValue propertyValue = CreateNullableIntPropertyValue ("test", NaInt32.Null);
 
       Assert.AreEqual ("test", propertyValue.Name, "Name after initialization");
-      Assert.AreEqual (null, propertyValue.Value, "Value after initialization");
-      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after initialization");
+      Assert.AreEqual (NaInt32.Null, propertyValue.Value, "Value after initialization");
+      Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after initialization");
       Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after initialization");
 
-      propertyValue.Value = null;
+      propertyValue.Value = NaInt32.Null;
 
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #1");
-      Assert.AreEqual (null, propertyValue.Value, "Value after change #1");
-      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after change #1");
+      Assert.AreEqual (NaInt32.Null, propertyValue.Value, "Value after change #1");
+      Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after change #1");
       Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #1");
 
-      propertyValue.Value = 10;
+      propertyValue.Value = new NaInt32 (10);
 
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #2");
-      Assert.AreEqual (10, propertyValue.Value, "Value after change #2");
-      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after change #2");
+      Assert.AreEqual (new NaInt32 (10), propertyValue.Value, "Value after change #2");
+      Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after change #2");
       Assert.AreEqual (true, propertyValue.HasChanged, "HasChanged after change #2");
 
-      propertyValue.Value = null;
+      propertyValue.Value = NaInt32.Null;
 
       Assert.AreEqual ("test", propertyValue.Name, "Name after change #3");
-      Assert.AreEqual (null, propertyValue.Value, "Value after change #3");
-      Assert.AreEqual (null, propertyValue.OriginalValue, "OriginalValue after change #3");
+      Assert.AreEqual (NaInt32.Null, propertyValue.Value, "Value after change #3");
+      Assert.AreEqual (NaInt32.Null, propertyValue.OriginalValue, "OriginalValue after change #3");
       Assert.AreEqual (false, propertyValue.HasChanged, "HasChanged after change #3");
     }
 
@@ -271,7 +273,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheck ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (string), 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "12345");
       propertyValue.Value = "12345678901";
     }
@@ -280,7 +282,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheckInConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (string), 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "12345678901");
     }
 
@@ -288,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheckInConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (string), 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, 123);
     }
 
@@ -296,7 +298,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheck ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (string), 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "123");
       propertyValue.Value = 123;
     }
@@ -305,7 +307,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableStringToNull ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (string), false, 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", true, false, 10);
       PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
       propertyValue.Value = null;
@@ -314,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNullableBinary ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), true);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
       Assert.IsNull (propertyValue.Value);
     }
@@ -322,7 +324,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinary ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
 
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       ResourceManager.IsEmptyImage ((byte[]) propertyValue.Value);
@@ -335,7 +337,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void SetBinaryWithInvalidType ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, new int[0]);
     }
 
@@ -343,7 +345,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaConstructor ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, null);
     }
 
@@ -351,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaProperty ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, ResourceManager.GetImage1 ());
       propertyValue.Value = null;
     }
@@ -360,7 +362,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException), ExpectedMessage = "Value for property 'test' is too large. Maximum size: 1000000.")]
     public void SetBinaryLargerThanMaxLength ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (byte[]), true, 1000000);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", true, true, 1000000);
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       propertyValue.Value = ResourceManager.GetImageLarger1MB ();
     }
@@ -369,7 +371,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The relation property 'test' cannot be set directly.")]
     public void SetRelationPropertyDirectly ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (ObjectID), true);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", TypeInfo.ObjectIDMappingTypeName, true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
 
       propertyValue.Value = DomainObjectIDs.Customer1;
@@ -377,35 +379,37 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     private PropertyValue CreateIntPropertyValue (string name, int intValue)
     {
-      return CreatePropertyValue (name, typeof (int), null, intValue);
-    }
-
-    private PropertyValue CreateNullableIntPropertyValue (string name, int? intValue)
-    {
-      return CreatePropertyValue (name, typeof (int?), null, intValue);
+      return CreatePropertyValue (name, "int32", false, intValue);
     }
 
     private PropertyValue CreateStringPropertyValue (string name, string stringValue)
     {
       bool isNullable = (stringValue == null) ? true : false;
-      return CreatePropertyValue (name, typeof (string), isNullable, stringValue);
+      return CreatePropertyValue (name, "string", isNullable, stringValue);
     }
 
     private PropertyDefinition CreateIntPropertyDefinition (string name)
     {
-      return CreatePropertyDefinition (name, typeof (int), null);
+      return CreatePropertyDefinition (name, "int32", false);
     }
 
-    private PropertyDefinition CreatePropertyDefinition (string name, Type propertyType, bool? isNullable)
+    private PropertyValue CreateNullableIntPropertyValue (string name, NaInt32 intValue)
     {
-      int? maxLength = (propertyType == typeof (string)) ? (int?) 100 : null;
-
-      return new ReflectionBasedPropertyDefinition (name, name, propertyType, isNullable, maxLength, true);
+      return CreatePropertyValue (name, "int32", true, intValue);
     }
 
-    private PropertyValue CreatePropertyValue (string name, Type propertyType, bool? isNullable, object value)
+    private PropertyDefinition CreatePropertyDefinition (string name, string mappingType, bool isNullable)
     {
-      return new PropertyValue (CreatePropertyDefinition (name, propertyType, isNullable), value);
+      int? maxLength = null;
+      if (mappingType == "string")
+        maxLength = 100;
+
+      return new XmlBasedPropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
+    }
+
+    private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
+    {
+      return new PropertyValue (CreatePropertyDefinition (name, mappingType, isNullable), value);
     }
   }
 }

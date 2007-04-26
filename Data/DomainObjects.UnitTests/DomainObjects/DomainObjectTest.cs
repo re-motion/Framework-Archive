@@ -4,7 +4,6 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -42,29 +41,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes.StringPropertyWithoutMaxLength, "StringPropertyWithoutMaxLength");
       ResourceManager.IsEqualToImage1 (classWithAllDataTypes.BinaryProperty, "BinaryProperty");
 
-      Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes.NaBooleanProperty, "NaBooleanProperty");
-      Assert.AreEqual (new NaByte (78), classWithAllDataTypes.NaByteProperty, "NaByteProperty");
-      Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1)), classWithAllDataTypes.NaDateProperty, "NaDateProperty");
-      Assert.AreEqual (new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)), classWithAllDataTypes.NaDateTimeProperty, "NaDateTimeProperty");
-      Assert.AreEqual (new NaDecimal (new decimal (765.098)), classWithAllDataTypes.NaDecimalProperty, "NaDecimalProperty");
-      Assert.AreEqual (new NaDouble (654321.789), classWithAllDataTypes.NaDoubleProperty, "NaDoubleProperty");
-      Assert.AreEqual (new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")), classWithAllDataTypes.NaGuidProperty, "NaGuidProperty");
-      Assert.AreEqual (new NaInt16 (12000), classWithAllDataTypes.NaInt16Property, "NaInt16Property");
-      Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes.NaInt32Property, "NaInt32Property");
-      Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes.NaInt64Property, "NaInt64Property");
-      Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes.NaSingleProperty, "NaSingleProperty");
+      Assert.AreEqual (true, classWithAllDataTypes.NaBooleanProperty, "NaBooleanProperty");
+      Assert.AreEqual ((byte) 78, classWithAllDataTypes.NaByteProperty, "NaByteProperty");
+      Assert.AreEqual (new DateTime (2005, 2, 1), classWithAllDataTypes.NaDateProperty, "NaDateProperty");
+      Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes.NaDateTimeProperty, "NaDateTimeProperty");
+      Assert.AreEqual (765.098m, classWithAllDataTypes.NaDecimalProperty, "NaDecimalProperty");
+      Assert.AreEqual (654321.789d, classWithAllDataTypes.NaDoubleProperty, "NaDoubleProperty");
+      Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes.NaGuidProperty, "NaGuidProperty");
+      Assert.AreEqual ((short) 12000, classWithAllDataTypes.NaInt16Property, "NaInt16Property");
+      Assert.AreEqual (-2147483647, classWithAllDataTypes.NaInt32Property, "NaInt32Property");
+      Assert.AreEqual (3147483647L, classWithAllDataTypes.NaInt64Property, "NaInt64Property");
+      Assert.AreEqual (12.456F, classWithAllDataTypes.NaSingleProperty, "NaSingleProperty");
 
-      Assert.AreEqual (NaBoolean.Null, classWithAllDataTypes.NaBooleanWithNullValueProperty, "NaBooleanWithNullValueProperty");
-      Assert.AreEqual (NaByte.Null, classWithAllDataTypes.NaByteWithNullValueProperty, "NaByteWithNullValueProperty");
-      Assert.AreEqual (NaDecimal.Null, classWithAllDataTypes.NaDecimalWithNullValueProperty, "NaDecimalWithNullValueProperty");
-      Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes.NaDateWithNullValueProperty, "NaDateWithNullValueProperty");
-      Assert.AreEqual (NaDateTime.Null, classWithAllDataTypes.NaDateTimeWithNullValueProperty, "NaDateTimeWithNullValueProperty");
-      Assert.AreEqual (NaDouble.Null, classWithAllDataTypes.NaDoubleWithNullValueProperty, "NaDoubleWithNullValueProperty");
-      Assert.AreEqual (NaGuid.Null, classWithAllDataTypes.NaGuidWithNullValueProperty, "NaGuidWithNullValueProperty");
-      Assert.AreEqual (NaInt16.Null, classWithAllDataTypes.NaInt16WithNullValueProperty, "NaInt16WithNullValueProperty");
-      Assert.AreEqual (NaInt32.Null, classWithAllDataTypes.NaInt32WithNullValueProperty, "NaInt32WithNullValueProperty");
-      Assert.AreEqual (NaInt64.Null, classWithAllDataTypes.NaInt64WithNullValueProperty, "NaInt64WithNullValueProperty");
-      Assert.AreEqual (NaSingle.Null, classWithAllDataTypes.NaSingleWithNullValueProperty, "NaSingleWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaBooleanWithNullValueProperty, "NaBooleanWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaByteWithNullValueProperty, "NaByteWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaDecimalWithNullValueProperty, "NaDecimalWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaDateWithNullValueProperty, "NaDateWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaDateTimeWithNullValueProperty, "NaDateTimeWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaDoubleWithNullValueProperty, "NaDoubleWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaGuidWithNullValueProperty, "NaGuidWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaInt16WithNullValueProperty, "NaInt16WithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaInt32WithNullValueProperty, "NaInt32WithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaInt64WithNullValueProperty, "NaInt64WithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaSingleWithNullValueProperty, "NaSingleWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.StringWithNullValueProperty, "StringWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NullableBinaryProperty, "NullableBinaryProperty");
     }
@@ -490,7 +489,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
 
       Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
     }
 
     [Test]
@@ -505,7 +504,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.AreEqual (StateType.Deleted, order.State);
       Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
     }
 
     [Test]
@@ -515,7 +514,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.NewObject (clientTransactionMock);
 
       Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
     }
 
     [Test]

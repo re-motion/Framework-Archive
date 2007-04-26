@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static AbstractClassNotInMapping NewObject()
     {
-      return DomainObject.NewObject<AbstractClassNotInMapping>().With();
+      return NewObject<AbstractClassNotInMapping>().With();
     }
 
     protected AbstractClassNotInMapping()

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Specialized;
 using System.Xml;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;

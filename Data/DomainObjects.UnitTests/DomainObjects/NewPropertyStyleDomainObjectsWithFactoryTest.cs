@@ -1,17 +1,12 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
-using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Development.UnitTesting;
-using System.Reflection;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -24,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static NonInstantiableAbstractClass NewObject()
       {
-        return DomainObject.NewObject<NonInstantiableAbstractClass>().With();
+        return NewObject<NonInstantiableAbstractClass>().With();
       }
 
       protected NonInstantiableAbstractClass ()
@@ -40,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static NonInstantiableAbstractClassWithProps NewObject ()
       {
-        return DomainObject.NewObject<NonInstantiableAbstractClassWithProps> ().With();
+        return NewObject<NonInstantiableAbstractClassWithProps> ().With();
       }
 
       protected NonInstantiableAbstractClassWithProps()
@@ -56,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static NonInstantiableSealedClass NewObject ()
       {
-        return DomainObject.NewObject<NonInstantiableSealedClass> ().With();
+        return NewObject<NonInstantiableSealedClass> ().With();
       }
 
       public NonInstantiableSealedClass()
@@ -70,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static NonInstantiableClassWithAutomaticRelatedCollectionSetter NewObject ()
       {
-        return DomainObject.NewObject<NonInstantiableClassWithAutomaticRelatedCollectionSetter> ().With ();
+        return NewObject<NonInstantiableClassWithAutomaticRelatedCollectionSetter> ().With ();
       }
 
       protected NonInstantiableClassWithAutomaticRelatedCollectionSetter()
@@ -93,7 +88,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static Throws NewObject ()
       {
-        return DomainObject.NewObject<Throws> ().With();
+        return NewObject<Throws> ().With();
       }
 
       public Throws ()
@@ -107,12 +102,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       public static ClassWithWrongConstructor NewObject ()
       {
-        return DomainObject.NewObject<ClassWithWrongConstructor> ().With();
+        return NewObject<ClassWithWrongConstructor> ().With();
       }
 
       public static ClassWithWrongConstructor NewObject (ClientTransaction clientTransaction)
       {
-        return DomainObject.NewObject<ClassWithWrongConstructor> ().With (clientTransaction);
+        return NewObject<ClassWithWrongConstructor> ().With (clientTransaction);
       }
 
       public ClassWithWrongConstructor (string s)

@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -11,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static OrderItemWithNewPropertyAccess NewObject ()
     {
-      return DomainObject.NewObject<OrderItemWithNewPropertyAccess> ().With();
+      return NewObject<OrderItemWithNewPropertyAccess> ().With();
     }
 
     protected OrderItemWithNewPropertyAccess()

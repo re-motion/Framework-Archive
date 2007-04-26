@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
@@ -17,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
+      Assert.IsFalse (ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
     }
 
@@ -30,8 +29,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
-      Assert.IsFalse (object.ReferenceEquals (propertyDefinition.ClassDefinition, deserializedPropertyDefinition.ClassDefinition));
+      Assert.IsFalse (ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
+      Assert.IsFalse (ReferenceEquals (propertyDefinition.ClassDefinition, deserializedPropertyDefinition.ClassDefinition));
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
 
     }
@@ -64,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       PropertyDefinitionCollection deserializedDefinitions = (PropertyDefinitionCollection) SerializeAndDeserialize (definitions);
 
-      Assert.IsFalse (object.ReferenceEquals (definitions, deserializedDefinitions));
+      Assert.IsFalse (ReferenceEquals (definitions, deserializedDefinitions));
       Assert.AreEqual (definitions.Count, deserializedDefinitions.Count);
       Assert.AreSame (definitions[0], deserializedDefinitions[0]);
       Assert.AreSame (definitions[1], deserializedDefinitions[1]);
@@ -79,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
+      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
       AreEqual (endPointdefinition, deserializedEndPointDefinition);
     }
 
@@ -100,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       RelationEndPointDefinition deserializedOrderTicketEndPointdefinition = (RelationEndPointDefinition) SerializeAndDeserialize (orderTicketEndPointdefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (orderTicketEndPointdefinition, deserializedOrderTicketEndPointdefinition));
+      Assert.IsFalse (ReferenceEquals (orderTicketEndPointdefinition, deserializedOrderTicketEndPointdefinition));
       AreEqual (orderTicketEndPointdefinition, deserializedOrderTicketEndPointdefinition);
     }
 
@@ -124,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       VirtualRelationEndPointDefinition deserializedEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
+      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
       AreEqual (endPointdefinition, deserializedEndPointDefinition);
     }
 
@@ -145,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       VirtualRelationEndPointDefinition deserializedOrderEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (orderEndPointDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (orderEndPointDefinition, deserializedOrderEndPointDefinition));
+      Assert.IsFalse (ReferenceEquals (orderEndPointDefinition, deserializedOrderEndPointDefinition));
       AreEqual (orderEndPointDefinition, deserializedOrderEndPointDefinition);
     }
 
@@ -168,7 +167,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       AnonymousRelationEndPointDefinition deserializedEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
+      Assert.IsFalse (ReferenceEquals (endPointdefinition, deserializedEndPointDefinition));
       AreEqual (endPointdefinition, deserializedEndPointDefinition);
     }
 
@@ -187,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       AnonymousRelationEndPointDefinition deserializedClientEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (clientEndPointDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (clientEndPointDefinition, deserializedClientEndPointDefinition));
+      Assert.IsFalse (ReferenceEquals (clientEndPointDefinition, deserializedClientEndPointDefinition));
       AreEqual (clientEndPointDefinition, deserializedClientEndPointDefinition);
     }
 
@@ -207,7 +206,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       RelationDefinition relationDefinition = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       RelationDefinition deserializedRelationDefinition = (RelationDefinition) SerializeAndDeserialize (relationDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (relationDefinition, deserializedRelationDefinition));
+      Assert.IsFalse (ReferenceEquals (relationDefinition, deserializedRelationDefinition));
       AreEqual (relationDefinition, deserializedRelationDefinition);
     }
 
@@ -230,7 +229,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       RelationDefinitionCollection deserializedDefinitions = (RelationDefinitionCollection) SerializeAndDeserialize (definitions);
 
-      Assert.IsFalse (object.ReferenceEquals (definitions, deserializedDefinitions));
+      Assert.IsFalse (ReferenceEquals (definitions, deserializedDefinitions));
       Assert.AreSame (definitions[0], deserializedDefinitions[0]);
       Assert.AreSame (definitions[1], deserializedDefinitions[1]);
     }
@@ -244,7 +243,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       ClassDefinitionCollection deserializedDefinitions = (ClassDefinitionCollection) SerializeAndDeserialize (definitions);
 
-      Assert.IsFalse (object.ReferenceEquals (definitions, deserializedDefinitions));
+      Assert.IsFalse (ReferenceEquals (definitions, deserializedDefinitions));
       AreEqual (definitions[0], deserializedDefinitions[0]);
       AreEqual (definitions[1], deserializedDefinitions[1]);
       Assert.IsTrue (deserializedDefinitions.Contains (definitions[0].ID));
@@ -257,7 +256,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
 
-      Assert.IsFalse (object.ReferenceEquals (classDefinition, deserializedClassDefinition));
+      Assert.IsFalse (ReferenceEquals (classDefinition, deserializedClassDefinition));
       AreEqual (classDefinition, deserializedClassDefinition);
     }
 
@@ -278,7 +277,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       PropertyDefinitionCollection definitions = MappingConfiguration.Current.ClassDefinitions["Order"].MyPropertyDefinitions;
       PropertyDefinitionCollection deserializedDefinitions = (PropertyDefinitionCollection) SerializeAndDeserialize (definitions);
 
-      Assert.IsFalse (object.ReferenceEquals (definitions, deserializedDefinitions));
+      Assert.IsFalse (ReferenceEquals (definitions, deserializedDefinitions));
       Assert.AreSame (definitions.ClassDefinition, deserializedDefinitions.ClassDefinition);
     }
 

@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     public new static DerivedClassWithEntityFromBaseClassWithHierarchy NewObject ()
     {
-      return DomainObject.NewObject<DerivedClassWithEntityFromBaseClassWithHierarchy> ().With ();
+      return NewObject<DerivedClassWithEntityFromBaseClassWithHierarchy> ().With ();
     }
 
     protected DerivedClassWithEntityFromBaseClassWithHierarchy ()

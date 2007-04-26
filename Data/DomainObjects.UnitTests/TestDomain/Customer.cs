@@ -1,5 +1,4 @@
 using System;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -16,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public new static Customer NewObject ()
     {
-      return DomainObject.NewObject<Customer> ().With ();
+      return NewObject<Customer> ().With ();
     }
 
     protected Customer ()
@@ -28,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    public abstract NaDateTime CustomerSince { get; set; }
+    public abstract DateTime? CustomerSince { get; set; }
 
     [DBColumn ("CustomerType")]
     public abstract CustomerType Type { get; set; }

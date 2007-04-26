@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Location NewObject ()
     {
-      return DomainObject.NewObject<Location> ().With();
+      return NewObject<Location> ().With();
     }
 
     protected Location()

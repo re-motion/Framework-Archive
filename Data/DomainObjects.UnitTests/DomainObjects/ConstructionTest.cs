@@ -29,12 +29,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       public static DomainObjectWithSpecialConstructor NewObject (string s)
       {
-        return DomainObject.NewObject<DomainObjectWithSpecialConstructor>().With(s);
+        return NewObject<DomainObjectWithSpecialConstructor>().With(s);
       }
 
       public static DomainObjectWithSpecialConstructor NewObject (object o)
       {
-        return DomainObject.NewObject<DomainObjectWithSpecialConstructor> ().With (o);
+        return NewObject<DomainObjectWithSpecialConstructor> ().With (o);
       }
     }
 

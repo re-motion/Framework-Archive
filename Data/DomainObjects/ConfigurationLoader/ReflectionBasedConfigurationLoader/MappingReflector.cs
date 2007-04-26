@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         foreach (Type type in assembly.GetTypes())
         {
-          if (type.IsSubclassOf (typeof (DomainObject)))
+          if (typeof (DomainObject).IsAssignableFrom (type))
             domainObjectClasses.Add (type);
         }
       }

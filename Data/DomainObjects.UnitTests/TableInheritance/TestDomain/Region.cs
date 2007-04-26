@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   {
     public static Region NewObject ()
     {
-      return DomainObject.NewObject<Region> ().With();
+      return NewObject<Region> ().With();
     }
 
     protected Region()

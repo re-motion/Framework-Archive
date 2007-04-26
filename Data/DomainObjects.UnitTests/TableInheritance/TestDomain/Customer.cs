@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     public new static Customer NewObject ()
     {
-      return DomainObject.NewObject<Customer> ().With ();
+      return NewObject<Customer> ().With ();
     }
 
     protected Customer()

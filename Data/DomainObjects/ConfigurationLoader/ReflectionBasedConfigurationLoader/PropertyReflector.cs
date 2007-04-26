@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -19,28 +18,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     public PropertyDefinition GetMetadata()
     {
       Validate();
-      TypeInfo typeInfo = GetTypeInfo();
+      CheckValidPropertyType();
 
       return new ReflectionBasedPropertyDefinition (
           GetPropertyName(),
           GetStorageSpecificIdentifier(),
-          typeInfo.Type,
-          IsNullable (typeInfo),
+          IsRelationProperty() ? typeof (ObjectID) : PropertyInfo.PropertyType,
+          IsNullable(),
           GetMaxLength(),
           true);
     }
 
-    private TypeInfo GetTypeInfo()
+    private void CheckValidPropertyType()
     {
-      Type nativePropertyType = IsRelationProperty() ? typeof (ObjectID) : PropertyInfo.PropertyType;
-      bool isNullable = IsNullable();
+      Type nativePropertyType = GetNativePropertyType();
+      bool isNullable = IsNullable() ?? false;
 
       if (nativePropertyType.IsEnum)
-        return GetEnumTypeInfo (nativePropertyType, isNullable);
+        return;
 
       try
       {
-        return TypeInfo.GetMandatory (nativePropertyType, isNullable);
+        TypeInfo.GetMandatory (nativePropertyType, isNullable);
       }
       catch (MandatoryMappingTypeNotFoundException e)
       {
@@ -48,9 +47,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    private TypeInfo GetEnumTypeInfo (Type type, bool isNullable)
+    private Type GetNativePropertyType()
     {
-      return new TypeInfo (type, TypeUtility.GetPartialAssemblyQualifiedName (type), isNullable, TypeInfo.GetDefaultEnumValue (type));
+      if (IsRelationProperty())
+        return typeof (ObjectID);
+
+      return TypeInfo.GetNativeType (PropertyInfo.PropertyType);
     }
 
     //TODO: Move adding of "ID" to RdbmsPropertyReflector
@@ -64,13 +66,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return PropertyInfo.Name;
     }
 
-    private bool? IsNullable (TypeInfo typeInfo)
+    protected bool? IsNullable()
     {
+      if (PropertyInfo.PropertyType.IsValueType)
+        return null;
+
       if (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
         return true;
-      if (typeInfo.Type.IsClass)
-        return typeInfo.IsNullable;
-      return null;
+
+      return IsNullableFromAttribute();
     }
 
     private int? GetMaxLength()

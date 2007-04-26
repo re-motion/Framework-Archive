@@ -687,6 +687,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
+    <Compile Include="TestDomain\OrderWithNewPropertyAccessBase.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStorageProviderFromStorageGroup.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithDefaultStorageProvider.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />

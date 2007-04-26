@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static IndustrialSector NewObject ()
     {
-      return DomainObject.NewObject<IndustrialSector> ().With ();
+      return NewObject<IndustrialSector> ().With ();
     }
 
     protected IndustrialSector ()

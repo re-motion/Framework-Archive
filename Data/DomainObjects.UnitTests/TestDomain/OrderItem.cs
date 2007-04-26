@@ -11,12 +11,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static OrderItem NewObject ()
     {
-      return DomainObject.NewObject<OrderItem> ().With();
+      return NewObject<OrderItem> ().With();
     }
 
     public static OrderItem NewObject (Order order)
     {
-      OrderItem orderItem = DomainObject.NewObject<OrderItem> ().With (order);
+      OrderItem orderItem = NewObject<OrderItem> ().With (order);
       return orderItem;
     }
 

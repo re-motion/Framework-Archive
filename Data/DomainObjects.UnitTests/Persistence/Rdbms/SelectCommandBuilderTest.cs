@@ -3,7 +3,6 @@ using System.Data;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 

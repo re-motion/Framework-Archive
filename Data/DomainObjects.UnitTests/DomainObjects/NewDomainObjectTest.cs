@@ -1,10 +1,8 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
-using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -196,7 +194,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ceo.Name = "Ford Prefect";
 
-      customer.CustomerSince = new NaDateTime (new DateTime (2000, 1, 1));
+      customer.CustomerSince = new DateTime (2000, 1, 1);
       customer.Name = "Arthur Dent";
       customer.Ceo = ceo;
 
@@ -248,7 +246,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNotNull (official.Orders[orderID]);
 
       Assert.AreEqual ("Ford Prefect", ceo.Name);
-      Assert.AreEqual (new NaDateTime (new DateTime (2000, 1, 1)), customer.CustomerSince);
+      Assert.AreEqual (new DateTime (2000, 1, 1), customer.CustomerSince);
       Assert.AreEqual ("Arthur Dent", customer.Name);
       Assert.AreEqual (1, orderItem.Position);
       Assert.AreEqual ("Sternenkarte", orderItem.Product);

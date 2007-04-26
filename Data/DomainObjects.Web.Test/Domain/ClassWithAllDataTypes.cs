@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
@@ -100,6 +100,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     public abstract byte ByteProperty { get; set; }
 
     [DBColumn ("Date")]
+    [DateType (DateTypeEnum.Date)]
     public abstract DateTime DateProperty { get; set; }
 
     [DBColumn ("DateTime")]
@@ -145,74 +146,76 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     public abstract byte[] BinaryProperty { get; set; }
 
     [DBColumn ("NaBoolean")]
-    public abstract NaBoolean NaBooleanProperty { get; set; }
+    public abstract bool? NaBooleanProperty { get; set; }
 
     [DBColumn ("NaByte")]
-    public abstract NaByte NaByteProperty { get; set; }
+    public abstract byte? NaByteProperty { get; set; }
 
     [DBColumn ("NaDate")]
-    public abstract NaDateTime NaDateProperty { get; set; }
+    [DateType (DateTypeEnum.Date)]
+    public abstract DateTime? NaDateProperty { get; set; }
 
     [DBColumn ("NaDateTime")]
-    public abstract NaDateTime NaDateTimeProperty { get; set; }
+    public abstract DateTime? NaDateTimeProperty { get; set; }
 
     [DBColumn ("NaDecimal")]
-    public abstract NaDecimal NaDecimalProperty { get; set; }
+    public abstract decimal? NaDecimalProperty { get; set; }
 
     [DBColumn ("NaDouble")]
-    public abstract NaDouble NaDoubleProperty { get; set; }
+    public abstract double? NaDoubleProperty { get; set; }
 
     [DBColumn ("NaGuid")]
-    public abstract NaGuid NaGuidProperty { get; set; }
+    public abstract Guid? NaGuidProperty { get; set; }
 
     [DBColumn ("NaInt16")]
-    public abstract NaInt16 NaInt16Property { get; set; }
+    public abstract short? NaInt16Property { get; set; }
 
     [DBColumn ("NaInt32")]
-    public abstract NaInt32 NaInt32Property { get; set; }
+    public abstract int? NaInt32Property { get; set; }
 
     [DBColumn ("NaInt64")]
-    public abstract NaInt64 NaInt64Property { get; set; }
+    public abstract long? NaInt64Property { get; set; }
 
     [DBColumn ("NaSingle")]
-    public abstract NaSingle NaSingleProperty { get; set; }
+    public abstract float? NaSingleProperty { get; set; }
 
     [DBColumn ("StringWithNullValue")]
     [StringProperty (MaximumLength = 100)]
     public abstract string StringWithNullValueProperty { get; set; }
 
     [DBColumn ("NaBooleanWithNullValue")]
-    public abstract NaBoolean NaBooleanWithNullValueProperty { get; set; }
+    public abstract bool? NaBooleanWithNullValueProperty { get; set; }
 
     [DBColumn ("NaByteWithNullValue")]
-    public abstract NaByte NaByteWithNullValueProperty { get; set; }
+    public abstract byte? NaByteWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDateWithNullValue")]
-    public abstract NaDateTime NaDateWithNullValueProperty { get; set; }
+    [DateType (DateTypeEnum.Date)]
+    public abstract DateTime? NaDateWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDateTimeWithNullValue")]
-    public abstract NaDateTime NaDateTimeWithNullValueProperty { get; set; }
+    public abstract DateTime? NaDateTimeWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDecimalWithNullValue")]
-    public abstract NaDecimal NaDecimalWithNullValueProperty { get; set; }
+    public abstract decimal? NaDecimalWithNullValueProperty { get; set; }
 
     [DBColumn ("NaDoubleWithNullValue")]
-    public abstract NaDouble NaDoubleWithNullValueProperty { get; set; }
+    public abstract double? NaDoubleWithNullValueProperty { get; set; }
 
     [DBColumn ("NaGuidWithNullValue")]
-    public abstract NaGuid NaGuidWithNullValueProperty { get; set; }
+    public abstract Guid? NaGuidWithNullValueProperty { get; set; }
 
     [DBColumn ("NaInt16WithNullValue")]
-    public abstract NaInt16 NaInt16WithNullValueProperty { get; set; }
+    public abstract short? NaInt16WithNullValueProperty { get; set; }
 
     [DBColumn ("NaInt32WithNullValue")]
-    public abstract NaInt32 NaInt32WithNullValueProperty { get; set; }
+    public abstract int? NaInt32WithNullValueProperty { get; set; }
 
     [DBColumn ("NaInt64WithNullValue")]
-    public abstract NaInt64 NaInt64WithNullValueProperty { get; set; }
+    public abstract long? NaInt64WithNullValueProperty { get; set; }
 
     [DBColumn ("NaSingleWithNullValue")]
-    public abstract NaSingle NaSingleWithNullValueProperty { get; set; }
+    public abstract float? NaSingleWithNullValueProperty { get; set; }
 
     [DBColumn ("NullableBinary")]
     [BinaryProperty (MaximumLength = 1000000)]

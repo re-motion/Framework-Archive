@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -116,7 +117,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException))]
+    [ExpectedException (typeof (ArgumentTypeException))]
     public void GetInvalidDefaultEnumValue()
     {
       TypeInfo.GetDefaultEnumValue (GetType());

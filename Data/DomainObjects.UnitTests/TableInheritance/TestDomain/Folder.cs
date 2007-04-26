@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     public static Folder NewObject()
     {
-      return DomainObject.NewObject<Folder>().With();
+      return NewObject<Folder>().With();
     }
 
     protected Folder()

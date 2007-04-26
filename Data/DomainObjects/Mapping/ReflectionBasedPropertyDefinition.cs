@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -40,24 +39,18 @@ namespace Rubicon.Data.DomainObjects.Mapping
         throw CreateArgumentException (
             propertyName, "IsNullable parameter can only be supplied for reference types but the property is of type '{0}'.", propertyType);
       }
-      if (propertyType != typeof (string) && !propertyType.IsArray && maxLength.HasValue)
+      //TODO: change byte[] to all arrays. Will have repurcussions in several places -> Search for byte[]
+      if (propertyType != typeof (string) && propertyType != typeof (byte[]) && maxLength.HasValue)
       {
         throw CreateArgumentException (
-            propertyName, "MaxLength parameter can only be supplied for strings and arrays but the property is of type '{0}'.", propertyType);
+            propertyName, "MaxLength parameter can only be supplied for strings and byte arrays but the property is of type '{0}'.", propertyType);
       }
 
       _propertyType = propertyType;
-      if (_propertyType.IsValueType)
-        _isNullable = IsNullableValueType(_propertyType);
+      if (propertyType.IsValueType)
+        _isNullable = TypeInfo.IsNullableValueType (propertyType);
       else
         _isNullable = isNullable ?? true;
-    }
-
-    private bool IsNullableValueType (Type propertyType)
-    {
-      if (typeof (INaNullable).IsAssignableFrom (propertyType))
-        return true;
-      return propertyType.IsGenericTypeDefinition && _propertyType.GetGenericTypeDefinition() == typeof (Nullable<>);
     }
 
     public override Type PropertyType
@@ -75,9 +68,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       get
       {
-        if (_propertyType.IsEnum)
-          return TypeInfo.GetDefaultEnumValue (_propertyType);
-        return TypeInfo.GetMandatory (_propertyType, _isNullable).DefaultValue;
+        if (_isNullable)
+          return null;
+
+        Type nativeType = TypeInfo.GetNativeType (_propertyType);
+        if (nativeType.IsEnum)
+          return TypeInfo.GetDefaultEnumValue (nativeType);
+        return TypeInfo.GetMandatory (nativeType, false).DefaultValue;
       }
     }
 

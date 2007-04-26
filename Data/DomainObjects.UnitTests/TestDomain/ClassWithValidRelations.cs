@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static ClassWithValidRelations NewObject ()
     {
-      return DomainObject.NewObject<ClassWithValidRelations> ().With();
+      return NewObject<ClassWithValidRelations> ().With();
     }
 
     protected ClassWithValidRelations()

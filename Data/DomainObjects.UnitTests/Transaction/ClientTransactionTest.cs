@@ -76,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (1, domainObjects.Count);
       Assert.AreSame (domainObject2, domainObjects[0]);
 
-      Assert.IsFalse (object.ReferenceEquals (domainObject1, domainObject2));
+      Assert.IsFalse (ReferenceEquals (domainObject1, domainObject2));
     }
 
     [Test]
@@ -245,7 +245,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       DomainObjectCollection orders2 = ClientTransactionMock.GetRelatedObjects (
           new RelationEndPointID (customer.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
-      Assert.IsTrue (object.ReferenceEquals (orders1, orders2));
+      Assert.IsTrue (ReferenceEquals (orders1, orders2));
 
       Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
       DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
@@ -289,7 +289,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
 
-      Assert.IsTrue (object.ReferenceEquals (order, orders[DomainObjectIDs.Order1]));
+      Assert.IsTrue (ReferenceEquals (order, orders[DomainObjectIDs.Order1]));
     }
 
     [Test]
@@ -517,8 +517,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order changedOrder1 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order1);
       Order changedOrder2 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order2);
 
-      Assert.IsFalse (object.ReferenceEquals (order1, changedOrder1));
-      Assert.IsFalse (object.ReferenceEquals (order2, changedOrder2));
+      Assert.IsFalse (ReferenceEquals (order1, changedOrder1));
+      Assert.IsFalse (ReferenceEquals (order2, changedOrder2));
 
       Assert.AreEqual (50, changedOrder1.OrderNumber);
       Assert.AreEqual (60, changedOrder2.OrderNumber);

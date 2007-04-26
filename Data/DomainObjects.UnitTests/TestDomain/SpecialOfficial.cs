@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static new SpecialOfficial NewObject ()
     {
-      return DomainObject.NewObject<SpecialOfficial>().With();
+      return NewObject<SpecialOfficial>().With();
     }
 
     protected SpecialOfficial()

@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
             expectedState.GetType ());
       }
 
-      if (!object.ReferenceEquals (_sender, expectedState.Sender))
+      if (!ReferenceEquals (_sender, expectedState.Sender))
       {
         throw CreateApplicationException (
             "Actual sender '{0}' does not match expected sender '{1}'.", _sender, expectedState.Sender);

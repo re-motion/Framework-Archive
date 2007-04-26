@@ -92,14 +92,33 @@ public class TypeInfo
 
   public static object GetDefaultEnumValue (Type type)
   {
-    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (Enum));
 
     Array enumValues = Enum.GetValues (type);
 
     if (enumValues.Length > 0)
       return enumValues.GetValue (0);
-  
+
     throw new InvalidEnumDefinitionException (type);
+  }
+
+  //TODO: Test
+  public static Type GetNativeType (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    if (IsNullableValueType (type))
+      return type.GetGenericArguments ()[0];
+
+    return type;
+  }
+
+  //TODO: Test
+  public static bool IsNullableValueType (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    
+    return type.IsValueType && type.IsGenericType && !type.IsGenericTypeDefinition && type.GetGenericTypeDefinition () == typeof (Nullable<>);
   }
 
   private static Tuple<string, bool> GetMappingTypeKey (TypeInfo typeInfo)

@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
       CollectionChangeState collectionChangeState = (CollectionChangeState) expectedState;
 
-      if (!object.ReferenceEquals (_domainObject, collectionChangeState.DomainObject))
+      if (!ReferenceEquals (_domainObject, collectionChangeState.DomainObject))
       {
         throw CreateApplicationException (
             "Affected actual DomainObject '{0}' and expected DomainObject '{1}' do not match.",

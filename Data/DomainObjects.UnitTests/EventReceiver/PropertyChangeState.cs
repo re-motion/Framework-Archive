@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
             propertyChangeState.PropertyValue.Name);
       }
 
-      if (!object.Equals (_oldValue, propertyChangeState.OldValue))
+      if (!Equals (_oldValue, propertyChangeState.OldValue))
       {
         throw CreateApplicationException (
             "Actual old value '{0}' and expected old value '{1}' do not match.",
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
             propertyChangeState.OldValue);
       }
 
-      if (!object.Equals (_newValue, propertyChangeState.NewValue))
+      if (!Equals (_newValue, propertyChangeState.NewValue))
       {
         throw CreateApplicationException (
             "Actual new value '{0}' and expected new value '{1}' do not match.",

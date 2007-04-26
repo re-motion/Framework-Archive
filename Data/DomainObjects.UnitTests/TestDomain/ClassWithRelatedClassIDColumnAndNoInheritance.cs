@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static ClassWithRelatedClassIDColumnAndNoInheritance NewObject ()
     {
-      return DomainObject.NewObject<ClassWithRelatedClassIDColumnAndNoInheritance> ().With();
+      return NewObject<ClassWithRelatedClassIDColumnAndNoInheritance> ().With();
     }
 
     protected ClassWithRelatedClassIDColumnAndNoInheritance()

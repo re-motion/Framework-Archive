@@ -39,19 +39,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.AreSame (companyClassDefinition, deserializedPartnerObjects[1]);
 
       ClassDefinitionCollection deserializedDerivedClasses = (ClassDefinitionCollection) deserializedPartnerObjects[2];
-      Assert.IsFalse (object.ReferenceEquals (partnerClassDefinition.DerivedClasses, deserializedDerivedClasses));
+      Assert.IsFalse (ReferenceEquals (partnerClassDefinition.DerivedClasses, deserializedDerivedClasses));
       Assert.AreEqual (partnerClassDefinition.DerivedClasses.Count, deserializedDerivedClasses.Count);
       for (int i = 0; i < partnerClassDefinition.DerivedClasses.Count; i++)
         Assert.AreSame (partnerClassDefinition.DerivedClasses[i], deserializedDerivedClasses[i]);
 
       PropertyDefinitionCollection deserializedPropertyDefinitions = (PropertyDefinitionCollection) deserializedPartnerObjects[3];
-      Assert.IsFalse (object.ReferenceEquals (partnerClassDefinition.MyPropertyDefinitions, deserializedPropertyDefinitions));
+      Assert.IsFalse (ReferenceEquals (partnerClassDefinition.MyPropertyDefinitions, deserializedPropertyDefinitions));
       Assert.AreEqual (partnerClassDefinition.MyPropertyDefinitions.Count, deserializedPropertyDefinitions.Count);
       for (int i = 0; i < partnerClassDefinition.MyPropertyDefinitions.Count; i++)
         Assert.AreSame (partnerClassDefinition.MyPropertyDefinitions[i], deserializedPropertyDefinitions[i]);
 
       RelationDefinitionCollection deserializedRelationDefinitions = (RelationDefinitionCollection) deserializedPartnerObjects[4];
-      Assert.IsFalse (object.ReferenceEquals (partnerClassDefinition.MyRelationDefinitions, deserializedRelationDefinitions));
+      Assert.IsFalse (ReferenceEquals (partnerClassDefinition.MyRelationDefinitions, deserializedRelationDefinitions));
       Assert.AreEqual (partnerClassDefinition.MyRelationDefinitions.Count, deserializedRelationDefinitions.Count);
       for (int i = 0; i < partnerClassDefinition.MyRelationDefinitions.Count; i++)
         Assert.AreSame (partnerClassDefinition.MyRelationDefinitions[i], deserializedRelationDefinitions[i]);
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.AreSame (partnerToPersonRelationDefinition, deserializedPartnerObjects[7]);
 
       IRelationEndPointDefinition[] deserializedRelationEndPoints = (IRelationEndPointDefinition[]) deserializedPartnerObjects[8];
-      Assert.IsFalse (object.ReferenceEquals (partnerToPersonRelationDefinition.EndPointDefinitions, deserializedRelationEndPoints));
+      Assert.IsFalse (ReferenceEquals (partnerToPersonRelationDefinition.EndPointDefinitions, deserializedRelationEndPoints));
       Assert.AreEqual (partnerToPersonRelationDefinition.EndPointDefinitions.Length, deserializedRelationEndPoints.Length);
       for (int i = 0; i < partnerToPersonRelationDefinition.EndPointDefinitions.Length; i++)
         Assert.AreSame (partnerToPersonRelationDefinition.EndPointDefinitions[i], deserializedRelationEndPoints[i]);
@@ -94,11 +94,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.AreSame (clientClassDefinition, deserializedClientObjects[0]);
 
       ClassDefinitionCollection deserializedDerivedClasses = (ClassDefinitionCollection) deserializedClientObjects[1];
-      Assert.IsFalse (object.ReferenceEquals (clientClassDefinition.DerivedClasses, deserializedDerivedClasses));
+      Assert.IsFalse (ReferenceEquals (clientClassDefinition.DerivedClasses, deserializedDerivedClasses));
       Assert.AreEqual (0, deserializedDerivedClasses.Count);
 
       RelationDefinitionCollection deserializedRelationDefinitions = (RelationDefinitionCollection) deserializedClientObjects[2];
-      Assert.IsFalse (object.ReferenceEquals (clientClassDefinition.MyRelationDefinitions, deserializedRelationDefinitions));
+      Assert.IsFalse (ReferenceEquals (clientClassDefinition.MyRelationDefinitions, deserializedRelationDefinitions));
       Assert.AreEqual (clientClassDefinition.MyRelationDefinitions.Count, deserializedRelationDefinitions.Count);
       for (int i = 0; i < clientClassDefinition.MyRelationDefinitions.Count; i++)
         Assert.AreSame (clientClassDefinition.MyRelationDefinitions[i], deserializedRelationDefinitions[i]);

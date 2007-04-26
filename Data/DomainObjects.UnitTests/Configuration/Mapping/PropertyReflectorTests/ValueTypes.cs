@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
@@ -32,10 +31,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", actual.PropertyName);
-      Assert.AreSame (typeof (NaBoolean), actual.PropertyType);
+      Assert.AreSame (typeof (bool?), actual.PropertyType);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
-      Assert.AreEqual (NaBoolean.Null, actual.DefaultValue);
+      Assert.IsNull (actual.DefaultValue);
     }
 
     [Test]

@@ -1,5 +1,4 @@
 using System;
-using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 

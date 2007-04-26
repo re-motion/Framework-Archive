@@ -3,7 +3,6 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -29,14 +28,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNullableValueType ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (NaInt32), null, null, true);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int?), null, null, true);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
-      Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
+      Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
-      Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
+      Assert.AreEqual (typeof (int?), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
       Assert.IsFalse (actual.IsObjectID);
@@ -69,6 +68,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
+      Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
+    }
+
+    [Test]
+    public void InitializeWithNullableEnum ()
+    {
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (ClassWithAllDataTypes.EnumType?), null, null, true);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
+      Assert.IsNull (actual.DefaultValue);
+      Assert.IsTrue (actual.IsNullable);
+      Assert.IsNull (actual.MaxLength);
+      Assert.AreEqual ("PropertyName", actual.PropertyName);
+      Assert.AreEqual (typeof (ClassWithAllDataTypes.EnumType?), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
       Assert.IsFalse (actual.IsObjectID);
@@ -149,7 +164,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-       "MaxLength parameter can only be supplied for strings and arrays but the property is of type 'System.Int32'.\r\n  Property: test")]
+       "MaxLength parameter can only be supplied for strings and byte arrays but the property is of type 'System.Int32'.\r\n  Property: test")]
     public void IntPropertyWithMaxLength ()
     {
       new ReflectionBasedPropertyDefinition ("test", "test", typeof (int), 10);

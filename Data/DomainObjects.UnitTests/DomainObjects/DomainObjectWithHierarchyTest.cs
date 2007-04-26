@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
       DomainObjectCollection subordinates = employee.Subordinates;
 
-      Assert.IsTrue (object.ReferenceEquals (subordinates, employee.Subordinates));
+      Assert.IsTrue (ReferenceEquals (subordinates, employee.Subordinates));
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
       Employee employee2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee5);
 
-      Assert.IsTrue (object.ReferenceEquals (employee1.Supervisor, employee2.Supervisor));
+      Assert.IsTrue (ReferenceEquals (employee1.Supervisor, employee2.Supervisor));
     }
   }
 }

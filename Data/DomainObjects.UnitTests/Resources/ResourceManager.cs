@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Assertion=Rubicon.Utilities.Assertion;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Resources
 {
@@ -21,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Resources
     {
       Type resourceManagerType = typeof (ResourceManager);
       Stream stream = resourceManagerType.Assembly.GetManifestResourceStream (resourceManagerType, resourceID);
-      Rubicon.Utilities.Assertion.Assert (stream != null, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
+      Assertion.Assert (stream != null, "Resource '{0}.{1}' was not found", resourceManagerType.Namespace, resourceID);
 
       return stream;
     }

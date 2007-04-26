@@ -1,10 +1,5 @@
 using System;
-using System.Text;
-using System.ComponentModel;
-
-using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
@@ -13,13 +8,13 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 public class ClassWithAllDataTypesSearch : BindableSearchObject
 {
   private string _stringProperty;
-  private NaByte _bytePropertyFrom;
-  private NaByte _bytePropertyTo;
+  private byte? _bytePropertyFrom;
+  private byte? _bytePropertyTo;
   private ClassWithAllDataTypes.EnumType _enumProperty;
-  private NaDateTime _datePropertyFrom;
-  private NaDateTime _datePropertyTo;
-  private NaDateTime _dateTimePropertyFrom;
-  private NaDateTime _dateTimePropertyTo;
+  private DateTime? _datePropertyFrom;
+  private DateTime? _datePropertyTo;
+  private DateTime? _dateTimePropertyFrom;
+  private DateTime? _dateTimePropertyTo;
 
   public string StringProperty
   {
@@ -27,13 +22,13 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
     set { _stringProperty = value; }
   }
 
-  public NaByte BytePropertyFrom
+  public byte? BytePropertyFrom
   {
     get { return _bytePropertyFrom; }
     set { _bytePropertyFrom = value; }
   }
 
-  public NaByte BytePropertyTo
+  public byte? BytePropertyTo
   {
     get { return _bytePropertyTo; }
     set { _bytePropertyTo = value; }
@@ -46,28 +41,28 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
   }
 
   [DateType (DateTypeEnum.Date)]
-  public NaDateTime DatePropertyFrom
+  public DateTime? DatePropertyFrom
   {
     get { return _datePropertyFrom; }
     set { _datePropertyFrom = value; }
   }
 
   [DateType (DateTypeEnum.Date)]
-  public NaDateTime DatePropertyTo
+  public DateTime? DatePropertyTo
   {
     get { return _datePropertyTo; }
     set { _datePropertyTo = value; }
   }
 
   [DateType (DateTypeEnum.DateTime)]
-  public NaDateTime DateTimePropertyFrom
+  public DateTime? DateTimePropertyFrom
   {
     get { return _dateTimePropertyFrom; }
     set { _dateTimePropertyFrom = value; }
   }
 
   [DateType (DateTypeEnum.DateTime)]
-  public NaDateTime DateTimePropertyTo
+  public DateTime? DateTimePropertyTo
   {
     get { return _dateTimePropertyTo; }
     set { _dateTimePropertyTo = value; }

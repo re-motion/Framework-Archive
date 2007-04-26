@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public new static Folder NewObject ()
     {
-      return DomainObject.NewObject<Folder> ().With();
+      return NewObject<Folder> ().With();
     }
 
     protected Folder ()

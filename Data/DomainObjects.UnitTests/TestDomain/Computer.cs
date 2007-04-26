@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Computer NewObject ()
     {
-      return DomainObject.NewObject<Computer> ().With();
+      return NewObject<Computer> ().With();
     }
 
     protected Computer ()

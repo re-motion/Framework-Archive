@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -76,6 +77,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     protected virtual string GetSortExpression ()
     {
       return null;
+    }
+
+    private bool IsNullable ()
+    {
+      return IsNullableFromAttribute ();
     }
   }
 }

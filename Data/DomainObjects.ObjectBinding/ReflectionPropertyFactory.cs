@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
@@ -20,9 +21,17 @@ public class ReflectionPropertyFactory
 
     Type itemType = GetItemType (propertyInfo);
 
-    bool isNullableType = NaTypeUtility.IsNaNullableType (itemType);
-    if (isNullableType)
+    bool isNullableType = false;
+    if (TypeInfo.IsNullableValueType (itemType))
+    {
+      itemType = TypeInfo.GetNativeType (itemType);
+      isNullableType = true;
+    }
+    else if (NaTypeUtility.IsNaNullableType (itemType))
+    {
       itemType = NaTypeUtility.GetBasicType (itemType);
+      isNullableType = true;
+    }
 
     return CreateProperty (propertyInfo, itemType, isNullableType);
   }

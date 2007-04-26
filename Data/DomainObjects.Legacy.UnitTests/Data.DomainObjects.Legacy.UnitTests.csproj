@@ -73,7 +73,9 @@
     <Compile Include="Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs" />
     <Compile Include="DatabaseTest.cs" />
     <Compile Include="Database\StandardMappingDatabaseAgent.cs" />
+    <Compile Include="DataManagement\PropertyValueTest.cs" />
     <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs" />
+    <Compile Include="DomainObjects\DomainObjectTest.cs" />
     <Compile Include="DomainObjects\NewDomainObjectTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="EventReceiver\ChangeState.cs" />

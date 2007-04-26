@@ -1,7 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Configuration;
-using System.IO;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -9,7 +7,6 @@ using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Design;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Design;

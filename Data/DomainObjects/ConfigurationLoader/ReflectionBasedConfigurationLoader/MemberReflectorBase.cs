@@ -129,19 +129,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType));
     }
 
-    protected bool IsNullable()
-    {
-      if (PropertyInfo.PropertyType.IsValueType)
-        return IsNullableValueType();
-      return IsNullableReferenceType();
-    }
-
-    private bool IsNullableValueType()
-    {
-      return typeof (INaNullable).IsAssignableFrom (PropertyInfo.PropertyType);
-    }
-
-    private bool IsNullableReferenceType()
+    protected bool IsNullableFromAttribute ()
     {
       INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (PropertyInfo, true);
       if (attribute != null)

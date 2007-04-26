@@ -26,18 +26,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LookUp ()
     {
-      StorageProvider provider = _storageProviderManager[DatabaseTest.c_testDomainProviderID];
+      StorageProvider provider = _storageProviderManager[c_testDomainProviderID];
 
       Assert.IsNotNull (provider);
       Assert.AreEqual (typeof (SqlProvider), provider.GetType ());
-      Assert.AreEqual (DatabaseTest.c_testDomainProviderID, provider.ID);
+      Assert.AreEqual (c_testDomainProviderID, provider.ID);
     }
 
     [Test]
     public void Reference ()
     {
-      StorageProvider provider1 = _storageProviderManager[DatabaseTest.c_testDomainProviderID];
-      StorageProvider provider2 = _storageProviderManager[DatabaseTest.c_testDomainProviderID];
+      StorageProvider provider1 = _storageProviderManager[c_testDomainProviderID];
+      StorageProvider provider2 = _storageProviderManager[c_testDomainProviderID];
 
       Assert.AreSame (provider1, provider2);
     }
@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider) _storageProviderManager[DatabaseTest.c_testDomainProviderID];
+        provider = (RdbmsProvider) _storageProviderManager[c_testDomainProviderID];
         provider.LoadDataContainer (DomainObjectIDs.Order1);
 
         Assert.IsTrue (provider.IsConnected);

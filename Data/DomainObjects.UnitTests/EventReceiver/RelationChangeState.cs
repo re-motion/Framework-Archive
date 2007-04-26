@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
             relationChangeState.PropertyName);
       }
 
-      if (!object.ReferenceEquals (_oldDomainObject, relationChangeState.OldDomainObject))
+      if (!ReferenceEquals (_oldDomainObject, relationChangeState.OldDomainObject))
       {
         throw CreateApplicationException (
             "Actual old related DomainObject '{0}' and expected old related DomainObject '{1}' do not match.",
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
             GetObjectIDAsText (relationChangeState.OldDomainObject));
       }
 
-      if (!object.ReferenceEquals (_newDomainObject, relationChangeState.NewDomainObject))
+      if (!ReferenceEquals (_newDomainObject, relationChangeState.NewDomainObject))
       {
         throw CreateApplicationException (
             "Actual new related DomainObject '{0}' and expected new related DomainObject '{1}' do not match.",

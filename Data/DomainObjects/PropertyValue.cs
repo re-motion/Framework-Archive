@@ -324,11 +324,8 @@ public class PropertyValue
   {
     if (value != null)
     {
-      if (definition.PropertyType != typeof (object))
-      {
-        if (value.GetType () != definition.PropertyType)
-          throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
-      }
+      if (!definition.PropertyType.IsAssignableFrom (value.GetType()))
+        throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
 
       if (value.GetType () == typeof (string))
         CheckStringValue ((string) value, definition);
@@ -340,8 +337,7 @@ public class PropertyValue
     {
       if (!definition.IsNullable)
       {
-        throw new InvalidOperationException (
-            string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
+        throw new InvalidOperationException (string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
       }
     }
   }

@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public static Official NewObject ()
     {
-      return DomainObject.NewObject<Official> ().With();
+      return NewObject<Official> ().With();
     }
 
     protected Official()

@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = GetPropertyInfo<ClassWithMixedProperties> ("String");
 
       Assert.AreSame (
-          typeof (Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties),
+          typeof (ClassWithMixedProperties),
           ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
     }
 
@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("OtherString");
 
       Assert.AreSame (
-          typeof (Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties),
+          typeof (DerivedClassWithMixedProperties),
           ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
     }
 
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("String");
 
       Assert.AreSame (
-          typeof (Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithMixedProperties),
+          typeof (DerivedClassWithMixedProperties),
           ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
     }
 
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = GetPropertyInfo<ClassWithMixedProperties> ("Int32");
 
       Assert.AreSame (
-          typeof (Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties),
+          typeof (ClassWithMixedProperties),
           ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
     }
 
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithMixedProperties> ("Int32");
 
       Assert.AreSame (
-          typeof (Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedProperties),
+          typeof (ClassWithMixedProperties),
           ReflectionUtility.GetOriginalDeclaringType (propertyInfo));
     }
 

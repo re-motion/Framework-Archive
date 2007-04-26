@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 {
@@ -12,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       {
         if (s_instance == null)
         {
-          System.Diagnostics.Debugger.Break ();
+          Debugger.Break ();
           throw new InvalidOperationException ("StandardConfiguration has not been Initialized by invoking Initialize()");
         }
         return s_instance;

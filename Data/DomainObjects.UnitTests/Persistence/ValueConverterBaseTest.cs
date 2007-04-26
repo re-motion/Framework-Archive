@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
@@ -47,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
       PropertyDefinition dateTimeProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"];
 
-      Assert.AreEqual (NaDateTime.Null, _converterMock.GetValue (customerDefinition, dateTimeProperty, null));
+      Assert.IsNull (_converterMock.GetValue (customerDefinition, dateTimeProperty, null));
     }
 
     [Test]

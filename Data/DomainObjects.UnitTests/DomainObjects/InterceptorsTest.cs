@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using Rubicon;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using System.Reflection;
-using Rubicon.Data.DomainObjects.Mapping;
+using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
@@ -46,6 +41,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsFalse (relatedObjectsGet.IsAbstract);
       CheckInterception (true, selector, interceptor, relatedObjectsGet);
       CheckInterception (true, outerSelector, outerSelector.PropertyInterceptor, relatedObjectsGet);
+    }
+    [Test]
+    [Ignore("Implement inheritence root first")]
+    public void PropInterceptorShouldInterceptNonAutoPropertiesInMapping_ForBaseTypeNotInMapping ()
+    {
+      DomainObjectPropertyInterceptor interceptor = new DomainObjectPropertyInterceptor();
+      DomainObjectPropertyInterceptorSelector selector = new DomainObjectPropertyInterceptorSelector (interceptor);
+
+      DomainObjectInterceptorSelector outerSelector = new DomainObjectInterceptorSelector();
+
+      MethodInfo basePropertyGet = typeof (OrderWithNewPropertyAccess).GetMethod ("get_BaseProperty");
+      Assert.IsFalse (basePropertyGet.IsAbstract);
+      CheckInterception (true, selector, interceptor, basePropertyGet);
+      CheckInterception (true, outerSelector, outerSelector.PropertyInterceptor, basePropertyGet);
+
+      MethodInfo basePropertySet = typeof (OrderWithNewPropertyAccess).GetMethod ("set_BaseProperty");
+      Assert.IsFalse (basePropertySet.IsAbstract);
+      CheckInterception (true, selector, interceptor, basePropertySet);
+      CheckInterception (true, outerSelector, outerSelector.PropertyInterceptor, basePropertySet);
     }
 
     [Test]

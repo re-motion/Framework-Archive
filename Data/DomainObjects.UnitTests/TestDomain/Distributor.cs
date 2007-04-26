@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   {
     public static new Distributor NewObject ()
     {
-      return DomainObject.NewObject<Distributor> ().With();
+      return NewObject<Distributor> ().With();
     }
 
     protected Distributor ()

@@ -4,7 +4,6 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -44,32 +43,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       query.Parameters.Add ("@singleUpperBound", (float) 6790);
       query.Parameters.Add ("@string", "abcdeföäü");
 
-      query.Parameters.Add ("@naBoolean", new NaBoolean (true));
-      query.Parameters.Add ("@naByte", new NaByte (78));
-      query.Parameters.Add ("@naDate", new NaDateTime (new DateTime (2005, 2, 1)));
-      query.Parameters.Add ("@naDateTime", new NaDateTime (new DateTime (2005, 2, 1, 5, 0, 0)));
-      query.Parameters.Add ("@naDecimal", new NaDecimal (new decimal (765.098)));
-      query.Parameters.Add ("@naDoubleLowerBound", new NaDouble (654321D));
-      query.Parameters.Add ("@naDoubleUpperBound", new NaDouble (654322D));
-      query.Parameters.Add ("@naGuid", new NaGuid (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
-      query.Parameters.Add ("@naInt16", new NaInt16 (12000));
-      query.Parameters.Add ("@naInt32", new NaInt32 (-2147483647));
-      query.Parameters.Add ("@naInt64", new NaInt64 (3147483647));
-      query.Parameters.Add ("@naSingleLowerBound", new NaSingle (12F));
-      query.Parameters.Add ("@naSingleUpperBound", new NaSingle (13F));
+      query.Parameters.Add ("@naBoolean", true);
+      query.Parameters.Add ("@naByte", (byte) 78);
+      query.Parameters.Add ("@naDate", new DateTime (2005, 2, 1));
+      query.Parameters.Add ("@naDateTime", new DateTime (2005, 2, 1, 5, 0, 0));
+      query.Parameters.Add ("@naDecimal", 765.098m);
+      query.Parameters.Add ("@naDoubleLowerBound", 654321D);
+      query.Parameters.Add ("@naDoubleUpperBound", 654322D);
+      query.Parameters.Add ("@naGuid", new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
+      query.Parameters.Add ("@naInt16", (short) 12000);
+      query.Parameters.Add ("@naInt32", -2147483647);
+      query.Parameters.Add ("@naInt64", 3147483647L);
+      query.Parameters.Add ("@naSingleLowerBound", 12F);
+      query.Parameters.Add ("@naSingleUpperBound", 13F);
 
-      query.Parameters.Add ("@naBooleanWithNullValue", NaBoolean.Null);
-      query.Parameters.Add ("@naByteWithNullValue", NaByte.Null);
-      query.Parameters.Add ("@naDateWithNullValue", NaDateTime.Null);
-      query.Parameters.Add ("@naDateTimeWithNullValue", NaDateTime.Null);
-      query.Parameters.Add ("@naDecimalWithNullValue", NaDecimal.Null);
-      query.Parameters.Add ("@naDoubleWithNullValue", NaDouble.Null);
-      query.Parameters.Add ("@naGuidWithNullValue", NaGuid.Null);
-      query.Parameters.Add ("@naInt16WithNullValue", NaInt16.Null);
-      query.Parameters.Add ("@naInt32WithNullValue", NaInt32.Null);
-      query.Parameters.Add ("@naInt64WithNullValue", NaInt64.Null);
-      query.Parameters.Add ("@naSingleWithNullValue", NaSingle.Null);
-      query.Parameters.Add ("@stringWithNullValue", (string) null);
+      query.Parameters.Add ("@naBooleanWithNullValue", null);
+      query.Parameters.Add ("@naByteWithNullValue", null);
+      query.Parameters.Add ("@naDateWithNullValue", null);
+      query.Parameters.Add ("@naDateTimeWithNullValue", null);
+      query.Parameters.Add ("@naDecimalWithNullValue", null);
+      query.Parameters.Add ("@naDoubleWithNullValue", null);
+      query.Parameters.Add ("@naGuidWithNullValue", null);
+      query.Parameters.Add ("@naInt16WithNullValue", null);
+      query.Parameters.Add ("@naInt32WithNullValue", null);
+      query.Parameters.Add ("@naInt64WithNullValue", null);
+      query.Parameters.Add ("@naSingleWithNullValue", null);
+      query.Parameters.Add ("@stringWithNullValue", null);
 
       DataContainerCollection actualContainers = Provider.ExecuteCollectionQuery (query);
 

@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       foreach (IRelationEndPointDefinition endPoint in endPoints)
       {
-        if (object.ReferenceEquals (endPoint, value))
+        if (ReferenceEquals (endPoint, value))
           return true;
       }
 

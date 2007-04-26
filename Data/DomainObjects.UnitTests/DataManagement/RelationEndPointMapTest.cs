@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DomainObjectCollection originalOrderItems = _map.GetOriginalRelatedObjects (endPointID);
       DomainObjectCollection orderItems = _map.GetRelatedObjects (endPointID);
 
-      Assert.IsFalse (object.ReferenceEquals (originalOrderItems, orderItems));
+      Assert.IsFalse (ReferenceEquals (originalOrderItems, orderItems));
     }
 
     [Test]
@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DomainObject originalOrderTicket = _map.GetOriginalRelatedObject (endPointID);
       DomainObject orderTicket = _map.GetRelatedObject (endPointID);
 
-      Assert.IsTrue (object.ReferenceEquals (originalOrderTicket, orderTicket));
+      Assert.IsTrue (ReferenceEquals (originalOrderTicket, orderTicket));
     }
 
     [Test]

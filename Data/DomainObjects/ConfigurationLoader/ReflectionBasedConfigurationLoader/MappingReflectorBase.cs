@@ -7,6 +7,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 {
   public abstract class MappingReflectorBase: IMappingLoader
   {
+    protected MappingReflectorBase()
+    {
+    }
+
     protected abstract ICollection GetDomainObjectClasses();
 
     public ClassDefinitionCollection GetClassDefinitions()
