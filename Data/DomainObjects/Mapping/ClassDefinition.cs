@@ -469,8 +469,23 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
+     internal static void SetClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+    }
+
     internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
     {
+      if (!ReferenceEquals (args.PropertyDefinition.ClassDefinition, this))
+      {
+        throw CreateMappingException (
+            "Proeprty '{0}' cannot be added to class '{1}', because it was initialized for class '{2}'.",
+            args.PropertyDefinition.PropertyName,
+            _id,
+            args.PropertyDefinition.ClassDefinition.ID);
+      }
+
       if (IsClassTypeResolved != args.PropertyDefinition.IsPropertyTypeResolved)
       {
         if (IsClassTypeResolved)
@@ -511,7 +526,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     internal void PropertyDefinitions_Added (object sender, PropertyDefinitionAddedEventArgs args)
     {
-      args.PropertyDefinition.SetClassDefinition (this);
     }
 
     private void PerformSetBaseClass (ClassDefinition baseClass)
@@ -631,5 +645,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     }
 
     #endregion
+
   }
 }

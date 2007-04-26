@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Factories;
@@ -10,28 +11,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
   [TestFixture]
   public class PropertyDefinitionCollectionTest : StandardMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private PropertyDefinitionCollection _collection;
     private XmlBasedPropertyDefinition _propertyDefinition;
+    private XmlBasedClassDefinition _classDefinition;
 
-    // construction and disposing
-
-    public PropertyDefinitionCollectionTest ()
-    {
-    }
-
-    // methods and properties
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _propertyDefinition = new XmlBasedPropertyDefinition ("Name", "Name", "string", 100);
+      _classDefinition = new XmlBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order));
+      _propertyDefinition = new XmlBasedPropertyDefinition (_classDefinition, "Name", "Name", "string", 100);
       _collection = new PropertyDefinitionCollection ();
     }
 
@@ -112,6 +102,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       _collection.Add (_propertyDefinition);
 
       XmlBasedPropertyDefinition copy = new XmlBasedPropertyDefinition (
+          (XmlBasedClassDefinition) _propertyDefinition.ClassDefinition,  
           _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.MappingTypeName, true,
           _propertyDefinition.IsNullable, _propertyDefinition.MaxLength, _propertyDefinition.IsPersistent);
 
@@ -147,7 +138,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsColumName ()
     {
-      _collection.Add (new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32"));
+      _collection.Add (new XmlBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", "int32"));
 
       Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
     }

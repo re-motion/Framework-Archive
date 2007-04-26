@@ -214,9 +214,6 @@
     <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\Mapping\PropertyDefinitionFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Configuration\Mapping\PropertyDefinitionTest.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -12,9 +12,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   [TestFixture]
   public class RelationReflectorTest: ReflectionBasedMappingTest
   {
-    private ClassDefinition _classWithManySideRelationPropertiesClassDefinition;
-    private ClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
-    private ClassDefinition _classWithBothEndPointsOnSameClassClassDefinition;
+    private ReflectionBasedClassDefinition _classWithManySideRelationPropertiesClassDefinition;
+    private ReflectionBasedClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
+    private ReflectionBasedClassDefinition _classWithBothEndPointsOnSameClassClassDefinition;
     private ClassDefinitionCollection _classDefinitions;
 
     public override void SetUp()
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_UnidirectionalOneToOne()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToOne");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_UnidirectionalOneToMany()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToMany");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_BidirectionalOneToOne()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToOne");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
@@ -133,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_BidirectionalOneToMany()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToMany");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
@@ -167,7 +167,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetMetadata_BidirectionalOneToMany_WithBothEndPointsOnSameClass()
     {
       PropertyInfo propertyInfo = typeof (ClassWithBothEndPointsOnSameClass).GetProperty ("Parent");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithBothEndPointsOnSameClassClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithBothEndPointsOnSameClassClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
@@ -206,12 +206,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidUnidirectionalRelation", true, false);
-      ClassDefinition classDefinition =
+      ReflectionBasedClassDefinition classDefinition =
           new ReflectionBasedClassDefinition ("ClassWithInvalidUnidirectionalRelation", "Table", "TestDomain", type, false);
 
       PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
       PropertyDefinition propertyDefinition =
-          new ReflectionBasedPropertyDefinition ("LeftSide", "LeftSide", typeof (ObjectID), true);
+          new ReflectionBasedPropertyDefinition (classDefinition, "LeftSide", "LeftSide", typeof (ObjectID), true);
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();
@@ -231,11 +231,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
-      ClassDefinition classDefinition = 
+      ReflectionBasedClassDefinition classDefinition = 
           new ReflectionBasedClassDefinition ("ClassWithInvalidBidirectionalRelation", "Table", "TestDomain", type, false);
 
       PropertyInfo propertyInfo = type.GetProperty ("InvalidOppositePropertyNameLeftSide");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyReflector propertyReflector = new PropertyReflector (classDefinition, propertyInfo);
       classDefinition.MyPropertyDefinitions.Add (propertyReflector.GetMetadata());
       
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();

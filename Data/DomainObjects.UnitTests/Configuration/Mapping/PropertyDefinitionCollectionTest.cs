@@ -3,34 +3,23 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
   public class PropertyDefinitionCollectionTest : ReflectionBasedMappingTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private PropertyDefinitionCollection _collection;
     private PropertyDefinition _propertyDefinition;
-
-    // construction and disposing
-
-    public PropertyDefinitionCollectionTest ()
-    {
-    }
-
-    // methods and properties
+    private ReflectionBasedClassDefinition _classDefinition;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _propertyDefinition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+      _propertyDefinition = new ReflectionBasedPropertyDefinition (_classDefinition, "Name", "Name", typeof (string), 100);
       _collection = new PropertyDefinitionCollection ();
     }
 
@@ -111,6 +100,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_propertyDefinition);
 
       PropertyDefinition copy = new ReflectionBasedPropertyDefinition (
+          (ReflectionBasedClassDefinition) _propertyDefinition.ClassDefinition,  
           _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.PropertyType,
           _propertyDefinition.IsNullable, _propertyDefinition.MaxLength, _propertyDefinition.IsPersistent);
 
@@ -146,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ContainsColumName ()
     {
-      _collection.Add (new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int)));
+      _collection.Add (new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (int)));
 
       Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
     }

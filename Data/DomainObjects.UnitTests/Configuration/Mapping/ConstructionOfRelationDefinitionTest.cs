@@ -29,16 +29,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson' cannot have two non-virtual end points.")]
     public void TwoRelationEndPointDefinitions ()
     {
-      ClassDefinition partnerDefinition = new ReflectionBasedClassDefinition ("Partner", "Partner", "TestDomain", typeof (Partner), false);
+      ReflectionBasedClassDefinition partnerDefinition = new ReflectionBasedClassDefinition ("Partner", "Partner", "TestDomain", typeof (Partner), false);
       partnerDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", typeof (ObjectID)));
+          partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", "ContactPersonID", typeof (ObjectID)));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
           partnerDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson", false);
 
-      ClassDefinition personDefinition = new ReflectionBasedClassDefinition ("Person", "Person", "TestDomain", typeof (Person), false);
+      ReflectionBasedClassDefinition personDefinition = new ReflectionBasedClassDefinition ("Person", "Person", "TestDomain", typeof (Person), false);
       personDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", "AssociatedPartnerCompanyID", typeof (ObjectID)));
+          personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", "AssociatedPartnerCompanyID", typeof (ObjectID)));
 
       RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (
           personDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany", false);

@@ -14,10 +14,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public static ReflectionBasedClassDefinition CreateOrderDefinitionWithResolvedCustomerProperty()
     {
       ReflectionBasedClassDefinition classDefinition = CreateOrderDefinition();
-      classDefinition.MyPropertyDefinitions.Add (PropertyDefinitionFactory.CreateCustomerDefinition());
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", "CustomerID", typeof (ObjectID), false));
 
       return classDefinition;
     }
-
   }
 }

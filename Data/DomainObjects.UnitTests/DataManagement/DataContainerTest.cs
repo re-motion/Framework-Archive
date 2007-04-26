@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -19,12 +20,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       base.SetUp ();
 
       Guid idValue = Guid.NewGuid ();
+      ReflectionBasedClassDefinition orderClass =
+          new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
 
       _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", idValue));
 
       _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);
 
-      _nameDefinition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
+      _nameDefinition = new ReflectionBasedPropertyDefinition (orderClass, "Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
     }
 
@@ -162,7 +165,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       DataContainer container = DataContainer.CreateNew (id);
 
       PropertyDefinition reportsToDefinition = new ReflectionBasedPropertyDefinition (
-          "ReportsTo", "ReportsTo", typeof (string), true, 100);
+          (ReflectionBasedClassDefinition) container.ClassDefinition, "ReportsTo", "ReportsTo", typeof (string), true, 100);
 
       container.PropertyValues.Add (new PropertyValue (reportsToDefinition, null));
 

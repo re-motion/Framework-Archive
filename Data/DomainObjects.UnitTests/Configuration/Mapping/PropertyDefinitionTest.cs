@@ -9,11 +9,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
   [TestFixture]
   public class PropertyDefinitionTest : ReflectionBasedMappingTest
   {
+    private ReflectionBasedClassDefinition _classDefinition;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+    }
+
     [Test]
     public void InitializeWithValueType ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int), null, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (int), null, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (int.MinValue, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
@@ -28,8 +37,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNullableValueType ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int?), null, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (int?), null, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
@@ -44,8 +53,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithObjectID ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (ObjectID), false, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (ObjectID), false, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
@@ -60,8 +69,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithEnum ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (ClassWithAllDataTypes.EnumType), null, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (ClassWithAllDataTypes.EnumType), null, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
@@ -76,8 +85,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNullableEnum ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (ClassWithAllDataTypes.EnumType?), null, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (ClassWithAllDataTypes.EnumType?), null, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
@@ -92,8 +101,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNullableStringAndMaxLength ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string), true, 100, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (string), true, 100, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
@@ -108,8 +117,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNotNullableStringWithoutMaxLength ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string), false, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (string), false, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (string.Empty, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
@@ -124,8 +133,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNullableArrayAndMaxLength ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (byte[]), true, 100, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (byte[]), true, 100, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
@@ -140,8 +149,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithNotNullableArrayWithoutMaxLength ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (byte[]), false, null, true);
-      Assert.IsNull (actual.ClassDefinition);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (byte[]), false, null, true);
+      Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (new byte[0], actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
@@ -157,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot access property 'StorageSpecificName' for non-persistent property definitions.")]
     public void NonPersistentProperty ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("ThePropertyName", "TheColumnName", typeof (int), null, null, false);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "ThePropertyName", "TheColumnName", typeof (int), null, null, false);
       Assert.IsFalse (actual.IsPersistent);
       Dev.Null = actual.StorageSpecificName;
     }
@@ -167,7 +176,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
        "MaxLength parameter can only be supplied for strings and byte arrays but the property is of type 'System.Int32'.\r\n  Property: test")]
     public void IntPropertyWithMaxLength ()
     {
-      new ReflectionBasedPropertyDefinition ("test", "test", typeof (int), 10);
+      new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (int), 10);
     }
 
     [Test]
@@ -175,7 +184,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
        "IsNullable parameter can only be supplied for reference types but the property is of type 'System.Int32'.\r\n  Property: test")]
     public void CheckValueTypeCtors ()
     {
-      new ReflectionBasedPropertyDefinition ("test", "test", typeof (int), false);
+      new ReflectionBasedPropertyDefinition (_classDefinition, "test", "test", typeof (int), false);
     }
   }
 }

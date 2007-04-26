@@ -22,12 +22,7 @@ public class ReflectionPropertyFactory
     Type itemType = GetItemType (propertyInfo);
 
     bool isNullableType = false;
-    if (TypeInfo.IsNullableValueType (itemType))
-    {
-      itemType = TypeInfo.GetNativeType (itemType);
-      isNullableType = true;
-    }
-    else if (NaTypeUtility.IsNaNullableType (itemType))
+    if (NaTypeUtility.IsNaNullableType (itemType))
     {
       itemType = NaTypeUtility.GetBasicType (itemType);
       isNullableType = true;

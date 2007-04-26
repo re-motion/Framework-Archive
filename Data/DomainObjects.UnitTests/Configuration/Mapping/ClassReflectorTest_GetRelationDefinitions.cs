@@ -165,10 +165,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return classDefinition;
     }
 
-    private void CreatePropertyDefinitionsForClassWithManySideRelationProperties (ClassDefinition classDefinition)
+    private void CreatePropertyDefinitionsForClassWithManySideRelationProperties (ReflectionBasedClassDefinition classDefinition)
     {
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
               "NoAttributeID",
               typeof (ObjectID),
@@ -178,6 +179,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
               "NotNullableID",
               typeof (ObjectID),
@@ -187,6 +189,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToOne",
               "UnidirectionalOneToOneID",
               typeof (ObjectID),
@@ -196,6 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToMany",
               "UnidirectionalOneToManyID",
               typeof (ObjectID),
@@ -205,6 +209,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
               "BidirectionalOneToOneID",
               typeof (ObjectID),
@@ -214,6 +219,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToMany",
               "BidirectionalOneToManyID",
               typeof (ObjectID),

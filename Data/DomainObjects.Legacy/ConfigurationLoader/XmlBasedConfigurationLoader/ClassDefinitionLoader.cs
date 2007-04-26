@@ -75,10 +75,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
 
       foreach (XmlNode classNodeWithBaseClass in classNodesWithBaseClass)
       {
-        ClassDefinition derivedClass = classDefinitions[classNodeWithBaseClass.SelectSingleNode ("@id").InnerText];
+        XmlBasedClassDefinition derivedClass = (XmlBasedClassDefinition) classDefinitions[classNodeWithBaseClass.SelectSingleNode ("@id").InnerText];
 
         string baseClassID = classNodeWithBaseClass.SelectSingleNode ("@baseClass").InnerText;
-        ClassDefinition baseClass = classDefinitions[baseClassID];
+        XmlBasedClassDefinition baseClass = (XmlBasedClassDefinition) classDefinitions[baseClassID];
 
         if (baseClass == null)
           throw CreateMappingException ("Class '{0}' refers to non-existing base class '{1}'.", derivedClass.ID, baseClassID);
@@ -115,22 +115,22 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
       return null;
     }
 
-    private void FillPropertyDefinitions (ClassDefinition classDefinition, XmlNode classNode)
+    private void FillPropertyDefinitions (XmlBasedClassDefinition classDefinition, XmlNode classNode)
     {
       foreach (XmlNode propertyNode in classNode.SelectNodes (FormatXPath ("{0}:properties/{0}:property"), _namespaceManager))
       {
-        PropertyDefinition propertyDefinition = GetPropertyDefinition (classDefinition, propertyNode);
+        XmlBasedPropertyDefinition propertyDefinition = GetPropertyDefinition (classDefinition, propertyNode);
         classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       }
 
       foreach (XmlNode relationPropertyNode in classNode.SelectNodes (FormatXPath ("{0}:properties/{0}:relationProperty[{0}:column]"), _namespaceManager))
       {
-        PropertyDefinition propertyDefinition = GetRelationPropertyDefinition (classDefinition, relationPropertyNode);
+        XmlBasedPropertyDefinition propertyDefinition = GetRelationPropertyDefinition (classDefinition, relationPropertyNode);
         classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       }
     }
 
-    private XmlBasedPropertyDefinition GetPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
+    private XmlBasedPropertyDefinition GetPropertyDefinition (XmlBasedClassDefinition classDefinition, XmlNode propertyNode)
     {
       string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
 
@@ -151,15 +151,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigur
       if (maxLengthNode != null)
         maxLength = int.Parse (maxLengthNode.InnerText);
 
-      return new XmlBasedPropertyDefinition (propertyName, columnName, mappingType, _resolveTypes, isNullable, maxLength);
+      return new XmlBasedPropertyDefinition (classDefinition, propertyName, columnName, mappingType, _resolveTypes, isNullable, maxLength);
     }
 
-    private XmlBasedPropertyDefinition GetRelationPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
+    private XmlBasedPropertyDefinition GetRelationPropertyDefinition (XmlBasedClassDefinition classDefinition, XmlNode propertyNode)
     {
       string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
       string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-      return new XmlBasedPropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypes, true, null);
+      return new XmlBasedPropertyDefinition (classDefinition, propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypes, true, null);
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

@@ -11,24 +11,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
   [TestFixture]
   public class MappingTest : SerializationBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public MappingTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void PropertyDefinitionWithoutClassDefinition ()
     {
-      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "string", true, true, 100);
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition (classDefinition, "PropertyName", "ColumnName", "string", true, true, 100);
 
       XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
@@ -39,8 +26,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithClassDefinition ()
     {
-      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("OrderNumber", "OrderNo", "int32", false);
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition (classDefinition, "OrderNumber", "OrderNo", "int32", false);
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
       XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
@@ -64,7 +51,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithUnresolvedNativePropertyType ()
     {
-      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, null);
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition (classDefinition, "PropertyName", "ColumnName", "int32", false, true, null);
 
       XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -73,7 +61,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithUnresolvedUnknownPropertyType ()
     {
-      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, null);
+      XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition (classDefinition, "PropertyName", "ColumnName", "UnknownPropertyType", false, true, null);
 
       XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -98,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     public void RelationEndPointDefinitionWithoutRelationDefinition ()
     {
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
-      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      classDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (classDefinition, "Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
       RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
       RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
@@ -113,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
       XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
       XmlBasedClassDefinition orderTicketDefinition = new XmlBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
 
-      orderTicketDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (orderTicketDefinition, "Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
@@ -158,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
       XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
       XmlBasedClassDefinition orderTicketDefinition = new XmlBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket));
 
-      orderTicketDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (orderTicketDefinition, "Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
@@ -202,7 +191,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
       XmlBasedClassDefinition clientDefinition = new XmlBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
       XmlBasedClassDefinition locationDefinition = new XmlBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location));
 
-      locationDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, false));
+      locationDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (locationDefinition, "Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, false));
 
       AnonymousRelationEndPointDefinition clientEndPointDefinition = new AnonymousRelationEndPointDefinition (clientDefinition);
       RelationEndPointDefinition locationEndPointDefinition = new RelationEndPointDefinition (locationDefinition, "Client", true);

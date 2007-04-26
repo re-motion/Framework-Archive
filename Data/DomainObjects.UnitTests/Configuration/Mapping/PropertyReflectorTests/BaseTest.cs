@@ -1,5 +1,9 @@
+using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
@@ -7,8 +11,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
   {
     protected PropertyReflector CreatePropertyReflector<T> (string property)
     {
-      PropertyInfo propertyInfo = typeof (T).GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-      return new PropertyReflector (propertyInfo);
+      ArgumentUtility.CheckNotNullOrEmpty ("property", property);
+
+      Type type = typeof (T);
+      PropertyInfo propertyInfo = type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+      ReflectionBasedClassDefinition classDefinition;
+      if (typeof (DomainObject).IsAssignableFrom (type))
+        classDefinition = new ReflectionBasedClassDefinition (type.Name, type.Name, c_testDomainProviderID, type, true);
+      else
+        classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
+
+      return new PropertyReflector (classDefinition, propertyInfo);
     }
   }
 }

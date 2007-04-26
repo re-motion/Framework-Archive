@@ -12,35 +12,36 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     private string _mappingTypeName;
     private bool _isNullable;
 
-    public XmlBasedPropertyDefinition (string propertyName, string columnName, string mappingTypeName) 
-      : this (propertyName, columnName, mappingTypeName, false)
+    public XmlBasedPropertyDefinition (XmlBasedClassDefinition classDefinition, string propertyName, string columnName, string mappingTypeName)
+      : this (classDefinition, propertyName, columnName, mappingTypeName, false)
     {
     }
 
-    public XmlBasedPropertyDefinition (string propertyName, string columnName, string mappingTypeName, bool isNullable)
-        : this (propertyName, columnName, mappingTypeName, true, isNullable, null)
+    public XmlBasedPropertyDefinition (XmlBasedClassDefinition classDefinition, string propertyName, string columnName, string mappingTypeName, bool isNullable)
+      : this (classDefinition, propertyName, columnName, mappingTypeName, true, isNullable, null)
     {
     }
 
-    public XmlBasedPropertyDefinition (string propertyName, string columnName, string mappingTypeName, int? maxLength)
-        : this (propertyName, columnName, mappingTypeName, true, false, maxLength)
+    public XmlBasedPropertyDefinition (XmlBasedClassDefinition classDefinition, string propertyName, string columnName, string mappingTypeName, int? maxLength)
+      : this (classDefinition, propertyName, columnName, mappingTypeName, true, false, maxLength)
     {
     }
 
     public XmlBasedPropertyDefinition (
+        XmlBasedClassDefinition classDefinition, 
         string propertyName,
         string columnName,
         string mappingTypeName,
         bool resolveMappingType,
         bool isNullable,
         int? maxLength)
-        : this (propertyName, columnName, mappingTypeName, resolveMappingType, isNullable, maxLength, true)
+      : this (classDefinition, propertyName, columnName, mappingTypeName, resolveMappingType, isNullable, maxLength, true)
     {
     }
 
     public XmlBasedPropertyDefinition (
-        string propertyName, string columnName, string mappingTypeName, bool resolveMappingType, bool isNullable, int? maxLength, bool isPersistent)
-        : base (propertyName, columnName, maxLength, isPersistent)
+        XmlBasedClassDefinition classDefinition, string propertyName, string columnName, string mappingTypeName, bool resolveMappingType, bool isNullable, int? maxLength, bool isPersistent)
+        : base (classDefinition, propertyName, columnName, maxLength, isPersistent)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("mappingTypeName", mappingTypeName);
 

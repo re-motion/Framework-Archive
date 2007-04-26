@@ -25,11 +25,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     // construction and disposing
 
-    protected PropertyDefinition (string propertyName, string columnName, int? maxLength, bool isPersistent)
+    protected PropertyDefinition (ClassDefinition classDefinition, string propertyName, string columnName, int? maxLength, bool isPersistent)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
 
+      _classDefinition = classDefinition;
       _propertyName = propertyName;
       _storageSpecificName = columnName;
       _maxLength = maxLength;
@@ -95,11 +97,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     protected bool IsPartOfMappingConfiguration
     {
       get { return _mappingClassID != null; }
-    }
-
-    public void SetClassDefinition (ClassDefinition classDefinition)
-    {
-      _classDefinition = classDefinition;
     }
 
     #region ISerializable Members

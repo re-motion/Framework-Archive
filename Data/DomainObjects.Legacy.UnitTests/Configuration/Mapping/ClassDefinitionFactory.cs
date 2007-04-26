@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 {
@@ -14,7 +15,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public static XmlBasedClassDefinition CreateOrderDefinitionWithResolvedCustomerProperty()
     {
       XmlBasedClassDefinition classDefinition = CreateOrderDefinition();
-      classDefinition.MyPropertyDefinitions.Add (PropertyDefinitionFactory.CreateCustomerDefinition());
+      classDefinition.MyPropertyDefinitions.Add (
+          new XmlBasedPropertyDefinition (classDefinition, "Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, null));
 
       return classDefinition;
     }
@@ -27,7 +29,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public static XmlBasedClassDefinition CreateWithUnresolvedRelationProperty()
     {
       XmlBasedClassDefinition classDefinition = CreateWithUnresolvedClassType();
-      classDefinition.MyPropertyDefinitions.Add (PropertyDefinitionFactory.CreateWithUnresolvedRelationPropertyType());
+      classDefinition.MyPropertyDefinitions.Add (
+          new XmlBasedPropertyDefinition (classDefinition, "PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName, false, false, null));
 
       return classDefinition;
     }

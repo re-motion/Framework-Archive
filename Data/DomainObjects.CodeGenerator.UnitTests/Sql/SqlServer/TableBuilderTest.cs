@@ -19,6 +19,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     // member fields
 
     private TableBuilder _tableBuilder;
+    private XmlBasedClassDefinition _classDefintion;
 
     // construction and disposing
 
@@ -33,27 +34,28 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       base.SetUp ();
 
       _tableBuilder = new TableBuilder ();
+      _classDefintion = new XmlBasedClassDefinition ("ClassID", "Table", "StorageProvider", "Type", false);
     }
 
     [Test]
     public void GetSqlDataType ()
     {
-      Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "boolean", false, false, null)));
-      Assert.AreEqual ("tinyint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "byte", false, false, null)));
-      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "date", false, false, null)));
-      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "dateTime", false, false, null)));
-      Assert.AreEqual ("decimal (38, 3)", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "decimal", false, false, null)));
-      Assert.AreEqual ("float", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "double", false, false, null)));
-      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "guid", false, false, null)));
-      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "int16", false, false, null)));
-      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "int32", false, false, null)));
-      Assert.AreEqual ("bigint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "int64", false, false, null)));
-      Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "single", false, false, null)));
-      Assert.AreEqual ("nvarchar (100)", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "string", false, false, 100)));
+      Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "boolean", false, false, null)));
+      Assert.AreEqual ("tinyint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "byte", false, false, null)));
+      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "date", false, false, null)));
+      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "dateTime", false, false, null)));
+      Assert.AreEqual ("decimal (38, 3)", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "decimal", false, false, null)));
+      Assert.AreEqual ("float", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "double", false, false, null)));
+      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "guid", false, false, null)));
+      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "int16", false, false, null)));
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "int32", false, false, null)));
+      Assert.AreEqual ("bigint", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "int64", false, false, null)));
+      Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "single", false, false, null)));
+      Assert.AreEqual ("nvarchar (100)", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "string", false, false, 100)));
 
-      Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "string")));
+      Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "string")));
 
-      Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "binary", false, false, null)));
+      Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", "binary", false, false, null)));
       Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType ((XmlBasedPropertyDefinition) OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
       Assert.AreEqual ("varchar (255)", _tableBuilder.GetSqlDataType ((XmlBasedPropertyDefinition) CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
     }
@@ -62,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     public void GetSqlDataTypeWithDotNetType ()
     {
       string mappingTypeName = "Namespace.TypeName, AssemblyName";
-      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", mappingTypeName, false, false, null)));
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition (_classDefintion, "Name", "ColumnName", mappingTypeName, false, false, null)));
     }
 
     [Test]
@@ -118,19 +120,19 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
     {
       XmlBasedClassDefinition abstractClass = new XmlBasedClassDefinition ("AbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
       abstractClass.MyPropertyDefinitions.Add (
-          new XmlBasedPropertyDefinition ("PropertyInAbstractClass", "PropertyInAbstractClass", "string", false, true, 100));
+          new XmlBasedPropertyDefinition (abstractClass, "PropertyInAbstractClass", "PropertyInAbstractClass", "string", false, true, 100));
 
       XmlBasedClassDefinition derivedAbstractClass = new XmlBasedClassDefinition (
           "DerivedAbstractClass", null, "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, abstractClass);
 
       derivedAbstractClass.MyPropertyDefinitions.Add (
-          new XmlBasedPropertyDefinition ("PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", "string", false, false, 101));
+          new XmlBasedPropertyDefinition (derivedAbstractClass, "PropertyInAbstractDerivedClass", "PropertyInAbstractDerivedClass", "string", false, false, 101));
 
       XmlBasedClassDefinition derivedConcreteClass = new XmlBasedClassDefinition (
           "DerivedConcreteClass", "EntityName", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, derivedAbstractClass);
 
       derivedConcreteClass.MyPropertyDefinitions.Add (
-          new XmlBasedPropertyDefinition ("PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", "string", false, true, 102));
+          new XmlBasedPropertyDefinition (derivedConcreteClass, "PropertyInDerivedConcreteClass", "PropertyInDerivedConcreteClass", "string", false, true, 102));
 
       string expectedStatement = "CREATE TABLE [dbo].[EntityName]\r\n"
           + "(\r\n"

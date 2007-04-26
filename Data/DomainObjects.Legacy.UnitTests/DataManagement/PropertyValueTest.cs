@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
+using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
@@ -11,6 +12,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
   [TestFixture]
   public class PropertyValueTest : StandardMappingTest
   {
+    private XmlBasedClassDefinition _classDefinition;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _classDefinition = new XmlBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order));
+    }
+
     [Test]
     public void TestEquals ()
     {
@@ -273,7 +283,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheck ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "12345");
       propertyValue.Value = "12345678901";
     }
@@ -282,7 +292,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException))]
     public void MaxLengthCheckInConstructor ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "12345678901");
     }
 
@@ -290,7 +300,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheckInConstructor ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, 123);
     }
 
@@ -298,7 +308,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void TypeCheck ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "string", 10);
       PropertyValue propertyValue = new PropertyValue (definition, "123");
       propertyValue.Value = 123;
     }
@@ -307,7 +317,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableStringToNull ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "string", true, false, 10);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "string", true, false, 10);
       PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
       propertyValue.Value = null;
@@ -316,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [Test]
     public void SetNullableBinary ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", true);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
       Assert.IsNull (propertyValue.Value);
     }
@@ -324,7 +334,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [Test]
     public void SetNotNullableBinary ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", false);
 
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       ResourceManager.IsEmptyImage ((byte[]) propertyValue.Value);
@@ -337,7 +347,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidTypeException))]
     public void SetBinaryWithInvalidType ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, new int[0]);
     }
 
@@ -345,7 +355,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaConstructor ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, null);
     }
 
@@ -353,7 +363,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property 'test' does not allow null values.")]
     public void SetNotNullableBinaryToNullViaProperty ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", false);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", false);
       PropertyValue propertyValue = new PropertyValue (definition, ResourceManager.GetImage1 ());
       propertyValue.Value = null;
     }
@@ -362,7 +372,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (ValueTooLongException), ExpectedMessage = "Value for property 'test' is too large. Maximum size: 1000000.")]
     public void SetBinaryLargerThanMaxLength ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "binary", true, true, 1000000);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", "binary", true, true, 1000000);
       PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
       propertyValue.Value = ResourceManager.GetImageLarger1MB ();
     }
@@ -371,7 +381,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The relation property 'test' cannot be set directly.")]
     public void SetRelationPropertyDirectly ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", TypeInfo.ObjectIDMappingTypeName, true);
+      PropertyDefinition definition = new XmlBasedPropertyDefinition (_classDefinition, "test", "test", TypeInfo.ObjectIDMappingTypeName, true);
       PropertyValue propertyValue = new PropertyValue (definition, null);
 
       propertyValue.Value = DomainObjectIDs.Customer1;
@@ -404,7 +414,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DataManagement
       if (mappingType == "string")
         maxLength = 100;
 
-      return new XmlBasedPropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
+      return new XmlBasedPropertyDefinition (_classDefinition, name, name, mappingType, true, isNullable, maxLength);
     }
 
     private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)

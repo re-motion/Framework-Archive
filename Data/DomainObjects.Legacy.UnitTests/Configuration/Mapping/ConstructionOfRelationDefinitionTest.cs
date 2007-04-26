@@ -46,14 +46,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     public void TwoRelationEndPointDefinitions ()
     {
       XmlBasedClassDefinition customerDefinition = new XmlBasedClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
-      customerDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
+      customerDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (customerDefinition, "Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
           customerDefinition, "Order", false);
 
       XmlBasedClassDefinition orderDefinition = new XmlBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
-      orderDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
+      orderDefinition.MyPropertyDefinitions.Add (new XmlBasedPropertyDefinition (orderDefinition, "Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
 
       RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (orderDefinition, "Customer", false);
 

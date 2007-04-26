@@ -26,7 +26,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public override DataContainer LoadDataContainer (ObjectID id)
     {
       DataContainer container = DataContainer.CreateForExisting (id, null);
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("Name", "Name", typeof (string), 100);
+      PropertyDefinition definition = 
+          new ReflectionBasedPropertyDefinition ((ReflectionBasedClassDefinition) container.ClassDefinition, "Name", "Name", typeof (string), 100);
       container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
       return container;
     }

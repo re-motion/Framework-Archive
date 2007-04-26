@@ -10,9 +10,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   //TODO: Test for null or empty StorageSpecificIdentifier
   public class PropertyReflector: MemberReflectorBase
   {
-    public PropertyReflector (PropertyInfo propertyInfo)
+    private readonly ReflectionBasedClassDefinition _classDefinition;
+
+    public PropertyReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
         : base (propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      _classDefinition = classDefinition;
     }
 
     public PropertyDefinition GetMetadata()
@@ -21,6 +25,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       CheckValidPropertyType();
 
       return new ReflectionBasedPropertyDefinition (
+          _classDefinition,
           GetPropertyName(),
           GetStorageSpecificIdentifier(),
           IsRelationProperty() ? typeof (ObjectID) : PropertyInfo.PropertyType,

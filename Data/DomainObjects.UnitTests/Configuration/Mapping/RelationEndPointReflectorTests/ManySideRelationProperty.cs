@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
   [TestFixture]
   public class ManySideRelationProperty: ReflectionBasedMappingTest
   {
-    private ClassDefinition _classDefinition;
+    private ReflectionBasedClassDefinition _classDefinition;
     private ClassDefinitionCollection _classDefinitions;
 
     public override void SetUp()
@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_ForOptional()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("NoAttribute");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("NoAttribute");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_ForMandatory()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("NotNullable");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("NotNullable");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -55,7 +55,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_UnidirectionalOneToOne()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToOne");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("UnidirectionalOneToOne");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -72,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_UnidirectionalOneToMany()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToMany");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("UnidirectionalOneToMany");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -89,7 +89,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_BidirectionalOneToOne()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToOne");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("BidirectionalOneToOne");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void GetMetadata_BidirectionalOneToMany()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToMany");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("BidirectionalOneToMany");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_UnidirectionalOneToOne ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToOne");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("UnidirectionalOneToOne");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -135,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_UnidirectionalOneToMany ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("UnidirectionalOneToMany");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("UnidirectionalOneToMany");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -146,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToOne");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("BidirectionalOneToOne");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -157,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithManySideRelationProperties> ("BidirectionalOneToMany");
+      PropertyReflector propertyReflector = CreatePropertyReflector ("BidirectionalOneToMany");
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
@@ -165,10 +165,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
     }
 
-    private PropertyReflector CreatePropertyReflector<T> (string property)
+    private PropertyReflector CreatePropertyReflector (string property)
     {
-      PropertyInfo propertyInfo = typeof (T).GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-      return new PropertyReflector (propertyInfo);
+      Type type = typeof (ClassWithManySideRelationProperties);
+      PropertyInfo propertyInfo = type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (type.Name, type.Name, c_testDomainProviderID, type, true);
+
+      return new PropertyReflector (_classDefinition, propertyInfo);
     }
   }
 }

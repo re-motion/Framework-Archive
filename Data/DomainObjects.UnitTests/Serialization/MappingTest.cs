@@ -12,7 +12,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithoutClassDefinition ()
     {
-      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string), true, 100);
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order), false);
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition (classDefinition, "PropertyName", "ColumnName", typeof (string), true, 100);
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
@@ -23,8 +24,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithClassDefinition ()
     {
-      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("OrderNumber", "OrderNo", typeof (int));
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order), false);
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition (classDefinition, "OrderNumber", "OrderNo", typeof (int));
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
@@ -48,7 +49,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithUnresolvedNativePropertyType ()
     {
-      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (int));
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
+      PropertyDefinition propertyDefinition = new ReflectionBasedPropertyDefinition (classDefinition, "PropertyName", "ColumnName", typeof (int));
 
       PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -73,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void RelationEndPointDefinitionWithoutRelationDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
-      classDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Order", "OrderID", typeof (ObjectID), false));
+      classDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (classDefinition, "Order", "OrderID", typeof (ObjectID), false));
       RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
       RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
@@ -88,14 +90,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
       ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
 
-      orderTicketDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Order", "OrderID", typeof (ObjectID), false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (orderTicketDefinition, "Order", "OrderID", typeof (ObjectID), false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       RelationEndPointDefinition orderTicketEndPointdefinition = new RelationEndPointDefinition (orderTicketDefinition, "Order", true);
 
-      RelationDefinition relationDefinition = new RelationDefinition ("OrderToOrderTicket", orderEndPointDefinition, orderTicketEndPointdefinition);
+      new RelationDefinition ("OrderToOrderTicket", orderEndPointDefinition, orderTicketEndPointdefinition);
 
       RelationEndPointDefinition deserializedOrderTicketEndPointdefinition = (RelationEndPointDefinition) SerializeAndDeserialize (orderTicketEndPointdefinition);
 
@@ -130,17 +132,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void VirtualRelationEndPointDefinitionWithRelationDefinition ()
     {
-      ClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
-      ClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
+      ReflectionBasedClassDefinition orderDefinition = new ReflectionBasedClassDefinition ("Order", "Order", "TestDomain", typeof (Order), false);
+      ReflectionBasedClassDefinition orderTicketDefinition = new ReflectionBasedClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket), false);
 
-      orderTicketDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Order", "OrderID", typeof (ObjectID), false));
+      orderTicketDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (orderTicketDefinition, "Order", "OrderID", typeof (ObjectID), false));
 
       VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
           orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
 
       RelationEndPointDefinition orderTicketEndPointdefinition = new RelationEndPointDefinition (orderTicketDefinition, "Order", true);
 
-      RelationDefinition relationDefinition = new RelationDefinition ("OrderToOrderTicket", orderEndPointDefinition, orderTicketEndPointdefinition);
+      new RelationDefinition ("OrderToOrderTicket", orderEndPointDefinition, orderTicketEndPointdefinition);
 
       VirtualRelationEndPointDefinition deserializedOrderEndPointDefinition = (VirtualRelationEndPointDefinition) SerializeAndDeserialize (orderEndPointDefinition);
 
@@ -174,15 +176,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void AnonymousRelationEndPointDefinitionWithRelationDefinition ()
     {
-      ClassDefinition clientDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client), false);
-      ClassDefinition locationDefinition = new ReflectionBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location), false);
+      ReflectionBasedClassDefinition clientDefinition = new ReflectionBasedClassDefinition ("Client", "Client", "TestDomain", typeof (Client), false);
+      ReflectionBasedClassDefinition locationDefinition = new ReflectionBasedClassDefinition ("Location", "Location", "TestDomain", typeof (Location), false);
 
-      locationDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Client", "ClientID", typeof (ObjectID), false));
+      locationDefinition.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (locationDefinition, "Client", "ClientID", typeof (ObjectID), false));
 
       AnonymousRelationEndPointDefinition clientEndPointDefinition = new AnonymousRelationEndPointDefinition (clientDefinition);
       RelationEndPointDefinition locationEndPointDefinition = new RelationEndPointDefinition (locationDefinition, "Client", true);
 
-      RelationDefinition relationDefinition = new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", clientEndPointDefinition, locationEndPointDefinition);
+      new RelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client", clientEndPointDefinition, locationEndPointDefinition);
 
       AnonymousRelationEndPointDefinition deserializedClientEndPointDefinition = (AnonymousRelationEndPointDefinition) SerializeAndDeserialize (clientEndPointDefinition);
 

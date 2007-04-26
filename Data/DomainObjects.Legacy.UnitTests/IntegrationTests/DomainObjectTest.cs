@@ -666,7 +666,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       Employee employee = new Employee ();
 
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ((XmlBasedClassDefinition) employee.DataContainer.ClassDefinition, "testproperty", "testproperty", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -685,7 +685,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       Employee employee = new Employee ();
 
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("Name", "Name", "string", true, true, 10);
+      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ((XmlBasedClassDefinition) employee.DataContainer.ClassDefinition, "Name", "Name", "string", true, true, 10);
       PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
       Assert.IsTrue (propertyValues.Contains ("Name"));

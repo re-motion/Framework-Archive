@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       foreach (PropertyInfo propertyInfo in propertyInfos)
       {
-        PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+        PropertyReflector propertyReflector = new PropertyReflector (classDefinition, propertyInfo);
         classDefinition.MyPropertyDefinitions.Add (propertyReflector.GetMetadata());
       }
     }
