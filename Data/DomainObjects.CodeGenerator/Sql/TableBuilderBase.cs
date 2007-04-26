@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -55,7 +56,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
     public abstract void AddToCreateTableScript (ClassDefinition concreteTableClassDefinition, StringBuilder createTableStringBuilder);
     public abstract void AddToDropTableScript (ClassDefinition concreteTableClassDefinition, StringBuilder dropTableStringBuilder);
-    public abstract string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable);
+    public abstract string GetColumn (XmlBasedPropertyDefinition propertyDefinition, bool forceNullable);
     protected abstract string ColumnListOfParticularClassFormatString { get; }
 
     protected abstract string SqlDataTypeBoolean { get;}
@@ -76,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     protected abstract string SqlDataTypeSerializedObjectID { get;}
     protected abstract string SqlDataTypeClassID { get;}
 
-    public string GetSqlDataType (PropertyDefinition propertyDefinition)
+    public string GetSqlDataType (XmlBasedPropertyDefinition propertyDefinition)
     {
       EnsureSqlDataTypeMappingPopulated ();
 
@@ -220,7 +221,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
       StringBuilder columnListStringBuilder = new StringBuilder ();
 
-      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+      foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
         columnListStringBuilder.Append (GetColumn (propertyDefinition, forceNullable));
 
       return string.Format (ColumnListOfParticularClassFormatString, classDefinition.ID, columnListStringBuilder);

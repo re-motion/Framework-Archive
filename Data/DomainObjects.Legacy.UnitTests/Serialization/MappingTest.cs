@@ -28,9 +28,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithoutClassDefinition ()
     {
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "string", true, true, 100);
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "string", true, true, 100);
 
-      PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+      XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
       Assert.IsFalse (object.ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -39,11 +39,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithClassDefinition ()
     {
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("OrderNumber", "OrderNo", "int32", false);
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("OrderNumber", "OrderNo", "int32", false);
       XmlBasedClassDefinition classDefinition = new XmlBasedClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
-      PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+      XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
 
       Assert.IsFalse (object.ReferenceEquals (propertyDefinition, deserializedPropertyDefinition));
       Assert.IsFalse (object.ReferenceEquals (propertyDefinition.ClassDefinition, deserializedPropertyDefinition.ClassDefinition));
@@ -55,27 +55,27 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     public void PropertyDefinitionInMapping ()
     {
       ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions["Order"];
-      PropertyDefinition orderNumberDefinition = orderDefinition["OrderNumber"];
+      XmlBasedPropertyDefinition orderNumberDefinition = (XmlBasedPropertyDefinition) orderDefinition["OrderNumber"];
 
-      PropertyDefinition deserializedOrderNumberDefinition = (PropertyDefinition) SerializeAndDeserialize (orderNumberDefinition);
+      XmlBasedPropertyDefinition deserializedOrderNumberDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (orderNumberDefinition);
       Assert.AreSame (orderNumberDefinition, deserializedOrderNumberDefinition);
     }
 
     [Test]
     public void PropertyDefinitionWithUnresolvedNativePropertyType ()
     {
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, null);
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, null);
 
-      PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+      XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
     }
 
     [Test]
     public void PropertyDefinitionWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, null);
+      XmlBasedPropertyDefinition propertyDefinition = new XmlBasedPropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, null);
 
-      PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+      XmlBasedPropertyDefinition deserializedPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (propertyDefinition);
       AreEqual (propertyDefinition, deserializedPropertyDefinition);
     }
 
@@ -320,10 +320,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
     [Test]
     public void PropertyDefinitionWithEnumType ()
     {
-      PropertyDefinition enumPropertyDefinition =
-          TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
+      XmlBasedPropertyDefinition enumPropertyDefinition =
+          (XmlBasedPropertyDefinition) TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
 
-      PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
+      XmlBasedPropertyDefinition deserializedEnumPropertyDefinition = (XmlBasedPropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
 
       AreEqual (enumPropertyDefinition, deserializedEnumPropertyDefinition);
     }
@@ -348,7 +348,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
 
       Assert.AreEqual (expected.MyPropertyDefinitions.Count, actual.MyPropertyDefinitions.Count);
       for (int i = 0; i < expected.MyPropertyDefinitions.Count; i++)
-        AreEqual (expected.MyPropertyDefinitions[i], actual.MyPropertyDefinitions[i]);
+        AreEqual ((XmlBasedPropertyDefinition) expected.MyPropertyDefinitions[i], (XmlBasedPropertyDefinition) actual.MyPropertyDefinitions[i]);
 
       Assert.AreEqual (expected.MyRelationDefinitions.Count, actual.MyRelationDefinitions.Count);
       for (int i = 0; i < expected.MyRelationDefinitions.Count; i++)
@@ -385,7 +385,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Serialization
         Assert.AreEqual (((VirtualRelationEndPointDefinition) expected).SortExpression, ((VirtualRelationEndPointDefinition) actual).SortExpression);
     }
 
-    private void AreEqual (PropertyDefinition expected, PropertyDefinition actual)
+    private void AreEqual (XmlBasedPropertyDefinition expected, XmlBasedPropertyDefinition actual)
     {
       if (expected.ClassDefinition != null)
         Assert.AreEqual (expected.ClassDefinition.ID, actual.ClassDefinition.ID);

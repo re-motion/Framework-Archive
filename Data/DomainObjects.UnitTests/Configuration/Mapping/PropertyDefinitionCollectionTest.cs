@@ -112,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       PropertyDefinition copy = new ReflectionBasedPropertyDefinition (
           _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.PropertyType,
-          _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
+          _propertyDefinition.IsNullable, _propertyDefinition.MaxLength, _propertyDefinition.IsPersistent);
 
       Assert.IsFalse (_collection.Contains (copy));
     }

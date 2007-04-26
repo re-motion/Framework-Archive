@@ -54,8 +54,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql.SqlServer
       Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "string")));
 
       Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (new XmlBasedPropertyDefinition ("Name", "ColumnName", "binary", false, false, null)));
-      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
-      Assert.AreEqual ("varchar (255)", _tableBuilder.GetSqlDataType (CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
+      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType ((XmlBasedPropertyDefinition) OrderItemClass.GetMandatoryPropertyDefinition ("Order")));
+      Assert.AreEqual ("varchar (255)", _tableBuilder.GetSqlDataType ((XmlBasedPropertyDefinition) CustomerClass.GetMandatoryPropertyDefinition ("PrimaryOfficial")));
     }
 
     [Test]

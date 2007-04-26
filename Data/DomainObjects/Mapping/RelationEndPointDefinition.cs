@@ -32,18 +32,13 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
     
     PropertyDefinition propertyDefinition = classDefinition[propertyName];
     if (propertyDefinition == null)
-    {
-      throw CreateMappingException (
-          "Relation definition error for end point: Class '{0}' has no property '{1}'.",
-          classDefinition.ID, propertyName);
-    }
+      throw CreateMappingException ("Relation definition error for end point: Class '{0}' has no property '{1}'.", classDefinition.ID, propertyName);
 
-    if (propertyDefinition.MappingTypeName != TypeInfo.ObjectIDMappingTypeName)
+    if (!propertyDefinition.IsObjectID)
     {
       throw CreateMappingException (
-          "Relation definition error: Property '{0}' of class '{1}' is of type '{2}',"
-          + " but non-virtual properties must be of type 'Rubicon.Data.DomainObjects.ObjectID'.",
-          propertyDefinition.PropertyName, classDefinition.ID, propertyDefinition.PropertyType);
+          "Relation definition error: Property '{0}' of class '{1}' is of type '{2}', but non-virtual properties must be of type '{3}'.",
+          propertyDefinition.PropertyName, classDefinition.ID, propertyDefinition.PropertyType, typeof (ObjectID));
     }
 
     _classDefinition = classDefinition;    

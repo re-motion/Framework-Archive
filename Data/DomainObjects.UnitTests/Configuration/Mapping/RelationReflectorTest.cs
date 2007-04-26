@@ -212,7 +212,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
       PropertyDefinition propertyDefinition =
-          new ReflectionBasedPropertyDefinition ("LeftSide", "LeftSide", typeof (ObjectID), true, null);
+          new ReflectionBasedPropertyDefinition ("LeftSide", "LeftSide", typeof (ObjectID), true);
       classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();

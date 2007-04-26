@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithResolvedPropertyType ()
     {
-      PropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
+      XmlBasedPropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
@@ -22,12 +22,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
     public void InitializeWithUnresolvedPropertyType ()
     {
-      PropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", false, true, null);
+      XmlBasedPropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", false, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
@@ -37,12 +38,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
     public void InitializeWithUnresolvedUnknownPropertyType ()
     {
-      PropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "UnknownMappingType", false, true, null);
+      XmlBasedPropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "UnknownMappingType", false, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
@@ -52,12 +54,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.IsNull (actual.PropertyType);
       Assert.IsFalse (actual.IsPropertyTypeResolved);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
     public void StringPropertyWithoutMaxLength ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "string");
+      XmlBasedPropertyDefinition definition = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "string");
       Assert.IsNull (definition.MaxLength);
     }
 
@@ -66,13 +69,20 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         ExpectedMessage = "MaxLength parameter cannot be supplied with value of type 'System.Int32'.")]
     public void IntPropertyWithMaxLength ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "int32", 10);
+      new XmlBasedPropertyDefinition ("test", "test", "int32", 10);
+    }
+
+    [Test]
+    public void ObjectIDProperty ()
+    {
+      XmlBasedPropertyDefinition definition = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", TypeInfo.ObjectIDMappingTypeName);
+      Assert.IsTrue (definition.IsObjectID);
     }
 
     [Test]
     public void MappingTypeName ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "date");
+      XmlBasedPropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "date");
 
       Assert.AreEqual (typeof (DateTime), definition.PropertyType);
       Assert.AreEqual ("date", definition.MappingTypeName);
@@ -82,14 +92,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException))]
     public void InvalidMappingType ()
     {
-      PropertyDefinition definition = new XmlBasedPropertyDefinition ("test", "test", "InvalidMappingType");
+      new XmlBasedPropertyDefinition ("test", "test", "InvalidMappingType");
     }
 
     [Test]
     [Obsolete]
     public void GetColumnName ()
     {
-      PropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
+      XmlBasedPropertyDefinition actual = new XmlBasedPropertyDefinition ("PropertyName", "StorageSpecificName", "int32", true, true, null);
       Assert.IsNull (actual.ClassDefinition);
       Assert.AreEqual ("StorageSpecificName", actual.StorageSpecificName);
       Assert.AreEqual (actual.StorageSpecificName, actual.ColumnName);

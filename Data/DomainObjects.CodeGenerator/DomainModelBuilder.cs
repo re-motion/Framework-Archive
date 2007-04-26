@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
               domainObjectCollectionBaseClass, serializableAttribute);
         }
 
-        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
         {
           if (propertyDefinition.MappingTypeName.Contains (","))
           {

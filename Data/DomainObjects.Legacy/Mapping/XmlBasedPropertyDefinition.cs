@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       get { return (_typeInfo != null); }
     }
 
-    public override string MappingTypeName
+    public string MappingTypeName
     {
       get { return _mappingTypeName; }
     }
@@ -81,6 +81,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
     public override bool IsNullable
     {
       get { return _isNullable; }
+    }
+
+    public override bool IsObjectID
+    {
+      get { return _mappingTypeName == TypeInfo.ObjectIDMappingTypeName; }
     }
 
     private TypeInfo GetTypeInfo (string mappingTypeName, bool isNullable)

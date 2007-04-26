@@ -18,12 +18,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (int.MinValue, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
-      Assert.AreEqual (typeof (int).FullName, actual.MappingTypeName);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (int), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
@@ -34,12 +34,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
       Assert.IsTrue (actual.IsNullable);
-      Assert.AreEqual (typeof(NaInt32).FullName, actual.MappingTypeName);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
@@ -50,12 +50,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
-      Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (ObjectID), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
+      Assert.IsTrue (actual.IsObjectID);
     }
 
     [Test]
@@ -66,19 +66,76 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value0, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
-      Assert.AreEqual (typeof (ClassWithAllDataTypes.EnumType).FullName, actual.MappingTypeName);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (ClassWithAllDataTypes.EnumType), actual.PropertyType);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
-    public void StringPropertyWithoutMaxLength ()
+    public void InitializeWithNullableStringAndMaxLength ()
     {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string));
-      Assert.IsNull (definition.MaxLength);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string), true, 100, true);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
+      Assert.IsNull (actual.DefaultValue);
+      Assert.IsTrue (actual.IsNullable);
+      Assert.AreEqual (100, actual.MaxLength);
+      Assert.AreEqual ("PropertyName", actual.PropertyName);
+      Assert.AreEqual (typeof (string), actual.PropertyType);
+      Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
+    }
+
+    [Test]
+    public void InitializeWithNotNullableStringWithoutMaxLength ()
+    {
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (string), false, null, true);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
+      Assert.AreEqual (string.Empty, actual.DefaultValue);
+      Assert.IsFalse (actual.IsNullable);
+      Assert.IsNull (actual.MaxLength);
+      Assert.AreEqual ("PropertyName", actual.PropertyName);
+      Assert.AreEqual (typeof (string), actual.PropertyType);
+      Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
+    }
+
+    [Test]
+    public void InitializeWithNullableArrayAndMaxLength ()
+    {
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (byte[]), true, 100, true);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
+      Assert.IsNull (actual.DefaultValue);
+      Assert.IsTrue (actual.IsNullable);
+      Assert.AreEqual (100, actual.MaxLength);
+      Assert.AreEqual ("PropertyName", actual.PropertyName);
+      Assert.AreEqual (typeof (byte[]), actual.PropertyType);
+      Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
+    }
+
+    [Test]
+    public void InitializeWithNotNullableArrayWithoutMaxLength ()
+    {
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition ("PropertyName", "ColumnName", typeof (byte[]), false, null, true);
+      Assert.IsNull (actual.ClassDefinition);
+      Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
+      Assert.AreEqual (new byte[0], actual.DefaultValue);
+      Assert.IsFalse (actual.IsNullable);
+      Assert.IsNull (actual.MaxLength);
+      Assert.AreEqual ("PropertyName", actual.PropertyName);
+      Assert.AreEqual (typeof (byte[]), actual.PropertyType);
+      Assert.IsTrue (actual.IsPropertyTypeResolved);
+      Assert.IsTrue (actual.IsPersistent);
+      Assert.IsFalse (actual.IsObjectID);
     }
 
     [Test]
@@ -91,27 +148,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void MappingTypeName ()
-    {
-      PropertyDefinition definition = new ReflectionBasedPropertyDefinition ("test", "test", typeof (int));
-
-      Assert.AreEqual (typeof (int), definition.PropertyType);
-      Assert.AreEqual ("System.Int32", definition.MappingTypeName);
-    }
-
-    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "MaxLength parameter cannot be supplied for properties of type 'System.Int32'.\r\n  Property: test")]
+       "MaxLength parameter can only be supplied for strings and arrays but the property is of type 'System.Int32'.\r\n  Property: test")]
     public void IntPropertyWithMaxLength ()
     {
       new ReflectionBasedPropertyDefinition ("test", "test", typeof (int), 10);
     }
 
     [Test]
-    [Ignore("TODO: Implement tests for arg checks")]
-    public void CheckValueTypeCtors()
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
+       "IsNullable parameter can only be supplied for reference types but the property is of type 'System.Int32'.\r\n  Property: test")]
+    public void CheckValueTypeCtors ()
     {
-      
+      new ReflectionBasedPropertyDefinition ("test", "test", typeof (int), false);
     }
   }
 }

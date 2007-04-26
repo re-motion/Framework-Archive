@@ -345,8 +345,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength", 
           "StringPropertyWithoutMaxLength", 
           typeof (string), 
-          false, 
-          null));
+          false));
       classWithAllDataTypes.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty", "Binary", typeof (byte[])));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty", "NaBoolean", typeof (bool?)));

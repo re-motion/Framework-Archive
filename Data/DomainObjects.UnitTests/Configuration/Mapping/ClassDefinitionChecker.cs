@@ -180,7 +180,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreEqual (
           expectedDefinition.StorageSpecificName,
           actualDefinition.StorageSpecificName,
-          "ColumnName of property definition '{0}' (class definition: '{1}') does not match.",
+          "StorageSpecificName of property definition '{0}' (class definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
           classDefinition.ID);
 
@@ -206,9 +206,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           classDefinition.ID);
 
       Assert.AreEqual (
-          expectedDefinition.MappingTypeName,
-          actualDefinition.MappingTypeName,
-          "PropertyTypeName of property definition '{0}' (class definition: '{1}') does not match.",
+          expectedDefinition.IsObjectID,
+          actualDefinition.IsObjectID,
+          "IsObjectID of property definition '{0}' (class definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
           classDefinition.ID);
     }

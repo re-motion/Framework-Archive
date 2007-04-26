@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     // member fields
 
     private PropertyDefinitionCollection _collection;
-    private PropertyDefinition _propertyDefinition;
+    private XmlBasedPropertyDefinition _propertyDefinition;
 
     // construction and disposing
 
@@ -111,9 +111,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
     {
       _collection.Add (_propertyDefinition);
 
-      PropertyDefinition copy = new XmlBasedPropertyDefinition (
+      XmlBasedPropertyDefinition copy = new XmlBasedPropertyDefinition (
           _propertyDefinition.PropertyName, _propertyDefinition.StorageSpecificName, _propertyDefinition.MappingTypeName, true,
-          _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
+          _propertyDefinition.IsNullable, _propertyDefinition.MaxLength, _propertyDefinition.IsPersistent);
 
       Assert.IsFalse (_collection.Contains (copy));
     }

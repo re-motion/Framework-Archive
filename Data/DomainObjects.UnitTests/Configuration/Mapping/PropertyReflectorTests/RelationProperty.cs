@@ -21,7 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
-      Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);
@@ -38,7 +37,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
           actual.PropertyName);
       Assert.AreSame (typeof (ObjectID), actual.PropertyType);
-      Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, actual.MappingTypeName);
       Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual (null, actual.DefaultValue);

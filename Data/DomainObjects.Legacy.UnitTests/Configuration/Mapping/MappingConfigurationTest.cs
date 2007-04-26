@@ -164,7 +164,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
         Assert.IsNotNull (classDefinition.ClassTypeName, classMessage);
         Assert.IsFalse (classDefinition.IsClassTypeResolved, classMessage);
 
-        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
         {
           string propertyMessage = classMessage + ", Property: " + propertyDefinition.PropertyName;
           Assert.IsNull (propertyDefinition.PropertyType, propertyMessage);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -69,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql.SqlServer
           SqlFileBuilder.DefaultSchema);
     }
 
-    public override string GetColumn (PropertyDefinition propertyDefinition, bool forceNullable)
+    public override string GetColumn (XmlBasedPropertyDefinition propertyDefinition, bool forceNullable)
     {
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 

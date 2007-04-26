@@ -364,7 +364,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       int? maxLength = (propertyType == typeof (string)) ? (int?) 100 : null;
 
-      return new ReflectionBasedPropertyDefinition (name, name, propertyType, isNullable, maxLength);
+      return new ReflectionBasedPropertyDefinition (name, name, propertyType, isNullable, maxLength, true);
     }
 
     private PropertyValue CreatePropertyValue (string name, Type propertyType, bool? isNullable, object value)

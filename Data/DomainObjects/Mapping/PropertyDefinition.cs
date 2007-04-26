@@ -64,8 +64,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-    public abstract string MappingTypeName { get; }
-
     public abstract Type PropertyType { get; }
 
     public abstract bool IsPropertyTypeResolved
@@ -76,12 +74,14 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       get; }
 
+    public abstract object DefaultValue { get; }
+
+    public abstract bool IsObjectID { get; }
+
     public int? MaxLength
     {
       get { return _maxLength; }
     }
-
-    public abstract object DefaultValue { get; }
 
     public bool IsPersistent
     {

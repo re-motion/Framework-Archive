@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
-
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -136,7 +136,7 @@ public class CodeFileBuilder: FileBuilder
   
   // methods and properties
 
-  protected virtual string GetCSharpTypeName (PropertyDefinition propertyDefinition)
+  protected virtual string GetCSharpTypeName (XmlBasedPropertyDefinition propertyDefinition)
   {
     TypeName typeName;
     if (propertyDefinition.MappingTypeName.Contains (","))

@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -41,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       if (_classDefinition is ReflectionBasedClassDefinition)
         return base.IsDateType (propertyInfo);
 
-      PropertyDefinition propertyDefinition = GetPropertyDefinition (propertyInfo);
+      XmlBasedPropertyDefinition propertyDefinition = GetPropertyDefinition (propertyInfo) as XmlBasedPropertyDefinition;
       return propertyDefinition != null && propertyDefinition.MappingTypeName == "date";
     }
 

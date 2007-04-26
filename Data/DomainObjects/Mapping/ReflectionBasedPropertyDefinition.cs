@@ -12,21 +12,21 @@ namespace Rubicon.Data.DomainObjects.Mapping
     private bool _isNullable;
 
     public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType)
-      : this (propertyName, columnName, propertyType, null)
+      : this (propertyName, columnName, propertyType, null, null, true)
     {
     }
 
     public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType, bool isNullable)
-      : this (propertyName, columnName, propertyType, isNullable, null)
+      : this (propertyName, columnName, propertyType, isNullable, null, true)
     {
     }
 
-    public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType, int? maxLength)
-      : this (propertyName, columnName, propertyType, null, maxLength)
+    public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType, int maxLength)
+      : this (propertyName, columnName, propertyType, null, maxLength, true)
     {
     }
 
-    public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType, bool? isNullable, int? maxLength)
+    public ReflectionBasedPropertyDefinition (string propertyName, string columnName, Type propertyType, bool isNullable, int maxLength)
       : this (propertyName, columnName, propertyType, isNullable, maxLength, true)
     {
     }
@@ -36,9 +36,15 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull ("propertyType", propertyType);
       if (propertyType.IsValueType && isNullable.HasValue)
-        throw CreateArgumentException (propertyName, "IsNullable parameter cannot be supplied for value type properties.");
-      if (propertyType != typeof (string) && propertyType != typeof (byte[]) && maxLength.HasValue)
-        throw CreateArgumentException (propertyName, "MaxLength parameter cannot be supplied for properties of type '{0}'.", propertyType);
+      {
+        throw CreateArgumentException (
+            propertyName, "IsNullable parameter can only be supplied for reference types but the property is of type '{0}'.", propertyType);
+      }
+      if (propertyType != typeof (string) && !propertyType.IsArray && maxLength.HasValue)
+      {
+        throw CreateArgumentException (
+            propertyName, "MaxLength parameter can only be supplied for strings and arrays but the property is of type '{0}'.", propertyType);
+      }
 
       _propertyType = propertyType;
       if (_propertyType.IsValueType)
@@ -57,11 +63,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override Type PropertyType
     {
       get { return _propertyType; }
-    }
-
-    public override string MappingTypeName
-    {
-      get { return _propertyType == typeof (ObjectID) ? TypeInfo.ObjectIDMappingTypeName : _propertyType.FullName; }
     }
 
     public override bool IsPropertyTypeResolved
@@ -83,6 +84,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override bool IsNullable
     {
       get { return _isNullable; }
+    }
+
+    public override bool IsObjectID
+    {
+      get { return _propertyType == typeof (ObjectID); }
     }
 
     private ArgumentException CreateArgumentException (string propertyName, string message, params object[] args)

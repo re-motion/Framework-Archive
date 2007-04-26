@@ -359,7 +359,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
       Assert.AreEqual (expected.StorageSpecificName, actual.StorageSpecificName);
       Assert.AreEqual (expected.DefaultValue, actual.DefaultValue);
       Assert.AreEqual (expected.IsNullable, actual.IsNullable);
-      Assert.AreEqual (expected.MappingTypeName, actual.MappingTypeName);
       Assert.AreEqual (expected.MaxLength, actual.MaxLength);
       Assert.AreEqual (expected.PropertyName, actual.PropertyName);
       Assert.AreEqual (expected.PropertyType, actual.PropertyType);

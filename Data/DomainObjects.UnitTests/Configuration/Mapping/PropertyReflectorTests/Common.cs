@@ -23,7 +23,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
       Assert.AreEqual ("Boolean", actual.StorageSpecificName);
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.AreSame (typeof (bool), actual.PropertyType);
-      Assert.AreEqual (typeof (bool).FullName, actual.MappingTypeName);
     }
   }
 }

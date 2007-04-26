@@ -160,7 +160,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
       WriteComment ("methods and properties");
       WriteLine ();
 
-      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+      foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
       {
         if (propertyDefinition.MappingTypeName == TypeInfo.ObjectIDMappingTypeName)
           continue;
@@ -268,7 +268,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
       List<TypeName> propertyTypeNames = new List<TypeName> ();
       foreach (ClassDefinition classDefinition in _mappingConfiguration.ClassDefinitions)
       {
-        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
         {
           if (propertyDefinition.MappingTypeName.Contains (","))
           {
