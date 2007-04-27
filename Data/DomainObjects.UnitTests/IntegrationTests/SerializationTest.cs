@@ -236,86 +236,86 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       ChangeState[] expectedChangeStates = new ChangeState[]
     { 
-      new RelationChangeState (desNewCeo1, "Company", null, desNewCustomer1, "1: 1. Changing event of newCeo from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Ceo", null, desNewCeo1, "1: 2. Changing event of newCustomer1 from null to newCeo1"),
-      new RelationChangeState (desNewCeo1, "Company", null, null, "1: 3. Changed event of newCeo from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Ceo", null, null, "1: 4. Changed event of newCustomer1 from null to newCeo1"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, desNewCustomer1, "1: 1. Changing event of newCeo from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, desNewCeo1, "1: 2. Changing event of newCustomer1 from null to newCeo1"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, null, "1: 3. Changed event of newCeo from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, null, "1: 4. Changed event of newCustomer1 from null to newCeo1"),
 
-      new RelationChangeState (desNewCeo2, "Company", null, desNewCustomer1, "2: 1. Changing event of newCeo2 from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Ceo", desNewCeo1, desNewCeo2, "2: 2. Changing event of newCustomer1 from newCeo1 to newCeo2"),
-      new RelationChangeState (desNewCeo1, "Company", desNewCustomer1, null, "2: 3. Changing event of newCeo1 from newCustomer1 to null"),
-      new RelationChangeState (desNewCeo2, "Company", null, null, "2: 4. Changed event of newCeo2 from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Ceo", null, null, "2: 5. Changed event of newCustomer1 from newCeo1 to newCeo2"),
-      new RelationChangeState (desNewCeo1, "Company", null, null, "2: 6. Changed event of newCeo1 from newCustomer1 to null"),
+      new RelationChangeState (desNewCeo2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, desNewCustomer1, "2: 1. Changing event of newCeo2 from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", desNewCeo1, desNewCeo2, "2: 2. Changing event of newCustomer1 from newCeo1 to newCeo2"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", desNewCustomer1, null, "2: 3. Changing event of newCeo1 from newCustomer1 to null"),
+      new RelationChangeState (desNewCeo2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, null, "2: 4. Changed event of newCeo2 from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, null, "2: 5. Changed event of newCustomer1 from newCeo1 to newCeo2"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, null, "2: 6. Changed event of newCeo1 from newCustomer1 to null"),
 
-      new RelationChangeState (desNewCeo1, "Company", null, desNewCustomer2, "3: 1. Changing event of newCeo from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer2, "Ceo", null, desNewCeo1, "3: 2. Changing event of newCustomer2 from null to newCeo1"),
-      new RelationChangeState (desNewCeo1, "Company", null, null, "3: 3. Changed event of newCeo from null to newCustomer1"),
-      new RelationChangeState (desNewCustomer2, "Ceo", null, null, "3: 4. Changed event of newCustomer2 from null to newCeo1"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, desNewCustomer2, "3: 1. Changing event of newCeo from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, desNewCeo1, "3: 2. Changing event of newCustomer2 from null to newCeo1"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, null, "3: 3. Changed event of newCeo from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, null, "3: 4. Changed event of newCustomer2 from null to newCeo1"),
 
-      new RelationChangeState (desNewCeo1, "Company", desNewCustomer2, null, "4: 1. Changing event of newCeo from newCustomer1 to null"),
-      new RelationChangeState (desNewCustomer2, "Ceo", desNewCeo1, null, "4: 2. Changing event of newCustomer2 from newCeo1 to null"),
-      new RelationChangeState (desNewCeo1, "Company", null, null, "4: 3. Changed event of newCeo from newCustomer1 to null"),
-      new RelationChangeState (desNewCustomer2, "Ceo", null, null, "4: 4. Changed event of newCustomer2 from newCeo1 to null"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", desNewCustomer2, null, "4: 1. Changing event of newCeo from newCustomer1 to null"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", desNewCeo1, null, "4: 2. Changing event of newCustomer2 from newCeo1 to null"),
+      new RelationChangeState (desNewCeo1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", null, null, "4: 3. Changed event of newCeo from newCustomer1 to null"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo", null, null, "4: 4. Changed event of newCustomer2 from newCeo1 to null"),
 
-      new RelationChangeState (desNewOrder1, "Customer", null, desNewCustomer1, "5: 1. Changing event of newOrder1 from null to newCustomer1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, desNewCustomer1, "5: 1. Changing event of newOrder1 from null to newCustomer1"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder1, "5: 2. Adding of newOrder1 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, desNewOrder1, "5: 3. Changing event of newCustomer1 from null to newOrder1"),
-      new RelationChangeState (desNewOrder1, "Customer", null, null, "5: 4. Changed event of newOrder1 from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, desNewOrder1, "5: 3. Changing event of newCustomer1 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "5: 4. Changed event of newOrder1 from null to newCustomer1"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder1, "5: 5. Added of newOrder1 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "5: 6. Changed event of newCustomer1 from null to newOrder1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "5: 6. Changed event of newCustomer1 from null to newOrder1"),
 
-      new RelationChangeState (desNewOrder2, "Customer", null, desNewCustomer1, "6: 1. Changing event of newOrder2 from null to newCustomer1"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, desNewCustomer1, "6: 1. Changing event of newOrder2 from null to newCustomer1"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "6: 2. Adding of newOrder2 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, desNewOrder2, "6: 3. Changing event of newCustomer1 from null to newOrder2"),
-      new RelationChangeState (desNewOrder2, "Customer", null, null, "6: 4. Changed event of newOrder2 from null to newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, desNewOrder2, "6: 3. Changing event of newCustomer1 from null to newOrder2"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "6: 4. Changed event of newOrder2 from null to newCustomer1"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "6: 5. Added of newOrder2 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "6: 6. Changed event of newCustomer1 from null to newOrder2"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "6: 6. Changed event of newCustomer1 from null to newOrder2"),
 
-      new RelationChangeState (desNewOrder2, "Customer", desNewCustomer1, null, "7: 1. Changing event of newOrder2 from newCustomer1 to null"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", desNewCustomer1, null, "7: 1. Changing event of newOrder2 from newCustomer1 to null"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "7: 2. Removing of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", desNewOrder2, null, "7: 3. Changing event of newCustomer1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrder2, "Customer", null, null, "7: 4. Changed event of newOrder2 from newCustomer1 to null"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", desNewOrder2, null, "7: 3. Changing event of newCustomer1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "7: 4. Changed event of newOrder2 from newCustomer1 to null"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "7: 5. Removed of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "7: 6. Changed event of newCustomer1 from newOrder2 to null"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "7: 6. Changed event of newCustomer1 from newOrder2 to null"),
 
-      new RelationChangeState (desNewOrderItem1, "Order", null, desNewOrder1, "8: 1. Changing event of newOrderItem1 from null to newOrder1"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, desNewOrder1, "8: 1. Changing event of newOrderItem1 from null to newOrder1"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem1, "8: 2. Adding of newOrderItem1 to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", null, desNewOrderItem1, "8: 3. Changing event of newOrder1 from null to newOrderItem1"),
-      new RelationChangeState (desNewOrderItem1, "Order", null, null, "8: 4. Changed event of newOrderItem1 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, desNewOrderItem1, "8: 3. Changing event of newOrder1 from null to newOrderItem1"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "8: 4. Changed event of newOrderItem1 from null to newOrder1"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem1, "8: 5. Added of newOrderItem1 to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", null, null, "8: 6. Changed event of newOrder1 from null to newOrderItem1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "8: 6. Changed event of newOrder1 from null to newOrderItem1"),
 
-      new RelationChangeState (desNewOrderItem2, "Order", null, desNewOrder1, "9: 1. Changing event of newOrderItem2 from null to newOrder1"),
+      new RelationChangeState (desNewOrderItem2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, desNewOrder1, "9: 1. Changing event of newOrderItem2 from null to newOrder1"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem2, "9: 2. Adding of newOrderItem2 to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", null, desNewOrderItem2, "9: 3. Changing event of newOrder1 from null to newOrderItem2"),
-      new RelationChangeState (desNewOrderItem2, "Order", null, null, "9: 4. Changed event of newOrderItem2 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, desNewOrderItem2, "9: 3. Changing event of newOrder1 from null to newOrderItem2"),
+      new RelationChangeState (desNewOrderItem2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "9: 4. Changed event of newOrderItem2 from null to newOrder1"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem2, "9: 5. Added of newOrderItem2 to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", null, null, "9: 6. Changed event of newOrder1 from null to newOrderItem2"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "9: 6. Changed event of newOrder1 from null to newOrderItem2"),
 
-      new RelationChangeState (desNewOrderItem1, "Order", desNewOrder1, null, "10: 1. Changing event of newOrderItem1 from newOrder1 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", desNewOrder1, null, "10: 1. Changing event of newOrderItem1 from newOrder1 to null"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem1, "10: 2. Removing of newOrderItem1 from newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", desNewOrderItem1, null, "10: 3. Changing event of newOrder1 from newOrderItem1 to null"),
-      new RelationChangeState (desNewOrderItem1, "Order", null, null, "10: 4. Changed event of newOrderItem2 from newOrder1 to null"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", desNewOrderItem1, null, "10: 3. Changing event of newOrder1 from newOrderItem1 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "10: 4. Changed event of newOrderItem2 from newOrder1 to null"),
       new CollectionChangeState (desNewOrder1.OrderItems, desNewOrderItem1, "10: 5. Removed of newOrderItem1 from newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderItems", null, null, "10: 6. Changed event of newOrder1 from newOrderItem1 to null"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "10: 6. Changed event of newOrder1 from newOrderItem1 to null"),
 
-      new RelationChangeState (desNewOrderItem1, "Order", null, desNewOrder2, "11: 1. Changing event of newOrderItem1 from null to newOrder2"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, desNewOrder2, "11: 1. Changing event of newOrderItem1 from null to newOrder2"),
       new CollectionChangeState (desNewOrder2.OrderItems, desNewOrderItem1, "11: 2. Adding of newOrderItem1 to newOrder2"),
-      new RelationChangeState (desNewOrder2, "OrderItems", null, desNewOrderItem1, "11: 3. Changing event of newOrder2 from null to newOrderItem1"),
-      new RelationChangeState (desNewOrderItem1, "Order", null, null, "11: 4. Changed event of newOrderItem2 from null to newOrder2"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, desNewOrderItem1, "11: 3. Changing event of newOrder2 from null to newOrderItem1"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "11: 4. Changed event of newOrderItem2 from null to newOrder2"),
       new CollectionChangeState (desNewOrder2.OrderItems, desNewOrderItem1, "11: 5. Adding of newOrderItem1 to newOrder2"),
-      new RelationChangeState (desNewOrder2, "OrderItems", null, null, "11: 6. Changed event of newOrder2 from null to newOrderItem1"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "11: 6. Changed event of newOrder2 from null to newOrderItem1"),
 
-      new RelationChangeState (desNewOrder1, "Official", null, desOfficial2, "12: 1. Changing event of newOrder1 from null to official2"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", null, desOfficial2, "12: 1. Changing event of newOrder1 from null to official2"),
       new CollectionChangeState (desOfficial2.Orders, desNewOrder1, "12: 2. Adding of newOrder1 to official2"),
-      new RelationChangeState (desOfficial2, "Orders", null, desNewOrder1, "12: 3. Changing event of official2 from null to newOrder1"),
-      new RelationChangeState (desNewOrder1, "Official", null, null, "12: 4. Changed event of newOrder1 from null to official2"),
+      new RelationChangeState (desOfficial2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Orders", null, desNewOrder1, "12: 3. Changing event of official2 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official", null, null, "12: 4. Changed event of newOrder1 from null to official2"),
       new CollectionChangeState (desOfficial2.Orders, desNewOrder1, "12: 5. Adding of newOrder1 to official2"),
-      new RelationChangeState (desOfficial2, "Orders", null, null, "12: 6. Changed event of official2 from null to newOrder1"),
+      new RelationChangeState (desOfficial2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Orders", null, null, "12: 6. Changed event of official2 from null to newOrder1"),
 
-      new RelationChangeState (desNewOrder1, "OrderTicket", null, desNewOrderTicket1, "13: 1. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (desNewOrder1, "OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, desNewOrderTicket1, "13: 1. Changing event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
     };
 
       deserializedEventReceiver.Check (expectedChangeStates);
@@ -331,12 +331,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       expectedChangeStates = new ChangeState[]
     { 
-      new RelationChangeState (desNewOrderTicket1, "Order", desNewOrder1, desNewOrder2, "14: 1. Changing event of newOrderTicket1 from newOrder1 to newOrder2"),
-      new RelationChangeState (desNewOrder1, "OrderTicket", desNewOrderTicket1, null, "14: 2. Changing event of newOrder1 from newOrderTicket1 to null"),
-      new RelationChangeState (desNewOrder2, "OrderTicket", null, desNewOrderTicket1, "14: 3. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (desNewOrderTicket1, "Order", null, null, "14: 4. Changed event of newOrderTicket1 from newOrder1 to newOrder2"),
-      new RelationChangeState (desNewOrder1, "OrderTicket", null, null, "14: 5. Changed event of newOrder1 from newOrderTicket1 to null"),
-      new RelationChangeState (desNewOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", desNewOrder1, desNewOrder2, "14: 1. Changing event of newOrderTicket1 from newOrder1 to newOrder2"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", desNewOrderTicket1, null, "14: 2. Changing event of newOrder1 from newOrderTicket1 to null"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, desNewOrderTicket1, "14: 3. Changing event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "14: 4. Changed event of newOrderTicket1 from newOrder1 to newOrder2"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, null, "14: 5. Changed event of newOrder1 from newOrderTicket1 to null"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -351,12 +351,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       expectedChangeStates = new ChangeState[]
     { 
-      new RelationChangeState (desNewOrder2, "Customer", null, desNewCustomer1, "15a: 1. Changing event of newOrder2 from null to newCustomer1.Orders"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, desNewCustomer1, "15a: 1. Changing event of newOrder2 from null to newCustomer1.Orders"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15a: 2. Adding of newOrder2 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, desNewOrder2, "15a: 3. Changing event of newCustomer1 from null to newOrder2"),
-      new RelationChangeState (desNewOrder2, "Customer", null, null, "15a: 4. Changed event of newOrder2 from null to newCustomer1.Orders"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, desNewOrder2, "15a: 3. Changing event of newCustomer1 from null to newOrder2"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "15a: 4. Changed event of newOrder2 from null to newCustomer1.Orders"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15a: 5. Added of newOrder2 to newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -371,16 +371,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       expectedChangeStates = new ChangeState[]
     { 
-      new RelationChangeState (desNewOrder2, "Customer", desNewCustomer1, desNewCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", desNewCustomer1, desNewCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "15b: 4. Adding of newOrder2 to newCustomer2"),
-      new RelationChangeState (desNewCustomer2, "Orders", null, desNewOrder2, "15b: 5. Changing event of newCustomer2 from null to newOrder2"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, desNewOrder2, "15b: 5. Changing event of newCustomer2 from null to newOrder2"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", desNewOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrder2, "Customer", null, null, "15b: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", desNewOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrder2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "15b: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "15b: 9. Added of newOrder2 to newCustomer2"),
-      new RelationChangeState (desNewCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
       new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 7. Removed of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
+      new RelationChangeState (desNewCustomer1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -397,14 +397,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     { 
       new ObjectDeletionState (desNewOrder2, "16: 1. Deleting event of newOrder2"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
-      new RelationChangeState (desNewCustomer2, "Orders", desNewOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderTicket1, "Order", desNewOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderItem1, "Order", desNewOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", desNewOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", desNewOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", desNewOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
 
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
-      new RelationChangeState (desNewCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
       new ObjectDeletionState (desNewOrder2, "16: 6. Deleted event of newOrder2")
     };
 
@@ -420,10 +420,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       expectedChangeStates = new ChangeState[]
     { 
-      new RelationChangeState (desNewOrderTicket1, "Order", null, desNewOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderTicket", null, desNewOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (desNewOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
-      new RelationChangeState (desNewOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, desNewOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, desNewOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
+      new RelationChangeState (desNewOrder1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
       eventReceiver.Check (expectedChangeStates);
