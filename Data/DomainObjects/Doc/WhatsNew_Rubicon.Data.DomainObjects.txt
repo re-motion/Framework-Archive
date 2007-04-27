@@ -101,6 +101,9 @@
 
 - Rubicon.Data.DomainObjects.Mapping.NullRelationEndPointDefinition: umbenannt zu AnonymousRelationEndPointDefinition.
 
+- Rubicon.Data.DomainObjects.ObjectBinding.BindableDomainObjects und BindableSearchObjects unterstüzen nun .NET Nullable Types.
+  
+
 1.7.37.0
 ========
 

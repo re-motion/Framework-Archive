@@ -28,12 +28,12 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
     return MultiLingualResourcesAttribute.GetResourceText (this, resourceName);
   }
 
-  public NaBoolean GetDefaultValue (IBusinessObjectClass objectClass)
+  public bool? GetDefaultValue (IBusinessObjectClass objectClass)
   {
     if (IsNullableType)
-      return NaBoolean.Null;
+      return null;
 
-    return NaBoolean.False;
+    return false;
   }
 
   public override object FromInternalType (object internalValue)

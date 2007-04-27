@@ -17,7 +17,7 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
   {
   }
 
-  public NaInt32 MaxLength
+  public int? MaxLength
   {
     get { return 38; }
   }

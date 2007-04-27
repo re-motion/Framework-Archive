@@ -7,20 +7,20 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class StringProperty : BaseProperty, IBusinessObjectStringProperty
 {
-  private NaInt32 _maxLength;
+  private int? _maxLength;
 
   public StringProperty (
       PropertyInfo propertyInfo, 
       bool isRequired,
       Type itemType, 
       bool isList,
-      NaInt32 maxLength)
+      int? maxLength)
     : base (propertyInfo, isRequired, itemType, isList)
   {
     _maxLength = maxLength;
   }
 
-  public NaInt32 MaxLength
+  public int? MaxLength
   {
     get { return _maxLength; }
   }

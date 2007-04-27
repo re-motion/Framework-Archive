@@ -43,7 +43,7 @@ public class ReflectionPropertyFactory
 
     if (itemType == typeof (string))
     {
-      return new StringProperty (propertyInfo, isRequired, itemType, isList, NaInt32.FromBoxedInt32 (GetMaxStringLength (propertyInfo)));
+      return new StringProperty (propertyInfo, isRequired, itemType, isList, GetMaxStringLength (propertyInfo));
     }
     else if (itemType == typeof (Guid))
     {
@@ -142,9 +142,13 @@ public class ReflectionPropertyFactory
     IsRequiredAttribute isRequiredAttribute = AttributeUtility.GetCustomAttribute<IsRequiredAttribute> (propertyInfo, true);
     if (isRequiredAttribute != null)
       return isRequiredAttribute.IsRequired;
-      
-    if (NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType) || propertyInfo.PropertyType == typeof (string))
+
+    if (TypeInfo.IsNullableValueType (propertyInfo.PropertyType) 
+        || NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType)
+        || propertyInfo.PropertyType == typeof (string))
+    {
       return false;
+    }
 
     if (!propertyInfo.PropertyType.IsValueType)
       return false;

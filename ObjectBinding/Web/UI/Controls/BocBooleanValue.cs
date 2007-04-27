@@ -150,7 +150,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   {
     string newValue = PageUtility.GetPostBackCollectionItem (Page, _hiddenField.UniqueID);
     bool? newNaValue = null;
-    if (newValue != null)
+    if (!string.IsNullOrEmpty (newValue))
       newNaValue = bool.Parse (newValue);
     bool isDataChanged = newValue != null && _value != newNaValue;
     if (isDataChanged)
