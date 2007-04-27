@@ -27,8 +27,11 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaGuid.ToBoxedGuid ((NaGuid)internalValue);
+
+    if (IsNullableType && internalValue == null)
+      return null;
 
     Guid guidValue = new Guid (internalValue.ToString ());
 
@@ -43,13 +46,16 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       if (publicValue != null)
         return new NaGuid (new Guid (publicValue.ToString ()));
       else
         return NaGuid.Null;
     }
+
+    if (IsNullableType && publicValue == null)
+      return null;
 
     return new Guid (base.ToInternalType (publicValue).ToString ());
   }

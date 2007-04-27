@@ -1,11 +1,14 @@
 using System;
 using System.Reflection;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
 public class NullableProperty : BaseProperty
 {
-  bool _isNullableType;
+  private bool _isNullableType;
+  private bool _isNaNullableType;
 
   public NullableProperty (
       PropertyInfo propertyInfo, 
@@ -15,7 +18,10 @@ public class NullableProperty : BaseProperty
       bool isNullableType)
     : base (propertyInfo, isRequired, itemType, isList)
   {
+    ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
     _isNullableType = isNullableType;
+    _isNaNullableType = isNullableType && NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType);
   }
 
   protected bool IsNullableType
@@ -23,9 +29,9 @@ public class NullableProperty : BaseProperty
     get { return _isNullableType; }
   }
 
-  public override bool IsRequired
+  protected bool IsNaNullableType
   {
-    get { return base.IsRequired; }
+    get { return _isNaNullableType; }
   }
 
   public override object FromInternalType (object internalValue)

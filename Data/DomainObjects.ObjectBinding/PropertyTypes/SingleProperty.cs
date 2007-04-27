@@ -27,8 +27,11 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaSingle.ToBoxedSingle ((NaSingle)internalValue);
+
+    if (IsNullableType && internalValue == null)
+      return null;
 
     return base.FromInternalType (float.Parse (internalValue.ToString ()));  
   }
@@ -38,13 +41,16 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       if (publicValue != null)
         return NaSingle.Parse (publicValue.ToString ());
       else
         return NaSingle.Null;
     }
+
+    if (IsNullableType && publicValue == null)
+      return null;
 
     return float.Parse (base.ToInternalType (publicValue).ToString ());
   }

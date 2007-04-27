@@ -27,8 +27,11 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaByte.ToBoxedByte ((NaByte)internalValue);
+    
+    if (IsNullableType && internalValue == null)
+      return null;
 
     return base.FromInternalType (int.Parse (internalValue.ToString ()));  
   }
@@ -38,13 +41,16 @@ public class ByteProperty : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       if (publicValue != null)
         return NaByte.Parse (publicValue.ToString ());
       else
         return NaByte.Null;
     }
+
+    if (IsNullableType && publicValue == null)
+      return null;
 
     return byte.Parse (base.ToInternalType (publicValue).ToString ());
   }

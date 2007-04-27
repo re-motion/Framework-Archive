@@ -27,8 +27,11 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaDecimal.ToBoxedDecimal ((NaDecimal)internalValue);
+
+    if (IsNullableType && internalValue == null)
+      return null;
 
     return base.FromInternalType (decimal.Parse (internalValue.ToString ()));  
   }
@@ -38,13 +41,16 @@ public class DecimalProperty : NullableProperty, IBusinessObjectDoubleProperty
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       if (publicValue != null)
         return NaDecimal.Parse (publicValue.ToString ());
       else
         return NaDecimal.Null;
     }
+
+    if (IsNullableType && publicValue == null)
+      return null;
 
     return decimal.Parse (base.ToInternalType (publicValue).ToString ());
   }

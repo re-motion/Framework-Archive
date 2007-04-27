@@ -22,7 +22,7 @@ public class DateProperty : NullableProperty, IBusinessObjectDateProperty
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       NaDateTime value = (NaDateTime) internalValue;
       return NaDateTime.ToBoxedDateTime (value.Date);
@@ -36,7 +36,7 @@ public class DateProperty : NullableProperty, IBusinessObjectDateProperty
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaDateTime.FromBoxedDateTime (publicValue).Date;
 
     return base.ToInternalType (publicValue);

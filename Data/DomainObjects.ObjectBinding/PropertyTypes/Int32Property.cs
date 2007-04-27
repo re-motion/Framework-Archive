@@ -27,7 +27,7 @@ public class Int32Property : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaInt32.ToBoxedInt32 ((NaInt32)internalValue);
     
     return base.FromInternalType (internalValue);
@@ -38,7 +38,7 @@ public class Int32Property : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaInt32.FromBoxedInt32 (publicValue);
 
     return base.ToInternalType (publicValue);

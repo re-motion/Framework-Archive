@@ -27,8 +27,11 @@ public class Int16Property : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaInt16.ToBoxedInt16 ((NaInt16)internalValue);
+
+    if (IsNullableType && internalValue == null)
+      return null;
 
     return base.FromInternalType (short.Parse (internalValue.ToString ()));  
   }
@@ -38,13 +41,16 @@ public class Int16Property : NullableProperty, IBusinessObjectInt32Property
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
     {
       if (publicValue != null)
         return NaInt16.Parse (publicValue.ToString ());
       else
         return NaInt16.Null;
     }
+
+    if (IsNullableType && publicValue == null)
+      return null;
 
     return short.Parse (base.ToInternalType (publicValue).ToString ());
   }

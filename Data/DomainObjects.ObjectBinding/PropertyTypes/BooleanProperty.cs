@@ -41,7 +41,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
     if (IsList)
       return internalValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaBoolean.ToBoxedBoolean ((NaBoolean)internalValue);
 
     return internalValue;
@@ -52,7 +52,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
     if (IsList)
       return publicValue;
 
-    if (IsNullableType)
+    if (IsNaNullableType)
       return NaBoolean.FromBoxedBoolean (publicValue);
 
     return publicValue;
