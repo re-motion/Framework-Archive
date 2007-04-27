@@ -1,5 +1,4 @@
 using System;
-using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
@@ -8,7 +7,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 public class TypeWithBoolean: ReflectionBusinessObject
 {
   private bool _booleanValue;
-  private NaBoolean _naBooleanValue;
+  private bool? _nullableBooleanValue;
 
   public bool BooleanValue
   {
@@ -16,10 +15,10 @@ public class TypeWithBoolean: ReflectionBusinessObject
     set { _booleanValue = value; }
   }
 
-  public NaBoolean NaBooleanValue
+  public bool? NullableBooleanValue
   {
-    get { return _naBooleanValue; }
-    set { _naBooleanValue = value; }
+    get { return _nullableBooleanValue; }
+    set { _nullableBooleanValue = value; }
   }
 }
 

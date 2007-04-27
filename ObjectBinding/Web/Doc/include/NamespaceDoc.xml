@@ -26,8 +26,7 @@
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
-            a <see cref="T:System.Boolean"/> or <see cref="T:Rubicon.NullableValueTypes.NaBoolean"/> value and 
-            <see langword="null"/> using a tri-state check-box.
+            a <see cref="T:System.Boolean"/> value and <see langword="null"/> using a tri-state check-box.
           </td>
         </tr>
         <tr>
@@ -35,8 +34,7 @@
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
-            a <see cref="T:System.Boolean"/> or <see cref="T:Rubicon.NullableValueTypes.NaBoolean"/> value and 
-            <see langword="null"/> using a regular check-box.
+            a <see cref="T:System.Boolean"/> value and <see langword="null"/> using a regular check-box.
           </td>
         </tr>
         <tr>
@@ -44,8 +42,8 @@
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty"/>, 
-            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty"/>, a <see cref="T:System.DateTime"/>
-            or <see cref="T:Rubicon.NullableValueTypes.NaDateTime"/> value and <see langword="null"/>.
+            <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty"/>, 
+            a <see cref="T:System.DateTime"/> and <see langword="null"/>.
           </td>
         </tr>
         <tr>

@@ -420,38 +420,21 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        object value = DataSource.BusinessObject.GetProperty (Property);
+        bool? value = (bool?) DataSource.BusinessObject.GetProperty (Property);
         LoadValueInternal (value, interim);
       }
     }
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> A boxed <see cref="Boolean"/> or <see cref="NaBoolean"/> value, or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
-  public void LoadUnboundValue (object value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="Boolean"/> value to load. </param>
-  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
-  public void LoadUnboundValue (bool value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="NaBoolean"/> value to load. </param>
-  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
-  public void LoadUnboundValue (NaBoolean value, bool interim)
+  public void LoadUnboundValue (bool? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-  protected virtual void LoadValueInternal (object value, bool interim)
+  protected virtual void LoadValueInternal (bool? value, bool interim)
   {
     if (! interim)
     {
@@ -535,7 +518,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
-  public new object Value
+  public new bool? Value
   {
     get
     {
@@ -544,17 +527,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     set
     {
       IsDirty = true;
-      
-      NaBoolean temp;
-      if (value is NaBoolean)
-        temp = (NaBoolean) value;
-      else
-        temp =  NaBoolean.FromBoxedBoolean (value);
-     
-      if (temp.IsNull)
-        _value = GetDefaultValue();
-      else
-        _value = temp.Value;
+      _value = value ?? GetDefaultValue();
     }
   }
 
@@ -562,7 +535,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = value; }
+    set { Value = ArgumentUtility.CheckValueType<bool> ("value", value); }
   }
 
   /// <summary> The boolean value to which this control defaults if the assigned value is <see langword="null"/>. </summary>
@@ -614,16 +587,9 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     if (_defaultValue == NaBooleanEnum.Undefined)
     {
       if (DataSource != null && DataSource.BusinessObjectClass != null && DataSource.BusinessObject != null && Property != null)
-      {
-        NaBoolean defaultValue = Property.GetDefaultValue (DataSource.BusinessObjectClass);
-        if (defaultValue.IsNull)
-          return false;
-        return defaultValue.Value;
-      }
+        return Property.GetDefaultValue (DataSource.BusinessObjectClass) ?? false;
       else
-      {
         return false;
-      }
     }
     else
     {

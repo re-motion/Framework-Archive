@@ -380,16 +380,6 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
   }
 
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> 
-  ///   The <see cref="String"/>, boxed <see cref="Int32"/>, boxed <see cref="Double"/>, or boxed <see cref="DateTime"/> value to load, 
-  ///   or <see langword="null"/>. 
-  /// </param>
-  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (object value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
@@ -400,25 +390,25 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="Int32"/> value to load. </param>
+  /// <param name="value"> The <see cref="Int32"/> value to load or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (int value, bool interim)
+  public void LoadUnboundValue (int? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="Double"/> value to load. </param>
+  /// <param name="value"> The <see cref="Double"/> value to load or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (double value, bool interim)
+  public void LoadUnboundValue (double? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
+  /// <param name="value"> The <see cref="DateTime"/> value to load or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (DateTime value, bool interim)
+  public void LoadUnboundValue (DateTime? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
@@ -611,8 +601,8 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       {
         if (_textBoxStyle.MaxLength.IsNull)
         {
-          NaInt32 length = stringProperty.MaxLength;
-          if (!length.IsNull)
+          int? length = stringProperty.MaxLength;
+          if (length.HasValue)
             _textBoxStyle.MaxLength = length.Value;
         }
       }

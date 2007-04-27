@@ -389,10 +389,22 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The enumeration value or <see langword="null"/> to load or <see langword="null"/>. </param>
+  /// <param name="value"> The enumeration value or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (object value, bool interim)
+  public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
+    where TEnum : struct
   {
+    ArgumentUtility.CheckType ("value", value, typeof (Enum));
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The enumeration value. </param>
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
+    where TEnum : struct
+  {
+    ArgumentUtility.CheckType ("value", value, typeof (Enum));
     LoadValueInternal (value, interim);
   }
 

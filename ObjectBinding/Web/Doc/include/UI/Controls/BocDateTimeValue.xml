@@ -5,8 +5,7 @@
     
       <h4 class="dtH4">Supported Data Types</h4>
       <para>
-        The control's <see cref="Value"/> can be assigned <see cref="DateTime"/> or <see cref="NaDateTime"/> values
-        as well as <see langword="null"/>. 
+        The control's <see cref="Value"/> can be assigned <see cref="DateTime"/> values and <see langword="null"/>. 
       </para><para>
         The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports the 
         <see cref="IBusinessObjectDateProperty"/> and the <see cref="IBusinessObjectDateTimeProperty"/>.
@@ -185,6 +184,7 @@
     </returns>
   </LoadPostData>
   <LoadValue>
+    <param name="value">The value to load.</param>
     <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     <remarks>
       <para>

@@ -1,5 +1,4 @@
 using System;
-using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
@@ -8,7 +7,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 public class TypeWithDateTime: ReflectionBusinessObject
 {
   private DateTime _dateTimeValue;
-  private NaDateTime _naDateTimeValue;
+  private DateTime? _nullableDateTimeValue;
 
   public DateTime DateTimeValue
   {
@@ -16,10 +15,10 @@ public class TypeWithDateTime: ReflectionBusinessObject
     set { _dateTimeValue = value; }
   }
 
-  public NaDateTime NaDateTimeValue
+  public DateTime? NullableDateTimeValue
   {
-    get { return _naDateTimeValue; }
-    set { _naDateTimeValue = value; }
+    get { return _nullableDateTimeValue; }
+    set { _nullableDateTimeValue = value; }
   }
 }
 

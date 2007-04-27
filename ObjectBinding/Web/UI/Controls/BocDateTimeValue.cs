@@ -88,7 +88,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   private string _internalDateValue = null;
   private string _internalTimeValue = null;
   /// <summary> A backup of the <see cref="DateTime"/> value. </summary>
-  private NaDateTime _savedDateTimeValue = NaDateTime.Null;
+  private DateTime? _savedDateTimeValue = null;
 
   private BocDateTimeValueType _valueType = BocDateTimeValueType.Undefined;
   private BocDateTimeValueType _actualValueType = BocDateTimeValueType.Undefined;
@@ -185,9 +185,9 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
       
       //  Reset the time in if the control is displayed in date mode and the date was changed
       if (   ActualValueType == BocDateTimeValueType.Date
-          && ! _savedDateTimeValue.IsNull)
+          && _savedDateTimeValue.HasValue)
       {
-         _savedDateTimeValue = _savedDateTimeValue.Date;
+         _savedDateTimeValue = _savedDateTimeValue.Value.Date;
       }
       IsDirty = true;
     }
@@ -203,10 +203,10 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
       
       //  Reset the seconds if the control does not display seconds and the time was changed
       if (   ! ShowSeconds
-          && ! _savedDateTimeValue.IsNull)
+          && _savedDateTimeValue.HasValue)
       {
-          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
-         _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
+          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Value.Second);
+         _savedDateTimeValue = _savedDateTimeValue.Value.Subtract (seconds);
       }
       IsDirty = true;
     }
@@ -533,7 +533,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     _actualValueType = (BocDateTimeValueType) values[4];
     _showSeconds = (bool) values[5];
     _provideMaxLength = (bool) values[6];
-    _savedDateTimeValue = (NaDateTime) values[7];
+    _savedDateTimeValue = (DateTime?) values[7];
 
     _dateTextBox.Text = _internalDateValue;
     _timeTextBox.Text = _internalTimeValue;
@@ -564,40 +564,22 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        object value = DataSource.BusinessObject.GetProperty (Property);
+        DateTime? value = (DateTime?) DataSource.BusinessObject.GetProperty (Property);
         LoadValueInternal (value, interim);
       }
     }
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> 
-  ///   A boxed <see cref="DateTime"/> or <see cref="NaDateTime"/> value to load, or <see langword="null"/>. 
-  /// </param>
-  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (object value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
   /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (DateTime value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="NaDateTime"/> value to load. </param>
-  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (NaDateTime value, bool interim)
+  public void LoadUnboundValue (DateTime? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-  protected virtual void LoadValueInternal (object value, bool interim)
+  protected virtual void LoadValueInternal (DateTime? value, bool interim)
   {
     if (! interim)
     {
@@ -1014,7 +996,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   /// </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
-  public new object Value
+  public new DateTime? Value
   {
     get 
     {
@@ -1077,16 +1059,16 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
 
           //  Restore the seconds if the control does not display them.
           if (   ! ShowSeconds
-              && ! _savedDateTimeValue.IsNull)
+              && _savedDateTimeValue.HasValue)
           {
-            dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Second);
+            dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Value.Second);
           }
       }
       else if (    ActualValueType == BocDateTimeValueType.Date
-                && ! _savedDateTimeValue.IsNull)
+                && _savedDateTimeValue.HasValue)
       {
         //  Restore the time if the control is displayed in date mode.
-        dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Time);
+        dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Value.TimeOfDay);
       }
 
       return dateTimeValue;
@@ -1094,13 +1076,9 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     set 
     {
       IsDirty = true;
+      _savedDateTimeValue = value;
 
-      if (value is NaDateTime)
-        _savedDateTimeValue = (NaDateTime) value;
-      else
-        _savedDateTimeValue = NaDateTime.FromBoxedDateTime (value);
-
-      if (_savedDateTimeValue.IsNull)
+      if (!_savedDateTimeValue.HasValue)
       {
         InternalDateValue = null;
         InternalTimeValue = null;
@@ -1139,33 +1117,21 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = value; }
+    set { Value = ArgumentUtility.CheckValueType<DateTime> ("value", value); }
   }
 
   /// <summary> Gets or sets the string displayed in the <see cref="DateTextBox"/>. </summary>
   protected virtual string InternalDateValue
   {
     get{ return _internalDateValue; }
-    set
-    {
-      if (_internalDateValue == value)
-        return;
-
-      _internalDateValue = value;
-    }
+    set { _internalDateValue = value; }
   }
 
   /// <summary> Gets or sets the string displayed in the <see cref="TimeTextBox"/>. </summary>
   protected virtual string InternalTimeValue
   {
     get{ return _internalTimeValue; }
-    set
-    {
-      if (_internalTimeValue == value)
-        return;
-
-      _internalTimeValue = value;
-    }
+    set { _internalTimeValue = value; }
   }
 
   /// <summary> 

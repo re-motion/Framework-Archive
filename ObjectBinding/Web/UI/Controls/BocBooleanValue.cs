@@ -66,7 +66,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   private static readonly string s_startUpScriptKey = typeof (BocBooleanValue).FullName+ "_Startup";
 
 	// member fields
-  private NaBoolean _value = NaBoolean.Null;
+  private bool? _value = null;
 
   private HyperLink _hyperLink;
   private Image _image;
@@ -149,9 +149,9 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetPostBackCollectionItem (Page, _hiddenField.UniqueID);
-    NaBoolean newNaValue = NaBoolean.Null;
+    bool? newNaValue = null;
     if (newValue != null)
-      newNaValue = NaBoolean.Parse (newValue);
+      newNaValue = bool.Parse (newValue);
     bool isDataChanged = newValue != null && _value != newNaValue;
     if (isDataChanged)
     {
@@ -370,7 +370,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     object[] values = (object[]) savedState;
 
     base.LoadViewState (values[0]);
-    _value = (NaBoolean) values[1];
+    _value = (bool?) values[1];
 
     _hiddenField.Value = _value.ToString();
   }
@@ -393,38 +393,21 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        object value = DataSource.BusinessObject.GetProperty (Property);
+        bool? value = (bool?) DataSource.BusinessObject.GetProperty (Property);
         LoadValueInternal (value, interim);
       }
     }
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> A boxed <see cref="Boolean"/> or <see cref="NaBoolean"/> value, or <see langword="null"/>. </param>
   /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (object value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="Boolean"/> value to load. </param>
-  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (bool value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-  /// <param name="value"> The <see cref="NaBoolean"/> value to load. </param>
-  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
-  public void LoadUnboundValue (NaBoolean value, bool interim)
+  public void LoadUnboundValue (bool? value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-  protected virtual void LoadValueInternal (object value, bool interim)
+  protected virtual void LoadValueInternal (bool? value, bool interim)
   {
     if (! interim)
     {
@@ -535,25 +518,16 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   /// <value> The boolean value currently displayed or <see langword="null"/>. </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
-  public new object Value
+  public new bool? Value
   {
     get
     {
-      if (_value.IsNull)
-        return null;
-      else if (_value.IsTrue)
-        return true;
-      else
-        return false;
+      return _value;
     }
     set
     {
       IsDirty = true;
-
-      if (value is NaBoolean)
-        _value = (NaBoolean) value;
-      else
-        _value =  NaBoolean.FromBoxedBoolean (value);
+      _value = value;
     }
   }
 
@@ -561,7 +535,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = value; }
+    set { Value = ArgumentUtility.CheckValueType<bool> ("value", value); }
   }
 
   /// <summary> 

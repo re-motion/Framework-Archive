@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.ObjectBinding
 {
@@ -92,16 +91,9 @@ public interface IBusinessObjectProperty
 public interface IBusinessObjectStringProperty: IBusinessObjectProperty
 {
   /// <summary>
-  ///   Getsthe the maximum length of a string assigned to the property, or <see cref="NaInt32.Null"/> if no maximum 
-  ///   length is defined.
+  ///   Getsthe the maximum length of a string assigned to the property, or <see langword="null"/> if no maximum length is defined.
   /// </summary>
-  /// <value> An instance of the <see cref="NaInt32"/> data type.</value>
-  /// <remarks>
-  ///   <note type="inotes">
-  ///     Must not return <see langword="null"/>.
-  ///   </note>
-  /// </remarks>
-  NaInt32 MaxLength { get; }
+  int? MaxLength { get; }
 }
 
 /// <summary> 
@@ -223,10 +215,10 @@ public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
   /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>
   /// <param name="objectClass"> The <see cref="IBusinessObjectClass"/> for which to get the property's default value. </param>
   /// <remarks> 
-  ///   If <see cref="NaBoolean.Null"/> is returned, the object model does not define a default value. In case the 
+  ///   If <see langword="null"/> is returned, the object model does not define a default value. In case the 
   ///   caller requires a default value, the selection of the appropriate value is left to the caller.
   /// </remarks>
-  NaBoolean GetDefaultValue (IBusinessObjectClass objectClass);
+  bool? GetDefaultValue (IBusinessObjectClass objectClass);
 }
 
 /// <summary> 
@@ -281,7 +273,7 @@ public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
 /// </remarks>
 public interface IBusinessObjectInstanceEnumerationProperty: IBusinessObjectEnumerationProperty
 {
-  /// <summary> Returns a list of all the enumeration's values for the specified <paramref name="buessinessObject"/>. </summary>
+  /// <summary> Returns a list of all the enumeration's values for the specified <paramref name="businessObject"/>. </summary>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enum values. </param>
   /// <returns> 
   ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
@@ -290,7 +282,7 @@ public interface IBusinessObjectInstanceEnumerationProperty: IBusinessObjectEnum
 
   /// <summary> 
   ///   Returns a list of the enumeration's values that can be used in the current context
-  ///   for the specified <paramref name="buessinessObject"/>
+  ///   for the specified <paramref name="businessObject"/>
   /// </summary>
   /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enum values. </param>
   /// <returns> 

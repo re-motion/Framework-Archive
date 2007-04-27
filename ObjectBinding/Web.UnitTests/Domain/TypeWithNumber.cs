@@ -1,5 +1,4 @@
 using System;
-using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Reflection;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
@@ -7,19 +6,19 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 
 public class TypeWithNumber: ReflectionBusinessObject
 {
-  private int _intValue;
-  private NaInt32 _naInt32Value;
+  private int _int32Value;
+  private int? _nullableInt32Value;
 
-  public int IntValue
+  public int Int32Value
   {
-    get { return _intValue; }
-    set { _intValue = value; }
+    get { return _int32Value; }
+    set { _int32Value = value; }
   }
 
-  public NaInt32 NaInt32Value
+  public int? NullableInt32Value
   {
-    get { return _naInt32Value; }
-    set { _naInt32Value = value; }
+    get { return _nullableInt32Value; }
+    set { _nullableInt32Value = value; }
   }
 }
 

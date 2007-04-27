@@ -94,7 +94,7 @@ public interface IBusinessObject
   ///   <paramref name="propertyIdentifier"/> parameter. 
   /// </value>
   /// <exception cref="Exception"> 
-  ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
+  ///   Thrown if the <paramref name="propertyIdentifier"/> is not part of this business object's class. 
   /// </exception>
   object this [string propertyIdentifier] { get; set; }
 
@@ -138,7 +138,7 @@ public interface IBusinessObject
   ///   <paramref name="propertyIdentifier"/> parameter. 
   /// </returns>
   /// <exception cref="Exception"> 
-  ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
+  ///   Thrown if the <paramref name="propertyIdentifier"/> is not part of this business object's class. 
   /// </exception>
   string GetPropertyString (string propertyIdentifier);
 

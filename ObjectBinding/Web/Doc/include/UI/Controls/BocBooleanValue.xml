@@ -5,8 +5,7 @@
       
       <h4 class="dtH4">Supported Data Types</h4>
       <para>
-        The control's <see cref="Value"/> can be assigned <see cref="Boolean"/> or <see cref="NaBoolean"/> values
-        as well as <see langword="null"/>. 
+        The control's <see cref="Value"/> can be assigned <see cref="Boolean"/> values and <see langword="null"/>. 
       </para><para>
         The control's <see cref="Property"/> supports the <see cref="IBusinessObjectBooleanProperty"/>.
       </para>      
@@ -177,6 +176,7 @@
     <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   </LoadValue>
   <LoadUnboundValue>
+    <param name="value">The value to load.</param>
     <param name="interim"> Specifies whether this is the initial loading or an interim loading. </param>
     <remarks>
       <para>

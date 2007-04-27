@@ -218,7 +218,7 @@ public class BocEnumValueTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithNull()
   {
-    object value = null;
+    TestEnum? value = null;
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.Value = TestEnum.Second;
     _bocEnumValue.IsDirty = true;
