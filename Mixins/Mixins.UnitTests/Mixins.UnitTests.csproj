@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\InternalNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\DoubleImplementer.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinAddingAllowMultipleToClassAndMember.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1Attribute.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MultiAttribute.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="DefBuilder.cs" />
     <Compile Include="Configuration\DefinitionBuilderTests.cs" />

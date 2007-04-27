@@ -16,6 +16,36 @@ namespace Mixins.Validation.DefaultLog
       get { return _results; }
     }
 
+    public int GetNumberOfFailureResults()
+    {
+      int count = 0;
+      foreach (DefaultValidationResult result in _results)
+      {
+        count += result.Failures.Count;
+      }
+      return count;
+    }
+
+    public int GetNumberOfWarningResults ()
+    {
+      int count = 0;
+      foreach (DefaultValidationResult result in _results)
+      {
+        count += result.Warnings.Count;
+      }
+      return count;
+    }
+
+    public int GetNumberOfSuccessResults ()
+    {
+      int count = 0;
+      foreach (DefaultValidationResult result in _results)
+      {
+        count += result.Successes.Count;
+      }
+      return count;
+    }
+
     public void ValidationStartsFor (IVisitableDefinition definition)
     {
       ArgumentUtility.CheckNotNull ("definition", definition);

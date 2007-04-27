@@ -30,7 +30,7 @@ namespace Mixins.Definitions.Building
       {
         if (mixinBase.Equals (mixin.Type))
         {
-          string message = string.Format ("MixinBase<,> cannot be directly applied to a base class ({0}) as a mixin.", _baseClass.FullName);
+          string message = string.Format ("The Mixin classes cannot be directly applied to a base class ({0}) as a mixin.", _baseClass.FullName);
           throw new ConfigurationException (message);
         }
 
@@ -46,7 +46,7 @@ namespace Mixins.Definitions.Building
 
     private IEnumerable<Type> GetFilteredGenericArguments (Type mixinBase)
     {
-      Debug.Assert (!mixinBase.IsGenericTypeDefinition); // the mixinBase is always a specialization of Mixin<,>
+      Debug.Assert (!mixinBase.IsGenericTypeDefinition); // the mixinBase is always a specialization of Mixin<,> or Mixin<>
 
       Type[] genericArguments = mixinBase.GetGenericArguments ();
       Type[] originalGenericParameters = mixinBase.GetGenericTypeDefinition ().GetGenericArguments ();
@@ -63,7 +63,7 @@ namespace Mixins.Definitions.Building
     private Type GetMixinBase (MixinDefinition mixin)
     {
       Type mixinBase = mixin.Type.BaseType;
-      while (mixinBase != null && !IsSpecializationOf (mixinBase, typeof (Mixin<,>)))
+      while (mixinBase != null && !(IsSpecializationOf (mixinBase, typeof (Mixin<,>)) || IsSpecializationOf (mixinBase, typeof (Mixin<>))))
       {
         mixinBase = mixinBase.BaseType;
       }
@@ -108,11 +108,6 @@ namespace Mixins.Definitions.Building
     private void AnalyzeRequirementForType (Type requiredType, Dictionary<Type, Type> requirements)
     {
       Debug.Assert (!requiredType.IsGenericParameter);
-      if (requiredType.Equals (typeof (INull)))
-      {
-        return;
-      }
-
       if (!requirements.ContainsKey (requiredType))
       {
         requirements.Add (requiredType, requiredType);

@@ -8,6 +8,31 @@ using Rubicon.Text;
 
 namespace Mixins.UnitTests.Mixins
 {
+  public struct InvokeWithWrapper<T>
+  {
+    private readonly IInvokeWith<T> _invokeWith;
+
+    public InvokeWithWrapper(IInvokeWith<T> invokeWith)
+    {
+      _invokeWith = invokeWith;
+    }
+
+    public T With()
+    {
+      return _invokeWith.With();
+    }
+
+    public T With<A1> (A1 a1)
+    {
+      return _invokeWith.With (a1);
+    }
+
+    public T With<A1, A2> (A1 a1, A2 a2)
+    {
+      return _invokeWith.With (a1, a2);
+    }
+  }
+
   public class ObjectFactory
   {
     private TypeFactory _typeFactory;
@@ -17,9 +42,9 @@ namespace Mixins.UnitTests.Mixins
       _typeFactory = typeFactory;
     }
 
-    public IInvokeWith<T> Create<T> ()
+    public InvokeWithWrapper<T> Create<T> ()
     {
-      const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+      const BindingFlags bindingFlags  = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
       Type concreteType = _typeFactory.GetConcreteType (typeof (T));
       GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
@@ -35,7 +60,7 @@ namespace Mixins.UnitTests.Mixins
             } 
             return CreateConstructionDelegate(ctor, delegateType);
           });
-      return new InvokeWith<T> (constructionDelegateCreator);
+      return new InvokeWithWrapper<T>(new InvokeWith<T> (constructionDelegateCreator));
     }
 
     public static Delegate CreateConstructionDelegate (ConstructorInfo ctor, Type delegateType)

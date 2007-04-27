@@ -11,10 +11,5 @@ namespace Mixins.UnitTests.SampleTypes
     {
       get { return base.This; }
     }
-
-    public new object Base
-    {
-      get { return base.Base; }
-    }
   }
 }

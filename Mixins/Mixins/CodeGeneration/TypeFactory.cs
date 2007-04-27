@@ -1,6 +1,8 @@
 using System;
 using Mixins.Definitions;
+using Mixins.Validation.DefaultLog;
 using Rubicon.Utilities;
+using Mixins.Validation;
 
 namespace Mixins.CodeGeneration
 {
@@ -20,6 +22,27 @@ namespace Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
       _configuration = configuration;
+
+      Assertion.DebugAssert (ValidateConfiguration ());
+    }
+
+    private bool ValidateConfiguration ()
+    {
+      DefaultValidationLog log = Validator.Validate (_configuration);
+      if (log.GetNumberOfFailureResults () != 0)
+      {
+        ConsoleDumper.DumpLog (log);
+        return false;
+      }
+      else if (log.GetNumberOfWarningResults () != 0)
+      {
+        ConsoleDumper.DumpLog (log);
+        return true;
+      }
+      else
+      {
+        return true;
+      }
     }
 
     // Instances returned by this method must be initialized with <see cref="InitializeInstance"/>

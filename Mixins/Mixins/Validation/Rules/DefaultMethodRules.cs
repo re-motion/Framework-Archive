@@ -24,8 +24,7 @@ namespace Mixins.Validation.Rules
       {
         foreach (ParameterInfo parameter in args.Definition.MethodInfo.GetParameters())
         {
-          if (!parameter.ParameterType.Equals(typeof(INull)) && !parameter.IsDefined (typeof (ThisAttribute), false) 
-              && !parameter.IsDefined (typeof(BaseAttribute), false))
+          if (!parameter.IsDefined (typeof (ThisAttribute), false) && !parameter.IsDefined (typeof(BaseAttribute), false))
           {
             args.Log.Fail (args.Self);
             return;

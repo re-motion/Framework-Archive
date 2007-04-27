@@ -77,14 +77,12 @@ namespace Mixins.CodeGeneration
 
     private static object GetMixinArgumentInitialization (ParameterInfo p, object mixinTargetInstance)
     {
-      if (p.ParameterType.Equals (typeof (INull)))
-        return null;
-      else if (p.IsDefined (typeof (ThisAttribute), false))
+      if (p.IsDefined (typeof (ThisAttribute), false))
         return mixinTargetInstance;
       else if (p.IsDefined (typeof (BaseAttribute), false))
         throw new NotImplementedException ("Base parameter types are not implemented.");
       else
-        throw new NotSupportedException ("Initialization methods can only contain this, base, or null arguments.");
+        throw new NotSupportedException ("Initialization methods can only contain this or base arguments.");
     }
   }
 }

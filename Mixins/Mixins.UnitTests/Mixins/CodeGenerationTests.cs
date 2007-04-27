@@ -7,6 +7,7 @@ using Mixins.UnitTests.SampleTypes;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
+using Mixins.Validation;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -150,7 +151,6 @@ namespace Mixins.UnitTests.Mixins
       BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
-      Assert.IsNull (mixin.Base);
     }
 
     [Test]
@@ -207,6 +207,19 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsTrue (eventInfo.GetAddMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
       Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsSpecialName);
       Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
+    }
+
+    [Test]
+    [Ignore("TODO: Implement base")]
+    public void CompleteInterface()
+    {
+      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7), typeof (BT3Mixin4)));
+      ObjectFactory = new ObjectFactory (TypeFactory);
+
+      ICBaseType3BT3Mixin4 complete = ObjectFactory.Create<BaseType3> ().With() as ICBaseType3BT3Mixin4;
+      Assert.IsNotNull (complete);
+      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
+      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType35) complete).IfcMethod ());
     }
   }
 }

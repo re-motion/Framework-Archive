@@ -27,36 +27,6 @@ namespace Mixins.UnitTests.Configuration
       t.ValidationDump ();
     }
 
-    public static int TotalFailures (IList<DefaultValidationResult> results)
-    {
-      int sum = 0;
-      foreach (DefaultValidationResult result in results)
-      {
-        sum += result.Failures.Count;
-      }
-      return sum;
-    }
-
-    public static int TotalWarnings (IList<DefaultValidationResult> results)
-    {
-      int sum = 0;
-      foreach (DefaultValidationResult result in results)
-      {
-        sum += result.Warnings.Count;
-      }
-      return sum;
-    }
-
-    public static int TotalSuccesses (IList<DefaultValidationResult> results)
-    {
-      int sum = 0;
-      foreach (DefaultValidationResult result in results)
-      {
-        sum += result.Successes.Count;
-      }
-      return sum;
-    }
-
     public static bool HasFailure (string ruleName, DefaultValidationLog log)
     {
       foreach (DefaultValidationResult result in log.Results)
@@ -257,7 +227,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = new ApplicationDefinition ();
       DefaultValidationLog log = Validator.Validate (application);
       Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultApplicationRules.ApplicationShouldContainAtLeastOneBaseClass", log));
-      Assert.AreEqual (0, TotalFailures(log.Results));
+      Assert.AreEqual (0, log.GetNumberOfFailureResults());
     }
 
     [Test]
@@ -266,7 +236,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition bc = DefBuilder.Build (typeof (DateTime)).BaseClasses[typeof (DateTime)];
       DefaultValidationLog log = Validator.Validate (bc);
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
+      Assert.AreEqual (0, log.GetNumberOfWarningResults());
     }
 
     [Test]
@@ -393,13 +363,13 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType5), typeof (BT5Mixin3));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5Mixin3)].ThisDependencies[typeof(IBT5Mixin3)]);
 
-      Assert.AreEqual (0, TotalFailures (log.Results));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
+      Assert.AreEqual (0, log.GetNumberOfFailureResults());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults());
 
       log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5Mixin3)].BaseDependencies[typeof (IBT5Mixin3)]);
 
-      Assert.AreEqual (0, TotalFailures (log.Results));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
+      Assert.AreEqual (0, log.GetNumberOfFailureResults());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults());
     }
 
     [Test]
@@ -421,8 +391,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, TotalFailures(log.Results));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
+      Assert.AreEqual (0, log.GetNumberOfFailureResults());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults());
     }
 
     [Test]
@@ -463,7 +433,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
-      Assert.AreEqual (2, TotalFailures(log.Results));
+      Assert.AreEqual (2, log.GetNumberOfFailureResults());
     }
 
     [Test]
@@ -473,7 +443,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
-      Assert.AreEqual (2, TotalFailures (log.Results));
+      Assert.AreEqual (2, log.GetNumberOfFailureResults());
     }
 
     [Test]
@@ -482,10 +452,45 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember));
       DefaultValidationLog log = Validator.Validate (application);
 
-      ConsoleDumper.DumpLog (log);
+      Assert.AreEqual (0, log.GetNumberOfFailureResults());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+    }
 
-      Assert.AreEqual (0, TotalFailures (log.Results));
-      Assert.AreEqual (0, TotalWarnings (log.Results));
+    [Test]
+    public void SucceedsIfNestedPublicMixin ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (PublicNester.PublicNested));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.AreEqual (0, log.GetNumberOfFailureResults ());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults ());
+    }
+
+    [Test]
+    public void FailsIfNestedPublicMixinInNonPublic ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (InternalNester.PublicNested));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfNestedPrivateMixin ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (PublicNester.InternalNested));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfNestedPrivateMixinInNonPublic ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (InternalNester.InternalNested));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
   }
 }

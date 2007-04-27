@@ -8,10 +8,30 @@ namespace Mixins.Definitions
   {
     private Dictionary<T, T> _items = new Dictionary<T, T>();
 
-    public virtual void Add (T item)
+    public Set()
     {
-      if (!Contains (item))
+    }
+
+    public Set(IEnumerable<T> initialItems)
+    {
+      AddRange (initialItems);
+    }
+
+    public void AddRange (IEnumerable<T> items)
+    {
+      foreach (T item in items)
+        Add (item);
+    }
+
+    public void Add (T item)
+    {
+      if (ShouldAddItem (item) && !Contains (item))
         _items.Add (item, item);
+    }
+
+    protected virtual bool ShouldAddItem (T item)
+    {
+      return true;
     }
 
     public bool Contains (T item)

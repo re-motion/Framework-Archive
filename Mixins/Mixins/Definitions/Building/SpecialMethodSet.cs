@@ -5,10 +5,9 @@ namespace Mixins.Definitions.Building
 {
   public class SpecialMethodSet : Set<MethodInfo>
   {
-    public override void Add (MethodInfo item)
+    protected override bool ShouldAddItem (MethodInfo item)
     {
-      if (item != null)
-        base.Add (item);
+      return item != null;
     }
   }
 }

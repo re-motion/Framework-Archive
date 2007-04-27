@@ -577,7 +577,6 @@ namespace Mixins.UnitTests.Configuration
       Assert.Contains (typeof (IBaseType34), requiredBaseCallTypes);
       Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType32)));
       Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
-      Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (INull)));
 
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin3<,>)], requirers);

@@ -24,18 +24,27 @@ namespace Mixins
     internal void Initialize([This]TThis @this, [Base]TBase @base)
     {
       Assertion.Assert (@this != null);
-      Assertion.Assert (@base != null || typeof (INull).IsAssignableFrom (typeof(TBase)));
+      Assertion.Assert (@base != null);
       _this = @this;
       _base = @base;
     }
   }
 
-  public class Mixin<TThis> : Mixin<TThis, INull>
+  public class Mixin<[This]TThis>
     where TThis : class
   {
-  }
+    private TThis _this;
 
-  public interface INull
-  {
+    protected TThis This
+    {
+      get { return _this; }
+    }
+
+    [MixinInitializationMethod]
+    internal void Initialize ([This]TThis @this)
+    {
+      Assertion.Assert (@this != null);
+      _this = @this;
+    }
   }
 }
