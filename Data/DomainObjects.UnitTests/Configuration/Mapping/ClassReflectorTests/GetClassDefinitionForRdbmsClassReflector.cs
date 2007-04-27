@@ -5,10 +5,10 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
-  public class RdbmsClassReflectorTest: ClassReflectorTestBase
+  public class GetClassDefinitionForRdbmsClassReflector: TestBase
   {
     private ClassDefinitionChecker _classDefinitionChecker;
     private ClassDefinitionCollection _classDefinitions;
@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithMixedProperties",
           "ClassWithMixedProperties",
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (ClassWithMixedProperties),
           false);
 
@@ -168,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "DerivedClassWithMixedProperties",
           null,
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (DerivedClassWithMixedProperties),
           false,
           CreateClassWithMixedPropertiesClassDefinition());
@@ -183,7 +183,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties",
           "ClassWithOneSideRelationProperties",
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
           false);
 

@@ -180,6 +180,11 @@ public class RelationDefinition : ISerializable, IObjectReference
     return object.ReferenceEquals (endPointDefinition, _endPointDefinitions[1]);
   }
 
+  public override string ToString ()
+  {
+    return GetType ().FullName + ": " + _id;
+  }
+
   private MappingException CreateMappingException (string message, params object[] args)
   {
     return new MappingException (string.Format (message, args));

@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
@@ -160,6 +161,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsTrue (actual.IsPropertyTypeResolved);
       Assert.IsTrue (actual.IsPersistent);
       Assert.IsFalse (actual.IsObjectID);
+    }
+
+    [Test]
+    public void GetToString ()
+    {
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "ThePropertyName", "TheColumnName", typeof (int), null, null, false);
+
+      Assert.That (actual.ToString (), Is.EqualTo (typeof (ReflectionBasedPropertyDefinition).FullName + ": ThePropertyName"));
     }
 
     [Test]

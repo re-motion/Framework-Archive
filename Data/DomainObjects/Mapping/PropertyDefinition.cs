@@ -90,6 +90,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _isPersistent; }
     }
 
+    public override string ToString ()
+    {
+      return GetType ().FullName + ": " + _propertyName;
+    }
+
     /// <summary>
     /// IsPartOfMappingConfiguration is used only during the deserialization process. 
     /// It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.

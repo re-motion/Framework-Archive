@@ -1,11 +1,10 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_DomainBase")]
-  [TestDomain]
-  public abstract class DomainBase: DomainObject
+  [TableInheritanceTestDomain]
+  public abstract class DomainBase : DomainObject
   {
     protected DomainBase()
     {

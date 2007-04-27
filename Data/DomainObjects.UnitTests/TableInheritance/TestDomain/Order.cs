@@ -4,6 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Order")]
   [DBTable (Name = "TableInheritance_Order")]
+  [TableInheritanceTestDomain]
   [NotAbstract]
   public abstract class Order: DomainObject
   {

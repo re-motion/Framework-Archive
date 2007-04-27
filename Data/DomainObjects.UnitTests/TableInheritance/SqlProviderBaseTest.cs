@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       base.SetUp ();
 
       _storageProviderManager = new StorageProviderManager ();
-      _provider = (SqlProvider) _storageProviderManager.GetMandatory (c_testDomainProviderID);
+      _provider = (SqlProvider) _storageProviderManager.GetMandatory (TableInheritanceTestDomainProviderID);
       _provider.Connect ();
     }
 

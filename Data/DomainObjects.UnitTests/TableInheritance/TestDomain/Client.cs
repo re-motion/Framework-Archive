@@ -1,12 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Client")]
   [DBTable (Name = "TableInheritance_Client")]
   [NotAbstract]
-  [TestDomain]
+  [TableInheritanceTestDomain]
   public abstract class Client : DomainObject
   {
     public new static Client GetObject (ObjectID id)

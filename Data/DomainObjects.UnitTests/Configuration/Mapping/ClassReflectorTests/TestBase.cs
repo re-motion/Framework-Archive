@@ -1,9 +1,9 @@
 using System;
 using Rubicon.Data.DomainObjects.Mapping;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
-  public class ClassReflectorTestBase: ReflectionBasedMappingTest
+  public class TestBase: ReflectionBasedMappingTest
   {
     protected void CreatePropertyDefinitionsForClassWithMixedProperties (ReflectionBasedClassDefinition classDefinition)
     {

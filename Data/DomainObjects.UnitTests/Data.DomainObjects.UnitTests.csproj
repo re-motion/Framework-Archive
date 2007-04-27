@@ -110,13 +110,15 @@
   </ItemGroup>
   <ItemGroup>
     <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidUnidirectionalRelation.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />
     <Compile Include="Configuration\FakeDomainObjectsConfigurationTest.cs" />
     <Compile Include="Configuration\DomainObjectsConfigurationTest.cs" />
-    <Compile Include="Configuration\Mapping\ClassReflectorTest.cs" />
-    <Compile Include="Configuration\Mapping\ClassReflectorTestBase.cs" />
-    <Compile Include="Configuration\Mapping\ClassReflectorTest_GetRelationDefinitions.cs" />
-    <Compile Include="Configuration\Mapping\RdbmsClassReflectorTest.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinition.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBase.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetRelationDefinitions.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForRdbmsClassReflector.cs" />
     <Compile Include="Configuration\Mapping\LengthConstrainedPropertyAttributeTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BaseTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyReflectorTests\BinaryProperty.cs" />
@@ -631,6 +633,7 @@
     <Compile Include="TableInheritance\TestDomain\Region.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableInheritance\TestDomain\TableInheritanceTestDomainAttribute.cs" />
     <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -685,9 +688,9 @@
     </Compile>
     <Compile Include="TestDomain\ClassWithOptionalOneToOneRelationAndOppositeDerivedClass.cs" />
     <Compile Include="TestDomain\OrderWithNewPropertyAccessBase.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithStorageProviderFromStorageGroup.cs" />
-    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithDefaultStorageProvider.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithoutStorageGroupWithMixedProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
     <Compile Include="TestDomain\StorageProviderStubDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />

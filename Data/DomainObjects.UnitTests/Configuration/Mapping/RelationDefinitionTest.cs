@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -24,6 +25,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _customerToOrder = TestMappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
       _customerEndPoint = (VirtualRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
       _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];
+    }
+
+    [Test]
+    public void GetToString ()
+    {
+      RelationDefinition relation = new RelationDefinition ("RelationID", _customerEndPoint, _orderEndPoint);
+
+      Assert.That (relation.ToString (), Is.EqualTo (typeof (RelationDefinition).FullName + ": RelationID"));
     }
 
     [Test]

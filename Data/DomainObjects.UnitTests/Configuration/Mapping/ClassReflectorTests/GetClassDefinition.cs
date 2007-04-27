@@ -5,10 +5,10 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
+namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
-  public class ClassReflectorTest: ClassReflectorTestBase
+  public class GetClassDefinition: TestBase
   {
     private ClassDefinitionChecker _classDefinitionChecker;
     private ClassDefinitionCollection _classDefinitions;
@@ -149,39 +149,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classReflector.GetClassDefinition(_classDefinitions);
     }
 
-    [Test]
-    public void GetClassDefinition_ForClassWithStorageProviderFromStorageGroup ()
-    {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithStorageProviderFromStorageGroup));
-      ReflectionBasedClassDefinition expected = CreateClassWithStorageProviderFromStorageGroup ();
-
-      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
-
-      Assert.IsNotNull (actual);
-      _classDefinitionChecker.Check (expected, actual);
-      Assert.AreEqual (1, _classDefinitions.Count);
-    }
-
-    //TODO: Explicit default provider
-    [Test]
-    public void GetClassDefinition_ForClassWithDefaultStorageProvider ()
-    {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithDefaultStorageProvider));
-      ReflectionBasedClassDefinition expected = CreateClassWithDefaultStorageProvider ();
-
-      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
-
-      Assert.IsNotNull (actual);
-      _classDefinitionChecker.Check (expected, actual);
-      Assert.AreEqual (1, _classDefinitions.Count);
-    }
-
     private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithMixedProperties",
           "ClassWithMixedProperties",
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (ClassWithMixedProperties),
           false);
 
@@ -195,7 +168,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "DerivedClassWithMixedProperties",
           "DerivedClassWithMixedProperties",
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (DerivedClassWithMixedProperties),
           false,
           CreateClassWithMixedPropertiesClassDefinition ());
@@ -210,32 +183,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties",
           "ClassWithOneSideRelationProperties",
-          "TestDomain",
+          c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
-          false);
-
-      return classDefinition;
-    }
-
-    private ReflectionBasedClassDefinition CreateClassWithDefaultStorageProvider ()
-    {
-      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithDefaultStorageProvider",
-          "ClassWithDefaultStorageProvider",
-          "TestDomain",
-          typeof (ClassWithDefaultStorageProvider),
-          false);
-
-      return classDefinition;
-    }
-
-    private ReflectionBasedClassDefinition CreateClassWithStorageProviderFromStorageGroup ()
-    {
-      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithStorageProviderFromStorageGroup",
-          "ClassWithStorageProviderFromStorageGroup",
-          "UnitTestStorageProviderStub",
-          typeof (ClassWithStorageProviderFromStorageGroup),
           false);
 
       return classDefinition;

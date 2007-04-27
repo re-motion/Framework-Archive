@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
   public class TableInheritanceMappingTest: DatabaseTest
   {
     public const string CreateTestDataFileName = "DataDomainObjects_CreateTableInheritanceTestData.sql";
+    public const string TableInheritanceTestDomainProviderID = "TableInheritanceTestDomain";
 
     public TableInheritanceMappingTest()
       : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)

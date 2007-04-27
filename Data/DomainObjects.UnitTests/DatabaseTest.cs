@@ -12,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public const string TestDomainConnectionString = "Integrated Security=SSPI;Initial Catalog=TestDomain;Data Source=localhost; Max Pool Size=1;";
     public const string MasterConnectionString = "Integrated Security=SSPI;Initial Catalog=master;Data Source=localhost; Max Pool Size=1;";
 
+    public const string DefaultStorageProviderID = "DefaultStorageProvider";
     public const string c_testDomainProviderID = "TestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 

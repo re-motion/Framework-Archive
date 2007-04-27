@@ -408,6 +408,10 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     public abstract string MyStorageSpecificPrefix { get;}
 
+    public override string ToString ()
+    {
+      return GetType().FullName + ": " + _id;
+    }
 
     /// <summary>
     /// IsPartOfMappingConfiguration is used only during the deserialization process. 
@@ -469,7 +473,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       }
     }
 
-     internal static void SetClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
+    internal static void SetClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 

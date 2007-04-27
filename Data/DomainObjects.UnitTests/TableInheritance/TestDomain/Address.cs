@@ -1,12 +1,11 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Address")]
   [DBTable (Name = "TableInheritance_Address")]
   [NotAbstract]
-  [TestDomain]
+  [TableInheritanceTestDomain]
   public abstract class Address : DomainObject
   {
     public static Address NewObject ()

@@ -1,10 +1,9 @@
 using System;
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_AbstractClassWithoutDerivations")]
-  [TestDomain]
+  [TableInheritanceTestDomain]
   public abstract class AbstractClassWithoutDerivations : DomainObject
   {
     protected AbstractClassWithoutDerivations ()

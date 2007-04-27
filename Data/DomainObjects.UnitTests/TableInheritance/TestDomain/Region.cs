@@ -5,7 +5,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [ClassID ("TI_Region")]
   [DBTable (Name = "TableInheritance_Region")]
   [NotAbstract]
-  public abstract class Region: DomainObject
+  [TableInheritanceTestDomain]
+  public abstract class Region : DomainObject
   {
     public static Region NewObject ()
     {

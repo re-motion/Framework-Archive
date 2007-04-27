@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_AbstractBaseClassWithHierarchy")]
-  [TestDomain]
+  [TableInheritanceTestDomain]
   public abstract class AbstractBaseClassWithHierarchy : DomainObject
   {
     public new static AbstractBaseClassWithHierarchy GetObject (ObjectID id)

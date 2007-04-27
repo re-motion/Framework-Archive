@@ -4,6 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_HistoryEntry")]
   [DBTable (Name = "TableInheritance_HistoryEntry")]
+  [TableInheritanceTestDomain]
   [NotAbstract]
   public abstract class HistoryEntry: DomainObject
   {

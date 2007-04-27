@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [ExpectedException (typeof (MappingException))]
     public void Validate ()
     {
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false);
 
       MappingConfiguration mappingConfiguration = 
           new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));
@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void SetCurrentValidates ()
     {
-      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person), false);
+      ReflectionBasedClassDefinition personClass = new ReflectionBasedClassDefinition ("Person", null, TableInheritanceTestDomainProviderID, typeof (Person), false);
 
       MappingConfiguration mappingConfiguration = 
           new MappingConfiguration (new MappingReflector (TestDomainFactory.ConfigurationMappingTestDomainEmpty));

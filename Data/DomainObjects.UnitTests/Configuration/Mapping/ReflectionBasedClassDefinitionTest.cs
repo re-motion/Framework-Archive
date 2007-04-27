@@ -39,6 +39,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    public void GetToString()
+    {
+      ClassDefinition actual = new ReflectionBasedClassDefinition ("OrderID", "OrderTable", "StorageProvider", typeof (Order), false);
+
+      Assert.That (actual.ToString(), Is.EqualTo (typeof (ReflectionBasedClassDefinition).FullName + ": OrderID"));
+    }
+
+    [Test]
     public void GetIsAbstract_FromNonAbstractType()
     {
       ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order), false);
