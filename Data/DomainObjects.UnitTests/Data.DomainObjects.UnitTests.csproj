@@ -690,6 +690,8 @@
     <Compile Include="TestDomain\OrderWithNewPropertyAccessBase.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithoutStorageGroupWithMixedProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\BaseClassWithoutStorageSpecificIdentifierAttribute.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
     <Compile Include="TestDomain\StorageProviderStubDomainBase.cs" />

@@ -12,10 +12,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    public override string GetStorageSpecificName()
+    public override string GetStorageSpecificIdentifier()
     {
       if (IsTable())
-        return base.GetStorageSpecificName();
+        return base.GetStorageSpecificIdentifier();
       return null;
     }
 

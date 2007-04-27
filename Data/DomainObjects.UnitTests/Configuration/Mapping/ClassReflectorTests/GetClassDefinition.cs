@@ -45,6 +45,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
       Assert.IsNotNull (actual);
       _classDefinitionChecker.Check (expected, actual);
+      _classDefinitionChecker.Check (expected.BaseClass, actual.BaseClass);
       Assert.AreEqual (2, _classDefinitions.Count);
       Assert.AreSame (actual, _classDefinitions.GetMandatory (typeof (DerivedClassWithMixedProperties)));
       Assert.AreSame (actual.BaseClass, _classDefinitions.GetMandatory (typeof (ClassWithMixedProperties)));
@@ -122,6 +123,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
+    public void GetClassDefinition_ForDerivedClassWithStorageSpecificIdentifierAttribute ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithStorageSpecificIdentifierAttribute));
+      ReflectionBasedClassDefinition expected = CreateDerivedClassWithStorageSpecificIdentifierAttributeClassDefinition ();
+
+      ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
+
+      Assert.IsNotNull (actual);
+      _classDefinitionChecker.Check (expected, actual);
+      _classDefinitionChecker.Check (expected.BaseClass, actual.BaseClass);
+      Assert.AreEqual (2, _classDefinitions.Count);
+    }
+
+    [Test]
     public void GetClassDefinition_ForClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute));
@@ -186,6 +201,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (ClassWithOneSideRelationProperties),
           false);
+
+      return classDefinition;
+    }
+
+    private ReflectionBasedClassDefinition CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition ()
+    {
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
+          "BaseClassWithoutStorageSpecificIdentifierAttribute",
+          "BaseClassWithoutStorageSpecificIdentifierAttribute",
+          c_testDomainProviderID,
+          typeof (BaseClassWithoutStorageSpecificIdentifierAttribute),
+          true);
+
+      return classDefinition;
+    }
+
+    private ReflectionBasedClassDefinition CreateDerivedClassWithStorageSpecificIdentifierAttributeClassDefinition ()
+    {
+      ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
+          "DerivedClassWithStorageSpecificIdentifierAttribute",
+          "DerivedClassWithStorageSpecificIdentifierAttribute",
+          c_testDomainProviderID,
+          typeof (DerivedClassWithStorageSpecificIdentifierAttribute),
+          false,
+          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition ());
 
       return classDefinition;
     }

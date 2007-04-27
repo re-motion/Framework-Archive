@@ -10,7 +10,6 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  [Ignore("Implement exclusion of root classes for StorageGroups first.")]
   public class MappingReflectorTest: ReflectionBasedMappingTest
   {
     [Test]
@@ -66,6 +65,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker();
       relationDefinitionChecker.Check (TestMappingConfiguration.Current.RelationDefinitions, actualRelationDefinitions, true);
+    }
+
+    [Test]
+    public void Get_WithDuplicateAssembly ()
+    {
+      Assembly assembly = GetType ().Assembly;
+      MappingReflector expectedMappingReflector = new MappingReflector (assembly);
+      ClassDefinitionCollection expectedClassDefinitions = expectedMappingReflector.GetClassDefinitions ();
+      RelationDefinitionCollection expectedRelationDefinitions = expectedMappingReflector.GetRelationDefinitions (expectedClassDefinitions);
+      
+      MappingReflector mappingReflector = new MappingReflector (assembly, assembly);
+      ClassDefinitionCollection actualClassDefinitions = mappingReflector.GetClassDefinitions ();
+
+      ClassDefinitionChecker classDefinitionChecker = new ClassDefinitionChecker ();
+      classDefinitionChecker.Check (expectedClassDefinitions, actualClassDefinitions, false, false);
+
+      RelationDefinitionCollection actualRelationDefinitions = mappingReflector.GetRelationDefinitions (actualClassDefinitions);
+      RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
+      relationDefinitionChecker.Check (expectedRelationDefinitions, actualRelationDefinitions, false);
     }
   }
 }

@@ -66,10 +66,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection();
 
       ReflectionBasedClassDefinition testDomainBase = CreateTestDomainBaseDefinition();
-      classDefinitions.Add (testDomainBase);
+      //classDefinitions.Add (testDomainBase);
 
       ReflectionBasedClassDefinition storageProviderStubDomainBase = CreateStorageProviderStubDomainBaseDefinition();
-      classDefinitions.Add (storageProviderStubDomainBase);
+      //classDefinitions.Add (storageProviderStubDomainBase);
 
       ReflectionBasedClassDefinition company = CreateCompanyDefinition (null);
       classDefinitions.Add (company);
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classDefinitions.Add (CreateOrderTicketDefinition (null));
       classDefinitions.Add (CreateOrderItemDefinition (null));
 
-      ReflectionBasedClassDefinition officialDefinition = CreateOfficialDefinition (storageProviderStubDomainBase);
+      ReflectionBasedClassDefinition officialDefinition = CreateOfficialDefinition (null);
       classDefinitions.Add (officialDefinition);
       classDefinitions.Add (CreateSpecialOfficialDefinition (officialDefinition));
 
@@ -148,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       company.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              company, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name", "Name", typeof (string), 100));
+              company, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name", "Name", typeof (string), false, 100));
       company.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               company, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", "IndustrialSectorID", typeof (ObjectID), true));
@@ -239,7 +239,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       official.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              official, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Name", "Name", typeof (string), 100));
+              official, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Official.Name", "Name", typeof (string), false, 100));
 
       return official;
     }
@@ -257,7 +257,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       orderTicket.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName", "FileName", typeof (string), 255));
+              orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.FileName", "FileName", typeof (string), false, 255));
       orderTicket.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               orderTicket, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", "OrderID", typeof (ObjectID), true));
@@ -278,7 +278,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
               orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Position", "Position", typeof (int)));
       orderItem.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product", "Product", typeof (string), 100));
+              orderItem, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product", "Product", typeof (string), false, 100));
 
       return orderItem;
     }
@@ -290,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       ceo.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              ceo, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Name", "Name", typeof (string), 100));
+              ceo, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Name", "Name", typeof (string), false, 100));
       ceo.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               ceo, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company", "CompanyID", typeof (ObjectID), true));
@@ -305,7 +305,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       person.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              person, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.Name", "Name", typeof (string), 100));
+              person, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Person.Name", "Name", typeof (string), false, 100));
 
       return person;
     }
@@ -421,17 +421,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty",
               "String",
               typeof (string),
+              false,
               100));
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength",
-              "StringPropertyWithoutMaxLength",
+              "StringWithoutMaxLength",
               typeof (string),
               false));
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              classWithAllDataTypes, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty", "Binary", typeof (byte[])));
+              classWithAllDataTypes, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty", "Binary", typeof (byte[]), false));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
@@ -764,7 +765,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       industrialSector.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              industrialSector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name", "Name", typeof (string), 100));
+              industrialSector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name", "Name", typeof (string), false, 100));
 
       return industrialSector;
     }
@@ -776,7 +777,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       employee.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              employee, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", typeof (string), 100));
+              employee, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name", "Name", typeof (string), false, 100));
       employee.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               employee, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", "SupervisorID", typeof (ObjectID), true));
@@ -791,7 +792,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       computer.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
-              computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber", "SerialNumber", typeof (string), 20));
+              computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber", "SerialNumber", typeof (string), false, 20));
       computer.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee", "EmployeeID", typeof (ObjectID), true));

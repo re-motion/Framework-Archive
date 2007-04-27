@@ -16,7 +16,20 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   {
     public static ClassReflector CreateClassReflector (Type type)
     {
-      return new RdbmsClassReflector (type);
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      return CreateClassReflector (type, typeof (RdbmsClassReflector));
+    }
+
+    //TODO: Replace Hack with factory implementation
+    private static ClassReflector CreateClassReflector (Type type, Type classReflectorType)
+    {
+      if (classReflectorType == typeof (RdbmsClassReflector))
+        return new RdbmsClassReflector (type);
+      else if (classReflectorType == typeof (ClassReflector))
+        return new ClassReflector (type);
+
+      throw new ArgumentException (string.Format ("ClassReflector of Type '{0}' is not supported.", classReflectorType));
     }
 
     private Type _type;
@@ -67,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           GetID(),
-          GetStorageSpecificName(),
+          GetStorageSpecificIdentifier(),
           GetStorageProviderID(),
           Type,
           IsAbstract(),
@@ -100,7 +113,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return Type.Name;
     }
 
-    public virtual string GetStorageSpecificName()
+    public virtual string GetStorageSpecificIdentifier()
     {
       IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (Type, false);
       if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
@@ -133,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (IsInheritenceRoot())
         return null;
 
-      ClassReflector classReflector = new ClassReflector (Type.BaseType);
+      ClassReflector classReflector = CreateClassReflector (Type.BaseType, GetType());
       return classReflector.GetClassDefinition (classDefinitions);
     }
 
