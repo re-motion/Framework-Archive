@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -15,42 +16,10 @@ namespace Mixins.CodeGeneration.DynamicProxy
 {
   public class TypeGenerator: ITypeGenerator
   {
-    private static CustomAttributeBuilder CreateAttributeBuilderFromData (CustomAttributeData attributeData)
-    {
-      object[] constructorArgs = new object[attributeData.ConstructorArguments.Count];
-      for (int i = 0; i < constructorArgs.Length; ++i)
-        constructorArgs[i] = attributeData.ConstructorArguments[i].Value;
-
-      List<PropertyInfo> namedProperties = new List<PropertyInfo> ();
-      List<object> propertyValues = new List<object> ();
-      List<FieldInfo> namedFields = new List<FieldInfo> ();
-      List<object> fieldValues = new List<object> ();
-
-      foreach (CustomAttributeNamedArgument namedArgument in attributeData.NamedArguments)
-      {
-        switch (namedArgument.MemberInfo.MemberType)
-        {
-          case MemberTypes.Field:
-            namedFields.Add ((FieldInfo) namedArgument.MemberInfo);
-            fieldValues.Add (namedArgument.TypedValue.Value);
-            break;
-          case MemberTypes.Property:
-            namedProperties.Add ((PropertyInfo) namedArgument.MemberInfo);
-            propertyValues.Add (namedArgument.TypedValue.Value);
-            break;
-          default:
-            Assertion.Assert (false);
-            break;
-        }
-      }
-
-      return new CustomAttributeBuilder (attributeData.Constructor, constructorArgs, namedProperties.ToArray (),
-                                        propertyValues.ToArray (), namedFields.ToArray (), fieldValues.ToArray ());
-    }
-
     private ModuleManager _module;
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
+    private BaseCallProxyGenerator _baseCallGenerator;
 
     private FieldReference _configurationField;
     private FieldReference _extensionsField;
@@ -73,6 +42,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
       AddConfigurationField ();
       AddExtensionsField ();
       ReplicateConstructors ();
+
+      _baseCallGenerator = new BaseCallProxyGenerator (this);
 
       if (isSerializable)
       {
@@ -108,13 +79,24 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return interfaces;
     }
 
-    private TypeBuilder TypeBuilder
+    public TypeBuilder TypeBuilder
     {
       get { return _emitter.TypeBuilder; }
     }
 
+    public ExtendedClassEmitter Emitter
+    {
+      get { return _emitter; }
+    }
+
+    public BaseClassDefinition Configuration
+    {
+      get { return _configuration; }
+    }
+
     public TypeBuilder GetBuiltType()
     {
+      _baseCallGenerator.Finish();
       return TypeBuilder;
     }
 
@@ -309,7 +291,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       foreach (AttributeDefinition attribute in attributes)
       {
-        CustomAttributeBuilder builder = CreateAttributeBuilderFromData (attribute.Data);
+        CustomAttributeBuilder builder = ReflectionEmitUtility.CreateAttributeBuilderFromData (attribute.Data);
         target.AddCustomAttribute (builder);
       }
     }

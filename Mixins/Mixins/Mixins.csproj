@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
     <Compile Include="CodeGeneration\CallContextSingleton.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomEventEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomMethodEmitter.cs" />
@@ -55,9 +56,10 @@
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\VirtualMethodInvocationExpression.cs" />
     <Compile Include="CodeGeneration\ExtensionFieldAttribute.cs" />
-    <Compile Include="CodeGeneration\GeneratedClassInstanceInitializer.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\GeneratedClassInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\IModuleManager.cs" />
     <Compile Include="CodeGeneration\ITypeGenerator.cs" />
+    <Compile Include="CodeGeneration\ReflectionEmitUtility.cs" />
     <Compile Include="CodeGeneration\SerializationHelper.cs" />
     <Compile Include="CodeGeneration\TypeFactory.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />

@@ -7,13 +7,18 @@ namespace Mixins
   {
     public static T GetMixinOf<T> (object mixinTarget) where T : class
     {
+      return (T) GetMixinOf (typeof (T), mixinTarget);
+    }
+
+    public static object GetMixinOf (Type mixinType, object mixinTarget)
+    {
       IMixinTarget castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)
       {
-        MixinDefinition mixinDefinition = castMixinTarget.Configuration.Mixins[typeof (T)];
+        MixinDefinition mixinDefinition = castMixinTarget.Configuration.Mixins[mixinType];
         if (mixinDefinition != null)
         {
-          return (T) castMixinTarget.Mixins[mixinDefinition.MixinIndex];
+          return castMixinTarget.Mixins[mixinDefinition.MixinIndex];
         }
       }
       return null;

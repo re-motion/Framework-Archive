@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Mixins.CodeGeneration;
 using Mixins.Definitions;
@@ -154,10 +155,31 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO")]
+    [Ignore ("Todo: Implement base")]
     public void MixinsAreInitializedWithBase ()
     {
-      Assert.Fail();
+      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin1))));
+      BaseType3 bt3 = factory.Create<BaseType3> ().With ();
+      BT3Mixin1 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin1> (bt3);
+      Assert.IsNotNull (mixin);
+      Assert.AreSame (bt3, mixin.This);
+      Assert.IsNotNull (mixin.Base);
+      Assert.AreNotSame (bt3, mixin.Base);
+    }
+
+    [Test]
+    [Ignore("Todo: Implement base")]
+    public void GenericMixinsAreSpecialized ()
+    {
+      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>))));
+      BaseType3 bt3 = factory.Create<BaseType3> ().With ();
+      object mixin = MixinReflectionHelper.GetMixinOf (typeof (BT3Mixin3<,>), bt3);
+      Assert.IsNotNull (mixin);
+      Assert.IsNotNull (mixin.GetType().GetField ("This").GetValue (mixin));
+      Assert.IsNotNull (mixin.GetType ().GetField ("Base").GetValue (mixin));
+
+      Assert.AreSame (bt3, mixin.GetType ().GetField ("This").GetValue (mixin));
+      Assert.IsAssignableFrom (bt3.GetType().GetNestedType("BaseCallProxy"), mixin.GetType ().GetField ("Base").GetValue (mixin));
     }
 
     [Test]

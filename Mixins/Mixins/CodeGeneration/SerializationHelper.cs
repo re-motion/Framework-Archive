@@ -91,7 +91,7 @@ namespace Mixins.CodeGeneration
 
       if (extensions != null)
       {
-        GeneratedClassInstanceInitializer.InitializeInstanceFields (_deserializedObject, extensions);
+        ConcreteTypeBuilder.Scope.Current.InitializeInstance (_deserializedObject, extensions);
       }
     }
 

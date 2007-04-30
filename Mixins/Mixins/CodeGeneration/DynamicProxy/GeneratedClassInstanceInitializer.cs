@@ -4,19 +4,10 @@ using Mixins.Definitions;
 using Rubicon.Utilities;
 using System.Reflection;
 
-namespace Mixins.CodeGeneration
+namespace Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {
-    public static void InitializeInstanceFields (object instance, object[] extensions)
-    {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      ArgumentUtility.CheckNotNull ("instance", extensions);
-
-      Type type = instance.GetType ();
-      type.GetField ("__extensions").SetValue (instance, extensions);
-    }
-
     public static void InitializeInstanceFields (object instance)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
@@ -35,6 +26,15 @@ namespace Mixins.CodeGeneration
       }
 
       InitializeInstanceFields (instance, extensions);
+    }
+
+    public static void InitializeInstanceFields (object instance, object[] extensions)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("instance", extensions);
+
+      Type type = instance.GetType ();
+      type.GetField ("__extensions").SetValue (instance, extensions);
     }
 
     private static object InstantiateMixin (MixinDefinition mixinDefinition, object mixinTargetInstance)

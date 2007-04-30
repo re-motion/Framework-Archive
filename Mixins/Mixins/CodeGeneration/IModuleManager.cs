@@ -9,5 +9,8 @@ namespace Mixins.CodeGeneration
   {
     ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration);
     string SaveAssembly ();
+
+    void InitializeInstance (object instance);
+    void InitializeInstance (object instance, object[] extensions);
   }
 }

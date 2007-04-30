@@ -12,7 +12,7 @@ namespace Mixins.CodeGeneration
     {
       if (instance is IMixinTarget)
       {
-        GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
+        ConcreteTypeBuilder.Scope.Current.InitializeInstance (instance);
       }
     }
 

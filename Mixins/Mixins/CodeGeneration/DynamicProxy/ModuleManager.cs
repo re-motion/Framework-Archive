@@ -31,5 +31,15 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
       return Path.Combine (Environment.CurrentDirectory, ModuleScope.FILE_NAME);
     }
+
+    public void InitializeInstance (object instance)
+    {
+      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
+    }
+
+    public void InitializeInstance (object instance, object[] extensions)
+    {
+      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions);
+    }
   }
 }
