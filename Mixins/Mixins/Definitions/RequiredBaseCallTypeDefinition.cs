@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
-  public class RequiredFaceTypeDefinition : RequirementDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
+  public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
   {
-    public RequiredFaceTypeDefinition(BaseClassDefinition baseClass, Type type)
+    public RequiredBaseCallTypeDefinition (BaseClassDefinition baseClass, Type type)
         : base(baseClass, type)
     {
     }
