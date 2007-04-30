@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       _rootAssemblies = rootAssemblies;
     }
 
-    protected override ICollection GetDomainObjectClasses()
+    protected override Type[] GetDomainObjectTypes()
     {
       List<Assembly> assemblies = new List<Assembly>();
       foreach (Assembly assembly in _rootAssemblies)
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         }
       }
 
-      return domainObjectClasses;
+      return domainObjectClasses.ToArray();
     }
 
     private List<Assembly> FindAssemblies (Assembly assembly)

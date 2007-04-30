@@ -11,6 +11,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
   [TestFixture]
   public class SerializationTest : SerializationBaseTest
   {
+
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      SetDatabaseModifyable ();
+    }
+    
     [Test]
     public void ObjectsFromPartnerClassDefinition ()
     {
@@ -135,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
+    //[Ignore ("TODO: FS: Proxies are not serializable.")]
     public void EventsAfterDeserializationWithRegisteredEvents ()
     {
       Customer newCustomer1 = Customer.NewObject ();
@@ -398,14 +405,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       new ObjectDeletionState (desNewOrder2, "16: 1. Deleting event of newOrder2"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
       new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", desNewOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", desNewOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", desNewOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", desNewOrder2, null, "16: 4. Changing event of newOrderItem1 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", desNewOrder2, null, "16: 5. Changing event of newOrderTicket1 from newOrder2 to null"),
 
-      new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
-      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
+      new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 6. Removed of newOrder2 from newCustomer2"),
+      new RelationChangeState (desNewCustomer2, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "16: 7. Changed event of newCustomer2 from newOrder2 to null"),
+      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "16: 8. Changed event of newOrderItem1 from newOrder2 to null"),
       new RelationChangeState (desNewOrderTicket1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (desNewOrderItem1, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
-      new ObjectDeletionState (desNewOrder2, "16: 6. Deleted event of newOrder2")
+      new ObjectDeletionState (desNewOrder2, "16: 10. Deleted event of newOrder2")
     };
 
       eventReceiver.Check (expectedChangeStates);

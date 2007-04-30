@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private string GetRelationID()
     {
-      return PropertyInfo.DeclaringType.FullName + "." + PropertyInfo.Name;
+      return ReflectionUtility.GetPropertyName (PropertyInfo);
     }
 
     private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)

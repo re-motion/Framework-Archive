@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    protected abstract ICollection GetDomainObjectClasses();
+    protected abstract Type[] GetDomainObjectTypes();
 
     public ClassDefinitionCollection GetClassDefinitions()
     {
@@ -37,10 +37,21 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private List<ClassReflector> CreateClassReflectors()
     {
       List<ClassReflector> classReflectors = new List<ClassReflector>();
-      foreach (Type domainObjectClass in GetDomainObjectClasses())
+      foreach (Type domainObjectClass in GetDomainObjectTypesSorted ())
         classReflectors.Add (ClassReflector.CreateClassReflector (domainObjectClass));
       
       return classReflectors;
+    }
+
+    private Type[] GetDomainObjectTypesSorted ()
+    {
+      Type[] domainObjectTypes = GetDomainObjectTypes ();
+
+      Array.Sort (
+          domainObjectTypes,
+          delegate (Type left, Type right) { return string.Compare (left.FullName, right.FullName, StringComparison.Ordinal); });
+
+      return domainObjectTypes;
     }
 
     bool IMappingLoader.ResolveTypes

@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
       List<RelationDefinition> relations = new List<RelationDefinition>();
-      foreach (PropertyInfo propertyInfo in GetPropertyInfos ())
+      foreach (PropertyInfo propertyInfo in GetPropertyInfos())
       {
         if (IsRelationEndPoint (propertyInfo))
         {
@@ -158,18 +158,31 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return Attribute.IsDefined (Type, typeof (StorageGroupAttribute), false);
     }
 
-    private MemberInfo[] GetPropertyInfos()
+    private PropertyInfo[] GetPropertyInfos()
     {
-      List<MemberInfo> propertyInfos = new List<MemberInfo>();
-      propertyInfos.AddRange (GetPropertyInfos (Type));
+      List<PropertyInfo> propertyInfos = new List<PropertyInfo>();
+      propertyInfos.AddRange (GetPropertyInfosSorted (Type));
 
       if (IsInheritenceRoot())
       {
         for (Type type = Type.BaseType; type != typeof (DomainObject); type = type.BaseType)
-          propertyInfos.AddRange (GetPropertyInfos (type));
+          propertyInfos.AddRange (GetPropertyInfosSorted (type));
       }
 
       return propertyInfos.ToArray();
+    }
+
+    private IList<PropertyInfo> GetPropertyInfosSorted (Type type)
+    {
+      PropertyInfo[] propertyInfos = Array.ConvertAll<MemberInfo, PropertyInfo> (
+          GetPropertyInfos (type),
+          delegate (MemberInfo input) { return (PropertyInfo) input; });
+      
+      Array.Sort (
+          propertyInfos,
+          delegate (PropertyInfo left, PropertyInfo right) { return string.Compare (ReflectionUtility.GetPropertyName (left), ReflectionUtility.GetPropertyName (right), StringComparison.Ordinal); });
+
+      return propertyInfos;
     }
 
     private MemberInfo[] GetPropertyInfos (Type type)

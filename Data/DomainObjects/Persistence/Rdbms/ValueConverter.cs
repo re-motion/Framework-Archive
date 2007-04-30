@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     private ObjectID GetObjectID (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, string columnName)
     {
-      return GetObjectID (classDefinition, propertyDefinition, dataReader, dataReader.GetOrdinal (columnName));
+      return GetObjectID (classDefinition, propertyDefinition, dataReader, GetMandatoryOrdinal (dataReader, columnName));
     }
 
     private ObjectID GetObjectID (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)

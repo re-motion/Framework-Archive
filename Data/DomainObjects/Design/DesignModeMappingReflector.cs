@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -23,9 +24,14 @@ namespace Rubicon.Data.DomainObjects.Design
       Assertion.Assert (_typeDiscoveryService != null, "Look-up of 'ITypeDiscoveryService' via site.GetService(...) failed.");
     }
 
-    protected override ICollection GetDomainObjectClasses()
+    protected override Type[] GetDomainObjectTypes()
     {
-      return _typeDiscoveryService.GetTypes (typeof (DomainObject), false);
+      List<Type> domainObjectsTypes = new List<Type>();
+      foreach (Type domainObjectType in _typeDiscoveryService.GetTypes (typeof (DomainObject), false))
+        domainObjectsTypes.Add (domainObjectType);
+
+      return domainObjectsTypes.ToArray();
+
     }
   }
 }
