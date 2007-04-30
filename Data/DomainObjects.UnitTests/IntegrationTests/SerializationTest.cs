@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
 
     [Test]
-    //[Ignore ("TODO: FS: Proxies are not serializable.")]
+    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void EventsAfterDeserializationWithRegisteredEvents ()
     {
       Customer newCustomer1 = Customer.NewObject ();
