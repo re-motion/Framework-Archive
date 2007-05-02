@@ -37,7 +37,7 @@ namespace Mixins.Definitions.Building
       attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (classDefinition.Type));
 
       ApplyMixins(classDefinition, classContext);
-
+      ApplyBaseCallMethodRequirements (classDefinition);
     }
 
     private static bool IsVisibleToInheritors (MethodInfo method)
@@ -57,6 +57,13 @@ namespace Mixins.Definitions.Building
         MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
         mixin.MixinIndex = i;
       }
+    }
+
+    private void ApplyBaseCallMethodRequirements (BaseClassDefinition classDefinition)
+    {
+      RequiredBaseCallMethodDefinitionBuilder builder = new RequiredBaseCallMethodDefinitionBuilder (classDefinition);
+      foreach (RequiredBaseCallTypeDefinition requirement in classDefinition.RequiredBaseCallTypes)
+        builder.Apply (requirement);
     }
   }
 }

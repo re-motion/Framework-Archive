@@ -23,12 +23,14 @@ namespace Mixins.Validation.Rules
 
     protected override void DependencyMustBeSatisfied (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      DependencyMustBeSatisfiedImpl (args);
+      // DependencyMustBeSatisfiedImpl (args);
+      // Now throws a ConfigurationException if violated
     }
 
     protected override void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      AggregateDependencyMustBeFullyImplementedImpl (args);
+      // AggregateDependencyMustBeFullyImplementedImpl (args);
+      // Now throws a ConfigurationException if violated
     }
   }
 }

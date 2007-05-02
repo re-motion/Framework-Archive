@@ -232,16 +232,28 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Implement base")]
-    public void CompleteInterface()
+    [Ignore("TODO: Base parameter types")]
+    public void CompleteFaceInterface()
     {
-      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7), typeof (BT3Mixin4)));
+      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Face), typeof (BT3Mixin4)));
       ObjectFactory = new ObjectFactory (TypeFactory);
 
       ICBaseType3BT3Mixin4 complete = ObjectFactory.Create<BaseType3> ().With() as ICBaseType3BT3Mixin4;
       Assert.IsNotNull (complete);
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType35) complete).IfcMethod ());
+      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", MixinReflectionHelper.GetMixinOf<BT3Mixin7Face> (complete).InvokeThisMethods());
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement overrides")]
+    public void OverrideWithCompleteBaseInterface ()
+    {
+      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)));
+      ObjectFactory = new ObjectFactory (TypeFactory);
+
+      BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
+      Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod", bt3.IfcMethod());
     }
   }
 }

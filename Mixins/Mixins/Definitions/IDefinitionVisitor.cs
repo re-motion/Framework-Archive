@@ -18,6 +18,7 @@ namespace Mixins.Definitions
     void Visit (EventDefinition eventDefintion);
     void Visit (RequiredFaceTypeDefinition requiredFaceType);
     void Visit (RequiredBaseCallTypeDefinition requiredBaseCallType);
+    void Visit (RequiredBaseCallMethodDefinition requiredBaseCallMethod);
     void Visit (ThisDependencyDefinition thisDependency);
     void Visit (BaseDependencyDefinition baseDependency);
     void Visit (AttributeDefinition attribute);

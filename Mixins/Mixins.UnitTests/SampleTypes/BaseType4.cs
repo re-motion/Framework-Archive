@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
+  public interface IBaseType4 {}
+
   // no attributes
-  public class BaseType4
+  public class BaseType4 : IBaseType4
   {
     public string NonVirtualMethod ()
     {

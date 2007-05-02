@@ -75,6 +75,7 @@
     <Compile Include="Definitions\Building\InterfaceIntroductionBuilder.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\OverridesAnalyzer.cs" />
+    <Compile Include="Definitions\Building\RequiredBaseCallMethodDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
     <Compile Include="Definitions\Building\SpecialMethodSet.cs" />
     <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
+    <Compile Include="Definitions\RequiredBaseCallMethodDefinition.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
     <Compile Include="Definitions\Set.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />

@@ -6,14 +6,15 @@ namespace Mixins.UnitTests.SampleTypes
 {
   public interface IBT3Mixin4
   {
-    void Foo ();
+    string Foo ();
   }
 
   [MixinFor (typeof (BaseType3))]
   public class BT3Mixin4 : BT3Mixin3<BaseType3, IBaseType34>, IBT3Mixin4
   {
-    public void Foo ()
+    public string Foo ()
     {
+      return "BT3Mixin4.Foo";
     }
   }
 }

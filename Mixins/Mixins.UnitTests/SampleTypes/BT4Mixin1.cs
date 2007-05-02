@@ -5,18 +5,18 @@ using System.Text;
 namespace Mixins.UnitTests.SampleTypes
 {
   // no attributes
-  public class BT4Mixin1 : Mixin<BaseType4, BaseType4>
+  public class BT4Mixin1 : Mixin<BaseType4, IBaseType4>
   {
     [Override]
     public string NonVirtualMethod ()
     {
-      return Base.NonVirtualMethod () + "Overridden";
+      return This.NonVirtualMethod () + "Overridden";
     }
 
     [Override]
     public string NonVirtualProperty
     {
-      get { return Base.NonVirtualProperty + "Overridden"; }
+      get { return This.NonVirtualProperty + "Overridden"; }
     }
 
     [Override]

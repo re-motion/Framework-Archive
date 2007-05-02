@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassThisDependency.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\InternalNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\DoubleImplementer.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinAddingAllowMultipleToClassAndMember.cs" />
@@ -52,8 +53,9 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1AttributeToMember.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinImplementingIMixinTarget.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSetterOnly.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassBase.cs" />
+    <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnsatisfiedThisDependency.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MultiAttribute.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
@@ -81,17 +83,19 @@
     <Compile Include="SampleTypes\BT3Mixin5.cs" />
     <Compile Include="SampleTypes\BaseType4.cs" />
     <Compile Include="SampleTypes\BT3Mixin6.cs" />
+    <Compile Include="SampleTypes\BT3Mixin7Face.cs" />
     <Compile Include="SampleTypes\BT4Mixin1.cs" />
     <Compile Include="SampleTypes\BaseType5.cs" />
     <Compile Include="SampleTypes\BT5Mixin1.cs" />
     <Compile Include="SampleTypes\BT5Mixin2.cs" />
     <Compile Include="SampleTypes\BT5Mixin3.cs" />
     <Compile Include="SampleTypes\BT5MixinCircular.cs" />
-    <Compile Include="SampleTypes\BT3Mixin7.cs" />
+    <Compile Include="SampleTypes\BT3CompleteIfaces.cs" />
     <Compile Include="Configuration\SignatureCheckerTests.cs" />
     <Compile Include="Configuration\ValidationTests.cs" />
     <Compile Include="SampleTypes\BT5Mixin4.cs" />
     <Compile Include="SampleTypes\BT5Mixin5.cs" />
+    <Compile Include="SampleTypes\BT3Mixin7Base.cs" />
     <Compile Include="SampleTypes\NullMixin.cs" />
   </ItemGroup>
   <ItemGroup>

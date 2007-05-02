@@ -25,6 +25,7 @@ namespace Mixins.Validation
     private List<IValidationRule<ThisDependencyDefinition>> _thisDependencyRules = new List<IValidationRule<ThisDependencyDefinition>> ();
     private List<IValidationRule<BaseDependencyDefinition>> _baseDependencyRules = new List<IValidationRule<BaseDependencyDefinition>> ();
     private List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>>();
+    private List<IValidationRule<RequiredBaseCallMethodDefinition>> _requiredBaseCallMethodRules = new List<IValidationRule<RequiredBaseCallMethodDefinition>> ();
 
     public ValidatingVisitor(IValidationLog validationLog)
     {
@@ -90,6 +91,11 @@ namespace Mixins.Validation
     public IList<IValidationRule<RequiredBaseCallTypeDefinition>> RequiredBaseCallTypeRules
     {
       get { return _requiredBaseCallTypeRules; }
+    }
+
+    public IList<IValidationRule<RequiredBaseCallMethodDefinition>> RequiredBaseCallMethodRules
+    {
+      get { return _requiredBaseCallMethodRules; }
     }
 
     public IList<IValidationRule<ThisDependencyDefinition>> ThisDependencyRules
@@ -177,6 +183,12 @@ namespace Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("requiredBaseCallType", requiredBaseCallType);
       CheckRules (_requiredBaseCallTypeRules, requiredBaseCallType);
+    }
+
+    public void Visit (RequiredBaseCallMethodDefinition requiredBaseCallMethod)
+    {
+      ArgumentUtility.CheckNotNull ("requiredBaseCallMethod", requiredBaseCallMethod);
+      CheckRules (_requiredBaseCallMethodRules, requiredBaseCallMethod);
     }
 
     public void Visit (ThisDependencyDefinition dependency)
