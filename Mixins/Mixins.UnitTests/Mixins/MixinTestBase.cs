@@ -63,6 +63,26 @@ namespace Mixins.UnitTests.Mixins
       }
     }
 
+    public ObjectFactory NewObjectFactory(ApplicationDefinition configuration)
+    {
+      return new ObjectFactory (NewTypeFactory (configuration));
+    }
+
+    public TypeFactory NewTypeFactory (ApplicationDefinition configuration)
+    {
+      return new TypeFactory (configuration);
+    }
+
+    public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
+    {
+      return NewTypeFactory (DefBuilder.Build (targetType, mixinTypes)).GetConcreteType (targetType);
+    }
+
+    public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
+    {
+      return NewObjectFactory (DefBuilder.Build (typeof (T), mixinTypes)).Create<T>();
+    }
+
     private void VerifyPEFile (string assemblyPath)
     {
       Process process = new Process ();

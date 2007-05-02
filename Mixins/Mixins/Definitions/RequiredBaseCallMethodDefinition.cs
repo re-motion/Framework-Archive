@@ -28,12 +28,12 @@ namespace Mixins.Definitions
       get { return _declaringType; }
     }
 
-    public MemberInfo InterfaceMethod
+    public MethodInfo InterfaceMethod
     {
       get { return _interfaceMethod; }
     }
 
-    public MemberDefinition ImplementingMethod
+    public MethodDefinition ImplementingMethod
     {
       get { return _implementingMethod; }
     }

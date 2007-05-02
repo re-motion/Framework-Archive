@@ -9,7 +9,7 @@ namespace Mixins.Definitions
   [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
   {
-    public readonly DefinitionItemCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMembers =
+    public readonly DefinitionItemCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMethods =
         new DefinitionItemCollection<MemberInfo, RequiredBaseCallMethodDefinition> (delegate (RequiredBaseCallMethodDefinition m)
         { return m.InterfaceMethod; });
 
@@ -22,7 +22,7 @@ namespace Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
-      BaseCallMembers.Accept (visitor);
+      BaseCallMethods.Accept (visitor);
     }
   }
 }

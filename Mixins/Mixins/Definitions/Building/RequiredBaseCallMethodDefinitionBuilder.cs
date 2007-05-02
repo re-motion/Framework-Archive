@@ -48,7 +48,7 @@ namespace Mixins.Definitions.Building
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];
         MethodDefinition implementingMethod = _classDefinition.Methods[interfaceMapping.TargetMethods[i]];
-        declaringRequirement.BaseCallMembers.Add (new RequiredBaseCallMethodDefinition (declaringRequirement, interfaceMethod, implementingMethod));
+        declaringRequirement.BaseCallMethods.Add (new RequiredBaseCallMethodDefinition (declaringRequirement, interfaceMethod, implementingMethod));
       }
     }
 
@@ -59,7 +59,7 @@ namespace Mixins.Definitions.Building
       {
         MethodInfo interfaceMethod = methodIntroduction.InterfaceMember;
         MethodDefinition implementingMethod = methodIntroduction.ImplementingMember;
-        declaringRequirement.BaseCallMembers.Add (new RequiredBaseCallMethodDefinition(declaringRequirement, interfaceMethod, implementingMethod));
+        declaringRequirement.BaseCallMethods.Add (new RequiredBaseCallMethodDefinition(declaringRequirement, interfaceMethod, implementingMethod));
       }
     }
   }

@@ -53,6 +53,10 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinAddingBT1AttributeToMember.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinImplementingIMixinTarget.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSetterOnly.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithDuplicateIntialiationMethod.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithGenericIntialiationMethod.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\MixinWithThisAsBase.cs" />
+    <Compile Include="Mixins\ReflectionUtilityTests.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnsatisfiedThisDependency.cs" />

@@ -60,7 +60,8 @@
     <Compile Include="CodeGeneration\IModuleManager.cs" />
     <Compile Include="CodeGeneration\ITypeGenerator.cs" />
     <Compile Include="CodeGeneration\ReflectionEmitUtility.cs" />
-    <Compile Include="CodeGeneration\SerializationHelper.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
+    <Compile Include="CodeGeneration\ReflectionUtility.cs" />
     <Compile Include="CodeGeneration\TypeFactory.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />

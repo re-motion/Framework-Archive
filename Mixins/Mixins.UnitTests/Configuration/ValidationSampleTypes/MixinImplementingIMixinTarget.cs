@@ -7,12 +7,17 @@ namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
   {
     public BaseClassDefinition Configuration
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new NotImplementedException (); }
     }
 
     public object[] Mixins
     {
-      get { throw new Exception ("The method or operation is not implemented."); }
+      get { throw new NotImplementedException (); }
+    }
+
+    public object FirstBaseCallProxy
+    {
+      get { throw new NotImplementedException(); }
     }
   }
 }

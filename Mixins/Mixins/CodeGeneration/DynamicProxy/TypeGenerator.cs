@@ -23,6 +23,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private FieldReference _configurationField;
     private FieldReference _extensionsField;
+    private FieldReference _firstField;
 
     public TypeGenerator (ModuleManager module, BaseClassDefinition configuration)
     {
@@ -37,13 +38,15 @@ namespace Mixins.CodeGeneration.DynamicProxy
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
 
       List<Type> interfaces = GetInterfacesToImplement(isSerializable);
-      _emitter = new ExtendedClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray (), isSerializable);
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), isSerializable);
+      _emitter = new ExtendedClassEmitter (classEmitter);
+      _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter);
 
-      AddConfigurationField ();
-      AddExtensionsField ();
+      _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));
+      _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
+      _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
+
       ReplicateConstructors ();
-
-      _baseCallGenerator = new BaseCallProxyGenerator (this);
 
       if (isSerializable)
       {
@@ -105,16 +108,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
     }
 
-    private void AddConfigurationField()
-    {
-      _configurationField = _emitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));
-    }
-
-    private void AddExtensionsField()
-    {
-      _extensionsField = _emitter.CreateField ("__extensions", typeof (object[]), true);
-    }
-
     private void ImplementGetObjectData()
     {
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (ISerializable)) != 0);
@@ -134,6 +127,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
                   new ReferenceExpression (SelfReference.Self),
                   new ReferenceExpression (_configurationField),
                   new ReferenceExpression (_extensionsField),
+                  new ReferenceExpression (_firstField),
                   new ReferenceExpression (new ConstReference (!baseIsISerializable)))));
 
       if (baseIsISerializable)
@@ -186,7 +180,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ReplicateConstructor (ConstructorInfo constructor)
     {
       ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters());
-      ConstructorEmitter newConstructor = _emitter.CreateConstructor (arguments);
+      ConstructorEmitter newConstructor = _emitter.InnerEmitter.CreateConstructor (arguments);
 
       Expression[] argumentExpressions = ArgumentsUtil.ConvertArgumentReferenceToExpression (arguments);
       newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
@@ -212,6 +206,13 @@ namespace Mixins.CodeGeneration.DynamicProxy
           _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
       _emitter.ImplementPropertyWithField (mixinsProperty, _extensionsField);
       mixinsProperty.Generate();
+
+      CustomPropertyEmitter firstProperty =
+          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
+      firstProperty.GetMethod =
+          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
+      _emitter.ImplementPropertyWithField (firstProperty, _firstField);
+      firstProperty.Generate ();
     }
 
     private void ImplementIntroducedInterfaces()

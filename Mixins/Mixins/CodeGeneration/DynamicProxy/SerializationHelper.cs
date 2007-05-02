@@ -6,15 +6,15 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Mixins.Definitions;
 using Rubicon.Utilities;
 
-namespace Mixins.CodeGeneration
+namespace Mixins.CodeGeneration.DynamicProxy
 {
   [Serializable]
   public class SerializationHelper : IObjectReference, ISerializable
   {
-    private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter s_formatter = new BinaryFormatter (); // hack: this is used to circumvent serialization bug
+    private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter s_formatter = new BinaryFormatter (); // HACK: this is used to circumvent serialization bug
 
     public static void GetObjectDataForGeneratedTypes (SerializationInfo info, StreamingContext context, object concreteObject,
-        BaseClassDefinition configuration, object[] extensions, bool serializeBaseMembers)
+        BaseClassDefinition configuration, object[] extensions, object first, bool serializeBaseMembers)
     {
       info.SetType (typeof (SerializationHelper));
 
@@ -27,6 +27,7 @@ namespace Mixins.CodeGeneration
       }
 
       SerializeArray(extensions, "__extension", info);
+      info.AddValue ("__first", first);
 
       object[] baseMemberValues;
       if (serializeBaseMembers)
@@ -75,6 +76,7 @@ namespace Mixins.CodeGeneration
       Type concreteType = ConcreteTypeBuilder.Instance.Current.GetConcreteType (configuration);
 
       object[] extensions = DeserializeArray<object> ("__extension", info);
+      object first = info.GetValue ("__first", typeof (object));
       object[] baseMemberValues = DeserializeArray<object> ("__baseMemberValue", info);
 
       if (baseMemberValues != null)
@@ -91,7 +93,7 @@ namespace Mixins.CodeGeneration
 
       if (extensions != null)
       {
-        ConcreteTypeBuilder.Scope.Current.InitializeInstance (_deserializedObject, extensions);
+        ConcreteTypeBuilder.Scope.Current.InitializeInstance (_deserializedObject, extensions, first);
       }
     }
 

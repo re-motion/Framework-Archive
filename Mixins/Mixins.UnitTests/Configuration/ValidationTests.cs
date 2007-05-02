@@ -193,7 +193,7 @@ namespace Mixins.UnitTests.Configuration
 
       RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
-      RequiredBaseCallMethodDefinition bcm1 = bc1.BaseCallMembers[typeof (IBaseType34).GetMethod ("IfcMethod")];
+      RequiredBaseCallMethodDefinition bcm1 = bc1.BaseCallMethods[typeof (IBaseType34).GetMethod ("IfcMethod")];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bcm1));
 
       RequiredFaceTypeDefinition ft1 = bt3.RequiredFaceTypes[typeof(IBaseType32)];
@@ -397,7 +397,25 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithUnidentifiedInitializationArgument));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodCanOnlyHaveThisBaseAndNulLArguments", log));
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodCanOnlyHaveThisAndBaseArguments", log));
+    }
+
+    [Test]
+    public void FailsIfGenericInitializationMethod ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithGenericIntialiationMethod));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodMustNotBeGeneric", log));
+    }
+
+    [Test]
+    public void FailsIfNonUniqueInitializationMethodNames ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithDuplicateIntialiationMethod));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodMustHaveUniqueName", log));
     }
 
     [Test]

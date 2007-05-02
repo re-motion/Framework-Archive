@@ -37,9 +37,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
     }
 
-    public void InitializeInstance (object instance, object[] extensions)
+    public void InitializeInstance (object instance, object[] extensions, object baseCallProxy)
     {
-      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions);
+      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions, baseCallProxy);
     }
   }
 }

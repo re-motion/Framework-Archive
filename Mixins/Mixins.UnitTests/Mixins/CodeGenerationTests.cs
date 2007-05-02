@@ -147,19 +147,17 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void MixinsAreInitializedWithTarget ()
     {
-      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));
-      BaseType3 bt3 = factory.Create<BaseType3>().With();
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With ();
       BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
     }
 
     [Test]
-    [Ignore ("Todo: Implement base")]
+    [Ignore ("TODO: Implement base")]
     public void MixinsAreInitializedWithBase ()
     {
-      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin1))));
-      BaseType3 bt3 = factory.Create<BaseType3> ().With ();
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin1)).With ();
       BT3Mixin1 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin1> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
@@ -171,8 +169,7 @@ namespace Mixins.UnitTests.Mixins
     [Ignore("Todo: Implement base")]
     public void GenericMixinsAreSpecialized ()
     {
-      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>))));
-      BaseType3 bt3 = factory.Create<BaseType3> ().With ();
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();
       object mixin = MixinReflectionHelper.GetMixinOf (typeof (BT3Mixin3<,>), bt3);
       Assert.IsNotNull (mixin);
       Assert.IsNotNull (mixin.GetType().GetField ("This").GetValue (mixin));
@@ -194,10 +191,8 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void PropertiesEventsAndAttributesAreReplicated()
     {
-      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType1), typeof (MixinWithPropsEventAtts)));
-      ObjectFactory = new ObjectFactory (TypeFactory);
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithPropsEventAtts)).With ();
 
-      BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
       Assert.IsTrue (bt1.GetType ().IsDefined (typeof (BT1Attribute), false));
       Assert.IsTrue (bt1.GetType ().IsDefined (typeof (ReplicatableAttribute), false));
 
@@ -235,10 +230,8 @@ namespace Mixins.UnitTests.Mixins
     [Ignore("TODO: Base parameter types")]
     public void CompleteFaceInterface()
     {
-      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Face), typeof (BT3Mixin4)));
-      ObjectFactory = new ObjectFactory (TypeFactory);
+      ICBaseType3BT3Mixin4 complete = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).With () as ICBaseType3BT3Mixin4;
 
-      ICBaseType3BT3Mixin4 complete = ObjectFactory.Create<BaseType3> ().With() as ICBaseType3BT3Mixin4;
       Assert.IsNotNull (complete);
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType35) complete).IfcMethod ());
@@ -249,10 +242,8 @@ namespace Mixins.UnitTests.Mixins
     [Ignore ("TODO: Implement overrides")]
     public void OverrideWithCompleteBaseInterface ()
     {
-      TypeFactory = new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)));
-      ObjectFactory = new ObjectFactory (TypeFactory);
 
-      BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
+      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).With();
       Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod", bt3.IfcMethod());
     }
   }

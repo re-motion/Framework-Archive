@@ -10,16 +10,28 @@ using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
-  public class ExtendedClassEmitter : ClassEmitter, IAttributableEmitter
+  public class ExtendedClassEmitter : IAttributableEmitter
   {
-    public ExtendedClassEmitter (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, bool serializable)
-        : base (modulescope, name, baseType, interfaces, serializable)
+    private AbstractTypeEmitter _innerEmitter;
+
+    public ExtendedClassEmitter (AbstractTypeEmitter innerEmitter)
     {
+      _innerEmitter = innerEmitter;
+    }
+
+    public AbstractTypeEmitter InnerEmitter
+    {
+      get { return _innerEmitter; }
     }
 
     public Type BaseType
     {
       get { return TypeBuilder.BaseType; }
+    }
+
+    public TypeBuilder TypeBuilder
+    {
+      get { return InnerEmitter.TypeBuilder; }
     }
 
     public CustomMethodEmitter CreateInterfaceImplementationMethod (MethodInfo interfaceMethod)
@@ -31,8 +43,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
         methodDefinitionAttributes |= MethodAttributes.SpecialName;
       }
       string methodName = string.Format ("{0}.{1}", interfaceMethod.DeclaringType.FullName, interfaceMethod.Name);
-      CustomMethodEmitter methodDefinition = new CustomMethodEmitter (this, methodName, methodDefinitionAttributes);
-      methodDefinition.CopyParametersAndReturnTypeFrom (interfaceMethod, this);
+      CustomMethodEmitter methodDefinition = new CustomMethodEmitter (InnerEmitter, methodName, methodDefinitionAttributes);
+      methodDefinition.CopyParametersAndReturnTypeFrom (interfaceMethod, InnerEmitter);
 
       TypeBuilder.DefineMethodOverride (methodDefinition.MethodBuilder, interfaceMethod);
 
@@ -46,7 +58,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (interfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
 
-      CustomPropertyEmitter newProperty = new CustomPropertyEmitter (this, propertyName, PropertyAttributes.None, interfaceProperty.PropertyType,
+      CustomPropertyEmitter newProperty = new CustomPropertyEmitter (InnerEmitter, propertyName, PropertyAttributes.None, interfaceProperty.PropertyType,
         indexParameterTypes);
 
       return newProperty;
@@ -55,7 +67,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public CustomEventEmitter CreateInterfaceImplementationEvent (EventInfo interfaceEvent)
     {
       string eventName = string.Format ("{0}.{1}", interfaceEvent.DeclaringType.FullName, interfaceEvent.Name);
-      CustomEventEmitter newEvent = new CustomEventEmitter (this, eventName, EventAttributes.None, interfaceEvent.EventHandlerType);
+      CustomEventEmitter newEvent = new CustomEventEmitter (InnerEmitter, eventName, EventAttributes.None, interfaceEvent.EventHandlerType);
       return newEvent;
     }
 
@@ -112,7 +124,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      base.TypeBuilder.SetCustomAttribute (customAttribute);
+      TypeBuilder.SetCustomAttribute (customAttribute);
     }
   }
 }

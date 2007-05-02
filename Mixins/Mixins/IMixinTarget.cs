@@ -8,7 +8,7 @@ namespace Mixins
   public interface IMixinTarget
   {
     BaseClassDefinition Configuration { get; }
-
     object[] Mixins { get; }
+    object FirstBaseCallProxy { get; }
   }
 }

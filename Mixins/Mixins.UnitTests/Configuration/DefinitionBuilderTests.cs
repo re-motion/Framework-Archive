@@ -591,9 +591,9 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType3)];
 
       RequiredBaseCallTypeDefinition req1 = baseClass.RequiredBaseCallTypes[typeof (IBaseType31)];
-      Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.BaseCallMembers.Count);
+      Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.BaseCallMethods.Count);
       
-      RequiredBaseCallMethodDefinition member1 = req1.BaseCallMembers[typeof (IBaseType31).GetMethod ("IfcMethod")];
+      RequiredBaseCallMethodDefinition member1 = req1.BaseCallMethods[typeof (IBaseType31).GetMethod ("IfcMethod")];
       Assert.AreEqual ("Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
       Assert.AreSame (req1, member1.DeclaringType);
       Assert.AreSame (req1, member1.Parent);
@@ -602,9 +602,9 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreEqual (baseClass.Methods[typeof (BaseType3).GetMethod("IfcMethod")], member1.ImplementingMethod);
 
       RequiredBaseCallTypeDefinition req2 = baseClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
-      Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.BaseCallMembers.Count);
+      Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.BaseCallMethods.Count);
 
-      RequiredBaseCallMethodDefinition member2 = req2.BaseCallMembers[typeof (IBT3Mixin4).GetMethod ("Foo")];
+      RequiredBaseCallMethodDefinition member2 = req2.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
       Assert.AreEqual ("Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
       Assert.AreSame (req2, member2.DeclaringType);
       Assert.AreSame (req2, member2.Parent);
@@ -616,9 +616,9 @@ namespace Mixins.UnitTests.Configuration
       baseClass = application.BaseClasses[typeof (BaseType3)];
 
       RequiredBaseCallTypeDefinition req3 = baseClass.RequiredBaseCallTypes[typeof (ICBaseType3BT3Mixin4)];
-      Assert.AreNotEqual (0, req3.BaseCallMembers.Count);
+      Assert.AreNotEqual (0, req3.BaseCallMethods.Count);
 
-      RequiredBaseCallMethodDefinition member3 = req3.BaseCallMembers[typeof (IBT3Mixin4).GetMethod ("Foo")];
+      RequiredBaseCallMethodDefinition member3 = req3.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
       Assert.IsNotNull (member3);
       Assert.AreEqual (baseClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member3.ImplementingMethod);
     }
