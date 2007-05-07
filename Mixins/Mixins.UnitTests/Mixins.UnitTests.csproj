@@ -56,6 +56,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithDuplicateIntialiationMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithGenericIntialiationMethod.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithThisAsBase.cs" />
+    <Compile Include="Mixins\CustomConfigurationTests.cs" />
     <Compile Include="Mixins\ReflectionUtilityTests.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />

@@ -140,5 +140,43 @@ namespace Mixins.CodeGeneration.DynamicProxy
       else
         throw new NotSupportedException ("Initialization methods can only contain this or base arguments.");
     }
+
+    public static void InitializeInstanceFieldsWithMixins (object instance, object[] mixinInstances)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      IMixinTarget mixinTarget = instance as IMixinTarget;
+      if (mixinTarget == null)
+      {
+        throw new ArgumentException ("Object is not a mixin target.", "instance");
+      }
+
+      Type baseCallProxyType = instance.GetType ().GetNestedType ("BaseCallProxy");
+
+      BaseClassDefinition configuration = ((IMixinTarget) instance).Configuration;
+      object[] extensions = new object[configuration.Mixins.Count];
+
+      foreach (object mixinInstance in mixinInstances)
+      {
+        MixinDefinition mixinDefinition = configuration.Mixins[mixinInstance.GetType()];
+        if (mixinDefinition == null)
+        {
+          string message = string.Format ("The supplied mixin of type {0} is not valid in the current configuration.", mixinInstance.GetType());
+          throw new ArgumentException (message, "mixinInstances");
+        }
+        else
+        {
+          extensions[mixinDefinition.MixinIndex] = mixinInstance;
+        }
+      }
+
+      foreach (MixinDefinition mixinDefinition in configuration.Mixins)
+      {
+        if (extensions[mixinDefinition.MixinIndex] == null)
+          extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition, instance, baseCallProxyType);
+      }
+
+      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, configuration.Mixins.Count);
+        InitializeInstanceFields (instance, extensions, firstBaseCallProxy);
+    }
   }
 }

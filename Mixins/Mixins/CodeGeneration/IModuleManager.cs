@@ -12,5 +12,7 @@ namespace Mixins.CodeGeneration
 
     void InitializeInstance (object instance);
     void InitializeInstance (object instance, object[] extensions, object firstBaseCallProxy);
+
+    void InitializeInstanceWithMixins (object instance, object[] mixinInstances);
   }
 }

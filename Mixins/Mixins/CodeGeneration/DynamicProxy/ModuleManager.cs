@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Castle.DynamicProxy;
 using Mixins.Definitions;
 using System.IO;
@@ -40,6 +41,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public void InitializeInstance (object instance, object[] extensions, object baseCallProxy)
     {
       GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions, baseCallProxy);
+    }
+
+    public void InitializeInstanceWithMixins (object instance, object[] mixinInstances)
+    {
+      GeneratedClassInstanceInitializer.InitializeInstanceFieldsWithMixins (instance, mixinInstances);
     }
   }
 }

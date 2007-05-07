@@ -17,35 +17,49 @@ namespace Mixins.CodeGeneration
       }
     }
 
-    public static readonly TypeFactory DefaultInstance = new TypeFactory (new ApplicationDefinition());
+    public static readonly TypeFactory DefaultInstance = new TypeFactory ();
 
     public static void InitializeMixedInstance (object instance)
     {
       if (instance is IMixinTarget)
-      {
         ConcreteTypeBuilder.Current.Scope.InitializeInstance (instance);
-      }
+      else
+        throw new ArgumentException ("The given instance does not implement IMixinTarget.", "instance");
+    }
+
+    public static void InitializeMixedInstanceWithMixins (object instance, object[] mixinInstances)
+    {
+      if (instance is IMixinTarget)
+        ConcreteTypeBuilder.Current.Scope.InitializeInstanceWithMixins (instance, mixinInstances);
+      else
+        throw new ArgumentException ("The given instance does not implement IMixinTarget.", "instance");
     }
 
     public readonly ApplicationDefinition Configuration;
 
-    public TypeFactory(ApplicationDefinition configuration)
+    // just for the default instance
+    private TypeFactory()
+    {
+      Configuration = new ApplicationDefinition();
+    }
+
+    public TypeFactory (ApplicationDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
       Configuration = configuration;
 
-      Assertion.Assert (ValidateConfiguration (), "The configuration cannot be validated.");
+      Assertion.Assert (ValidateConfiguration(), "The configuration cannot be validated.");
     }
 
-    private bool ValidateConfiguration ()
+    private bool ValidateConfiguration()
     {
       DefaultValidationLog log = Validator.Validate (Configuration);
-      if (log.GetNumberOfFailureResults () != 0)
+      if (log.GetNumberOfFailureResults() != 0)
       {
         ConsoleDumper.DumpLog (log);
         return false;
       }
-      else if (log.GetNumberOfWarningResults () != 0)
+      else if (log.GetNumberOfWarningResults() != 0)
       {
         ConsoleDumper.DumpLog (log);
         return true;

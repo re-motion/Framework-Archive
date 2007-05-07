@@ -3,7 +3,7 @@ using Mixins.Definitions;
 
 namespace Mixins.CodeGeneration
 {
-  public struct CurrentTypeFactoryScope : IDisposable
+  public struct CurrentTypeFactoryScope: IDisposable
   {
     private bool _disposed;
     private TypeFactory _oldValue;
@@ -11,7 +11,10 @@ namespace Mixins.CodeGeneration
     public CurrentTypeFactoryScope (TypeFactory newValue)
     {
       _disposed = false;
-      _oldValue = TypeFactory.Current;
+      if (TypeFactory.HasCurrent)
+        _oldValue = TypeFactory.Current;
+      else
+        _oldValue = null;
       TypeFactory.SetCurrent (newValue);
     }
 

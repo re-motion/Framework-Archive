@@ -34,6 +34,11 @@ namespace Mixins.Definitions
       return GetEnumerator ();
     }
 
+    public TValue[] ToArray ()
+    {
+      return _orderedItems.ToArray();
+    }
+
     public int Count
     {
       get { return _orderedItems.Count; }
