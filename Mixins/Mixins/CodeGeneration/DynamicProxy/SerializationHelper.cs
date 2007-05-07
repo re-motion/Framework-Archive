@@ -73,7 +73,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
         configuration = (BaseClassDefinition) s_formatter.Deserialize (stream);
       }
 
-      Type concreteType = ConcreteTypeBuilder.Instance.Current.GetConcreteType (configuration);
+      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (configuration);
 
       object[] extensions = DeserializeArray<object> ("__extension", info);
       object first = info.GetValue ("__first", typeof (object));
@@ -93,7 +93,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       if (extensions != null)
       {
-        ConcreteTypeBuilder.Scope.Current.InitializeInstance (_deserializedObject, extensions, first);
+        ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, extensions, first);
       }
     }
 

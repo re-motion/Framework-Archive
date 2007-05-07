@@ -35,18 +35,11 @@ namespace Mixins.UnitTests.Mixins
 
   public class ObjectFactory
   {
-    private TypeFactory _typeFactory;
-
-    public ObjectFactory(TypeFactory typeFactory)
-    {
-      _typeFactory = typeFactory;
-    }
-
-    public InvokeWithWrapper<T> Create<T> ()
+    public static InvokeWithWrapper<T> Create<T> ()
     {
       const BindingFlags bindingFlags  = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
-      Type concreteType = _typeFactory.GetConcreteType (typeof (T));
+      Type concreteType = TypeFactory.Current.GetConcreteType (typeof (T));
       GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
           concreteType,
           delegate (Type[] argumentTypes, Type delegateType)
@@ -72,7 +65,7 @@ namespace Mixins.UnitTests.Mixins
       EmitUtility.PushParameters (ilgen, parameters.Length);
       ilgen.Emit (OpCodes.Newobj, ctor);
       ilgen.Emit (OpCodes.Dup);
-      ilgen.EmitCall (OpCodes.Call, typeof (TypeFactory).GetMethod ("InitializeInstance"), null);
+      ilgen.EmitCall (OpCodes.Call, typeof (TypeFactory).GetMethod ("InitializeMixedInstance"), null);
       ilgen.Emit (OpCodes.Ret);
 
       return method.CreateDelegate (delegateType);
@@ -80,9 +73,9 @@ namespace Mixins.UnitTests.Mixins
 
     public object Create (Type t, params object[] args)
     {
-      Type concreteType = _typeFactory.GetConcreteType (t);
+      Type concreteType = TypeFactory.Current.GetConcreteType (t);
       object instance = Activator.CreateInstance (concreteType, args);
-      TypeFactory.InitializeInstance (instance);
+      TypeFactory.InitializeMixedInstance (instance);
       return instance;
     }
   }

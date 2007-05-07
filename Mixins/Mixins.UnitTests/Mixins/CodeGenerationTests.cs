@@ -18,20 +18,20 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeIsAssignableButDifferent ()
     {
-      Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
       Assert.IsTrue (typeof (BaseType1).IsAssignableFrom (t));
       Assert.AreNotEqual (typeof (BaseType1), t);
 
-      t = TypeFactory.GetConcreteType (typeof (BaseType2));
+      t = TypeFactory.Current.GetConcreteType (typeof (BaseType2));
       Assert.IsTrue (typeof (BaseType2).IsAssignableFrom (t));
 
-      t = TypeFactory.GetConcreteType (typeof (BaseType3));
+      t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
       Assert.IsTrue (typeof (BaseType3).IsAssignableFrom (t));
 
-      t = TypeFactory.GetConcreteType (typeof (BaseType4));
+      t = TypeFactory.Current.GetConcreteType (typeof (BaseType4));
       Assert.IsTrue (typeof (BaseType4).IsAssignableFrom (t));
 
-      t = TypeFactory.GetConcreteType (typeof (BaseType5));
+      t = TypeFactory.Current.GetConcreteType (typeof (BaseType5));
       Assert.IsTrue (typeof (BaseType5).IsAssignableFrom (t));
 
       Assert.IsNotNull (ObjectFactory.Create<BaseType1> ());

@@ -1,4 +1,5 @@
 using System;
+using Mixins.CodeGeneration.SingletonUtilities;
 using Mixins.Definitions;
 using Mixins.Validation.DefaultLog;
 using Rubicon.Utilities;
@@ -6,29 +7,39 @@ using Mixins.Validation;
 
 namespace Mixins.CodeGeneration
 {
-  public class TypeFactory
+  public class TypeFactory : CallContextSingletonBase<TypeFactory, TypeFactory.TypeFactoryCreator>
   {
-    public static void InitializeInstance (object instance)
+    public class TypeFactoryCreator : IInstanceCreator<TypeFactory>
     {
-      if (instance is IMixinTarget)
+      public TypeFactory CreateInstance ()
       {
-        ConcreteTypeBuilder.Scope.Current.InitializeInstance (instance);
+        return TypeFactory.DefaultInstance;
       }
     }
 
-    private ApplicationDefinition _configuration;
+    public static readonly TypeFactory DefaultInstance = new TypeFactory (new ApplicationDefinition());
+
+    public static void InitializeMixedInstance (object instance)
+    {
+      if (instance is IMixinTarget)
+      {
+        ConcreteTypeBuilder.Current.Scope.InitializeInstance (instance);
+      }
+    }
+
+    public readonly ApplicationDefinition Configuration;
 
     public TypeFactory(ApplicationDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
-      _configuration = configuration;
+      Configuration = configuration;
 
-      Assertion.DebugAssert (ValidateConfiguration ());
+      Assertion.Assert (ValidateConfiguration (), "The configuration cannot be validated.");
     }
 
     private bool ValidateConfiguration ()
     {
-      DefaultValidationLog log = Validator.Validate (_configuration);
+      DefaultValidationLog log = Validator.Validate (Configuration);
       if (log.GetNumberOfFailureResults () != 0)
       {
         ConsoleDumper.DumpLog (log);
@@ -45,14 +56,14 @@ namespace Mixins.CodeGeneration
       }
     }
 
-    // Instances returned by this method must be initialized with <see cref="InitializeInstance"/>
+    // Instances of the type returned by this method must be initialized with <see cref="InitializeMixedInstance"/>
     public Type GetConcreteType (Type baseType)
     {
       ArgumentUtility.CheckNotNull ("baseType", baseType);
-      BaseClassDefinition classConfig = _configuration.BaseClasses[baseType];
+      BaseClassDefinition classConfig = Configuration.BaseClasses[baseType];
       if (classConfig != null)
       {
-        return ConcreteTypeBuilder.Instance.Current.GetConcreteType (classConfig);
+        return ConcreteTypeBuilder.Current.GetConcreteType (classConfig);
       }
       else
       {

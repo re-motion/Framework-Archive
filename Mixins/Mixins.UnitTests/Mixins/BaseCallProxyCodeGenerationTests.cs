@@ -66,23 +66,24 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces1 ()
     {
-      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType3), typeof (MixinWithThisAsBase));
-      TypeFactory tf = NewTypeFactory (configuration);
-      Type t = tf.GetConcreteType(typeof (BaseType3));
-      Type proxyType = t.GetNestedType ("BaseCallProxy");
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (BaseType3), typeof (MixinWithThisAsBase))))
+      {
+        Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
+        Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-      foreach (RequiredBaseCallTypeDefinition req in configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
-        Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
+        foreach (RequiredBaseCallTypeDefinition req in TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
+          Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
+      }
     }
 
     [Test]
     [Ignore("TODO: Implement non-this interfaces on proxy")]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces2 ()
     {
-      Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
+      Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
       Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-      foreach (RequiredBaseCallTypeDefinition req in Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
+      foreach (RequiredBaseCallTypeDefinition req in TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
         Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
     }
 

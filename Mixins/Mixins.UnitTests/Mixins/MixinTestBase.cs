@@ -12,23 +12,16 @@ namespace Mixins.UnitTests.Mixins
 {
   public abstract class MixinTestBase
   {
-    protected ApplicationDefinition Configuration;
-    protected TypeFactory TypeFactory;
-    protected ObjectFactory ObjectFactory;
-
     public const string PEVerifyPath = @"C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\PEVerify.exe";
 
     [SetUp]
     public virtual void SetUp()
     {
-      ConcreteTypeBuilder.Scope.SetCurrent (null);
-
-      Configuration = CreateConfiguration();
-      TypeFactory = new TypeFactory (Configuration);
-      ObjectFactory = new ObjectFactory (TypeFactory);
+      ConcreteTypeBuilder.Current.ResetScope ();
+      TypeFactory.SetCurrent (new TypeFactory (CreateConfiguration()));
     }
 
-    protected virtual ApplicationDefinition CreateConfiguration()
+    private ApplicationDefinition CreateConfiguration()
     {
       ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly());
       return DefinitionBuilder.CreateApplicationDefinition (context);
@@ -40,7 +33,7 @@ namespace Mixins.UnitTests.Mixins
       string path;
       try
       {
-        path = ConcreteTypeBuilder.Scope.Current.SaveAssembly ();
+        path = ConcreteTypeBuilder.Current.Scope.SaveAssembly ();
       }
       catch (Exception ex)
       {
@@ -48,10 +41,8 @@ namespace Mixins.UnitTests.Mixins
         return;
       }
 
-      Configuration = null;
-      TypeFactory = null;
-      ObjectFactory = null;
-      ConcreteTypeBuilder.Scope.SetCurrent (null);
+      TypeFactory.SetCurrent (null);
+      ConcreteTypeBuilder.Current.ResetScope();
 
       if (path != null || !File.Exists(path))
       {
@@ -63,24 +54,16 @@ namespace Mixins.UnitTests.Mixins
       }
     }
 
-    public ObjectFactory NewObjectFactory(ApplicationDefinition configuration)
-    {
-      return new ObjectFactory (NewTypeFactory (configuration));
-    }
-
-    public TypeFactory NewTypeFactory (ApplicationDefinition configuration)
-    {
-      return new TypeFactory (configuration);
-    }
-
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      return NewTypeFactory (DefBuilder.Build (targetType, mixinTypes)).GetConcreteType (targetType);
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (targetType, mixinTypes)))
+        return TypeFactory.Current.GetConcreteType (targetType);
     }
 
     public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      return NewObjectFactory (DefBuilder.Build (typeof (T), mixinTypes)).Create<T>();
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (T), mixinTypes)))
+        return ObjectFactory.Create<T>();
     }
 
     private void VerifyPEFile (string assemblyPath)

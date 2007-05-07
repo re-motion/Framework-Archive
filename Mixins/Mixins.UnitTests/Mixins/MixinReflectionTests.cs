@@ -10,13 +10,12 @@ using NUnit.Framework;
 namespace Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixinReflectionTests
+  public class MixinReflectionTests : MixinTestBase
   {
     [Test]
     public void FindMixinInstanceInTarget ()
     {
-      ObjectFactory factory = new ObjectFactory (new TypeFactory (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2))));
-      BaseType3 bt3 = factory.Create<BaseType3> ().With ();
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
       BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
       Assert.IsNotNull (mixin);
     }
@@ -34,19 +33,21 @@ namespace Mixins.UnitTests.Mixins
       ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
       ApplicationDefinition applicationDefinition = DefinitionBuilder.CreateApplicationDefinition (context);
 
-      ObjectFactory factory = new ObjectFactory (new TypeFactory(applicationDefinition));
-      BaseType1 bt1 = factory.Create<BaseType1> ().With ();
-      IMixinTarget mixinTarget = bt1 as IMixinTarget;
-      Assert.IsNotNull (mixinTarget);
+      using (new CurrentTypeFactoryScope (applicationDefinition))
+      {
+        BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
+        IMixinTarget mixinTarget = bt1 as IMixinTarget;
+        Assert.IsNotNull (mixinTarget);
 
-      BaseClassDefinition configuration = mixinTarget.Configuration;
-      Assert.IsNotNull (configuration);
+        BaseClassDefinition configuration = mixinTarget.Configuration;
+        Assert.IsNotNull (configuration);
 
-      Assert.AreSame (applicationDefinition.BaseClasses[typeof (BaseType1)], configuration);
+        Assert.AreSame (applicationDefinition.BaseClasses[typeof (BaseType1)], configuration);
 
-      object[] mixins = mixinTarget.Mixins;
-      Assert.IsNotNull (mixins);
-      Assert.AreEqual (configuration.Mixins.Count, mixins.Length);
+        object[] mixins = mixinTarget.Mixins;
+        Assert.IsNotNull (mixins);
+        Assert.AreEqual (configuration.Mixins.Count, mixins.Length);
+      }
     }
   }
 }

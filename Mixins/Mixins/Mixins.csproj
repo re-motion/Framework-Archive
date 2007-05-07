@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
-    <Compile Include="CodeGeneration\CallContextSingleton.cs" />
+    <Compile Include="CodeGeneration\CurrentTypeFactoryScope.cs" />
+    <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingleton.cs" />
+    <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingletonBase.cs" />
+    <Compile Include="CodeGeneration\SingletonUtilities\DefaultInstanceCreator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomEventEmitter.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
     <Compile Include="CodeGeneration\ReflectionUtility.cs" />
     <Compile Include="CodeGeneration\TypeFactory.cs" />
+    <Compile Include="CodeGeneration\SingletonUtilities\IInstanceCreator.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />
     <Compile Include="Definitions\BaseClassDefinition.cs" />
