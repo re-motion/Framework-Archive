@@ -142,7 +142,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void EventsAfterDeserializationWithRegisteredEvents ()
     {
       Customer newCustomer1 = Customer.NewObject ();
@@ -445,7 +444,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void BidirectionalRelationsIncludingHierarchyOfObjects ()
     {
       Employee employee1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
@@ -536,7 +534,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void UnidirectionalRelation ()
     {
       Location location1 = DomainObject.GetObject<Location> (DomainObjectIDs.Location1);

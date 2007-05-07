@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using Castle.DynamicProxy;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 {
+  [Serializable]
   class GenerationHook<TTarget> : IProxyGenerationHook
   {
     private IInterceptorSelector<TTarget> _selector;

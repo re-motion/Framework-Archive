@@ -68,7 +68,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void DomainObjectTest ()
     {
       DomainObject domainObject = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
@@ -79,7 +78,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void DomainObjectCollectionTest ()
     {
       Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
@@ -104,7 +102,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void ObjectEndPointTest ()
     {
       ObjectEndPoint endPoint = new ObjectEndPoint (DomainObject.GetObject<Company> (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
@@ -115,7 +112,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void CollectionEndPointTest ()
     {
       DomainObjectCollection oppositeDomainObjects = new DomainObjectCollection ();
@@ -127,7 +123,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    [Ignore ("TODO: FS: Proxies are not serializable.")]
     public void RelationEndPointCollectionTest ()
     {
       RelationEndPointCollection collection = new RelationEndPointCollection ();
