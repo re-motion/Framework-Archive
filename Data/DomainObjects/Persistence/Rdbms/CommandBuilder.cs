@@ -33,8 +33,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     // methods and properties
 
-    public abstract bool UsesView { get; }
-
     public RdbmsProvider Provider
     {
       get { return _provider; }
@@ -69,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       IDataParameter commandParameter = command.CreateParameter();
       commandParameter.ParameterName = Provider.GetParameterName (parameterName);
 
-      ValueConverter valueConverter = Provider.CreateValueConverter (UsesView);
+      ValueConverter valueConverter = Provider.CreateValueConverter ();
       if (parameterValue != null && parameterValue.GetType() == typeof (ObjectID))
         commandParameter.Value = valueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
       else

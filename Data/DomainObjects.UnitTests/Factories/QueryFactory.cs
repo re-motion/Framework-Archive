@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return new QueryDefinition (
           "OrderQuery",
           "TestDomain",
-          "select [OrderView].* from [OrderView] inner join [CustomerView] where [CustomerView].[ID] = @customerID order by [Order_OrderNo] asc;",
+          "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof (OrderCollection));
     }
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return new QueryDefinition (
           "CustomerTypeQuery",
           "TestDomain",
-          "select [CustomerView].* from [CustomerView] where [Company_CustomerType] = @customerType order by [Company_Name] asc;",
+          "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
           QueryType.Collection,
           typeof (DomainObjectCollection));
     }
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return new QueryDefinition (
           "OrderSumQuery",
           "TestDomain",
-          "select sum(quantity) from [OrderView] where [Order_CustomerID] = @customerID;",
+          "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
           QueryType.Scalar);
     }
   }

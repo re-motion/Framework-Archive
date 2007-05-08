@@ -13,44 +13,44 @@
   <query id="OrderNoSumByCustomerNameQuery" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-      select sum([Order_OrderNo])
-      from [OrderView] inner join [CustomerView] on [Order_CustomerID] = [CustomerView].[ID]
-      where Company_Name = @customerName;
+      select sum([OrderNo])
+      from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
+      where [Company].[Name] = @customerName;
     </statement>
   </query>
 
   <query id="OrderNoSumForMultipleCustomers" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-      select sum([Order_OrderNo])
-      from [OrderView] inner join [CustomerView] on [Order_CustomerID] = [CustomerView].[ID]
-      where [Company_Name] in ({companyNames});
+      select sum([OrderNo])
+      from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
+      where [Company].[Name] in ({companyNames});
     </statement>
   </query>
 
   <query id="BulkUpdateQuery" type="scalar">
     <storageProviderID>TestDomain</storageProviderID>
     <statement>
-      update [OrderView] set [Order_DeliveryDate] = '2006/01/01' where [Order_CustomerID] = @customerID;
+      update [Order] set [DeliveryDate] = '2006/01/01' where [CustomerID] = @customerID;
       select @@ROWCOUNT;
     </statement>
   </query>
 
   <query id="OrderQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select [OrderView].* from [OrderView] where [Order_CustomerID] = @customerID order by [Order_OrderNo] asc;</statement>
+    <statement>select [Order].* from [Order] where [CustomerID] = @customerID order by [OrderNo] asc;</statement>
     <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="OrderByOfficialQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select [OrderView].* from [OrderView] where [Order_OfficialID] = @officialID order by [Order_OrderNo] asc;</statement>
+    <statement>select [Order].* from [Order] where [OfficialID] = @officialID order by [OrderNo] asc;</statement>
     <collectionType>Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
   <query id="CustomerTypeQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
-    <statement>select * from [CustomerView] where [Company_CustomerType] = @customerType order by [Company_Name] asc;</statement>
+    <statement>select * from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
   </query>
 
   <query id="QueryWithAllDataTypes" type="collection">
@@ -59,44 +59,44 @@
     <statement>
     	 <![CDATA[
 	      set ANSI_NULLS OFF;
-	      select * from TableWithAllDataTypesView where 
-	        [TableWithAllDataTypes_Boolean] = @boolean and
-	        [TableWithAllDataTypes_Byte] = @byte and
-	        [TableWithAllDataTypes_Date] = @date and
-	        [TableWithAllDataTypes_DateTime] = @dateTime and
-	        [TableWithAllDataTypes_Decimal] = @decimal and
-	        [TableWithAllDataTypes_Double] > @doubleLowerBound and [TableWithAllDataTypes_Double] < @doubleUpperBound and
-	        [TableWithAllDataTypes_Enum] = @enum and
-	        [TableWithAllDataTypes_Guid] = @guid and
-	        [TableWithAllDataTypes_Int16] = @int16 and
-	        [TableWithAllDataTypes_Int32] = @int32 and
-	        [TableWithAllDataTypes_Int64] = @int64 and
-	        [TableWithAllDataTypes_Single] > @singleLowerBound and [TableWithAllDataTypes_Single] < @singleUpperBound and
-	        [TableWithAllDataTypes_String] = @string and
+	      select * from TableWithAllDataTypes where 
+	        [Boolean] = @boolean and
+	        [Byte] = @byte and
+	        [Date] = @date and
+	        [DateTime] = @dateTime and
+	        [Decimal] = @decimal and
+	        [Double] > @doubleLowerBound and [Double] < @doubleUpperBound and
+	        [Enum] = @enum and
+	        [Guid] = @guid and
+	        [Int16] = @int16 and
+	        [Int32] = @int32 and
+	        [Int64] = @int64 and
+	        [Single] > @singleLowerBound and [Single] < @singleUpperBound and
+	        [String] = @string and
           -- Note: StringWithoutMaxLength cannot be used here, because it is of type 'text'.
-	        [TableWithAllDataTypes_NaBoolean] = @naBoolean and
-	        [TableWithAllDataTypes_NaByte] = @naByte and
-	        [TableWithAllDataTypes_NaDate] = @naDate and
-	        [TableWithAllDataTypes_NaDateTime] = @naDateTime and
-	        [TableWithAllDataTypes_NaDecimal] = @naDecimal and
-	        [TableWithAllDataTypes_NaDouble] > @naDoubleLowerBound and [TableWithAllDataTypes_NaDouble] < @naDoubleUpperBound and
-	        [TableWithAllDataTypes_NaGuid] = @naGuid and
-	        [TableWithAllDataTypes_NaInt16] = @naInt16 and
-	        [TableWithAllDataTypes_NaInt32] = @naInt32 and
-	        [TableWithAllDataTypes_NaInt64] = @naInt64 and
-	        [TableWithAllDataTypes_NaSingle] > @naSingleLowerBound and [TableWithAllDataTypes_NaSingle] < @naSingleUpperBound and
-	        [TableWithAllDataTypes_StringWithNullValue] = @stringWithNullValue and
-	        [TableWithAllDataTypes_NaBooleanWithNullValue] = @naBooleanWithNullValue and 
-	        [TableWithAllDataTypes_NaByteWithNullValue] = @naByteWithNullValue and 
-	        [TableWithAllDataTypes_NaDateWithNullValue] = @naDateWithNullValue and
-	        [TableWithAllDataTypes_NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
-	        [TableWithAllDataTypes_NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
-	        [TableWithAllDataTypes_NaDoubleWithNullValue] = @naDoubleWithNullValue and
-	        [TableWithAllDataTypes_NaGuidWithNullValue] = @naGuidWithNullValue and
-	        [TableWithAllDataTypes_NaInt16WithNullValue] = @naInt16WithNullValue and
-	        [TableWithAllDataTypes_NaInt32WithNullValue] = @naInt32WithNullValue and
-	        [TableWithAllDataTypes_NaInt64WithNullValue] = @naInt64WithNullValue and
-	        [TableWithAllDataTypes_NaSingleWithNullValue] = @naSingleWithNullValue;
+	        [NaBoolean] = @naBoolean and
+	        [NaByte] = @naByte and
+	        [NaDate] = @naDate and
+	        [NaDateTime] = @naDateTime and
+	        [NaDecimal] = @naDecimal and
+	        [NaDouble] > @naDoubleLowerBound and [NaDouble] < @naDoubleUpperBound and
+	        [NaGuid] = @naGuid and
+	        [NaInt16] = @naInt16 and
+	        [NaInt32] = @naInt32 and
+	        [NaInt64] = @naInt64 and
+	        [NaSingle] > @naSingleLowerBound and [NaSingle] < @naSingleUpperBound and
+	        [StringWithNullValue] = @stringWithNullValue and
+	        [NaBooleanWithNullValue] = @naBooleanWithNullValue and 
+	        [NaByteWithNullValue] = @naByteWithNullValue and 
+	        [NaDateWithNullValue] = @naDateWithNullValue and
+	        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
+	        [NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
+	        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
+	        [NaGuidWithNullValue] = @naGuidWithNullValue and
+	        [NaInt16WithNullValue] = @naInt16WithNullValue and
+	        [NaInt32WithNullValue] = @naInt32WithNullValue and
+	        [NaInt64WithNullValue] = @naInt64WithNullValue and
+	        [NaSingleWithNullValue] = @naSingleWithNullValue;
 	    ]]>      
     </statement>
   </query>

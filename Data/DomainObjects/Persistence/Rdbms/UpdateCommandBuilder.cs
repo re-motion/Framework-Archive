@@ -30,11 +30,6 @@ public class UpdateCommandBuilder : CommandBuilder
 
   // methods and properties
 
-  public override bool UsesView
-  {
-    get { return false; }
-  }
-
   public override IDbCommand Create ()
   {
     IDbCommand command = Provider.CreateDbCommand ();

@@ -13,11 +13,8 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
   {
     private static Hashtable s_hasClassIDColumn = new Hashtable ();
 
-    private readonly bool _usesView;
-
-    public ValueConverter (bool usesView)
+    public ValueConverter ()
     {
-      _usesView = usesView;
     }
 
     public virtual object GetDBValue (object value)
@@ -82,9 +79,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
       if (propertyDefinition.PropertyType != typeof (ObjectID))
-        return GetValue (classDefinition, propertyDefinition, GetValue(dataReader, GetColumnName(classDefinition, propertyDefinition)));
+        return GetValue (classDefinition, propertyDefinition, GetValue (dataReader, propertyDefinition.StorageSpecificName));
       else
-        return GetObjectID (classDefinition, propertyDefinition, dataReader, GetColumnName (classDefinition, propertyDefinition));
+        return GetObjectID (classDefinition, propertyDefinition, dataReader, propertyDefinition.StorageSpecificName);
     }
 
     public override object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, object dataValue)
@@ -186,7 +183,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         int classIDColumnOrdinal;
         try
         {
-          classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (classDefinition, propertyDefinition)));
+          classIDColumnOrdinal = dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
         }
         catch (IndexOutOfRangeException)
         {
@@ -231,7 +228,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
           {
             try
             {
-              dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (GetColumnName (classDefinition, propertyDefinition)));
+              dataReader.GetOrdinal (RdbmsProvider.GetClassIDColumnName (propertyDefinition.StorageSpecificName));
               s_hasClassIDColumn[hashKey] = true;
             }
             catch (IndexOutOfRangeException)
@@ -262,14 +259,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       return storageProviderDefinition.GetHashCode ()
           ^ classDefinition.GetEntityName ().GetHashCode ()
           ^ propertyDefinition.StorageSpecificName.GetHashCode ();
-    }
-
-    private string GetColumnName (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
-    {
-      if (_usesView)
-        return classDefinition.GetFullyQualifiedStorageSpecificNameForProperty (propertyDefinition.PropertyName);
-      else
-        return propertyDefinition.StorageSpecificName;
     }
 
     protected RdbmsProviderException CreateRdbmsProviderException (

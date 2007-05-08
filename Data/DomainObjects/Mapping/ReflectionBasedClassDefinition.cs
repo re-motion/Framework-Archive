@@ -10,7 +10,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
   public class ReflectionBasedClassDefinition: ClassDefinition
   {
     private bool _isAbstract;
-    private string _storageSpecificPrefix;
     private Type _classType;
 
     public ReflectionBasedClassDefinition (string id, string entityName, string storageProviderID, Type classType, bool isAbstract)
@@ -28,7 +27,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
      
       _classType = classType;
       _isAbstract = isAbstract;
-      _storageSpecificPrefix = string.IsNullOrEmpty (entityName) ? null : (entityName + "_");
 
       if (baseClass != null)
       {
@@ -46,11 +44,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
     public override bool IsAbstract
     {
       get { return _isAbstract; }
-    }
-
-    public override string MyStorageSpecificPrefix
-    {
-      get { return _storageSpecificPrefix; }
     }
 
     public override Type ClassType

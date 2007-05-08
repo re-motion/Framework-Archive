@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         {
           List<ObjectID> objectIDsInCorrectOrder = new List<ObjectID> ();
 
-          ValueConverter valueConverter = new ValueConverter (builder.UsesView);
+          ValueConverter valueConverter = new ValueConverter ();
           while (reader.Read ())
           {
             objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));
@@ -102,7 +102,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (Provider, reader, commandBuilder.UsesView);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (Provider, reader);
           return dataContainerFactory.CreateCollection ();
         }
       }

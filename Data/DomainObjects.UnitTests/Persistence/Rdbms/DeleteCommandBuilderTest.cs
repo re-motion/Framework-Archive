@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -10,19 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class DeleteCommandBuilderTest : SqlProviderBaseTest
   {
-    [Test]
-    public void UsesView ()
-    {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
-
-      order.Delete ();
-      
-      Provider.Connect ();
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, order.DataContainer);
-      
-      Assert.That (commandBuilder.UsesView, Is.False);
-    }
-
     [Test]
     public void CreateWithoutForeignKeyColumn ()
     {

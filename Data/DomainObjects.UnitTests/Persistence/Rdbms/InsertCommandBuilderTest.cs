@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -9,16 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   [TestFixture]
   public class InsertCommandBuilderTest : SqlProviderBaseTest
   {
-    [Test]
-    public void UsesView ()
-    {
-      Order order = Order.NewObject ();
-
-      Provider.Connect ();
-      CommandBuilder commandBuilder = new InsertCommandBuilder (Provider, order.DataContainer);
-      Assert.That (commandBuilder.UsesView, Is.False);
-    }
-
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()

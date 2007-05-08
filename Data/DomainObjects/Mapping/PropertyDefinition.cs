@@ -104,6 +104,11 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return _mappingClassID != null; }
     }
 
+    private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+    {
+      return new InvalidOperationException (string.Format (message, args));
+    }
+
     #region ISerializable Members
 
     protected PropertyDefinition (SerializationInfo info, StreamingContext context)

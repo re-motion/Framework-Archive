@@ -247,7 +247,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader, commandBuilder.UsesView);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, reader);
           return dataContainerFactory.CreateDataContainer();
         }
       }
@@ -339,7 +339,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       {
         using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
         {
-          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader, commandBuilder.UsesView);
+          DataContainerFactory dataContainerFactory = new DataContainerFactory (this, dataReader);
           return dataContainerFactory.CreateCollection();
         }
       }
@@ -509,9 +509,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     }
 
     /// <summary> Gets a value converter that converts database types to .NET types according to the providers type mapping rules. </summary>
-    public ValueConverter CreateValueConverter (bool usesView)
+    public ValueConverter CreateValueConverter ()
     {
-      return new ValueConverter (usesView);
+      return new ValueConverter ();
     }
 
     /// <summary> Surrounds an identifier with delimiters according to the database's syntax. </summary>

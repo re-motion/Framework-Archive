@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp ();
 
-      _converter = new ValueConverter (false);
+      _converter = new ValueConverter ();
       _ceoDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Ceo");
 
       _storageProviderManager = new StorageProviderManager ();

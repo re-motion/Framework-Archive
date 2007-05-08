@@ -10,17 +10,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class UpdateCommandBuilderTest : SqlProviderBaseTest
   {
     [Test]
-    public void UsesView ()
-    {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
-      order.DeliveryDate = DateTime.Now;
-
-      Provider.Connect ();
-      CommandBuilder commandBuilder = new UpdateCommandBuilder (Provider, order.DataContainer);
-      Assert.That (commandBuilder.UsesView, Is.False);
-    }
-
-    [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {

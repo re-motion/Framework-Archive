@@ -28,7 +28,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void Initialize ()
     {
       Assert.That (_builder.Provider, Is.SameAs (Provider));
-      Assert.That (((CommandBuilder) _builder).UsesView, Is.False);
     }
 
     [Test]

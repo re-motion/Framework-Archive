@@ -85,11 +85,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       }
     }
 
-    public override string MyStorageSpecificPrefix
-    {
-      get { return string.Empty; }
-    }
-
     public override Type ClassType
     {
       get { return _classType; }

@@ -27,11 +27,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     // methods and properties
 
-    public override bool UsesView
-    {
-      get { return true; }
-    }
-
     public override IDbCommand Create()
     {
       IDbCommand command = Provider.CreateDbCommand();

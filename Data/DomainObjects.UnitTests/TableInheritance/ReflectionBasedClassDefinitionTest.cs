@@ -115,23 +115,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    public void GetStorageSpecificPrefix ()
-    {
-      Assert.IsNull (_domainBaseClass.GetStorageSpecificPrefix());
-      Assert.AreEqual ("TableInheritance_Person_", _personClass.GetStorageSpecificPrefix ());
-      Assert.AreEqual ("TableInheritance_Person_", _customerClass.GetStorageSpecificPrefix ());
-    }
-
-    [Test]
-    [ExpectedException(typeof (InvalidOperationException), ExpectedMessage =
-        "The fully qualified storage specific property name cannot be evaluated because class 'DomainBase' does not know its entity.")]
-    public void GetFullyQualifiedStorageSpecificName_WithAbstractClass ()
-    {
-      _domainBaseClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (_domainBaseClass, "CreatedBy", "CreatedByColumn", typeof (string), 100));
-      _domainBaseClass.GetFullyQualifiedStorageSpecificNameForProperty ("CreatedBy");
-    }
-
-    [Test]
     public void ValidateMappingWithDerivationInDifferentEntitiesAndMatchingColumnNames ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, TableInheritanceTestDomainProviderID, typeof (DomainBase), true);

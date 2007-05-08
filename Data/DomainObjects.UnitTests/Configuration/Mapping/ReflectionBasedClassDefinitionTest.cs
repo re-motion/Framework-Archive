@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void InitializeWithType()
+    public void Initialize()
     {
       ClassDefinition actual = new ReflectionBasedClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order), false);
 
@@ -34,7 +34,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (actual.StorageProviderID, Is.EqualTo ("StorageProvider"));
       Assert.That (actual.ClassType, Is.SameAs (typeof (Order)));
       Assert.That (actual.BaseClass, Is.Null);
-      Assert.That (actual.MyStorageSpecificPrefix, Is.EqualTo ("OrderTable_"));
       Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
     }
 
@@ -835,35 +834,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
 
       Assert.IsTrue (companyClass.IsSameOrBaseClassOf (_distributorClass));
-    }
-
-    [Test]
-    public void GetFullyQualifiedStorageSpecificName_WithPropertyInLeafClass ()
-    {
-      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
-      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
-      customerClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (customerClass, "CustomerSince", "CustomerSinceColumn", typeof (DateTime)));
-
-      Assert.AreEqual ("CompanyTable_CustomerSinceColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("CustomerSince"));
-    }
-
-    [Test]
-    public void GetFullyQualifiedStorageSpecificName_WithPropertyInBaseClass ()
-    {
-      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
-      companyClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (companyClass, "Name", "NameColumn", typeof (string), false));
-      ReflectionBasedClassDefinition customerClass = new ReflectionBasedClassDefinition ("Customer", null, "StorageProvider", typeof (Customer), false, companyClass);
-
-      Assert.AreEqual ("CompanyTable_NameColumn", customerClass.GetFullyQualifiedStorageSpecificNameForProperty ("Name"));
-    }
-
-    [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = "Class 'Company' does not contain the property 'InvalidPropertyName'.")]
-    public void GetFullyQualifiedStorageSpecificName_WithInvalidPropertyName ()
-    {
-      ReflectionBasedClassDefinition companyClass = new ReflectionBasedClassDefinition ("Company", "CompanyTable", "StorageProvider", typeof (Company), false);
-
-      companyClass.GetFullyQualifiedStorageSpecificNameForProperty ("InvalidPropertyName");
     }
 
     private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)

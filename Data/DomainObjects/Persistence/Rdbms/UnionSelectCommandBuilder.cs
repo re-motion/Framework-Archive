@@ -51,11 +51,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     // methods and properties
 
-    public override bool UsesView
-    {
-      get { return false; }
-    }
-
     public override IDbCommand Create ()
     {
       string[] allConcreteEntityNames = _classDefinition.GetAllConcreteEntityNames ();

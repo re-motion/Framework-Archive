@@ -10,16 +10,14 @@ public class DataContainerFactory
 {
   private readonly IDataReader _dataReader;
   private readonly RdbmsProvider _provider;
-  private readonly bool _usesView;
 
-  public DataContainerFactory (RdbmsProvider provider, IDataReader dataReader, bool usesView)
+  public DataContainerFactory (RdbmsProvider provider, IDataReader dataReader)
   {
     ArgumentUtility.CheckNotNull ("provider", provider);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
     _dataReader = dataReader;
     _provider = provider;
-    _usesView = usesView;
   }
 
   public virtual DataContainer CreateDataContainer ()
@@ -42,7 +40,7 @@ public class DataContainerFactory
 
   protected virtual DataContainer CreateDataContainerFromReader ()
   {
-    ValueConverter valueConverter = _provider.CreateValueConverter (_usesView);
+    ValueConverter valueConverter = _provider.CreateValueConverter ();
     
     ObjectID id = valueConverter.GetID (_dataReader);
     object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
