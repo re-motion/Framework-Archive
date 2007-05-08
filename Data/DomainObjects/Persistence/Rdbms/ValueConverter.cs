@@ -13,7 +13,8 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
   {
     private static Hashtable s_hasClassIDColumn = new Hashtable ();
 
-    public ValueConverter ()
+    public ValueConverter (TypeConversionProvider typeConversionProvider)
+        : base(typeConversionProvider)
     {
     }
 

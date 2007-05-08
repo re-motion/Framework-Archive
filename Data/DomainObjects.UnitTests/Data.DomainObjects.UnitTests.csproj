@@ -500,7 +500,7 @@
     <Compile Include="Persistence\StorageProviderManagerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Persistence\ValueConverterBaseMock.cs">
+    <Compile Include="Persistence\StubValueConverterBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\ValueConverterBaseTest.cs">

@@ -29,13 +29,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (85, classWithAllDataTypes.ByteProperty, "ByteProperty");
       Assert.AreEqual (new DateTime (2005, 1, 1), classWithAllDataTypes.DateProperty, "DateProperty");
       Assert.AreEqual (new DateTime (2005, 1, 1, 17, 0, 0), classWithAllDataTypes.DateTimeProperty, "DateTimeProperty");
-      Assert.AreEqual (123456.789, classWithAllDataTypes.DecimalProperty, "DecimalProperty");
-      Assert.AreEqual (987654.321, classWithAllDataTypes.DoubleProperty, "DoubleProperty");
+      Assert.AreEqual (123456.789m, classWithAllDataTypes.DecimalProperty, "DecimalProperty");
+      Assert.AreEqual (987654.321d, classWithAllDataTypes.DoubleProperty, "DoubleProperty");
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes.EnumProperty, "EnumProperty");
       Assert.AreEqual (new Guid ("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"), classWithAllDataTypes.GuidProperty, "GuidProperty");
       Assert.AreEqual (32767, classWithAllDataTypes.Int16Property, "Int16Property");
       Assert.AreEqual (2147483647, classWithAllDataTypes.Int32Property, "Int32Property");
-      Assert.AreEqual (9223372036854775807, classWithAllDataTypes.Int64Property, "Int64Property");
+      Assert.AreEqual (9223372036854775807L, classWithAllDataTypes.Int64Property, "Int64Property");
       Assert.AreEqual (6789.321, classWithAllDataTypes.SingleProperty, "SingleProperty");
       Assert.AreEqual ("abcdeföäü", classWithAllDataTypes.StringProperty, "StringProperty");
       Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes.StringPropertyWithoutMaxLength, "StringPropertyWithoutMaxLength");

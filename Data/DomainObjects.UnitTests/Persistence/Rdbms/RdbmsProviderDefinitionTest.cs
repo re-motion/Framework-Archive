@@ -34,6 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.AreEqual ("Provider", provider.Name);
       Assert.AreSame (typeof (SqlProvider), provider.StorageProviderType);
       Assert.AreEqual ("ConnectionString", provider.ConnectionString);
+      Assert.IsNotNull (provider.TypeConversionProvider);
     }
 
     [Test]
@@ -51,6 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.AreSame (typeof (SqlProvider), provider.StorageProviderType);
       Assert.AreEqual ("ConnectionString", provider.ConnectionString);
       Assert.IsEmpty (config);
+      Assert.IsNotNull (provider.TypeConversionProvider);
     }
 
     [Test]

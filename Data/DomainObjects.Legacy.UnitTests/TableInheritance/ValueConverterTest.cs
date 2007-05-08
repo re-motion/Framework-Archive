@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 {
@@ -16,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       base.SetUp ();
 
-      _converter = new ValueConverter ();
+      _converter = new ValueConverter (TypeConversionProvider.Create ());
       Provider.Connect ();
     }
 

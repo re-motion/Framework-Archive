@@ -117,6 +117,11 @@ public abstract class StorageProvider : IDisposable
     get { return _disposed; }
   }
 
+  public TypeConversionProvider TypeConversionProvider
+  {
+    get { return _definition.TypeConversionProvider; }
+  }
+
   protected void CheckDisposed ()
   {
     if (_disposed)

@@ -2,6 +2,7 @@ using System;
 using System.Data.SqlClient;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
@@ -67,6 +68,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       Provider.Dispose ();
       Provider.GetColumnsFromSortExpression ("StorageSpecificName asc");
+    }
+
+    [Test]
+    public void GetTypeConversionServices()
+    {
+      Assert.AreSame (ProviderDefinition.TypeConversionProvider, ((StorageProvider) Provider).TypeConversionProvider);
+    }
+
+    [Test]
+    public void CreateValueConverter ()
+    {
+      ValueConverter valueConverter = Provider.CreateValueConverter();
+      Assert.IsNotNull (valueConverter);
+      Assert.AreSame (ProviderDefinition.TypeConversionProvider, valueConverter.TypeConversionProvider);
     }
   }
 }

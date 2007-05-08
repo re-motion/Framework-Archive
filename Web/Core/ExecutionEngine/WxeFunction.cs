@@ -137,7 +137,7 @@ namespace Rubicon.Web.ExecutionEngine
             if (paramDecl.Type == typeof (string))                              // string constant
               arguments.Add (item.Value);
             else                                                                // parse constant
-              arguments.Add (TypeConversionServices.Current.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
+              arguments.Add (TypeConversionProvider.Current.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
           }
           else
           {
@@ -146,7 +146,7 @@ namespace Rubicon.Web.ExecutionEngine
             else if (string.CompareOrdinal (item.Value, "false") == 0)          // false
               arguments.Add (false);
             else if (item.Value.Length > 0 && char.IsDigit (item.Value[0]))     // starts with digit -> parse constant
-              arguments.Add (TypeConversionServices.Current.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
+              arguments.Add (TypeConversionProvider.Current.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
             else                                                                // variable name
               arguments.Add (new WxeVariableReference (item.Value));
           }
@@ -436,7 +436,7 @@ namespace Rubicon.Web.ExecutionEngine
         {
           try
           {
-            _variables[paramDeclaration.Name] = TypeConversionServices.Current.Convert (
+            _variables[paramDeclaration.Name] = TypeConversionProvider.Current.Convert (
                 null, CultureInfo.InvariantCulture, typeof (string), paramDeclaration.Type, strval);
           }
           catch (Exception e)

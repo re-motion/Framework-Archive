@@ -37,17 +37,17 @@ public class TypeConversionServicesTest
   [Test]
   public void Create()
   { 
-    Assert.IsNotNull (TypeConversionServices.Create());
+    Assert.IsNotNull (TypeConversionProvider.Create());
   }
 
   [Test]
   public void TestCurrent()
   { 
-    Assert.IsNotNull (TypeConversionServices.Current);
-    TypeConversionServices services = TypeConversionServices.Create();
-    TypeConversionServices.SetCurrent (services);
-    Assert.IsNotNull (TypeConversionServices.Current);
-    Assert.AreSame (services, TypeConversionServices.Current);
+    Assert.IsNotNull (TypeConversionProvider.Current);
+    TypeConversionProvider provider = TypeConversionProvider.Create();
+    TypeConversionProvider.SetCurrent (provider);
+    Assert.IsNotNull (TypeConversionProvider.Current);
+    Assert.AreSame (provider, TypeConversionProvider.Current);
   }
 
   [Test]

@@ -74,7 +74,7 @@ public class TabbedMenuTest: WebControlTest
   [Test]
   public void GetUrlParametersForMainMenuTab()
   {
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_mainMenuTab2.ItemID});
     
     NameValueCollection parameters = _tabbedMenu.GetUrlParameters (_mainMenuTab2);
@@ -90,7 +90,7 @@ public class TabbedMenuTest: WebControlTest
   [Test]
   public void GetUrlParametersForSubMenuTab()
   {
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID});
     
     NameValueCollection parameters = _tabbedMenu.GetUrlParameters (_subMenuTab22);
@@ -107,7 +107,7 @@ public class TabbedMenuTest: WebControlTest
   public void FormatUrlForMainMenuTab()
   {
     string url = "/AppDir/page.aspx";
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_mainMenuTab2.ItemID});
     string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
@@ -121,7 +121,7 @@ public class TabbedMenuTest: WebControlTest
   public void FormatUrlForSubMenuTab()
   {
     string url = "/AppDir/page.aspx";
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID});
     string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
@@ -136,7 +136,7 @@ public class TabbedMenuTest: WebControlTest
   {
     string url = "/AppDir/page.aspx";
     _mainMenuTab3.IsSelected = true;
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_mainMenuTab3.ItemID});
     string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
@@ -151,7 +151,7 @@ public class TabbedMenuTest: WebControlTest
   {
     string url = "/AppDir/page.aspx";
     _subMenuTab12.IsSelected = true;
-    string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
+    string expectedParameterValue = (string) TypeConversionProvider.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_subMenuTab12.Parent.ItemID, _subMenuTab12.ItemID});
     string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     

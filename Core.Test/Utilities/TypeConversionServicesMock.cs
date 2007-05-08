@@ -7,8 +7,8 @@ using Rubicon.Utilities;
 namespace Rubicon.Core.UnitTests.Utilities
 {
 
-/// <summary> Exposes non-public members of the <see cref="TypeConversionServices"/> type. </summary>
-public class TypeConversionServicesMock: TypeConversionServices
+/// <summary> Exposes non-public members of the <see cref="TypeConversionProvider"/> type. </summary>
+public class TypeConversionServicesMock: TypeConversionProvider
 {
   public new TypeConverter GetTypeConverterByAttribute (Type type)
   {
@@ -37,7 +37,7 @@ public class TypeConversionServicesMock: TypeConversionServices
 
   public static void ClearCache()
   {
-    Hashtable cache = (Hashtable) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionServices), "s_typeConverters");
+    Hashtable cache = (Hashtable) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionProvider), "s_typeConverters");
     cache.Clear();
   }
 }

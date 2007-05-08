@@ -327,7 +327,7 @@ namespace Rubicon.Web.UI.Controls
         else
           value = Context.Request.QueryString[SelectionID];
         if (value != null)
-          selection = (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
+          selection = (string[]) TypeConversionProvider.Current.Convert (typeof (string), typeof (string[]), value);
       }
 
       if (selection == null)
@@ -405,7 +405,7 @@ namespace Rubicon.Web.UI.Controls
       else
         tabIDs = ConvertTabIDsToArray (subMenuTab.Parent, subMenuTab);
 
-      string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
+      string value = (string) TypeConversionProvider.Current.Convert (typeof (string[]), typeof (string), tabIDs);
 
       NameValueCollection urlParameters = new NameValueCollection ();
       urlParameters.Add (SelectionID, value);

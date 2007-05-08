@@ -1,24 +1,16 @@
 using System;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
-  public class ValueConverterBaseMock : ValueConverterBase
+  public class StubValueConverterBase : ValueConverterBase
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public ValueConverterBaseMock ()
+    public StubValueConverterBase (TypeConversionProvider typeConversionProvider)
+        : base(typeConversionProvider)
     {
     }
-
-    // methods and properties
 
     public new object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
     {

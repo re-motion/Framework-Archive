@@ -509,9 +509,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     }
 
     /// <summary> Gets a value converter that converts database types to .NET types according to the providers type mapping rules. </summary>
-    public ValueConverter CreateValueConverter ()
+    public virtual ValueConverter CreateValueConverter ()
     {
-      return new ValueConverter ();
+      return new ValueConverter (TypeConversionProvider);
     }
 
     /// <summary> Surrounds an identifier with delimiters according to the database's syntax. </summary>

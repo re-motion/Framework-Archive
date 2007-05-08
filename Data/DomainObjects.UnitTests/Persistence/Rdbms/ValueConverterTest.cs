@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -20,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp ();
 
-      _converter = new ValueConverter ();
+      _converter = new ValueConverter (TypeConversionProvider.Create ());
       _ceoDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Ceo");
 
       _storageProviderManager = new StorageProviderManager ();

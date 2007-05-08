@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         {
           List<ObjectID> objectIDsInCorrectOrder = new List<ObjectID> ();
 
-          ValueConverter valueConverter = new ValueConverter ();
+          ValueConverter valueConverter = _provider.CreateValueConverter();
           while (reader.Read ())
           {
             objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));

@@ -14,7 +14,7 @@ namespace Rubicon.Utilities
 /// <remarks>
 ///   <para>
 ///     Use the <see cref="Create"/> method if you need to create a new instance of the
-///     <see cref="TypeConversionServices"/> type.
+///     <see cref="TypeConversionProvider"/> type.
 ///   </para><para>
 ///     Conversion is possible under the following conditions:
 ///   </para>
@@ -28,57 +28,57 @@ namespace Rubicon.Utilities
 ///       <see cref="Type"/>.
 ///     </item>
 ///     <item>
-///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try to use the 
+///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionProvider</b> try to use the 
 ///       <see cref="BidirectionalStringConverter"/>. See the documentation of the string converter for details on the
 ///       supported types.
 ///     </item>
 ///   </list>
 /// </remarks>
-public class TypeConversionServices
+public class TypeConversionProvider
 {
   private static Hashtable s_typeConverters = new Hashtable();
-  private static TypeConversionServices s_current;
+  private static TypeConversionProvider s_current;
 
-  /// <summary> Creates a new instace of the <see cref="TypeConversionServices"/> type. </summary>
-  /// <returns> An instance of the <see cref="TypeConversionServices"/> type. </returns>
-  public static TypeConversionServices Create()
+  /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
+  /// <returns> An instance of the <see cref="TypeConversionProvider"/> type. </returns>
+  public static TypeConversionProvider Create()
   {
-    return new TypeConversionServices();
+    return new TypeConversionProvider();
   }
 
-  /// <summary> Gets the current <see cref="TypeConversionServices"/>. </summary>
-  /// <value> An instance of the <see cref="TypeConversionServices"/> type. </value>
-  public static TypeConversionServices Current
+  /// <summary> Gets the current <see cref="TypeConversionProvider"/>. </summary>
+  /// <value> An instance of the <see cref="TypeConversionProvider"/> type. </value>
+  public static TypeConversionProvider Current
   {
     get
     {
       if (s_current == null)
       {
-        lock (typeof (TypeConversionServices))
+        lock (typeof (TypeConversionProvider))
         {
           if (s_current == null)
-            s_current = TypeConversionServices.Create();
+            s_current = TypeConversionProvider.Create();
         }
       }
       return s_current;
     }
   }
 
-  /// <summary> Sets the current <see cref="TypeConversionServices"/>. </summary>
-  /// <param name="services"> A <see cref="TypeConversionServices"/>. Must not be <see langword="null"/>. </param>
-  public static void SetCurrent (TypeConversionServices services)
+  /// <summary> Sets the current <see cref="TypeConversionProvider"/>. </summary>
+  /// <param name="provider"> A <see cref="TypeConversionProvider"/>. Must not be <see langword="null"/>. </param>
+  public static void SetCurrent (TypeConversionProvider provider)
   {
-    ArgumentUtility.CheckNotNull ("services", services);
-    lock (typeof (TypeConversionServices))
+    ArgumentUtility.CheckNotNull ("provider", provider);
+    lock (typeof (TypeConversionProvider))
     {
-      s_current = services;
+      s_current = provider;
     }
   }
 
   private Hashtable _additionalTypeConverters = new Hashtable();
   private BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
-  protected TypeConversionServices()
+  protected TypeConversionProvider()
 	{
 	}
 
@@ -173,7 +173,7 @@ public class TypeConversionServices
   }
 
   /// <summary> 
-  ///   Test whether the <see cref="TypeConversionServices"/> object can convert an object of <see cref="Type"/> 
+  ///   Test whether the <see cref="TypeConversionProvider"/> object can convert an object of <see cref="Type"/> 
   ///   <paramref name="sourceType"/> into an object of <see cref="Type"/> <paramref name="destinationType"/>
   ///   by using the <see cref="Convert"/> method.
   /// </summary>

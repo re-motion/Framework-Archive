@@ -366,7 +366,7 @@
     <Compile Include="Utilities\StringUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\TypeConversionServices.cs">
+    <Compile Include="Utilities\TypeConversionProvider.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\TypeUtility.cs">

@@ -14,6 +14,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
     // member fields
 
     private Type _storageProviderType;
+    private TypeConversionProvider _typeConversionProvider;
 
     // construction and disposing
 
@@ -25,6 +26,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
 
       string storageProviderTypeName = GetAndRemoveNonEmptyStringAttribute (config, "providerType", name, true);
       _storageProviderType = TypeUtility.GetType (storageProviderTypeName, true, false);
+      _typeConversionProvider = TypeConversionProvider.Create();
     }
 
     protected StorageProviderDefinition (string name, Type storageProviderType)
@@ -33,6 +35,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
       ArgumentUtility.CheckNotNull ("storageProviderType", storageProviderType);
 
       _storageProviderType = storageProviderType;
+      _typeConversionProvider = TypeConversionProvider.Create ();
     }
 
     // abstract methods and properties
@@ -56,6 +59,11 @@ namespace Rubicon.Data.DomainObjects.Persistence.Configuration
     public Type StorageProviderType
     {
       get { return _storageProviderType; }
+    }
+
+    public TypeConversionProvider TypeConversionProvider
+    {
+      get { return _typeConversionProvider; }
     }
   }
 }

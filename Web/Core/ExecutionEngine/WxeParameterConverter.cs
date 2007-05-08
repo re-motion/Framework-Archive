@@ -123,10 +123,10 @@ public class WxeParameterConverter
     Type destinationType = typeof (string);
 
     //TODO: #if DEBUG
-    if (! TypeConversionServices.Current.CanConvert (sourceType, destinationType))
+    if (! TypeConversionProvider.Current.CanConvert (sourceType, destinationType))
       return value;
 
-    return TypeConversionServices.Current.Convert (
+    return TypeConversionProvider.Current.Convert (
         null, CultureInfo.InvariantCulture, sourceType, destinationType, value);
   }
 
