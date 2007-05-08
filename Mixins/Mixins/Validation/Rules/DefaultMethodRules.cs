@@ -1,6 +1,7 @@
 using System;
 using Mixins.Definitions;
 using System.Reflection;
+using Mixins.Validation;
 
 namespace Mixins.Validation.Rules
 {
@@ -9,6 +10,8 @@ namespace Mixins.Validation.Rules
     public override void Install (ValidatingVisitor visitor)
     {
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMethodMustBeVirtual));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractMethodMustBeOverridden));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (NoCircularOverrides));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (InitializationMethodCanOnlyHaveThisAndBaseArguments));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (InitializationMethodMustNotBeGeneric));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (InitializationMethodMustHaveUniqueName));
@@ -17,6 +20,20 @@ namespace Mixins.Validation.Rules
     private void OverriddenMethodMustBeVirtual (DelegateValidationRule<MethodDefinition>.Args args)
     {
       SingleMust (args.Definition.Overrides.GetEnumerator ().MoveNext () ? args.Definition.MethodInfo.IsVirtual : true, args.Log, args.Self);
+    }
+
+    private void AbstractMethodMustBeOverridden (DelegateValidationRule<MethodDefinition>.Args args)
+    {
+      SingleMust (!args.Definition.MethodInfo.IsAbstract || args.Definition.Overrides.Count > 0, args.Log, args.Self);
+    }
+
+    private void NoCircularOverrides (DelegateValidationRule<MethodDefinition>.Args args)
+    {
+      MethodDefinition originalMethod = args.Definition;
+      MethodDefinition method = args.Definition.Base;
+      while (method != null && method != originalMethod)
+        method = method.Base;
+      SingleMust (method != originalMethod, args.Log, args.Self);
     }
 
     private void InitializationMethodCanOnlyHaveThisAndBaseArguments (DelegateValidationRule<MethodDefinition>.Args args)

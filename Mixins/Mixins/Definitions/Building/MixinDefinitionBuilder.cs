@@ -4,6 +4,7 @@ using Mixins;
 using Mixins.Context;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Rubicon;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
@@ -14,7 +15,6 @@ namespace Mixins.Definitions.Building
     private BaseClassDefinition _baseClass;
     private RequirementsAnalyzer _faceRequirementsAnalyzer; 
     private RequirementsAnalyzer _baseRequirementsAnalyzer;
-    private OverridesAnalyzer _overridesAnalyzer;
 
     public MixinDefinitionBuilder (BaseClassDefinition baseClass)
     {
@@ -22,7 +22,6 @@ namespace Mixins.Definitions.Building
       _baseClass = baseClass;
       _faceRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (ThisAttribute));
       _baseRequirementsAnalyzer = new RequirementsAnalyzer (baseClass, typeof (BaseAttribute));
-      _overridesAnalyzer = new OverridesAnalyzer();
     }
 
     public BaseClassDefinition BaseClass
@@ -38,7 +37,7 @@ namespace Mixins.Definitions.Building
       BaseClass.Mixins.Add (mixin);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m) { return m.IsPublic; });
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m) { return m.IsPublic || m.IsFamily; });
       membersBuilder.Apply (mixin.Type.GetProperties (bindingFlags), mixin.Type.GetEvents (bindingFlags),
         mixin.Type.GetMethods (bindingFlags));
 
@@ -69,39 +68,23 @@ namespace Mixins.Definitions.Building
 
     private void AnalyzeOverrides (MixinDefinition mixin)
     {
-      foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in _overridesAnalyzer.Analyze(mixin.Methods, _baseClass.Methods))
-        InitializeMethodOverride (methodOverride.A, methodOverride.B);
-      foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in _overridesAnalyzer.Analyze (mixin.Properties, _baseClass.Properties))
-        InitializePropertyOverride (propertyOverride.A, propertyOverride.B);
-      foreach (Tuple<EventDefinition, EventDefinition> eventOverride in _overridesAnalyzer.Analyze (mixin.Events, _baseClass.Events))
-        InitializeEventOverride (eventOverride.A, eventOverride.B);
-    }
+      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (delegate { return _baseClass.Methods; });
+      foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (mixin.Methods))
+        InitializeOverride (methodOverride.A, methodOverride.B);
 
-    private void InitializeMemberOverride (MemberDefinition overrider, MemberDefinition baseMember)
+      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (delegate { return _baseClass.Properties; });
+      foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in propertyAnalyzer.Analyze (mixin.Properties))
+        InitializeOverride (propertyOverride.A, propertyOverride.B);
+
+      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (delegate { return _baseClass.Events; });
+      foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (mixin.Events))
+        InitializeOverride (eventOverride.A, eventOverride.B);
+    }
+    
+    private void InitializeOverride (MemberDefinition overrider, MemberDefinition baseMember)
     {
-      overrider.Base = baseMember;
+      overrider.BaseAsMember = baseMember;
       baseMember.AddOverride (overrider);
-    }
-
-    private void InitializeMethodOverride (MethodDefinition overrider, MethodDefinition baseMember)
-    {
-      InitializeMemberOverride (overrider, baseMember);
-    }
-
-    private void InitializePropertyOverride (PropertyDefinition overrider, PropertyDefinition baseMember)
-    {
-      InitializeMemberOverride (overrider, baseMember);
-      if (overrider.GetMethod != null && baseMember.GetMethod != null)
-        InitializeMethodOverride (overrider.GetMethod, baseMember.GetMethod);
-      if (overrider.SetMethod != null && baseMember.SetMethod != null)
-        InitializeMethodOverride (overrider.SetMethod, baseMember.SetMethod);
-    }
-
-    private void InitializeEventOverride (EventDefinition overrider, EventDefinition baseMember)
-    {
-      InitializeMemberOverride (overrider, baseMember);
-      InitializeMethodOverride (overrider.AddMethod, baseMember.AddMethod);
-      InitializeMethodOverride (overrider.RemoveMethod, baseMember.RemoveMethod);
     }
 
     private void AnalyzeInitializationMethods (MixinDefinition mixin)

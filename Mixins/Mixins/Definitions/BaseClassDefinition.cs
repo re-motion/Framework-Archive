@@ -58,5 +58,26 @@ namespace Mixins.Definitions
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);
     }
+
+    public IEnumerable<MethodDefinition> GetAllMixinMethods()
+    {
+      foreach (MixinDefinition mixin in Mixins)
+        foreach (MethodDefinition method in mixin.Methods)
+          yield return method;
+    }
+
+    public IEnumerable<PropertyDefinition> GetAllMixinProperties ()
+    {
+      foreach (MixinDefinition mixin in Mixins)
+        foreach (PropertyDefinition property in mixin.Properties)
+          yield return property;
+    }
+
+    public IEnumerable<EventDefinition> GetAllMixinEvents ()
+    {
+      foreach (MixinDefinition mixin in Mixins)
+        foreach (EventDefinition eventDefinition in mixin.Events)
+          yield return eventDefinition;
+    }
   }
 }

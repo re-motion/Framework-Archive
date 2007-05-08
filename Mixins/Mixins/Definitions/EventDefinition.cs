@@ -6,13 +6,14 @@ using Rubicon.Utilities;
 namespace Mixins.Definitions
 {
   [Serializable]
-  public class EventDefinition : MemberDefinition, IVisitableDefinition
+  public class EventDefinition: MemberDefinition, IVisitableDefinition
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker();
 
     public readonly DefinitionItemCollection<Type, EventDefinition> Overrides =
         new DefinitionItemCollection<Type, EventDefinition> (delegate (EventDefinition m) { return m.DeclaringClass.Type; });
 
+    private EventDefinition _base;
     private MethodDefinition _addMethod;
     private MethodDefinition _removeMethod;
 
@@ -31,6 +32,28 @@ namespace Mixins.Definitions
       get { return (EventInfo) MemberInfo; }
     }
 
+    public override MemberDefinition BaseAsMember
+    {
+      get { return _base; }
+      set
+      {
+        if (value == null || value is EventDefinition)
+        {
+          _base = (EventDefinition) value;
+          AddMethod.Base = _base == null ? null : _base.AddMethod;
+          RemoveMethod.Base = _base == null ? null : _base.RemoveMethod;
+        }
+        else
+          throw new ArgumentException ("Base must be EventDefinition or null.", "value");
+      }
+    }
+
+    public EventDefinition Base
+    {
+      get { return _base; }
+      set { BaseAsMember = value; }
+    }
+
     public MethodDefinition AddMethod
     {
       get { return _addMethod; }
@@ -47,13 +70,9 @@ namespace Mixins.Definitions
 
       EventDefinition overriderEvent = overrider as EventDefinition;
       if (overriderEvent == null)
-      {
         return false;
-      }
       else
-      {
         return IsSignatureCompatibleWithEvent (overriderEvent);
-      }
     }
 
     private bool IsSignatureCompatibleWithEvent (EventDefinition overrider)
@@ -66,22 +85,23 @@ namespace Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("member", member);
 
-      EventDefinition Event = member as EventDefinition;
-      if (Event == null)
+      EventDefinition overrider = member as EventDefinition;
+      if (overrider == null)
       {
         string message = string.Format ("Member {0} cannot override event {1} - it is not an event.", member.FullName, FullName);
         throw new ArgumentException (message);
       }
 
-      Overrides.Add (Event);
+      Overrides.Add (overrider);
+
+      AddMethod.AddOverride (overrider.AddMethod);
+      RemoveMethod.AddOverride (overrider.RemoveMethod);
     }
 
-    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ()
+    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions()
     {
       foreach (EventDefinition overrider in Overrides)
-      {
         yield return overrider;
-      }
     }
 
     public override void Accept (IDefinitionVisitor visitor)
@@ -90,14 +110,8 @@ namespace Mixins.Definitions
       visitor.Visit (this);
       base.AcceptForChildren (visitor);
 
-      if (AddMethod != null)
-      {
-        AddMethod.Accept (visitor);
-      }
-      if (RemoveMethod != null)
-      {
-        RemoveMethod.Accept (visitor);
-      }
+      AddMethod.Accept (visitor);
+      RemoveMethod.Accept (visitor);
     }
   }
 }

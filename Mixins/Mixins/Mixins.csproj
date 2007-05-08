@@ -88,13 +88,14 @@
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
     <Compile Include="Definitions\EventIntroductionDefinition.cs" />
+    <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
+    <Compile Include="Definitions\MultiDictionary.cs" />
     <Compile Include="Definitions\PropertyIntroductionDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollectionBase.cs" />
     <Compile Include="Definitions\IAttributableDefinition.cs" />
     <Compile Include="Definitions\MemberIntroductionDefinition.cs" />
     <Compile Include="Definitions\EventDefinition.cs" />
     <Compile Include="Definitions\MethodIntroductionDefinition.cs" />
-    <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
     <Compile Include="Definitions\RequiredBaseCallMethodDefinition.cs" />

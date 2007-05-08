@@ -89,9 +89,10 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void MixinOnInterface ()
+    public void MixinsOnInterface ()
     {
       ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      context.GetOrAddClassContext (typeof (IBaseType2)).AddMixinContext (new MixinContext (typeof (IBaseType2), typeof (BT2Mixin1)));
 
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
       Assert.IsNotNull (classContext);

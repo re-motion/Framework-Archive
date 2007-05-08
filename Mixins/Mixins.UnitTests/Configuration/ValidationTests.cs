@@ -116,8 +116,6 @@ namespace Mixins.UnitTests.Configuration
       
       BaseClassDefinition bt1 = application.BaseClasses[typeof (BaseType1)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt1));
-      BaseClassDefinition bt2 = application.BaseClasses[typeof (IBaseType2)];
-      Assert.IsTrue (visitedDefinitions.ContainsKey (bt2));
       BaseClassDefinition bt3 = application.BaseClasses[typeof (BaseType3)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3));
 
@@ -125,8 +123,6 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m1));
       MixinDefinition bt1m2 = bt1.Mixins[typeof (BT1Mixin2)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt1m2));
-      MixinDefinition bt2m1 = bt2.Mixins[typeof (BT2Mixin1)];
-      Assert.IsTrue (visitedDefinitions.ContainsKey (bt2m1));
       MixinDefinition bt3m1 = bt3.Mixins[typeof (BT3Mixin1)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m1));
       MixinDefinition bt3m2 = bt3.Mixins[typeof (BT3Mixin2)];
@@ -492,6 +488,52 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfOverriddenMixinMethodNotVirtual ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof (MixinWithNonVirtualMethodToBeOverridden));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+    }
+
+    [Test]
+    public void FailsIfAbstractMixinMethodHasNoOverride ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (AbstractMixin));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.AbstractMethodMustBeOverridden", log));
+    }
+
+    [Test]
+    public void FailsIfCrossOverridesOnSameMethods ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingSameClassMethod));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log));
+    }
+
+    [Test]
+    public void SucceedsIfCrossOverridesNotOnSameMethods ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingClassMethod));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.AreEqual (0, log.GetNumberOfFailureResults ());
+      Assert.AreEqual (0, log.GetNumberOfWarningResults ());
+    }
+
+    [Test]
+    public void FailsIfBaseClassDefinitionIsInterface ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (IBaseType2));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAnInterface", log));
     }
   }
 }

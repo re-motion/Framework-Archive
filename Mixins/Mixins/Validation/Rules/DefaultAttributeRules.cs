@@ -92,7 +92,7 @@ namespace Mixins.Validation.Rules
           return true;
       }
       
-      if (member.Base != null && member.Base.CustomAttributes.HasItem (attributeDefinition.AttributeType))
+      if (member.BaseAsMember != null && member.BaseAsMember.CustomAttributes.HasItem (attributeDefinition.AttributeType))
         return true;
 
       return false;

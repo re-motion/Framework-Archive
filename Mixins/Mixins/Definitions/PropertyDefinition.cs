@@ -13,6 +13,7 @@ namespace Mixins.Definitions
     public readonly DefinitionItemCollection<Type, PropertyDefinition> Overrides =
         new DefinitionItemCollection<Type, PropertyDefinition> (delegate (PropertyDefinition m) { return m.DeclaringClass.Type; });
 
+    private PropertyDefinition _base;
     private MethodDefinition _getMethod;
     private MethodDefinition _setMethod;
 
@@ -36,6 +37,30 @@ namespace Mixins.Definitions
     public MethodDefinition SetMethod
     {
       get { return _setMethod; }
+    }
+
+    public override MemberDefinition BaseAsMember
+    {
+      get { return _base; }
+      set
+      {
+        if (value == null || value is PropertyDefinition)
+        {
+          _base = (PropertyDefinition) value;
+          if (GetMethod != null)
+            GetMethod.Base = _base == null ? null : _base.GetMethod;
+          if (SetMethod != null)
+            SetMethod.Base = _base == null ? null : _base.SetMethod;
+        }
+        else
+          throw new ArgumentException ("Base must be PropertyDefinition or null.", "value");
+      }
+    }
+
+    public PropertyDefinition Base
+    {
+      get { return _base; }
+      set { BaseAsMember = value; }
     }
 
     protected override bool IsSignatureCompatibleWith (MemberDefinition overrider)
@@ -63,17 +88,22 @@ namespace Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("member", member);
 
-      PropertyDefinition property = member as PropertyDefinition;
-      if (property == null)
+      PropertyDefinition overrider = member as PropertyDefinition;
+      if (overrider == null)
       {
         string message = string.Format ("Member {0} cannot override property {1} - it is not a property.", member.FullName, FullName);
         throw new ArgumentException (message);
       }
 
-      Overrides.Add (property);
+      Overrides.Add (overrider);
+
+      if (GetMethod != null && overrider.GetMethod != null)
+        GetMethod.AddOverride (overrider.GetMethod);
+      if (SetMethod != null && overrider.SetMethod != null)
+        SetMethod.AddOverride (overrider.SetMethod);
     }
 
-    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ()
+    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions()
     {
       foreach (PropertyDefinition overrider in Overrides)
       {

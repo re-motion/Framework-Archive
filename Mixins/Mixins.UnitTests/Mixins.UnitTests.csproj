@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
+    <Compile Include="SampleTypes\MixinOverridingClassMethod.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSameClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassThisDependency.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\InternalNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\DoubleImplementer.cs" />
@@ -55,9 +57,13 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSetterOnly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithDuplicateIntialiationMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithGenericIntialiationMethod.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithNonVirtualMethodToBeOverridden.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithThisAsBase.cs" />
     <Compile Include="Mixins\CustomConfigurationTests.cs" />
     <Compile Include="Mixins\ReflectionUtilityTests.cs" />
+    <Compile Include="SampleTypes\AbstractMixin.cs" />
+    <Compile Include="SampleTypes\ClassOverridingMixinMethod.cs" />
+    <Compile Include="SampleTypes\ClassOverridingMixinMethodWrongSig.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnidentifiedInitializationArgument.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnsatisfiedThisDependency.cs" />

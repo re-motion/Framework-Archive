@@ -37,7 +37,7 @@ namespace Mixins.Definitions
     {
       foreach (MemberDefinition member in GetAllMembers())
       {
-        if (member.Base != null)
+        if (member.BaseAsMember != null)
         {
           yield return member;
         }

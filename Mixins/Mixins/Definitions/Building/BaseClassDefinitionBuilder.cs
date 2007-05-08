@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Mixins.Context;
 using System.Reflection;
+using Rubicon;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
@@ -38,6 +40,29 @@ namespace Mixins.Definitions.Building
 
       ApplyMixins(classDefinition, classContext);
       ApplyBaseCallMethodRequirements (classDefinition);
+
+      AnalyzeOverrides (classDefinition);
+    }
+
+    private void AnalyzeOverrides (BaseClassDefinition definition)
+    {
+      OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (definition.GetAllMixinMethods);
+      foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))
+        InitializeOverride (methodOverride.A, methodOverride.B);
+
+      OverridesAnalyzer<PropertyDefinition> propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (definition.GetAllMixinProperties);
+      foreach (Tuple<PropertyDefinition, PropertyDefinition> propertyOverride in propertyAnalyzer.Analyze (definition.Properties))
+        InitializeOverride (propertyOverride.A, propertyOverride.B);
+
+      OverridesAnalyzer<EventDefinition> eventAnalyzer = new OverridesAnalyzer<EventDefinition> (definition.GetAllMixinEvents);
+      foreach (Tuple<EventDefinition, EventDefinition> eventOverride in eventAnalyzer.Analyze (definition.Events))
+        InitializeOverride (eventOverride.A, eventOverride.B);
+    }
+
+    private void InitializeOverride (MemberDefinition overrider, MemberDefinition baseMember)
+    {
+      overrider.BaseAsMember = baseMember;
+      baseMember.AddOverride (overrider);
     }
 
     private static bool IsVisibleToInheritors (MethodInfo method)

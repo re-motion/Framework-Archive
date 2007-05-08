@@ -34,16 +34,12 @@ namespace Mixins.Context
       ArgumentUtility.CheckNotNull ("assembly", assembly);
       ArgumentUtility.CheckNotNull ("targetContext", targetContext);
 
-      foreach (Type t in assembly.GetTypes())
+      foreach (Type t in assembly.GetTypes ())
       {
         if (t.IsDefined (typeof (MixinForAttribute), false))
-        {
-          AnalyzeMixin(t, targetContext);
-        }
+          AnalyzeMixin (t, targetContext);
         if (t.IsDefined (typeof (ApplyMixinAttribute), true))
-        {
-          AnalyzeMixinApplications(t, targetContext);
-        }
+          AnalyzeMixinApplications (t, targetContext);
       }
     }
 

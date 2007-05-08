@@ -1,1 +1,1 @@
-- No cross-overrides between mixins and targets
+- Override method visibility

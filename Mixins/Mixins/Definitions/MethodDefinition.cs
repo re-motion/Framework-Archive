@@ -13,6 +13,8 @@ namespace Mixins.Definitions
     public readonly DefinitionItemCollection<Type, MethodDefinition> Overrides =
         new DefinitionItemCollection<Type, MethodDefinition> (delegate (MethodDefinition m) { return m.DeclaringClass.Type; });
 
+    private MethodDefinition _base;
+
     public MethodDefinition (MethodInfo memberInfo, ClassDefinition declaringClass)
         : base (memberInfo, declaringClass)
     {
@@ -23,6 +25,24 @@ namespace Mixins.Definitions
       get {
         return (MethodInfo) MemberInfo;
       }
+    }
+
+    public override MemberDefinition BaseAsMember
+    {
+      get { return _base; }
+      set
+      {
+        if (value == null || value is MethodDefinition)
+          _base = (MethodDefinition) value;
+        else
+          throw new ArgumentException ("Base must be MethodDefinition or null.", "value");
+      }
+    }
+
+    public MethodDefinition Base
+    {
+      get { return _base; }
+      set { BaseAsMember = value; }
     }
 
     protected override bool IsSignatureCompatibleWith (MemberDefinition overrider)
@@ -60,7 +80,7 @@ namespace Mixins.Definitions
       Overrides.Add (method);
     }
 
-    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions ()
+    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions()
     {
       foreach (MethodDefinition overrider in Overrides)
       {

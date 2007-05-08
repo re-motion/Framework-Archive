@@ -11,7 +11,6 @@ namespace Mixins.Definitions
     private MemberInfo _memberInfo;
     private ClassDefinition _declaringClass;
 
-    private MemberDefinition _base = null;
     private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
         new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
@@ -64,15 +63,11 @@ namespace Mixins.Definitions
       get { return string.Format ("{0}.{1}", DeclaringClass.FullName, Name); }
     }
 
+    public abstract MemberDefinition BaseAsMember { get; set; }
+
     public IVisitableDefinition Parent
     {
       get { return DeclaringClass; }
-    }
-
-    public MemberDefinition Base
-    {
-      get { return _base; }
-      set { _base = value; }
     }
 
     public MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes

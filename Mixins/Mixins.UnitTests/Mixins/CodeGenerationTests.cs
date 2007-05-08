@@ -242,9 +242,29 @@ namespace Mixins.UnitTests.Mixins
     [Ignore ("TODO: Implement overrides")]
     public void OverrideWithCompleteBaseInterface ()
     {
-
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).With();
       Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod", bt3.IfcMethod());
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement mixin method overrides")]
+    public void OverrideMixinMethod ()
+    {
+      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With();
+      IAbstractMixin comAsIAbstractMixin = com as IAbstractMixin;
+      Assert.IsNotNull (comAsIAbstractMixin);
+      Assert.AreEqual ("AbstractMixin.ImplementedMethod-ClassOverridingMixinMethod.AbstractMethod-25", comAsIAbstractMixin.ImplementedMethod());
+    }
+
+    [Test]
+    [Ignore("TODO: Implement mixin method overrides")]
+    public void DoubleOverride ()
+    {
+      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
+      IMixinOverridingClassMethod comAsIAbstractMixin = com as IMixinOverridingClassMethod;
+      Assert.IsNotNull (comAsIAbstractMixin);
+      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIAbstractMixin.AbstractMethod(25));
+      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
     }
   }
 }

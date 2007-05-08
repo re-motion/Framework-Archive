@@ -312,7 +312,7 @@ namespace Mixins.UnitTests.Configuration
       MethodDefinition overridden = baseClass.Methods[baseMethod1];
 
       Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin1)));
-      MemberDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
+      MethodDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
       Assert.AreSame (overrider, mixin1.Methods[mixinMethod1]);
       Assert.IsNotNull (overrider.Base);
@@ -407,7 +407,7 @@ namespace Mixins.UnitTests.Configuration
       MixinDefinition mixin = baseClass.Mixins[typeof(BT4Mixin1)];
       Assert.IsNotNull (mixin);
 
-      MemberDefinition overrider = mixin.Methods[typeof(BT4Mixin1).GetMethod("NonVirtualMethod")];
+      MethodDefinition overrider = mixin.Methods[typeof(BT4Mixin1).GetMethod("NonVirtualMethod")];
       Assert.IsNotNull(overrider);
       Assert.IsNotNull(overrider.Base);
 
@@ -482,7 +482,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinAppliedToInterface ()
     {
-      ApplicationDefinition application = GetApplicationDefinition ();
+      ApplicationDefinition application = DefBuilder.Build (typeof (IBaseType2), typeof (BT2Mixin1));
       Assert.IsFalse (application.BaseClasses.HasItem (typeof (BaseType2)));
       Assert.IsTrue (application.BaseClasses.HasItem (typeof (IBaseType2)));
       
@@ -838,6 +838,45 @@ namespace Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bt1 = GetApplicationDefinition().BaseClasses[typeof (BaseType1)];
       Assert.IsFalse (bt1.CustomAttributes.HasItem (typeof (SerializableAttribute)));
+    }
+
+    [Test]
+    public void OverriddenMixinMethod()
+    {
+      BaseClassDefinition overrider = GetApplicationDefinition().BaseClasses[typeof (ClassOverridingMixinMethod)];
+      MixinDefinition mixin = overrider.Mixins[typeof (AbstractMixin)];
+      Assert.IsNotNull (mixin);
+
+      MethodDefinition method = mixin.Methods[typeof (AbstractMixin).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
+      Assert.IsNotNull (method);
+      MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMethod).GetMethod ("AbstractMethod")];
+      Assert.IsNotNull (overridingMethod);
+      Assert.AreSame (method, overridingMethod.Base);
+      Assert.IsTrue (method.Overrides.HasItem (typeof (ClassOverridingMixinMethod)));
+      Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMethod)]);
+    }
+
+    [Test]
+    public void NotOverriddenAbstractMixinMethodSucceeds ()
+    {
+      BaseClassDefinition bt1 = DefBuilder.Build (typeof (BaseType1), typeof (AbstractMixin)).BaseClasses[typeof(BaseType1)];
+      MixinDefinition mixin = bt1.Mixins[typeof (AbstractMixin)];
+      MethodDefinition method = mixin.Methods[typeof (AbstractMixin).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
+      Assert.AreEqual (0, method.Overrides.Count);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException))]
+    public void ThrowsOnMixinMethodOverridedWrongSig ()
+    {
+      DefBuilder.Build (typeof (ClassOverridingMixinMethodWrongSig), typeof (AbstractMixin));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException))]
+    public void ThrowsOnMixinOverrideWithoutMixin ()
+    {
+      DefBuilder.Build (typeof (ClassOverridingMixinMethod));
     }
   }
 }
