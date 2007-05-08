@@ -8,7 +8,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 {
 
 /// <summary> Exposes non-public members of the <see cref="StringUtility"/> type. </summary>
-public class StringUtilityMock
+public class StubStringUtility
 {
   public static void AddParseMethodToCache (Type key, MethodInfo parseMethod)
   {

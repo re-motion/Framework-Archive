@@ -336,18 +336,25 @@ namespace Rubicon.Utilities
     /// <exception cref="ParseException"> The <b>Parse</b> method was not found, or failed. </exception>
     public static object Parse (Type type, string value, IFormatProvider formatProvider)
     {
-      if (type == typeof (string))
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      Type underlyingType = Nullable.GetUnderlyingType (type) ?? type;
+      bool isNullableType = underlyingType != type;
+
+      if (underlyingType == typeof (string))
         return value;
-      else if (type.IsArray)
+      if (underlyingType.IsArray)
         return StringUtility.ParseArrayValue (type, value, formatProvider);
-      else if (type.IsEnum)
-        return Enum.Parse (type, value, false);
-      else if (type == typeof (Guid))
-        return new Guid (value);
-      else if (type == typeof (DBNull))
+      if (underlyingType == typeof (DBNull))
         return DBNull.Value;
+      if (isNullableType && string.IsNullOrEmpty (value))
+        return null;
+      if (underlyingType.IsEnum)
+        return ParseEnumValue(underlyingType, value);
+      if (underlyingType == typeof (Guid))
+        return new Guid (value);
       else
-        return StringUtility.ParseScalarValue (type, value, formatProvider);
+        return StringUtility.ParseScalarValue (underlyingType, value, formatProvider);
     }
 
     private static object ParseArrayValue (Type type, string value, IFormatProvider formatProvider)
@@ -391,15 +398,31 @@ namespace Rubicon.Utilities
       }
     }
 
+    private static object ParseEnumValue (Type underlyingType, string value)
+    {
+      try
+      {
+        return Enum.Parse (underlyingType, value, false);
+      }
+      catch (ArgumentException e)
+      {
+        throw new ParseException (string.Format ("{0} is not a valid value for {1}.", value, underlyingType.Name));
+      }
+    }
+
     public static bool CanParse (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
+      type = Nullable.GetUnderlyingType (type) ?? type;
+
       if (type == typeof (string))
+        return true;
+      if (type == typeof (DBNull))
         return true;
       if (type == typeof (Guid))
         return true;
-      if (type == typeof (DBNull))
+      if (type.IsEnum)
         return true;
       if (type.IsArray)
       {

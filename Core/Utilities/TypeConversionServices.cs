@@ -189,7 +189,7 @@ public class TypeConversionServices
     ArgumentUtility.CheckNotNull ("sourceType", sourceType);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-    if (sourceType == destinationType)
+    if (AreUnderlyingTypesEqual(destinationType, sourceType))
       return true;
 
     TypeConverter converter = GetTypeConverter (sourceType, destinationType);
@@ -222,15 +222,14 @@ public class TypeConversionServices
   /// <param name="destinationType"> 
   ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
   /// </param>
-  /// <param name="value"> The <see cref="NaInt16"/> to be converted. Must not be <see langword="null"/>. </param>
+  /// <param name="value"> The <see cref="Object"/> to be converted.</param>
   /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
-  public virtual object Convert (
-      ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value)
+  public virtual object Convert (ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value)
   {
     ArgumentUtility.CheckNotNull ("sourceType", sourceType);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-    if (sourceType == destinationType)
+    if (AreUnderlyingTypesEqual (sourceType, destinationType))
     {
       if (destinationType == typeof (string) && value == null)
         return string.Empty;
@@ -245,8 +244,7 @@ public class TypeConversionServices
     if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
       return destinationTypeConverter.ConvertFrom (context, culture, value);
 
-    throw new NotSupportedException (string.Format (
-        "Cannot convert value '{0}' to type '{1}'.", value, destinationType));
+    throw new NotSupportedException (string.Format ("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
   }
 
   protected TypeConverter GetBasicTypeConverter (Type type)
@@ -304,6 +302,17 @@ public class TypeConversionServices
   {
     ArgumentUtility.CheckNotNull ("type", type);
     return (TypeConverter) _additionalTypeConverters[type];
+  }
+
+  private bool AreUnderlyingTypesEqual (Type destinationType, Type sourceType)
+  {
+    if (sourceType == destinationType)
+      return true;
+
+    if ((Nullable.GetUnderlyingType (sourceType) ?? sourceType) == (Nullable.GetUnderlyingType (destinationType) ?? destinationType))
+      return true;
+
+    return false;
   }
 }
 

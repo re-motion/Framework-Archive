@@ -262,7 +262,7 @@
     <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\StringUtilityMock.cs">
+    <Compile Include="Utilities\StubStringUtility.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\StringUtilityTest.cs">

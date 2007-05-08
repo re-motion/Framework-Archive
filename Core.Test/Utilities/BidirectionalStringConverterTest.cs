@@ -383,6 +383,25 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
+  public void ConvertToNullableInt32 ()
+  {
+    Type destinationType = typeof (int?);
+
+    Assert.AreEqual (0, _converter.ConvertTo ("0", destinationType));
+    Assert.AreEqual (1, _converter.ConvertTo ("1", destinationType));
+    Assert.AreEqual (null, _converter.ConvertTo (string.Empty, destinationType));
+    Assert.AreEqual (null, _converter.ConvertTo (null, destinationType));
+  }
+
+  [Test]
+  public void ConvertFromNullableInt32 ()
+  {
+    Assert.AreEqual ("0", _converter.ConvertFrom ((int?) 0));
+    Assert.AreEqual ("1", _converter.ConvertFrom ((int?) 1));
+    Assert.AreEqual (string.Empty, _converter.ConvertFrom ((int?) null));
+  }
+
+  [Test]
   [ExpectedException (typeof (ParseException))]
   public void ConvertToInt32WithNull()
   {
@@ -392,7 +411,7 @@ public class BidirectionalStringConverterTest
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual ("", _converter.ConvertFrom (null));
+    Assert.AreEqual (string.Empty, _converter.ConvertFrom (null));
   }
 
   [Test]

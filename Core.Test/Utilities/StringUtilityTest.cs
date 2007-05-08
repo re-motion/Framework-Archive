@@ -11,15 +11,24 @@ namespace Rubicon.Core.UnitTests.Utilities
 [TestFixture]
 public class StringUtilityTest
 {
+  private enum TestEnum 
+  { 
+    Value1 
+  }
+
   private CultureInfo _cultureBackup;
   private CultureInfo _cultureEnUs;
   private CultureInfo _cultureDeAt;
 
   private Type _int32 = typeof (int);
+  private Type _nullableInt32 = typeof (int?);
   private Type _double = typeof (double);
   private Type _string = typeof (string);
   private Type _object = typeof (object);
   private Type _guid = typeof (Guid);
+  private Type _nullableGuid = typeof (Guid?);
+  private Type _enum = typeof (TestEnum);
+  private Type _nullableEnum = typeof (TestEnum?);
   private Type _dbNull = typeof (DBNull);
   private Type _doubleArray = typeof (double[]);
   private Type _stringArray = typeof (string[]);
@@ -33,7 +42,7 @@ public class StringUtilityTest
     _cultureBackup = Thread.CurrentThread.CurrentCulture;
     Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-    StringUtilityMock.ClearCache();
+    StubStringUtility.ClearCache();
   }
 
   [TearDown]
@@ -53,7 +62,7 @@ public class StringUtilityTest
   public void IsNullOrEmpty()
   {
     Assert.AreEqual (true, StringUtility.IsNullOrEmpty (null));
-    Assert.AreEqual (true, StringUtility.IsNullOrEmpty (""));
+    Assert.AreEqual (true, StringUtility.IsNullOrEmpty (string.Empty));
     Assert.AreEqual (false, StringUtility.IsNullOrEmpty (" "));
   }
 
@@ -67,20 +76,21 @@ public class StringUtilityTest
     Assert.AreEqual (false, StringUtility.AreEqual ("täst1", "TÄST1", false));
     Assert.AreEqual (true, StringUtility.AreEqual ("täst1", "TÄST1", true));
   }
+
   [Test]
   public void GetParseMethodFromCache()
   {
-    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
-    StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
-    Assert.AreSame (parseMethod, StringUtilityMock.GetParseMethodFromCache (_int32));
+    MethodInfo parseMethod = StubStringUtility.GetParseMethodFromType (_int32);
+    StubStringUtility.AddParseMethodToCache (_int32, parseMethod);
+    Assert.AreSame (parseMethod, StubStringUtility.GetParseMethodFromCache (_int32));
   }
 
   [Test]
   public void HasTypeInCache()
   {
-    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
-    StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
-    Assert.IsTrue (StringUtilityMock.HasTypeInCache (_int32));
+    MethodInfo parseMethod = StubStringUtility.GetParseMethodFromType (_int32);
+    StubStringUtility.AddParseMethodToCache (_int32, parseMethod);
+    Assert.IsTrue (StubStringUtility.HasTypeInCache (_int32));
   }
 
   [Test]
@@ -90,9 +100,27 @@ public class StringUtilityTest
   }
 
   [Test]
+  public void CanParseNullableInt32 ()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_nullableInt32));
+  }
+
+  [Test]
+  public void CanParseEnum ()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_enum));
+  }
+
+  [Test]
+  public void CanParseNullableEnum ()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_nullableEnum));
+  }
+
+  [Test]
   public void GetParseMethodForInt32()
   {
-    MethodInfo parseMethod = StringUtilityMock.GetParseMethod (_int32, true);
+    MethodInfo parseMethod = StubStringUtility.GetParseMethod (_int32, true);
     Assert.IsNotNull (parseMethod);
     Assert.AreEqual ("Parse", parseMethod.Name);
     Assert.AreEqual (2, parseMethod.GetParameters().Length);
@@ -106,7 +134,7 @@ public class StringUtilityTest
   [Test]
   public void GetParseMethodFromTypeForInt32()
   {
-    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
+    MethodInfo parseMethod = StubStringUtility.GetParseMethodFromType (_int32);
     Assert.IsNotNull (parseMethod);
     Assert.AreEqual ("Parse", parseMethod.Name);
     Assert.AreEqual (1, parseMethod.GetParameters().Length);
@@ -119,7 +147,7 @@ public class StringUtilityTest
   [Test]
   public void GetParseMethodWithFormatProviderFromTypeForInt32()
   {
-    MethodInfo parseMethod = StringUtilityMock.GetParseMethodWithFormatProviderFromType (_int32);
+    MethodInfo parseMethod = StubStringUtility.GetParseMethodWithFormatProviderFromType (_int32);
     Assert.IsNotNull (parseMethod);
     Assert.AreEqual ("Parse", parseMethod.Name);
     Assert.AreEqual (2, parseMethod.GetParameters().Length);
@@ -140,25 +168,113 @@ public class StringUtilityTest
   [ExpectedException (typeof (ParseException))]
   public void GetParseMethodForObjectWithException()
   {
-    StringUtilityMock.GetParseMethod (_object, true);
+    StubStringUtility.GetParseMethod (_object, true);
   }
 
   [Test]
   public void GetParseMethodForObjectWithoutException()
   {
-    Assert.IsNull (StringUtilityMock.GetParseMethod (_object, false));
+    Assert.IsNull (StubStringUtility.GetParseMethod (_object, false));
   }
 
   [Test]
   public void GetParseMethodFromTypeForObject()
   {
-    Assert.IsNull (StringUtilityMock.GetParseMethodFromType (_object));
+    Assert.IsNull (StubStringUtility.GetParseMethodFromType (_object));
   }
 
   [Test]
   public void GetParseMethodWithFormatProviderFromTypeForObject()
   {
-    Assert.IsNull (StringUtilityMock.GetParseMethodWithFormatProviderFromType (_object));
+    Assert.IsNull (StubStringUtility.GetParseMethodWithFormatProviderFromType (_object));
+  }
+
+  [Test]
+  public void ParseInt32 ()
+  {
+    object value = StringUtility.Parse (_int32, "1", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_int32, value.GetType ());
+    Assert.AreEqual (1, value);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void ParseInt32WithEmpty ()
+  {
+    StringUtility.Parse (_int32, string.Empty, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void ParseInt32WithNull ()
+  {
+    StringUtility.Parse (_int32, null, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
+  public void ParseNullableInt32 ()
+  {
+    object value = StringUtility.Parse (_nullableInt32, "1", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_int32, value.GetType ());
+    Assert.AreEqual (1, value);
+  }
+
+  [Test]
+  public void ParseNullableInt32WithEmpty ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableInt32, string.Empty, CultureInfo.InvariantCulture));
+  }
+
+  [Test]
+  public void ParseNullableInt32WithNull ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableInt32, null, CultureInfo.InvariantCulture));
+  }
+
+  [Test]
+  public void ParseEnum ()
+  {
+    object value = StringUtility.Parse (_enum, "Value1", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_enum, value.GetType ());
+    Assert.AreEqual (TestEnum.Value1, value);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException), ExpectedMessage = " is not a valid value for TestEnum.")]
+  public void ParseEnumWithEmpty ()
+  {
+    StringUtility.Parse (_enum, string.Empty, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException), ExpectedMessage = " is not a valid value for TestEnum.")]
+  public void ParseEnumWithNull ()
+  {
+    StringUtility.Parse (_enum, null, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
+  public void ParseNullableEnum ()
+  {
+    object value = StringUtility.Parse (_nullableEnum, "Value1", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_enum, value.GetType ());
+    Assert.AreEqual (TestEnum.Value1, value);
+  }
+
+  [Test]
+  public void ParseNullableEnumWithEmpty ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableEnum, string.Empty, CultureInfo.InvariantCulture));
+  }
+
+  [Test]
+  public void ParseNullableEnumWithNull ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableEnum, null, CultureInfo.InvariantCulture));
   }
 
   [Test]
@@ -351,6 +467,20 @@ public class StringUtilityTest
   }
 
   [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ParseGuidWithEmpty ()
+  {
+    StringUtility.Parse (_guid, string.Empty, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void ParseGuidWithNull ()
+  {
+    StringUtility.Parse (_guid, null, CultureInfo.InvariantCulture);
+  }
+
+  [Test]
   public void ParseEmptyGuid()
   {
     Guid guid = Guid.Empty;
@@ -361,9 +491,30 @@ public class StringUtilityTest
   }
 
   [Test]
+  public void ParseNullableGuid ()
+  {
+    Guid? guid = Guid.NewGuid ();
+    object value = StringUtility.Parse (_nullableGuid, guid.ToString (), null);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_guid, value.GetType ());
+    Assert.AreEqual (guid, value);
+  }
+
+  [Test]
+  public void ParseNullableGuidWithEmpty ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableGuid, string.Empty, null));
+  }
+
+  [Test]
+  public void ParseNullableGuidWithNull ()
+  {
+    Assert.IsNull (StringUtility.Parse (_nullableGuid, null, null));
+  }
+  [Test]
   public void FormatNull()
   {
-    Assert.AreEqual ("", StringUtility.Format (null, null));
+    Assert.AreEqual (string.Empty, StringUtility.Format (null, null));
   }
 
   [Test]
