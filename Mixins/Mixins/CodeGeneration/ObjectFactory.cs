@@ -1,13 +1,11 @@
 using System;
 using System.Reflection.Emit;
 using Mixins.CodeGeneration;
-using Mixins.UnitTests.SampleTypes;
 using Rubicon.Reflection;
-using Mixins.Definitions;
 using System.Reflection;
 using Rubicon.Text;
 
-namespace Mixins.UnitTests.Mixins
+namespace Mixins.CodeGeneration
 {
   public struct InvokeWithWrapper<T>
   {
@@ -48,7 +46,7 @@ namespace Mixins.UnitTests.Mixins
             if (ctor == null)
             {
               string message = string.Format ("Type {0} does not contain constructor with signature {1}.", typeof (T).FullName,
-                SeparatedStringBuilder.Build (",", argumentTypes, delegate (Type t) { return t.FullName; }));
+                                              SeparatedStringBuilder.Build (",", argumentTypes, delegate (Type t) { return t.FullName; }));
               throw new MissingMethodException (message);
             } 
             return CreateConstructionAndDelegate(ctor, delegateType);
@@ -94,7 +92,7 @@ namespace Mixins.UnitTests.Mixins
             if (ctor == null)
             {
               string message = string.Format ("Type {0} does not contain constructor with signature {1}.", typeof (T).FullName,
-                SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
+                                              SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
               throw new MissingMethodException (message);
             }
             return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);

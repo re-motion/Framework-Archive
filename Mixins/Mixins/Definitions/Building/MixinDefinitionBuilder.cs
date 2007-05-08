@@ -37,7 +37,10 @@ namespace Mixins.Definitions.Building
       BaseClass.Mixins.Add (mixin);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m) { return m.IsPublic || m.IsFamily; });
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m)
+      {
+        return m.IsPublic || m.IsFamily || (m.IsPrivate && m.IsVirtual);
+      });
       membersBuilder.Apply (mixin.Type.GetProperties (bindingFlags), mixin.Type.GetEvents (bindingFlags),
         mixin.Type.GetMethods (bindingFlags));
 

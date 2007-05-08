@@ -57,10 +57,10 @@ namespace Mixins.UnitTests.Mixins
       BT1Mixin1 m1 = new BT1Mixin1 ();
       BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (m1).With();
 
-      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<BT1Mixin1> (bt1));
-      Assert.AreSame (m1, MixinReflectionHelper.GetMixinOf<BT1Mixin1> (bt1));
-      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<BT1Mixin2> (bt1));
-      Assert.AreNotSame (m1, MixinReflectionHelper.GetMixinOf<BT1Mixin2> (bt1));
+      Assert.IsNotNull (Mixin.Get<BT1Mixin1> ((object) bt1));
+      Assert.AreSame (m1, Mixin.Get<BT1Mixin1> ((object) bt1));
+      Assert.IsNotNull (Mixin.Get<BT1Mixin2> ((object) bt1));
+      Assert.AreNotSame (m1, Mixin.Get<BT1Mixin2> ((object) bt1));
     }
 
     [Test]

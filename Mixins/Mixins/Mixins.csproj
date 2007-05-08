@@ -47,6 +47,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\ObjectFactory.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingleton.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingletonBase.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\DefaultInstanceCreator.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="Mixin.cs" />
     <Compile Include="MixinForAttribute.cs" />
     <Compile Include="MixinInitializationMethodAttribute.cs" />
-    <Compile Include="MixinReflectionHelper.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\DefaultLog\ConsoleDumper.cs" />

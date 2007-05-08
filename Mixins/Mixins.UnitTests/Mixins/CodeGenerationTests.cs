@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Mixins.CodeGeneration;
 using Mixins.Definitions;
+using Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using NUnit.Framework;
 using Mixins.UnitTests.SampleTypes;
 using System.IO;
@@ -148,7 +149,7 @@ namespace Mixins.UnitTests.Mixins
     public void MixinsAreInitializedWithTarget ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With ();
-      BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
+      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> ((object) bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
     }
@@ -158,7 +159,7 @@ namespace Mixins.UnitTests.Mixins
     public void MixinsAreInitializedWithBase ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin1> (bt3);
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> ((object) bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
       Assert.IsNotNull (mixin.Base);
@@ -166,17 +167,24 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("Todo: Implement base")]
     public void GenericMixinsAreSpecialized ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();
-      object mixin = MixinReflectionHelper.GetMixinOf (typeof (BT3Mixin3<,>), bt3);
+      object mixin = Mixin.Get (typeof (BT3Mixin3<,>), (object) bt3);
       Assert.IsNotNull (mixin);
-      Assert.IsNotNull (mixin.GetType().GetField ("This").GetValue (mixin));
-      Assert.IsNotNull (mixin.GetType ().GetField ("Base").GetValue (mixin));
+      
+      PropertyInfo thisProperty = mixin.GetType().BaseType.GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance);
+      Assert.IsNotNull (thisProperty);
 
-      Assert.AreSame (bt3, mixin.GetType ().GetField ("This").GetValue (mixin));
-      Assert.IsAssignableFrom (bt3.GetType().GetNestedType("BaseCallProxy"), mixin.GetType ().GetField ("Base").GetValue (mixin));
+      Assert.IsNotNull (thisProperty.GetValue (mixin, null));
+      Assert.AreSame (bt3, thisProperty.GetValue (mixin, null));
+      Assert.AreEqual (typeof (BaseType3), thisProperty.PropertyType);
+
+      PropertyInfo baseProperty = mixin.GetType ().BaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance);
+      Assert.IsNotNull (baseProperty);
+
+      Assert.IsNotNull (baseProperty.GetValue (mixin, null));
+      Assert.AreEqual (bt3.GetType().GetNestedType("BaseCallProxy"), baseProperty.PropertyType);
     }
 
     [Test]
@@ -235,7 +243,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (complete);
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType35) complete).IfcMethod ());
-      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", MixinReflectionHelper.GetMixinOf<BT3Mixin7Face> (complete).InvokeThisMethods());
+      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> ((object) complete).InvokeThisMethods());
     }
 
     [Test]
@@ -264,6 +272,25 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (comAsIAbstractMixin);
       Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIAbstractMixin.AbstractMethod(25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
+    }
+
+    [Test]
+    public void MixinCanImplementMethodsExplicitly()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithExplicitImplementation)).With();
+      IExplicit explicito = bt1 as IExplicit;
+      Assert.IsNotNull (explicito);
+      Assert.AreEqual ("XXX", explicito.Explicit());
+    }
+
+    [Test]
+    [Ignore("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
+    public void MixinCanIntroduceGenericInterface()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinIntroducingGenericInterface<>)).With ();
+      IGeneric<BaseType1> generic = bt1 as IGeneric<BaseType1>;
+      Assert.IsNotNull (generic);
+      Assert.AreEqual ("Generic", generic.Generic (bt1));
     }
   }
 }

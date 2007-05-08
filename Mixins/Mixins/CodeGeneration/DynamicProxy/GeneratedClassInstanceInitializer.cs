@@ -75,7 +75,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       if (IsGenericParameterBoundTo (parameter, typeof (ThisAttribute)))
       {
-        return mixinTargetInstance.GetType();
+        return mixinTargetInstance.GetType().BaseType;
       }
       else if (IsGenericParameterBoundTo (parameter, typeof (BaseAttribute)))
       {

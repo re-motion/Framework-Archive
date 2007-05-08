@@ -46,6 +46,8 @@
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\MixinIntroducingGenericInterface.cs" />
+    <Compile Include="Mixins\MixinBaseClassTests.cs" />
     <Compile Include="SampleTypes\MixinOverridingClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSameClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassThisDependency.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="Mixins\BaseCallProxyCodeGenerationTests.cs" />
     <Compile Include="Mixins\MixinReflectionTests.cs" />
     <Compile Include="Mixins\MixinTestBase.cs" />
-    <Compile Include="Mixins\ObjectFactory.cs" />
     <Compile Include="Mixins\SerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleTypes\BaseType1.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="SampleTypes\BT5Mixin4.cs" />
     <Compile Include="SampleTypes\BT5Mixin5.cs" />
     <Compile Include="SampleTypes\BT3Mixin7Base.cs" />
+    <Compile Include="SampleTypes\MixinWithExplicitImplementation.cs" />
     <Compile Include="SampleTypes\NullMixin.cs" />
   </ItemGroup>
   <ItemGroup>

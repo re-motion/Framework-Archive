@@ -13,7 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.UnitTests", "Mixins.
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{9731FCDD-0F9F-41C5-B691-8AA9101CE249}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -27,6 +36,10 @@ Global
 		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9731FCDD-0F9F-41C5-B691-8AA9101CE249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9731FCDD-0F9F-41C5-B691-8AA9101CE249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9731FCDD-0F9F-41C5-B691-8AA9101CE249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9731FCDD-0F9F-41C5-B691-8AA9101CE249}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

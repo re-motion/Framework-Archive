@@ -1,5 +1,8 @@
 using System;
 using Mixins.Definitions;
+using Mixins.Context;
+using System.Reflection;
+using Mixins.Definitions.Building;
 
 namespace Mixins.CodeGeneration
 {
@@ -20,6 +23,16 @@ namespace Mixins.CodeGeneration
 
     public CurrentTypeFactoryScope (ApplicationDefinition configuration)
         : this (new TypeFactory (configuration))
+    {
+    }
+
+    public CurrentTypeFactoryScope (ApplicationContext configuration)
+      : this (DefinitionBuilder.CreateApplicationDefinition(configuration))
+    {
+    }
+
+    public CurrentTypeFactoryScope (Assembly assemblyToBeScanned)
+      : this (DefaultContextBuilder.BuildContextFromAssembly(assemblyToBeScanned))
     {
     }
 

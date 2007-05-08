@@ -882,5 +882,20 @@ namespace Mixins.UnitTests.Configuration
     {
       DefBuilder.Build (typeof (ClassOverridingMixinMethod));
     }
+
+    [Test]
+    public void MixinCanImplementMethodsExplicitly()
+    {
+      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithExplicitImplementation));
+      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IExplicit)));
+
+      MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
+          "Mixins.UnitTests.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assert.IsNotNull (explicitMethod);
+
+      MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];
+      Assert.IsTrue (m1.Methods.HasItem (explicitMethod));
+    }
   }
 }

@@ -16,14 +16,14 @@ namespace Mixins.UnitTests.Mixins
     public void FindMixinInstanceInTarget ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
-      BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (bt3);
+      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> ((object) bt3);
       Assert.IsNotNull (mixin);
     }
 
     [Test]
     public void NullIfMixinNotFound ()
     {
-      BT3Mixin2 mixin = MixinReflectionHelper.GetMixinOf<BT3Mixin2> (new object());
+      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (new object());
       Assert.IsNull (mixin);
     }
 

@@ -156,7 +156,7 @@ namespace Mixins.UnitTests.Mixins
     {
       ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
       IMixinOverridingClassMethod comAsIfc = com as IMixinOverridingClassMethod;
-      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com));
+      Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com));
 
       Assert.IsNotNull (comAsIfc);
       Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIfc.AbstractMethod (25));
@@ -164,9 +164,9 @@ namespace Mixins.UnitTests.Mixins
 
       ClassOverridingMixinMethod com2 = SerializeAndDeserialize (com);
       IMixinOverridingClassMethod com2AsIfc = com as IMixinOverridingClassMethod;
-      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com2));
-      Assert.AreNotSame(MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com),
-          MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com2));
+      Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com2));
+      Assert.AreNotSame(Mixin.Get<MixinOverridingClassMethod> ((object) com),
+          Mixin.Get<MixinOverridingClassMethod> ((object) com2));
 
       Assert.IsNotNull (com2AsIfc);
       Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
