@@ -49,17 +49,23 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private static object InstantiateMixin (MixinDefinition mixinDefinition, object mixinTargetInstance, Type baseCallProxyType)
     {
       object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex);
+
       Type mixinType = mixinDefinition.Type;
+      List<Type> boundGenericArguments = new List<Type> ();
       if (mixinType.ContainsGenericParameters)
       {
-        List<Type> boundGenericArguments = new List<Type>();
         foreach (Type genericArgument in mixinType.GetGenericArguments())
         {
           if (genericArgument.IsGenericParameter)
             boundGenericArguments.Add (GetBoundGenericParameter (genericArgument, mixinTargetInstance, baseCallProxyInstance));
         }
-        mixinType = mixinType.MakeGenericType (boundGenericArguments.ToArray());
       }
+
+      if (mixinDefinition.HasOverriddenMembers())
+        mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition, boundGenericArguments.ToArray());
+      else if (mixinType.ContainsGenericParameters)
+        mixinType = mixinType.MakeGenericType (boundGenericArguments.ToArray());
+
       object mixinInstance = Activator.CreateInstance (mixinType);
       InitializeMixin (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance);
       return mixinInstance;

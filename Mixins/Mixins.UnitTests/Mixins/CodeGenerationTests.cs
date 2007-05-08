@@ -247,7 +247,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement mixin method overrides")]
     public void OverrideMixinMethod ()
     {
       ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With();
@@ -257,7 +256,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Implement mixin method overrides")]
+    [Ignore("TODO: Implement overrides")]
     public void DoubleOverride ()
     {
       ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();

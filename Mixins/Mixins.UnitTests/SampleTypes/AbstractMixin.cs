@@ -7,7 +7,7 @@ namespace Mixins.UnitTests.SampleTypes
     string ImplementedMethod();
   }
 
-  public abstract class AbstractMixin : IAbstractMixin
+  public abstract class AbstractMixin : Mixin<object>, IAbstractMixin
   {
     public string ImplementedMethod ()
     {

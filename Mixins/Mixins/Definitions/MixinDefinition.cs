@@ -38,10 +38,18 @@ namespace Mixins.Definitions
       foreach (MemberDefinition member in GetAllMembers())
       {
         if (member.BaseAsMember != null)
-        {
           yield return member;
-        }
       }
+    }
+
+    public bool HasOverriddenMembers ()
+    {
+      foreach (MemberDefinition member in GetAllMembers ())
+      {
+        if (member.GetOverridesAsMemberDefinitions ().GetEnumerator ().MoveNext ())
+          return true;
+      }
+      return false;
     }
 
     public override IVisitableDefinition Parent

@@ -535,5 +535,14 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAnInterface", log));
     }
+
+    [Test]
+    public void FailsIfMixinMethodIsOverriddenWhichHasNoThisProperty()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof(AbstractMixinWithoutBase));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMixinMustHaveThisProperty", log));
+    }
   }
 }

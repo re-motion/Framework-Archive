@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
     <Compile Include="SampleTypes\MixinOverridingClassMethod.cs" />

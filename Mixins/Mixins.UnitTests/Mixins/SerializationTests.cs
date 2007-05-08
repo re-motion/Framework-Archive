@@ -151,6 +151,28 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual ("35", c2.S);
     }
 
+    [Test]
+    public void SerializationOfDerivedMixinWorks ()
+    {
+      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
+      IMixinOverridingClassMethod comAsIfc = com as IMixinOverridingClassMethod;
+      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com));
+
+      Assert.IsNotNull (comAsIfc);
+      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIfc.AbstractMethod (25));
+      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
+
+      ClassOverridingMixinMethod com2 = SerializeAndDeserialize (com);
+      IMixinOverridingClassMethod com2AsIfc = com as IMixinOverridingClassMethod;
+      Assert.IsNotNull (MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com2));
+      Assert.AreNotSame(MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com),
+          MixinReflectionHelper.GetMixinOf<MixinOverridingClassMethod> (com2));
+
+      Assert.IsNotNull (com2AsIfc);
+      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
+      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com2.OverridableMethod (13));
+    }
+
     private byte[] Serialize (object o)
     {
       using (MemoryStream stream = new MemoryStream ())

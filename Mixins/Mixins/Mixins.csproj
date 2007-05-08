@@ -43,6 +43,10 @@
   <ItemGroup>
     <Compile Include="ApplyMixinAttribute.cs" />
     <Compile Include="CodeGeneration\CurrentTypeFactoryScope.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
+    <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingleton.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingletonBase.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\DefaultInstanceCreator.cs" />

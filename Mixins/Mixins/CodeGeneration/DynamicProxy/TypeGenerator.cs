@@ -46,7 +46,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
       _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
 
-      ReplicateConstructors ();
+      _emitter.ReplicateBaseTypeConstructors();
 
       if (isSerializable)
       {
@@ -165,30 +165,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       newMethod.Generate();
     }
 
-    private void ReplicateConstructors()
-    {
-      ConstructorInfo[] constructors = _emitter.BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-      foreach (ConstructorInfo constructor in constructors)
-      {
-        if (constructor.IsPublic | constructor.IsFamily)
-        {
-          ReplicateConstructor (constructor);
-        }
-      }
-    }
-
-    private void ReplicateConstructor (ConstructorInfo constructor)
-    {
-      ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters());
-      ConstructorEmitter newConstructor = _emitter.InnerEmitter.CreateConstructor (arguments);
-
-      Expression[] argumentExpressions = ArgumentsUtil.ConvertArgumentReferenceToExpression (arguments);
-      newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
-
-      newConstructor.CodeBuilder.AddStatement (new ReturnStatement());
-      newConstructor.Generate();
-    }
-
     private void ImplementIMixinTarget()
     {
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
@@ -291,10 +267,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
     {
       foreach (AttributeDefinition attribute in attributes)
-      {
-        CustomAttributeBuilder builder = ReflectionEmitUtility.CreateAttributeBuilderFromData (attribute.Data);
-        target.AddCustomAttribute (builder);
-      }
+        AttributeReplicator.ReplicateAttribute(target, attribute.Data);
     }
 
     private void ReplicateClassAttributes()

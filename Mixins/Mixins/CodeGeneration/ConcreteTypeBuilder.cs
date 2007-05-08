@@ -39,5 +39,13 @@ namespace Mixins.CodeGeneration
       generator.InitializeStaticFields (finishedType);
       return finishedType;
     }
+
+    // TODO: Add type caching to this class
+    public Type GetConcreteMixinType (MixinDefinition configuration, Type[] genericArguments)
+    {
+      IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator (configuration, genericArguments);
+      Type finishedType = generator.GetBuiltType ().CreateType ();
+      return finishedType;
+    }
   }
 }

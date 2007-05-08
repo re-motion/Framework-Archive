@@ -15,6 +15,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return new TypeGenerator (this, configuration);
     }
 
+    public IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration, Type[] genericArguments)
+    {
+      return new MixinTypeGenerator (this, configuration, genericArguments);
+    }
+
     internal ModuleScope Scope
     {
       get { return _scope; }

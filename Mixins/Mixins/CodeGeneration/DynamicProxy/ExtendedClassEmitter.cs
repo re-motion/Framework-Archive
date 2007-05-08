@@ -64,11 +64,29 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return newProperty;
     }
 
+    // does not create the event's methods
     public CustomEventEmitter CreateInterfaceImplementationEvent (EventInfo interfaceEvent)
     {
       string eventName = string.Format ("{0}.{1}", interfaceEvent.DeclaringType.FullName, interfaceEvent.Name);
       CustomEventEmitter newEvent = new CustomEventEmitter (InnerEmitter, eventName, EventAttributes.None, interfaceEvent.EventHandlerType);
       return newEvent;
+    }
+
+    public CustomMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
+    {
+      MethodAttributes methodDefinitionAttributes = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.NewSlot
+          | MethodAttributes.Virtual | MethodAttributes.Final;
+      if (baseMethod.IsSpecialName)
+      {
+        methodDefinitionAttributes |= MethodAttributes.SpecialName;
+      }
+      string methodName = string.Format ("{0}.{1}", baseMethod.DeclaringType.FullName, baseMethod.Name);
+      CustomMethodEmitter methodDefinition = new CustomMethodEmitter (InnerEmitter, methodName, methodDefinitionAttributes);
+      methodDefinition.CopyParametersAndReturnTypeFrom (baseMethod, InnerEmitter);
+
+      TypeBuilder.DefineMethodOverride (methodDefinition.MethodBuilder, baseMethod);
+
+      return methodDefinition;
     }
 
     public void ImplementMethodByDelegation (MethodEmitter methodDefinition, Reference implementer, MethodInfo methodToCall)
@@ -125,6 +143,30 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
       TypeBuilder.SetCustomAttribute (customAttribute);
+    }
+
+    public void ReplicateBaseTypeConstructors()
+    {
+      ConstructorInfo[] constructors = BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      foreach (ConstructorInfo constructor in constructors)
+      {
+        if (constructor.IsPublic | constructor.IsFamily)
+        {
+          ReplicateBaseTypeConstructor (constructor);
+        }
+      }
+    }
+
+    private void ReplicateBaseTypeConstructor (ConstructorInfo constructor)
+    {
+      ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters ());
+      ConstructorEmitter newConstructor = InnerEmitter.CreateConstructor (arguments);
+
+      Expression[] argumentExpressions = ArgumentsUtil.ConvertArgumentReferenceToExpression (arguments);
+      newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
+
+      newConstructor.CodeBuilder.AddStatement (new ReturnStatement ());
+      newConstructor.Generate ();
     }
   }
 }

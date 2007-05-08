@@ -8,6 +8,8 @@ namespace Mixins.CodeGeneration
   public interface IModuleManager
   {
     ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration);
+    IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration, Type[] genericArguments);
+
     string SaveAssembly ();
 
     void InitializeInstance (object instance);

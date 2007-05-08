@@ -305,6 +305,9 @@ namespace Mixins.UnitTests.Configuration
       MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
       MixinDefinition mixin2 = baseClass.Mixins[typeof (BT1Mixin2)];
 
+      Assert.IsFalse (mixin1.HasOverriddenMembers ());
+      Assert.IsFalse (mixin2.HasOverriddenMembers ());
+
       MethodInfo baseMethod1 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[0]);
       MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
       MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
@@ -846,6 +849,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition overrider = GetApplicationDefinition().BaseClasses[typeof (ClassOverridingMixinMethod)];
       MixinDefinition mixin = overrider.Mixins[typeof (AbstractMixin)];
       Assert.IsNotNull (mixin);
+      Assert.IsTrue (mixin.HasOverriddenMembers ());
 
       MethodDefinition method = mixin.Methods[typeof (AbstractMixin).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
       Assert.IsNotNull (method);
