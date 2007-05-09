@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [MixinFor (typeof (BaseType3))]
+  [Extends (typeof (BaseType3))]
   public class BT3Mixin1 : Mixin<IBaseType31, IBaseType31>
   {
     public new IBaseType31 This

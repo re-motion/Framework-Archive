@@ -17,7 +17,7 @@ namespace Samples.UnitTests
       public bool UnmanagedCalled = false;
     }
 
-    [ApplyMixin (typeof (DisposableMixin))]
+    [Uses (typeof (DisposableMixin))]
     public class C
     {
       public Data Data = new Data();

@@ -36,9 +36,9 @@ namespace Mixins.Context
 
       foreach (Type t in assembly.GetTypes ())
       {
-        if (t.IsDefined (typeof (MixinForAttribute), false))
+        if (t.IsDefined (typeof (ExtendsAttribute), false))
           AnalyzeMixin (t, targetContext);
-        if (t.IsDefined (typeof (ApplyMixinAttribute), true))
+        if (t.IsDefined (typeof (UsesAttribute), true))
           AnalyzeMixinApplications (t, targetContext);
       }
     }
@@ -48,7 +48,7 @@ namespace Mixins.Context
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       ArgumentUtility.CheckNotNull ("targetContext", targetContext);
 
-      foreach (MixinForAttribute mixinAttribute in mixinType.GetCustomAttributes(typeof(MixinForAttribute), false))
+      foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes(typeof(ExtendsAttribute), false))
       {
         MixinContext definition = new MixinContext(mixinAttribute.TargetType, mixinType);
         targetContext.GetOrAddClassContext (definition.TargetType).AddMixinContext (definition);
@@ -60,7 +60,7 @@ namespace Mixins.Context
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       ArgumentUtility.CheckNotNull ("targetContext", targetContext);
 
-      foreach (ApplyMixinAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (ApplyMixinAttribute), true))
+      foreach (UsesAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
       {
         MixinContext definition = new MixinContext (targetType, applyMixinAttribute.MixinType);
         targetContext.GetOrAddClassContext (targetType).AddMixinContext (definition);

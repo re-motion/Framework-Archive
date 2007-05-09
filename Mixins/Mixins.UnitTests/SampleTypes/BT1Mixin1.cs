@@ -11,7 +11,7 @@ namespace Mixins.UnitTests.SampleTypes
 
   public class BT1M1Attribute : Attribute {}
 
-  [MixinFor (typeof (BaseType1))]
+  [Extends (typeof (BaseType1))]
   [Serializable]
   [BT1M1Attribute]
   public class BT1Mixin1 : IBT1Mixin1

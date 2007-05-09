@@ -3,12 +3,12 @@ using Rubicon.Utilities;
 
 namespace Mixins
 {
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)] // MixinForAttribute is not inherited!
-  public class MixinForAttribute : Attribute
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)] // ExtendsAttribute is not inherited!
+  public class ExtendsAttribute : Attribute
   {
     private Type _targetType;
 
-    public MixinForAttribute (Type targetType)
+    public ExtendsAttribute (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       _targetType = targetType;

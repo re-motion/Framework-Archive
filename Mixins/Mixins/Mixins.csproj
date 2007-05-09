@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplyMixinAttribute.cs" />
+    <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\CurrentTypeFactoryScope.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
@@ -123,7 +123,7 @@
     <Compile Include="Context\MixinContext.cs" />
     <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
-    <Compile Include="MixinForAttribute.cs" />
+    <Compile Include="ExtendsAttribute.cs" />
     <Compile Include="MixinInitializationMethodAttribute.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

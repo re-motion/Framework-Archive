@@ -9,7 +9,7 @@ namespace Mixins.UnitTests.SampleTypes
     string Foo ();
   }
 
-  [MixinFor (typeof (BaseType3))]
+  [Extends (typeof (BaseType3))]
   public class BT3Mixin4 : BT3Mixin3<BaseType3, IBaseType34>, IBT3Mixin4
   {
     public string Foo ()

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [ApplyMixin(typeof(AbstractMixin))]
+  [Uses(typeof(AbstractMixin))]
   public class ClassOverridingMixinMethod
   {
     [Override]

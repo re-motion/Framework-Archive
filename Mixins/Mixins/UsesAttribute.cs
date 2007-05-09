@@ -5,12 +5,12 @@ using Rubicon.Utilities;
 
 namespace Mixins
 {
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)] // ApplyMixinAttribute is inherited
-  public class ApplyMixinAttribute : Attribute
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)] // UsesMixinAttribute is inherited
+  public class UsesAttribute : Attribute
   {
     private Type _mixinType;
 
-    public ApplyMixinAttribute (Type mixinType)
+    public UsesAttribute (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       _mixinType = mixinType;

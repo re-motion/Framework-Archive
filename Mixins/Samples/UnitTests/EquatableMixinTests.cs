@@ -9,7 +9,7 @@ namespace Samples.UnitTests
   [TestFixture]
   public class EquatableMixinTests
   {
-    [ApplyMixin(typeof (EquatableMixin<C>))]
+    [Uses(typeof (EquatableMixin<C>))]
     public class C
     {
       public int I;

@@ -15,7 +15,7 @@ namespace Mixins.UnitTests.Mixins
   public class SerializationTests : MixinTestBase
   {
     [Serializable]
-    [ApplyMixin(typeof(NullMixin))]
+    [Uses(typeof(NullMixin))]
     public class ClassImplementingISerializable : ISerializable
     {
       public int I;
@@ -36,7 +36,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Serializable]
-    [ApplyMixin (typeof (NullMixin))]
+    [Uses (typeof (NullMixin))]
     public class ClassWithoutDefaultCtor
     {
       public string S;

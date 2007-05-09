@@ -42,7 +42,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (ObjectFactory.Create<BaseType5> ());
     }
 
-    [ApplyMixin(typeof (NullMixin))]
+    [Uses(typeof (NullMixin))]
     public class ClassWithCtors
     {
       public object O;
