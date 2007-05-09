@@ -8,9 +8,12 @@ namespace Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {
-    private static SignatureChecker s_signatureChecker = new SignatureChecker();
-
     public static void InitializeInstanceFields (object instance)
+    {
+      InitializeInstanceFieldsWithMixins (instance, null);
+    }
+
+    public static void InitializeInstanceFieldsWithMixins (object instance, object[] mixinInstances)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
       IMixinTarget mixinTarget = instance as IMixinTarget;
@@ -19,26 +22,57 @@ namespace Mixins.CodeGeneration.DynamicProxy
         throw new ArgumentException ("Object is not a mixin target.", "instance");
       }
 
-      Type baseCallProxyType = instance.GetType().GetNestedType ("BaseCallProxy");
+      BaseClassDefinition configuration = mixinTarget.Configuration;
+      Type baseCallProxyType = instance.GetType ().GetNestedType ("BaseCallProxy");
 
-      BaseClassDefinition configuration = ((IMixinTarget) instance).Configuration;
-      object[] extensions = new object[configuration.Mixins.Count];
-      foreach (MixinDefinition mixinDefinition in configuration.Mixins)
-        extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition, instance, baseCallProxyType);
+      object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
+      FillUpExtensionsWithNewMixinInstances (extensions, configuration, instance, baseCallProxyType);
 
       object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, configuration.Mixins.Count);
       InitializeInstanceFields (instance, extensions, firstBaseCallProxy);
     }
 
+
     public static void InitializeInstanceFields (object instance, object[] extensions, object firstBaseCallProxy)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
-      ArgumentUtility.CheckNotNull ("instance", extensions);
+      ArgumentUtility.CheckNotNull ("extensions", extensions);
       ArgumentUtility.CheckNotNull ("firstBaseCallProxy", firstBaseCallProxy);
 
       Type type = instance.GetType ();
       type.GetField ("__extensions").SetValue (instance, extensions);
       type.GetField ("__first").SetValue (instance, firstBaseCallProxy);
+    }
+
+    private static object[] PrepareExtensionsWithGivenMixinInstances (BaseClassDefinition configuration, object[] mixinInstances)
+    {
+      object[] extensions = new object[configuration.Mixins.Count];
+
+      if (mixinInstances != null)
+      {
+        foreach (object mixinInstance in mixinInstances)
+        {
+          MixinDefinition mixinDefinition = configuration.Mixins[mixinInstance.GetType()];
+          if (mixinDefinition == null)
+          {
+            string message = string.Format ("The supplied mixin of type {0} is not valid in the current configuration.", mixinInstance.GetType());
+            throw new ArgumentException (message, "mixinInstances");
+          }
+          else
+            extensions[mixinDefinition.MixinIndex] = mixinInstance;
+        }
+      }
+      return extensions;
+    }
+
+    private static void FillUpExtensionsWithNewMixinInstances (
+        object[] extensions, BaseClassDefinition configuration, object targetInstance, Type baseCallProxyType)
+    {
+      foreach (MixinDefinition mixinDefinition in configuration.Mixins)
+      {
+        if (extensions[mixinDefinition.MixinIndex] == null)
+          extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition, targetInstance, baseCallProxyType);
+      }
     }
 
     private static object InstantiateBaseCallProxy (Type baseCallProxyType, object targetInstance, int depth)
@@ -51,47 +85,48 @@ namespace Mixins.CodeGeneration.DynamicProxy
       object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex);
 
       Type mixinType = mixinDefinition.Type;
-      List<Type> boundGenericArguments = new List<Type> ();
+      List<Type> boundGenericParameters = BindGenericParameters(mixinType, mixinTargetInstance, baseCallProxyInstance);
+
+      if (mixinDefinition.HasOverriddenMembers())
+        mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition, boundGenericParameters.ToArray());
+      else if (mixinType.ContainsGenericParameters)
+        mixinType = mixinType.MakeGenericType (boundGenericParameters.ToArray());
+
+      object mixinInstance = Activator.CreateInstance (mixinType);
+      InitializeMixin (mixinInstance, mixinTargetInstance, baseCallProxyInstance);
+      return mixinInstance;
+    }
+
+    private static List<Type> BindGenericParameters(Type mixinType, object mixinTargetInstance, object baseCallProxyInstance)
+    {
+      List<Type> boundGenericParameters = new List<Type> ();
       if (mixinType.ContainsGenericParameters)
       {
         foreach (Type genericArgument in mixinType.GetGenericArguments())
         {
           if (genericArgument.IsGenericParameter)
-            boundGenericArguments.Add (GetBoundGenericParameter (genericArgument, mixinTargetInstance, baseCallProxyInstance));
+            boundGenericParameters.Add (BindGenericParameter (genericArgument, mixinTargetInstance, baseCallProxyInstance));
         }
       }
-
-      if (mixinDefinition.HasOverriddenMembers())
-        mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition, boundGenericArguments.ToArray());
-      else if (mixinType.ContainsGenericParameters)
-        mixinType = mixinType.MakeGenericType (boundGenericArguments.ToArray());
-
-      object mixinInstance = Activator.CreateInstance (mixinType);
-      InitializeMixin (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance);
-      return mixinInstance;
+      return boundGenericParameters;
     }
 
-    private static Type GetBoundGenericParameter (Type parameter, object mixinTargetInstance, object baseCallProxyInstance)
+    private static Type BindGenericParameter (Type parameter, object mixinTargetInstance, object baseCallProxyInstance)
     {
-      if (IsGenericParameterBoundTo (parameter, typeof (ThisAttribute)))
-      {
+      if (IsGenericParameterAssociatedWithAttribute (parameter, typeof (ThisAttribute)))
         return mixinTargetInstance.GetType().BaseType;
-      }
-      else if (IsGenericParameterBoundTo (parameter, typeof (BaseAttribute)))
-      {
+      else if (IsGenericParameterAssociatedWithAttribute (parameter, typeof (BaseAttribute)))
         return baseCallProxyInstance.GetType();
-      }
       else
       {
-        string message = string.Format (
-            "Generic argument {0} of mixin {1} cannot be bound to a type - it is not marked as This or Base argument.",
+        string message = string.Format ("Generic argument {0} of mixin {1} cannot be bound to a type - it is not marked as This or Base argument.",
             parameter.Name,
             parameter.DeclaringType.FullName);
         throw new NotSupportedException (message);
       }
     }
 
-    private static bool IsGenericParameterBoundTo (Type genericParameter, Type attributeType)
+    private static bool IsGenericParameterAssociatedWithAttribute (Type genericParameter, Type attributeType)
     {
       Type mixinType = genericParameter.DeclaringType;
       Type baseClass = mixinType.BaseType;
@@ -111,33 +146,30 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return false;
     }
 
-    private static void InitializeMixin (
-        MixinDefinition mixinDefinition, object mixinInstance, object mixinTargetInstance, object baseCallProxyInstance)
+    private static void InitializeMixin (object mixinInstance, object mixinTargetInstance, object baseCallProxyInstance)
     {
-      foreach (MethodDefinition initializationMethod in mixinDefinition.InitializationMethods)
+      MethodInfo initializationMethod = ReflectionUtility.GetInitializationMethod (mixinInstance.GetType ());
+      if (initializationMethod != null)
       {
-        ParameterInfo[] methodArguments = initializationMethod.MethodInfo.GetParameters();
-        object[] argumentValues = Array.ConvertAll<ParameterInfo, object> (
-            methodArguments,
-            delegate (ParameterInfo p) { return GetMixinArgumentInitialization (p, mixinTargetInstance, baseCallProxyInstance); });
+        Assertion.Assert (!initializationMethod.ContainsGenericParameters);
 
-        MethodInfo concreteInitializationMethod = GetConcreteMethod (mixinInstance, initializationMethod);
-        concreteInitializationMethod.Invoke (mixinInstance, argumentValues);
+        ParameterInfo[] methodArguments = initializationMethod.GetParameters ();
+        object[] argumentValues = new object[methodArguments.Length];
+        for (int i = 0; i < argumentValues.Length; ++i)
+          argumentValues[i] = GetMixinInitializationArgument (methodArguments[i], mixinTargetInstance, baseCallProxyInstance);
+
+        try
+        {
+          initializationMethod.Invoke (mixinInstance, argumentValues); // TODO: perhaps cache this
+        }
+        catch (TargetInvocationException ex)
+        {
+          throw ex.InnerException;
+        }
       }
     }
 
-    private static MethodInfo GetConcreteMethod (object instance, MethodDefinition method)
-    {
-      if (method.MethodInfo.ContainsGenericParameters)
-      {
-        Assertion.Assert (!method.MethodInfo.IsGenericMethodDefinition);
-        return ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName (method.MethodInfo, instance.GetType());
-      }
-      else
-        return method.MethodInfo;
-    }
-
-    private static object GetMixinArgumentInitialization (ParameterInfo p, object mixinTargetInstance, object baseCallProxyInstance)
+    private static object GetMixinInitializationArgument (ParameterInfo p, object mixinTargetInstance, object baseCallProxyInstance)
     {
       if (p.IsDefined (typeof (ThisAttribute), false))
         return mixinTargetInstance;
@@ -145,44 +177,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
         return baseCallProxyInstance;
       else
         throw new NotSupportedException ("Initialization methods can only contain this or base arguments.");
-    }
-
-    public static void InitializeInstanceFieldsWithMixins (object instance, object[] mixinInstances)
-    {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      IMixinTarget mixinTarget = instance as IMixinTarget;
-      if (mixinTarget == null)
-      {
-        throw new ArgumentException ("Object is not a mixin target.", "instance");
-      }
-
-      Type baseCallProxyType = instance.GetType ().GetNestedType ("BaseCallProxy");
-
-      BaseClassDefinition configuration = ((IMixinTarget) instance).Configuration;
-      object[] extensions = new object[configuration.Mixins.Count];
-
-      foreach (object mixinInstance in mixinInstances)
-      {
-        MixinDefinition mixinDefinition = configuration.Mixins[mixinInstance.GetType()];
-        if (mixinDefinition == null)
-        {
-          string message = string.Format ("The supplied mixin of type {0} is not valid in the current configuration.", mixinInstance.GetType());
-          throw new ArgumentException (message, "mixinInstances");
-        }
-        else
-        {
-          extensions[mixinDefinition.MixinIndex] = mixinInstance;
-        }
-      }
-
-      foreach (MixinDefinition mixinDefinition in configuration.Mixins)
-      {
-        if (extensions[mixinDefinition.MixinIndex] == null)
-          extensions[mixinDefinition.MixinIndex] = InstantiateMixin (mixinDefinition, instance, baseCallProxyType);
-      }
-
-      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, configuration.Mixins.Count);
-        InitializeInstanceFields (instance, extensions, firstBaseCallProxy);
     }
   }
 }

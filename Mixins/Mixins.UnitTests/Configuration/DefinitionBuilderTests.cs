@@ -13,14 +13,6 @@ namespace Mixins.UnitTests.Configuration
   [TestFixture]
   public class DefinitionBuilderTests
   {
-    private class MixinWithCustomInitializationMethod
-    {
-      [MixinInitializationMethod]
-      public void Init([This]object @this)
-      {
-      }
-    }
-
     private class MixinImplementingISerializable : ISerializable, IDisposable
     {
       public void Dispose ()
@@ -501,43 +493,6 @@ namespace Mixins.UnitTests.Configuration
       MixinDefinition mixin = baseClass.Mixins[typeof (BT2Mixin1)];
       Assert.IsNotNull (mixin);
       Assert.AreSame (baseClass, mixin.BaseClass);
-    }
-
-    [Test]
-    public void InitializationMethod ()
-    {
-      ApplicationDefinition application = GetApplicationDefinition ();
-      BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType1)];
-      MixinDefinition mixin = baseClass.Mixins[typeof (BT1Mixin1)];
-      Assert.AreEqual (0, mixin.InitializationMethods.Count);
-
-      baseClass = application.BaseClasses[typeof (BaseType3)];
-      mixin = baseClass.Mixins[typeof (BT3Mixin1)];
-      
-      Assert.AreEqual (1, mixin.InitializationMethods.Count);
-
-      MethodInfo methodInfo = typeof (BT3Mixin1).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.IsNotNull (methodInfo);
-
-      List<MethodDefinition> initializationMethods = new List<MethodDefinition> (mixin.InitializationMethods);
-      Assert.AreEqual (methodInfo, initializationMethods[0].MethodInfo);
-
-      BaseType3 @this = new BaseType3();
-      BaseType3 @base = new BaseType3();
-      BT3Mixin1 mixinInstance = new BT3Mixin1 ();
-      initializationMethods[0].MethodInfo.Invoke (mixinInstance, new object[] { @this, @base });
-      Assert.AreSame (@this, mixinInstance.This);
-      Assert.AreSame (@base, mixinInstance.Base);
-    }
-
-    [Test]
-    public void CustomInitializationMethod ()
-    {
-      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithCustomInitializationMethod));
-      MixinDefinition mixin = application.BaseClasses[typeof (BaseType1)].Mixins[typeof (MixinWithCustomInitializationMethod)];
-      Assert.IsNotNull (mixin);
-      Assert.AreEqual (1, mixin.InitializationMethods.Count);
-      Assert.IsTrue (mixin.InitializationMethods.HasItem (typeof (MixinWithCustomInitializationMethod).GetMethod ("Init")));
     }
 
     [Test]

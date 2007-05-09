@@ -388,33 +388,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsIfUnidentifiedInitializationMethodArgument()
-    {
-      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithUnidentifiedInitializationArgument));
-      DefaultValidationLog log = Validator.Validate (application);
-
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodCanOnlyHaveThisAndBaseArguments", log));
-    }
-
-    [Test]
-    public void FailsIfGenericInitializationMethod ()
-    {
-      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithGenericIntialiationMethod));
-      DefaultValidationLog log = Validator.Validate (application);
-
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodMustNotBeGeneric", log));
-    }
-
-    [Test]
-    public void FailsIfNonUniqueInitializationMethodNames ()
-    {
-      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithDuplicateIntialiationMethod));
-      DefaultValidationLog log = Validator.Validate (application);
-
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.InitializationMethodMustHaveUniqueName", log));
-    }
-
-    [Test]
     public void FailsIfImplementingIMixinTarget()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinImplementingIMixinTarget));

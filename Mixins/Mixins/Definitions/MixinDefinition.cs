@@ -10,8 +10,6 @@ namespace Mixins.Definitions
   {
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-    public readonly DefinitionItemCollection<MethodInfo, MethodDefinition> InitializationMethods =
-        new DefinitionItemCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
     public readonly DefinitionItemCollection<Type, ThisDependencyDefinition> ThisDependencies =
         new DefinitionItemCollection<Type, ThisDependencyDefinition> (delegate (ThisDependencyDefinition d) { return d.RequiredType.Type; });
     public readonly DefinitionItemCollection<Type, BaseDependencyDefinition> BaseDependencies =
@@ -72,7 +70,6 @@ namespace Mixins.Definitions
       base.AcceptForChildren (visitor);
 
       InterfaceIntroductions.Accept (visitor);
-      InitializationMethods.Accept (visitor);
       ThisDependencies.Accept (visitor);
       BaseDependencies.Accept (visitor);
     }

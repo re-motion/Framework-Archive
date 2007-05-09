@@ -49,7 +49,6 @@ namespace Mixins.Definitions.Building
 
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
-      AnalyzeInitializationMethods (mixin);
 
       AnalyzeDependencies(mixin);
 
@@ -88,26 +87,6 @@ namespace Mixins.Definitions.Building
     {
       overrider.BaseAsMember = baseMember;
       baseMember.AddOverride (overrider);
-    }
-
-    private void AnalyzeInitializationMethods (MixinDefinition mixin)
-    {
-      foreach (MethodInfo method in GetMixinInitializationMethods (mixin.Type))
-      {
-        MethodDefinition methodDefinition = new MethodDefinition (method, mixin);
-        mixin.InitializationMethods.Add (methodDefinition);
-      }
-    }
-
-    private IEnumerable<MethodInfo> GetMixinInitializationMethods (Type type)
-    {
-      foreach (MethodInfo method in type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-      {
-        if (method.IsDefined (typeof (MixinInitializationMethodAttribute), true))
-        {
-          yield return method;
-        }
-      }
     }
 
     private void AnalyzeDependencies (MixinDefinition mixin)

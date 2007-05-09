@@ -53,7 +53,6 @@ namespace Mixins
       }
     }
 
-    [MixinInitializationMethod]
     internal void Initialize([This]TThis @this, [Base]TBase @base)
     {
       Assertion.Assert (@this != null);
@@ -84,7 +83,6 @@ namespace Mixins
       }
     }
 
-    [MixinInitializationMethod]
     internal void Initialize ([This]TThis @this)
     {
       Assertion.Assert (@this != null);
