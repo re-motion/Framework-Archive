@@ -26,13 +26,18 @@ namespace Mixins.UnitTests.SampleTypes
 
   public interface IBaseType35
   {
-    string IfcMethod ();
+    string IfcMethod2 ();
   }
 
   [Uses(typeof(BT3Mixin5))]
   public class BaseType3 : IBaseType31, IBaseType32, IBaseType34, IBaseType35
   {
-    public string IfcMethod ()
+    public virtual string IfcMethod ()
+    {
+      return "BaseType3.IfcMethod";
+    }
+
+    public string IfcMethod2 ()
     {
       return "BaseType3.IfcMethod";
     }

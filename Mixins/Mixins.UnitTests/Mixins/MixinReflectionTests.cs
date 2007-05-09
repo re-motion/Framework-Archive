@@ -10,10 +10,10 @@ using NUnit.Framework;
 namespace Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixinReflectionTests : MixinTestBase
+  public class MixinReflectionTests: MixinTestBase
   {
     [Test]
-    public void FindMixinInstanceInTarget ()
+    public void FindMixinInstanceInTarget()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
       BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> ((object) bt3);
@@ -21,16 +21,16 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void NullIfMixinNotFound ()
+    public void NullIfMixinNotFound()
     {
       BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (new object());
       Assert.IsNull (mixin);
     }
 
     [Test]
-    public void IMixinTarget ()
+    public void IMixinTarget()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly());
       ApplicationDefinition applicationDefinition = DefinitionBuilder.CreateApplicationDefinition (context);
 
       using (new CurrentTypeFactoryScope (applicationDefinition))

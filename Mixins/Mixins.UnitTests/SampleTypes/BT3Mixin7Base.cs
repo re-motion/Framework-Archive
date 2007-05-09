@@ -9,7 +9,7 @@ namespace Mixins.UnitTests.SampleTypes
     [Override]
     public string IfcMethod()
     {
-      return "BT3Mixin7Base.IfcMethod-" + Base.Foo() + "-" + ((IBaseType31)Base).IfcMethod();
+      return "BT3Mixin7Base.IfcMethod-" + Base.Foo() + "-" + ((IBaseType31)Base).IfcMethod() + "-" + Base.IfcMethod2();
     }
   }
 }

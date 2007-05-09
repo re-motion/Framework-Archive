@@ -247,6 +247,15 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfOverriddenMethodFinal ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassWithFinalMethod), typeof (MixinForFinalMethod));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustNotBeFinal", log));
+    }
+
+    [Test]
     public void FailsIfOverriddenPropertyMethodNotVirtual ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType4), typeof (BT4Mixin1));

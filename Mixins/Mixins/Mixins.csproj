@@ -53,9 +53,9 @@
     <Compile Include="CodeGeneration\SingletonUtilities\DefaultInstanceCreator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomEventEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomMethodEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CustomPropertyEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\CustomEventEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\CustomMethodEmitter.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\CustomPropertyEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IAttributableEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\LoadArrayElementExpression.cs" />

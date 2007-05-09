@@ -4,8 +4,10 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
-namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Mixins.CodeGeneration.DynamicProxy
 {
   public class CustomPropertyEmitter : IAttributableEmitter
   {
@@ -14,9 +16,9 @@ namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
     private MethodEmitter setMethod;
 
     public CustomPropertyEmitter (AbstractTypeEmitter parentTypeEmitter, String name, PropertyAttributes attributes, Type propertyType, Type[] indexParameters)
-		{
-			builder = parentTypeEmitter.TypeBuilder.DefineProperty(name, attributes, propertyType, indexParameters);
-		}
+    {
+      builder = parentTypeEmitter.TypeBuilder.DefineProperty(name, attributes, propertyType, indexParameters);
+    }
 
     public MethodEmitter GetMethod
     {
@@ -49,5 +51,19 @@ namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
     {
       builder.SetCustomAttribute (customAttribute);
     }
+
+    public void ImplementPropertyWithField (FieldReference backingField)
+    {
+      if (GetMethod != null)
+      {
+        GetMethod.CodeBuilder.AddStatement (new ReturnStatement (backingField));
+      }
+      if (SetMethod != null)
+      {
+        SetMethod.CodeBuilder.AddStatement (
+            new AssignStatement (backingField, SetMethod.Arguments[0].ToExpression ()));
+      }
+    }
+
   }
 }

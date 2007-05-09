@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Mixins.CodeGeneration;
 using Mixins.Definitions;
 using NUnit.Framework;
 using Mixins.UnitTests.SampleTypes;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
-using Mixins.Validation;
 using Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 
 namespace Mixins.UnitTests.Mixins
@@ -77,14 +72,56 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Implement non-this interfaces on proxy")]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces2 ()
     {
-      Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
-      Type proxyType = t.GetNestedType ("BaseCallProxy");
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4))))
+      {
+        Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
+        Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-      foreach (RequiredBaseCallTypeDefinition req in TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
-        Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
+        RequiredBaseCallTypeDefinition bt3Mixin4Req =
+            TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes[typeof (IBT3Mixin4)];
+        Assert.IsNotNull (bt3Mixin4Req);
+        Assert.IsTrue (bt3Mixin4Req.Type.IsAssignableFrom (proxyType));
+
+        foreach (RequiredBaseCallTypeDefinition req in TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes)
+          Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
+
+        MethodInfo methodImplementdByMixin =
+            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull (methodImplementdByMixin);
+
+        MethodInfo methodImplementdByBCOverridden =
+            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull (methodImplementdByBCOverridden);
+
+        MethodInfo methodImplementdByBCNotOverridden =
+            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
+        Assert.IsNotNull (methodImplementdByBCNotOverridden);
+      }
+    }
+
+    [Test]
+    public void GeneratedTypeImplementsOverriddenMembers ()
+    {
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof(BT3Mixin4))))
+      {
+        Type t = TypeFactory.Current.GetConcreteType (typeof(BaseType3));
+        Type proxyType = t.GetNestedType ("BaseCallProxy");
+
+        Assert.IsNotNull (proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement overrides")]
+    public void OverriddenMemberCalls ()
+    {
+      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4))))
+      {
+        BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
+        Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2", bt3.IfcMethod ());
+      }
     }
 
     [Test]

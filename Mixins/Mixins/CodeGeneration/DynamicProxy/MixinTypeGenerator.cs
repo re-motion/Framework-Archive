@@ -61,14 +61,14 @@ namespace Mixins.CodeGeneration.DynamicProxy
           if (method.Overrides[0].DeclaringClass != Configuration.BaseClass)
             throw new NotSupportedException ("The code generator only supports mixin methods to be overridden by the mixin's base class.");
           
-          CustomMethodEmitter methodOverride = _emitter.CreateMethodOverride (method.MethodInfo);
+          CustomMethodEmitter methodOverride = _emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
           LocalReference castTargetLocal = methodOverride.InnerEmitter.CodeBuilder.DeclareLocal (Configuration.BaseClass.Type);
           methodOverride.InnerEmitter.CodeBuilder.AddStatement (
               new AssignStatement (
                   castTargetLocal,
                   new CastClassExpression (Configuration.BaseClass.Type, targetReference.ToExpression())));
 
-          _emitter.ImplementMethodByDelegation (methodOverride.InnerEmitter, castTargetLocal, method.Overrides[0].MethodInfo);
+          methodOverride.ImplementMethodByDelegation (castTargetLocal, method.Overrides[0].MethodInfo);
           methodOverride.InnerEmitter.Generate();
         }
       }

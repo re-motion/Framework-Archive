@@ -55,6 +55,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       ImplementIMixinTarget ();
       ImplementIntroducedInterfaces();
+      ImplementOverrides();
 
       ReplicateClassAttributes();
     }
@@ -103,6 +104,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return TypeBuilder;
     }
 
+    internal FieldInfo ExtensionsField
+    {
+      get { return _extensionsField.Reference; }
+    }
+
     public void InitializeStaticFields (Type finishedType)
     {
       finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
@@ -115,7 +121,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       MethodInfo getObjectDataMethod =
           typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      MethodEmitter newMethod = _emitter.CreateInterfaceImplementationMethod (getObjectDataMethod).InnerEmitter;
+      MethodEmitter newMethod = _emitter.CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
 
       newMethod.CodeBuilder.AddStatement (
           new ExpressionStatement (
@@ -170,24 +176,24 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
 
       CustomPropertyEmitter configurationProperty =
-          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Configuration"));
+          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =
-          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
-      _emitter.ImplementPropertyWithField (configurationProperty, _configurationField);
+          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
+      configurationProperty.ImplementPropertyWithField (_configurationField);
       configurationProperty.Generate();
 
       CustomPropertyEmitter mixinsProperty =
-          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("Mixins"));
+          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
-          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
-      _emitter.ImplementPropertyWithField (mixinsProperty, _extensionsField);
+          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
+      mixinsProperty.ImplementPropertyWithField (_extensionsField);
       mixinsProperty.Generate();
 
       CustomPropertyEmitter firstProperty =
-          _emitter.CreateInterfaceImplementationProperty (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
+          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
-          _emitter.CreateInterfaceImplementationMethod (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
-      _emitter.ImplementPropertyWithField (firstProperty, _firstField);
+          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
+      firstProperty.ImplementPropertyWithField (_firstField);
       firstProperty.Generate ();
     }
 
@@ -215,11 +221,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
         MethodDefinition implementingMember,
         MethodInfo interfaceMember)
     {
-      CustomMethodEmitter customMethodEmitter = _emitter.CreateInterfaceImplementationMethod (interfaceMember);
-      MethodEmitter methodEmitter = customMethodEmitter.InnerEmitter;
+      CustomMethodEmitter customMethodEmitter = _emitter.CreateMethodOverrideOrInterfaceImplementation (interfaceMember);
 
-      LocalReference localImplementer = _emitter.EmitMakeReferenceOfExpression (methodEmitter, interfaceMember.DeclaringType, implementerExpression);
-      _emitter.ImplementMethodByDelegation (methodEmitter, localImplementer, interfaceMember);
+      LocalReference localImplementer = _emitter.AddMakeReferenceOfExpressionStatements (customMethodEmitter, interfaceMember.DeclaringType,
+          implementerExpression);
+      customMethodEmitter.ImplementMethodByDelegation (localImplementer, interfaceMember);
 
       ReplicateAttributes (implementingMember.CustomAttributes, customMethodEmitter);
       return customMethodEmitter;
@@ -227,7 +233,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private CustomPropertyEmitter ImplementIntroducedProperty (Expression implementerExpression, PropertyIntroductionDefinition property)
     {
-      CustomPropertyEmitter propertyEmitter = _emitter.CreateInterfaceImplementationProperty (property.InterfaceMember);
+      CustomPropertyEmitter propertyEmitter = _emitter.CreatePropertyOverrideOrInterfaceImplementation (property.InterfaceMember);
 
       if (property.ImplementingMember.GetMethod != null)
         propertyEmitter.GetMethod = ImplementIntroducedMethod (
@@ -250,7 +256,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Assertion.Assert (eventIntro.ImplementingMember.AddMethod != null);
       Assertion.Assert (eventIntro.ImplementingMember.RemoveMethod != null);
 
-      CustomEventEmitter eventEmitter = _emitter.CreateInterfaceImplementationEvent (eventIntro.InterfaceMember);
+      CustomEventEmitter eventEmitter = _emitter.CreateEventOverrideOrInterfaceImplementation (eventIntro.InterfaceMember);
       eventEmitter.AddMethod = ImplementIntroducedMethod (
           implementerExpression,
           eventIntro.ImplementingMember.AddMethod,
@@ -262,6 +268,24 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       ReplicateAttributes (eventIntro.ImplementingMember.CustomAttributes, eventEmitter);
       return eventEmitter;
+    }
+
+    private void ImplementOverrides ()
+    {
+      foreach (MethodDefinition method in _configuration.Methods)
+      {
+        if (method.Overrides.Count > 0)
+          ImplementOverride (method);
+      }
+    }
+
+    private void ImplementOverride (MethodDefinition method)
+    {
+      Console.WriteLine (method.FullName);
+      MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
+      CustomMethodEmitter methodOverride = _emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
+      methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
+      methodOverride.InnerEmitter.Generate();
     }
 
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)

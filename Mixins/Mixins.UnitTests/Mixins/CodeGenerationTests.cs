@@ -155,7 +155,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement base")]
     public void MixinsAreInitializedWithBase ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin1)).With ();
@@ -235,14 +234,15 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Base parameter types")]
+    [Ignore("TODO: Check")]
     public void CompleteFaceInterface()
     {
       ICBaseType3BT3Mixin4 complete = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).With () as ICBaseType3BT3Mixin4;
 
       Assert.IsNotNull (complete);
+      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType33) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
-      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType35) complete).IfcMethod ());
+      Assert.AreEqual ("BaseType3.IfcMethod2", ((IBaseType35) complete).IfcMethod2 ());
       Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> ((object) complete).InvokeThisMethods());
     }
 
