@@ -164,9 +164,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
 
     if (!DataContainer.PropertyValues.Contains (propertyName))
       return null;
-    if (State == StateType.New)
-      return false;
-    return DataContainer.PropertyValues[propertyName].HasChanged;
+    return State == StateType.New && !DataContainer.PropertyValues[propertyName].HasChanged;
   }
 
   #region IBusinessObject Members

@@ -106,6 +106,12 @@
 - Rubicon.Data.DomainObjects.Persistence.ValueConverterBase verwendet nun StorageProviderDefinition.TypeConversionProvider 
   statt hart-kodierter Konvertierungen.
 
+- DomainObjects: DefaultValues sind bei ReflectionBasedMapping nun wie folgt implementiert:
+  nullable Properties: null
+  Binaries: leeres Array
+  String: String.Empty
+  Alle weiteren Typen: Default Constructor
+
 1.7.37.0
 ========
 

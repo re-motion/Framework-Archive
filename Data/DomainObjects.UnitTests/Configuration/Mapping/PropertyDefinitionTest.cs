@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (int), null, null, true);
       Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
-      Assert.AreEqual (int.MinValue, actual.DefaultValue);
+      Assert.AreEqual (0, actual.DefaultValue);
       Assert.IsFalse (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
@@ -54,11 +54,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithObjectID ()
     {
-      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (ObjectID), false, null, true);
+      PropertyDefinition actual = new ReflectionBasedPropertyDefinition (_classDefinition, "PropertyName", "ColumnName", typeof (ObjectID), true, null, true);
       Assert.AreSame (_classDefinition, actual.ClassDefinition);
       Assert.AreEqual ("ColumnName", actual.StorageSpecificName);
       Assert.IsNull (actual.DefaultValue);
-      Assert.IsFalse (actual.IsNullable);
+      Assert.IsTrue (actual.IsNullable);
       Assert.IsNull (actual.MaxLength);
       Assert.AreEqual ("PropertyName", actual.PropertyName);
       Assert.AreEqual (typeof (ObjectID), actual.PropertyType);

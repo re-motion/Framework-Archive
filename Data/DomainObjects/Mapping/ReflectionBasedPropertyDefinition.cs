@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
@@ -74,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return true; }
     }
 
-    //TODO: Implement DefaultValue.
+    //TODO: Implement DefaultValue Provider
     public override object DefaultValue
     {
       get
@@ -82,10 +83,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
         if (_isNullable)
           return null;
 
-        Type nativeType = TypeInfo.GetNativeType (_propertyType);
-        if (nativeType.IsEnum)
-          return TypeInfo.GetDefaultEnumValue (nativeType);
-        return TypeInfo.GetMandatory (nativeType, false).DefaultValue;
+        if (_propertyType.IsArray)
+          return Array.CreateInstance (_propertyType.GetElementType(), 0);
+
+        if (_propertyType == typeof (string))
+          return string.Empty;
+
+        return Activator.CreateInstance (_propertyType, new object[0]);
       }
     }
 
