@@ -164,6 +164,9 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [DBColumn ("NaDouble")]
     public abstract double? NaDoubleProperty { get; set; }
 
+    [DBColumn ("NaEnum")]
+    public abstract EnumType? NaEnumProperty { get; set; }
+
     [DBColumn ("NaGuid")]
     public abstract Guid? NaGuidProperty { get; set; }
 
@@ -201,6 +204,9 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 
     [DBColumn ("NaDoubleWithNullValue")]
     public abstract double? NaDoubleWithNullValueProperty { get; set; }
+
+    [DBColumn ("NaEnumWithNullValue")]
+    public abstract EnumType? NaEnumWithNullValueProperty { get; set; }
 
     [DBColumn ("NaGuidWithNullValue")]
     public abstract Guid? NaGuidWithNullValueProperty { get; set; }

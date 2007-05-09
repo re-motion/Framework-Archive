@@ -179,6 +179,21 @@ beachten!</FONT></STRONG></P>
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
       </obc:boctextvalue></TD>
   </TR>
+<%--  <TR>
+    <TD></TD>
+    <TD><obc:bocenumvalue id="BocEnumValue6" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaEnumProperty">
+        <ListControlStyle></ListControlStyle>
+      </obc:bocenumvalue></TD>
+  </TR>
+  <TR>
+    <TD></TD>
+    <TD>
+      <obc:bocenumvalue id="Bocenumvalue7" runat="server" PropertyIdentifier="NaEnumProperty" DataSourceControl="CurrentObject"
+        ReadOnly="True">
+        <ListControlStyle></ListControlStyle>
+      </obc:bocenumvalue></TD>
+  </TR>
+--%>
   <TR>
     <TD></TD>
     <TD><obc:boctextvalue id="Boctextvalue27" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidProperty">
@@ -260,6 +275,21 @@ beachten!</FONT></STRONG></P>
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
       </obc:boctextvalue></TD>
   </TR>
+<%--  <TR>
+    <TD></TD>
+    <TD><obc:bocenumvalue id="BocEnumValue8" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaEnumPropertyWithNullValueProperty">
+        <ListControlStyle></ListControlStyle>
+      </obc:bocenumvalue></TD>
+  </TR>
+  <TR>
+    <TD></TD>
+    <TD>
+      <obc:bocenumvalue id="Bocenumvalue9" runat="server" PropertyIdentifier="NaEnumPropertyWithNullValueProperty" DataSourceControl="CurrentObject"
+        ReadOnly="True">
+        <ListControlStyle></ListControlStyle>
+      </obc:bocenumvalue></TD>
+  </TR>
+--%>
   <TR>
     <TD></TD>
     <TD><obc:boctextvalue id="Boctextvalue17" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaGuidWithNullValueProperty">
