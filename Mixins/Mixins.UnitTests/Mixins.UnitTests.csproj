@@ -47,6 +47,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinIntroducingGenericInterface.cs" />
+    <Compile Include="Mixins\CodeGenSampleTypes\VeryGenericMixin.cs" />
     <Compile Include="Mixins\MixinBaseClassTests.cs" />
     <Compile Include="SampleTypes\MixinOverridingClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSameClassMethod.cs" />

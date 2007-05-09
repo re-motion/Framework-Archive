@@ -292,5 +292,26 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (generic);
       Assert.AreEqual ("Generic", generic.Generic (bt1));
     }
+
+    [Test]
+    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
+    public void MuchGenericityWithoutOverriding ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (VeryGenericMixin<,>), typeof (BT3Mixin4)).With();
+      IVeryGenericMixin m = bt3 as IVeryGenericMixin;
+      Assert.IsNotNull (m);
+      Assert.AreEqual ("IVeryGenericMixin.GenericIfcMethod-5", m.GetMessage("5"));
+    }
+
+    [Test]
+    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
+    public void MuchGenericityWithOverriding ()
+    {
+      ClassOverridingUltraGenericStuff cougs = CreateMixedObject<ClassOverridingUltraGenericStuff> (typeof (AbstractDerivedUltraGenericMixin<,>),
+          typeof(BT3Mixin4)).With ();
+      IUltraGenericMixin m = cougs as IUltraGenericMixin;
+      Assert.IsNotNull (m);
+      Assert.AreEqual ("string-IVeryGenericMixin.GenericIfcMethod-5", m.GetMessage ("5"));
+    }
   }
 }
