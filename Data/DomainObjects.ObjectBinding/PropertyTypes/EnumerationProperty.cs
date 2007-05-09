@@ -14,11 +14,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     private const string c_disabledPrefix = "Disabled_";
 
     public EnumerationProperty (
+        IBusinessObjectClass businessObjectClass, 
         PropertyInfo propertyInfo,
         bool isRequired,
         Type itemType,
         bool isList)
-      : base (propertyInfo, isRequired, itemType, isList)
+      : base (businessObjectClass, propertyInfo, isRequired, itemType, isList)
     {
     }
 
@@ -66,7 +67,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return null;
     }
 
-    public override object FromInternalType (object internalValue)
+    public override object FromInternalType (IBusinessObject bindableObject, object internalValue)
     {
       ArgumentUtility.CheckNotNullAndType<Enum> ("internalValue", internalValue);
       ArgumentUtility.CheckValidEnumValue ("internalValue", (Enum) internalValue);
@@ -75,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       if ((undefinedValue != null) && internalValue.Equals (undefinedValue))
         return null;
 
-      return base.FromInternalType (internalValue);
+      return base.FromInternalType (bindableObject, internalValue);
     }
 
     public override object ToInternalType (object publicValue)

@@ -9,11 +9,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
   public class ReferenceProperty: NullableProperty, IBusinessObjectReferenceProperty
   {
     public ReferenceProperty (
+        IBusinessObjectClass businessObjectClass,
         PropertyInfo propertyInfo,
         bool isRequired,
         Type itemType,
         bool isList)
-        : base (propertyInfo, isRequired, itemType, isList, true)
+      : base (businessObjectClass, propertyInfo, isRequired, itemType, isList, true)
     {
     }
 

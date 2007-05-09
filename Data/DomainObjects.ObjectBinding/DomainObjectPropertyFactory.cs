@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
@@ -10,12 +9,14 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
   // TODO Doc: 
   public class DomainObjectPropertyFactory: ReflectionPropertyFactory
   {
-    private ClassDefinition _classDefinition;
-
-    public DomainObjectPropertyFactory (ClassDefinition classDefinition)
+    public DomainObjectPropertyFactory (DomainObjectClass businessObjectClass)
+      : base (businessObjectClass)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      _classDefinition = classDefinition;
+    }
+
+    protected DomainObjectClass DomainObjectClass
+    {
+      get { return (DomainObjectClass) BusinessObjectClass; }
     }
 
     protected override Type GetItemTypeForDomainObjectCollection (PropertyInfo propertyInfo)
@@ -39,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     protected override bool IsDateType (PropertyInfo propertyInfo)
     {
       //TODO: Remove this test once the Data.DomainObjects.ObjectBinding.Legacy assembly has been extracted.
-      if (_classDefinition is ReflectionBasedClassDefinition)
+      if (DomainObjectClass.ClassDefinition is ReflectionBasedClassDefinition)
         return base.IsDateType (propertyInfo);
 
       XmlBasedPropertyDefinition propertyDefinition = GetPropertyDefinition (propertyInfo) as XmlBasedPropertyDefinition;
@@ -69,22 +70,22 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 
     private PropertyDefinition GetPropertyDefinition(PropertyInfo propertyInfo)
     {
-      return _classDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
+      return DomainObjectClass.ClassDefinition.GetPropertyDefinition (GetPropertyName (propertyInfo));
     }
 
     private IRelationEndPointDefinition GetRelationEndPointDefinition(PropertyInfo propertyInfo)
     {
-      return _classDefinition.GetRelationEndPointDefinition (GetPropertyName (propertyInfo));
+      return DomainObjectClass.ClassDefinition.GetRelationEndPointDefinition (GetPropertyName (propertyInfo));
     }
 
     private IRelationEndPointDefinition GetMandatoryOppositeEndPointDefinition (PropertyInfo propertyInfo)
     {
-      return _classDefinition.GetMandatoryOppositeEndPointDefinition (GetPropertyName (propertyInfo));
+      return DomainObjectClass.ClassDefinition.GetMandatoryOppositeEndPointDefinition (GetPropertyName (propertyInfo));
     }
 
     private string GetPropertyName (PropertyInfo propertyInfo)
     {
-      if (_classDefinition is ReflectionBasedClassDefinition)
+      if (DomainObjectClass.ClassDefinition is ReflectionBasedClassDefinition)
         return ReflectionUtility.GetPropertyName (propertyInfo);
       else
         return propertyInfo.Name;

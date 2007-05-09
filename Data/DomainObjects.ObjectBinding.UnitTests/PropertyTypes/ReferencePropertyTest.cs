@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;
@@ -17,6 +18,7 @@ public class ReferencePropertyTest : DatabaseTest
   private ClientTransaction _clientTransaction;
   private Order _order;
   private OrderTicket _orderTicket;
+  private IBusinessObjectClass _orderTicketBusinessObjectClass;
 
   [SetUp]
   public override void SetUp ()
@@ -26,12 +28,13 @@ public class ReferencePropertyTest : DatabaseTest
     _clientTransaction = new ClientTransaction ();
     _order = new Order (_clientTransaction);
     _orderTicket = new OrderTicket (_order, _clientTransaction);
+    _orderTicketBusinessObjectClass = new DomainObjectClass (MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (OrderTicket)));
   }
 
   [Test]
   public void SearchAvailableObjectsWithDomainObject ()
   {
-    ReferenceProperty referenceProperty = new ReferenceProperty (GetOrderProperty (), true, null, false);
+    ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
     IBusinessObjectWithIdentity[] businessObjects = referenceProperty.SearchAvailableObjects (_orderTicket, "AllOrders");
     
@@ -46,7 +49,7 @@ public class ReferencePropertyTest : DatabaseTest
   [Test]
   public void SearchAvailableObjectsWithDifferentObject ()
   {
-    ReferenceProperty referenceProperty = new ReferenceProperty (GetOrderProperty (), true, null, false);
+    ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
     IBusinessObjectWithIdentity[] businessObjects = referenceProperty.SearchAvailableObjects (new BusinessObjectWithIdentity (), "AllOrders");
     
@@ -60,7 +63,7 @@ public class ReferencePropertyTest : DatabaseTest
   [Test]
   public void SearchAvailableObjectsWithNull ()
   {
-    ReferenceProperty referenceProperty = new ReferenceProperty (GetOrderProperty (), true, null, false);
+    ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
     IBusinessObjectWithIdentity[] businessObjects = referenceProperty.SearchAvailableObjects (null, "AllOrders");
     

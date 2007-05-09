@@ -6,76 +6,77 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-[MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Globalization.BooleanProperty")]
-public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
-{
-  private BooleanToEnumPropertyConverter _booleanToEnumConverter;
-
-  public BooleanProperty (      
-      PropertyInfo propertyInfo, 
-      bool isRequired,
-      Type itemType, 
-      bool isList, 
-      bool isNullableType)
-      : base (propertyInfo, isRequired, itemType, isList, isNullableType)
+  [MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Globalization.BooleanProperty")]
+  public class BooleanProperty: NullableProperty, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {
-    _booleanToEnumConverter = new BooleanToEnumPropertyConverter (this);
-  }
+    private BooleanToEnumPropertyConverter _booleanToEnumConverter;
 
-  public string GetDisplayName (bool value)
-  {
-    string resourceName = value ? "True" : "False";
-    return MultiLingualResourcesAttribute.GetResourceText (this, resourceName);
-  }
+    public BooleanProperty (
+        IBusinessObjectClass businessObjectClass,
+        PropertyInfo propertyInfo,
+        bool isRequired,
+        Type itemType,
+        bool isList,
+        bool isNullableType)
+        : base (businessObjectClass, propertyInfo, isRequired, itemType, isList, isNullableType)
+    {
+      _booleanToEnumConverter = new BooleanToEnumPropertyConverter (this);
+    }
 
-  public bool? GetDefaultValue (IBusinessObjectClass objectClass)
-  {
-    if (IsNullableType)
-      return null;
+    public string GetDisplayName (bool value)
+    {
+      string resourceName = value ? "True" : "False";
+      return MultiLingualResourcesAttribute.GetResourceText (this, resourceName);
+    }
 
-    return false;
-  }
+    public bool? GetDefaultValue (IBusinessObjectClass objectClass)
+    {
+      if (IsNullableType)
+        return null;
 
-  public override object FromInternalType (object internalValue)
-  {
-    if (IsList)
+      return false;
+    }
+
+    public override object FromInternalType (IBusinessObject bindableObject, object internalValue)
+    {
+      if (IsList)
+        return internalValue;
+
+      if (IsNaNullableType)
+        return NaBoolean.ToBoxedBoolean ((NaBoolean) internalValue);
+
       return internalValue;
+    }
 
-    if (IsNaNullableType)
-      return NaBoolean.ToBoxedBoolean ((NaBoolean)internalValue);
+    public override object ToInternalType (object publicValue)
+    {
+      if (IsList)
+        return publicValue;
 
-    return internalValue;
-  }
+      if (IsNaNullableType)
+        return NaBoolean.FromBoxedBoolean (publicValue);
 
-  public override object ToInternalType (object publicValue)
-  {
-    if (IsList)
       return publicValue;
+    }
 
-    if (IsNaNullableType)
-      return NaBoolean.FromBoxedBoolean (publicValue);
+    public IEnumerationValueInfo[] GetEnabledValues()
+    {
+      return _booleanToEnumConverter.GetValues();
+    }
 
-    return publicValue;
+    public IEnumerationValueInfo[] GetAllValues()
+    {
+      return _booleanToEnumConverter.GetValues();
+    }
+
+    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    {
+      return _booleanToEnumConverter.GetValueInfoByValue (value);
+    }
+
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    {
+      return _booleanToEnumConverter.GetValueInfoByIdentifier (identifier);
+    }
   }
-
-  public IEnumerationValueInfo[] GetEnabledValues()
-  {
-    return _booleanToEnumConverter.GetValues ();
-  }
-
-  public IEnumerationValueInfo[] GetAllValues()
-  {
-    return _booleanToEnumConverter.GetValues ();
-  }
-
-  public IEnumerationValueInfo GetValueInfoByValue (object value)
-  {
-    return _booleanToEnumConverter.GetValueInfoByValue (value);
-  }
-
-  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
-  {
-    return _booleanToEnumConverter.GetValueInfoByIdentifier (identifier);
-  }
-}
 }

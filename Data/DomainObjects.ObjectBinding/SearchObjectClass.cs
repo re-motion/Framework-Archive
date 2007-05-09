@@ -27,7 +27,7 @@ public class SearchObjectClass : IBusinessObjectClass
 	{
     ArgumentUtility.CheckNotNull ("type", type);
 
-    ReflectionPropertyFactory propertyFactory = new ReflectionPropertyFactory ();
+    ReflectionPropertyFactory propertyFactory = new ReflectionPropertyFactory (this);
     _classReflector = new BusinessObjectClassReflector (type, propertyFactory);
   }
 

@@ -34,21 +34,33 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   {
     ArgumentUtility.CheckNotNull ("type", type);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type.Name);
-    return new DomainObjectClass (classDefinition.ClassType);
+    string classID = type.Name;
+    ClassIDAttribute classIDAttribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute> (type, false);
+    if (classIDAttribute != null)
+      classID = classIDAttribute.ClassID;
+
+    return new DomainObjectClass (MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID));
   }
 
   private BusinessObjectClassReflector _classReflector;
+  private ClassDefinition _classDefinition;
+
+  public DomainObjectClass (Type type)
+    : this (MappingConfiguration.Current.ClassDefinitions.GetMandatory (ArgumentUtility.CheckNotNull ("type", type)))
+  {
+  }
 
   /// <summary>
   /// Instantiates a new object.
   /// </summary>
-  /// <param name="type">The type that the object should represent.</param>
-  public DomainObjectClass (Type type)
+  /// <param name="classDefinition">The <see cref="ClassDefinition"/> that the object should represent.</param>
+  public DomainObjectClass (ClassDefinition classDefinition)
   {
-    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
+    _classDefinition = classDefinition;
     ReflectionPropertyFactory propertyFactory = null;
+
     // TODO: Was ist wenn der Type typeof(string) ist? 
     // BindableDomainObject hat nur protected konstruktoren und kann daher nicht instanziert werden.
     // Vorschlag:
@@ -57,12 +69,18 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
     //    else
     //      propertyFactory = new ReflectionPropertyFactory ();
 
-    if (type == typeof (BindableDomainObject))
-      propertyFactory = new ReflectionPropertyFactory ();
+    if (_classDefinition.ClassType == typeof (BindableDomainObject))
+      propertyFactory = new ReflectionPropertyFactory (this);
     else
-      propertyFactory = new DomainObjectPropertyFactory (MappingConfiguration.Current.ClassDefinitions.GetMandatory (type));
+      propertyFactory = new DomainObjectPropertyFactory (this);
 
-    _classReflector = new BusinessObjectClassReflector (type, propertyFactory);
+    _classReflector = new BusinessObjectClassReflector (_classDefinition.ClassType, propertyFactory);
+  }
+
+  /// <summary>Gets the <see cref="ClassDefinition"/> of this <see cref="DomainObjectClass"/>.</summary>
+  public ClassDefinition ClassDefinition
+  {
+    get { return _classDefinition; }
   }
 
   /// <summary>

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Rubicon.ObjectBinding;
 using Rubicon.Security;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
@@ -28,11 +29,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _securableObject = new SecurableSearchObject (_mocks.CreateMock<IObjectSecurityStrategy> ());
 
       Type securableType = typeof (SecurableSearchObject);
-      _securableProperty = new StringProperty (securableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
+      IBusinessObjectClass securableBusinessObjectClass = new SearchObjectClass (securableType);
+      _securableProperty = new StringProperty (securableBusinessObjectClass, securableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
 
       Type nonSecurableType = typeof (TestSearchObject);
-      _nonSecurablePropertyReadOnly = new StringProperty (nonSecurableType.GetProperty ("ReadOnlyStringProperty"), false, typeof (string), false, 200);
-      _nonSecurableProperty = new StringProperty (nonSecurableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
+      IBusinessObjectClass nonSecurableBusinessObjectClass = new SearchObjectClass (securableType);
+      _nonSecurablePropertyReadOnly = new StringProperty (nonSecurableBusinessObjectClass, nonSecurableType.GetProperty ("ReadOnlyStringProperty"), false, typeof (string), false, 200);
+      _nonSecurableProperty = new StringProperty (nonSecurableBusinessObjectClass, nonSecurableType.GetProperty ("StringProperty"), false, typeof (string), false, 200);
       _nonSecurableObject = new TestSearchObject ();
     }
 

@@ -29,7 +29,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       _mockBusinessObjectWithIdentity = _mocks.CreateMock<IBusinessObjectWithIdentity> ();
      
       Type businessObjectType = typeof (StubBusinessObject);
-      _referenceProperty = new ReferenceProperty (businessObjectType.GetProperty ("ReferenceProperty"), false, typeof (IBusinessObjectWithIdentity), false);
+      IBusinessObjectClass businessObjectClass = new SearchObjectClass (businessObjectType);
+      _referenceProperty = new ReferenceProperty (businessObjectClass, businessObjectType.GetProperty ("ReferenceProperty"), false, typeof (IBusinessObjectWithIdentity), false);
 
       _businessObjectReflector = new BusinessObjectReflector (_mockBusinessObject);
     }

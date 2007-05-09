@@ -158,6 +158,17 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
 
   // methods and properties
 
+  internal bool? HasPropertyStillDefaultValue (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    if (!DataContainer.PropertyValues.Contains (propertyName))
+      return null;
+    if (State == StateType.New)
+      return false;
+    return DataContainer.PropertyValues[propertyName].HasChanged;
+  }
+
   #region IBusinessObject Members
 
   /// <summary>

@@ -107,7 +107,7 @@ public class BusinessObjectReflector
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = propertyInfo.GetValue (_bindableObject, new object[0]);
-    return reflectionProperty.FromInternalType (internalValue);
+    return reflectionProperty.FromInternalType (_bindableObject, internalValue);
   }
 
   /// <summary>
