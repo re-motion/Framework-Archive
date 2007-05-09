@@ -63,43 +63,32 @@ namespace Rubicon.Data.DomainObjects.Persistence
               propertyDefinition.PropertyName,
               classDefinition.ID);
         }
-        else
-        {
-          // For null values use Null singletons (e.g. NaBoolean.Null) instead
-          return propertyDefinition.DefaultValue;
-        }
+
+        return propertyDefinition.DefaultValue;        
       }
 
-      if (propertyDefinition.PropertyType.IsEnum)
-        return GetEnumValue (propertyDefinition, dataValue);
-
-      if (propertyDefinition.PropertyType == typeof (string))
-        return (string) dataValue;
-
-      return GetNativeObjectFromValue (propertyDefinition, dataValue);
+      return GetNativeObjectFromValue (classDefinition, propertyDefinition, dataValue);
     }
 
-    protected virtual object GetNativeObjectFromValue (PropertyDefinition propertyDefinition, object dataValue)
+    protected virtual object GetNativeObjectFromValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, object dataValue)
     {
-      if (TypeConversionProvider.CanConvert (dataValue.GetType (), propertyDefinition.PropertyType))
-        return TypeConversionProvider.Convert (null, CultureInfo.InvariantCulture, dataValue.GetType(), propertyDefinition.PropertyType, dataValue);
-
-      return dataValue;
-    }
-
-    protected virtual object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
-    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("dataValue", dataValue);
 
-      if (Enum.IsDefined (propertyDefinition.PropertyType, dataValue))
-        return Enum.ToObject (propertyDefinition.PropertyType, dataValue);
-
-      throw CreateConverterException (
-          "Enumeration '{0}' does not define the value '{1}', property '{2}'.",
-          propertyDefinition.PropertyType.FullName,
-          dataValue,
-          propertyDefinition.PropertyName);
+      try
+      {
+        return TypeConversionProvider.Convert (null, CultureInfo.InvariantCulture, dataValue.GetType(), propertyDefinition.PropertyType, dataValue);
+      }
+      catch (Exception e)
+      {
+        throw CreateConverterException (
+            e,
+            "Error converting the value for property '{0}' of class '{1}' from persistence medium:\r\n{2}",
+            propertyDefinition.PropertyName,
+            classDefinition.ID,
+            e.Message);
+      }
     }
 
     protected ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)

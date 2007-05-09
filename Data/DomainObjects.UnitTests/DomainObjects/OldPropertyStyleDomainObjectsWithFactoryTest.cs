@@ -105,6 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (new DateTime (2005, 2, 1, 5, 0, 0), classWithAllDataTypes.NaDateTimeProperty, "NaDateTimeProperty");
       Assert.AreEqual (765.098m, classWithAllDataTypes.NaDecimalProperty, "NaDecimalProperty");
       Assert.AreEqual (654321.789d, classWithAllDataTypes.NaDoubleProperty, "NaDoubleProperty");
+      Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes.NaEnumProperty, "NaEnumProperty");
       Assert.AreEqual (new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"), classWithAllDataTypes.NaGuidProperty, "NaGuidProperty");
       Assert.AreEqual ((short) 12000, classWithAllDataTypes.NaInt16Property, "NaInt16Property");
       Assert.AreEqual (-2147483647, classWithAllDataTypes.NaInt32Property, "NaInt32Property");
@@ -117,6 +118,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNull (classWithAllDataTypes.NaDateWithNullValueProperty, "NaDateWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NaDateTimeWithNullValueProperty, "NaDateTimeWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NaDoubleWithNullValueProperty, "NaDoubleWithNullValueProperty");
+      Assert.IsNull (classWithAllDataTypes.NaEnumWithNullValueProperty, "NaEnumWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NaGuidWithNullValueProperty, "NaGuidWithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NaInt16WithNullValueProperty, "NaInt16WithNullValueProperty");
       Assert.IsNull (classWithAllDataTypes.NaInt32WithNullValueProperty, "NaInt32WithNullValueProperty");

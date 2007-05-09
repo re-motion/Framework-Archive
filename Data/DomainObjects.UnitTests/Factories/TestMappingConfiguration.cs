@@ -392,14 +392,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty", "Double", typeof (double)));
-
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty",
               "Enum",
               typeof (ClassWithAllDataTypes.EnumType)));
-
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty", "Guid", typeof (Guid)));
@@ -469,6 +467,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
               typeof (double?)));
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
+              classWithAllDataTypes,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty",
+              "NaEnum",
+              typeof (ClassWithAllDataTypes.EnumType?)));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty", "NaGuid", typeof (Guid?)));
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
@@ -491,7 +495,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaSingleProperty",
               "NaSingle",
               typeof (float?)));
-
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes,
@@ -536,6 +539,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleWithNullValueProperty",
               "NaDoubleWithNullValue",
               typeof (double?)));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classWithAllDataTypes,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumWithNullValueProperty",
+              "NaEnumWithNullValue",
+              typeof (ClassWithAllDataTypes.EnumType?)));
       classWithAllDataTypes.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classWithAllDataTypes,

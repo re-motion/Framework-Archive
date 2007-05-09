@@ -73,6 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"], new DateTime (2005, 2, 1, 5, 0, 0)));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"], 765.098m));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"], 654321.789d));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"], ClassWithAllDataTypes.EnumType.Value2));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"], new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}")));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"], (short) 12000));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"], -2147483647));
@@ -85,6 +86,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty"], null));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalWithNullValueProperty"], null));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleWithNullValueProperty"], null));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumWithNullValueProperty"], null));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidWithNullValueProperty"], null));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16WithNullValueProperty"], null));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"], null));

@@ -301,6 +301,13 @@ public class TypeConversionProviderTest
   }
 
   [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromInt64ToInt32 ()
+  {
+    _provider.Convert (_object, _int32, 1L);
+  }
+
+  [Test]
   public void ConvertFromNaInt32ToString()
   {
     Assert.AreEqual ("1", _provider.Convert (_naInt32, _string, new NaInt32 (1)));

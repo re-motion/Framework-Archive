@@ -80,6 +80,7 @@
 	        [NaDateTime] = @naDateTime and
 	        [NaDecimal] = @naDecimal and
 	        [NaDouble] > @naDoubleLowerBound and [NaDouble] < @naDoubleUpperBound and
+	        [NaEnum] = @naEnum and
 	        [NaGuid] = @naGuid and
 	        [NaInt16] = @naInt16 and
 	        [NaInt32] = @naInt32 and
@@ -92,6 +93,7 @@
 	        [NaDateTimeWithNullValue] = @naDateTimeWithNullValue and
 	        [NaDecimalWithNullValue] = @naDecimalWithNullValue and 	        
 	        [NaDoubleWithNullValue] = @naDoubleWithNullValue and
+	        [NaEnumWithNullValue] = @naEnumWithNullValue and
 	        [NaGuidWithNullValue] = @naGuidWithNullValue and
 	        [NaInt16WithNullValue] = @naInt16WithNullValue and
 	        [NaInt32WithNullValue] = @naInt32WithNullValue and

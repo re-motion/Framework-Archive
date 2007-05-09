@@ -117,8 +117,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 
     [Test]
     [ExpectedException (typeof (ArgumentOutOfRangeException), ExpectedMessage =
-        "The value -1 is not supported by enum 'Rubicon.Core.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.",
-        MatchType = MessageMatch.Contains)]
+        "The value -1 is not supported for enumeration 'Rubicon.Core.UnitTests.Utilities.AdvancedEnumConverterTest+Int32Enum'.")]
     public void ConvertFromInt32_WithUndefinedValue()
     {
       _int32EnumConverter.ConvertFrom (-1);

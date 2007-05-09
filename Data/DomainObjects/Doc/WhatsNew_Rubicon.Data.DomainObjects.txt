@@ -103,6 +103,8 @@
 
 - Rubicon.Data.DomainObjects.ObjectBinding.BindableDomainObjects und BindableSearchObjects unterstüzen nun .NET Nullable Types.
   
+- Rubicon.Data.DomainObjects.Persistence.ValueConverterBase verwendet nun StorageProviderDefinition.TypeConversionProvider 
+  statt hart-kodierter Konvertierungen.
 
 1.7.37.0
 ========

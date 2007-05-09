@@ -102,6 +102,8 @@
     <Compile Include="IntegrationTests\SerializationTest.cs" />
     <Compile Include="MockConstraints\ContainsConstraint.cs" />
     <Compile Include="ObjectIDs\ObjectIDTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlProviderBaseTest.cs" />
+    <Compile Include="Persistence\Rdbms\SqlProviderCreateNewDataContainerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceManager.cs" />
     <Compile Include="Schemas\LegacySchemaLoaderTest.cs" />

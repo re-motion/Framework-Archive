@@ -1,6 +1,4 @@
 using System;
-using System.Globalization;
-using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -20,26 +18,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     {
       base.SetUp();
 
-      _typeConversionProvider = TypeConversionProvider.Create ();
-      _stubValueConverterBase = new StubValueConverterBase(_typeConversionProvider);
+      _typeConversionProvider = TypeConversionProvider.Create();
+      _stubValueConverterBase = new StubValueConverterBase (_typeConversionProvider);
     }
 
     [Test]
     public void Initialize()
     {
       Assert.That (_typeConversionProvider, Is.SameAs (_typeConversionProvider));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ConverterException), ExpectedMessage = 
-        "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
-        + " does not define the value 'InvalidEnumValue', property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type'.")]
-    public void GetInvalidEnumValue()
-    {
-      ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-      PropertyDefinition enumProperty = customerDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"];
-
-      _stubValueConverterBase.GetEnumValue (enumProperty, "InvalidEnumValue");
     }
 
     [Test]
@@ -92,7 +78,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void GetValue_ForString ()
+    public void GetValue_ForString()
     {
       ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
 
@@ -133,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void GetValue_ForEnums ()
+    public void GetValue_ForEnums_WithObject()
     {
       ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
 
@@ -143,10 +129,44 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
               classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"],
               ClassWithAllDataTypes.EnumType.Value1),
           Is.EqualTo (ClassWithAllDataTypes.EnumType.Value1));
+
+      Assert.That (
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"],
+              null),
+          Is.Null);
     }
 
     [Test]
-    public void GetValue_ForInt32_WithObject ()
+    public void GetValue_ForEnums_WithString()
+    {
+      ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
+
+      Assert.That (
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"],
+              "Value1"),
+          Is.EqualTo (ClassWithAllDataTypes.EnumType.Value1));
+
+      Assert.That (
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"],
+              string.Empty),
+          Is.Null);
+
+      Assert.That (
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"],
+              null),
+          Is.Null);
+    }
+
+    [Test]
+    public void GetValue_ForInt32_WithObject()
     {
       ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
 
@@ -173,37 +193,63 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void GetValue_ForInt32_WithString ()
+    public void GetValue_ForInt32_WithString()
     {
       ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
-      
-      Assert.That (
-        _stubValueConverterBase.GetValue (
-            classWithAllDataTypesDefinition,
-            classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"],
-            "2147483647"),
-        Is.EqualTo (2147483647));
 
       Assert.That (
-        _stubValueConverterBase.GetValue (
-            classWithAllDataTypesDefinition,
-            classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
-            "2147483647"),
-        Is.EqualTo (2147483647));
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"],
+              "2147483647"),
+          Is.EqualTo (2147483647));
 
       Assert.That (
-        _stubValueConverterBase.GetValue (
-            classWithAllDataTypesDefinition,
-            classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
-            string.Empty),
-        Is.Null);
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
+              "2147483647"),
+          Is.EqualTo (2147483647));
 
       Assert.That (
-        _stubValueConverterBase.GetValue (
-            classWithAllDataTypesDefinition,
-            classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
-            null),
-        Is.Null);
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
+              string.Empty),
+          Is.Null);
+
+      Assert.That (
+          _stubValueConverterBase.GetValue (
+              classWithAllDataTypesDefinition,
+              classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"],
+              null),
+          Is.Null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage =
+       "Error converting the value for property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty' "
+        + "of class 'ClassWithAllDataTypes' from persistence medium:\r\n"
+        + "The value -1 is not supported for enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType'.")]
+    public void GetInvalidEnumValue ()
+    {
+      ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
+      PropertyDefinition enumProperty = classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"];
+
+      _stubValueConverterBase.GetValue (classWithAllDataTypesDefinition, enumProperty, -1);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConverterException), ExpectedMessage =
+      "Error converting the value for property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property' "
+       + "of class 'ClassWithAllDataTypes' from persistence medium:\r\n"
+       + "Cannot convert value '1' to type 'System.Int32'.")]
+    public void GetInvalidValueType ()
+    {
+      ClassDefinition classWithAllDataTypesDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (ClassWithAllDataTypes));
+      PropertyDefinition int32Property = classWithAllDataTypesDefinition["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"];
+
+      _stubValueConverterBase.GetValue (classWithAllDataTypesDefinition, int32Property, 1L);
     }
   }
 }

@@ -50,6 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       query.Parameters.Add ("@naDecimal", 765.098m);
       query.Parameters.Add ("@naDoubleLowerBound", 654321D);
       query.Parameters.Add ("@naDoubleUpperBound", 654322D);
+      query.Parameters.Add ("@naEnum", ClassWithAllDataTypes.EnumType.Value2);
       query.Parameters.Add ("@naGuid", new Guid ("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
       query.Parameters.Add ("@naInt16", (short) 12000);
       query.Parameters.Add ("@naInt32", -2147483647);
@@ -62,6 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       query.Parameters.Add ("@naDateWithNullValue", null);
       query.Parameters.Add ("@naDateTimeWithNullValue", null);
       query.Parameters.Add ("@naDecimalWithNullValue", null);
+      query.Parameters.Add ("@naEnumWithNullValue", null);
       query.Parameters.Add ("@naDoubleWithNullValue", null);
       query.Parameters.Add ("@naGuidWithNullValue", null);
       query.Parameters.Add ("@naInt16WithNullValue", null);

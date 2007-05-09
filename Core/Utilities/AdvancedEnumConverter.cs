@@ -67,7 +67,7 @@ namespace Rubicon.Utilities
         if (value != null && _underlyingEnumType == value.GetType())
         {
           if (!Enum.IsDefined (EnumType, value))
-            throw new ArgumentOutOfRangeException ("value", string.Format ("The value {0} is not supported by enum '{1}'.", value, EnumType.FullName));
+            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, EnumType.FullName), (Exception) null);
 
           return Enum.ToObject (EnumType, value);
         }

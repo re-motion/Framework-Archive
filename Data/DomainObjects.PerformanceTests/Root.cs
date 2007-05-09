@@ -44,6 +44,8 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       test.TearDown ();
 
       test.TestFixtureTearDown();
+
+      Console.ReadLine();
     }
   }
 }
