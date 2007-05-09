@@ -8,7 +8,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 {
 
 /// <summary> Exposes non-public members of the <see cref="TypeConversionProvider"/> type. </summary>
-public class TypeConversionServicesMock: TypeConversionProvider
+public class StubTypeConversionProvider: TypeConversionProvider
 {
   public new TypeConverter GetTypeConverterByAttribute (Type type)
   {

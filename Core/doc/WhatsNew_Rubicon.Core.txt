@@ -12,6 +12,7 @@
 - Interface INullableObject zu INullObject umbenannt
 - Neues Interface Rubicon.Design.IDesignModeHelper: Facade für Design-Mode Eigenschaften.
 - TypeConversionServices zu TypeConversionProvider umbenannt.
+- AdvancedEnumConverter: Verarbeitet nun auch nullable Enums
 
 1.7.41
 ======

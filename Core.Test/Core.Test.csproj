@@ -268,10 +268,10 @@
     <Compile Include="Utilities\StringUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\TypeConversionServicesMock.cs">
+    <Compile Include="Utilities\StubTypeConversionProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utilities\TypeConversionServicesTest.cs">
+    <Compile Include="Utilities\TypeConversionProviderTest.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\TypeNameConverterTest.cs" />
