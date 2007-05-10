@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception;
 using Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle;
@@ -30,20 +31,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// properties), or is not derived from <see cref="DomainObject"/>.</exception>
     public Type GetConcreteDomainObjectType (Type baseType)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      if (!typeof (DomainObject).IsAssignableFrom (baseType))
-      {
-        string message = string.Format("Cannot instantiate type {0} as it is not derived from DomainObject.", baseType.FullName);
-        throw new ArgumentException (message, "baseType");
-      }
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("baseType", baseType, typeof (DomainObject));
+
       if (baseType.IsSealed)
       {
         string message = string.Format ("Cannot instantiate type {0} as it is sealed.", baseType.FullName);
         throw new ArgumentException (message, "baseType");
       }
-      if (baseType.IsAbstract && !baseType.IsDefined (typeof (NotAbstractAttribute), false))
+      
+      if (MappingConfiguration.Current.ClassDefinitions.GetMandatory (baseType).IsAbstract)
       {
-        string message = string.Format(
+        string message = string.Format (
           "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, NotAbstractAttribute must be used.",
           baseType.FullName);
         throw new ArgumentException (message, "baseType");

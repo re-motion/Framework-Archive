@@ -118,7 +118,7 @@ namespace Rubicon.Utilities
 			if (actualValue == null)
 				return null;
 
-			if (!expectedType.IsAssignableFrom (actualValue.GetType ()))
+			if (!expectedType.IsInstanceOfType (actualValue))
 				throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
 			return actualValue;
 		}
@@ -191,7 +191,7 @@ namespace Rubicon.Utilities
         int index = 0;
         foreach (object item in collection)
         {
-          if (item != null && !itemType.IsAssignableFrom (item.GetType()))
+          if (item != null && !itemType.IsInstanceOfType (item))
             throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
           ++index;
         }
@@ -213,7 +213,7 @@ namespace Rubicon.Utilities
         {
           if (item == null)
             throw new ArgumentItemNullException (argumentName, index);
-          if (!itemType.IsAssignableFrom (item.GetType()))
+          if (!itemType.IsInstanceOfType (item))
             throw new ArgumentItemTypeException (argumentName, index, itemType, item.GetType());
           ++index;
         }

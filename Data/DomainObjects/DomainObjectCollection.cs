@@ -1080,18 +1080,13 @@ namespace Rubicon.Data.DomainObjects
 
     private void CheckItemType (DomainObject domainObject, string argumentName)
     {
-      CheckItemType (_requiredItemType, domainObject.GetPublicDomainObjectType(), argumentName);
-    }
-
-    private void CheckItemType (Type requiredType, Type itemType, string argumentName)
-    {
-      if (requiredType != null && !requiredType.Equals (itemType) && !itemType.IsSubclassOf (requiredType))
+      if (_requiredItemType != null && !_requiredItemType.IsInstanceOfType (domainObject))
       {
         throw CreateArgumentException (
             argumentName,
             "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.",
-            itemType,
-            requiredType);
+            domainObject.GetPublicDomainObjectType (),
+            _requiredItemType);
       }
     }
 

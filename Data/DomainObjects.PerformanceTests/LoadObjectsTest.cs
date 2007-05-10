@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.PerformanceTests.TestDomain;
 
@@ -30,6 +31,11 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
 
       _clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID ("File", Guid.NewGuid());
+
+      Client.NewObject();
+      File.NewObject();
+      Company.NewObject();
+      Person.NewObject();
     }
 
     [Test]
@@ -37,25 +43,24 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
     {
       const int numberOfTests = 10;
 
-      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest on reference system: ~270ms");
+      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest on reference system: ~230 ms");
 
-      TimeSpan elapsedTime = new TimeSpan (0);
+      Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
         ClientTransaction.SetCurrent (null);
         Client client = DomainObject.GetObject<Client> (_clientID);
 
-        DateTime startTime = DateTime.Now;
+        stopwatch.Start ();
 
         DomainObjectCollection files = client.Files;
 
-        DateTime endTime = DateTime.Now;
+        stopwatch.Stop ();
 
-        elapsedTime += (endTime - startTime);
-        Assert.AreEqual (3000, files.Count);
+        Assert.AreEqual (6000, files.Count);
       }
 
-      double averageMilliSeconds = elapsedTime.TotalMilliseconds/numberOfTests;
+      double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;
       Console.WriteLine ("LoadObjectsOverRelationTest (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
     }
 
@@ -64,25 +69,23 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
     {
       const int numberOfTests = 10;
 
-      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationWithAbstractBaseClass on reference system: ??? ms");
+      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationWithAbstractBaseClass on reference system: ~710 ms");
 
-      TimeSpan elapsedTime = new TimeSpan (0);
+      Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
         ClientTransaction.SetCurrent (null);
         Client client = DomainObject.GetObject<Client> (_clientID);
 
-        DateTime startTime = DateTime.Now;
+        stopwatch.Start ();
 
         DomainObjectCollection clientBoundBaseClasses = client.ClientBoundBaseClasses;
 
-        DateTime endTime = DateTime.Now;
-
-        elapsedTime += (endTime - startTime);
-        Assert.AreEqual (3000, clientBoundBaseClasses.Count);
+        stopwatch.Stop ();
+        Assert.AreEqual (4000, clientBoundBaseClasses.Count);
       }
 
-      double averageMilliSeconds = elapsedTime.TotalMilliseconds/numberOfTests;
+      double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;
       Console.WriteLine (
           "LoadObjectsOverRelationWithAbstractBaseClass (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
     }

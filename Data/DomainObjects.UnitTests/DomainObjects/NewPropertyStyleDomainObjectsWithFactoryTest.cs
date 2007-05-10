@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -322,8 +323,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableNonDomainClass as it is not derived from DomainObject.\r\nParameter name: baseType")]
+    [ExpectedException (typeof (ArgumentTypeException))]
     public void NonDomainCannotBeInstantiated ()
     {
       DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory.GetConcreteDomainObjectType (typeof (NonInstantiableNonDomainClass));

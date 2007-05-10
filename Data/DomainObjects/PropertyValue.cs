@@ -324,7 +324,7 @@ public class PropertyValue
   {
     if (value != null)
     {
-      if (!definition.PropertyType.IsAssignableFrom (value.GetType()))
+      if (!definition.PropertyType.IsInstanceOfType (value))
         throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
 
       if (value.GetType () == typeof (string))

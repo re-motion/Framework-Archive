@@ -27,5 +27,12 @@ namespace Rubicon.Core.UnitTests.Utilities.ArgumentUtilityTests
 			string result = ArgumentUtility.CheckType<string> ("arg", "test");
 			Assert.AreEqual ("test", result);
 		}
-	}
+
+    [Test]
+    public void Succeed_BaseType ()
+    {
+      string result = (string) ArgumentUtility.CheckType<object> ("arg", "test");
+      Assert.AreEqual ("test", result);
+    }
+  }
 }
