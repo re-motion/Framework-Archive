@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class AnonymousRelationEndPointDefinitionTest : ReflectionBasedMappingTest
+  public class AnonymousRelationEndPointDefinitionTest : StandardMappingTest
   {
     private ClassDefinition _clientDefinition;
     private AnonymousRelationEndPointDefinition _definition;

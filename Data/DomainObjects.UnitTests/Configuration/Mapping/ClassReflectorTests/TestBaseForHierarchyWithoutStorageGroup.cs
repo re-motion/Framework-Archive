@@ -3,7 +3,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
-  public class TestBaseForHierarchyWithoutStorageGroup : ReflectionBasedMappingTest
+  public class TestBaseForHierarchyWithoutStorageGroup : StandardMappingTest
   {
     protected void CreatePropertyDefinitionsForClassWithoutStorageGroupWithMixedProperties (ReflectionBasedClassDefinition classDefinition)
     {

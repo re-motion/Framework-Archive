@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class InterceptorsTest : ReflectionBasedMappingTest
+  public class InterceptorsTest : StandardMappingTest
   {
     [Test]
     public void PropInterceptorShouldInterceptNonAutoPropertiesInMapping ()

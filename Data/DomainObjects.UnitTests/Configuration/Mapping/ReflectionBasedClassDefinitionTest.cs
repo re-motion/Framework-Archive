@@ -11,7 +11,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ReflectionBasedClassDefinitionTest: ReflectionBasedMappingTest
+  public class ReflectionBasedClassDefinitionTest: StandardMappingTest
   {
     private ReflectionBasedClassDefinition _orderClass;
     private ReflectionBasedClassDefinition _distributorClass;

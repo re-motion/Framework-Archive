@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
   [TestFixture]
-  public class ReflectionUtilityTest: ReflectionBasedMappingTest
+  public class ReflectionUtilityTest: StandardMappingTest
   {
     [Test]
     public void GetPropertyName ()

@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class ValueConverterBaseTest: ReflectionBasedMappingTest
+  public class ValueConverterBaseTest: StandardMappingTest
   {
     private StubValueConverterBase _stubValueConverterBase;
     private TypeConversionProvider _typeConversionProvider;

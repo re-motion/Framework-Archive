@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
 {
   [TestFixture]
-  public class OneSideRelationProperty: ReflectionBasedMappingTest
+  public class OneSideRelationProperty: StandardMappingTest
   {
     private ClassDefinition _classDefinition;
     private ClassDefinitionCollection _classDefinitions;

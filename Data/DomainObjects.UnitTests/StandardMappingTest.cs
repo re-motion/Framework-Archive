@@ -7,11 +7,11 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  public class ReflectionBasedMappingTest: DatabaseTest
+  public class StandardMappingTest: DatabaseTest
   {
     public const string CreateTestDataFileName = "DataDomainObjects_CreateTestData.sql";
 
-    protected ReflectionBasedMappingTest()
+    protected StandardMappingTest()
       : base (new StandardMappingDatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
     }

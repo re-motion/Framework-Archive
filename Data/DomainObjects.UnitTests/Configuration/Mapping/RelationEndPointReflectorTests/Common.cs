@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
 {
   [TestFixture]
-  public class Common: ReflectionBasedMappingTest
+  public class Common: StandardMappingTest
   {
     private ClassDefinitionCollection _classDefinitions;
 

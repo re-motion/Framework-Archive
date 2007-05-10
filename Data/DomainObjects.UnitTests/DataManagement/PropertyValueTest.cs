@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class PropertyValueTest : ReflectionBasedMappingTest
+  public class PropertyValueTest : StandardMappingTest
   {
     private ReflectionBasedClassDefinition _classDefinition;
 

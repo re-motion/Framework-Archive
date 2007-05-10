@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.ObjectIDs
 {
   [TestFixture]
-  public class ObjectIDTest : ReflectionBasedMappingTest
+  public class ObjectIDTest : StandardMappingTest
   {
     [DBTable]
     private class InvalidDomainObject : DomainObject

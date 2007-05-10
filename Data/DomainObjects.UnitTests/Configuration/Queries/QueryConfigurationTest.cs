@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 {
   [TestFixture]
-  public class QueryConfigurationTest : ReflectionBasedMappingTest
+  public class QueryConfigurationTest : StandardMappingTest
   {
     [Test]
     public void Loading ()

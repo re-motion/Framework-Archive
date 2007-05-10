@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ConstructionOfRelationDefinitionTest : ReflectionBasedMappingTest
+  public class ConstructionOfRelationDefinitionTest : StandardMappingTest
   {
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = "Relation 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' cannot have two virtual end points.")]

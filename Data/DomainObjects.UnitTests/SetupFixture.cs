@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       testDomainAgent.ExecuteBatch ("DataDomainObjects_SetupDB.sql", true);
 
       _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent (DatabaseTest.TestDomainConnectionString);
-      _standardMappingDatabaseAgent.ExecuteBatch (ReflectionBasedMappingTest.CreateTestDataFileName, true);
+      _standardMappingDatabaseAgent.ExecuteBatch (StandardMappingTest.CreateTestDataFileName, true);
       _standardMappingDatabaseAgent.ExecuteBatch (TableInheritanceMappingTest.CreateTestDataFileName, true);
       _standardMappingDatabaseAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
     }

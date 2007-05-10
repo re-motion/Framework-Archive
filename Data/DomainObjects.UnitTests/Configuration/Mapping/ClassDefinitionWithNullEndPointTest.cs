@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionWithNullEndPointTest : ReflectionBasedMappingTest
+  public class ClassDefinitionWithNullEndPointTest : StandardMappingTest
   {
     // types
 

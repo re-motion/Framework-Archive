@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationDefinitionTest : ReflectionBasedMappingTest
+  public class RelationDefinitionTest : StandardMappingTest
   {
     private ClassDefinition _orderClass;
     private ClassDefinition _customerClass;

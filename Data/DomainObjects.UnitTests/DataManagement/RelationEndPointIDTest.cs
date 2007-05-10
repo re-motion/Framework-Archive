@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
-  public class RelationEndPointIDTest : ReflectionBasedMappingTest
+  public class RelationEndPointIDTest : StandardMappingTest
   {
     private ObjectID _objectID;
     private string _propertyName;

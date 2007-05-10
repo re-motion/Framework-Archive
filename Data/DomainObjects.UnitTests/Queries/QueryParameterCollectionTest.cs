@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Queries;
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 {
   [TestFixture]
-  public class QueryParameterCollectionTest : ReflectionBasedMappingTest
+  public class QueryParameterCollectionTest : StandardMappingTest
   {
     private QueryParameterCollection _collection;
     private QueryParameter _parameter;

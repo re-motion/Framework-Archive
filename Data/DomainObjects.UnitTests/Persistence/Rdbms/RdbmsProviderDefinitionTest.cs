@@ -11,7 +11,7 @@ using Rubicon.Development.UnitTesting.Configuration;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class RdbmsProviderDefinitionTest : ReflectionBasedMappingTest
+  public class RdbmsProviderDefinitionTest : StandardMappingTest
   {
     private StorageProviderDefinition _definition;
 

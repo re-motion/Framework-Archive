@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class MappingConfigurationTest: ReflectionBasedMappingTest
+  public class MappingConfigurationTest: StandardMappingTest
   {
     private MockRepository _mockRepository;
     private IMappingLoader _mockMappingLoader;

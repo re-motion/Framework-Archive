@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests
 {
-  public class BaseTest: ReflectionBasedMappingTest
+  public class BaseTest: StandardMappingTest
   {
     protected PropertyReflector CreatePropertyReflector<T> (string property)
     {

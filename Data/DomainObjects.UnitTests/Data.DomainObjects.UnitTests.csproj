@@ -162,7 +162,7 @@
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\InsertCommandBuilderTest.cs" />
     <Compile Include="Persistence\Rdbms\QueryCommandBuilderTest.cs" />
-    <Compile Include="ReflectionBasedMappingTest.cs" />
+    <Compile Include="StandardMappingTest.cs" />
     <Compile Include="DomainObjects\NewPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="DomainObjects\OldPropertyStyleDomainObjectsWithFactoryTest.cs" />
     <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs" />

@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class ConstructionTest : ReflectionBasedMappingTest
+  public class ConstructionTest : StandardMappingTest
   {
     [DBTable]
     public class DomainObjectWithSpecialConstructor : DomainObject

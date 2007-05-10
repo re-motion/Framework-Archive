@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class TypeInfoTest: ReflectionBasedMappingTest
+  public class TypeInfoTest: StandardMappingTest
   {
     private enum TypeMappingTestEnum
     {
