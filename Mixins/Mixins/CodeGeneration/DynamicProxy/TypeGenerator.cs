@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
@@ -11,6 +12,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 using LoadArrayElementExpression = Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
+using Rubicon.Text;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
@@ -24,6 +26,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private FieldReference _configurationField;
     private FieldReference _extensionsField;
     private FieldReference _firstField;
+    private Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
 
     public TypeGenerator (ModuleManager module, BaseClassDefinition configuration)
     {
@@ -40,10 +43,12 @@ namespace Mixins.CodeGeneration.DynamicProxy
       List<Type> interfaces = GetInterfacesToImplement(isSerializable);
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), isSerializable);
       _emitter = new ExtendedClassEmitter (classEmitter);
-      _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter);
 
       _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (BaseClassDefinition));
       _extensionsField = _emitter.InnerEmitter.CreateField ("__extensions", typeof (object[]), true);
+
+      _baseCallGenerator = new BaseCallProxyGenerator (this, classEmitter);
+
       _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
 
       _emitter.ReplicateBaseTypeConstructors();
@@ -58,6 +63,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
       ImplementOverrides();
 
       ReplicateClassAttributes();
+
+      AddDebuggerAttributes();
     }
 
     private List<Type> GetInterfacesToImplement(bool isSerializable)
@@ -299,6 +306,41 @@ namespace Mixins.CodeGeneration.DynamicProxy
       ReplicateAttributes (_configuration.CustomAttributes, _emitter);
       foreach (MixinDefinition mixin in _configuration.Mixins)
         ReplicateAttributes (mixin.CustomAttributes, _emitter);
+    }
+
+    private void AddDebuggerAttributes ()
+    {
+      string debuggerString = "Mix of " + _configuration.Type.FullName + " + "
+          + SeparatedStringBuilder.Build (" + ", _configuration.Mixins, delegate (MixinDefinition m) { return m.FullName; });
+      CustomAttributeBuilder debuggerAttribute =
+          new CustomAttributeBuilder (
+              typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) }),
+              new object[] { debuggerString });
+      _emitter.AddCustomAttribute (debuggerAttribute);
+    }
+
+    public MethodInfo GetBaseCallMethodFor (MethodInfo method)
+    {
+      ArgumentUtility.CheckNotNull ("method", method);
+      if (!TypeBuilder.BaseType.Equals(method.DeclaringType))
+      {
+        string message = string.Format ("Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
+            method.DeclaringType.FullName, method.Name);
+        throw new ArgumentException (message, "method");
+      }
+      if (!_baseCallMethods.ContainsKey (method))
+        _baseCallMethods.Add (method, ImplementBaseCallMethod (method));
+      return _baseCallMethods[method];
+    }
+
+    private MethodInfo ImplementBaseCallMethod (MethodInfo method)
+    {
+      MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
+      CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (_emitter.InnerEmitter, "__base__" + method.Name, attributes);
+      baseCallMethod.CopyParametersAndReturnTypeFrom (method);
+      baseCallMethod.ImplementMethodByBaseCall (method);
+      baseCallMethod.InnerEmitter.Generate();
+      return baseCallMethod.MethodBuilder;
     }
   }
 }

@@ -12,9 +12,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
   public class CustomMethodEmitter : IAttributableEmitter
   {
     private MethodEmitter _innerEmitter;
+    private AbstractTypeEmitter _parentEmitter;
 
     public CustomMethodEmitter (AbstractTypeEmitter parentEmitter, string name, MethodAttributes attributes)
     {
+      _parentEmitter = parentEmitter;
       _innerEmitter = parentEmitter.CreateMethod (name, attributes);
     }
 
@@ -23,9 +25,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _innerEmitter.MethodBuilder.SetCustomAttribute (customAttribute);
     }
 
-    public void CopyParametersAndReturnTypeFrom (MethodInfo method, AbstractTypeEmitter parentEmitter)
+    public void CopyParametersAndReturnTypeFrom (MethodInfo method)
     {
-      _innerEmitter.CopyParametersAndReturnTypeFrom (method, parentEmitter);
+      _innerEmitter.CopyParametersAndReturnTypeFrom (method, _parentEmitter);
     }
 
     public MethodBuilder MethodBuilder

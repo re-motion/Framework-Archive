@@ -47,7 +47,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
       string methodName = string.Format ("{0}.{1}", baseOrInterfaceMethod.DeclaringType.FullName, baseOrInterfaceMethod.Name);
       CustomMethodEmitter methodDefinition = new CustomMethodEmitter (InnerEmitter, methodName, methodDefinitionAttributes);
-      methodDefinition.CopyParametersAndReturnTypeFrom (baseOrInterfaceMethod, InnerEmitter);
+      methodDefinition.CopyParametersAndReturnTypeFrom (baseOrInterfaceMethod);
 
       TypeBuilder.DefineMethodOverride (methodDefinition.MethodBuilder, baseOrInterfaceMethod);
 

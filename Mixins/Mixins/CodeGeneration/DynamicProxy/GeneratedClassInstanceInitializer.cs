@@ -28,7 +28,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
       FillUpExtensionsWithNewMixinInstances (extensions, configuration, instance, baseCallProxyType);
 
-      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, configuration.Mixins.Count);
+      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, 0);
       InitializeInstanceFields (instance, extensions, firstBaseCallProxy);
     }
 
@@ -82,7 +82,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private static object InstantiateMixin (MixinDefinition mixinDefinition, object mixinTargetInstance, Type baseCallProxyType)
     {
-      object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex);
+      object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex + 1);
 
       Type mixinType = mixinDefinition.Type;
       List<Type> boundGenericParameters = BindGenericParameters(mixinType, mixinTargetInstance, baseCallProxyInstance);

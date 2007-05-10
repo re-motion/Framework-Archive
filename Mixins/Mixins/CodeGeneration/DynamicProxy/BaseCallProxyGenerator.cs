@@ -8,6 +8,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 
 using LoadArrayElementExpression = Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
+using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
@@ -39,7 +40,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _depthField = _nestedEmitter.InnerEmitter.CreateField ("_depth", typeof (int));
 
       GenerateConstructor();
-      ImplementOverriddenMethods();
+      ImplementBaseCallsForOverrides();
       ImplementRequiredBaseCallTypes();
     }
 
@@ -65,50 +66,112 @@ namespace Mixins.CodeGeneration.DynamicProxy
       // ctor.Generate();
     }
 
-    private void ImplementOverriddenMethods ()
+    private void ImplementBaseCallsForOverrides ()
     {
       foreach (MethodDefinition method in _baseClassConfiguration.Methods)
       {
         if (method.Overrides.Count > 0)
-          ImplementOverriddenMethod (method);
+          ImplementBaseCallForOverride (method);
       }
     }
 
     // Implements a base or interface method
-    private void ImplementOverriddenMethod (MethodDefinition methodDefinition)
+    private void ImplementBaseCallForOverride (MethodDefinition methodDefinitionOnTarget)
     {
+      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      CustomMethodEmitter methodOverride = new CustomMethodEmitter (_nestedEmitter.InnerEmitter, methodDefinition.FullName, attributes);
-      methodOverride.CopyParametersAndReturnTypeFrom (methodDefinition.MethodInfo, _nestedEmitter.InnerEmitter);
-      AddStatementsToDelegateToNextInChain(methodOverride);
+      CustomMethodEmitter methodOverride = new CustomMethodEmitter (_nestedEmitter.InnerEmitter, methodDefinitionOnTarget.FullName, attributes);
+      methodOverride.CopyParametersAndReturnTypeFrom (methodDefinitionOnTarget.MethodInfo);
+      AddBaseCallToNextInChain(methodOverride, methodDefinitionOnTarget);
       // methodOverride.InnerEmitter.Generate();
 
-      _overriddenMethodToImplementationMap.Add (methodDefinition, methodOverride.MethodBuilder);
+      _overriddenMethodToImplementationMap.Add (methodDefinitionOnTarget, methodOverride.MethodBuilder);
     }
 
-    private static void AddStatementsToDelegateToNextInChain(CustomMethodEmitter methodOverride)
+    private void AddBaseCallToNextInChain(CustomMethodEmitter methodOverride, MethodDefinition methodDefinitionOnTarget)
     {
-      methodOverride.ImplementMethodByThrowing (typeof (NotImplementedException), "Not implemented.");
+      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+
+      for (int potentialDepth = 0; potentialDepth < _baseClassConfiguration.Mixins.Count; ++potentialDepth)
+      {
+        MethodDefinition nextInChain = GetNextInBaseChain (methodDefinitionOnTarget, potentialDepth);
+        AddBaseCallToTargetIfDepthMatches (methodOverride, nextInChain, potentialDepth);
+      }
+      AddUnconditionalBaseCallToTarget (methodOverride, methodDefinitionOnTarget);
+    }
+
+    private MethodDefinition GetNextInBaseChain (MethodDefinition methodDefinitionOnTarget, int potentialDepth)
+    {
+      Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
+
+      for (int i = potentialDepth; i < _baseClassConfiguration.Mixins.Count; ++i)
+        if (methodDefinitionOnTarget.Overrides.HasItem (_baseClassConfiguration.Mixins[i].Type))
+          return methodDefinitionOnTarget.Overrides[_baseClassConfiguration.Mixins[i].Type];
+      return methodDefinitionOnTarget;
+    }
+
+    private void AddBaseCallToTargetIfDepthMatches (CustomMethodEmitter methodEmitter, MethodDefinition target, int requestedDepth)
+    {
+      methodEmitter.InnerEmitter.CodeBuilder.AddStatement (
+          new IfStatement (
+              new SameConditionExpression (_depthField.ToExpression(), new ConstReference (requestedDepth).ToExpression()),
+          CreateBaseCallStatements (methodEmitter, target, methodEmitter.InnerEmitter.Arguments)));
+    }
+
+    private void AddUnconditionalBaseCallToTarget (CustomMethodEmitter methodEmitter, MethodDefinition target)
+    {
+      foreach (Statement statement in CreateBaseCallStatements (methodEmitter, target, methodEmitter.InnerEmitter.Arguments))
+        methodEmitter.InnerEmitter.CodeBuilder.AddStatement (statement);
+    }
+
+    private Statement[] CreateBaseCallStatements (CustomMethodEmitter methodEmitter, MethodDefinition target, ArgumentReference[] args)
+    {
+      Expression[] argExpressions = Array.ConvertAll<ArgumentReference, Expression> (args, delegate (ArgumentReference a) { return a.ToExpression(); });
+      if (target.DeclaringClass == _baseClassConfiguration)
+      {
+        MethodInfo baseCallMethod = _surroundingType.GetBaseCallMethodFor (target.MethodInfo);
+        return new Statement[] {
+          new ReturnStatement (new VirtualMethodInvocationExpression (_thisField, baseCallMethod, argExpressions))
+        };
+      }
+      else
+      {
+        MixinDefinition mixin = (MixinDefinition) target.DeclaringClass;
+        Reference mixinReference = GetMixinReference(methodEmitter, mixin);
+
+        return new Statement[] {
+            new ReturnStatement (new VirtualMethodInvocationExpression (mixinReference, target.MethodInfo, argExpressions))
+        };
+      }
+    }
+
+    private Reference GetMixinReference(CustomMethodEmitter methodEmitter, MixinDefinition mixin)
+    {
+      Reference extensionsReference = new IndirectFieldReference(_thisField, _surroundingType.ExtensionsField);
+      Expression mixinExpression = new CastClassExpression (mixin.Type,
+                                                            new LoadArrayElementExpression (mixin.MixinIndex, extensionsReference, typeof (object)));
+      return new ExpressionReference (mixin.Type, mixinExpression, methodEmitter.InnerEmitter);
     }
 
     private void ImplementRequiredBaseCallTypes ()
     {
       foreach (RequiredBaseCallTypeDefinition requiredType in _baseClassConfiguration.RequiredBaseCallTypes)
         foreach (RequiredBaseCallMethodDefinition requiredMethod in requiredType.BaseCallMethods)
-          ImplementRequiredBaseCallMethod (requiredMethod);
+          ImplementBaseCallForRequirement (requiredMethod);
     }
 
-    private void ImplementRequiredBaseCallMethod (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirement (RequiredBaseCallMethodDefinition requiredMethod)
     {
       if (requiredMethod.ImplementingMethod.DeclaringClass == _baseClassConfiguration)
-        ImplementRequiredBaseCallMethodOnThis (requiredMethod);
+        ImplementBaseCallForRequirementOnTarget (requiredMethod);
       else
-        ImplementRequiredBaseCallMethodOnExtension (requiredMethod);
+        ImplementBaseCallForRequirementOnMixin (requiredMethod);
     }
 
     // Required base call method implemented by "this" -> either overridden or not
     // If overridden, delegate to next in chain, else simply delegate to "this" field
-    private void ImplementRequiredBaseCallMethodOnThis (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirementOnTarget (RequiredBaseCallMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _nestedEmitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
       if (requiredMethod.ImplementingMethod.Overrides.Count == 0)
@@ -116,27 +179,19 @@ namespace Mixins.CodeGeneration.DynamicProxy
       else
       {
         Assertion.Assert (!_baseClassConfiguration.Methods.HasItem (requiredMethod.InterfaceMethod));
-        AddStatementsToDelegateToNextInChain (methodImplementation);
+        AddBaseCallToNextInChain (methodImplementation, requiredMethod.ImplementingMethod);
       }
     }
 
     // Required abse call method implemented by extension -> delegate to respective extension
-    private void ImplementRequiredBaseCallMethodOnExtension (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirementOnMixin (RequiredBaseCallMethodDefinition requiredMethod)
     {
       MixinDefinition mixin = (MixinDefinition) requiredMethod.ImplementingMethod.DeclaringClass;
       
       CustomMethodEmitter methodImplementation = _nestedEmitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
-      methodImplementation.ImplementMethodByThrowing (typeof (NotImplementedException), "Not implemented.");
 
-      /*LocalReference outerExtensionsLocal = methodImplementation.InnerEmitter.CodeBuilder.DeclareLocal (typeof(object[]));
-      methodImplementation.InnerEmitter.CodeBuilder.AddStatement(new AssignStatement(outerExtensionsLocal,
-          new ReferenceExpression(new IndirectFieldReference(_thisField, _surroundingType.ExtensionsField))));
-
-      LocalReference mixinLocal = methodImplementation.InnerEmitter.CodeBuilder.DeclareLocal (mixin.Type);
-      methodImplementation.InnerEmitter.CodeBuilder.AddStatement (new AssignStatement (mixinLocal,
-        new CastClassExpression (mixin.Type, new LoadArrayElementExpression (mixin.MixinIndex, outerExtensionsLocal, typeof (object)))));
-          
-      _nestedEmitter.ImplementMethodByDelegation (methodImplementation.InnerEmitter, mixinLocal, requiredMethod.ImplementingMethod.MethodInfo);*/
+      Reference mixinReference = GetMixinReference (methodImplementation, mixin);
+      methodImplementation.ImplementMethodByDelegation (mixinReference, requiredMethod.ImplementingMethod.MethodInfo);
       // methodImplementation.InnerEmitter.Generate ();
     }
 

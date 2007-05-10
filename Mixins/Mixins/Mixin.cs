@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Mixins.Definitions;
 using Rubicon.Utilities;
 
@@ -35,6 +36,7 @@ namespace Mixins
 
     protected TThis This
     {
+      [DebuggerStepThrough]
       get
       {
         if (_this == null)
@@ -45,6 +47,7 @@ namespace Mixins
 
     protected TBase Base
     {
+      [DebuggerStepThrough]
       get
       {
         if (_base == null)
@@ -75,6 +78,7 @@ namespace Mixins
 
     protected TThis This
     {
+      [DebuggerStepThrough]
       get
       {
         if (_this == null)

@@ -41,6 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ConditionExpression.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ExpressionReference.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\CurrentTypeFactoryScope.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />

@@ -114,7 +114,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement overrides")]
     public void OverriddenMemberCalls ()
     {
       using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4))))
@@ -125,7 +124,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Implement overrides")]
     public void BaseCallMethodToThis()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (MixinWithThisAsBase)).With ();

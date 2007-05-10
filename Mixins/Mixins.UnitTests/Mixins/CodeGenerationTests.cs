@@ -246,11 +246,10 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement overrides")]
     public void OverrideWithCompleteBaseInterface ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).With();
-      Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod", bt3.IfcMethod());
+      Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2", bt3.IfcMethod());
     }
 
     [Test]
@@ -263,7 +262,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Implement overrides")]
     public void DoubleOverride ()
     {
       ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
