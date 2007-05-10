@@ -152,7 +152,7 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.Web, 
-      Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Legacy, 
+      Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, Data.DomainObjects.Legacy, 
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
@@ -160,7 +160,7 @@
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
-      Data.DomainObjects.CodeGenerator.UnitTests, 
+      Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests, 
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
@@ -214,17 +214,17 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
-    <property name="project.name" value="Data.DomainObjects.CodeGenerator" />
-    <property name="project.dir" value="Data/DomainObjects.CodeGenerator" />
-    <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
+  <target name="Data.DomainObjects.Legacy.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.CodeGenerator" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Data.DomainObjects.CodeGenerator.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.CodeGenerator">
-    <property name="project.name" value="Data.DomainObjects.CodeGenerator.Console" />
-    <property name="project.dir" value="Data/DomainObjects.CodeGenerator.Console" />
+  <target name="Data.DomainObjects.Legacy.CodeGenerator.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.Legacy.CodeGenerator">
+    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.Console" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
     <property name="project.extension" value="exe" />
     <call target="execute-buildstep" />
@@ -473,15 +473,15 @@
     <call target="buildtest" />
   </target>
 
-  <target name="Data.DomainObjects.CodeGenerator.UnitTests">
+  <target name="Data.DomainObjects.Legacy.CodeGenerator.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.CodeGenerator" cascade="false"/>
+    <call target="Data.DomainObjects.Legacy.CodeGenerator" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
 
-    <property name="project.name" value="Data.DomainObjects.CodeGenerator.UnitTests" />
-    <property name="project.dir" value="Data/DomainObjects.CodeGenerator.UnitTests" />
-    <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
+    <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>

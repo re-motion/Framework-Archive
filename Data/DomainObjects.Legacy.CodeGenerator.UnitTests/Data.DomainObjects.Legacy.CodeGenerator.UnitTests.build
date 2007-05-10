@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--EXTERNAL_PROPERTIES: build.outputdir;build.test.outputdir;project.output;project.extension;project.doc;build.debug;build.csc.define-->
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests">
+  
+  <target name="build" description="perform a build">
+    <csc  target="library"
+          output="${build.test.outputdir}/${project.output}.${project.extension}"
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <nowarn>
+        <!-- obsolete warning -->
+        <warning number="0618" />
+      </nowarn> 
+      <sources failonempty="true">
+        <include name="**/*.cs"/>
+        <exclude name="IntegrationTests/TestDomain/*.cs" />
+        <include name="Properties/**/*.cs" />
+        <exclude name="bin/**/*.cs" />
+        <exclude name="Properties/AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.Legacy.CodeGenerator.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
+        <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
+        <include asis="true" name="System.Data.dll"/>
+        <include asis="true" name="System.Xml.dll"/>
+      </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests">
+        <include name="Sql/SqlServer/TestData/*.sql" />
+      </resources>
+    </csc>
+    <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
+      <fileset>
+        <include name="*.xml" />
+        <include name="IntegrationTests/TestDomain/*.cs" />
+      </fileset>
+    </copy>
+  </target>
+  
+</project>
