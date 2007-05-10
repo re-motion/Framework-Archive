@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
   public abstract class RequirementDefinitionBase<TSelf, TDependency> : IVisitableDefinition
       where TDependency : DependencyDefinitionBase<TSelf, TDependency>
       where TSelf : RequirementDefinitionBase<TSelf, TDependency>

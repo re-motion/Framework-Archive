@@ -62,9 +62,7 @@ namespace Mixins.Definitions.Building
       foreach (Type implementedInterface in mixin.ImplementedInterfaces)
       {
         if (!implementedInterface.Equals (typeof (System.Runtime.Serialization.ISerializable)))
-        {
           introductionBuilder.Apply (implementedInterface);
-        }
       }
     }
 

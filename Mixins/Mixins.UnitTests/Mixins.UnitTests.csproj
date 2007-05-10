@@ -50,6 +50,9 @@
     <Compile Include="Mixins\CodeGenSampleTypes\MixinIntroducingGenericInterface.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\VeryGenericMixin.cs" />
     <Compile Include="Mixins\MixinBaseClassTests.cs" />
+    <Compile Include="SampleTypes\MixinBaseDependingOnInheritedInterface.cs" />
+    <Compile Include="SampleTypes\MixinFaceDependingOnInheritedInterface.cs" />
+    <Compile Include="SampleTypes\MixinIntroducingInheritedInterface.cs" />
     <Compile Include="SampleTypes\MixinOverridingClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinOverridingSameClassMethod.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithClassThisDependency.cs" />

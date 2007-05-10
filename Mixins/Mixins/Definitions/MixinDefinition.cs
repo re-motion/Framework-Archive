@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
   public class MixinDefinition : ClassDefinition, IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =

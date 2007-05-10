@@ -501,18 +501,18 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = GetApplicationDefinition ();
       BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType3)];
 
-      List<Type> requiredFaceTypes = new List<RequiredFaceTypeDefinition> (baseClass.RequiredFaceTypes).ConvertAll<Type>
-          (delegate(RequiredFaceTypeDefinition def) { return def.Type; });
-      Assert.Contains (typeof (IBaseType31), requiredFaceTypes);
-      Assert.Contains (typeof (IBaseType32), requiredFaceTypes);
-      Assert.Contains (typeof (IBaseType33), requiredFaceTypes);
-      Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType34)));
-      Assert.IsFalse (requiredFaceTypes.Contains (typeof (IBaseType35)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem(typeof (IBaseType31)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType32)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType33)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType34)), "indirect dependency via BT3Mixin4");
+      Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType35)), "indirect dependency via BT3Mixin4");
+      Assert.IsFalse (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType2)));
 
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
+      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin4)], requirers, "indirect dependency");
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin6<,>)], requirers);
-      Assert.AreEqual (2, requirers.Count);
+      Assert.AreEqual (3, requirers.Count);
 
       Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
 
@@ -538,11 +538,9 @@ namespace Mixins.UnitTests.Configuration
 
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin3<,>)], requirers);
-      Assert.AreEqual (1, requirers.Count);
     }
 
     [Test]
-    [Ignore("TODO: Cleanly integrate inherited interfaces into the whole configuration stuff")]
     public void BaseMethods ()
     {
       ApplicationDefinition application = GetApplicationDefinition ();
@@ -574,7 +572,16 @@ namespace Mixins.UnitTests.Configuration
       baseClass = application.BaseClasses[typeof (BaseType3)];
 
       RequiredBaseCallTypeDefinition req3 = baseClass.RequiredBaseCallTypes[typeof (ICBaseType3BT3Mixin4)];
-      Assert.AreNotEqual (0, req3.BaseCallMethods.Count);
+      Assert.AreEqual (0, req3.BaseCallMethods.Count);
+
+      req3 = baseClass.RequiredBaseCallTypes[typeof (ICBaseType3)];
+      Assert.AreEqual (0, req3.BaseCallMethods.Count);
+
+      req3 = baseClass.RequiredBaseCallTypes[typeof (IBaseType31)];
+      Assert.AreEqual (1, req3.BaseCallMethods.Count);
+
+      req3 = baseClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
+      Assert.AreEqual (1, req3.BaseCallMethods.Count);
 
       RequiredBaseCallMethodDefinition member3 = req3.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
       Assert.IsNotNull (member3);
@@ -625,7 +632,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBT3Mixin4)));
       Assert.IsFalse (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType31)));
       Assert.IsFalse (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType32)));
-      Assert.IsFalse (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType33)));
+      Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType33)), "indirect dependency");
 
       Assert.AreEqual (application.BaseClasses[typeof (BaseType3)].RequiredBaseCallTypes[typeof (IBaseType34)], bt3Mixin6.BaseDependencies[typeof (IBaseType34)].RequiredType);
 
@@ -851,6 +858,56 @@ namespace Mixins.UnitTests.Configuration
 
       MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];
       Assert.IsTrue (m1.Methods.HasItem (explicitMethod));
+    }
+
+    [Test]
+    public void InheritedIntroducedInterfaces ()
+    {
+      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinIntroducingInheritedInterface));
+      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII4)));
+    }
+
+    [Test]
+    public void InheritedFaceDependencies ()
+    {
+      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
+          typeof (MixinIntroducingInheritedInterface));
+      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII4)));
+      
+      MixinDefinition m1 = bt1.Mixins[typeof(MixinFaceDependingOnInheritedInterface)];
+      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII1)));
+      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII2)));
+      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII3)));
+      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII4)));
+
+
+      Validation.DefaultLog.ConsoleDumper.DumpLog (Validation.Validator.Validate (configuration));
+    }
+
+    [Test]
+    public void InheritedBaseDependencies ()
+    {
+      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinBaseDependingOnInheritedInterface),
+          typeof (MixinIntroducingInheritedInterface));
+      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII4)));
+
+      MixinDefinition m1 = bt1.Mixins[typeof (MixinBaseDependingOnInheritedInterface)];
+      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII1)));
+      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII2)));
+      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII3)));
+      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII4)));
     }
   }
 }

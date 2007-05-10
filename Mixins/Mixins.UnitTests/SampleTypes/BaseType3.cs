@@ -39,7 +39,7 @@ namespace Mixins.UnitTests.SampleTypes
 
     public string IfcMethod2 ()
     {
-      return "BaseType3.IfcMethod";
+      return "BaseType3.IfcMethod2";
     }
   }
 }

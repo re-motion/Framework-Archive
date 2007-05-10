@@ -112,6 +112,8 @@ namespace Mixins.Definitions.Building
       {
         requirements.Add (requiredType, requiredType);
       }
+      foreach (Type inheritedInterface in requiredType.GetInterfaces ())
+        AnalyzeRequirementForType (inheritedInterface, requirements);
     }
   }
 }

@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{InterfaceMethod}")]
   public class RequiredBaseCallMethodDefinition : IVisitableDefinition
   {
     private RequiredBaseCallTypeDefinition _declaringType;

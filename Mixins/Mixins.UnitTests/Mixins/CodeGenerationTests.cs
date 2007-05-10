@@ -234,7 +234,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Check")]
     public void CompleteFaceInterface()
     {
       ICBaseType3BT3Mixin4 complete = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).With () as ICBaseType3BT3Mixin4;
@@ -312,6 +311,18 @@ namespace Mixins.UnitTests.Mixins
       IUltraGenericMixin m = cougs as IUltraGenericMixin;
       Assert.IsNotNull (m);
       Assert.AreEqual ("string-IVeryGenericMixin.GenericIfcMethod-5", m.GetMessage ("5"));
+    }
+
+    [Test]
+    public void InheritedIntroducedInterfaces ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinIntroducingInheritedInterface)).With();
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method1", ((IMixinIII1) bt1).Method1());
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method1", ((IMixinIII2) bt1).Method1 ());
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method2", ((IMixinIII2) bt1).Method2 ());
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method3", ((IMixinIII3) bt1).Method3 ());
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method4", ((IMixinIII4) bt1).Method4 ());
+      Assert.AreEqual ("MixinIntroducingInheritedInterface.Method2", ((IMixinIII4) bt1).Method2 ());
     }
   }
 }

@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using Rubicon.Utilities;
 using System.Reflection;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{InterfaceMember}")]
   public abstract class MemberIntroductionDefinition<TMemberInfo, TMemberDefinition>: IVisitableDefinition
       where TMemberInfo : MemberInfo
       where TMemberDefinition : MemberDefinition

@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{Type}")]
   public class BaseClassDefinition : ClassDefinition, IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, MixinDefinition> Mixins =
