@@ -322,7 +322,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public MethodInfo GetBaseCallMethodFor (MethodInfo method)
     {
       ArgumentUtility.CheckNotNull ("method", method);
-      if (!TypeBuilder.BaseType.Equals(method.DeclaringType))
+      if (!method.DeclaringType.IsAssignableFrom(TypeBuilder.BaseType))
       {
         string message = string.Format ("Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
             method.DeclaringType.FullName, method.Name);

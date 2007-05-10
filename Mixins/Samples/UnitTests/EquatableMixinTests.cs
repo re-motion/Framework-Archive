@@ -31,7 +31,6 @@ namespace Samples.UnitTests
     }
 
     [Test]
-    [Ignore("TODO: Implement overriding")]
     public void EqualsRespectsMembers ()
     {
       using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
@@ -51,6 +50,29 @@ namespace Samples.UnitTests
         Assert.AreNotEqual (c, c2);
         c.B = true;
         Assert.AreEqual (c, c2);
+      }
+    }
+
+    [Test]
+    public void GetHashCodeRespectsMembers ()
+    {
+      using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
+      {
+        C c = ObjectFactory.Create<C> ().With ();
+        C c2 = ObjectFactory.Create<C> ().With ();
+        Assert.AreEqual (c.GetHashCode(), c2.GetHashCode());
+
+        c2.S = "foo";
+        Assert.AreNotEqual (c.GetHashCode(), c2.GetHashCode());
+        c2.I = 5;
+        c2.B = true;
+        Assert.AreNotEqual (c.GetHashCode (), c2.GetHashCode ());
+        c.S = "foo";
+        Assert.AreNotEqual (c.GetHashCode (), c2.GetHashCode ());
+        c.I = 5;
+        Assert.AreNotEqual (c.GetHashCode (), c2.GetHashCode ());
+        c.B = true;
+        Assert.AreEqual (c.GetHashCode (), c2.GetHashCode ());
       }
     }
   }
