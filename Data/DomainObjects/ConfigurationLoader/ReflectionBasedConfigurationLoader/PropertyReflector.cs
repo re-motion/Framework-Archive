@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -37,19 +39,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private void CheckValidPropertyType()
     {
       Type nativePropertyType = GetNativePropertyType();
-      bool isNullable = IsNullable() ?? false;
 
-      if (nativePropertyType.IsEnum)
-        return;
-
-      try
-      {
-        TypeInfo.GetMandatory (nativePropertyType, isNullable);
-      }
-      catch (MandatoryMappingTypeNotFoundException e)
-      {
-        throw CreateMappingException (e, PropertyInfo, "The property type {0} is not supported.", nativePropertyType);
-      }
+      if (!IsTypeSupportedByStorageProvider (nativePropertyType))
+        throw CreateMappingException (null, PropertyInfo, "The property type {0} is not supported.", nativePropertyType);
     }
 
     private Type GetNativePropertyType()
@@ -57,7 +49,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (IsRelationProperty())
         return typeof (ObjectID);
 
-      return TypeInfo.GetNativeType (PropertyInfo.PropertyType);
+      return Nullable.GetUnderlyingType (PropertyInfo.PropertyType) ?? PropertyInfo.PropertyType;
+    }
+
+    private bool IsTypeSupportedByStorageProvider (Type type)
+    {
+      StorageProviderDefinition storageProviderDefinition =
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (_classDefinition.StorageProviderID);
+      return storageProviderDefinition.TypeProvider.IsTypeSupported (type);
     }
 
     //TODO: Move adding of "ID" to RdbmsPropertyReflector

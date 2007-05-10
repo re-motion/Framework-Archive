@@ -134,6 +134,7 @@
     <Compile Include="DBColumnAttribute.cs" />
     <Compile Include="DBTableAttribute.cs" />
     <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
+    <Compile Include="Persistence\Configuration\TypeProvider.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StorageGroupAttribute.cs" />
@@ -298,9 +299,6 @@
     <Compile Include="Mapping\IRelationEndPointDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mapping\MandatoryMappingTypeNotFoundException.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Mapping\MappingConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -326,9 +324,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mapping\RelationEndPointDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mapping\TypeInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Mapping\VirtualRelationEndPointDefinition.cs">

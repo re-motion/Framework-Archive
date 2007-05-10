@@ -5,7 +5,7 @@ using Rubicon.Collections;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.Mapping
+namespace Rubicon.Data.DomainObjects.Legacy.Mapping
 {
 public class TypeInfo
 {
@@ -16,7 +16,6 @@ public class TypeInfo
   public const string ObjectIDMappingTypeName = "objectID";
 
   private static readonly Dictionary<Tuple<string, bool>, TypeInfo> s_mappingTypes = new Dictionary<Tuple<string, bool>, TypeInfo> ();
-  private static readonly Dictionary<Tuple<Type, bool>, TypeInfo> s_types = new Dictionary<Tuple<Type, bool>, TypeInfo> ();
 
   public static void AddInstance (TypeInfo typeInfo)
   {
@@ -25,8 +24,6 @@ public class TypeInfo
     lock (typeof (TypeInfo))
     {
       s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
-      if (typeInfo.MappingType != "date")
-        s_types.Add (GetTypeKey (typeInfo), typeInfo);
     }
   }
 
@@ -36,16 +33,6 @@ public class TypeInfo
 
     TypeInfo value;
     if (s_mappingTypes.TryGetValue (GetMappingTypeKey (mappingType, isNullable), out value))
-      return value;
-    return null;
-  }
-
-  public static TypeInfo GetInstance (Type type, bool isNullable)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    TypeInfo value;
-    if (s_types.TryGetValue (GetTypeKey (type, isNullable), out value))
       return value;
     return null;
   }
@@ -70,26 +57,6 @@ public class TypeInfo
     return typeInfo;
   }
 
-  public static TypeInfo GetMandatory (Type type, bool isNullable)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    TypeInfo typeInfo = GetInstance (type, isNullable);
-
-    if (typeInfo == null)
-    {
-      string message;
-      if (isNullable)
-        message = string.Format ("The nullable mapping type '{0}' could not be found.", type.FullName);
-      else
-        message = string.Format ("The not-nullable mapping type '{0}' could not be found.", type.FullName);
-
-      throw new MandatoryMappingTypeNotFoundException (message, type.FullName, isNullable);
-    }
-
-    return typeInfo;
-  }
-
   public static object GetDefaultEnumValue (Type type)
   {
     ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (Enum));
@@ -100,25 +67,6 @@ public class TypeInfo
       return enumValues.GetValue (0);
 
     throw new InvalidEnumDefinitionException (type);
-  }
-
-  //TODO: Test
-  public static Type GetNativeType (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    if (IsNullableValueType (type))
-      return type.GetGenericArguments ()[0];
-
-    return type;
-  }
-
-  //TODO: Test
-  public static bool IsNullableValueType (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-    
-    return type.IsValueType && type.IsGenericType && !type.IsGenericTypeDefinition && type.GetGenericTypeDefinition () == typeof (Nullable<>);
   }
 
   private static Tuple<string, bool> GetMappingTypeKey (TypeInfo typeInfo)

@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
       _propertyType = propertyType;
       if (propertyType.IsValueType)
-        _isNullable = TypeInfo.IsNullableValueType (propertyType);
+        _isNullable = Nullable.GetUnderlyingType (propertyType) != null;
       else
         _isNullable = isNullable ?? true;
     }

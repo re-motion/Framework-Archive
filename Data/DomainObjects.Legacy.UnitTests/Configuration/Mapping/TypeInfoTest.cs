@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;

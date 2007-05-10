@@ -32,9 +32,9 @@ public class ReflectionPropertyFactory
     Type itemType = GetItemType (propertyInfo);
 
     bool isNullableType = false;
-    if (TypeInfo.IsNullableValueType (itemType))
+    if (Nullable.GetUnderlyingType (itemType) != null)
     {
-      itemType = TypeInfo.GetNativeType (itemType);
+      itemType = Nullable.GetUnderlyingType (itemType);
       isNullableType = true;
     }
     else if (NaTypeUtility.IsNaNullableType (itemType))
@@ -153,7 +153,7 @@ public class ReflectionPropertyFactory
     if (isRequiredAttribute != null)
       return isRequiredAttribute.IsRequired;
 
-    if (TypeInfo.IsNullableValueType (propertyInfo.PropertyType) 
+    if (Nullable.GetUnderlyingType (propertyInfo.PropertyType) != null 
         || NaTypeUtility.IsNaNullableType (propertyInfo.PropertyType)
         || propertyInfo.PropertyType == typeof (string))
     {
