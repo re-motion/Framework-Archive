@@ -45,6 +45,8 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 
     private static string GetSqlDataType (Type type)
     {
+      type = Nullable.GetUnderlyingType (type) ?? type;
+
       if (type == typeof (Boolean))
         return "bit";
       if (type == typeof (Byte))
@@ -67,6 +69,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
         return "real";
       if (type.IsEnum)
         return GetSqlDataType (Enum.GetUnderlyingType (type));
+
       return null;
     }
 

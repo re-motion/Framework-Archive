@@ -22,6 +22,11 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
     private ClassDefinition _ceoClass;
     private ClassDefinition _classWithRelations;
 
+    [TestFixtureSetUp]
+    public virtual void TextFixtureSetUp ()
+    {
+    }
+
     [SetUp]
     public virtual void SetUp()
     {

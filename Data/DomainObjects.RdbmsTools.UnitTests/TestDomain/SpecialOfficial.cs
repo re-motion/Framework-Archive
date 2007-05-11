@@ -20,6 +20,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 255)]
-    public abstract string Specialty { get; set;}
+    public abstract string Speciality { get; set;}
   }
 }

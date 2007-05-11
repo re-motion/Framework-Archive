@@ -38,11 +38,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SchemaGeneration\SqlServer\ConstraintBuilderTest.cs" />
+    <Compile Include="SchemaGeneration\SqlServer\FileBuilderTest.cs" />
     <Compile Include="SchemaGeneration\SqlServer\TableBuilderTest.cs" />
     <Compile Include="SchemaGeneration\SqlServer\ViewBuilderTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
@@ -54,6 +53,7 @@
     <Compile Include="TestDomain\ClassWithRelations.cs" />
     <Compile Include="TestDomain\ConcreteClass.cs" />
     <Compile Include="TestDomain\AbstractWithoutConcreteClass.cs" />
+    <Compile Include="TestDomain\InternalStorageGroupAttribute.cs" />
     <Compile Include="TestDomain\DerivedClass.cs" />
     <Compile Include="TestDomain\SecondDerivedClass.cs" />
     <Compile Include="TestDomain\DerivedOfDerivedClass.cs" />
@@ -82,9 +82,9 @@
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.RdbmsToos\Data.DomainObjects.RdbmsToos.csproj">
+    <ProjectReference Include="..\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj">
       <Project>{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}</Project>
-      <Name>Data.DomainObjects.RdbmsToos</Name>
+      <Name>Data.DomainObjects.RdbmsTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>

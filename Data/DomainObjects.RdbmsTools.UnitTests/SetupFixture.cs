@@ -15,10 +15,13 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private const string c_firstStorageProviderConnectionString = "Integrated Security=SSPI;Initial Catalog=FirstDatabase;Data Source=localhost";
-    private const string c_secondStorageProviderConnectionString = "Integrated Security=SSPI;Initial Catalog=SecondDatabase;Data Source=localhost";
+    private const string c_firstStorageProviderConnectionString = "Integrated Security=SSPI;Initial Catalog=RdbmsToolsUnitTests1;Data Source=localhost;";
+    private const string c_secondStorageProviderConnectionString = "Integrated Security=SSPI;Initial Catalog=RdbmsToolsUnitTests2;Data Source=localhost;";
+    private const string c_internalStorageProviderConnectionString = "Integrated Security=SSPI;Initial Catalog=RdbmsToolsUnitTestsInternal;Data Source=localhost;";
+    
     private const string c_firstStorageProvider = "FirstStorageProvider";
     private const string c_secondStorageProvider = "SecondStorageProvider";
+    private const string c_internalStorageProvider = "Internal";
 
     [SetUp]
     public void SetUp ()
@@ -28,12 +31,15 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests
           new RdbmsProviderDefinition (c_firstStorageProvider, typeof (SqlProvider), c_firstStorageProviderConnectionString));
       storageProviderDefinitionCollection.Add (
           new RdbmsProviderDefinition (c_secondStorageProvider, typeof (SqlProvider), c_secondStorageProviderConnectionString));
+      storageProviderDefinitionCollection.Add (
+          new RdbmsProviderDefinition (c_internalStorageProvider, typeof (SqlProvider), c_internalStorageProviderConnectionString));
 
       PersistenceConfiguration persistenceConfiguration =
           new PersistenceConfiguration (storageProviderDefinitionCollection, storageProviderDefinitionCollection[c_firstStorageProvider]);
 
       persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new FirstStorageGroupAttribute(), c_firstStorageProvider));
       persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new SecondStorageGroupAttribute(), c_secondStorageProvider));
+      persistenceConfiguration.StorageGroups.Add (new StorageGroupElement (new InternalStorageGroupAttribute (), c_internalStorageProvider));
 
       DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), persistenceConfiguration));
       MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (Ceo).Assembly)));

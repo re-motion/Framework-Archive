@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     {
     }
 
-    [FirstStorageGroup]
+    [InternalStorageGroup]
     [DBTable]
     private abstract class AbstractClass : DomainObject
     {
@@ -64,6 +64,24 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       Assert.AreEqual ("ntext", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (String), false, null)));
 
       Assert.AreEqual ("image", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Byte[]), false, null)));
+    }
+
+    [Test]
+    public void GetSqlDataType_ForNullableValueTypes ()
+    {
+      Assert.AreEqual ("bit", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Boolean>), null, null)));
+      Assert.AreEqual ("tinyint", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Byte>), null, null)));
+      Assert.AreEqual ("datetime", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<DateTime>), null, null)));
+      Assert.AreEqual ("decimal (38, 3)", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Decimal>), null, null)));
+      Assert.AreEqual ("float", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Double>), null, null)));
+      Assert.AreEqual ("uniqueidentifier", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Guid>), null, null)));
+      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Int16>), null, null)));
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Int32>), null, null)));
+      Assert.AreEqual ("bigint", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Int64>), null, null)));
+      Assert.AreEqual ("real", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Single>), null, null)));
+
+      Assert.AreEqual ("int", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Int32Enum>), null, null)));
+      Assert.AreEqual ("smallint", _tableBuilder.GetSqlDataType (CreatePropertyDefinition (typeof (Nullable<Int16Enum>), null, null)));
     }
 
     //TODO: Copy to TableBuilderBaseTest
