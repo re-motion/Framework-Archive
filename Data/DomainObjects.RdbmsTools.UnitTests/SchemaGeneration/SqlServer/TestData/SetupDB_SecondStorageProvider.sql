@@ -33,8 +33,8 @@ CREATE TABLE [dbo].[Official]
 
   -- Official columns
   [Name] nvarchar (100) NOT NULL,
-  [ResponsibleForCustomerType] int NOT NULL,
   [ResponsibleForOrderPriority] int NOT NULL,
+  [ResponsibleForCustomerType] int NOT NULL,
 
   -- SpecialOfficial columns
   [Speciality] nvarchar (255) NULL,
@@ -47,17 +47,17 @@ GO
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[OfficialView] ([ID], [ClassID], [Timestamp], [Name], [ResponsibleForCustomerType], [ResponsibleForOrderPriority], [Speciality])
+CREATE VIEW [dbo].[OfficialView] ([ID], [ClassID], [Timestamp], [Name], [ResponsibleForOrderPriority], [ResponsibleForCustomerType], [Speciality])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ResponsibleForCustomerType], [ResponsibleForOrderPriority], [Speciality]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [ResponsibleForOrderPriority], [ResponsibleForCustomerType], [Speciality]
     FROM [dbo].[Official]
     WHERE [ClassID] IN ('Official', 'SpecialOfficial')
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[SpecialOfficialView] ([ID], [ClassID], [Timestamp], [Name], [ResponsibleForCustomerType], [ResponsibleForOrderPriority], [Speciality])
+CREATE VIEW [dbo].[SpecialOfficialView] ([ID], [ClassID], [Timestamp], [Name], [ResponsibleForOrderPriority], [ResponsibleForCustomerType], [Speciality])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ResponsibleForCustomerType], [ResponsibleForOrderPriority], [Speciality]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [ResponsibleForOrderPriority], [ResponsibleForCustomerType], [Speciality]
     FROM [dbo].[Official]
     WHERE [ClassID] IN ('SpecialOfficial')
   WITH CHECK OPTION

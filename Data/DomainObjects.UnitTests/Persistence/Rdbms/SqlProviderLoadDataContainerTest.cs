@@ -84,8 +84,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     //TODO: Improove this message to state that the passed ClassID and the ClassID in the database to not match.
     [Test]
     [ExpectedException (typeof (RdbmsProviderException), ExpectedMessage = 
-        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of object "
-        + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The mandatory column 'CustomerID' could not be found.")]
+        "Error while reading property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber' of object "
+        + "'Order|895853eb-06cd-4291-b467-160560ae8ec1|System.Guid': The mandatory column 'OrderNo' could not be found.")]
     public void LoadDataContainerWithClassIDFromOtherClass ()
     {
       ObjectID id = new ObjectID ("ClassWithGuidKey", new Guid ("{895853EB-06CD-4291-B467-160560AE8EC1}"));

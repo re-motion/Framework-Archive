@@ -28,9 +28,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (OrderClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority])\r\n"
+          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID]\r\n"
           + "    FROM [dbo].[Order]\r\n"
           + "    WHERE [ClassID] IN ('Order')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -44,9 +44,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (CustomerClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [PrimaryOfficialID], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [CustomerType])\r\n"
+          "CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [PrimaryOfficialID], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [CustomerType]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID]\r\n"
           + "    FROM [dbo].[Customer]\r\n"
           + "    WHERE [ClassID] IN ('Customer')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -60,9 +60,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (ConcreteClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass])\r\n"
+          "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID]\r\n"
           + "    FROM [dbo].[ConcreteClass]\r\n"
           + "    WHERE [ClassID] IN ('ConcreteClass', 'DerivedClass', 'DerivedOfDerivedClass', 'SecondDerivedClass')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -76,13 +76,13 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (CompanyClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [PrimaryOfficialID], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [CustomerType], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences])\r\n"
+          "CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [PrimaryOfficialID], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [CustomerType], null, null, null\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], null, null, null\r\n"
           + "    FROM [dbo].[Customer]\r\n"
           + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\r\n"
           + "  UNION ALL\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\r\n"
           + "    FROM [dbo].[DevelopmentPartner]\r\n"
           + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\r\n";
 
@@ -95,9 +95,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (PartnerClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences])\r\n"
+          "CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [AddressID], [Name], [PhoneNumber], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\r\n"
           + "    FROM [dbo].[DevelopmentPartner]\r\n"
           + "    WHERE [ClassID] IN ('DevelopmentPartner')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -111,9 +111,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (DerivedClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[DerivedClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass])\r\n"
+          "CREATE VIEW [dbo].[DerivedClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID]\r\n"
           + "    FROM [dbo].[ConcreteClass]\r\n"
           + "    WHERE [ClassID] IN ('DerivedClass', 'DerivedOfDerivedClass')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -136,16 +136,16 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddView (ConcreteClass);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority])\r\n"
+          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID]\r\n"
           + "    FROM [dbo].[Order]\r\n"
           + "    WHERE [ClassID] IN ('Order')\r\n"
           + "  WITH CHECK OPTION\r\n"
           + "GO\r\n\r\n"
-          + "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass])\r\n"
+          + "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID]\r\n"
           + "    FROM [dbo].[ConcreteClass]\r\n"
           + "    WHERE [ClassID] IN ('ConcreteClass', 'DerivedClass', 'DerivedOfDerivedClass', 'SecondDerivedClass')\r\n"
           + "  WITH CHECK OPTION\r\n";
@@ -163,16 +163,16 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
       _viewBuilder.AddViews (classes);
 
       string expectedScript =
-          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority])\r\n"
+          "CREATE VIEW [dbo].[OrderView] ([ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [CustomerID], [CustomerIDClassID], [Number], [OfficialID], [Priority]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [Number], [Priority], [CustomerID], [CustomerIDClassID], [OfficialID]\r\n"
           + "    FROM [dbo].[Order]\r\n"
           + "    WHERE [ClassID] IN ('Order')\r\n"
           + "  WITH CHECK OPTION\r\n"
           + "GO\r\n\r\n"
-          + "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass])\r\n"
+          + "CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID])\r\n"
           + "  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInSecondDerivedClassID], [PropertyInSecondDerivedClass]\r\n"
+          + "  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID]\r\n"
           + "    FROM [dbo].[ConcreteClass]\r\n"
           + "    WHERE [ClassID] IN ('ConcreteClass', 'DerivedClass', 'DerivedOfDerivedClass', 'SecondDerivedClass')\r\n"
           + "  WITH CHECK OPTION\r\n";

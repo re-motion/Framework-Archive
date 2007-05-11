@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;

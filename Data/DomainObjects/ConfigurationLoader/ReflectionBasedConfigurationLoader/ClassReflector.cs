@@ -177,10 +177,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       PropertyInfo[] propertyInfos = Array.ConvertAll<MemberInfo, PropertyInfo> (
           GetPropertyInfos (type),
           delegate (MemberInfo input) { return (PropertyInfo) input; });
-      
-      Array.Sort (
-          propertyInfos,
-          delegate (PropertyInfo left, PropertyInfo right) { return string.Compare (ReflectionUtility.GetPropertyName (left), ReflectionUtility.GetPropertyName (right), StringComparison.Ordinal); });
+
+      //Array.Sort (
+      //    propertyInfos,
+      //    delegate (PropertyInfo left, PropertyInfo right) { return string.Compare (ReflectionUtility.GetPropertyName (left), ReflectionUtility.GetPropertyName (right), StringComparison.Ordinal); });
 
       return propertyInfos;
     }

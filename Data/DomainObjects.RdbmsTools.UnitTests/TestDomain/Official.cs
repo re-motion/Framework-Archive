@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
