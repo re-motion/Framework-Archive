@@ -2,7 +2,6 @@ using System;
 using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.RdbmsToos.SchemaGeneration.SqlServer;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer

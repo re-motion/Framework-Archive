@@ -34,8 +34,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SchemaGeneration\SqlServer\FileBuilder.cs" />
+    <Compile Include="SchemaGeneration\ConstraintBuilderBase.cs" />
+    <Compile Include="SchemaGeneration\FileBuilder.cs" />
+    <Compile Include="SchemaGeneration\SqlServer\ConstraintBuilder.cs" />
     <Compile Include="SchemaGeneration\SqlServer\TableBuilder.cs" />
+    <Compile Include="SchemaGeneration\SqlServer\ViewBuilder.cs" />
+    <Compile Include="SchemaGeneration\ViewBuilderBase.cs" />
     <Compile Include="SchemaGeneration\TableBuilderBase.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>

@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.RdbmsToos.SchemaGeneration.SqlServer
+namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
 {
   public class FileBuilder
   {

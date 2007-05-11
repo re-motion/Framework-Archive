@@ -22,6 +22,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     public abstract string Description { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [DBColumn("PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
     public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
   }
 }
