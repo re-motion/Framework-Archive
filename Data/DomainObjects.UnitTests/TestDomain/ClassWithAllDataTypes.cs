@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithAllDataTypes")]
+  [DBTable ("TableWithAllDataTypes")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithAllDataTypes : TestDomainBase
   {
     public enum EnumType

@@ -6,8 +6,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
   [MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
   [Serializable]
-  [DBTable (Name = "TableForRelationTest")]
-  [NotAbstract]
+  [DBTable ("TableForRelationTest")]
+  [Instantiable]
   [RpaTest]
   public abstract class ClassForRelationTest: BindableDomainObject
   {

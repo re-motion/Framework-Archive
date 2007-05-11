@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   [DBTable]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class OrderTicket : TestDomainBase
   {
     public static OrderTicket NewObject ()

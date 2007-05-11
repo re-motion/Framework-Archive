@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithGuidKey")]
+  [DBTable ("TableWithGuidKey")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithGuidKey : TestDomainBase
   {
     public static ClassWithGuidKey NewObject ()

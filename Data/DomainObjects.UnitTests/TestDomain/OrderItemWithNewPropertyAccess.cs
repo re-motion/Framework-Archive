@@ -3,7 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [NotAbstract]
+  [Instantiable]
   [DBTable]
   [TestDomain]
   public abstract class OrderItemWithNewPropertyAccess : DomainObject

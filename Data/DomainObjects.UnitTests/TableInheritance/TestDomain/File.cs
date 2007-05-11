@@ -3,8 +3,8 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_File")]
-  [DBTable (Name = "TableInheritance_File")]
-  [NotAbstract]
+  [DBTable ("TableInheritance_File")]
+  [Instantiable]
   public abstract class File: FileSystemItem
   {
     public new static File GetObject (ObjectID id)

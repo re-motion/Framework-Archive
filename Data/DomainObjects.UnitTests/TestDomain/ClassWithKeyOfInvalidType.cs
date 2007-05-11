@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithKeyOfInvalidType")]
+  [DBTable ("TableWithKeyOfInvalidType")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithKeyOfInvalidType : TestDomainBase
   {
     protected ClassWithKeyOfInvalidType ()

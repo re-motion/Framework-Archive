@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   [DBTable]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class OrderItem : TestDomainBase
   {
     public static OrderItem NewObject ()
@@ -16,8 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public static OrderItem NewObject (Order order)
     {
-      OrderItem orderItem = NewObject<OrderItem> ().With (order);
-      return orderItem;
+      return NewObject<OrderItem> ().With (order);
     }
 
     protected OrderItem()

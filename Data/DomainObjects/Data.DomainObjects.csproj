@@ -99,6 +99,7 @@
     <Compile Include="ClassIDAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflectorBase.cs" />
     <Compile Include="CurrentTransactionScope.cs" />
+    <Compile Include="DBStorageGroupAttribute.cs" />
     <Compile Include="Design\DomainObjectsDesignModeHelper.cs" />
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
@@ -106,7 +107,7 @@
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
-    <Compile Include="NotAbstractAttribute.cs" />
+    <Compile Include="InstantiableAttribute.cs" />
     <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IMappingAttribute.cs" />

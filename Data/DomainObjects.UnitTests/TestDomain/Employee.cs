@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   [DBTable]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Employee : TestDomainBase
   {
     public static Employee NewObject ()

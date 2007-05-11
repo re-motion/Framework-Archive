@@ -3,9 +3,9 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
   [ClassID ("ClassIDForClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute")]
-  [DBTable (Name = "ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable")]
+  [DBTable ("ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute : DomainObject
   {
     protected ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute ()

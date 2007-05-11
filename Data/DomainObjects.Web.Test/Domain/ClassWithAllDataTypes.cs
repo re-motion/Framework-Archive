@@ -8,8 +8,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
   [MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
   [Serializable]
-  [DBTable (Name = "TableWithAllDataTypes")]
-  [NotAbstract]
+  [DBTable ("TableWithAllDataTypes")]
+  [Instantiable]
   [RpaTest]
   public abstract class ClassWithAllDataTypes : BindableDomainObject
   {

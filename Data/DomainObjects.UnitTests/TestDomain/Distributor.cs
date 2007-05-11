@@ -3,7 +3,7 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Distributor : Partner
   {
     public static new Distributor NewObject ()

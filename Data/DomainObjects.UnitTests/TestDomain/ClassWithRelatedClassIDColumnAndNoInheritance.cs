@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithRelatedClassIDColumnAndNoInheritance")]
+  [DBTable ("TableWithRelatedClassIDColumnAndNoInheritance")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
   {
     public static ClassWithRelatedClassIDColumnAndNoInheritance NewObject ()

@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithoutTimestampColumn")]
+  [DBTable ("TableWithoutTimestampColumn")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithoutTimestampColumn: TestDomainBase
   {
     protected ClassWithoutTimestampColumn()

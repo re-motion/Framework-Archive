@@ -4,8 +4,8 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
-  [DBTable (Name = "TableWithUndefinedEnum")]
-  [NotAbstract]
+  [DBTable ("TableWithUndefinedEnum")]
+  [Instantiable]
   [RpaTest]
   public abstract class ClassWithUndefinedEnum: BindableDomainObject
   {

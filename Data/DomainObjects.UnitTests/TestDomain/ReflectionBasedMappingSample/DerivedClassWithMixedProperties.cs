@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
-  [NotAbstract]
+  [Instantiable]
   public abstract class DerivedClassWithMixedProperties : ClassWithMixedProperties
   {
     protected DerivedClassWithMixedProperties()

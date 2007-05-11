@@ -3,8 +3,8 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_DerivedClassWithEntityWithHierarchy")]
-  [DBTable (Name = "TableInheritance_DerivedClassWithEntityWithHierarchy")]
-  [NotAbstract]
+  [DBTable ("TableInheritance_DerivedClassWithEntityWithHierarchy")]
+  [Instantiable]
   public abstract class DerivedClassWithEntityWithHierarchy: AbstractBaseClassWithHierarchy
   {
     public new static DerivedClassWithEntityWithHierarchy GetObject (ObjectID id)

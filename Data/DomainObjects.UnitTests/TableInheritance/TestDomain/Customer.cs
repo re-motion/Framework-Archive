@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   }
 
   [ClassID ("TI_Customer")]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Customer: Person
   {
     public new static Customer GetObject (ObjectID id)

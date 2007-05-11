@@ -4,9 +4,9 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
-  [DBTable (Name = "TableWithoutColumns")]
+  [DBTable ("TableWithoutColumns")]
   [RpaTest]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithoutProperties: BindableDomainObject
   {
     public static ClassWithoutProperties NewObject()

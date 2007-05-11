@@ -14,14 +14,15 @@ namespace Rubicon.Data.DomainObjects
     {
     }
 
+    public DBTableAttribute (string name)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      _name = name;
+    }
+
     public string Name
     {
       get { return _name; }
-      set
-      {
-        ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-        _name = value;
-      }
     }
 
     string IStorageSpecificIdentifierAttribute.Identifier

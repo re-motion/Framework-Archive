@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   [DBTable]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Order : TestDomainBase
   {
     public static Order NewObject ()

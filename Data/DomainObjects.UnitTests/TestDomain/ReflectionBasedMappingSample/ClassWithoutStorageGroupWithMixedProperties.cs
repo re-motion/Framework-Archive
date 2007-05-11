@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 {
   [DBTable]
   //No StorageGroup
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithoutStorageGroupWithMixedProperties : DomainObject
   {
     protected ClassWithoutStorageGroupWithMixedProperties ()

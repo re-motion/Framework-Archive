@@ -136,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private bool IsAbstract()
     {
       if (Type.IsAbstract)
-        return !Attribute.IsDefined (Type, typeof (NotAbstractAttribute), false);
+        return !Attribute.IsDefined (Type, typeof (InstantiableAttribute), false);
 
       return false;
     }

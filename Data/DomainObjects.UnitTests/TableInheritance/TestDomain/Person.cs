@@ -3,8 +3,8 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Person")]
-  [DBTable (Name = "TableInheritance_Person")]
-  [NotAbstract]
+  [DBTable ("TableInheritance_Person")]
+  [Instantiable]
   public abstract class Person: DomainBase
   {
     public new static Person GetObject (ObjectID id)

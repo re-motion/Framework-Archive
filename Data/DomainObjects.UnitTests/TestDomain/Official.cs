@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   [DBTable]
   [StorageProviderStub]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Official : StorageProviderStubDomainBase
   {
     public static new Official GetObject (ObjectID id)

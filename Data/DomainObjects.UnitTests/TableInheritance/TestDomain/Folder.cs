@@ -3,8 +3,8 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Folder")]
-  [DBTable (Name = "TableInheritance_Folder")]
-  [NotAbstract]
+  [DBTable ("TableInheritance_Folder")]
+  [Instantiable]
   public abstract class Folder: FileSystemItem
   {
     public new static Folder GetObject (ObjectID id)

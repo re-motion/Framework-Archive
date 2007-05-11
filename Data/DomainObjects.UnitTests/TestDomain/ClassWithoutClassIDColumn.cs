@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithoutClassIDColumn")]
+  [DBTable ("TableWithoutClassIDColumn")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithoutClassIDColumn : TestDomainBase
   {
     protected ClassWithoutClassIDColumn ()

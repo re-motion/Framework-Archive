@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   public class NewPropertyStyleDomainObjectsWithFactoryTest : ClientTransactionBaseTest
   {
     [DBTable]
-    [NotAbstract]
+    [Instantiable]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
       public static NonInstantiableAbstractClass NewObject()
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       public abstract void Foo ();
     }
 
-    [NotAbstract]
+    [Instantiable]
     [DBTable]
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
@@ -61,7 +61,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [DBTable]
-    [NotAbstract]
+    [Instantiable]
     public abstract class NonInstantiableClassWithAutomaticRelatedCollectionSetter : DomainObject
     {
       public static NonInstantiableClassWithAutomaticRelatedCollectionSetter NewObject ()
@@ -517,7 +517,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test][ExpectedException(typeof(ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.TestDomain."
-        + "AbstractClassNotInMapping as it is abstract; for classes with automatic properties, NotAbstractAttribute must be used.\r\nParameter name: baseType")]
+        + "AbstractClassNotInMapping as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.\r\nParameter name: baseType")]
     public void CannotInstantiateReallyAbstractClass ()
     {
       using (new FactoryInstantiationScope ())

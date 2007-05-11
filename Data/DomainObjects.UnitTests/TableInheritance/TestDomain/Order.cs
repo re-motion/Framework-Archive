@@ -3,9 +3,9 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_Order")]
-  [DBTable (Name = "TableInheritance_Order")]
+  [DBTable ("TableInheritance_Order")]
   [TableInheritanceTestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class Order: DomainObject
   {
     public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)

@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable (Name = "TableWithValidRelations")]
+  [DBTable ("TableWithValidRelations")]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassWithValidRelations : TestDomainBase
   {
     public static ClassWithValidRelations NewObject ()

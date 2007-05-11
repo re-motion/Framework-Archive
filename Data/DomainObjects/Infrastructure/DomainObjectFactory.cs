@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       if (MappingConfiguration.Current.ClassDefinitions.GetMandatory (baseType).IsAbstract)
       {
         string message = string.Format (
-          "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, NotAbstractAttribute must be used.",
+          "Cannot instantiate type {0} as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
           baseType.FullName);
         throw new ArgumentException (message, "baseType");
       }

@@ -3,9 +3,9 @@ using System;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
   [ClassID ("TI_HistoryEntry")]
-  [DBTable (Name = "TableInheritance_HistoryEntry")]
+  [DBTable ("TableInheritance_HistoryEntry")]
   [TableInheritanceTestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class HistoryEntry: DomainObject
   {
     public new static HistoryEntry GetObject (ObjectID id)

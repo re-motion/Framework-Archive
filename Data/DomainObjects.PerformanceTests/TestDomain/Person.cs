@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 {
-  [NotAbstract]
+  [Instantiable]
   [DBTable]
   public abstract class Person: ClientBoundBaseClass
   {

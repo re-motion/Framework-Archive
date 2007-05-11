@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects
   /// Use automatic properties whenever a domain object's property implementationw ould be trivial. Make the properties abstract and annotate them
   /// with this attribute. Note that the automatic implementation will only work for domain objects instantiated with the
   /// <see cref="DomainObjectFactory"/>. In order to communicate that the domain object class is only abstract because of the automatic properties,
-  /// annotate the class with a <see cref="NotAbstractAttribute"/>.
+  /// annotate the class with a <see cref="InstantiableAttribute"/>.
   /// </para>
   /// </remarks>
   // TODO: Remove

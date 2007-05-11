@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [ClassID ("ClassIDForClassHavingClassIDAttribute")]
   [DBTable]
   [TestDomain]
-  [NotAbstract]
+  [Instantiable]
   public abstract class ClassHavingClassIDAttribute : DomainObject
   {
     protected ClassHavingClassIDAttribute ()
