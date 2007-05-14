@@ -2,7 +2,9 @@
 ======
 - BocBooleanValue, BocCheckBox und BocDateTimeValue:
   * Support für Rubicon.NaValueTypes wurde entfernt, Value und LoadUnboundValue sind nun strong typed auf Boolean? bzw DateTime?.
-
+- BocReferenceValue: 
+  * Bugfix: Im nicht gebunden Zustand hat der BocReferenceValue seinen angezeigten Wert verloren, wenn nicht bei jedem Postback Value gesetzt wurde.
+  
 1.7.36
 ======
 - BocList: Spaltenbrite für Index- und Checkboxspalte von 0.5em auf 1.6em geändert um besseren Support für tableLayout: fixed zu erhalten.

@@ -103,6 +103,7 @@ public class BocReferenceValue:
 
   /// <summary> The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object. </summary>
   private string _internalValue = null;
+  private string _displayName = null;
 
   private bool _enableIcon = true;
   private string _select = String.Empty;
@@ -228,6 +229,11 @@ public class BocReferenceValue:
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
+    if (_internalValue == null)
+      _displayName = null;
+    else
+      _displayName = _dropDownList.SelectedItem.Text;
+
     if (! IsReadOnly && Enabled)
       OnSelectionChanged();
   }
@@ -873,17 +879,19 @@ public class BocReferenceValue:
 
     base.LoadViewState (values[0]);
     if (values[1] != null)    
-      InternalValue = (string) values[1];  
+      InternalValue = (string) values[1];
+    _displayName = (string) values[2];
 
     //  Drop down list has enabled view state, selected value must not be restored
   }
 
   protected override object SaveViewState()
   {
-    object[] values = new object[2];
+    object[] values = new object[3];
 
     values[0] = base.SaveViewState();
     values[1] = _internalValue;
+    values[2] = _displayName;
 
     return values;
   }
@@ -1094,8 +1102,8 @@ public class BocReferenceValue:
   private void PreRenderReadOnlyValue()
   {
     string text;
-    if (Value != null)
-      text = HttpUtility.HtmlEncode (GetDisplayName (Value));
+    if (InternalValue != null)
+      text = HttpUtility.HtmlEncode (_displayName);
     else
       text = String.Empty;
     if (StringUtility.IsNullOrEmpty (text))
@@ -1352,13 +1360,18 @@ public class BocReferenceValue:
     { 
       IsDirty = true;
 
-      IBusinessObjectWithIdentity businessObjectWithIdentity = value;
-      _value = businessObjectWithIdentity; 
-      
-      if (businessObjectWithIdentity != null)
-        InternalValue = businessObjectWithIdentity.UniqueIdentifier;
+      _value = value;
+
+      if (value != null)
+      {
+        InternalValue = value.UniqueIdentifier;
+        _displayName = GetDisplayName (value);
+      }
       else
+      {
         InternalValue = null;
+        _displayName = null;
+      }
     }
   }
 
