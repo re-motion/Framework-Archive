@@ -22,7 +22,7 @@ public class DomainObject
 
   #region Creation and GetObject factory methods
   /// <summary>
-  /// Creates a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>.
+  /// Returns an invocation object creating a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The concrete type to be implemented by the object.</typeparam>
   /// <returns>An <see cref="InvokeWith{T}"/> object used to create a new domain object instance.</returns>
