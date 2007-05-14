@@ -38,6 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DomainObjectSecurityStrategy.cs" />
+    <Compile Include="IDomainObjectSecurityContextFactory.cs" />
     <Compile Include="SecurityClientTransactionExtension.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Security.Data.DomainObjects.build" />

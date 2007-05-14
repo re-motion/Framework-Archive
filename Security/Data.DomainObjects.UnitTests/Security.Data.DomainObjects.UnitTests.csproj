@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DomainObjectSecurityStrategyTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\BaseTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\ObjectDeletingTest.cs" />
     <Compile Include="SecurityClientTransactionExtensionTests\NewObjectCreatingTest.cs" />
