@@ -3,6 +3,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
+using System.Runtime.Remoting.Messaging;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -10,9 +11,19 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Client")]
   public class Client : OrganizationalStructureObject
   {
+    // constants
+
     // types
 
-    // static members and constants
+    // static members
+
+    private static readonly string s_currentKey = typeof (Client).AssemblyQualifiedName + "_Current";
+
+    public static Client Current
+    {
+      get { return (Client) CallContext.GetData (s_currentKey); }
+      set { CallContext.SetData (s_currentKey, value); }
+    }
 
     public static new Client GetObject (ObjectID id, ClientTransaction clientTransaction)
     {

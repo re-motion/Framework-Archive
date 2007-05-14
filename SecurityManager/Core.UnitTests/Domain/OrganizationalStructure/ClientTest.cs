@@ -9,6 +9,7 @@ using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -82,10 +83,47 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetDisplayName ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
-      Client client = testHelper.CreateClient ("Clientname", "UID");
+      Client client = _testHelper.CreateClient ("Clientname", "UID");
 
       Assert.AreEqual ("Clientname", client.DisplayName);
+    }
+
+    [Test]
+    public void Get_Current_NotInitialized ()
+    {
+      Assert.IsNull (Client.Current);
+    }
+
+    [Test]
+    public void SetAndGet_Current()
+    {
+      Client client = _testHelper.CreateClient ("Client", "UID: Client");
+      
+      Client.Current = client;
+      Assert.AreSame (client, Client.Current);
+      
+      Client.Current = null;
+    }
+
+    [Test]
+    public void SetAndGet_Current_Threading ()
+    {
+      Client client = _testHelper.CreateClient ("Client", "UID: Client");
+
+      Client.Current = client;
+      Assert.AreSame (client, Client.Current);
+
+      ThreadRunner.Run (delegate ()
+          {
+            Client otherClient = _testHelper.CreateClient ("OtherClient", "UID: OtherClient");
+
+            Assert.IsNull (Client.Current);
+            Client.Current = otherClient;
+            Assert.AreSame (otherClient, Client.Current);
+
+          });
+
+      Assert.AreSame (client, Client.Current);
     }
 
     #region IBusinessObjectWithIdentifier.UniqueIdentifier tests
