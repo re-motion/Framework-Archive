@@ -25,11 +25,6 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public GroupListFormFunction (ObjectID clientID)
-      : base (clientID)
-    {
-    }
-
     // methods and properties
 
     WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (GroupListForm), "UI/OrganizationalStructure/GroupListForm.aspx");

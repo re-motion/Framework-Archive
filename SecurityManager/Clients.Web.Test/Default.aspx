@@ -12,10 +12,10 @@
 <body>
     <form id="form1" runat="server">
     <p>
-    <a href="UserList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid">Aufbauorganisation verwalten</a>
+    <a href="UserList.wxe">Aufbauorganisation verwalten</a>
     </p>
     <p>
-    <a href="SecurableClassDefinitionList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid&WxeReturnToSelf=True&TabbedMenuSelection=AccessControlTab">Berechtigungen verwalten</a>
+    <a href="SecurableClassDefinitionList.wxe?WxeReturnToSelf=True&TabbedMenuSelection=AccessControlTab">Berechtigungen verwalten</a>
     </p>
     <p>
       <asp:Button ID="EvaluateSecurity" runat="server" Text="Evaluate Security" OnClick="EvaluateSecurity_Click" />

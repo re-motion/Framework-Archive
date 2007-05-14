@@ -7,6 +7,7 @@ using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.Security.Data.DomainObjects;
+using System.Runtime.Remoting.Messaging;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -23,6 +24,14 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //}
 
     // static members and constants
+
+    private static readonly string s_currentKey = typeof (User).AssemblyQualifiedName + "_Current";
+
+    public static User Current
+    {
+      get { return (User) CallContext.GetData (s_currentKey); }
+      set { CallContext.SetData (s_currentKey, value); }
+    }
 
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
@@ -178,11 +187,14 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     SecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      string owner = UserName;
-      string ownerGroup = Group == null ? null : Group.UniqueIdentifier;
-      string ownerClient = Client == null ? null : Client.UniqueIdentifier;
+      using (new SecurityFreeSection ())
+      {
+        string owner = UserName;
+        string ownerGroup = Group == null ? null : Group.UniqueIdentifier;
+        string ownerClient = Client == null ? null : Client.UniqueIdentifier;
 
-      return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates(), GetAbstractRoles ());
+        return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
+      }
     }
 
     protected virtual IDictionary<string, Enum> GetStates ()

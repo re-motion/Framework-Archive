@@ -25,8 +25,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, User user, Group group)
-      : base (clientID, organizationalStructureObjectID)
+    public EditRoleFormFunction (ObjectID organizationalStructureObjectID, User user, Group group)
+      : base (organizationalStructureObjectID)
     {
       User = user;
       Group = group;

@@ -38,17 +38,25 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         GroupList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupList.FixedColumns[0], SortingDirection.Ascending));
-      GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+      GroupList.LoadUnboundValue (Group.FindByClientID (ClientID, CurrentFunction.CurrentTransaction), IsPostBack);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       NewGroupButton.Visible = securityClient.HasConstructorAccess (typeof (Group));
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+
+      if (HasClientChanged)
+        GroupList.LoadUnboundValue (Group.FindByClientID (ClientID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
       if (!Page.IsReturningPostBack)
       {
-        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (CurrentFunction.ClientID, ((Group) e.BusinessObject).ID);
+        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (((Group) e.BusinessObject).ID);
         editGroupFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editGroupFormFunction);
       }
@@ -63,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (CurrentFunction.ClientID, null);
+        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (null);
         editGroupFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editGroupFormFunction);
       }

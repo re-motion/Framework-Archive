@@ -41,8 +41,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'StatePrope
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'StateDefinitionView')
   DROP VIEW [dbo].[StateDefinitionView]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AccesTypeReferenceView')
-  DROP VIEW [dbo].[AccesTypeReferenceView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AccessTypeReferenceView')
+  DROP VIEW [dbo].[AccessTypeReferenceView]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AccessTypeDefinitionView')
   DROP VIEW [dbo].[AccessTypeDefinitionView]
@@ -322,7 +322,7 @@ CREATE TABLE [dbo].[AccessTypeReference]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
 
-  -- AccesTypeReference columns
+  -- AccessTypeReference columns
   [Index] int NOT NULL,
   [SecurableClassID] uniqueidentifier NULL,
   [SecurableClassIDClassID] varchar (100) NULL,
@@ -618,11 +618,11 @@ CREATE VIEW [dbo].[StateDefinitionView] ([ID], [ClassID], [Timestamp], [Index], 
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccesTypeReferenceView] ([ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID])
+CREATE VIEW [dbo].[AccessTypeReferenceView] ([ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID]
     FROM [dbo].[AccessTypeReference]
-    WHERE [ClassID] IN ('AccesTypeReference')
+    WHERE [ClassID] IN ('AccessTypeReference')
   WITH CHECK OPTION
 GO
 

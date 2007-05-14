@@ -26,8 +26,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public EditGroupFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
-      : base (clientID, organizationalStructureObjectID)
+    public EditGroupFormFunction (ObjectID organizationalStructureObjectID)
+      : base (organizationalStructureObjectID)
     {
     }
 

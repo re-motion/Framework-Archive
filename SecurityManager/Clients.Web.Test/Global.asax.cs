@@ -11,10 +11,14 @@ using Rubicon.Web.UI;
 using Rubicon.Security.Web.UI;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Security.Web.ExecutionEngine;
+using Rubicon.SecurityManager.Clients.Web.Classes;
+using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
+using Rubicon.Data.DomainObjects;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test
 {
-  public class Global : System.Web.HttpApplication
+  public class Global : SecurityManagerHttpApplication
   {
 
     protected void Application_Start (object sender, EventArgs e)
@@ -27,25 +31,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
     protected void Application_End (object sender, EventArgs e)
     {
 
-    }
-
-    protected void Application_PostAcquireRequestState (object sender, EventArgs e)
-    {
-      if (Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState)
-      {
-        IPrincipal user = (IPrincipal) Session["CurrentUser"];
-        if (user == null)
-          HttpContext.Current.User = new GenericPrincipal (new GenericIdentity (string.Empty), new string[0]);
-        else
-          HttpContext.Current.User = user;
-      }
-    }
-
-
-    public void SetUser (IPrincipal user)
-    {
-      HttpContext.Current.User = user;
-      Session["CurrentUser"] = user;
     }
   }
 }

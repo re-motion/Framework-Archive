@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void LoadTree (bool interim, bool refreshTreeNodes)
     {
-      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (new ClientTransaction ()), interim);
+      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (CurrentFunction.CurrentTransaction), interim);
       if (refreshTreeNodes)
         SecurableClassDefinitionTree.RefreshTreeNodes ();
     }
@@ -67,7 +67,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       if (!IsReturningPostBack)
       {
         SecurableClassDefinition classDefinition = (SecurableClassDefinition) e.BusinessObjectTreeNode.BusinessObject;
-        EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, classDefinition.ID);
+        EditPermissionsFormFunction function = new EditPermissionsFormFunction (classDefinition.ID);
         string features = "width=1000, height=700, resizable=yes, menubar=no, toolbar=no, location=no, status=no";
         ExecuteFunctionExternal (function, "_blank", features, (Control) sender, true);
       }

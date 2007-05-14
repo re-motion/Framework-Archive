@@ -265,7 +265,7 @@
       </properties>
     </class>
 
-    <class id="AccesTypeReference">
+    <class id="AccessTypeReference">
       <type>Rubicon.SecurityManager.Domain.Metadata.AccessTypeReference, Rubicon.SecurityManager</type>
       <entity name="AccessTypeReference"/>
       <storageProviderID>SecurityManager</storageProviderID>

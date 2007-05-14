@@ -25,8 +25,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public EditGroupTypePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, Position position, GroupType groupType)
-      : base (clientID, organizationalStructureObjectID)
+    public EditGroupTypePositionFormFunction (ObjectID organizationalStructureObjectID, Position position, GroupType groupType)
+      : base (organizationalStructureObjectID)
     {
       GroupType = groupType;
       Position = position;

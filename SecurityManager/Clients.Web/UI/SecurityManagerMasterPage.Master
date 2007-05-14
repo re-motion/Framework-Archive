@@ -1,5 +1,5 @@
 <%@ Master Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.SecurityManagerMasterPage" %>
-<%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="SecurityManagerNavigationTabs" %>
+<%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="NavigationTabs" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head id="Head" runat="server">
@@ -11,7 +11,7 @@
         <td class="contentViewHeaderControls">
           <div class="contentViewHeaderControls">
             <asp:ContentPlaceHolder ID="HeaderControlsPlaceHolder" runat="server">
-            <securityManager:SecurityManagerNavigationTabs ID="SecurityManagerNavigationTabs" runat="server" />
+            <securityManager:NavigationTabs ID="SecurityManagerNavigationTabs" runat="server" />
             </asp:ContentPlaceHolder>
           </div>
         </td>

@@ -49,6 +49,7 @@
     <Content Include="UI\AccessControl\EditAccessControlListControl.ascx" />
     <Content Include="UI\AccessControl\EditPermissionsForm.aspx" />
     <Content Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx" />
+    <Content Include="UI\SecurityManagerCurrentClientControl.ascx" />
     <Content Include="UI\SecurityManagerMasterPage.Master" />
     <Content Include="UI\ErrorMessageControl.ascx" />
     <Content Include="SecurityManagerUrlMapping.xml" />
@@ -91,6 +92,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Classes\ObjectBoundRepeater.cs" />
+    <Compile Include="Classes\SecurityManagerHttpApplication.cs" />
     <Compile Include="default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -400,6 +402,13 @@
     </Compile>
     <Compile Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx.designer.cs">
       <DependentUpon>SecurableClassDefinitionListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SecurityManagerCurrentClientControl.ascx.cs">
+      <DependentUpon>SecurityManagerCurrentClientControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\SecurityManagerCurrentClientControl.ascx.designer.cs">
+      <DependentUpon>SecurityManagerCurrentClientControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorMessageControl.ascx.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>

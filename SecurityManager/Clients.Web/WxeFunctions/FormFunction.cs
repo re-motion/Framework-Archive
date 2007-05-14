@@ -24,13 +24,13 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
     {
     }
 
-    public FormFunction (ObjectID ClientID, ObjectID CurrentObjectID)
-      : base (ClientID, CurrentObjectID)
+    public FormFunction (ObjectID CurrentObjectID)
+      : base (CurrentObjectID)
     {
     }
 
     // methods and properties
-    [WxeParameter (2, false, WxeParameterDirection.In)]
+    [WxeParameter (1, false, WxeParameterDirection.In)]
     public ObjectID CurrentObjectID
     {
       get { return (ObjectID) Variables["CurrentObjectID"]; }
@@ -48,10 +48,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
       }
       set
       {
-        if (value != null)
-          CurrentObjectID = value.ID;
-        else
-          CurrentObjectID = null;
+        CurrentObjectID = (value != null) ? value.ID : null;
       }
     }
   }

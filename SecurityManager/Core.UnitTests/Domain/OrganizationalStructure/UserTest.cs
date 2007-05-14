@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Security.Data.DomainObjects;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -85,6 +86,45 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
 
       _testHelper.Transaction.Commit ();
+    }
+
+    [Test]
+    public void Get_Current_NotInitialized ()
+    {
+      Assert.IsNull (User.Current);
+    }
+
+    [Test]
+    public void SetAndGet_Current ()
+    {
+      User user = CreateUser ();
+
+      User.Current = user;
+      Assert.AreSame (user, User.Current);
+
+      User.Current = null;
+    }
+
+    [Test]
+    public void SetAndGet_Current_Threading ()
+    {
+      User user = CreateUser ();
+      User.Current = user;
+      Assert.AreSame (user, User.Current);
+
+      ThreadRunner.Run (delegate ()
+          {
+            Client otherClient = _testHelper.CreateClient ("OtherClient", "UID: otherClient");
+            Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherClient);
+            User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherClient);
+
+            Assert.IsNull (User.Current);
+            User.Current = otherUser;
+            Assert.AreSame (otherUser, User.Current);
+
+          });
+
+      Assert.AreSame (user, User.Current);
     }
 
     [Test]

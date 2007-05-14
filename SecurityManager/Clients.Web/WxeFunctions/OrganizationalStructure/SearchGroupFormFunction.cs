@@ -25,11 +25,6 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public SearchGroupFormFunction (ObjectID clientID)
-      : base (clientID)
-    {
-    }
-
     // methods and properties
 
     public Group SelectedGroup

@@ -25,10 +25,6 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    public PositionListFormFunction (ObjectID clientID)
-      : base (clientID)
-    {
-    }
     // methods and properties
 
     WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (PositionListForm), "UI/OrganizationalStructure/PositionListForm.aspx");

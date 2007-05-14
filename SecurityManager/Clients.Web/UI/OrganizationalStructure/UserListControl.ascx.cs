@@ -22,6 +22,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     // construction and disposing
 
     // methods and properties
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
@@ -38,17 +39,25 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         UserList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) UserList.FixedColumns[0], SortingDirection.Ascending));
-      UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+      UserList.LoadUnboundValue (User.FindByClientID (ClientID, CurrentFunction.CurrentTransaction), IsPostBack);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       NewUserButton.Visible = securityClient.HasConstructorAccess (typeof (User));
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender (e);
+
+      if (HasClientChanged)
+        UserList.LoadUnboundValue (User.FindByClientID (ClientID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void UserList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
       if (!Page.IsReturningPostBack)
       {
-        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (CurrentFunction.ClientID, ((User) e.BusinessObject).ID);
+        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (((User) e.BusinessObject).ID);
         editUserFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editUserFormFunction);
       }
@@ -63,7 +72,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (CurrentFunction.ClientID, null);
+        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (null);
         editUserFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editUserFormFunction);
       }

@@ -25,8 +25,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    public EditPermissionsFormFunction (ObjectID clientID, ObjectID securableClassDefinitionObjectID)
-      : base (clientID, securableClassDefinitionObjectID)
+    public EditPermissionsFormFunction (ObjectID securableClassDefinitionObjectID)
+      : base (securableClassDefinitionObjectID)
     {
     }
 

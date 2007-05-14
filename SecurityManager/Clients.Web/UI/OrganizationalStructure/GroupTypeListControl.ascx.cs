@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditGroupTypeFormFunction editGroupTypeFormFunction = new EditGroupTypeFormFunction (CurrentFunction.ClientID, ((GroupType) e.BusinessObject).ID);
+        EditGroupTypeFormFunction editGroupTypeFormFunction = new EditGroupTypeFormFunction (((GroupType) e.BusinessObject).ID);
         editGroupTypeFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editGroupTypeFormFunction);
       }
@@ -59,7 +59,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditGroupTypeFormFunction editGroupTypeFormFunction = new EditGroupTypeFormFunction (CurrentFunction.ClientID, null);
+        EditGroupTypeFormFunction editGroupTypeFormFunction = new EditGroupTypeFormFunction (null);
         editGroupTypeFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editGroupTypeFormFunction);
       }

@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (CurrentFunction.ClientID, ((Position) e.BusinessObject).ID);
+        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (((Position) e.BusinessObject).ID);
         editPositionFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editPositionFormFunction);
       }
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       if (!Page.IsReturningPostBack)
       {
-        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (CurrentFunction.ClientID,null);
+        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (null);
         editPositionFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editPositionFormFunction);
       }

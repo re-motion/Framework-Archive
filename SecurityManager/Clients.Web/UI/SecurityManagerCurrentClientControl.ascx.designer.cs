@@ -10,8 +10,8 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI {
     
-    public partial class SecurityManagerNavigationTabs {
-        protected Rubicon.SecurityManager.Clients.Web.UI.CurrentClientControl CurrentClientControl;
-        protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
+    public partial class CurrentClientControl {
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentUserField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue CurrentClientField;
     }
 }

@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     private void EditGroupTypePosition (GroupTypePosition groupTypePosition, Position position, GroupType groupType)
     {
       EditGroupTypePositionFormFunction editGroupTypePositionFormFunction =
-        new EditGroupTypePositionFormFunction (CurrentFunction.ClientID, groupTypePosition == null ? null : groupTypePosition.ID, position, groupType);
+        new EditGroupTypePositionFormFunction ( (groupTypePosition != null) ? groupTypePosition.ID : null, position, groupType);
 
       editGroupTypePositionFormFunction.TransactionMode = WxeTransactionMode.None;
       Page.ExecuteFunction (editGroupTypePositionFormFunction);

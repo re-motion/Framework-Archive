@@ -5,6 +5,7 @@ using Rubicon.Security.Configuration;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
@@ -29,19 +30,11 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
       Initialize ();
     }
 
-    protected BaseTransactedFunction (ObjectID ClientID)
-      : base (ClientID)
-    {
-      Initialize ();
-    }
-
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
     public ObjectID ClientID
     {
-      get { return (ObjectID) Variables["ClientID"]; }
-      set { Variables["ClientID"] = value; }
+      get { return (Client.Current != null) ? Client.Current.ID : null; }
     }
 
     public bool HasUserCancelled

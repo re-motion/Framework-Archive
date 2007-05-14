@@ -200,11 +200,14 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     SecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      string owner = null;
-      string ownerGroup = UniqueIdentifier;
-      string ownerClient = Client == null ? null : Client.UniqueIdentifier;
+      using (new SecurityFreeSection ())
+      {
+        string owner = null;
+        string ownerGroup = UniqueIdentifier;
+        string ownerClient = Client == null ? null : Client.UniqueIdentifier;
 
-      return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
+        return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
+      }
     }
 
     protected virtual IDictionary<string, Enum> GetStates ()

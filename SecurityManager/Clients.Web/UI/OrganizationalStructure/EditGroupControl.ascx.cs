@@ -118,8 +118,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void EditRole (Role role, User user, Group group, Position position)
     {
-      EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (
-          CurrentFunction.ClientID, role == null ? null : role.ID, user, group);
+      EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction ((role != null) ? role.ID : null, user, group);
 
       editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
       Page.ExecuteFunction (editRoleFormFunction);
@@ -131,7 +130,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       {
         if (!Page.IsReturningPostBack)
         {
-          SearchGroupFormFunction searchGroupFormFunction = new SearchGroupFormFunction (CurrentFunction.ClientID);
+          SearchGroupFormFunction searchGroupFormFunction = new SearchGroupFormFunction ();
           searchGroupFormFunction.TransactionMode = WxeTransactionMode.None;
 
           Page.ExecuteFunction (searchGroupFormFunction);
