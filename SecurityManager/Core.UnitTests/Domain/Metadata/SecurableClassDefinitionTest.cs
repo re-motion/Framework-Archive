@@ -421,9 +421,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
        ExpectedMessage = "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void Commit_TwoStateCombinations ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
-
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
       StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);

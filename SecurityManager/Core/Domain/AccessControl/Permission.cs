@@ -12,16 +12,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // static members and constants
 
-    public static new Permission GetObject (ObjectID id)
-    {
-      return (Permission) DomainObject.GetObject (id);
-    }
-
-    public static new Permission GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (Permission) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new Permission GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Permission) DomainObject.GetObject (id, clientTransaction);

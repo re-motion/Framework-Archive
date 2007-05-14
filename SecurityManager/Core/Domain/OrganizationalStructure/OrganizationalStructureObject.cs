@@ -9,28 +9,20 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static new OrganizationalStructureObject GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (OrganizationalStructureObject) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new OrganizationalStructureObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (OrganizationalStructureObject) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing
 
-    public OrganizationalStructureObject (ClientTransaction clientTransaction) : base (clientTransaction)
+    public OrganizationalStructureObject (ClientTransaction clientTransaction)
+      : base (clientTransaction)
     {
     }
 
-    protected OrganizationalStructureObject (DataContainer dataContainer) : base (dataContainer)
+    protected OrganizationalStructureObject (DataContainer dataContainer)
+      : base (dataContainer)
     {
-    // This infrastructure constructor is necessary for the DomainObjects framework.
-    // Do not remove the constructor or place any code here.
+      // This infrastructure constructor is necessary for the DomainObjects framework.
+      // Do not remove the constructor or place any code here.
     }
 
     // methods and properties

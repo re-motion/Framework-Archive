@@ -22,16 +22,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return (MetadataObject) metadataObjects[0];
     }
 
-    public static new MetadataObject GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (MetadataObject) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new MetadataObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (MetadataObject) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing

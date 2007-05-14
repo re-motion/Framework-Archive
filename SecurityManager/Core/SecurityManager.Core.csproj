@@ -48,6 +48,7 @@
     </Compile>
     <Compile Include="Domain\AccessControl\AccessControlEntry.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPriorityComparer.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryValidationResult.cs" />
     <Compile Include="Domain\AccessControl\AccessControlException.cs" />
     <Compile Include="Domain\AccessControl\AccessControlList.cs" />
     <Compile Include="Domain\AccessControl\AccessControlListFinder.cs" />
