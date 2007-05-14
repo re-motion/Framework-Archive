@@ -140,31 +140,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get { return (DateTime) DataContainer["ChangedAt"]; }
     }
 
-    public void Touch ()
-    {
-      DataContainer["ChangedAt"] = DateTime.Now;
-    }
-
     public int Index
     {
       get { return (int) DataContainer["Index"]; }
       set { DataContainer["Index"] = value; }
     }
 
-    public bool MatchesToken (SecurityToken token)
+    public void Touch ()
     {
-      ArgumentUtility.CheckNotNull ("token", token);
-
-      if (!MatchesClient (token))
-        return false;
-
-      if (!MatchesAbstractRole (token))
-        return false;
-
-      if (!MatchesUserOrPosition (token))
-        return false;
-
-      return true;
+      DataContainer["ChangedAt"] = DateTime.Now;
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
@@ -214,6 +198,22 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       Permission permission = GetPermission (accessType);
       permission.Allowed = NaBoolean.Null;
+    }
+
+    public bool MatchesToken (SecurityToken token)
+    {
+      ArgumentUtility.CheckNotNull ("token", token);
+
+      if (!MatchesClient (token))
+        return false;
+
+      if (!MatchesAbstractRole (token))
+        return false;
+
+      if (!MatchesUserOrPosition (token))
+        return false;
+
+      return true;
     }
 
     private bool MatchesClient (SecurityToken token)
@@ -366,6 +366,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         //TODO: Move the message into the validation logic.
         throw new ConstraintViolationException ("The access control entry is in an invalid state.");
       }
+
+      if (State != StateType.Deleted && Client != ClientSelection.SpecificClient)
+        SpecificClient = null;
 
       base.OnCommitting (args);
     }

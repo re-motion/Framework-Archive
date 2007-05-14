@@ -158,5 +158,37 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       ace.Index = 1;
       Assert.AreEqual (1, ace.Index);
     }
+
+    [Test]
+    public void ClearSpecificClientOnCommit ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0);
+      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, _testHelper.Transaction);
+      ace.Client = ClientSelection.OwningClient;
+      ace.SpecificClient = _testHelper.CreateClient ("TestClient");
+
+      Assert.IsNotNull (ace.SpecificClient);
+      _testHelper.Transaction.Commit ();
+      Assert.IsNull (ace.SpecificClient);      
+    }
+
+    [Test]
+    public void ClearSpecificClientOnCommitWhenObjectIsDeleted ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0);
+      AccessControlEntry aceExpected = AccessControlEntry.GetObject (aceID, _testHelper.Transaction);
+      aceExpected.Client = ClientSelection.SpecificClient;
+      aceExpected.SpecificClient = _testHelper.CreateClient ("TestClient");
+      _testHelper.Transaction.Commit ();
+      ClientTransaction clientTransaction = new ClientTransaction ();
+      AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID, clientTransaction);
+      aceActual.Client = ClientSelection.OwningClient;
+
+      Assert.IsNotNull (aceActual.SpecificClient);
+      aceActual.Delete ();
+      clientTransaction.Commit ();
+    }
   }
 }
