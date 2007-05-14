@@ -12,10 +12,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static MetadataObject Find (ClientTransaction transaction, string metadataID)
+    public static MetadataObject Find (string metadataID, ClientTransaction clientTransaction)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      
       FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder ();
-      DomainObjectCollection metadataObjects = transaction.QueryManager.GetCollection (queryBuilder.CreateQuery (metadataID));
+      DomainObjectCollection metadataObjects = clientTransaction.QueryManager.GetCollection (queryBuilder.CreateQuery (metadataID));
       if (metadataObjects.Count == 0)
         return null;
 

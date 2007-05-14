@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="property:Client" xml:space="preserve">
-    <value>Mandant</value>
+  <data name="Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.All" xml:space="preserve">
+    <value>Any Client</value>
   </data>
-  <data name="property:Group" xml:space="preserve">
-    <value>Gruppe</value>
+  <data name="Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.OwningClient" xml:space="preserve">
+    <value>Client of the Object</value>
   </data>
-  <data name="property:Priority" xml:space="preserve">
-    <value>Priorität</value>
-  </data>
-  <data name="property:SpecificAbstractRole" xml:space="preserve">
-    <value>Abstrakte Rolle</value>
-  </data>
-  <data name="property:SpecificClient" xml:space="preserve">
-    <value>Mandant</value>
-  </data>
-  <data name="property:SpecificPosition" xml:space="preserve">
-    <value>Position</value>
+  <data name="Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.SpecificClient" xml:space="preserve">
+    <value>Specific Client</value>
   </data>
 </root>

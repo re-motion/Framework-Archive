@@ -2,6 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -23,8 +24,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Client) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static Client FindByUnqiueIdentifier (ClientTransaction clientTransaction, string uniqueIdentifier)
+    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll");
+      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+    }
+
+    public static Client FindByUnqiueIdentifier (string uniqueIdentifier, ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
@@ -64,6 +75,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (string) DataContainer["UniqueIdentifier"]; }
       set { DataContainer["UniqueIdentifier"] = value; }
+    }
+
+    public override string DisplayName
+    {
+      get { return Name; }
     }
   }
 }

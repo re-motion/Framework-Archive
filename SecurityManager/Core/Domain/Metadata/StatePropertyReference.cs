@@ -10,16 +10,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new StatePropertyReference GetObject (ObjectID id)
-    {
-      return (StatePropertyReference) DomainObject.GetObject (id);
-    }
-
-    public static new StatePropertyReference GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (StatePropertyReference) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new StatePropertyReference GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (StatePropertyReference) DomainObject.GetObject (id, clientTransaction);

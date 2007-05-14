@@ -114,6 +114,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GroupSelection.de.resx</DependentUpon>
     </Compile>
+    <Compile Include="Globalization\Domain\AccessControl\ClientSelection.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClientSelection.resx</DependentUpon>
+    </Compile>
     <Compile Include="Globalization\Domain\AccessControl\GroupSelection.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -215,6 +220,14 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessControlEntry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\ClientSelection.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\ClientSelection.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClientSelection.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.de.resx">
       <SubType>Designer</SubType>

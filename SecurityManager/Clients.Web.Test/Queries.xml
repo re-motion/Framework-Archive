@@ -64,6 +64,13 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [ClientView] ORDER BY [Name] ASC;
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindByUnqiueIdentifier" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
@@ -81,7 +88,7 @@
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName ASC;
+      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName ASC, FirstName ASC;
     </statement>
   </query>
 

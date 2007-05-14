@@ -13,23 +13,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static DomainObjectCollection Find (ClientTransaction transaction, EnumWrapper[] abstractRoles)
-    {
-      if (abstractRoles.Length == 0)
-        return new DomainObjectCollection ();
-
-      FindAbstractRolesQueryBuilder queryBuilder = new FindAbstractRolesQueryBuilder ();
-      return transaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
-    }
-
-    public static DomainObjectCollection FindAll (ClientTransaction transaction)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
-      return transaction.QueryManager.GetCollection (query);
-    }
-
     public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (AbstractRoleDefinition) DomainObject.GetObject (id, clientTransaction);
@@ -38,6 +21,25 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
       return (AbstractRoleDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+    }
+
+    public static DomainObjectCollection Find (EnumWrapper[] abstractRoles, ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      if (abstractRoles.Length == 0)
+        return new DomainObjectCollection ();
+
+      FindAbstractRolesQueryBuilder queryBuilder = new FindAbstractRolesQueryBuilder ();
+      return clientTransaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
+    }
+
+    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
+      return clientTransaction.QueryManager.GetCollection (query);
     }
 
     // member fields

@@ -2,6 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -25,8 +26,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll");
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindAll");
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 

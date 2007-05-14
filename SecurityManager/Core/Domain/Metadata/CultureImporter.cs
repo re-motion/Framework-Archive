@@ -82,7 +82,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       string metadataID = nameNode.Attributes["ref"].Value;
       XmlAttribute commentAttribute = nameNode.Attributes["comment"];
       
-      MetadataObject metadataObject = MetadataObject.Find (_transaction, metadataID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataID, _transaction);
       if (metadataObject == null)
       {
         string objectDetails = commentAttribute == null ? string.Empty : "('" + commentAttribute.Value + "') ";

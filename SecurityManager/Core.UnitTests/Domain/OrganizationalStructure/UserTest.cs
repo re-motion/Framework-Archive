@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_ValidUser ()
     {
-      User foundUser = User.FindByUserName (_testHelper.Transaction, "test.user");
+      User foundUser = User.FindByUserName ("test.user", _testHelper.Transaction);
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_NotExistingUser ()
     {
-      User foundUser = User.FindByUserName (_testHelper.Transaction, "not.existing");
+      User foundUser = User.FindByUserName ("not.existing", _testHelper.Transaction);
 
       Assert.IsNull (foundUser);
     }
@@ -51,8 +51,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_Empty ()
     {
-      User testUser = User.FindByUserName (_testHelper.Transaction, "test.user");
-      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testParentOfOwningGroup");
+      User testUser = User.FindByUserName ("test.user", _testHelper.Transaction);
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier ("UID: testParentOfOwningGroup", _testHelper.Transaction);
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -61,8 +61,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_TwoRoles ()
     {
-      User testUser = User.FindByUserName (_testHelper.Transaction, "test.user");
-      Group testgroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testgroup");
+      User testUser = User.FindByUserName ("test.user", _testHelper.Transaction);
+      Group testgroup = Group.FindByUnqiueIdentifier ("UID: testgroup", _testHelper.Transaction);
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);

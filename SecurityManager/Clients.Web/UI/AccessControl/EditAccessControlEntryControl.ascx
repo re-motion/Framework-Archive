@@ -5,7 +5,7 @@
 <%@ Register TagPrefix="securityManager" Assembly="Rubicon.SecurityManager.Clients.Web" Namespace="Rubicon.SecurityManager.Clients.Web.Classes" %>
 <%@ Register TagPrefix="securityManager" Src="EditPermissionControl.ascx" TagName="EditPermissionControl" %>
 <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager" />
-<rubicon:FormGridManager ID="FormGridManager" runat="server" />
+<rubicon:FormGridManager ID="FormGridManager" runat="server" ShowHelpProviders="False" ShowRequiredMarkers="False" />
 <table id="FormGrid" runat="server" class="accessControlEntry">
   <tr>
     <td class="accessControlEntryTitleCell" colspan="2">
@@ -13,6 +13,25 @@
       <div class="accessControlEntryButtons">
         <rubicon:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
       </div>
+    </td>
+  </tr>
+  <tr>
+    <td><rubicon:SmartLabel ID="ClientLabel" runat="server" ForControl="ClientField"/>&nbsp;(1)</td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <tr>
+          <td><rubicon:BocEnumValue ID="ClientField" runat="server" PropertyIdentifier="Client" DataSourceControl="CurrentObject" OnSelectionChanged="ClientField_SelectionChanged">
+            <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
+          </rubicon:BocEnumValue></td>
+          <td>
+            <rubicon:BocReferenceValue ID="SpecificClientField" runat="server" PropertyIdentifier="SpecificClient" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll" >
+              <PersistedCommand>
+                <rubicon:BocCommand />
+              </PersistedCommand>
+            </rubicon:BocReferenceValue>
+          </td>
+        </tr>
+      </table>
     </td>
   </tr>
   <tr>

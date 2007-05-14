@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "b8621bc9-9ab3-4524-b1e4-582657d6b420";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
 
       Assert.IsInstanceOfType (typeof (SecurableClassDefinition), metadataObject);
     }
@@ -33,7 +33,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "38777218-cd4d-45ca-952d-c10b1104996a";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
 
       Assert.IsNull (metadataObject);
     }
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|2";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
 
       Assert.IsInstanceOfType (typeof (StateDefinition), metadataObject);
       StateDefinition state = (StateDefinition) metadataObject;
@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|42";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
 
       Assert.IsNull (metadataObject);
     }
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "Hello|42";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
     }
 
     [Test]
@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|Hello";
 
       ClientTransaction transaction = new ClientTransaction ();
-      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID, transaction);
     }
   }
 }

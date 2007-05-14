@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName (transaction, "Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
+      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice", transaction);
 
       MetadataObjectAssert.AreEqual (invoiceClass, foundClass);
     }
@@ -196,7 +196,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName (transaction, "Invce");
+      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce", transaction);
 
       Assert.IsNull (foundClass);
     }

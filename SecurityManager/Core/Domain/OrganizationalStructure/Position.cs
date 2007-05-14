@@ -7,6 +7,7 @@ using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Security.Data.DomainObjects;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -36,8 +37,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 

@@ -24,18 +24,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static User FindByUserName (ClientTransaction transaction, string userName)
-    {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
-      query.Parameters.Add ("@userName", userName);
-
-      DomainObjectCollection users = transaction.QueryManager.GetCollection (query);
-      if (users.Count == 0)
-        return null;
-
-      return (User) users[0];
-    }
-
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (User) DomainObject.GetObject (id, clientTransaction);
@@ -46,10 +34,25 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (User) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
+    public static User FindByUserName (string userName, ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
+      query.Parameters.Add ("@userName", userName);
+
+      DomainObjectCollection users = clientTransaction.QueryManager.GetCollection (query);
+      if (users.Count == 0)
+        return null;
+
+      return (User) users[0];
+    }
+
     public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID");
-      
       query.Parameters.Add ("@clientID", clientID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);

@@ -61,19 +61,22 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID");
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID");
       query.Parameters.Add ("@clientID", clientID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 
-    public static Group FindByUnqiueIdentifier (ClientTransaction transaction, string uniqueIdentifier)
+    public static Group FindByUnqiueIdentifier (string uniqueIdentifier, ClientTransaction clientTransaction)
     {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
       query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
-      DomainObjectCollection groups = transaction.QueryManager.GetCollection (query);
+      DomainObjectCollection groups = clientTransaction.QueryManager.GetCollection (query);
       if (groups.Count == 0)
         return null;
 

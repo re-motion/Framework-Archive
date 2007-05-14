@@ -4,21 +4,11 @@ using Rubicon.Data.DomainObjects;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class EnumValueDefinition : MetadataObject
+  public abstract class EnumValueDefinition : MetadataObject
   {
     // types
 
     // static members and constants
-
-    public static new EnumValueDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (EnumValueDefinition) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new EnumValueDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (EnumValueDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
 
     // member fields
 

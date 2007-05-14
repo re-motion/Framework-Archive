@@ -140,5 +140,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       add { Events.AddHandler (s_deleteEvent, value); }
       remove { Events.RemoveHandler (s_deleteEvent, value); }
     }
+
+    protected void ClientField_SelectionChanged (object sender, EventArgs e)
+    {
+
+    }
   }
 }

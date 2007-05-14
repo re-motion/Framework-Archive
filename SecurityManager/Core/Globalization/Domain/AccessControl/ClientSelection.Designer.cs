@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AccessControlEntry {
+    internal class ClientSelection {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AccessControlEntry() {
+        internal ClientSelection() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry", typeof(AccessControlEntry).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.ClientSelection", typeof(ClientSelection).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,29 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Client.
+        ///   Looks up a localized string similar to Any Client.
         /// </summary>
-        internal static string property_Client {
+        internal static string Rubicon_SecurityManager_Domain_AccessControl_ClientSelection_All {
             get {
-                return ResourceManager.GetString("property:Client", resourceCulture);
+                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.All", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group.
+        ///   Looks up a localized string similar to Client of the Object.
         /// </summary>
-        internal static string property_Group {
+        internal static string Rubicon_SecurityManager_Domain_AccessControl_ClientSelection_OwningClient {
             get {
-                return ResourceManager.GetString("property:Group", resourceCulture);
+                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.OwningClient", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Priority.
+        ///   Looks up a localized string similar to Specific Client.
         /// </summary>
-        internal static string property_Priority {
+        internal static string Rubicon_SecurityManager_Domain_AccessControl_ClientSelection_SpecificClient {
             get {
-                return ResourceManager.GetString("property:Priority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Abstract Role.
-        /// </summary>
-        internal static string property_SpecificAbstractRole {
-            get {
-                return ResourceManager.GetString("property:SpecificAbstractRole", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Client.
-        /// </summary>
-        internal static string property_SpecificClient {
-            get {
-                return ResourceManager.GetString("property:SpecificClient", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Position.
-        /// </summary>
-        internal static string property_SpecificPosition {
-            get {
-                return ResourceManager.GetString("property:SpecificPosition", resourceCulture);
+                return ResourceManager.GetString("Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.SpecificClient", resourceCulture);
             }
         }
     }

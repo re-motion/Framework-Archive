@@ -34,11 +34,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       _testHelper = new OrganisationalStructureTestHelper ();
     }
-    
+
+    [Test]
+    public void FindAll ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+
+      DomainObjectCollection clients = Client.FindAll (transaction);
+
+      Assert.AreEqual (2, clients.Count);
+      Assert.AreEqual (_expectedClientID, clients[1].ID);
+    }
+
     [Test]
     public void FindByUnqiueIdentifier_ValidClient ()
     {
-      Client foundClient = Client.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testClient");
+      Client foundClient = Client.FindByUnqiueIdentifier ("UID: testClient", _testHelper.Transaction);
 
       Assert.AreEqual ("UID: testClient", foundClient.UniqueIdentifier);
     }
@@ -46,7 +57,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUnqiueIdentifier_NotExistingClient ()
     {
-      Client foundClient = Client.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: NotExistingClient");
+      Client foundClient = Client.FindByUnqiueIdentifier ("UID: NotExistingClient", _testHelper.Transaction);
 
       Assert.IsNull (foundClient);
     }
@@ -66,6 +77,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
 
       Assert.IsNotEmpty (client.UniqueIdentifier);
+    }
+
+    [Test]
+    public void GetDisplayName ()
+    {
+      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      Client client = testHelper.CreateClient ("Clientname", "UID");
+
+      Assert.AreEqual ("Clientname", client.DisplayName);
     }
 
     #region IBusinessObjectWithIdentifier.UniqueIdentifier tests

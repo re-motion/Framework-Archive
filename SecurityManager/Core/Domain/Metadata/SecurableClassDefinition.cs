@@ -14,37 +14,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static SecurableClassDefinition FindByName (ClientTransaction transaction, string name)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
-      query.Parameters.Add ("@name", name);
-
-      DomainObjectCollection result = transaction.QueryManager.GetCollection (query);
-      if (result.Count == 0)
-        return null;
-
-      return (SecurableClassDefinition) result[0];
-    }
-
-    public static DomainObjectCollection FindAll (ClientTransaction transaction)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
-      return transaction.QueryManager.GetCollection (query);
-    }
-
-    public static DomainObjectCollection FindAllBaseClasses (ClientTransaction transaction)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
-      return transaction.QueryManager.GetCollection (query);
-    }
-
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction);
@@ -53,6 +22,37 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
       return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+    }
+
+    public static SecurableClassDefinition FindByName (string name, ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
+      query.Parameters.Add ("@name", name);
+
+      DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (query);
+      if (result.Count == 0)
+        return null;
+
+      return (SecurableClassDefinition) result[0];
+    }
+
+    public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
+      return clientTransaction.QueryManager.GetCollection (query);
+    }
+
+    public static DomainObjectCollection FindAllBaseClasses (ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
+      return clientTransaction.QueryManager.GetCollection (query);
     }
 
     // member fields
