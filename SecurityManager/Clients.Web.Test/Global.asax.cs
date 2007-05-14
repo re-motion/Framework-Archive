@@ -31,11 +31,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
 
     protected void Application_PostAcquireRequestState (object sender, EventArgs e)
     {
-      IPrincipal user = (IPrincipal) Session["CurrentUser"];
-      if (user == null)
-        HttpContext.Current.User = new GenericPrincipal (new GenericIdentity (string.Empty), new string[0]);
-      else
-        HttpContext.Current.User = user;
+      if (Context.Handler is IRequiresSessionState || Context.Handler is IReadOnlySessionState)
+      {
+        IPrincipal user = (IPrincipal) Session["CurrentUser"];
+        if (user == null)
+          HttpContext.Current.User = new GenericPrincipal (new GenericIdentity (string.Empty), new string[0]);
+        else
+          HttpContext.Current.User = user;
+      }
     }
 
 

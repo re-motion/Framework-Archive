@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
         protected Rubicon.Web.UI.Controls.SmartLabel PriorityLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PriorityField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ActualPriority;
+        protected System.Web.UI.WebControls.Label ActualPriorityLabel;
         protected Rubicon.Web.UI.Controls.FormGridLabel PermissionsLabel;
         protected System.Web.UI.WebControls.PlaceHolder PermissionsPlaceHolder;
     }

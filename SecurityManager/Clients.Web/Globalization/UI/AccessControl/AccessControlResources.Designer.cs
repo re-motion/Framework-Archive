@@ -62,6 +62,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual Priority: {0}.
+        /// </summary>
+        internal static string ActualPriorityLabelText {
+            get {
+                return ResourceManager.GetString("ActualPriorityLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ACE (Access Control Entry).
         /// </summary>
         internal static string auto_AccessControlEntryTitle_InnerText {
@@ -85,6 +94,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static string auto_PermissionsLabel_Text {
             get {
                 return ResourceManager.GetString("auto:PermissionsLabel:Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a client..
+        /// </summary>
+        internal static string auto_SpecificClientField_ErrorMessage {
+            get {
+                return ResourceManager.GetString("auto:SpecificClientField:ErrorMessage", resourceCulture);
             }
         }
         

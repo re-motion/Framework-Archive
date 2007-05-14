@@ -16,7 +16,7 @@
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="ClientLabel" runat="server" ForControl="ClientField"/>&nbsp;(1)</td>
+    <td><rubicon:SmartLabel ID="ClientLabel" runat="server" ForControl="ClientField"/></td>
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
@@ -24,7 +24,7 @@
             <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
           </rubicon:BocEnumValue></td>
           <td>
-            <rubicon:BocReferenceValue ID="SpecificClientField" runat="server" PropertyIdentifier="SpecificClient" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll" >
+            <rubicon:BocReferenceValue ID="SpecificClientField" runat="server" PropertyIdentifier="SpecificClient" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll" Required="True" >
               <PersistedCommand>
                 <rubicon:BocCommand />
               </PersistedCommand>
@@ -35,27 +35,31 @@
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/>&nbsp;(4)</td>
+    <td><rubicon:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/></td>
     <td><rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
       <PersistedCommand>
         <rubicon:BocCommand />
       </PersistedCommand>
+      <DropDownListStyle AutoPostBack="True" />
     </rubicon:BocReferenceValue></td>
  </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/>&nbsp;(8)</td>
+    <td><rubicon:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/></td>
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
           <td>
-            <rubicon:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" >
+            <rubicon:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" OnSelectionChanged="SpecificPositionField_SelectionChanged" >
               <PersistedCommand>
                 <rubicon:BocCommand />
               </PersistedCommand>
+              <DropDownListStyle AutoPostBack="True" />
             </rubicon:BocReferenceValue>
           </td>
           <td>&nbsp;<asp:label id="SpecificPositionAndGroupLinkingLabel" runat="server" Text="###" />&nbsp;</td>
-          <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em"/></td>
+          <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" width="20em">
+            <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
+          </rubicon:BocEnumValue></td>
         </tr>
       </table>
     </td>
@@ -63,8 +67,10 @@
   <tr>
     <td><rubicon:SmartLabel ID="PriorityLabel" runat="server" ForControl="PriorityField"/></td>
     <td>
-      <rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" />
-      / <rubicon:BocTextValue ID="ActualPriority" runat="server" PropertyIdentifier="ActualPriority" DataSourceControl="CurrentObject" />
+      <rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" >
+        <TextBoxStyle AutoPostBack="True" />
+      </rubicon:BocTextValue>
+      / <asp:label id="ActualPriorityLabel" runat="server" Text="###" />
     </td>
   </tr>
   <tr>
