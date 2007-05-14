@@ -6,11 +6,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected OrderWithNewPropertyAccessBase (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public string BaseProperty
     {
       get { return string.Empty; }

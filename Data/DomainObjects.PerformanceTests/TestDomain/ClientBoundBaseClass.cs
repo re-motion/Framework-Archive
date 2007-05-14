@@ -29,11 +29,6 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    protected ClientBoundBaseClass (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     // methods and properties
 
     [DBBidirectionalRelation ("ClientBoundBaseClasses")]

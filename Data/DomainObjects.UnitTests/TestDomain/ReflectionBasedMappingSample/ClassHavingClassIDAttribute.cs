@@ -11,10 +11,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     protected ClassHavingClassIDAttribute ()
     {
     }
-
-    protected ClassHavingClassIDAttribute (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

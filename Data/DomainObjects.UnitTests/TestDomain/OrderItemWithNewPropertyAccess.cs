@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected OrderItemWithNewPropertyAccess (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public int Position
     {
       get { return (int) DataContainer["Position"]; }

@@ -10,10 +10,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithKeyOfInvalidType ()
     {
     }
-
-    protected ClassWithKeyOfInvalidType (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

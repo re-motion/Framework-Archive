@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Official (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 

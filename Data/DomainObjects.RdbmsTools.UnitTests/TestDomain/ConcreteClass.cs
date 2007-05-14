@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected ConcreteClass (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInConcreteClass { get; set; }
   }

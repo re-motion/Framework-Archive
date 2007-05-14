@@ -10,11 +10,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain
     {
     }
 
-    protected ClassWithPropertyTypeInOtherAssembly (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract ClassInOtherAssembly Property { get; set; }
   }
 }

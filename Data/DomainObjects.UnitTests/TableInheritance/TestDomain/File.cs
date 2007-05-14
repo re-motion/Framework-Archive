@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected File (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract int Size { get; set; }
 
     [DBColumn ("FileCreatedAt")]

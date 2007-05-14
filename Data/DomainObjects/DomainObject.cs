@@ -346,23 +346,7 @@ public class DomainObject
     _dataContainer.SetDomainObject (this);
   }
 
-    /// <summary>
-  /// Infrastructure constructor necessary to load a <see cref="DomainObject"/> from a datasource.
-  /// </summary>
-  /// <remarks>
-  /// All derived classes have to implement an (empty) constructor with this signature.
-  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
-  /// </remarks>
-  /// <param name="dataContainer">The <see cref="DataContainer"/> to be associated with the loaded domain object.</param>
-  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null</exception>
-  protected DomainObject (DataContainer dataContainer)
-  {
-    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
-    _dataContainer = dataContainer;
-  }
-
-  #region Obsolete legacy constructors
+  #region Legacy constructors
   /// <summary>
   /// Initializes a new <see cref="DomainObject"/>.
   /// </summary>
@@ -379,9 +363,41 @@ public class DomainObject
     _dataContainer.SetDomainObject (this);
   }
 
+  /// <summary>
+  /// Infrastructure constructor for loading a <see cref="DomainObject"/> from a data source when the legacy mapping is used.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// For the legacy mapping, all derived classes have to implement an (empty) constructor with this signature.
+  /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
+  /// </para>
+  /// <para>
+  /// This constructor should not be used when using the reflection-based mapping. The reflection-based mapping instantiates objects without
+  /// using any constructor.
+  /// </para>
+  /// </remarks>
+  /// <param name="dataContainer">The <see cref="DataContainer"/> to be associated with the loaded domain object.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
+  protected DomainObject (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+
+    SetDataContainerForLoading (dataContainer);
+  }
   #endregion
 
   // methods and properties
+
+  /// <summary>
+  /// Sets the data container during the loading process of a domain object.
+  /// </summary>
+  /// <param name="dataContainer">The data container to be associated with the loaded domain object.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
+  internal void SetDataContainerForLoading (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    _dataContainer = dataContainer;
+  }
 
   /// <summary>
   /// Returns the public type representation of this domain object, i.e. the type object visible to mappings, database, etc.

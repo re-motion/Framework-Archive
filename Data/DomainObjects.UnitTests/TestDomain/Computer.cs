@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Computer (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 20)]
     public abstract string SerialNumber { get; set; }
 

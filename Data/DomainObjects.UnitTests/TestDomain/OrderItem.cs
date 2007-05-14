@@ -29,11 +29,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       Order = order;
     }
 
-    protected OrderItem (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract int Position { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

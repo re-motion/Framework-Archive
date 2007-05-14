@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Client (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract Client ParentClient { get; set; }
   }
 }

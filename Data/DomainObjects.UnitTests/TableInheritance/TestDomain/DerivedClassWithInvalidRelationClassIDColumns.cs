@@ -9,10 +9,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     protected DerivedClassWithInvalidRelationClassIDColumns ()
     {
     }
-
-    protected DerivedClassWithInvalidRelationClassIDColumns (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

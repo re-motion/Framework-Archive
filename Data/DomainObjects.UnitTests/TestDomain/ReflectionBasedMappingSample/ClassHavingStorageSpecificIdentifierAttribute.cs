@@ -12,11 +12,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassHavingStorageSpecificIdentifierAttribute (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract int NoAttribute { get; set; }
 
     [DBColumn ("CustomName")]

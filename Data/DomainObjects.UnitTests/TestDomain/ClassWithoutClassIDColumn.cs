@@ -10,10 +10,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithoutClassIDColumn ()
     {
     }
-
-    protected ClassWithoutClassIDColumn (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

@@ -70,10 +70,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
 
     public IInvokeWith<TMinimal> MakeTypesafeConstructorInvoker<TMinimal> (Type concreteType)
     {
-      if (!typeof (TMinimal).IsAssignableFrom (concreteType))
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("concreteType", concreteType, typeof (TMinimal));
+
+      if (!WasCreatedByGenerator (concreteType))
       {
-        string message = string.Format ("The required minimal type {0} and concrete type {1} (proxy for {2}) are not compatible.",
-          typeof (TMinimal).FullName, concreteType.Name, concreteType.BaseType.FullName);
+        string message = string.Format ("Type {0} is not an interceptable type created by this kind of generator.",
+          concreteType.FullName);
         throw new ArgumentException (message);
       }
 
@@ -96,7 +98,28 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
             }
           });
         
-      return new InvokeWithBoundFirst<TMinimal, CastleInterceptor[]> (constructionDelegateCreator, new CastleInterceptor[] { _mainInterceptor });
+      return new InvokeWithBoundFirst<TMinimal, CastleInterceptor[]> (constructionDelegateCreator, CreateInterceptorArray());
+    }
+
+    private CastleInterceptor[] CreateInterceptorArray()
+    {
+      return new CastleInterceptor[] { _mainInterceptor };
+    }
+
+    public void PrepareUnconstructedInstance (DomainObject instance)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+
+      if (!WasCreatedByGenerator (instance.GetType ()))
+      {
+        string message = string.Format ("Type {0} is not an interceptable type created by this kind of generator.",
+          instance.GetType ().FullName);
+        throw new ArgumentException (message);
+      }
+
+      FieldInfo field = instance.GetType().GetField ("__interceptors");
+      Assertion.Assert (field != null, "DynamicProxy 2 __interceptors field must exist");
+      field.SetValue (instance, CreateInterceptorArray());
     }
   }
 }

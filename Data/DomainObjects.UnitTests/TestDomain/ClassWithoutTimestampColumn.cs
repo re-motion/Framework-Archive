@@ -10,10 +10,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithoutTimestampColumn()
     {
     }
-
-    protected ClassWithoutTimestampColumn (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

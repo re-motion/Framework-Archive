@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected Order (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract int Number { get; set; }
 
     public abstract OrderPriority Priority { get; set; }

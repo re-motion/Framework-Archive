@@ -8,10 +8,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ReferencedT
     protected ClassInOtherAssembly ()
     {
     }
-
-    protected ClassInOtherAssembly (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

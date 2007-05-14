@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
     {
     }
 
-    protected DerivedClassHavingAnOverriddenPropertyWithMappingAttribute (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StorageClassNoneAttribute]
     public override int Int32
     {

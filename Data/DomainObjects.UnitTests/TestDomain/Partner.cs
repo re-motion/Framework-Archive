@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Partner (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("AssociatedPartnerCompany", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Person ContactPerson { get; set; }

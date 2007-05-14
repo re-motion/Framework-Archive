@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithMixedProperties (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     public object Unmanaged
     {

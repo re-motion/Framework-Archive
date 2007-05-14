@@ -14,11 +14,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected SecondDerivedClass (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInSecondDerivedClass { get; set; }
 

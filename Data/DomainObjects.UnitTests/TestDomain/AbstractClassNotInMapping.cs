@@ -12,10 +12,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected AbstractClassNotInMapping()
     {
     }
-
-    protected AbstractClassNotInMapping (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithMixedPropertiesNotInMapping (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract bool Boolean { get; set; }
   }
 }

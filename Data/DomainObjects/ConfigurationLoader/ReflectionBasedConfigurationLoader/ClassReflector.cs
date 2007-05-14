@@ -88,7 +88,22 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       CreatePropertyDefinitions (classDefinition, GetPropertyInfos());
 
+      ValidateClassDefinition (classDefinition);
+
       return classDefinition;
+    }
+
+    private void ValidateClassDefinition (ReflectionBasedClassDefinition classDefinition)
+    {
+      BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
+      ConstructorInfo legacyLoadConstructor = classDefinition.ClassType.GetConstructor(flags, null, new Type[] {typeof (DataContainer)}, null);
+      if (legacyLoadConstructor != null)
+      {
+        string message = string.Format ("Domain object type {0} has a legacy infrastructure constructor for loading (a nonpublic constructor taking a"
+            + " single DataContainer argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.",
+            classDefinition.ClassType);
+        throw new MappingException (message);
+      }
     }
 
     private void CreatePropertyDefinitions (ReflectionBasedClassDefinition classDefinition, MemberInfo[] propertyInfos)

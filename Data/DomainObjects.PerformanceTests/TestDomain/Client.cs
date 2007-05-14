@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    protected Client (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength= 100)]
     public abstract string Name { get; set; }
 

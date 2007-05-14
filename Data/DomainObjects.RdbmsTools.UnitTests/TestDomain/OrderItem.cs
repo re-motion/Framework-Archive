@@ -18,11 +18,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected OrderItem (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract int Position { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

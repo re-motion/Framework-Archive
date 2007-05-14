@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected OrderWithNewPropertyAccess (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBColumn (("OrderNo"))]
     public abstract int OrderNumber { get; set; }
 

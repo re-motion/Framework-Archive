@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
     {
     }
 
-    protected BaseClass (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract int Int32 { get; set; }
   }
 }

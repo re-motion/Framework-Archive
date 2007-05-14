@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected Client (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("Client", SortExpression = "CreatedAt asc")]
     public abstract ObjectList<DomainBase> AssignedObjects { get; }
 

@@ -12,11 +12,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithPropertiesHavingStorageClassAttribute (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract int NoAttribute { get; set; }
 
     [StorageClass (StorageClass.Persistent)]

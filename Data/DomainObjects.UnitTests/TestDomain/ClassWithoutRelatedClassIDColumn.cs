@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithoutRelatedClassIDColumn()
     {
     }
-
-    protected ClassWithoutRelatedClassIDColumn (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   
     [DBBidirectionalRelation ("ClassWithoutRelatedClassIDColumn", ContainsForeignKey = true)]
     public abstract Distributor Distributor { get; set; }

@@ -14,10 +14,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected SpecialOfficial()
     {
     }
-
-    protected SpecialOfficial (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected DerivedClassWithEntityWithHierarchy (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("ChildDerivedClassesWithEntityWithHierarchy")]
     public abstract DerivedClassWithEntityWithHierarchy ParentDerivedClassWithEntityWithHierarchy { get; set; }
 

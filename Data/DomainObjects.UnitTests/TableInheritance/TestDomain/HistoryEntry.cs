@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected HistoryEntry (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract DateTime HistoryDate { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 250)]

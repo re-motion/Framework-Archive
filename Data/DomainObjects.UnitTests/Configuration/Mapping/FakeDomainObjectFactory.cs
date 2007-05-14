@@ -20,5 +20,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       throw new Exception ("The method or operation is not implemented.");
     }
+
+    public void PrepareUnconstructedInstance (DomainObject instance)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
   }
 }

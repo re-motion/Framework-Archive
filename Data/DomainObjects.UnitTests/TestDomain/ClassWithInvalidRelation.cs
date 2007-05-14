@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithInvalidRelation (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("ClassWithInvalidRelation", ContainsForeignKey = true)]
     [DBColumn ("TableWithGuidKeyID")]
     public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }

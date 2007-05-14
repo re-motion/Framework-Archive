@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
@@ -20,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       protected DomainObjectWithSpecialConstructor (object o)
       {
         O = o;
-      }
-
-      protected DomainObjectWithSpecialConstructor (DataContainer dataContainer)
-          : base (dataContainer)
-      {
       }
 
       public static DomainObjectWithSpecialConstructor NewObject (string s)

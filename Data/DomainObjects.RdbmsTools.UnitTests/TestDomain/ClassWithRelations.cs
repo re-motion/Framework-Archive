@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithRelations (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract DerivedClass DerivedClass { get; set; }
   }
 }

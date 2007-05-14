@@ -9,10 +9,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     protected File()
     {
     }
-
-    protected File (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

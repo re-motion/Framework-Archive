@@ -124,13 +124,20 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   }
 
   /// <summary>
-  /// Infrastructure constructor necessary to load a <b>BindableDomainObject</b> from a datasource.
+  /// Infrastructure constructor for loading a <see cref="BindableDomainObject"/> from a data source when the legacy mapping is used.
   /// </summary>
   /// <remarks>
-  /// All derived classes have to implement an (empty) constructor with this signature.
+  /// <para>
+  /// For the legacy mapping, all derived classes have to implement an (empty) constructor with this signature.
   /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
+  /// </para>
+  /// <para>
+  /// This constructor should not be used when using the reflection-based mapping. The reflection-based mapping instantiates objects without
+  /// using any constructor.
+  /// </para>
   /// </remarks>
-  /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
+  /// <param name="dataContainer">The <see cref="DataContainer"/> to be associated with the loaded domain object.</param>
+  /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
     Initialize ();

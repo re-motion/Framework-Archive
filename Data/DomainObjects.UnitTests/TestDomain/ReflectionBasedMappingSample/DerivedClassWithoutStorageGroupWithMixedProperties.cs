@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected DerivedClassWithoutStorageGroupWithMixedProperties (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public override int Int32
     {
       get { return 0; }

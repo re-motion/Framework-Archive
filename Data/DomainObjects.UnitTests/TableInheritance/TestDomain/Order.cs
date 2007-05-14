@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected Order (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract int Number { get; set; }
 
     public abstract DateTime OrderDate { get; set; }

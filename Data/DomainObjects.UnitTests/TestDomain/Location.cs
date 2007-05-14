@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Location (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [Mandatory]
     public abstract Client Client { get; set; }
   }

@@ -41,6 +41,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <param name="type">The exatct interceptable type to be constructed; this must be a type returned by <see cref="GetConcreteDomainObjectType"/>.
     /// <typeparamref name="TMinimal"/> must be assignable from this type.</param>
     /// <returns>A construction object, which instantiates <paramref name="type"/> and returns <typeparamref name="TMinimal"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="type"/> is not the same or a subtype of <typeparamref name="TMinimal"/> or
+    /// <paramref name="type"/> wasn't created by this kind of factory.</exception>
     IInvokeWith<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type);
+
+    /// <summary>
+    /// Prepares an instance which has not been created via <see cref="GetTypesafeConstructorInvoker"/> for use.
+    /// </summary>
+    /// <param name="instance">The instance to be prepared</param>
+    /// <remarks>
+    /// If an instance is constructed without a constructor call, e.g. by using
+    /// <see cref="System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject"/>, this method can be used to have the factory
+    /// perform any initialization work it would otherwise have performed via the constructor.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">The <paramref name="instance"/> argument is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="instance"/> is not of a type created by this kind of factory.</exception>
+    void PrepareUnconstructedInstance (DomainObject instance);
   }
 }

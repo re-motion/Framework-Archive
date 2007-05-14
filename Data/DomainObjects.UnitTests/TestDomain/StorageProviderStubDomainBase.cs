@@ -9,11 +9,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected StorageProviderStubDomainBase (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     public new DataContainer DataContainer
     {

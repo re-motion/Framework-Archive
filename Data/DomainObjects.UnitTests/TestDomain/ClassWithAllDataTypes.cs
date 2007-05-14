@@ -30,11 +30,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithAllDataTypes (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     internal bool OnLoadedHasBeenCalled
     {

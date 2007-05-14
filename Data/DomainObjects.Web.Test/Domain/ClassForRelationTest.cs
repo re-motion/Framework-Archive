@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     {
     }
 
-    protected ClassForRelationTest (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 

@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Supplier (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract int SupplierQuality { get; set; }
   }
 }

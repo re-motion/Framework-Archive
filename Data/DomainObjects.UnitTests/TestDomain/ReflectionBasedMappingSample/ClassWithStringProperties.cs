@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithStringProperties (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract string NoAttribute { get; set; }
 
     [StringProperty (IsNullable = true)]

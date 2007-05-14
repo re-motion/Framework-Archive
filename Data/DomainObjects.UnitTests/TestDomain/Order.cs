@@ -25,11 +25,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Order (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [DBColumn ("OrderNo")]
     public abstract int OrderNumber { get; set; }
 

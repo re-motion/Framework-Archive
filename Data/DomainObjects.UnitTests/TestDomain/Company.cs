@@ -17,11 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Company (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {

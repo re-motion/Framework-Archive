@@ -12,11 +12,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithManySideRelationProperties (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [BidirectionalRelation ("NoAttribute")]
     public abstract ClassWithOneSideRelationProperties NoAttribute { get; set; }
 

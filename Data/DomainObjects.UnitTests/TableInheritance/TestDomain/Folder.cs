@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
-    protected Folder (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("ParentFolder", SortExpression = "Name ASC")]
     public abstract ObjectList<FileSystemItem> FileSystemItems { get; }
 

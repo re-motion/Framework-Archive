@@ -12,10 +12,5 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     protected AbstractWithoutConcreteClass()
     {
     }
-
-    protected AbstractWithoutConcreteClass (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

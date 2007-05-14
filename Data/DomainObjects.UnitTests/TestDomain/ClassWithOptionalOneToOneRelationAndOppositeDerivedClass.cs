@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithOptionalOneToOneRelationAndOppositeDerivedClass (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract Company Company { get; set; }
   }
 }

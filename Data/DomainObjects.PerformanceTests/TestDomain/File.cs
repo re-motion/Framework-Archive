@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    protected File (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Number { get; set; }
 

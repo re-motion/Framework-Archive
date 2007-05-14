@@ -17,10 +17,5 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     protected ClassWithoutProperties()
     {
     }
-
-    protected ClassWithoutProperties (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   }
 }

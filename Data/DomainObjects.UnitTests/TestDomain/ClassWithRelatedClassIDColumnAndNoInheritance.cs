@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithRelatedClassIDColumnAndNoInheritance (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
     [DBColumn ("TableWithGuidKeyID")]
     public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }

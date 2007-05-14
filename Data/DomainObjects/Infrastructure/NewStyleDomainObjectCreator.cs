@@ -12,8 +12,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   // Creates new domain object instances via the DomainObjectFactory.
   // Needed constructors:
-  // MyDomainObject (DataContainer) -- for loading
   // (any constructor) -- for new objects
+  // no constructor for loading required
   class NewStyleDomainObjectCreator : IDomainObjectCreator
   {
     public readonly static NewStyleDomainObjectCreator Instance = new NewStyleDomainObjectCreator ();
@@ -22,7 +22,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
-      return factory.GetTypesafeConstructorInvoker<DomainObject> (concreteType).With (dataContainer);
+      DomainObject instance = (DomainObject) System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject (concreteType);
+      factory.PrepareUnconstructedInstance (instance);
+      instance.SetDataContainerForLoading (dataContainer);
+      return instance;
     }
 
     public IInvokeWith<T> GetTypesafeConstructorInvoker<T> ()

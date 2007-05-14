@@ -31,11 +31,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       Order = order;
     }
 
-    protected OrderTicket (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StringProperty (IsNullable = false, MaximumLength = 255)]
     public abstract string FileName { get; set; }
 

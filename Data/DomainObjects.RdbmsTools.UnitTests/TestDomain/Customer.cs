@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
     {
     }
 
-    protected Customer (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBColumn ("CustomerType")]
     public abstract CustomerType Type { get; set; }
 

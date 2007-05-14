@@ -24,11 +24,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected TestDomainBase (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     public new DataContainer DataContainer
     {

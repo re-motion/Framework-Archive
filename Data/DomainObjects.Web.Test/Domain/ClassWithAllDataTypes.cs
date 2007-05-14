@@ -33,11 +33,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     {
     }
 
-    protected ClassWithAllDataTypes (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     [StorageClassNone]
     public string[] StringArray
     {

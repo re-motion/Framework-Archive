@@ -18,11 +18,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     {
     }
 
-    protected ClassWithUndefinedEnum (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract UndefinedEnum UndefinedEnum { get; set; }
   }
 }

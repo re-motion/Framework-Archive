@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithBothEndPointsOnSameClass (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("Children")]
     public abstract ClassWithBothEndPointsOnSameClass Parent { get; set; }
 

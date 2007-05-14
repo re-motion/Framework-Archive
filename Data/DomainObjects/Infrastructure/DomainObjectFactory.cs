@@ -69,23 +69,30 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <param name="type">The exatct interceptable type to be constructed; this must be a type returned by <see cref="GetConcreteDomainObjectType"/>.
     /// <typeparamref name="TMinimal"/> must be assignable from this type.</param>
     /// <returns>A construction object, which instantiates <paramref name="type"/> and returns <typeparamref name="TMinimal"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="type"/> argument is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="type"/> is not the same or a subtype of <typeparamref name="TMinimal"/> or
+    /// <paramref name="type"/> wasn't created by this kind of factory.</exception>
     public IInvokeWith<TMinimal> GetTypesafeConstructorInvoker<TMinimal> (Type type)
     {
-      if (!typeof (TMinimal).IsAssignableFrom (type))
-      {
-        string message = string.Format ("The required minimal type {0} and concrete type {1} are not compatible.",
-          typeof (TMinimal).FullName, type.FullName);
-        throw new ArgumentException (message);
-      }
-
-      if (!WasCreatedByFactory (type))
-      {
-        string message = string.Format ("Type {0} is not an interceptable type created by the factory.",
-          type.FullName);
-        throw new ArgumentException (message);
-      }
-
+      ArgumentUtility.CheckNotNull ("type", type);
       return _generator.MakeTypesafeConstructorInvoker<TMinimal> (type);
+    }
+
+    /// <summary>
+    /// Prepares an instance which has not been created by construction via <see cref="GetTypesafeConstructorInvoker"/> for use.
+    /// </summary>
+    /// <param name="instance">The instance to be prepared</param>
+    /// <remarks>
+    /// If an instance is constructed without a constructor call, e.g. by using
+    /// <see cref="System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject"/> instead of <see cref="GetTypesafeConstructorInvoker"/>,
+    /// this method can be used to have the factory perform any initialization work it would otherwise have performed via the constructor.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">The <paramref name="instance"/> argument is null.</exception>
+    /// <exception cref="ArgumentException"><paramref name="instance"/> is not of a type created by this kind of factory.</exception>
+    public void PrepareUnconstructedInstance (DomainObject instance)
+    {
+      ArgumentUtility.CheckNotNull ("instance", instance);
+      _generator.PrepareUnconstructedInstance (instance);
     }
   }
 }

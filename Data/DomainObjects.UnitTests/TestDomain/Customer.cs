@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Customer (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract DateTime? CustomerSince { get; set; }
 
     [DBColumn ("CustomerType")]

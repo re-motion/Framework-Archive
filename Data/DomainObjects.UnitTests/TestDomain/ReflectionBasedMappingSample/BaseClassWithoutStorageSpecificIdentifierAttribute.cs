@@ -8,10 +8,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     protected BaseClassWithoutStorageSpecificIdentifierAttribute ()
     {
     }
-
-    protected BaseClassWithoutStorageSpecificIdentifierAttribute (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
   }
 }

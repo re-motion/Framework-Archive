@@ -11,11 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    protected ClassWithBinaryProperties (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract byte[] NoAttribute { get; set; }
 
     [BinaryProperty (IsNullable = true)]

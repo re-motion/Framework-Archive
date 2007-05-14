@@ -10,11 +10,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
         InitializeNew();
     }
-
-    protected DomainBase (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
   
     private void InitializeNew()
     {

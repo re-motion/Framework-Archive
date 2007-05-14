@@ -8,11 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
     {
     }
 
-    protected ClassWithInvalidUnidirectionalRelation (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSide { get; }
   }
 }

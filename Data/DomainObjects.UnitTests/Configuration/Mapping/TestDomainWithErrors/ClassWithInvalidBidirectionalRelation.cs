@@ -8,11 +8,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainW
     {
     }
 
-    protected ClassWithInvalidBidirectionalRelation (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-    }
-
     [DBBidirectionalRelation ("NoContainsKeyRightSide")]
     public abstract ClassWithInvalidBidirectionalRelation NoContainsKeyLeftSide { get; set; }
 

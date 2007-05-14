@@ -15,11 +15,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected Distributor (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     public abstract int NumberOfShops { get; set; }
 
     [DBBidirectionalRelation ("Distributor")]
