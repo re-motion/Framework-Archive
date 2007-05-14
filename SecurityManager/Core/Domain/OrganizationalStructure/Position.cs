@@ -18,10 +18,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     // types
 
-    //public enum Methods
-    //{
-    //  Create
-    //}
+    public enum Methods
+    {
+      //Create
+      Search
+    }
 
     // static members and constants
 
@@ -44,9 +45,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     [DemandMethodPermission (SecurityManagerAccessTypes.AssignRole)]
-    [System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
     public static void Dummy_AssignRole ()
     {
+      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
@@ -55,6 +57,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition (clientTransaction);
     //}
 
+    [DemandMethodPermission (GeneralAccessTypes.Search)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public static void Search ()
+    {
+      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+    }
+    
     // member fields
 
     private DomainObjectCollection _accessControlEntriesToBeDeleted;

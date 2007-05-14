@@ -18,10 +18,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     // types
 
-    //public enum Methods
-    //{
-    //  Create
-    //}
+    public enum Methods
+    {
+      //Create
+      Search
+    }
 
     // TODO: Rewrite with test
     protected class GroupSecurityStrategy : ObjectSecurityStrategy
@@ -88,6 +89,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //{
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup (clientTransaction);
     //}
+
+    [DemandMethodPermission (GeneralAccessTypes.Search)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public static void Search ()
+    {
+      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+    }
 
     // member fields
 

@@ -4,6 +4,8 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data;
+using System.ComponentModel;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -14,6 +16,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     // types
 
+    public enum Methods
+    {
+      Search
+    }
+    
     // static members and constants
 
     public static new GroupType GetObject (ObjectID id, ClientTransaction clientTransaction)
@@ -34,6 +41,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 
+    [DemandMethodPermission (GeneralAccessTypes.Search)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public static void Search ()
+    {
+      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+    }
+    
     // member fields
 
     // construction and disposing

@@ -1,10 +1,13 @@
 using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
+  [WxeDemandTargetStaticMethodPermission (GroupType.Methods.Search)]
   public class GroupTypeListFormFunction : BaseTransactedFunction
   {
     // types
@@ -19,7 +22,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    // TODO: Make protected once delegation works
+    // TODO: Make protected once a way is found to solve the "WxeDemandTargetStaticMethodPermission being typed on fixed class" problem
     public GroupTypeListFormFunction (params object[] args)
       : base (args)
     {
