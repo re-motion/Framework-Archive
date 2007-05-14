@@ -48,18 +48,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static Group FindByUnqiueIdentifier (ClientTransaction transaction, string uniqueIdentifier)
-    {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
-      query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
-
-      DomainObjectCollection groups = transaction.QueryManager.GetCollection (query);
-      if (groups.Count == 0)
-        return null;
-
-      return (Group) groups[0];
-    }
-
     public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Group) DomainObject.GetObject (id, clientTransaction);
@@ -77,6 +65,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       query.Parameters.Add ("@clientID", clientID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+    }
+
+    public static Group FindByUnqiueIdentifier (ClientTransaction transaction, string uniqueIdentifier)
+    {
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
+      query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
+
+      DomainObjectCollection groups = transaction.QueryManager.GetCollection (query);
+      if (groups.Count == 0)
+        return null;
+
+      return (Group) groups[0];
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]

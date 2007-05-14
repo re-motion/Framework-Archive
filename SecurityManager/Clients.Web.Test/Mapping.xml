@@ -68,6 +68,12 @@
           <column>Name</column>
           <maxLength>100</maxLength>
         </property>
+        <property name="UniqueIdentifier">
+          <type>string</type>
+          <column>UniqueIdentifier</column>
+          <nullable>false</nullable>
+          <maxLength>100</maxLength>
+        </property>
       </properties>
     </class>
 
@@ -446,6 +452,10 @@
         <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="false">
           <column>AccessControlListID</column>
         </relationProperty>
+        <relationProperty name="SpecificClient" relationID="ClientToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>ClientID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty>
         <relationProperty name="SpecificGroup" relationID="GroupToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupID</column>
         </relationProperty>
@@ -512,7 +522,6 @@
         <property name="Text">
           <type>string</type>
           <column>Text</column>
-          <maxLength>2147483647</maxLength>
         </property>
         <relationProperty name="Culture" relationID="CultureToLocalizedName" isMandatory="true" cardinality="one">
           <column>CultureID</column>

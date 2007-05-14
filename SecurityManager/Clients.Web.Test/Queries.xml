@@ -64,6 +64,13 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindByUnqiueIdentifier" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [ClientView] WHERE [UniqueIdentifier] = @uniqueIdentifier;
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>

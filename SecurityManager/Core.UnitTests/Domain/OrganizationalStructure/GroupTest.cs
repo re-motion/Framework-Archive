@@ -1,18 +1,31 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using NUnit.Framework;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.ObjectBinding;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.GroupTests
+namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
-  public class Test : DomainTest
+  public class GroupTest : DomainTest
   {
+    private DatabaseFixtures _dbFixtures;
     private OrganisationalStructureTestHelper _testHelper;
+    private ObjectID _expectedClientID;
+
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+      
+      _dbFixtures = new DatabaseFixtures ();
+      Client client = _dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      _expectedClientID = client.ID;
+    }
 
     public override void SetUp ()
     {
@@ -22,101 +35,38 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
     }
 
     [Test]
+    public void FindByUnqiueIdentifier_ValidGroup ()
+    {
+      Group foundGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testGroup");
+
+      Assert.AreEqual ("UID: testGroup", foundGroup.UniqueIdentifier);
+    }
+
+    [Test]
+    public void FindByUnqiueIdentifier_NotExistingGroup ()
+    {
+      Group foundGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: NotExistingGroup");
+
+      Assert.IsNull (foundGroup);
+    }
+
+    [Test]
+    public void Find_GroupsByClientID ()
+    {
+      DomainObjectCollection groups = Group.FindByClientID (_expectedClientID, _testHelper.Transaction);
+
+      Assert.AreEqual (9, groups.Count);
+    }
+
+    [Test]
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyDomain ();
+      ClientTransaction transaction = new ClientTransaction ();
+      Client client = _testHelper.CreateClient (transaction, "NewClient2");
+      _testHelper.CreateGroup (transaction, "NewGroup2", "UID: testGroup", null, client);
 
-      ClientTransaction transaction1 = new ClientTransaction ();
-      Client client1 = _testHelper.CreateClient (transaction1, "NewClient1");
-      Group group1 = _testHelper.CreateGroup (transaction1, "NewGroup1", "UID: NewGroup", null, client1);
-
-      transaction1.Commit ();
-
-      ClientTransaction transaction2 = new ClientTransaction ();
-      Client client2 = _testHelper.CreateClient (transaction2, "NewClient2");
-      Group group2 = _testHelper.CreateGroup (transaction2, "NewGroup2", "UID: NewGroup", null, client2);
-
-      transaction2.Commit ();
-    }
-
-    [Test]
-    public void GetAndSet_UniqueIdentifier ()
-    {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-
-      group.UniqueIdentifier = "My Unique Identifier";
-
-      Assert.AreEqual ("My Unique Identifier", group.UniqueIdentifier);
-    }
-
-    [Test]
-    public void GetAndSet_UniqueIdentifierFromBusinessObjectWithIdentity ()
-    {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-      IBusinessObjectWithIdentity businessObject = group;
-
-      group.UniqueIdentifier = "My Unique Identifier";
-
-      Assert.AreEqual (group.ID.ToString(), businessObject.UniqueIdentifier);
-    }
-
-    [Test]
-    public void GetProperty_UniqueIdentifier ()
-    {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-      IBusinessObjectWithIdentity businessObject = group;
-      
-      group.UniqueIdentifier = "My Unique Identifier";
-
-      Assert.AreEqual ("My Unique Identifier", businessObject.GetProperty ("UniqueIdentifier"));
-      Assert.AreEqual (group.ID.ToString (), businessObject.UniqueIdentifier);
-    }
-
-    [Test]
-    public void SetProperty_UniqueIdentifier ()
-    {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-      IBusinessObjectWithIdentity businessObject = group;
-
-      businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
-      Assert.AreEqual ("My Unique Identifier", group.UniqueIdentifier);
-      Assert.AreEqual (group.ID.ToString (), businessObject.UniqueIdentifier);
-    }
-
-    [Test]
-    public void GetPropertyDefinition_UniqueIdentifier ()
-    {
-      Group group = _testHelper.CreateGroup ( string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-      IBusinessObjectWithIdentity businessObject = group;
-      group.UniqueIdentifier = "My Unique Identifier";
-
-      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("UniqueIdentifier");
-
-      Assert.IsInstanceOfType (typeof (IBusinessObjectStringProperty), property);
-      Assert.AreEqual ("My Unique Identifier", businessObject.GetProperty (property));
-    }
-
-    [Test]
-    public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
-    {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
-      IBusinessObjectWithIdentity businessObject = group;
-
-      IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();
-
-      bool isFound = false;
-      foreach (BaseProperty property in properties)
-      {
-        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == typeof (Group))
-        {
-          isFound = true;
-          break;
-        }
-      }
-
-      Assert.IsTrue (isFound, "Property UnqiueIdentifier declared on Group was not found.");
+      transaction.Commit ();
     }
 
     [Test]
@@ -149,11 +99,102 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.Group
       Assert.IsTrue (securityContext.IsStateless);
     }
 
+    [Test]
+    public void Get_UniqueIdentifier ()
+    {
+      OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
+      Group group = factory.CreateGroup (_testHelper.Transaction);
+
+      Assert.IsNotEmpty (group.UniqueIdentifier);
+    }
+
+    #region IBusinessObjectWithIdentifier.UniqueIdentifier tests
+
+    [Test]
+    public void SetAndGet_UniqueIdentifier ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+
+      group.UniqueIdentifier = "My Unique Identifier";
+
+      Assert.AreEqual ("My Unique Identifier", group.UniqueIdentifier);
+    }
+
+    [Test]
+    public void SetAndGet_UniqueIdentifierFromBusinessObjectWithIdentity ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      IBusinessObjectWithIdentity businessObject = group;
+
+      group.UniqueIdentifier = "My Unique Identifier";
+
+      Assert.AreEqual (group.ID.ToString (), businessObject.UniqueIdentifier);
+    }
+
+    [Test]
+    public void GetProperty_UniqueIdentifier ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      IBusinessObjectWithIdentity businessObject = group;
+
+      group.UniqueIdentifier = "My Unique Identifier";
+
+      Assert.AreEqual ("My Unique Identifier", businessObject.GetProperty ("UniqueIdentifier"));
+      Assert.AreEqual (group.ID.ToString (), businessObject.UniqueIdentifier);
+    }
+
+    [Test]
+    public void SetProperty_UniqueIdentifier ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      IBusinessObjectWithIdentity businessObject = group;
+
+      businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
+      Assert.AreEqual ("My Unique Identifier", group.UniqueIdentifier);
+      Assert.AreEqual (group.ID.ToString (), businessObject.UniqueIdentifier);
+    }
+
+    [Test]
+    public void GetPropertyDefinition_UniqueIdentifier ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      IBusinessObjectWithIdentity businessObject = group;
+      group.UniqueIdentifier = "My Unique Identifier";
+
+      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("UniqueIdentifier");
+
+      Assert.IsInstanceOfType (typeof (IBusinessObjectStringProperty), property);
+      Assert.AreEqual ("My Unique Identifier", businessObject.GetProperty (property));
+    }
+
+    [Test]
+    public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
+    {
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      IBusinessObjectWithIdentity businessObject = group;
+
+      IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();
+
+      bool isFound = false;
+      foreach (BaseProperty property in properties)
+      {
+        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == typeof (Group))
+        {
+          isFound = true;
+          break;
+        }
+      }
+
+      Assert.IsTrue (isFound, "Property UnqiueIdentifier declared on Group was not found.");
+    }
+
+    #endregion
+
     private Group CreateGroup ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
       Group group = _testHelper.CreateGroup ("TestGroup", "UID: TestGroup", null, client);
-      
+
       return group;
     }
   }

@@ -88,6 +88,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       }
     }
 
+    public Client SpecificClient
+    {
+      get { return (Client) GetRelatedObject ("SpecificClient"); }
+      set { SetRelatedObject ("SpecificClient", value); }
+    }
+
     public Group SpecificGroup
     {
       get { return (Group) GetRelatedObject ("SpecificGroup"); }
@@ -149,6 +155,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
+      if (!MatchesClient (token))
+        return false;
+
       if (!MatchesAbstractRole (token))
         return false;
 
@@ -206,14 +215,32 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       permission.Allowed = NaBoolean.Null;
     }
 
+    private bool MatchesClient (SecurityToken token)
+    {
+      switch (Client)
+      {
+        case ClientSelection.All:
+          return true;
+
+        case ClientSelection.OwningClient:
+          return token.OwningClient != null && token.MatchesUserClient (token.OwningClient);
+
+        case ClientSelection.SpecificClient:
+          return token.MatchesUserClient (SpecificClient);
+
+        default:
+          return false;
+      }
+    }
+
     private bool MatchesAbstractRole (SecurityToken token)
     {
       if (SpecificAbstractRole == null)
         return true;
 
-      foreach (AbstractRoleDefinition role in token.AbstractRoles)
+      foreach (AbstractRoleDefinition abstractRole in token.AbstractRoles)
       {
-        if (role.ID == SpecificAbstractRole.ID)
+        if (abstractRole.ID == SpecificAbstractRole.ID)
           return true;
       }
 

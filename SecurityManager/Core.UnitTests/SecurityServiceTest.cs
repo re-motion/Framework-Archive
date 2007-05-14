@@ -75,7 +75,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithoutAccess ()
     {
-      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
       
       Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
       Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return (token);
@@ -93,7 +93,7 @@ namespace Rubicon.SecurityManager.UnitTests
     {
       List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
       roles.Add (_ace.SpecificAbstractRole);
-      SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
+      SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
 
       Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
       Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return(token);
@@ -112,7 +112,7 @@ namespace Rubicon.SecurityManager.UnitTests
     {
       List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
       roles.Add (_ace.SpecificAbstractRole);
-      SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
+      SecurityToken token = new SecurityToken (null, null, new List<Group> (), roles);
 
       Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_transaction, _ace)).Constraints (
           Mocks_Is.NotNull (),
@@ -134,7 +134,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
     {
-      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
       AccessControlException expectedException = new AccessControlException ();
 
       Expect.Call (_mockAclFinder.Find (_transaction, _context)).Throw (expectedException);
@@ -154,7 +154,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
     {
-      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      SecurityToken token = new SecurityToken (null, null, new List<Group> (), new List<AbstractRoleDefinition> ());
       AccessControlException expectedException = new AccessControlException ();
 
       Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));

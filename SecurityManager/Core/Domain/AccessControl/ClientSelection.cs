@@ -5,6 +5,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   public enum ClientSelection
   {
     All = 0,
-    ClientOfOwner
+    OwningClient = 1,
+    SpecificClient = 2
   }
 }

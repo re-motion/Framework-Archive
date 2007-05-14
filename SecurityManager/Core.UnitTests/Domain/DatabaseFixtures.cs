@@ -71,6 +71,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       groupType2_officialPosition.Position = officialPosition;
 
       Client client1 = CreateClient (transaction, "Testclient");
+      client1.UniqueIdentifier = "UID: testClient";
       Group rootGroup = CreateGroup (transaction, "rootGroup", "UID: rootGroup", null, client1);
       for (int i = 0; i < 2; i++)
       {
@@ -88,14 +89,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       }
 
       Group testRootGroup = CreateGroup (transaction, "testRootGroup", "UID: testRootGroup", null, client1);
-      Group testParentOfOwnerGroup = CreateGroup (transaction, "testParentOfOwnerGroup", "UID: testParentOfOwnerGroup", testRootGroup, client1);
-      Group testOwnerGroup = CreateGroup (transaction, "testOwnerGroup", "UID: testOwnerGroup", testParentOfOwnerGroup, client1);
+      Group testParentOfOwningGroup = CreateGroup (transaction, "testParentOfOwningGroup", "UID: testParentOfOwningGroup", testRootGroup, client1);
+      Group testOwningGroup = CreateGroup (transaction, "testOwningGroup", "UID: testOwningGroup", testParentOfOwningGroup, client1);
       Group testGroup = CreateGroup (transaction, "testGroup", "UID: testGroup", null, client1);
-      User testUser = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwnerGroup, client1);
+      User testUser = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwningGroup, client1);
 
       CreateRole (transaction, testUser, testGroup, officialPosition);
       CreateRole (transaction, testUser, testGroup, managerPosition);
-      CreateRole (transaction, testUser, testOwnerGroup, managerPosition);
+      CreateRole (transaction, testUser, testOwningGroup, managerPosition);
       CreateRole (transaction, testUser, testRootGroup, officialPosition);
 
       Client client2 = CreateClient (transaction, "Client 2");

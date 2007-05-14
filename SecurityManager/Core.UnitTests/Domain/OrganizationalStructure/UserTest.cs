@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void GetRolesForGroup_Empty ()
     {
       User testUser = User.FindByUserName (_testHelper.Transaction, "test.user");
-      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testParentOfOwnerGroup");
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UID: testParentOfOwningGroup");
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);

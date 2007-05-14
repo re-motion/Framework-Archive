@@ -84,8 +84,8 @@
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
-    <Compile Include="Domain\OrganizationalStructure\GroupTests\Test.cs" />
-    <Compile Include="Domain\OrganizationalStructure\GroupTests\TestWithTwoClients.cs" />
+    <Compile Include="Domain\OrganizationalStructure\ClientTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganisationalStructureTestHelper.cs" />
     <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />

@@ -264,31 +264,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateEmptyToken ()
     {
-      return CreateToken (null, null, null);
+      return CreateToken (null, null, null, null);
+    }
+
+    public SecurityToken CreateTokenWithOwningClient (User user, Client owningClient)
+    {
+      return CreateToken (user, owningClient, null, null);
     }
 
     public SecurityToken CreateTokenWithAbstractRole (params AbstractRoleDefinition[] roleDefinitions)
     {
-      return CreateToken (null, null, roleDefinitions);
+      return CreateToken (null, null, null, roleDefinitions);
     }
 
-    public SecurityToken CreateTokenWithGroups (User user, params Group[] groups)
+    public SecurityToken CreateTokenWithOwningGroups (User user, params Group[] owningGroups)
     {
-      return CreateToken (user, groups, null);
+      return CreateToken (user, null, owningGroups, null);
     }
 
-    public SecurityToken CreateToken (User user, Group[] groups, AbstractRoleDefinition[] abstractRoleDefinitions)
+    public SecurityToken CreateToken (User user, Client owningClient, Group[] owningGroups, AbstractRoleDefinition[] abstractRoleDefinitions)
     {
-      List<Group> groupList = new List<Group> ();
+      List<Group> owningGroupList = new List<Group> ();
       List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
 
-      if (groups != null)
-        groupList.AddRange (groups);
+      if (owningGroups != null)
+        owningGroupList.AddRange (owningGroups);
 
       if (abstractRoleDefinitions != null)
         abstractRoles.AddRange (abstractRoleDefinitions);
 
-      return new SecurityToken (user, groupList, abstractRoles);
+      return new SecurityToken (user, owningClient, owningGroupList, abstractRoles);
     }
 
     public AbstractRoleDefinition CreateTestAbstractRole ()
@@ -299,6 +304,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
     {
       return new AbstractRoleDefinition (_transaction, Guid.NewGuid (), name, value);
+    }
+
+    public AccessControlEntry CreateAceWithOwningClient ()
+    {
+      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      entry.Client = ClientSelection.OwningClient;
+
+      return entry;
+    }
+
+    public AccessControlEntry CreateAceWithSpecficClient (Client client)
+    {
+      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      entry.Client = ClientSelection.SpecificClient;
+      entry.SpecificClient = client;
+
+      return entry;
     }
 
     public AccessControlEntry CreateAceWithAbstractRole ()

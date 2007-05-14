@@ -150,6 +150,7 @@ CREATE TABLE [dbo].[Client]
 
   -- Client columns
   [Name] nvarchar (100) NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
 
   CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -389,6 +390,7 @@ CREATE TABLE [dbo].[AccessControlEntry]
   [UserSelection] int NOT NULL,
   [Priority] int NULL,
   [AccessControlListID] uniqueidentifier NULL,
+  [ClientID] uniqueidentifier NULL,
   [GroupID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
   [PositionID] uniqueidentifier NULL,
@@ -434,7 +436,7 @@ CREATE TABLE [dbo].[LocalizedName]
   [Timestamp] rowversion NOT NULL,
 
   -- LocalizedName columns
-  [Text] ntext NOT NULL,
+  [Text] text NOT NULL,
   [CultureID] uniqueidentifier NULL,
   [MetadataObjectID] uniqueidentifier NULL,
   [MetadataObjectIDClassID] varchar (100) NULL,
@@ -493,7 +495,8 @@ ALTER TABLE [dbo].[AccessControlEntry] ADD
   CONSTRAINT [FK_PositionToAccessControlEntry] FOREIGN KEY ([PositionID]) REFERENCES [dbo].[Position] ([ID]),
   CONSTRAINT [FK_UserToAccessControlEntry] FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]),
   CONSTRAINT [FK_AbstractRoleToAccessControlEntry] FOREIGN KEY ([AbstractRoleID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
-  CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID])
+  CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID]),
+  CONSTRAINT [FK_ClientToAccessControlEntry] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID])
 
 ALTER TABLE [dbo].[Permission] ADD
   CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
@@ -504,9 +507,9 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name])
+CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier]
     FROM [dbo].[Client]
     WHERE [ClassID] IN ('Client')
   WITH CHECK OPTION
@@ -663,9 +666,9 @@ CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [Change
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
+CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [ClientID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [ClientID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
     FROM [dbo].[AccessControlEntry]
     WHERE [ClassID] IN ('AccessControlEntry')
   WITH CHECK OPTION

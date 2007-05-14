@@ -64,7 +64,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void AceWithClient ()
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      ace.Client = ClientSelection.ClientOfOwner;
+      ace.Client = ClientSelection.OwningClient;
 
       Assert.AreEqual (AccessControlEntry.ClientPriority, ace.ActualPriority);
     }
@@ -87,7 +87,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       ace.User = UserSelection.Owner;
       ace.SpecificAbstractRole = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid(), "Test", 42);
       ace.Group = GroupSelection.OwningGroup;
-      ace.Client = ClientSelection.ClientOfOwner;
+      ace.Client = ClientSelection.OwningClient;
 
       int expectedPriority = AccessControlEntry.UserPriority + AccessControlEntry.AbstractRolePriority + AccessControlEntry.GroupPriority
                              + AccessControlEntry.ClientPriority;

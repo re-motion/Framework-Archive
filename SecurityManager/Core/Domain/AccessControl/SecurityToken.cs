@@ -11,20 +11,23 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   public sealed class SecurityToken
   {
     private User _user;
+    private Client _owningClient;
     private ReadOnlyCollection<Group> _owningGroups;
     private ReadOnlyCollection<Group> _userGroups;
     private ReadOnlyCollection<Role> _owningGroupRoles;
     private ReadOnlyCollection<AbstractRoleDefinition> _abstractRoles;
 
-    public SecurityToken (User user, List<Group> ownningGroups, List<AbstractRoleDefinition> abstractRoles)
+    public SecurityToken (User user, Client owningClient, List<Group> ownningGroups, List<AbstractRoleDefinition> abstractRoles)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("ownningGroups", ownningGroups);
       ArgumentUtility.CheckNotNullOrItemsNull ("abstractRoles", abstractRoles);
 
       _user = user;
+      _owningClient = owningClient;
       _owningGroups = ownningGroups.AsReadOnly ();
       _abstractRoles = abstractRoles.AsReadOnly ();
     }
+
 
     public User User
     {
@@ -39,6 +42,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
           _userGroups = GetGroups (_user);
         return _userGroups;
       }
+    }
+
+    public Client OwningClient
+    {
+      get { return _owningClient; }
     }
 
     public ReadOnlyCollection<Group> OwningGroups
@@ -59,6 +67,16 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public ReadOnlyCollection<AbstractRoleDefinition> AbstractRoles
     {
       get { return _abstractRoles; }
+    }
+
+    public bool MatchesUserClient (Client client)
+    {
+      ArgumentUtility.CheckNotNull ("client", client);
+
+      if (User == null)
+        return false;
+
+      return User.Client.ID == client.ID;
     }
 
     public bool ContainsRoleForOwningGroupAndPosition (Position position)

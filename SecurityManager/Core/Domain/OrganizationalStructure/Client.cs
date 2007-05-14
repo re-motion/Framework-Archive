@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -22,6 +23,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Client) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
+    public static Client FindByUnqiueIdentifier (ClientTransaction clientTransaction, string uniqueIdentifier)
+    {
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindByUnqiueIdentifier");
+      query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
+
+      DomainObjectCollection clients = clientTransaction.QueryManager.GetCollection (query);
+      if (clients.Count == 0)
+        return null;
+
+      return (Client) clients[0];
+    }
+
     // member fields
 
     // construction and disposing
@@ -29,6 +42,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public Client (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      UniqueIdentifier = Guid.NewGuid ().ToString ();
     }
 
     protected Client (DataContainer dataContainer)
@@ -46,5 +60,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["Name"] = value; }
     }
 
+    public string UniqueIdentifier
+    {
+      get { return (string) DataContainer["UniqueIdentifier"]; }
+      set { DataContainer["UniqueIdentifier"] = value; }
+    }
   }
 }
