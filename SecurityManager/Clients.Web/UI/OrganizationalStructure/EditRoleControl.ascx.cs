@@ -82,14 +82,16 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillUserField ()
     {
-      UserField.SetBusinessObjectList (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
+      Group group = CurrentFunction.Group;
+      if (group != null)
+        UserField.SetBusinessObjectList (User.FindByClientID (group.Client.ID, CurrentFunction.Role.ClientTransaction));
     }
 
     private void FillGroupField ()
     {
       User user = CurrentFunction.User;
       if (user != null)
-        GroupField.SetBusinessObjectList (CurrentFunction.Role.GetPossibleGroups (CurrentFunction.ClientID));
+        GroupField.SetBusinessObjectList (CurrentFunction.Role.GetPossibleGroups (user.Client.ID));
     }
 
     private void FillPositionField ()

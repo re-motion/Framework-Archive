@@ -4,11 +4,13 @@ using Rubicon.Globalization;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 using System.Runtime.Remoting.Messaging;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Client")]
+  [PermanentGuid ("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
   public class Client : OrganizationalStructureObject
   {
     // constants
@@ -91,6 +93,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public override string DisplayName
     {
       get { return Name; }
+    }
+
+    protected override string GetOwningClient ()
+    {
+      return UniqueIdentifier;
     }
   }
 }

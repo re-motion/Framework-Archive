@@ -19,5 +19,20 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       return new Position (transaction);
     }
+
+    public virtual Type GetGroupType ()
+    {
+      return typeof (Group);
+    }
+
+    public virtual Type GetUserType ()
+    {
+      return typeof (User);
+    }
+
+    public virtual Type GetPositionType ()
+    {
+      return typeof (Position);
+    }
   }
 }

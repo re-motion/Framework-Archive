@@ -52,7 +52,7 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" OnMenuItemClick="ChildrenList_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" OnMenuItemClick="ChildrenList_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
             <PersistedCommand>

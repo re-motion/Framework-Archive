@@ -3,11 +3,13 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
+  [PermanentGuid ("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
   public class GroupType : OrganizationalStructureObject
   {
     // types

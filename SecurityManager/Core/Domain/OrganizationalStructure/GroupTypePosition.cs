@@ -1,11 +1,13 @@
 using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
+  [PermanentGuid ("E2BF5572-DDFF-4319-8824-B41653950860")]
   public class GroupTypePosition : OrganizationalStructureObject
   {
     // types

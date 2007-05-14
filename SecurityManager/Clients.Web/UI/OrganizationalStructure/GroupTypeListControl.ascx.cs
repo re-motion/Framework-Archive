@@ -6,6 +6,8 @@ using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructu
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Security.Configuration;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -38,6 +40,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
         GroupTypeList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupTypeList.FixedColumns[0], SortingDirection.Ascending));
       GroupTypeList.LoadUnboundValue (GroupType.FindAll (CurrentFunction.CurrentTransaction), false);
+
+      if (SecurityConfiguration.Current.SecurityService != null)
+      {
+        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+        NewGroupTypeButton.Visible = securityClient.HasConstructorAccess (typeof (GroupType));
+      }
     }
 
     protected void GroupTypeList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

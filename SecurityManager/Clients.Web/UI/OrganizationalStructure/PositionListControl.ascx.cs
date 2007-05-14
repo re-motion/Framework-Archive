@@ -2,11 +2,13 @@ using System;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Security;
+using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -40,8 +42,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         PositionList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
       PositionList.LoadUnboundValue (Position.FindAll (CurrentFunction.CurrentTransaction), false);
 
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      NewPositionButton.Visible = securityClient.HasConstructorAccess (typeof (Position));
+      if (!SecurityConfiguration.Current.SecurityProvider.IsNull)
+      {
+        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+        Type positionType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetPositionType ();
+        NewPositionButton.Visible = securityClient.HasConstructorAccess (positionType);
+      }
     }
 
     protected void PositionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

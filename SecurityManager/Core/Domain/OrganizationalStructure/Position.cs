@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
   [PermanentGuid ("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
-  public class Position : OrganizationalStructureObject, ISecurableObject, IDomainObjectSecurityContextFactory
+  public class Position : OrganizationalStructureObject
   {
     // types
 
@@ -56,8 +56,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //}
 
     // member fields
-
-    private DomainObjectSecurityStrategy _securityStrategy;
 
     private DomainObjectCollection _accessControlEntriesToBeDeleted;
     private DomainObjectCollection _rolesToBeDeleted;
@@ -143,52 +141,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       _groupTypePositionsToBeDeleted = null;
     }
 
-    IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
+    protected override IDictionary<string, Enum> GetStates ()
     {
-      if (_securityStrategy == null)
-        _securityStrategy = new DomainObjectSecurityStrategy (RequiredSecurityForStates.None, this);
-
-      return _securityStrategy;
-    }
-
-    SecurityContext ISecurityContextFactory.CreateSecurityContext ()
-    {
-      using (new SecurityFreeSection ())
-      {
-        string owner = null;
-        string ownerGroup = null;
-        string ownerClient = null;
-
-        return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
-      }
-    }
-
-    protected virtual IDictionary<string, Enum> GetStates ()
-    {
-      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      IDictionary<string, Enum> states = base.GetStates ();
       states.Add ("Delegation", Delegation);
 
       return states;
-    }
-
-    protected virtual IList<Enum> GetAbstractRoles ()
-    {
-      return new List<Enum> ();
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsDiscarded
-    {
-      get { return IsDiscarded; }
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsNew
-    {
-      get { return State == StateType.New; }
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsDeleted
-    {
-      get { return State == StateType.Deleted; }
     }
   }
 }

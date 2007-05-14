@@ -2,11 +2,13 @@ using System;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Security;
+using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -41,8 +43,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         UserList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) UserList.FixedColumns[0], SortingDirection.Ascending));
       UserList.LoadUnboundValue (User.FindByClientID (ClientID, CurrentFunction.CurrentTransaction), IsPostBack);
 
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      NewUserButton.Visible = securityClient.HasConstructorAccess (typeof (User));
+      if (!SecurityConfiguration.Current.SecurityProvider.IsNull)
+      {
+        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+        Type userType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetUserType ();
+        NewUserButton.Visible = securityClient.HasConstructorAccess (userType);
+      }
     }
 
     protected override void OnPreRender (EventArgs e)

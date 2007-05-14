@@ -4,11 +4,13 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.Utilities;
+using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
+  [PermanentGuid ("23C68C62-5B0F-4857-8DF2-C161C0077745")]
   public class Role : OrganizationalStructureObject
   {
     // types
@@ -24,6 +26,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       return (Role) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
+
     // member fields
 
     // construction and disposing
@@ -106,6 +109,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       }
 
       return filteredObjects;
+    }
+
+    protected override string GetOwningClient ()
+    {
+      if (User != null)
+        return User.Client.UniqueIdentifier;
+
+      if (Group != null)
+        return Group.Client.UniqueIdentifier;
+
+      return null;
     }
   }
 }

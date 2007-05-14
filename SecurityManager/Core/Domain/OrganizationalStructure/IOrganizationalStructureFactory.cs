@@ -8,5 +8,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     Group CreateGroup (ClientTransaction transaction);
     User CreateUser (ClientTransaction transaction);
     Position CreatePosition (ClientTransaction transaction);
+    Type GetGroupType ();
+    Type GetUserType ();
+    Type GetPositionType ();
   }
 }

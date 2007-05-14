@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
@@ -124,6 +125,55 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
           });
 
       Assert.AreSame (client, Client.Current);
+    }
+
+    [Test]
+    public void GetSecurityStrategy ()
+    {
+      ISecurableObject client = _testHelper.CreateClient ("Client", "UID: Client");
+
+      IObjectSecurityStrategy objectSecurityStrategy = client.GetSecurityStrategy ();
+      Assert.IsNotNull (objectSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
+      DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
+      Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
+    }
+
+    [Test]
+    public void GetSecurityStrategy_SameTwice ()
+    {
+      ISecurableObject client = _testHelper.CreateClient ("Client", "UID: Client");
+
+      Assert.AreSame (client.GetSecurityStrategy (), client.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void DomainObjectSecurityContextFactoryImplementation ()
+    {
+      Client client = _testHelper.CreateClient ("Client", "UID: Client");
+      IDomainObjectSecurityContextFactory factory = client;
+
+      Assert.IsFalse (factory.IsDiscarded);
+      Assert.IsTrue (factory.IsNew);
+      Assert.IsFalse (factory.IsDeleted);
+
+      client.Delete ();
+
+      Assert.IsTrue (factory.IsDiscarded);
+    }
+
+    [Test]
+    public void CreateSecurityContext ()
+    {
+      Client client = _testHelper.CreateClient ("Client", "UID: Client");
+
+      SecurityContext securityContext = ((ISecurityContextFactory) client).CreateSecurityContext ();
+      Assert.AreEqual (client.GetType (), Type.GetType (securityContext.Class));
+      Assert.IsEmpty (securityContext.Owner);
+      Assert.IsEmpty (securityContext.OwnerGroup);
+      Assert.AreEqual (client.UniqueIdentifier, securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.AbstractRoles);
+      Assert.IsTrue (securityContext.IsStateless);
     }
 
     #region IBusinessObjectWithIdentifier.UniqueIdentifier tests

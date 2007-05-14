@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
   [PermanentGuid ("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
-  public class Group : OrganizationalStructureObject, ISecurableObject, IDomainObjectSecurityContextFactory
+  public class Group : OrganizationalStructureObject
   {
     // types
 
@@ -90,8 +90,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     //}
 
     // member fields
-
-    private DomainObjectSecurityStrategy _securityStrategy;
 
     // construction and disposing
 
@@ -190,49 +188,14 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return groups;
     }
 
-    IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
+    protected override string GetOwningClient ()
     {
-      if (_securityStrategy == null)
-        _securityStrategy = new DomainObjectSecurityStrategy (RequiredSecurityForStates.None, this);
-
-      return _securityStrategy;
+      return Client == null ? null : Client.UniqueIdentifier;
     }
 
-    SecurityContext ISecurityContextFactory.CreateSecurityContext ()
+    protected override string GetOwningGroup ()
     {
-      using (new SecurityFreeSection ())
-      {
-        string owner = null;
-        string ownerGroup = UniqueIdentifier;
-        string ownerClient = Client == null ? null : Client.UniqueIdentifier;
-
-        return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
-      }
-    }
-
-    protected virtual IDictionary<string, Enum> GetStates ()
-    {
-      return new Dictionary<string, Enum> ();
-    }
-
-    protected virtual IList<Enum> GetAbstractRoles ()
-    {
-      return new List<Enum> ();
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsDiscarded
-    {
-      get { return IsDiscarded; }
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsNew
-    {
-      get { return State == StateType.New; }
-    }
-
-    bool IDomainObjectSecurityContextFactory.IsDeleted
-    {
-      get { return State == StateType.Deleted; }
+      return UniqueIdentifier;
     }
   }
 }
