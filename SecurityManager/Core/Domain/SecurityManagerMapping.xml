@@ -18,6 +18,10 @@
           <nullable>false</nullable>
           <maxLength>100</maxLength>
         </property>
+        <relationProperty name="Parent" relationID="ChildrenToParentClient" cardinality="one" isMandatory="false">
+          <column>ParentID</column>
+        </relationProperty>
+        <relationProperty name="Children" relationID="ChildrenToParentClient" cardinality="many" isMandatory="false"/>
       </properties>
     </class>
 

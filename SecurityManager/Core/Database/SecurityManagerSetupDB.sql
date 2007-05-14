@@ -151,6 +151,7 @@ CREATE TABLE [dbo].[Client]
   -- Client columns
   [Name] nvarchar (100) NOT NULL,
   [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [ParentID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -446,6 +447,9 @@ CREATE TABLE [dbo].[LocalizedName]
 GO
 
 -- Create constraints for tables that were created above
+ALTER TABLE [dbo].[Client] ADD
+  CONSTRAINT [FK_ChildrenToParentClient] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Client] ([ID])
+
 ALTER TABLE [dbo].[Group] ADD
   CONSTRAINT [FK_ClientToGroup] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Group] ([ID]),
@@ -507,9 +511,9 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier])
+CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [ParentID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [ParentID]
     FROM [dbo].[Client]
     WHERE [ClassID] IN ('Client')
   WITH CHECK OPTION

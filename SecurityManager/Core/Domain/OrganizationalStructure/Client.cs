@@ -5,6 +5,8 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 using System.Runtime.Remoting.Messaging;
 using Rubicon.Data;
+using Rubicon.Security;
+using System.ComponentModel;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -16,6 +18,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     // constants
 
     // types
+
+    public enum Methods
+    {
+      Search
+    }
 
     // static members
 
@@ -59,6 +66,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Client) clients[0];
     }
 
+    [DemandMethodPermission (GeneralAccessTypes.Search)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public static void Search ()
+    {
+      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+    }
+
     // member fields
 
     // construction and disposing
@@ -88,6 +102,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (string) DataContainer["UniqueIdentifier"]; }
       set { DataContainer["UniqueIdentifier"] = value; }
+    }
+
+    public Client Parent
+    {
+      get { return (Client) GetRelatedObject ("Parent"); }
+      set { SetRelatedObject ("Parent", value); }
+    }
+
+    public DomainObjectCollection Children
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("Children"); }
+      set { } // marks property Children as modifiable
     }
 
     public override string DisplayName
