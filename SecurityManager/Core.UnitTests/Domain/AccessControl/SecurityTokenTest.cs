@@ -151,14 +151,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void MatchesUserClient_Matches ()
+    public void MatchesUserClient_MatchesUserInClient ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      Client client = CreateClient (transaction, "Testclient");
+      Client client = CreateClient (transaction, "TestClient");
       Group group = CreateGroup (transaction, "Testgroup", null, client);
       User user = CreateUser (transaction, "test.user", group, client);
 
-      SecurityToken token = new SecurityToken (user, client, CreateOwningGroups (), CreateAbstractRoles ());
+      SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (), CreateAbstractRoles ());
+
+      Assert.IsTrue (token.MatchesUserClient (client));
+    }
+
+    [Test]
+    public void MatchesUserClient_MatchesUserInParentClient ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      Client parentClient = CreateClient (transaction, "ParentClient");
+      Client client = CreateClient (transaction, "TestClient");
+      client.Parent = parentClient;
+      Group group = CreateGroup (transaction, "Testgroup", null, parentClient);
+      User user = CreateUser (transaction, "test.user", group, parentClient);
+
+      SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (), CreateAbstractRoles ());
 
       Assert.IsTrue (token.MatchesUserClient (client));
     }
@@ -309,6 +324,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     private List<Group> CreateOwningGroups (params Group[] groups)
     {
       return new List<Group> (groups);
+    }
+
+    private List<Client> CreateOwningClients (params Client[] clients)
+    {
+      return new List<Client> (clients);
     }
   }
 }

@@ -121,7 +121,7 @@
     <value>Beliebiger Mandant</value>
   </data>
   <data name="Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.OwningClient" xml:space="preserve">
-    <value>Mandant des Objekts</value>
+    <value>Mandant des Objekts oder übergeordnete</value>
   </data>
   <data name="Rubicon.SecurityManager.Domain.AccessControl.ClientSelection.SpecificClient" xml:space="preserve">
     <value>Bestimmter Mandant</value>

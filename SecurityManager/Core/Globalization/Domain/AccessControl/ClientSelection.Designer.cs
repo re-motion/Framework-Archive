@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Client of the Object.
+        ///   Looks up a localized string similar to Client of the Object of the Object or parents.
         /// </summary>
         internal static string Rubicon_SecurityManager_Domain_AccessControl_ClientSelection_OwningClient {
             get {
