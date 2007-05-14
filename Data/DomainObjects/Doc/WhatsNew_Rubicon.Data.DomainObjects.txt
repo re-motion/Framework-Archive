@@ -46,24 +46,59 @@
 
   </configuration>
 
+- CurrentTransactionScope: Per Using-Block benutzen, um temporär die aktuelle ClientTransaction zu setzen.
+
 - Neue Factory-Methoden für DomainObjects: Generell diese benutzen, DomainObjects nicht mehr via "new" anlegen. (Alter Mechanismus funktioniert für
   Legacy-Objekte weiterhin.)
   DomainObject.GetObject<T> (ObjectID) - "Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource."
-  DomainObject.Create<T> (ClientTransaction) - "Creates a new instance of a domain object."
-  DomainObject.Create<T> () - "Creates a new instance of a domain object for the current transaction."
+  DomainObject.NewObject<T> () - "Returns an invocation object creating a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>."
   
-  Factory-Methoden bieten wahlweise Factory-basierte Instanziierung und Legacy-Instanziierung. Konfiguration per FactoryInstantiatedAttribute und
-  (v.a. zum Testen) FactoryInstantiationScope. Zukunft: Mapping entscheidet statt FactoryInstantiatedAttribute.
-
-- Neue Konstruktoren für DomainObjects: In Zukunft sollte jedes DomainObject von der Factory erzeugt werden; diese braucht dazu genau einen public
-  oder protected constructor:
-  MyDomainObject (ClientTransaction clientTransaction, ObjectID objectID)
-    : base (clientTransaction, objectID)
+  GetObject<T> kann direkt benutzt werden, um Domain-Objekte zu laden. NewObject<T> ist hingegen protected - in jeder konkreten DomainObject-Subklasse
+  sollte es daher eine statische Factory-Methode geben, die an NewObject<T> delegiert. NewObject<T> liefert nicht direkt das konstruierte Objekt,
+  sondern einen Invocation-Wrapper, der dazu dient, typsicher den richtigen Konstruktor auszuwählen. Das Objekt wird erst durch einen Aufruf der With-
+  Methode des Wrappers wirklich erzeugt.
+  
+  Beispiel:
+  
+  [...]
+  class Order : DomainObject
   {
-  }
+    public static Order NewObject ()
+    {
+      return NewObject<Order> ().With();
+    }
   
-  Andere Konstruktoren sind für Factory-erzeugte Domain-Objekte nicht mehr nötig. (Für Domain-Objekte, die nicht von der Factory erzeugt werden,
-  werden weiterhin die bisherigen "Legacy"-Konstruktoren benutzt.)
+    public static Order NewObject (int i, string s)
+    {
+      return NewObject<Order> ().With(i, s);
+    }
+
+    public static Order NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return NewObject<Order>().With();
+      }
+    }
+    
+    protected Order()
+    {
+    }
+    
+    protected Order (int i, string s)
+    {
+    }
+    
+    ...
+  }
+
+- Keine vorgeschriebenen Konstruktoren mehr: DomainObjects müssen für das Reflection-basierte Mapping keine speziellen Konstruktoren mehr
+  implementieren. Der Infrastruktur-Konstruktor wird nicht mehr benutzt (beim Laden eines Objekts wird gar kein Konstruktor ausgeführt), sein
+  Vorhandensein führt zu einer Exception.
+  
+  Folgender reguläre Ausdruck hilft dabei, die Konstruktoren per Visual-Studio-Find/Replace zu finden (und gegebenenfalls zu entfernen):
+  \n:b*protected :i \(DataContainer :i\)(([^\}])*\n)*(([^\}])*\n)*(([^\}])*\n)*.*\}\n
+  (Die Zeilenumbrüche sind eventuell anzupassen.)
 
 - Neuer Property-Zugriff (für DomainObjects, die von der Factory erzeugt werden; alter Mechanismus funktioniert weiterhin unverändert):
 
@@ -81,8 +116,7 @@
     set { SetPropertyValue (value); }
   }
   
-  Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit NotAbstractAttribute gekennzeichnet werden:
-  [AutomaticProperty]
+  Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit InstantiableAttribute gekennzeichnet werden:
   public abstract int IntProperty { get; set; }
 
 - Search & Replace für neue Property Accessors
