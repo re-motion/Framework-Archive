@@ -57,7 +57,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    [ExpectedException (typeof (ConstraintViolationException),
+    [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
        "The access control entry has the Client property set to SpecificClient, but no Client is assigned.")]
     public void Commit_SpecificClientIsNull ()
     {

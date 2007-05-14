@@ -22,12 +22,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public const int GroupPriority = 2;
     public const int ClientPriority = 1;
 
-    public static new AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (AccessControlEntry) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
       return (AccessControlEntry) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
@@ -39,13 +39,13 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     // construction and disposing
 
     public AccessControlEntry (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+        : base (clientTransaction)
     {
-      Touch ();
+      Touch();
     }
 
     protected AccessControlEntry (DataContainer dataContainer)
-      : base (dataContainer)
+        : base (dataContainer)
     {
       // This infrastructure constructor is necessary for the DomainObjects framework.
       // Do not remove the constructor or place any code here.
@@ -82,7 +82,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get
       {
         if (Priority.IsNull)
-          return CalculatePriority ();
+          return CalculatePriority();
 
         return Priority.Value;
       }
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public DomainObjectCollection Permissions
     {
-      get { return new DomainObjectCollection (GetPermissions (), true); }
+      get { return new DomainObjectCollection (GetPermissions(), true); }
     }
 
     public DateTime ChangedAt
@@ -169,7 +169,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
     {
-      List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition> ();
+      List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition>();
 
       foreach (Permission permission in Permissions)
       {
@@ -177,7 +177,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
           allowedAccessTypes.Add (permission.AccessType);
       }
 
-      return allowedAccessTypes.ToArray ();
+      return allowedAccessTypes.ToArray();
     }
 
     public void AttachAccessType (AccessTypeDefinition accessType)
@@ -185,18 +185,19 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
       if (FindPermission (accessType) != null)
-        throw new ArgumentException (string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
+        throw new ArgumentException (
+            string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
 
       Permission permission = new Permission (ClientTransaction);
       permission.AccessType = accessType;
       permission.Allowed = NaBoolean.Null;
-      DomainObjectCollection permissions = GetPermissions ();
+      DomainObjectCollection permissions = GetPermissions();
       permissions.Add (permission);
       if (permissions.Count == 1)
         permission.Index = 0;
       else
         permission.Index = ((Permission) permissions[permissions.Count - 2]).Index + 1;
-      Touch ();
+      Touch();
     }
 
     public void AllowAccess (AccessTypeDefinition accessType)
@@ -281,7 +282,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       Permission permission = FindPermission (accessType);
       if (permission == null)
-        throw new ArgumentException (string.Format ("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
+        throw new ArgumentException (
+            string.Format ("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
 
       return permission;
     }
@@ -335,9 +337,37 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       base.OnDeleted (args);
 
       foreach (Permission permission in _permissionsToBeDeleted)
-        permission.Delete ();
+        permission.Delete();
 
       _permissionsToBeDeleted = null;
+    }
+
+    public AccessControlEntryValidationResult Validate ()
+    {
+      AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
+
+      if (Client == ClientSelection.SpecificClient && SpecificClient == null)
+        result.SetSpecificClientMissing();
+
+      return result;
+    }
+
+    protected override void OnCommitting (EventArgs args)
+    {
+      AccessControlEntryValidationResult result = Validate();
+      if (!result.IsValid)
+      {
+        if (result.IsSpecificClientMissing)
+        {
+          throw new ConstraintViolationException (
+              "The access control entry has the Client property set to SpecificClient, but no Client is assigned.");
+        }
+
+        //TODO: Move the message into the validation logic.
+        throw new ConstraintViolationException ("The access control entry is in an invalid state.");
+      }
+
+      base.OnCommitting (args);
     }
   }
 }

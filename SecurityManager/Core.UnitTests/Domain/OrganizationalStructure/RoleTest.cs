@@ -73,15 +73,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser()).Return (principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: rootGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: parentGroup0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityServiceGetAccessForGroup ("UID: group0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityServiceGetAccessForGroup ("UID: parentGroup1", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: group1", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testRootGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testParentOfOwningGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testOwningGroup", principal);
-      ExpectSecurityServiceGetAccessForGroup ("UID: testGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group0", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group1", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwningGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       _mocks.ReplayAll ();

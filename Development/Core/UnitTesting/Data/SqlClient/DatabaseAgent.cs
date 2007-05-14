@@ -89,7 +89,7 @@ namespace Rubicon.Development.UnitTesting.Data.SqlClient
         sqlFileName = Path.Combine (Path.GetDirectoryName(uri.LocalPath), sqlFileName);
       }
       string fileContent = File.ReadAllText (sqlFileName, Encoding.Default);
-      return fileContent.Split (new string[] {"\r\nGO\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+      return fileContent.Split (new string[] {"\r\nGO\r\n", "\nGO\n"}, StringSplitOptions.RemoveEmptyEntries);
     }
   }
 }

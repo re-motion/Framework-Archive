@@ -123,7 +123,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The client 'UID: NotExistingClient' could not be found.")]
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The client 'UID: NotExistingClient' could not be found.")]
     public void Create_WithNotExistingOwningClient ()
     {
       ClientTransaction transaction = new ClientTransaction ();
