@@ -202,27 +202,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContext (params Enum[] abstractRoles)
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: testClient", new Dictionary<string, Enum> (), abstractRoles);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: testClient", null, abstractRoles);
     }
 
     private SecurityContext CreateContextWithoutOwningClient ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", null , new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", null, null, null);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningClient ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: NotExistingClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: NotExistingClient", null, null);
     }
 
     private SecurityContext CreateContextWithoutOwningGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", null, "UID: testClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", null, "UID: testClient", null, null);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: NotExistingGroup", "UID: testClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UID: NotExistingGroup", "UID: testClient", null, null);
     }
   }
 }

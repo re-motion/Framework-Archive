@@ -55,8 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameidentifierTwice ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
-      client.UniqueIdentifier = "UID: testClient";
+      Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
 
       _testHelper.Transaction.Commit ();
     }
@@ -64,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Get_UniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
 
       Assert.IsNotEmpty (client.UniqueIdentifier);
     }
@@ -74,7 +73,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetAndSet_UniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
 
       client.UniqueIdentifier = "My Unique Identifier";
 
@@ -84,7 +83,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetAndSet_UniqueIdentifierFromBusinessObjectWithIdentity ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
       IBusinessObjectWithIdentity businessObject = client;
 
       client.UniqueIdentifier = "My Unique Identifier";
@@ -95,7 +94,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetProperty_UniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
       IBusinessObjectWithIdentity businessObject = client;
 
       client.UniqueIdentifier = "My Unique Identifier";
@@ -107,7 +106,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetProperty_UniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
       IBusinessObjectWithIdentity businessObject = client;
 
       businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
@@ -118,7 +117,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPropertyDefinition_UniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
       IBusinessObjectWithIdentity businessObject = client;
       client.UniqueIdentifier = "My Unique Identifier";
 
@@ -131,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", string.Empty);
       IBusinessObjectWithIdentity businessObject = client;
 
       IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();

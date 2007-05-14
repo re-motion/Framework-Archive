@@ -324,6 +324,10 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Security\Data.DomainObjects\Security.Data.DomainObjects.csproj">
+      <Project>{D4397460-CE03-43E6-87F7-3A4E50B8250E}</Project>
+      <Name>Security.Data.DomainObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Database\SecurityManagerSetupDBSpecialTables.sql" />

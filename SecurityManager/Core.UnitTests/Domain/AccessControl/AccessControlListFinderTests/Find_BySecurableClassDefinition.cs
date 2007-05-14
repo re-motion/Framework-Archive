@@ -79,7 +79,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", PaymentState.None);
-      SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, null);
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
       aclFinder.Find (classDefinition, context);
@@ -96,7 +96,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       states.Add ("State", OrderState.Delivered);
       states.Add ("Payment", PaymentState.None);
       states.Add ("New", PaymentState.None);
-      SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, null);
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
       AccessControlList acl = aclFinder.Find (classDefinition, context);
@@ -164,7 +164,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
 
     private SecurityContext CreateStatelessContext ()
     {
-      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", null, null);
     }
 
     private SecurityContext CreateContextForDeliveredAndUnpaidOrder ()
@@ -178,7 +178,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       states.Add ("State", OrderState.Delivered);
       states.Add ("Payment", PaymentState.None);
 
-      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, null);
     }
 
     private SecurityContext CreateContextForDeliveredAndUnpaidAndDhlOrder (Type type)
@@ -188,7 +188,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       states.Add ("Payment", PaymentState.None);
       states.Add ("Delivery", Delivery.Dhl);
 
-      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, null);
     }
 
     private SecurityContext CreateContextWithoutPaymentState ()
@@ -196,7 +196,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", OrderState.Delivered);
 
-      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, null);
     }
   }
 }

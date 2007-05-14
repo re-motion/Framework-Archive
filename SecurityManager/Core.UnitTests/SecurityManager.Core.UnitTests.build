@@ -30,6 +30,7 @@
         <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <include name="${build.test.outputdir}/Rubicon.Development.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Security.Data.DomainObjects.dll" />
         <include name="${build.test.outputdir}/Rubicon.SecurityManager.dll" />
         <include name="${build.test.outputdir}/log4net.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />

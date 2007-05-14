@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -79,7 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UserName_SameNameTwice ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("Testclient", "UID: testClient");
       Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, client);
       User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
 
@@ -91,7 +92,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       ISecurableObject user = CreateUser ();
 
-      Assert.IsNotNull (user.GetSecurityStrategy ());
+      IObjectSecurityStrategy objectSecurityStrategy = user.GetSecurityStrategy ();
+      Assert.IsNotNull (objectSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
+      DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
+      Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
     }
 
     [Test]
@@ -103,6 +108,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void DomainObjectSecurityContextFactoryImplementation ()
+    {
+      User user = CreateUser ();
+      IDomainObjectSecurityContextFactory factory = user;
+
+      Assert.IsFalse (factory.IsDiscarded);
+      Assert.IsTrue (factory.IsNew);
+      Assert.IsFalse (factory.IsDeleted);
+
+      user.Delete ();
+
+      Assert.IsTrue (factory.IsDiscarded);
+    }
+
+    [Test]
     public void CreateSecurityContext ()
     {
       User user = CreateUser ();
@@ -111,7 +131,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (user.GetType(), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
       Assert.AreEqual (user.Group.UniqueIdentifier, securityContext.OwnerGroup);
-      Assert.IsEmpty (securityContext.OwnerClient);
+      Assert.AreEqual (user.Client.UniqueIdentifier, securityContext.OwnerClient);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
     }
@@ -126,6 +146,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (user.GetType (), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
       Assert.IsEmpty (securityContext.OwnerGroup);
+      Assert.AreEqual (user.Client.UniqueIdentifier, securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.AbstractRoles);
+      Assert.IsTrue (securityContext.IsStateless);
+    }
+
+    [Test]
+    public void CreateSecurityContext_WithNoClient ()
+    {
+      User user = CreateUser ();
+      user.Client = null;
+
+      SecurityContext securityContext = ((ISecurityContextFactory) user).CreateSecurityContext ();
+      Assert.AreEqual (user.GetType (), Type.GetType (securityContext.Class));
+      Assert.AreEqual (user.UserName, securityContext.Owner);
+      Assert.AreEqual (user.Group.UniqueIdentifier, securityContext.OwnerGroup);
       Assert.IsEmpty (securityContext.OwnerClient);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
@@ -133,7 +168,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     private User CreateUser ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
       Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
    

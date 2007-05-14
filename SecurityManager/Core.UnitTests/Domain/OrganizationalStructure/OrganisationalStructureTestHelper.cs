@@ -20,14 +20,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       get { return _transaction; }
     }
 
-    public Client CreateClient (string name)
+    public Client CreateClient (string name, string uniqueIdentifier)
     {
-      return CreateClient (_transaction, name);
+      return CreateClient (_transaction, name, uniqueIdentifier);
     }
 
-    public Client CreateClient (ClientTransaction transaction, string name)
+    public Client CreateClient (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
       Client client = new Client (transaction);
+      client.UniqueIdentifier = uniqueIdentifier;
       client.Name = name;
 
       return client;

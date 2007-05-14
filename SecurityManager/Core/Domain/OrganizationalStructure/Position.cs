@@ -6,13 +6,14 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
   [PermanentGuid ("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
-  public class Position : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
+  public class Position : OrganizationalStructureObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
     // types
 
@@ -54,7 +55,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // member fields
 
-    private IObjectSecurityStrategy _securityStrategy;
+    private DomainObjectSecurityStrategy _securityStrategy;
 
     private DomainObjectCollection _accessControlEntriesToBeDeleted;
     private DomainObjectCollection _rolesToBeDeleted;
@@ -143,16 +144,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
       if (_securityStrategy == null)
-        _securityStrategy = new ObjectSecurityStrategy (this);
+        _securityStrategy = new DomainObjectSecurityStrategy (RequiredSecurityForStates.None, this);
 
       return _securityStrategy;
     }
 
     SecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      string owner = string.Empty;
-      string ownerGroup = string.Empty;
-      string ownerClient = string.Empty;
+      string owner = null;
+      string ownerGroup = null;
+      string ownerClient = null;
 
       return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates (), GetAbstractRoles ());
     }
@@ -168,6 +169,21 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     protected virtual IList<Enum> GetAbstractRoles ()
     {
       return new List<Enum> ();
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsDiscarded
+    {
+      get { return IsDiscarded; }
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsNew
+    {
+      get { return State == StateType.New; }
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsDeleted
+    {
+      get { return State == StateType.Deleted; }
     }
   }
 }

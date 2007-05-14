@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
+using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
@@ -39,7 +40,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithRole ()
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
-      Client client = testHelper.CreateClient ("Client");
+      Client client = testHelper.CreateClient ("TestClient", "UID: testClient");
       Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, client);
       Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, client);
       User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, client);
@@ -79,7 +80,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
       ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
-      Assert.IsNotNull (position.GetSecurityStrategy ());
+      IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy ();
+      Assert.IsNotNull (objectSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
+      DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
+      Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
     }
 
     [Test]
@@ -89,6 +94,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
       Assert.AreSame (position.GetSecurityStrategy (), position.GetSecurityStrategy ());
+    }
+
+    [Test]
+    public void DomainObjectSecurityContextFactoryImplementation ()
+    {
+      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      Position position = testHelper.CreatePosition ("PositionName");
+      IDomainObjectSecurityContextFactory factory = position;
+
+      Assert.IsFalse (factory.IsDiscarded);
+      Assert.IsTrue (factory.IsNew);
+      Assert.IsFalse (factory.IsDeleted);
+
+      position.Delete ();
+
+      Assert.IsTrue (factory.IsDiscarded);
     }
 
     [Test]

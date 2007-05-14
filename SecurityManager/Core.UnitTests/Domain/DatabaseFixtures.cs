@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       groupType2_officialPosition.GroupType = groupType2;
       groupType2_officialPosition.Position = officialPosition;
 
-      Client client1 = CreateClient (transaction, "Testclient");
+      Client client1 = CreateClient (transaction, "TestClient");
       client1.UniqueIdentifier = "UID: testClient";
       Group rootGroup = CreateGroup (transaction, "rootGroup", "UID: rootGroup", null, client1);
       for (int i = 0; i < 2; i++)

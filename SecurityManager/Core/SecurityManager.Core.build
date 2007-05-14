@@ -33,6 +33,8 @@
         <include name="${build.outputdir}/Rubicon.Data.DomainObjects.dll" />
         <include name="${build.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <include name="${build.outputdir}/Rubicon.Security.dll" />
+        <include name="${build.outputdir}/Rubicon.Security.Data.DomainObjects.dll" />
+        <include name="${build.outputdir}/log4net.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>

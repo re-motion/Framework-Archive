@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Security;
+using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -63,7 +64,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      Client client = _testHelper.CreateClient (transaction, "NewClient2");
+      Client client = _testHelper.CreateClient (transaction, "NewClient2", "UID: testClient");
       _testHelper.CreateGroup (transaction, "NewGroup2", "UID: testGroup", null, client);
 
       transaction.Commit ();
@@ -74,7 +75,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       ISecurableObject group = CreateGroup ();
 
-      Assert.IsNotNull (group.GetSecurityStrategy ());
+      IObjectSecurityStrategy objectSecurityStrategy = group.GetSecurityStrategy ();
+      Assert.IsNotNull (objectSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (DomainObjectSecurityStrategy), objectSecurityStrategy);
+      DomainObjectSecurityStrategy domainObjectSecurityStrategy = (DomainObjectSecurityStrategy) objectSecurityStrategy;
+      Assert.AreEqual (RequiredSecurityForStates.None, domainObjectSecurityStrategy.RequiredSecurityForStates);
     }
 
     [Test]
@@ -86,9 +91,39 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void DomainObjectSecurityContextFactoryImplementation ()
+    {
+      Group group = CreateGroup ();
+      IDomainObjectSecurityContextFactory factory = group;
+
+      Assert.IsFalse (factory.IsDiscarded);
+      Assert.IsTrue (factory.IsNew);
+      Assert.IsFalse (factory.IsDeleted);
+
+      group.Delete ();
+
+      Assert.IsTrue (factory.IsDiscarded);
+    }
+
+    [Test]
     public void CreateSecurityContext ()
     {
       Group group = CreateGroup ();
+
+      SecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext ();
+      Assert.AreEqual (group.GetType (), Type.GetType (securityContext.Class));
+      Assert.IsEmpty (securityContext.Owner);
+      Assert.AreEqual (group.UniqueIdentifier, securityContext.OwnerGroup);
+      Assert.AreEqual (group.Client.UniqueIdentifier, securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.AbstractRoles);
+      Assert.IsTrue (securityContext.IsStateless);
+    }
+
+    [Test]
+    public void CreateSecurityContext_WithNoClient ()
+    {
+      Group group = CreateGroup ();
+      group.Client = null;
 
       SecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext ();
       Assert.AreEqual (group.GetType (), Type.GetType (securityContext.Class));
@@ -113,7 +148,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_UniqueIdentifier ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
 
       group.UniqueIdentifier = "My Unique Identifier";
 
@@ -123,7 +158,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetAndGet_UniqueIdentifierFromBusinessObjectWithIdentity ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       group.UniqueIdentifier = "My Unique Identifier";
@@ -134,7 +169,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetProperty_UniqueIdentifier ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       group.UniqueIdentifier = "My Unique Identifier";
@@ -146,7 +181,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void SetProperty_UniqueIdentifier ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
@@ -157,7 +192,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPropertyDefinition_UniqueIdentifier ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
       group.UniqueIdentifier = "My Unique Identifier";
 
@@ -170,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
     {
-      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty));
+      Group group = _testHelper.CreateGroup (string.Empty, string.Empty, null, _testHelper.CreateClient (string.Empty, string.Empty));
       IBusinessObjectWithIdentity businessObject = group;
 
       IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions ();
@@ -192,7 +227,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     private Group CreateGroup ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
       Group group = _testHelper.CreateGroup ("TestGroup", "UID: TestGroup", null, client);
 
       return group;

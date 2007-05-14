@@ -30,11 +30,11 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("classType", classType, typeof (ISecurableObject));
 
       _class = TypeUtility.GetPartialAssemblyQualifiedName (classType);
-      _owner = owner;
-      _ownerGroup = ownerGroup;
-      _ownerClient = ownerClient;
+      _owner = StringUtility.NullToEmpty (owner);
+      _ownerGroup = StringUtility.NullToEmpty (ownerGroup);
+      _ownerClient = StringUtility.NullToEmpty (ownerClient);
       _abstractRoles = InitializeAbstractRoles (abstractRoles);
-      _states = InitializeStates (states);;
+      _states = InitializeStates (states);
     }
 
     public string Class
@@ -126,7 +126,7 @@ namespace Rubicon.Security
       return EqualsAbstractRoles (this._abstractRoles, other._abstractRoles);
     }
 
-    private bool EqualsStates (IDictionary<string,EnumWrapper> leftStates, IDictionary<string,EnumWrapper> rightStates)
+    private bool EqualsStates (IDictionary<string, EnumWrapper> leftStates, IDictionary<string, EnumWrapper> rightStates)
     {
       if (leftStates.Count != rightStates.Count)
         return false;

@@ -73,15 +73,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser()).Return (principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityProviderGetAccessForGroup ("UID: group0", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: group1", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwningGroup", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", "UID: testClient", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group0", "UID: testClient", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group1", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwningGroup", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", "UID: testClient", principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = new Role (transaction);
       _mocks.ReplayAll ();
@@ -191,14 +191,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (3, positions.Count);
     }
 
-    private void ExpectSecurityProviderGetAccessForGroup (string ownerGroup, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
+    private void ExpectSecurityProviderGetAccessForGroup (string owningGroup, string owningClient, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
       Type classType = typeof (Group);
       string owner = string.Empty;
-      string ownerClient = string.Empty;
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       List<Enum> abstractRoles = new List<Enum> ();
-      SecurityContext securityContext = new SecurityContext (classType, owner, ownerGroup, ownerClient, states, abstractRoles);
+      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningClient, states, abstractRoles);
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 
@@ -209,12 +208,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       Type classType = typeof (Position);
       string owner = string.Empty;
-      string ownerGroup = string.Empty;
-      string ownerClient = string.Empty;
+      string owningGroup = string.Empty;
+      string owningClient = string.Empty;
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("Delegation", delegation);
       List<Enum> abstractRoles = new List<Enum> ();
-      SecurityContext securityContext = new SecurityContext (classType, owner, ownerGroup, ownerClient, states, abstractRoles);
+      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningClient, states, abstractRoles);
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 

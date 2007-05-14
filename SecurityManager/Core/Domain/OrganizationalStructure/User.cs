@@ -6,13 +6,14 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.Utilities;
+using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
-  [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")] 
-  public class User : OrganizationalStructureObject, ISecurableObject, ISecurityContextFactory
+  [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")]
+  public class User : OrganizationalStructureObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
     // types
 
@@ -62,7 +63,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // member fields
 
-    private IObjectSecurityStrategy _securityStrategy;
+    private DomainObjectSecurityStrategy _securityStrategy;
 
     // construction and disposing
 
@@ -167,7 +168,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
       if (_securityStrategy == null)
-        _securityStrategy = new ObjectSecurityStrategy (this);
+        _securityStrategy = new DomainObjectSecurityStrategy (RequiredSecurityForStates.None, this);
 
       return _securityStrategy;
     }
@@ -175,8 +176,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     SecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
       string owner = UserName;
-      string ownerGroup = Group == null ? string.Empty : Group.UniqueIdentifier;
-      string ownerClient = string.Empty;
+      string ownerGroup = Group == null ? null : Group.UniqueIdentifier;
+      string ownerClient = Client == null ? null : Client.UniqueIdentifier;
 
       return new SecurityContext (GetType (), owner, ownerGroup, ownerClient, GetStates(), GetAbstractRoles ());
     }
@@ -189,6 +190,21 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     protected virtual IList<Enum> GetAbstractRoles ()
     {
       return new List<Enum> ();
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsDiscarded
+    {
+      get { return IsDiscarded; }
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsNew
+    {
+      get { return State == StateType.New; }
+    }
+
+    bool IDomainObjectSecurityContextFactory.IsDeleted
+    {
+      get { return State == StateType.Deleted; }
     }
   }
 }
