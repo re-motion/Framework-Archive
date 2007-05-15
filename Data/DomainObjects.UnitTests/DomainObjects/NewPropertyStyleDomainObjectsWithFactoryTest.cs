@@ -462,7 +462,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void PropertyAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
@@ -470,7 +471,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void RelatedAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
@@ -478,7 +480,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void RelatedObjectsAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
@@ -487,7 +490,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void PropertySetAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
@@ -495,7 +499,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void RelatedSetAccessWithoutBeingInMappingThrows ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
@@ -527,7 +532,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException(typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.")]
+    [ExpectedException(typeof (InvalidOperationException), ExpectedMessage = "There is no current property or it hasn't been properly initialized.",
+        MatchType = MessageMatch.Contains)]
     public void ExplicitInterfaceProperty ()
     {
       IPropertyInterface domainObject = ClassWithExplicitInterfaceProperty.NewObject();

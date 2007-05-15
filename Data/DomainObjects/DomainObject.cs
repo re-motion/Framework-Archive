@@ -541,7 +541,7 @@ public class DomainObject
     string propertyName = CurrentPropertyManager.CurrentPropertyName;
     if (propertyName == null)
     {
-      throw new InvalidOperationException ("There is no current property or it hasn't been properly initialized.");
+      throw new InvalidOperationException ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?");
     }
     else
     {
@@ -549,6 +549,19 @@ public class DomainObject
     }
   }
 
+  #endregion
+
+  #region PropertyAccessors
+  protected PropertyAccessor<T> CurrentProperty<T> ()
+  {
+    string propertyIdentifier = GetAndCheckCurrentPropertyName();
+    return Property<T> (propertyIdentifier);
+  }
+
+  protected PropertyAccessor<T> Property<T> (string propertyIdentifier)
+  {
+    return new PropertyAccessor<T> (this, propertyIdentifier);
+  }
   #endregion
 
   #region Get/SetPropertyValue

@@ -31,7 +31,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public abstract Ceo Ceo { get; set; }
 
     [DBBidirectionalRelation ("Companies")]
-    public abstract IndustrialSector IndustrialSector { get; set; }
+    public virtual IndustrialSector IndustrialSector
+    {
+      get { return CurrentProperty<IndustrialSector>().GetValue(); }
+      set { CurrentProperty<IndustrialSector> ().SetValue (value); }
+    }
 
     [DBBidirectionalRelation ("Company")]
     private ClassWithoutRelatedClassIDColumnAndDerivation ClassWithoutRelatedClassIDColumnAndDerivation

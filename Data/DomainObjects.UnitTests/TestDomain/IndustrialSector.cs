@@ -18,10 +18,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
-    public abstract string Name { get; set; }
+    public virtual string Name
+    {
+      get
+      {
+        return CurrentProperty<string>().GetValue();
+      }
+      set
+      {
+        CurrentProperty<string>().SetValue (value);
+      }
+    }
 
     [DBBidirectionalRelationAttribute ("IndustrialSector")]
     [Mandatory]
-    public abstract ObjectList<Company> Companies { get; }
+    public virtual ObjectList<Company> Companies
+    {
+      get
+      {
+        return CurrentProperty<ObjectList<Company>>().GetValue();
+      }
+    }
   }
 }
