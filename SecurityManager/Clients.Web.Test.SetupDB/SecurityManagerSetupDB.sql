@@ -151,6 +151,7 @@ CREATE TABLE [dbo].[Client]
   -- Client columns
   [Name] nvarchar (100) NOT NULL,
   [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [IsAbstract] bit NOT NULL,
   [ParentID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID])
@@ -511,9 +512,9 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [ParentID])
+CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [IsAbstract], [ParentID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [ParentID]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [IsAbstract], [ParentID]
     FROM [dbo].[Client]
     WHERE [ClassID] IN ('Client')
   WITH CHECK OPTION

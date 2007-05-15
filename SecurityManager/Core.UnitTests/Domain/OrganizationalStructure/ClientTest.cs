@@ -176,6 +176,54 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.IsTrue (securityContext.IsStateless);
     }
 
+    [Test]
+    public void GetHierachy_NoChildren ()
+    {
+      Client root = _testHelper.CreateClient ("Root", "UID: Root");
+
+      DomainObjectCollection clients = root.GetHierachy ();
+
+      Assert.AreEqual (1, clients.Count);
+      Assert.Contains (root, clients);
+    }
+
+    [Test]
+    public void GetHierachy_NoGrandChildren ()
+    {
+      Client root = _testHelper.CreateClient ("Root", "UID: Root");
+      Client child1 = _testHelper.CreateClient ("Child1", "UID: Child1");
+      child1.Parent = root;
+      Client child2 = _testHelper.CreateClient ("Child2", "UID: Child2");
+      child2.Parent = root;
+
+      DomainObjectCollection clients = root.GetHierachy ();
+
+      Assert.AreEqual (3, clients.Count);
+      Assert.Contains (root, clients);
+      Assert.Contains (child1, clients);
+      Assert.Contains (child2, clients);
+    }
+
+    [Test]
+    public void GetHierachy_WithGrandChildren ()
+    {
+      Client root = _testHelper.CreateClient ("Root", "UID: Root");
+      Client child1 = _testHelper.CreateClient ("Child1", "UID: Child1");
+      child1.Parent = root;
+      Client child2 = _testHelper.CreateClient ("Child2", "UID: Child2");
+      child2.Parent = root;
+      Client grandChild1 = _testHelper.CreateClient ("GrandChild1", "UID: GrandChild1");
+      grandChild1.Parent = child1;
+
+      DomainObjectCollection clients = root.GetHierachy ();
+
+      Assert.AreEqual (4, clients.Count);
+      Assert.Contains (root, clients);
+      Assert.Contains (child1, clients);
+      Assert.Contains (child2, clients);
+      Assert.Contains (grandChild1, clients);
+    }
+
     #region IBusinessObjectWithIdentifier.UniqueIdentifier tests
 
     [Test]

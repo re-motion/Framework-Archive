@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
 
     // static members and constants
 
-    private static readonly string s_clientIDKey = typeof (BaseControl).FullName + "_ClientID";
+    private static readonly string s_currentClientIDKey = typeof (BaseControl).FullName + "_CurrentClientID";
 
     // member fields
 
@@ -40,10 +40,10 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       get { return null; }
     }
 
-    protected ObjectID ClientID
+    protected ObjectID CurrentClientID
     {
-      get { return (ObjectID) ViewState[s_clientIDKey]; }
-      set { ViewState[s_clientIDKey] = value; }
+      get { return (ObjectID) ViewState[s_currentClientIDKey]; }
+      set { ViewState[s_currentClientIDKey] = value; }
     }
 
     protected bool HasClientChanged
@@ -56,14 +56,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       base.OnLoad (e);
 
       if (!IsPostBack)
-        ClientID = CurrentFunction.ClientID;
+        CurrentClientID = CurrentFunction.ClientID;
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      if (ClientID != CurrentFunction.ClientID)
+      if (CurrentClientID != CurrentFunction.ClientID)
       {
-        ClientID = CurrentFunction.ClientID;
+        CurrentClientID = CurrentFunction.ClientID;
         _hasClientChanged = true;
       }
 

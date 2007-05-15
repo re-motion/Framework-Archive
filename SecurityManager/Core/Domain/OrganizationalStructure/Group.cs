@@ -184,6 +184,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
+    // TODO: UnitTests
     public List<Group> GetPossibleParentGroups (ObjectID clientID)
     {
       List<Group> groups = new List<Group> ();

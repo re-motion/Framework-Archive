@@ -18,6 +18,11 @@
           <nullable>false</nullable>
           <maxLength>100</maxLength>
         </property>
+        <property name="IsAbstract">
+          <type>boolean</type>
+          <column>IsAbstract</column>
+          <nullable>false</nullable>
+        </property>
         <relationProperty name="Parent" relationID="ChildrenToParentClient" cardinality="one" isMandatory="false">
           <column>ParentID</column>
         </relationProperty>

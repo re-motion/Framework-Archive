@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="securityManager" Src="SecurityManagerCurrentClientControl.ascx" TagName="CurrentClientControl" %>
 <div style="text-align: right">
-<securityManager:CurrentClientControl id="SecurityManagerCurrentClientControl" runat="server"/>
+<securityManager:CurrentClientControl id="SecurityManagerCurrentClientControl" runat="server" EnableAbstractClients="true"/>
 </div>
 <rubicon:TabbedMenu ID="TabbedMenu" runat="server">
   <Tabs>
@@ -19,6 +19,11 @@
         <rubicon:SubMenuTab ItemID="GroupTab" Text="$res:Group">
           <PersistedCommand>
             <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="GroupList" />
+          </PersistedCommand>
+        </rubicon:SubMenuTab>
+        <rubicon:SubMenuTab ItemID="ClientTab" Text="$res:Client">
+          <PersistedCommand>
+            <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="ClientList" />
           </PersistedCommand>
         </rubicon:SubMenuTab>
         <rubicon:SubMenuTab ItemID="PositionTab" Text="$res:Position">

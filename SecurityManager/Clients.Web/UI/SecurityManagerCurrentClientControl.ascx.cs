@@ -15,14 +15,24 @@ using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.NullableValueTypes;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.Web.UI.Controls;
+using System.ComponentModel;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI
 {
   public partial class CurrentClientControl : System.Web.UI.UserControl
   {
     private static readonly string s_isClientSelectionEnabledKey = typeof (CurrentClientControl).FullName + "_IsClientSelectionEnabled";
+    private static readonly string s_enableAbstractClientsKey = typeof (CurrentClientControl).FullName + "_EnableAbstractClients";
+
     private bool _isCurrentClientFieldReadOnly = true;
     private ClientTransaction _clientTransaction;
+
+    [DefaultValue (true)]
+    public bool EnableAbstractClients
+    {
+      get { return (bool?) ViewState[s_enableAbstractClientsKey] ?? true; }
+      set { ViewState[s_enableAbstractClientsKey] = value; }
+    }
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
@@ -45,7 +55,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
 
       if (!IsPostBack)
       {
-        DomainObjectCollection clients = Client.FindAll (_clientTransaction);
+        DomainObjectCollection clients = GetPossibleClients ();
         CurrentClientField.SetBusinessObjectList (clients);
         CurrentClientField.LoadUnboundValue (Client.Current, false);
 
@@ -57,6 +67,27 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
 
       if (!IsClientSelectionEnabled)
         CurrentClientField.Command.Type = CommandType.None;
+    }
+
+    private DomainObjectCollection GetPossibleClients ()
+    {
+      User user = ApplicationInstance.LoadUserFromSession (_clientTransaction);
+      DomainObjectCollection clients;
+      if (user == null)
+        clients = new DomainObjectCollection ();
+      else
+        clients = user.Client.GetHierachy ();
+
+      if (!EnableAbstractClients)
+      {
+        for (int i = clients.Count - 1; i >= 0; i--)
+        {
+          if (((Client) clients[i]).IsAbstract)
+            clients.RemoveAt (i);
+        }
+      }
+
+      return clients;
     }
 
     protected void CurrentClientField_SelectionChanged (object sender, EventArgs e)
@@ -79,7 +110,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
     protected void CurrentClientField_CommandClick (object sender, BocCommandClickEventArgs e)
     {
       _isCurrentClientFieldReadOnly = false;
-      CurrentClientField.SetBusinessObjectList (Client.FindAll (_clientTransaction));
+      CurrentClientField.SetBusinessObjectList (GetPossibleClients ());
       CurrentClientField.LoadUnboundValue (Client.Current, false);
     }
 

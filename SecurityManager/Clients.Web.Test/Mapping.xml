@@ -16,7 +16,6 @@
           <type>Rubicon.SecurityManager.Clients.Web.Test.Domain.Confidentiality, Rubicon.SecurityManager.Clients.Web.Test</type>
           <column>Confidentiality</column>
         </property>
-
         <relationProperty name="Client" relationID="ClientToFile" cardinality="one" isMandatory="true">
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
@@ -67,6 +66,11 @@
           <type>string</type>
           <column>Name</column>
           <maxLength>100</maxLength>
+        </property>
+        <property name="IsAbstract">
+          <type>boolean</type>
+          <column>IsAbstract</column>
+          <nullable>false</nullable>
         </property>
         <property name="UniqueIdentifier">
           <type>string</type>

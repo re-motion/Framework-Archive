@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
+namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Client {
+    internal class ClientListFormResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Client() {
+        internal ClientListFormResources() {
         }
         
         /// <summary>
@@ -39,7 +39,8 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Client", typeof(Client).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Clie" +
+                            "ntListFormResources", typeof(ClientListFormResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +62,11 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subordinate Clients.
+        ///   Looks up a localized string similar to Search client.
         /// </summary>
-        internal static string property_Children {
+        internal static string auto_this_Title {
             get {
-                return ResourceManager.GetString("property:Children", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string property_DisplayName {
-            get {
-                return ResourceManager.GetString("property:DisplayName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Abstract Client.
-        /// </summary>
-        internal static string property_IsAbstract {
-            get {
-                return ResourceManager.GetString("property:IsAbstract", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string property_Name {
-            get {
-                return ResourceManager.GetString("property:Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parent Client.
-        /// </summary>
-        internal static string property_Parent {
-            get {
-                return ResourceManager.GetString("property:Parent", resourceCulture);
+                return ResourceManager.GetString("auto:this:Title", resourceCulture);
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using Rubicon.Data;
 using Rubicon.Security;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -104,6 +105,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["UniqueIdentifier"] = value; }
     }
 
+    public bool IsAbstract
+    {
+      get { return (bool) DataContainer["IsAbstract"]; }
+      set { DataContainer["IsAbstract"] = value; }
+    }
+
     public Client Parent
     {
       get { return (Client) GetRelatedObject ("Parent"); }
@@ -124,6 +131,29 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     protected override string GetOwningClient ()
     {
       return UniqueIdentifier;
+    }
+
+    // TODO: UnitTests
+    public List<Client> GetPossibleParentClients (ObjectID clientID)
+    {
+      List<Client> clients = new List<Client> ();
+
+      foreach (Client client in Client.FindAll (ClientTransaction))
+      {
+        if ((!Children.Contains (client.ID)) && (client.ID != this.ID))
+          clients.Add (client);
+      }
+      return clients;
+    }
+
+    public DomainObjectCollection GetHierachy ()
+    {
+      DomainObjectCollection clients = new DomainObjectCollection ();
+      clients.Add (this);
+      foreach (Client client in Children)
+        clients.Combine (client.GetHierachy ());
+
+      return clients;
     }
   }
 }

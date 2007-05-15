@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.UI {
+namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
-    public partial class SecurityManagerNavigationTabs {
-        protected Rubicon.SecurityManager.Clients.Web.UI.CurrentClientControl SecurityManagerCurrentClientControl;
-        protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
+    public partial class ClientListForm {
+        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.ClientListControl ClientListControl;
     }
 }
