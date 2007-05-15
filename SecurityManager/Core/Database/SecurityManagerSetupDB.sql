@@ -237,7 +237,7 @@ CREATE TABLE [dbo].[User]
   [LastName] nvarchar (100) NOT NULL,
   [UserName] nvarchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL,
-  [GroupID] uniqueidentifier NULL,
+  [OwningGroupID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -466,7 +466,7 @@ ALTER TABLE [dbo].[Role] ADD
 
 ALTER TABLE [dbo].[User] ADD
   CONSTRAINT [FK_ClientToUser] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
-  CONSTRAINT [FK_GroupToUser] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID])
+  CONSTRAINT [FK_OwningGroupToUser] FOREIGN KEY ([OwningGroupID]) REFERENCES [dbo].[Group] ([ID])
 
 ALTER TABLE [dbo].[EnumValueDefinition] ADD
   CONSTRAINT [FK_StatePropertyToState] FOREIGN KEY ([StatePropertyID]) REFERENCES [dbo].[StatePropertyDefinition] ([ID])
@@ -559,9 +559,9 @@ CREATE VIEW [dbo].[RoleView] ([ID], [ClassID], [Timestamp], [PositionID], [Group
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [GroupID])
+CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [OwningGroupID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [GroupID]
+  SELECT [ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [OwningGroupID]
     FROM [dbo].[User]
     WHERE [ClassID] IN ('User')
   WITH CHECK OPTION

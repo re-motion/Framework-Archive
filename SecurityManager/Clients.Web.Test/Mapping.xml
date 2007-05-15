@@ -218,8 +218,8 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
-        <relationProperty name="Group" relationID="GroupToUser" cardinality="one" isMandatory="true">
-          <column>GroupID</column>
+        <relationProperty name="OwningGroup" relationID="OwningGroupToUser" cardinality="one" isMandatory="true">
+          <column>OwningGroupID</column>
           <oppositeClass>Group</oppositeClass>
         </relationProperty>
         <relationProperty name="AccessControlEntries" relationID="UserToAccessControlEntry" cardinality="many" isMandatory="false" />

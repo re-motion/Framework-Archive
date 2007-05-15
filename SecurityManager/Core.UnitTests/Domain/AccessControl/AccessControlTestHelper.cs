@@ -399,7 +399,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return group;
     }
 
-    public User CreateUser (string userName, string firstName, string lastName, string title, Group group, Client client)
+    public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Client client)
     {
       User user = _factory.CreateUser (_transaction);
       user.UserName = userName;
@@ -407,7 +407,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       user.LastName = lastName;
       user.Title = title;
       user.Client = client;
-      user.Group = group;
+      user.OwningGroup = owningGroup;
 
       return user;
     }

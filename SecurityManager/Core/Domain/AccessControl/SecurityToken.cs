@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       if (user != null)
       {
-        for (Group group = user.Group; group != null; group = group.Parent)
+        for (Group group = user.OwningGroup; group != null; group = group.Parent)
           groups.Add (group);
       }
 

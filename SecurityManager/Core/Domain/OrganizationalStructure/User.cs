@@ -136,10 +136,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { SetRelatedObject ("Client", value); }
     }
 
-    public Group Group
+    public Group OwningGroup
     {
-      get { return (Group) GetRelatedObject ("Group"); }
-      set { SetRelatedObject ("Group", value); }
+      get { return (Group) GetRelatedObject ("OwningGroup"); }
+      set { SetRelatedObject ("OwningGroup", value); }
     }
 
     // Must not be private because PermissionReflection would not work with derived classes.
@@ -195,7 +195,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     protected override string GetOwningGroup ()
     {
-      return Group == null ? null : Group.UniqueIdentifier;
+      return OwningGroup == null ? null : OwningGroup.UniqueIdentifier;
     }
   }
 }

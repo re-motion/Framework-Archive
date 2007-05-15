@@ -47,8 +47,8 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocReferenceValue ID="GroupField" runat="server" DataSourceControl="CurrentObject"
-        PropertyIdentifier="Group">
+      <rubicon:BocReferenceValue ID="OwningGroupField" runat="server" DataSourceControl="CurrentObject"
+        PropertyIdentifier="OwningGroup">
         <PersistedCommand>
           <rubicon:BocCommand />
         </PersistedCommand>

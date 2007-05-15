@@ -48,15 +48,15 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
             new BocListSortingOrderEntry ((BocColumnDefinition) RolesList.FixedColumns[1], SortingDirection.Ascending));
       }
 
-      FillGroupField ();
+      FillOwningGroupField ();
 
       if (RolesList.IsReadOnly)
         RolesList.Selection = RowSelection.Disabled;
     }
 
-    private void FillGroupField ()
+    private void FillOwningGroupField ()
     {
-      GroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
+      OwningGroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     public override bool Validate ()

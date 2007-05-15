@@ -79,20 +79,20 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group.
-        /// </summary>
-        internal static string property_Group {
-            get {
-                return ResourceManager.GetString("property:Group", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Lastname.
         /// </summary>
         internal static string property_LastName {
             get {
                 return ResourceManager.GetString("property:LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string property_OwningGroup {
+            get {
+                return ResourceManager.GetString("property:OwningGroup", resourceCulture);
             }
         }
         

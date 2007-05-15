@@ -276,7 +276,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       user.LastName = lastName;
       user.Title = title;
       user.Client = client;
-      user.Group = group;
+      user.OwningGroup = group;
 
       return user;
     }

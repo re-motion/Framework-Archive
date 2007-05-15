@@ -92,7 +92,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
     {
       if (Clerk == null)
         return null;
-      return Clerk.Group;
+      return Clerk.OwningGroup;
     }
 
     public override Client GetOwnerClient ()

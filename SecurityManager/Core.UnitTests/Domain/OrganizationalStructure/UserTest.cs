@@ -170,7 +170,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityContext securityContext = ((ISecurityContextFactory) user).CreateSecurityContext ();
       Assert.AreEqual (user.GetType(), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
-      Assert.AreEqual (user.Group.UniqueIdentifier, securityContext.OwnerGroup);
+      Assert.AreEqual (user.OwningGroup.UniqueIdentifier, securityContext.OwnerGroup);
       Assert.AreEqual (user.Client.UniqueIdentifier, securityContext.OwnerClient);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
@@ -180,7 +180,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void CreateSecurityContext_WithNoGroup ()
     {
       User user = CreateUser ();
-      user.Group = null;
+      user.OwningGroup = null;
 
       SecurityContext securityContext = ((ISecurityContextFactory) user).CreateSecurityContext ();
       Assert.AreEqual (user.GetType (), Type.GetType (securityContext.Class));
@@ -200,7 +200,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityContext securityContext = ((ISecurityContextFactory) user).CreateSecurityContext ();
       Assert.AreEqual (user.GetType (), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
-      Assert.AreEqual (user.Group.UniqueIdentifier, securityContext.OwnerGroup);
+      Assert.AreEqual (user.OwningGroup.UniqueIdentifier, securityContext.OwnerGroup);
       Assert.IsEmpty (securityContext.OwnerClient);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
