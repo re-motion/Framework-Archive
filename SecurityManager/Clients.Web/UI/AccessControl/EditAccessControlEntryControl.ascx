@@ -20,7 +20,7 @@
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <td><rubicon:BocEnumValue ID="ClientField" runat="server" PropertyIdentifier="Client" DataSourceControl="CurrentObject" OnSelectionChanged="ClientField_SelectionChanged">
+          <td><rubicon:BocEnumValue ID="ClientField" runat="server" PropertyIdentifier="Client" DataSourceControl="CurrentObject" OnSelectionChanged="ClientField_SelectionChanged" Width="20em" >
             <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
           </rubicon:BocEnumValue></td>
           <td>

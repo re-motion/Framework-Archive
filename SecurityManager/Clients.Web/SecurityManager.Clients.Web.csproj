@@ -104,11 +104,6 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.de.Designer.cs">
-      <DependentUpon>SecurableClassDefinitionTreeViewResources.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Globalization\Classes\SecurableClassDefinitionTreeViewResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

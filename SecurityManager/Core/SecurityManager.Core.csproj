@@ -99,20 +99,10 @@
     <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
     <Compile Include="Domain\Revision.cs" />
     <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
-    <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.de.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AccessControlEntry.de.resx</DependentUpon>
-    </Compile>
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessControlEntry.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Globalization\Domain\AccessControl\GroupSelection.de.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GroupSelection.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\Domain\AccessControl\ClientSelection.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -128,46 +118,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Client.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Client.de.Designer.cs">
-      <DependentUpon>Client.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\User.de.Designer.cs">
-      <DependentUpon>User.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Role.de.Designer.cs">
-      <DependentUpon>Role.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Position.de.Designer.cs">
-      <DependentUpon>Position.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.de.Designer.cs">
-      <DependentUpon>GroupTypePosition.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\GroupType.de.Designer.cs">
-      <DependentUpon>GroupType.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Group.de.Designer.cs">
-      <DependentUpon>Group.de.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Delegation.de.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Delegation.de.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\Domain\OrganizationalStructure\Delegation.Designer.cs">
       <AutoGen>True</AutoGen>
