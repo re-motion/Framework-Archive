@@ -1,26 +1,32 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class AbstractRoleDefinition : EnumValueDefinition
+  [Instantiable]
+  public abstract class AbstractRoleDefinition : EnumValueDefinition
   {
-    // types
-
-    // static members and constants
-
-    public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction)
     {
-      return (AbstractRoleDefinition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AbstractRoleDefinition> ().With ();
+      }
     }
 
-    public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
     {
-      return (AbstractRoleDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
+      }
     }
 
     public static DomainObjectCollection Find (EnumWrapper[] abstractRoles, ClientTransaction clientTransaction)
@@ -42,35 +48,21 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return clientTransaction.QueryManager.GetCollection (query);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public AbstractRoleDefinition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected AbstractRoleDefinition ()
     {
     }
 
-    public AbstractRoleDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
-      : base (clientTransaction)
+    protected AbstractRoleDefinition (Guid metadataItemID, string name, int value)
     {
-      DataContainer["MetadataItemID"] = metadataItemID;
-      DataContainer["Name"] = name;
-      DataContainer["Value"] = value;
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      MetadataItemID = metadataItemID;
+      Name = name;
+      Value = value;
     }
 
-    protected AbstractRoleDefinition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
-    // methods and properties
-
-    private DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-    }
+    [DBBidirectionalRelation ("SpecificAbstractRole")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
   }
 }

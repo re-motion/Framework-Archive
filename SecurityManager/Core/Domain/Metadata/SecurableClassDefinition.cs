@@ -1,18 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
+using ReflectionUtility=Rubicon.Utilities.ReflectionUtility;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class SecurableClassDefinition : MetadataObject
+  [Instantiable]
+  [DBTable]
+  public abstract class SecurableClassDefinition : MetadataObject
   {
     // types
 
     // static members and constants
+
+    public static SecurableClassDefinition NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<SecurableClassDefinition> ().With ();
+      }
+    }
 
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
@@ -57,23 +70,15 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // member fields
 
-    private DomainObjectCollection _stateProperties;
-    private DomainObjectCollection _accessTypes;
+    private ObjectList<StatePropertyDefinition> _stateProperties;
+    private ObjectList<AccessTypeDefinition> _accessTypes;
 
     // construction and disposing
 
-    public SecurableClassDefinition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected  SecurableClassDefinition ()
     {
       Touch ();
       Initialize ();
-    }
-
-    protected SecurableClassDefinition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
     }
 
     // methods and properties
@@ -101,79 +106,80 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       Touch ();
     }
 
-    public SecurableClassDefinition BaseClass
-    {
-      get { return (SecurableClassDefinition) GetRelatedObject ("BaseClass"); }
-      set { SetRelatedObject ("BaseClass", value); }
-    }
+    [DBBidirectionalRelation ("DerivedClasses")]
+    [DBColumn ("BaseSecurableClassID")]
+    public abstract SecurableClassDefinition BaseClass { get; set; }
 
-    public DomainObjectCollection DerivedClasses
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("DerivedClasses"); }
-      set { } // marks property DerivedClasses as modifiable
-    }
+    [DBBidirectionalRelation ("BaseClass", SortExpression = "[Index] ASC")]
+    public abstract ObjectList<SecurableClassDefinition> DerivedClasses { get; }
 
-    public DateTime ChangedAt
+    public virtual DateTime ChangedAt 
     {
-      get { return (DateTime) DataContainer["ChangedAt"]; }
-   }
+      get { return CurrentProperty<DateTime>().GetValue(); }
+      private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.ChangedAt", value); }
+    }
 
     public void Touch ()
     {
-      DataContainer["ChangedAt"] = DateTime.Now;
+      ChangedAt = DateTime.Now;
     }
 
-    public DomainObjectCollection StateProperties
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DBBidirectionalRelationAttribute ("Class")]
+    protected abstract ObjectList<StatePropertyReference> StatePropertyReferences { get; }
+
+    [StorageClassNone]
+    public ObjectList<StatePropertyDefinition> StateProperties
     {
       get
       {
         if (_stateProperties == null)
         {
-          DomainObjectCollection stateProperties = new DomainObjectCollection ();
+          ObjectList<StatePropertyDefinition> stateProperties = new ObjectList<StatePropertyDefinition> ();
 
           foreach (StatePropertyReference propertyReference in StatePropertyReferences)
             stateProperties.Add (propertyReference.StateProperty);
 
-          _stateProperties = new DomainObjectCollection (stateProperties, true);
+          _stateProperties = new ObjectList<StatePropertyDefinition> (stateProperties, true);
         }
 
         return _stateProperties;
       }
     }
 
-    public DomainObjectCollection AccessTypes
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DBBidirectionalRelationAttribute ("Class", SortExpression = "[Index] ASC")]
+    protected abstract ObjectList<AccessTypeReference> AccessTypeReferences { get; }
+
+    [StorageClassNone]
+    public ObjectList<AccessTypeDefinition> AccessTypes
     {
       get
       {
         if (_accessTypes == null)
         {
-          DomainObjectCollection accessTypes = new DomainObjectCollection ();
+          ObjectList<AccessTypeDefinition> accessTypes = new ObjectList<AccessTypeDefinition> ();
 
           foreach (AccessTypeReference accessTypeReference in AccessTypeReferences)
             accessTypes.Add (accessTypeReference.AccessType);
 
-          _accessTypes = new DomainObjectCollection (accessTypes, true);
+          _accessTypes = new ObjectList<AccessTypeDefinition> (accessTypes, true);
         }
 
         return _accessTypes;
       }
     }
 
-    public DomainObjectCollection StateCombinations
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StateCombinations"); }
-      // Property is not meant to be modifiable in UI
-    }
+    [DBBidirectionalRelation ("Class")]
+    [IsReadOnly]
+    public abstract ObjectList<StateCombination> StateCombinations { get; }
 
-    public DomainObjectCollection AccessControlLists
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlLists"); }
-      set { } // marks property AccessControlLists as modifiable
-    }
+    [DBBidirectionalRelation ("Class", SortExpression = "[Index] ASC")]
+    public abstract ObjectList<AccessControlList> AccessControlLists { get; }
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      AccessTypeReference reference = new AccessTypeReference (ClientTransaction);
+      AccessTypeReference reference = AccessTypeReference.NewObject (ClientTransaction);
       reference.AccessType = accessType;
       AccessTypeReferences.Add (reference);
       DomainObjectCollection accessTypeReferences = AccessTypeReferences;
@@ -188,7 +194,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      StatePropertyReference reference = new StatePropertyReference (ClientTransaction);
+      StatePropertyReference reference = StatePropertyReference.NewObject (ClientTransaction);
       reference.StateProperty = stateProperty;
 
       StatePropertyReferences.Add (reference);
@@ -208,7 +214,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public AccessControlList CreateAccessControlList ()
     {
-      AccessControlList accessControlList = new AccessControlList (ClientTransaction);
+      AccessControlList accessControlList = AccessControlList.NewObject (ClientTransaction);
       accessControlList.Class = this;
       accessControlList.CreateStateCombination ();
       accessControlList.CreateAccessControlEntry ();
@@ -253,16 +259,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       }
 
       base.OnCommitting (args);
-    }
-
-    private DomainObjectCollection StatePropertyReferences
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
-    }
-
-    private DomainObjectCollection AccessTypeReferences
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
     }
   }
 }

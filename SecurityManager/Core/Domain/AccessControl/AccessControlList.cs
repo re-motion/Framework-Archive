@@ -7,20 +7,26 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  public class AccessControlList : AccessControlObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class AccessControlList : AccessControlObject
   {
     // types
 
     // static members and constants
 
-    public static new AccessControlList GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static AccessControlList NewObject (ClientTransaction clientTransaction)
     {
-      return (AccessControlList) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AccessControlList>().With();
+      }
     }
 
-    public static new AccessControlList GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public new static AccessControlList GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (AccessControlList) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      return (AccessControlList) DomainObject.GetObject (id, clientTransaction);
     }
 
     // member fields
@@ -30,18 +36,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // construction and disposing
 
-    public AccessControlList (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected AccessControlList ()
     {
-      Touch ();
-      Initialize ();
-    }
-
-    protected AccessControlList (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
+      Touch();
+      Initialize();
     }
 
     // methods and properties
@@ -49,8 +47,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     //TODO: Add test for initialize during on load
     protected override void OnLoaded ()
     {
-      base.OnLoaded ();
-      Initialize ();
+      base.OnLoaded();
+      Initialize();
     }
 
     private void Initialize ()
@@ -67,9 +65,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         stateCombination.Index = 0;
       else
         stateCombination.Index = ((StateCombination) stateCombinations[stateCombinations.Count - 2]).Index + 1;
-      Touch ();
+      Touch();
       if (Class != null)
-        Class.Touch ();
+        Class.Touch();
     }
 
     private void AccessControlEntries_Added (object sender, DomainObjectCollectionChangeEventArgs args)
@@ -80,48 +78,39 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         ace.Index = 0;
       else
         ace.Index = ((AccessControlEntry) accessControlEntries[accessControlEntries.Count - 2]).Index + 1;
-      Touch ();
+      Touch();
     }
 
-    public DateTime ChangedAt
+    public virtual DateTime ChangedAt
     {
-      get { return (DateTime) DataContainer["ChangedAt"]; }
+      get { return CurrentProperty<DateTime>().GetValue(); }
+      private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlList.ChangedAt", value); }
     }
 
     public void Touch ()
     {
-      DataContainer["ChangedAt"] = DateTime.Now;
+      ChangedAt = DateTime.Now;
     }
 
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
+    public abstract int Index { get; set; }
 
-    public SecurableClassDefinition Class
-    {
-      get { return (SecurableClassDefinition) GetRelatedObject ("Class"); }
-      set { SetRelatedObject ("Class", value); }
-    }
+    [DBBidirectionalRelation ("AccessControlLists")]
+    [DBColumn ("SecurableClassID")]
+    [Mandatory]
+    public abstract SecurableClassDefinition Class { get; set; }
 
-    public DomainObjectCollection StateCombinations
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StateCombinations"); }
-      set { } // marks property StateCombinations as modifiable
-    }
+    [DBBidirectionalRelation ("AccessControlList", SortExpression = "[Index] ASC")]
+    [Mandatory]
+    public abstract ObjectList<StateCombination> StateCombinations { get; }
 
-    public DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-      set { } // marks property AccessControlEntries as modifiable
-    }
+    [DBBidirectionalRelation ("AccessControlList", SortExpression = "[Index] ASC")]
+    public abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     public AccessControlEntry[] FindMatchingEntries (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
-      List<AccessControlEntry> entries = new List<AccessControlEntry> ();
+      List<AccessControlEntry> entries = new List<AccessControlEntry>();
 
       foreach (AccessControlEntry entry in AccessControlEntries)
       {
@@ -129,7 +118,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
           entries.Add (entry);
       }
 
-      return entries.ToArray ();
+      return entries.ToArray();
     }
 
     public AccessControlEntry[] FilterAcesByPriority (AccessControlEntry[] aces)
@@ -139,15 +128,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (aces.Length == 0)
         return aces;
 
-      AccessControlEntry[] sortedAces = (AccessControlEntry[]) aces.Clone ();
+      AccessControlEntry[] sortedAces = (AccessControlEntry[]) aces.Clone();
 
-      Array.Sort (sortedAces, new AccessControlEntryPriorityComparer ());
+      Array.Sort (sortedAces, new AccessControlEntryPriorityComparer());
       Array.Reverse (sortedAces);
 
       int highestPriority = sortedAces[0].ActualPriority;
 
       return Array.FindAll<AccessControlEntry> (
-          sortedAces, 
+          sortedAces,
           delegate (AccessControlEntry current) { return current.ActualPriority == highestPriority; });
     }
 
@@ -155,19 +144,19 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
-      List<AccessTypeDefinition> accessTypes = new List<AccessTypeDefinition> ();
+      List<AccessTypeDefinition> accessTypes = new List<AccessTypeDefinition>();
 
       AccessControlEntry[] aces = FilterAcesByPriority (FindMatchingEntries (token));
       foreach (AccessControlEntry ace in aces)
       {
-        foreach (AccessTypeDefinition allowedAccessType in ace.GetAllowedAccessTypes ())
+        foreach (AccessTypeDefinition allowedAccessType in ace.GetAllowedAccessTypes())
         {
           if (!accessTypes.Contains (allowedAccessType))
             accessTypes.Add (allowedAccessType);
         }
       }
 
-      return accessTypes.ToArray ();
+      return accessTypes.ToArray();
     }
 
     //TODO: Rewrite with test
@@ -176,8 +165,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       base.OnDeleting (args);
 
-      _accessControlEntriesToBeDeleted = AccessControlEntries.Clone ();
-      _stateCombinations = StateCombinations.Clone ();
+      _accessControlEntriesToBeDeleted = AccessControlEntries.Clone();
+      _stateCombinations = StateCombinations.Clone();
     }
 
     protected override void OnDeleted (EventArgs args)
@@ -185,11 +174,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       base.OnDeleted (args);
 
       foreach (AccessControlEntry accessControlEntry in _accessControlEntriesToBeDeleted)
-        accessControlEntry.Delete ();
+        accessControlEntry.Delete();
       _accessControlEntriesToBeDeleted = null;
 
       foreach (StateCombination stateCombination in _stateCombinations)
-        stateCombination.Delete ();
+        stateCombination.Delete();
       _stateCombinations = null;
     }
 
@@ -197,8 +186,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       if (Class == null)
         throw new InvalidOperationException ("Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.");
-      
-      StateCombination stateCombination = new StateCombination (ClientTransaction);
+
+      StateCombination stateCombination = StateCombination.NewObject (ClientTransaction);
       stateCombination.Class = Class;
       stateCombination.AccessControlList = this;
 
@@ -210,7 +199,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (Class == null)
         throw new InvalidOperationException ("Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.");
 
-      AccessControlEntry accessControlEntry = new AccessControlEntry (ClientTransaction);
+      AccessControlEntry accessControlEntry = AccessControlEntry.NewObject (ClientTransaction);
       foreach (AccessTypeDefinition accessTypeDefinition in Class.AccessTypes)
         accessControlEntry.AttachAccessType (accessTypeDefinition);
       accessControlEntry.AccessControlList = this;

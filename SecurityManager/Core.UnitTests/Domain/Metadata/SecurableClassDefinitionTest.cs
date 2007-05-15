@@ -17,9 +17,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AddAccessType_TwoNewAccessTypes ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      AccessTypeDefinition accessType0 = new AccessTypeDefinition (transaction);
-      AccessTypeDefinition accessType1 = new AccessTypeDefinition (transaction);
-      SecurableClassDefinitionWrapper classDefinitionWrapper = new SecurableClassDefinitionWrapper (new SecurableClassDefinition (transaction));
+      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (transaction);
+      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (transaction);
+      SecurableClassDefinitionWrapper classDefinitionWrapper = new SecurableClassDefinitionWrapper (SecurableClassDefinition.NewObject (transaction));
       DateTime changedAt = classDefinitionWrapper.SecurableClassDefinition.ChangedAt;
       Thread.Sleep (50);
 
@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void AddStateProperty ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction);
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject  (transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
       classDefinition.AddStateProperty (stateProperty);
 
@@ -260,7 +260,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void CreateAccessControlList ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
       DateTime changedAt = classDefinition.ChangedAt;
       Thread.Sleep (50);
 
@@ -276,7 +276,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void CreateAccessControlList_TwoNewAcls ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
       DateTime changedAt = classDefinition.ChangedAt;
       Thread.Sleep (50);
 
@@ -323,7 +323,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void GetChangedAt_AfterCreation ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
       Assert.AreNotEqual (DateTime.MinValue, classDefinition.ChangedAt);
     }
@@ -332,7 +332,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Touch_AfterCreation ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
       DateTime creationDate = classDefinition.ChangedAt;
 

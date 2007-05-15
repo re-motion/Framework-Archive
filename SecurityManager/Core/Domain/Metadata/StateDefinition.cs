@@ -1,55 +1,58 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class StateDefinition : EnumValueDefinition
+  [Instantiable]
+  public abstract class StateDefinition : EnumValueDefinition
   {
     // types
 
     // static members and constants
+
+    public static StateDefinition NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StateDefinition> ().With ();
+      }
+    }
+
+        public static StateDefinition NewObject (ClientTransaction clientTransaction, string name, int value)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StateDefinition> ().With (name, value);
+      }
+    }
 
     public static new StateDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (StateDefinition) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new StateDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (StateDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing
 
-    public StateDefinition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected StateDefinition ()
     {
     }
 
-    public StateDefinition (ClientTransaction clientTransaction, string name, int value)
-      : base (clientTransaction)
+    protected StateDefinition (string name, int value)
     {
-      DataContainer["Name"] = name;
-      DataContainer["Value"] = value;
-    }
-
-    protected StateDefinition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
+      Name = name;
+      Value = value;
     }
 
     // methods and properties
 
-    public StatePropertyDefinition StateProperty
-    {
-      get { return (StatePropertyDefinition) GetRelatedObject ("StateProperty"); }
-      set { SetRelatedObject ("StateProperty", value); }
-    }
+    [DBBidirectionalRelation ("DefinedStates")]
+    [Mandatory]
+    public abstract StatePropertyDefinition StateProperty { get; set; }
 
     public override Guid MetadataItemID
     {
@@ -57,9 +60,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { throw new NotSupportedException ("States do not support MetadataItemID"); }
     }
 
-    private DomainObjectCollection Usages
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Usages"); }
-    }
+    //TODO: Rename to StateUsages
+    [EditorBrowsable( EditorBrowsableState.Never)]
+    [DBBidirectionalRelation ("StateDefinition")]
+    protected abstract ObjectList<StateUsage> Usages { get; }
   }
 }

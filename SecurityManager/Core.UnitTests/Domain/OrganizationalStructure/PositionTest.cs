@@ -120,7 +120,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       position.Delegation = Delegation.Enabled;
 
       SecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext ();
-      Assert.AreEqual (position.GetType (), Type.GetType (securityContext.Class));
+      Assert.AreEqual (position.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.IsEmpty (securityContext.Owner);
       Assert.IsEmpty (securityContext.OwnerGroup);
       Assert.IsEmpty (securityContext.OwnerClient);

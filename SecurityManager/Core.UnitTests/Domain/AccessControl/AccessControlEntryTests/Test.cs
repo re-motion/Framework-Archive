@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetAllowedAccessTypes_EmptyAce ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       AccessTypeDefinition[] accessTypes = ace.GetAllowedAccessTypes();
 
@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetAllowedAccessTypes_ReadAllowed ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void AllowAccess_Read ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessTypeDefinition accessType = _testHelper.CreateReadAccessType (ace, null);
 
       ace.AllowAccess (accessType);
@@ -60,8 +60,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
         "The access type 'Test' is not assigned to this access control entry.\r\nParameter name: accessType")]
     public void AllowAccess_InvalidAccessType ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid(), "Test", 42);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_testHelper.Transaction, Guid.NewGuid(), "Test", 42);
 
       ace.AllowAccess (accessType);
     }
@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void RemoveAccess_Read ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessTypeDefinition accessType = _testHelper.CreateReadAccessType (ace, true);
 
       ace.RemoveAccess (accessType);
@@ -81,9 +81,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void AttachAccessType_TwoNewAccessType ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      AccessTypeDefinition accessType0 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid(), "Access Type 0", 0);
-      AccessTypeDefinition accessType1 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid(), "Access Type 1", 1);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (_testHelper.Transaction, Guid.NewGuid(), "Access Type 0", 0);
+      AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (_testHelper.Transaction, Guid.NewGuid(), "Access Type 1", 1);
       DateTime changedAt = ace.ChangedAt;
       Thread.Sleep (50);
 
@@ -105,8 +105,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
         "The access type 'Test' has already been attached to this access control entry.\r\nParameter name: accessType")]
     public void AttachAccessType_ExistingAccessType ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid(), "Test", 42);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_testHelper.Transaction, Guid.NewGuid(), "Test", 42);
 
       ace.AttachAccessType (accessType);
       ace.AttachAccessType (accessType);
@@ -130,7 +130,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void GetChangedAt_AfterCreation ()
     {
       ClientTransaction transaction = new ClientTransaction();
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       Assert.AreNotEqual (DateTime.MinValue, ace.ChangedAt);
     }
@@ -139,7 +139,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void Touch_AfterCreation ()
     {
       ClientTransaction transaction = new ClientTransaction();
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       DateTime creationDate = ace.ChangedAt;
 
@@ -153,7 +153,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void SetAndGet_Index ()
     {
       ClientTransaction transaction = new ClientTransaction();
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       ace.Index = 1;
       Assert.AreEqual (1, ace.Index);

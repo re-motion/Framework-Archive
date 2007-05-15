@@ -21,53 +21,53 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetBinaryAllowed_WithAllowedTrue ()
     {
-      Permission permission = new Permission (_transaction);
-      permission.Allowed = NaBoolean.True;
+      Permission permission = Permission.NewObject (_transaction);
+      permission.Allowed = true;
 
-      Assert.AreEqual (true, permission.BinaryAllowed);
+      Assert.IsTrue (permission.BinaryAllowed);
     }
 
     [Test]
     public void GetBinaryAllowed_WithAllowedFalse ()
     {
-      Permission permission = new Permission (_transaction);
-      permission.Allowed = NaBoolean.False;
+      Permission permission = Permission.NewObject (_transaction);
+      permission.Allowed = false;
 
-      Assert.AreEqual (false, permission.BinaryAllowed);
+      Assert.IsFalse (permission.BinaryAllowed);
     }
 
     [Test]
     public void GetBinaryAllowed_WithAllowedNull ()
     {
-      Permission permission = new Permission (_transaction);
-      permission.Allowed = NaBoolean.Null;
+      Permission permission = Permission.NewObject (_transaction);
+      permission.Allowed = null;
 
-      Assert.AreEqual (false, permission.BinaryAllowed);
+      Assert.IsFalse (permission.BinaryAllowed);
     }
 
     [Test]
     public void SetBinaryAllowed_FromTrue()
     {
-      Permission permission = new Permission (_transaction);
+      Permission permission = Permission.NewObject (_transaction);
       permission.BinaryAllowed = true;
 
-      Assert.AreEqual (NaBoolean.True, permission.Allowed);
+      Assert.AreEqual (true, permission.Allowed);
     }
 
     [Test]
     public void SetBinaryAllowed_FromFalse ()
     {
-      Permission permission = new Permission (_transaction);
+      Permission permission = Permission.NewObject (_transaction);
       permission.BinaryAllowed = false;
 
-      Assert.AreEqual (NaBoolean.Null, permission.Allowed);
+      Assert.IsNull (permission.Allowed);
     }
 
     [Test]
     public void SetAndGet_Index ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      Permission permission = new Permission (transaction);
+      Permission permission = Permission.NewObject (transaction);
 
       permission.Index = 1;
       Assert.AreEqual (1, permission.Index);

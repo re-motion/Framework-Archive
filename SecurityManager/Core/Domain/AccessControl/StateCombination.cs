@@ -7,39 +7,32 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  public class StateCombination : AccessControlObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class StateCombination : AccessControlObject
   {
     // types
 
     // static members and constants
 
-    public static new StateCombination GetObject (ObjectID id, ClientTransaction clientTransaction)
+     public static StateCombination NewObject (ClientTransaction clientTransaction)
     {
-      return (StateCombination) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new StateCombination GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (StateCombination) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StateCombination> ().With ();
+      }
     }
 
     // member fields
 
-    private DomainObjectCollection _stateUsagesToBeDeleted;
+    private ObjectList<StateUsage> _stateUsagesToBeDeleted;
 
     // construction and disposing
 
-    public StateCombination (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected StateCombination ()
     {
       Initialize();
-    }
-
-    protected StateCombination (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
     }
 
     // methods and properties
@@ -62,29 +55,19 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         Class.Touch ();
     }
 
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
+    public abstract int Index { get; set; }
 
-    public SecurableClassDefinition Class
-    {
-      get { return (SecurableClassDefinition) GetRelatedObject ("Class"); }
-      set { SetRelatedObject ("Class", value); }
-    }
+    [DBBidirectionalRelation ("StateCombinations")]
+    [DBColumn ("SecurableClassID")]
+    [Mandatory]
+    public abstract SecurableClassDefinition Class { get; set; }
 
-    public DomainObjectCollection StateUsages
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StateUsages"); }
-      set { } // marks property StateUsages as modifiable
-    }
+    [DBBidirectionalRelation ("StateCombination")]
+    public abstract ObjectList<StateUsage> StateUsages { get; }
 
-    public AccessControlList AccessControlList
-    {
-      get { return (AccessControlList) GetRelatedObject ("AccessControlList"); }
-      set { SetRelatedObject ("AccessControlList", value); }
-    }
+    [DBBidirectionalRelation ("StateCombinations")]
+    [Mandatory]
+    public abstract AccessControlList AccessControlList { get; set; }
 
     public bool MatchesStates (List<StateDefinition> states)
     {
@@ -104,7 +87,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public void AttachState (StateDefinition state)
     {
-      StateUsage usage = new StateUsage (ClientTransaction);
+      StateUsage usage = StateUsage.NewObject (ClientTransaction);
       usage.StateDefinition = state;
       StateUsages.Add (usage);
     }

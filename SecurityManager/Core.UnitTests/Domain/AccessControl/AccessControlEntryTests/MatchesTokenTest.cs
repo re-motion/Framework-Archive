@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void EmptyToken_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
       Assert.IsTrue (entry.MatchesToken (token));
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithClient_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
       SecurityToken token = _testHelper.CreateTokenWithOwningClient (null, entry.SpecificClient);
  
       Assert.IsTrue (entry.MatchesToken (token));
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithAbstractRole_EmptyAce_Matches ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
       SecurityToken token = _testHelper.CreateTokenWithAbstractRole (_testHelper.CreateTestAbstractRole ());
 
       Assert.IsTrue (entry.MatchesToken (token));

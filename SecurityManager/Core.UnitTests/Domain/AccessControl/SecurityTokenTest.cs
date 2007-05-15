@@ -269,7 +269,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Client CreateClient (ClientTransaction transaction, string name)
     {
-      Client client = new Client (transaction);
+      Client client = _factory.CreateClient (transaction);
       client.Name = name;
 
       return client;
@@ -308,7 +308,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private Role CreateRole (ClientTransaction transaction, User user, Group group, Position position)
     {
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       role.User = user;
       role.Group = group;
       role.Position = position;

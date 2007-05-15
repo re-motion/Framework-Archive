@@ -1,60 +1,49 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.AccessControl;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class AccessTypeDefinition : EnumValueDefinition
+  [Instantiable]
+  public abstract class AccessTypeDefinition : EnumValueDefinition
   {
-    // types
-
-    // static members and constants
-
-    public static new AccessTypeDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static AccessTypeDefinition NewObject (ClientTransaction clientTransaction)
     {
-      return (AccessTypeDefinition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AccessTypeDefinition> ().With ();
+      }
     }
 
-    public static new AccessTypeDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public static AccessTypeDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
     {
-      return (AccessTypeDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AccessTypeDefinition> ().With (metadataItemID, name, value);
+      }
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public AccessTypeDefinition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected AccessTypeDefinition ()
     {
     }
 
-    public AccessTypeDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
-      : base (clientTransaction)
+    protected AccessTypeDefinition (Guid metadataItemID, string name, int value)
     {
-      DataContainer["MetadataItemID"] = metadataItemID;
-      DataContainer["Name"] = name;
-      DataContainer["Value"] = value;
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      MetadataItemID = metadataItemID;
+      Name = name;
+      Value = value;
     }
 
-    protected AccessTypeDefinition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [DBBidirectionalRelation ("AccessType")]
+    public abstract ObjectList<AccessTypeReference> References { get; }
 
-    // methods and properties
-
-    public DomainObjectCollection References
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("References"); }
-      set { } // marks property References as modifiable
-    }
-
-    private DomainObjectCollection Permissions
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Permissions"); }
-    }
+    [DBBidirectionalRelation ("AccessType")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    protected abstract ObjectList<Permission> Permissions { get; }
   }
 }

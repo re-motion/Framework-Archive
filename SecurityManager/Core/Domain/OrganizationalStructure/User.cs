@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
 using Rubicon.Security.Data.DomainObjects;
 using System.Runtime.Remoting.Messaging;
@@ -14,17 +15,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
   [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")]
-  public class User : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class User : OrganizationalStructureObject
   {
-    // types
-
     public enum Methods
     {
       //Create
       Search
     }
-
-    // static members and constants
 
     private static readonly string s_currentKey = typeof (User).AssemblyQualifiedName + "_Current";
 
@@ -34,14 +34,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { CallContext.SetData (s_currentKey, value); }
     }
 
+    internal static User NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<User> ().With ();
+      }
+    }
+
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (User) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new User GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (User) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     public static User FindByUserName (string userName, ClientTransaction clientTransaction)
@@ -80,74 +83,37 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
     }
-    
-    // member fields
 
-    // construction and disposing
-
-    protected internal User (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected User ()
     {
     }
 
-    protected User (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [StringProperty (MaximumLength = 100)]
+    public abstract string Title { get; set; }
 
-    // methods and properties
+    [StringProperty (MaximumLength = 100)]
+    public abstract string FirstName { get; set; }
 
-    public string Title
-    {
-      get { return (string) DataContainer["Title"]; }
-      set { DataContainer["Title"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string LastName { get; set; }
 
-    public string FirstName
-    {
-      get { return (string) DataContainer["FirstName"]; }
-      set { DataContainer["FirstName"] = value; }
-    }
-
-    public string LastName
-    {
-      get { return (string) DataContainer["LastName"]; }
-      set { DataContainer["LastName"] = value; }
-    }
-
-    public string UserName
-    {
-      get { return (string) DataContainer["UserName"]; }
-      set { DataContainer["UserName"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string UserName { get; set; }
 
     [DemandPropertyWritePermission (SecurityManagerAccessTypes.AssignRole)]
-    public DomainObjectCollection Roles
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
-      set { } // marks property Roles as modifiable
-    }
+    [DBBidirectionalRelation ("User")]
+    public abstract ObjectList<Role> Roles { get; }
 
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
-    }
+    [Mandatory]
+    public abstract Client Client { get; set; }
 
-    public Group OwningGroup
-    {
-      get { return (Group) GetRelatedObject ("OwningGroup"); }
-      set { SetRelatedObject ("OwningGroup", value); }
-    }
+    [Mandatory]
+    public abstract Group OwningGroup { get; set; }
 
     // Must not be private because PermissionReflection would not work with derived classes.
     [EditorBrowsable (EditorBrowsableState.Never)]
-    protected DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-    }
+    [DBBidirectionalRelation ("SpecificUser")]
+    protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     public List<Role> GetRolesForGroup (Group group)
     {

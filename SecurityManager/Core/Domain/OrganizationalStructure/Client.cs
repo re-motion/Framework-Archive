@@ -14,7 +14,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Client")]
   [PermanentGuid ("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
-  public class Client : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Client : OrganizationalStructureObject
   {
     // constants
 
@@ -35,14 +38,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { CallContext.SetData (s_currentKey, value); }
     }
 
+    internal static Client NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Client> ().With ();
+      }
+    }
+
     public static new Client GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Client) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Client GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Client) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
@@ -78,50 +84,26 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public Client (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Client ()
     {
       UniqueIdentifier = Guid.NewGuid ().ToString ();
     }
 
-    protected Client (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
     // methods and properties
 
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    public string UniqueIdentifier
-    {
-      get { return (string) DataContainer["UniqueIdentifier"]; }
-      set { DataContainer["UniqueIdentifier"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string UniqueIdentifier { get; set; }
 
-    public bool IsAbstract
-    {
-      get { return (bool) DataContainer["IsAbstract"]; }
-      set { DataContainer["IsAbstract"] = value; }
-    }
+    public abstract bool IsAbstract { get; set; }
 
-    public Client Parent
-    {
-      get { return (Client) GetRelatedObject ("Parent"); }
-      set { SetRelatedObject ("Parent", value); }
-    }
+    [DBBidirectionalRelation ("Children")]
+    public abstract Client Parent { get; set; }
 
-    public DomainObjectCollection Children
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Children"); }
-      set { } // marks property Children as modifiable
-    }
+    [DBBidirectionalRelation ("Parent")]
+    public abstract ObjectList<Client> Children { get; }
 
     public override string DisplayName
     {

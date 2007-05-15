@@ -2,8 +2,8 @@ using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
+using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
-using Rubicon.Data;
 using System.ComponentModel;
 using Rubicon.Security;
 
@@ -12,25 +12,22 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
   [PermanentGuid ("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
-  public class GroupType : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class GroupType : OrganizationalStructureObject
   {
-    // types
-
     public enum Methods
     {
       Search
     }
-    
-    // static members and constants
 
-    public static new GroupType GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static GroupType NewObject (ClientTransaction clientTransaction)
     {
-      return (GroupType) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new GroupType GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (GroupType) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<GroupType> ().With ();
+      }
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
@@ -47,47 +44,23 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
     }
-    
-    // member fields
 
-    // construction and disposing
-
-    public GroupType (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected GroupType ()
     {
     }
 
-    protected GroupType (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    // methods and properties
+    [DBBidirectionalRelation ("GroupType")]
+    public abstract ObjectList<Group> Groups { get; }
 
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [DBBidirectionalRelation ("GroupType")]
+    public abstract ObjectList<GroupTypePosition> Positions { get; }
 
-    public DomainObjectCollection Groups
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Groups"); }
-      set { } // marks property Groups as modifiable
-    }
-
-    public DomainObjectCollection Positions
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Positions"); }
-      set { } // marks property Positions as modifiable
-    }
-
-    private DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-    }
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DBBidirectionalRelation ("SpecificGroupType")]
+    protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     //TODO: UnitTests
     public override string DisplayName

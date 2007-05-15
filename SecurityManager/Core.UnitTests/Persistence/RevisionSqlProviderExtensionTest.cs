@@ -11,6 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
   public class RevisionSqlProviderExtensionTest : DomainTest
   {
     private ClientTransaction _clientTransaction;
+    private OrganizationalStructureFactory _factory;
 
     public override void SetUp ()
     {
@@ -20,12 +21,13 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
       dbFixtures.CreateEmptyDomain ();
       
       _clientTransaction = new ClientTransaction();
+      _factory = new OrganizationalStructureFactory ();
     }
 
     [Test]
     public void Saving_OneSecurityManagerDomainObject ()
     {
-      Client client = new Client (_clientTransaction);
+      Client client = _factory.CreateClient (_clientTransaction);
 
       _clientTransaction.Commit ();
 
@@ -35,7 +37,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
     [Test]
     public void Saving_DisacardedDomainObject ()
     {
-      Client client = new Client (_clientTransaction);
+      Client client = _factory.CreateClient (_clientTransaction);
       client.Delete ();
 
       _clientTransaction.Commit ();

@@ -34,7 +34,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateClerkAbstractRole (int index)
     {
-      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
+      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
       role.Index = index;
 
       return role;
@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateSecretaryAbstractRole (int index)
     {
-      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 1);
+      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 1);
       role.Index = index;
 
       return role;
@@ -50,7 +50,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AbstractRoleDefinition CreateAdministratorAbstractRole (int index)
     {
-      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
+      AbstractRoleDefinition role = AbstractRoleDefinition.NewObject (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRoles, Rubicon.Security.UnitTests.TestDomain", 0);
       role.Index = index;
 
       return role;
@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeCreate (int index)
     {
-      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 0);
+      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 0);
       type.Index = index;
 
       return type;
@@ -66,7 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeRead (int index)
     {
-      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 1);
+      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 1);
       type.Index = index;
 
       return type;
@@ -74,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public AccessTypeDefinition CreateAccessTypeEdit (int index)
     {
-      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 2);
+      AccessTypeDefinition type = AccessTypeDefinition.NewObject  (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessTypes, Rubicon.Security", 2);
       type.Index = index;
       
       return type;
@@ -82,7 +82,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateConfidentialityProperty (int index)
     {
-      StatePropertyDefinition property = new StatePropertyDefinition (_transaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
+      StatePropertyDefinition property = StatePropertyDefinition.NewObject  (_transaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
       property.Index = index;
       property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
       property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
@@ -93,7 +93,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateFileStateProperty (int index)
     {
-      StatePropertyDefinition property = new StatePropertyDefinition (_transaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
+      StatePropertyDefinition property = StatePropertyDefinition.NewObject  (_transaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
       property.Index = index;
       property.AddState (State_NewName, State_NewValue);
       property.AddState (State_NormalName, State_NormalValue);
@@ -114,12 +114,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StatePropertyDefinition CreateNewStateProperty (string name)
     {
-      return new StatePropertyDefinition (_transaction, Guid.NewGuid (), name);
+      return StatePropertyDefinition.NewObject  (_transaction, Guid.NewGuid (), name);
     }
 
     public StateDefinition CreateState (string name, int value)
     {
-      StateDefinition state = new StateDefinition (_transaction, name, value);
+      StateDefinition state = StateDefinition.NewObject (_transaction, name, value);
       state.Index = value;
 
       return state;

@@ -168,7 +168,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Client client = _testHelper.CreateClient ("Client", "UID: Client");
 
       SecurityContext securityContext = ((ISecurityContextFactory) client).CreateSecurityContext ();
-      Assert.AreEqual (client.GetType (), Type.GetType (securityContext.Class));
+      Assert.AreEqual (client.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.IsEmpty (securityContext.Owner);
       Assert.IsEmpty (securityContext.OwnerGroup);
       Assert.AreEqual (client.UniqueIdentifier, securityContext.OwnerClient);

@@ -6,7 +6,6 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
-using Rubicon.Security.Data.DomainObjects;
 using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
@@ -14,26 +13,23 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
   [PermanentGuid ("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
-  public class Position : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Position : OrganizationalStructureObject
   {
-    // types
-
     public enum Methods
     {
       //Create
       Search
     }
 
-    // static members and constants
-
-    public static new Position GetObject (ObjectID id, ClientTransaction clientTransaction)
+    internal static Position NewObject (ClientTransaction clientTransaction)
     {
-      return (Position) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Position GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Position) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Position> ().With ();
+      }
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)
@@ -64,60 +60,31 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
     }
     
-    // member fields
-
     private DomainObjectCollection _accessControlEntriesToBeDeleted;
     private DomainObjectCollection _rolesToBeDeleted;
     private DomainObjectCollection _groupTypePositionsToBeDeleted;
-
-    // construction and disposing
-
-    protected internal Position (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Position ()
     {
     }
 
-    protected Position (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
-    // methods and properties
-
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
     [PermanentGuid ("5C31F600-88F3-4ff7-988C-0E45A857AB4B")]
-    public Delegation Delegation
-    {
-      get { return (Delegation) DataContainer["Delegation"]; }
-      set { DataContainer["Delegation"] = value; }
-    }
+    public abstract Delegation Delegation { get; set; }
 
-    public DomainObjectCollection GroupTypes
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("GroupTypes"); }
-      set { } // marks property GroupTypes as modifiable
-    }
+    [DBBidirectionalRelation ("Position")]
+    public abstract ObjectList<GroupTypePosition> GroupTypes { get; }
 
     // Must not be private because PermissionReflection would not work with derived classes.
     [EditorBrowsable (EditorBrowsableState.Never)]
-    protected DomainObjectCollection Roles
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
-    }
+    [DBBidirectionalRelation ("Position")]
+    protected abstract ObjectList<Role> Roles { get; }
 
     // Must not be private because PermissionReflection would not work with derived classes.
     [EditorBrowsable (EditorBrowsableState.Never)]
-    protected DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-    }
+    [DBBidirectionalRelation ("SpecificPosition")]
+    protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     public override string DisplayName
     {

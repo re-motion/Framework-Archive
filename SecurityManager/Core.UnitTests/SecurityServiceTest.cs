@@ -188,7 +188,7 @@ namespace Rubicon.SecurityManager.UnitTests
     
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)
     {
-      AccessControlList acl = new AccessControlList (transaction);
+      AccessControlList acl = AccessControlList.NewObject (transaction);
       acl.AccessControlEntries.Add (ace);
 
       return acl;
@@ -196,14 +196,14 @@ namespace Rubicon.SecurityManager.UnitTests
 
     private AccessControlEntry CreateAce (ClientTransaction transaction)
     {
-      AccessControlEntry ace = new AccessControlEntry (transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (transaction);
 
-      AbstractRoleDefinition abstractRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "QualityManager", 0);
+      AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (transaction, Guid.NewGuid (), "QualityManager", 0);
       ace.SpecificAbstractRole = abstractRole;
 
-      AccessTypeDefinition readAccessType = new AccessTypeDefinition (transaction, Guid.NewGuid (), "Read|MyTypeName", 0);
-      AccessTypeDefinition writeAccessType = new AccessTypeDefinition (transaction, Guid.NewGuid (), "Write|MyTypeName", 1);
-      AccessTypeDefinition deleteAccessType = new AccessTypeDefinition (transaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
+      AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Read|MyTypeName", 0);
+      AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Write|MyTypeName", 1);
+      AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
 
       ace.AttachAccessType (readAccessType);
       ace.AttachAccessType (writeAccessType);

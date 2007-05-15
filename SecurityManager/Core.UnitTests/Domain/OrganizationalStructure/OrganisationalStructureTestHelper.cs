@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Client CreateClient (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
-      Client client = new Client (transaction);
+      Client client = _factory.CreateClient (transaction);
       client.UniqueIdentifier = uniqueIdentifier;
       client.Name = name;
 
@@ -73,7 +73,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      Role role = new Role (_transaction);
+      Role role = Role.NewObject (_transaction);
       role.User = user;
       role.Group = group;
       role.Position = position;
@@ -83,7 +83,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public GroupType CreateGroupType (string name)
     {
-      GroupType groupType = new GroupType (_transaction);
+      GroupType groupType = GroupType.NewObject (_transaction);
       groupType.Name = name;
 
       return groupType;
@@ -91,7 +91,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public GroupTypePosition CreateGroupTypePosition (GroupType groupType, Position position)
     {
-      GroupTypePosition concretePosition = new GroupTypePosition (_transaction);
+      GroupTypePosition concretePosition = GroupTypePosition.NewObject (_transaction);
       concretePosition.GroupType = groupType;
       concretePosition.Position = position;
 

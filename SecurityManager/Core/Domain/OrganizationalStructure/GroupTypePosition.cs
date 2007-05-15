@@ -1,58 +1,36 @@
 using System;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
-using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
   [PermanentGuid ("E2BF5572-DDFF-4319-8824-B41653950860")]
-  public class GroupTypePosition : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class GroupTypePosition : OrganizationalStructureObject
   {
-    // types
-
-    // static members and constants
-
-    public static new GroupTypePosition GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static GroupTypePosition NewObject (ClientTransaction clientTransaction)
     {
-      return (GroupTypePosition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<GroupTypePosition> ().With ();
+      }
     }
 
-    public static new GroupTypePosition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (GroupTypePosition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public GroupTypePosition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected GroupTypePosition ()
     {
     }
 
-    protected GroupTypePosition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [DBBidirectionalRelation ("Positions")]
+    [Mandatory]
+    public abstract GroupType GroupType { get; set; }
 
-    // methods and properties
-
-    public GroupType GroupType
-    {
-      get { return (GroupType) GetRelatedObject ("GroupType"); }
-      set { SetRelatedObject ("GroupType", value); }
-    }
-
-    public Position Position
-    {
-      get { return (Position) GetRelatedObject ("Position"); }
-      set { SetRelatedObject ("Position", value); }
-    }
+    [DBBidirectionalRelation ("GroupTypes")]
+    [Mandatory]
+    public abstract Position Position { get; set; }
 
     //TODO: UnitTests
     public override string DisplayName

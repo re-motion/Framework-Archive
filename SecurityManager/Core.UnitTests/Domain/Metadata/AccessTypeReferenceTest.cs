@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void SetAndGet_Index ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      AccessTypeReference accessTypeReference = new AccessTypeReference (transaction);
+      AccessTypeReference accessTypeReference = AccessTypeReference.NewObject (transaction);
 
       accessTypeReference.Index = 1;
       Assert.AreEqual (1, accessTypeReference.Index);

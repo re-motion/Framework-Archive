@@ -99,6 +99,7 @@
     <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
     <Compile Include="Domain\Revision.cs" />
     <Compile Include="Domain\SecurityManagerAccessTypes.cs" />
+    <Compile Include="Domain\SecurityManagerStorageGroupAttribute.cs" />
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,8 +285,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Database\SecurityManagerSetupDBSpecialTables.sql" />
-    <None Include="Domain\SecurityManagerMapping.xml">
-    </None>
     <None Include="Domain\SecurityManagerQueries.xml">
     </None>
     <None Include="GenerateSetupDBScript.ps1" />

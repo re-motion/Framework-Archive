@@ -191,7 +191,7 @@ namespace Rubicon.Security.Data.DomainObjects
       try
       {
         _isActive = true;
-        securityClient.CheckPropertyReadAccess (securableObject, propertyName);
+        securityClient.CheckPropertyReadAccess (securableObject, GetSimplePropertyName (propertyName));
       }
       finally
       {
@@ -231,12 +231,21 @@ namespace Rubicon.Security.Data.DomainObjects
       try
       {
         _isActive = true;
-        securityClient.CheckPropertyWriteAccess (securableObject, propertyName);
+        securityClient.CheckPropertyWriteAccess (securableObject, GetSimplePropertyName (propertyName));
       }
       finally
       {
         _isActive = false;
       }
+    }
+
+    //TODO: Move to reflection Utility and test
+    private string GetSimplePropertyName (string propertyName)
+    {
+      int lastIndex = propertyName.LastIndexOf ('.');
+      if (lastIndex != -1 && lastIndex + 1 < propertyName.Length)
+        return propertyName.Substring (lastIndex + 1);
+      return propertyName;
     }
 
     private SecurityClient GetSecurityClient ()

@@ -24,13 +24,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       base.SetUp ();
 
       _transaction = new ClientTransaction ();
-      _metadataObject = new SecurableClassDefinition (_transaction);
+      _metadataObject = SecurableClassDefinition.NewObject (_transaction);
       _metadataObject.Name = "Technical Name";
 
-      _cultureInvariant = new Culture (_transaction, string.Empty);
-      _cultureDe = new Culture (_transaction, "de");
-      _cultureDeAt = new Culture (_transaction, "de-AT");
-      _cultureRu = new Culture (_transaction, "ru");
+      _cultureInvariant = Culture.NewObject (_transaction, string.Empty);
+      _cultureDe = Culture.NewObject (_transaction, "de");
+      _cultureDeAt = Culture.NewObject (_transaction, "de-AT");
+      _cultureRu = Culture.NewObject (_transaction, "ru");
 
       _backupCulture = Thread.CurrentThread.CurrentCulture;
       _backupUICulture = Thread.CurrentThread.CurrentUICulture;
@@ -142,7 +142,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
 
     private LocalizedName CreateLocalizedName (MetadataObject metadataObject, Culture culture, string text)
     {
-      return new LocalizedName (metadataObject.ClientTransaction, text, culture, metadataObject);
+      return LocalizedName.NewObject (metadataObject.ClientTransaction, text, culture, metadataObject);
     }
   }
 }

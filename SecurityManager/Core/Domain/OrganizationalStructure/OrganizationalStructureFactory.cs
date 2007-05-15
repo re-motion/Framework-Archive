@@ -7,22 +7,22 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     public virtual Client CreateClient (ClientTransaction transaction)
     {
-      return new Client (transaction);
+      return Client.NewObject (transaction);
     }
 
     public virtual Group CreateGroup (ClientTransaction transaction)
     {
-      return new Group (transaction);
+      return Group.NewObject (transaction);
     }
 
     public virtual User CreateUser (ClientTransaction transaction)
     {
-      return new User (transaction);
+      return User.NewObject (transaction);
     }
 
     public virtual Position CreatePosition (ClientTransaction transaction)
     {
-      return new Position (transaction);
+      return Position.NewObject (transaction);
     }
 
     public virtual Type GetClientType ()

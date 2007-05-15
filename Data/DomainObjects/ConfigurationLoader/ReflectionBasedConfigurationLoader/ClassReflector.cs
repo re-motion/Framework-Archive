@@ -93,16 +93,22 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefinition;
     }
 
+    //TODO: Write test for abstract DomainObject with infrasturcture constructor
+    //TOOD: Write test for fail
     private void ValidateClassDefinition (ReflectionBasedClassDefinition classDefinition)
     {
-      BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
-      ConstructorInfo legacyLoadConstructor = classDefinition.ClassType.GetConstructor(flags, null, new Type[] {typeof (DataContainer)}, null);
-      if (legacyLoadConstructor != null)
+      if (!classDefinition.IsAbstract)
       {
-        string message = string.Format ("Domain object type {0} has a legacy infrastructure constructor for loading (a nonpublic constructor taking a"
-            + " single DataContainer argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.",
-            classDefinition.ClassType);
-        throw new MappingException (message);
+        BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
+        ConstructorInfo legacyLoadConstructor = classDefinition.ClassType.GetConstructor (flags, null, new Type[] {typeof (DataContainer)}, null);
+        if (legacyLoadConstructor != null)
+        {
+          throw new MappingException (
+              string.Format (
+                  "Domain object type {0} has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer"
+                  + " argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.",
+                  classDefinition.ClassType));
+        }
       }
     }
 
@@ -120,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType);
     }
 
-    private string GetID()
+    private string GetID ()
     {
       ClassIDAttribute attribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute> (Type, false);
       if (attribute != null)
@@ -128,7 +134,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return Type.Name;
     }
 
-    public virtual string GetStorageSpecificIdentifier()
+    public virtual string GetStorageSpecificIdentifier ()
     {
       IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (Type, false);
       if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
@@ -137,7 +143,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     }
 
     //TODO: Move type resolving to storagegrouplist
-    private string GetStorageProviderID()
+    //TODO: Test for DefaultStorageProvider
+    private string GetStorageProviderID ()
     {
       StorageGroupAttribute storageGroupAttribute = AttributeUtility.GetCustomAttribute<StorageGroupAttribute> (Type, true);
       if (storageGroupAttribute == null)
@@ -145,10 +152,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       string storageGroupName = TypeUtility.GetPartialAssemblyQualifiedName (storageGroupAttribute.GetType());
       StorageGroupElement storageGroup = DomainObjectsConfiguration.Current.Storage.StorageGroups[storageGroupName];
+      if (storageGroup == null)
+        return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
       return storageGroup.StorageProviderName;
     }
 
-    private bool IsAbstract()
+    private bool IsAbstract ()
     {
       if (Type.IsAbstract)
         return !Attribute.IsDefined (Type, typeof (InstantiableAttribute), false);
@@ -165,7 +174,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classReflector.GetClassDefinition (classDefinitions);
     }
 
-    private bool IsInheritenceRoot()
+    private bool IsInheritenceRoot ()
     {
       if (Type.BaseType == typeof (DomainObject))
         return true;
@@ -173,7 +182,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return Attribute.IsDefined (Type, typeof (StorageGroupAttribute), false);
     }
 
-    private PropertyInfo[] GetPropertyInfos()
+    private PropertyInfo[] GetPropertyInfos ()
     {
       List<PropertyInfo> propertyInfos = new List<PropertyInfo>();
       propertyInfos.AddRange (GetPropertyInfosSorted (Type));

@@ -5,58 +5,58 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class StatePropertyDefinition : MetadataObject
+  [Instantiable]
+  [DBTable]
+  public abstract class StatePropertyDefinition : MetadataObject
   {
     // types
 
     // static members and constants
+
+    public static StatePropertyDefinition NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StatePropertyDefinition> ().With ();
+      }
+    }
+
+    public static StatePropertyDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StatePropertyDefinition> ().With (metadataItemID, name);
+      }
+    }
 
     public static new StatePropertyDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (StatePropertyDefinition) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new StatePropertyDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (StatePropertyDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing
 
-    public StatePropertyDefinition (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected StatePropertyDefinition ()
     {
     }
 
-    public StatePropertyDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name)
-      : base (clientTransaction)
+    protected StatePropertyDefinition (Guid metadataItemID, string name)
     {
-      DataContainer["MetadataItemID"] = metadataItemID;
-      DataContainer["Name"] = name;
-    }
-
-    protected StatePropertyDefinition (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
+      MetadataItemID = metadataItemID;
+      Name = name;
     }
 
     // methods and properties
 
-    public DomainObjectCollection References
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("References"); }
-      set { } // marks property References as modifiable
-    }
+    //TODO: Rename to StatePropertyReferences
+    [DBBidirectionalRelation ("StateProperty")]
+    public abstract ObjectList<StatePropertyReference> References { get; }
 
-    public DomainObjectCollection DefinedStates
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("DefinedStates"); }
-      set { } // marks property DefinedStates as modifiable
-    }
+    [DBBidirectionalRelation ("StateProperty", SortExpression = "[Index] ASC")]
+    [Mandatory]
+    public abstract ObjectList<StateDefinition> DefinedStates { get; }
 
     public StateDefinition GetState (string name)
     {
@@ -106,6 +106,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return false;
     }
 
+    [StorageClassNone]
     public StateDefinition this[string stateName]
     {
       get { return GetState (stateName); }
@@ -115,7 +116,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);
 
-      StateDefinition newStateDefinition = new StateDefinition (ClientTransaction);
+      StateDefinition newStateDefinition = StateDefinition.NewObject (ClientTransaction);
       newStateDefinition.Name = stateName;
       newStateDefinition.Value = value;
       newStateDefinition.Index = value;

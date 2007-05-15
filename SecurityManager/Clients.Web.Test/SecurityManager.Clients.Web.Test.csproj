@@ -64,8 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <MappingFiles Include="Mapping.xml">
-    </MappingFiles>
     <MappingFiles Include="Queries.xml">
     </MappingFiles>
   </ItemGroup>

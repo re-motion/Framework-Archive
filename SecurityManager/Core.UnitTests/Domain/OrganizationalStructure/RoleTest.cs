@@ -83,7 +83,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", "UID: testClient", principal);
       ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", "UID: testClient", principal);
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       _mocks.ReplayAll ();
 
       List<Group> groups = role.GetPossibleGroups (_expectedClientID);
@@ -105,7 +105,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
 
       List<Group> groups = role.GetPossibleGroups (_expectedClientID);
 
@@ -120,7 +120,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       Group parentGroup = Group.GetObject (_expectedParentGroup0ID, transaction);
       _mocks.ReplayAll ();
 
@@ -139,7 +139,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       Group rootGroup = Group.GetObject (_expectedRootGroupID, transaction);
       _mocks.ReplayAll ();
 
@@ -162,7 +162,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       Group parentGroup = Group.GetObject (_expectedParentGroup0ID, transaction);
 
       List<Position> positions = role.GetPossiblePositions (parentGroup);
@@ -183,7 +183,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
       ClientTransaction transaction = new ClientTransaction ();
-      Role role = new Role (transaction);
+      Role role = Role.NewObject (transaction);
       Group rootGroup = Group.GetObject (_expectedRootGroupID, transaction);
 
       List<Position> positions = role.GetPossiblePositions (rootGroup);

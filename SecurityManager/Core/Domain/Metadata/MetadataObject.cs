@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
+  [SecurityManagerStorageGroup]
   public abstract class MetadataObject : BaseSecurityManagerObject
   {
     // types
@@ -28,42 +30,22 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public MetadataObject (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected MetadataObject ()
     {
-    }
-
-    protected MetadataObject (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
     }
 
     // methods and properties
 
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
+    public abstract int Index { get; set; }
 
-    public virtual Guid MetadataItemID
-    {
-      get { return (Guid) DataContainer["MetadataItemID"]; }
-      set { DataContainer["MetadataItemID"] = value; }
-    }
+    public abstract Guid MetadataItemID { get; set; }
 
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 200)]
+    public abstract string Name { get; set; }
 
-    public DomainObjectCollection LocalizedNames
-    {
-      get { return GetRelatedObjects ("LocalizedNames"); }
-    }
+    [IsReadOnly]
+    [DBBidirectionalRelation ("MetadataObject")]
+    public abstract ObjectList<LocalizedName> LocalizedNames { get; }
 
     public override string DisplayName
     {

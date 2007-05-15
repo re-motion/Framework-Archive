@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
 using Rubicon.Security.Data.DomainObjects;
 
@@ -14,7 +15,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
   [PermanentGuid ("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
-  public class Group : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Group : OrganizationalStructureObject
   {
     // types
 
@@ -50,14 +54,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
+    internal static Group NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Group> ().With ();
+      }
+    }
+
     public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Group) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Group) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
@@ -101,76 +108,42 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    protected internal Group (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Group ()
     {
       UniqueIdentifier = Guid.NewGuid ().ToString ();
     }
 
-    protected Group (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
     // methods and properties
 
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
-    public string ShortName
-    {
-      get { return (string) DataContainer["ShortName"]; }
-      set { DataContainer["ShortName"] = value; }
-    }
+    [StringProperty (MaximumLength = 10)]
+    public abstract string ShortName { get; set; }
 
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string UniqueIdentifier { get; set; }
 
-    public Group Parent
-    {
-      get { return (Group) GetRelatedObject ("Parent"); }
-      set { SetRelatedObject ("Parent", value); }
-    }
+    [Mandatory]
+    public abstract Client Client { get; set; }
 
-    public DomainObjectCollection Children
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Children"); }
-      set { } // marks property Children as modifiable
-    }
+    [DBBidirectionalRelation ("Children")]
+    public abstract Group Parent { get; set; }
 
-    public GroupType GroupType
-    {
-      get { return (GroupType) GetRelatedObject ("GroupType"); }
-      set { SetRelatedObject ("GroupType", value); }
-    }
+    [DBBidirectionalRelation ("Parent")]
+    public abstract ObjectList<Group> Children { get; }
+
+    [DBBidirectionalRelation ("Groups")]
+    public abstract GroupType GroupType { get; set; }
 
     [DemandPropertyWritePermission (SecurityManagerAccessTypes.AssignRole)]
-    public DomainObjectCollection Roles
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Roles"); }
-      set { } // marks property Roles as modifiable
-    }
-
-    public string UniqueIdentifier
-    {
-      get { return (string) DataContainer["UniqueIdentifier"]; }
-      set { DataContainer["UniqueIdentifier"] = value; }
-    }
+    [DBBidirectionalRelation ("Group")]
+    public abstract ObjectList<Role> Roles { get; }
 
     // Must not be private because PermissionReflection would not work with derived classes.
     [EditorBrowsable (EditorBrowsableState.Never)]
-    protected DomainObjectCollection AccessControlEntries
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
-    }
+    [DBBidirectionalRelation ("SpecificGroup")]
+    protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
     //TODO: UnitTests
     public override string DisplayName

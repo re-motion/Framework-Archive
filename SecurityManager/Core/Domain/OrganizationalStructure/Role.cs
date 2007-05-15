@@ -11,57 +11,34 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
   [PermanentGuid ("23C68C62-5B0F-4857-8DF2-C161C0077745")]
-  public class Role : OrganizationalStructureObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Role : OrganizationalStructureObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Role GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static Role NewObject (ClientTransaction clientTransaction)
     {
-      return (Role) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Role> ().With ();
+      }
     }
 
-    public static new Role GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Role) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Role (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Role ()
     {
     }
 
-    protected Role (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [DBBidirectionalRelation ("Roles")]
+    [Mandatory]
+    public abstract Group Group { get; set; }
 
-    // methods and properties
+    [DBBidirectionalRelation ("Roles")]
+    [Mandatory]
+    public abstract Position Position { get; set; }
 
-    public Group Group
-    {
-      get { return (Group) GetRelatedObject ("Group"); }
-      set { SetRelatedObject ("Group", value); }
-    }
-
-    public Position Position
-    {
-      get { return (Position) GetRelatedObject ("Position"); }
-      set { SetRelatedObject ("Position", value); }
-    }
-
-    public User User
-    {
-      get { return (User) GetRelatedObject ("User"); }
-      set { SetRelatedObject ("User", value); }
-    }
+    [DBBidirectionalRelation ("Roles")]
+    [Mandatory]
+    public abstract User User { get; set; }
 
 
     public List<Group> GetPossibleGroups (ObjectID clientID)

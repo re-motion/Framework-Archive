@@ -111,7 +111,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Group group = CreateGroup ();
 
       SecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext ();
-      Assert.AreEqual (group.GetType (), Type.GetType (securityContext.Class));
+      Assert.AreEqual (group.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.IsEmpty (securityContext.Owner);
       Assert.AreEqual (group.UniqueIdentifier, securityContext.OwnerGroup);
       Assert.AreEqual (group.Client.UniqueIdentifier, securityContext.OwnerClient);
@@ -126,7 +126,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       group.Client = null;
 
       SecurityContext securityContext = ((ISecurityContextFactory) group).CreateSecurityContext ();
-      Assert.AreEqual (group.GetType (), Type.GetType (securityContext.Class));
+      Assert.AreEqual (group.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.IsEmpty (securityContext.Owner);
       Assert.AreEqual (group.UniqueIdentifier, securityContext.OwnerGroup);
       Assert.IsEmpty (securityContext.OwnerClient);

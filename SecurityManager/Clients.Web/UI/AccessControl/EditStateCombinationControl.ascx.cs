@@ -120,7 +120,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         StateUsage stateUsage;
         if (CurrentStateCombination.StateUsages.Count == 0)
         {
-          stateUsage = new StateUsage (CurrentStateCombination.ClientTransaction);
+          stateUsage = StateUsage.NewObject (CurrentStateCombination.ClientTransaction);
           stateUsage.StateCombination = CurrentStateCombination;
         }
         else

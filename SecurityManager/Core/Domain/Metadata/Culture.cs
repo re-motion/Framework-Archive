@@ -6,20 +6,17 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class Culture : BaseSecurityManagerObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Culture : BaseSecurityManagerObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Culture GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static Culture NewObject (ClientTransaction clientTransaction, string cultureName)
     {
-      return (Culture) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Culture GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Culture) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Culture> ().With (cultureName);
+      }
     }
 
     public static Culture Find (string name, ClientTransaction clientTransaction)
@@ -36,33 +33,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return (Culture) result[0];
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public Culture (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Culture (string cultureName)
     {
+      ArgumentUtility.CheckNotNull ("cultureName", cultureName);
+      
+      CultureName = cultureName;
     }
 
-    public Culture (ClientTransaction clientTransaction, string cultureName)
-      : base (clientTransaction)
-    {
-      DataContainer["CultureName"] = cultureName;
-    }
-
-    protected Culture (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
-    // methods and properties
-
-    public string CultureName
-    {
-      get { return (string) DataContainer["CultureName"]; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    public abstract string CultureName { get; protected set; }
   }
 }

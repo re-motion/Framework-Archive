@@ -5,51 +5,30 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  public class StateUsage : AccessControlObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class StateUsage : AccessControlObject
   {
-    // types
-
-    // static members and constants
-
-    public static new StateUsage GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static StateUsage NewObject (ClientTransaction clientTransaction)
     {
-      return (StateUsage) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<StateUsage> ().With ();
+      }
     }
 
-    public static new StateUsage GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (StateUsage) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public StateUsage (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected StateUsage ()
     {
     }
 
-    protected StateUsage (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [DBBidirectionalRelation ("Usages")]
+    [Mandatory]
+    public abstract StateDefinition StateDefinition { get; set; }
 
-    // methods and properties
-
-    public StateDefinition StateDefinition
-    {
-      get { return (StateDefinition) GetRelatedObject ("StateDefinition"); }
-      set { SetRelatedObject ("StateDefinition", value); }
-    }
-
-    public StateCombination StateCombination
-    {
-      get { return (StateCombination) GetRelatedObject ("StateCombination"); }
-      set { SetRelatedObject ("StateCombination", value); }
-    }
+    [DBBidirectionalRelation ("StateUsages")]
+    [Mandatory]
+    public abstract StateCombination StateCombination { get; set; }
 
     protected override void OnCommitting (EventArgs args)
     {

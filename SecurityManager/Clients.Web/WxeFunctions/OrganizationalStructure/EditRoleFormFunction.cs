@@ -56,7 +56,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        Role = new Role (CurrentTransaction);
+        Role = Role.NewObject (CurrentTransaction);
         Role.User = User;
         Role.Group = Group;
       }

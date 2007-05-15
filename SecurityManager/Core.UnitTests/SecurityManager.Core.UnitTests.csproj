@@ -151,8 +151,6 @@
     </DatabaseFiles>
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql">
     </DatabaseFiles>
-    <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml">
-    </MappingFiles>
     <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml">
     </MappingFiles>
   </ItemGroup>

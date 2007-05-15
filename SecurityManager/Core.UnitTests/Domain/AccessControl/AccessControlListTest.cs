@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FindMatchingEntries_WithMatchingAce ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessControlList acl = _testHelper.CreateAcl (entry);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
@@ -45,13 +45,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FindMatchingEntries_WithMultipleMatchingAces ()
     {
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace1, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
-      AccessControlEntry ace2 = new AccessControlEntry (_testHelper.Transaction);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AccessControlEntry ace2 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace2.SpecificAbstractRole = role2;
       _testHelper.AttachAccessType (ace2, readAccessType, null);
       _testHelper.AttachAccessType (ace2, writeAccessType, true);
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithMatchingAce ()
     {
-      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace, null);
@@ -101,15 +101,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithMultipleMatchingAces ()
     {
-      AbstractRoleDefinition role1 = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "QualityManager", 0);
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (_testHelper.Transaction, Guid.NewGuid (), "QualityManager", 0);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace1.SpecificAbstractRole = role1;
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace1, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
-      AccessControlEntry ace2 = new AccessControlEntry (_testHelper.Transaction);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AccessControlEntry ace2 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace2.SpecificAbstractRole = role2;
       _testHelper.AttachAccessType (ace2, readAccessType, true);
       _testHelper.AttachAccessType (ace2, writeAccessType, true);
@@ -128,15 +128,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetAccessTypes_WithMultipleMatchingAcesButDifferentPriorities ()
     {
-      AbstractRoleDefinition role1 = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "QualityManager", 0);
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AbstractRoleDefinition role1 = AbstractRoleDefinition.NewObject (_testHelper.Transaction, Guid.NewGuid (), "QualityManager", 0);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace1.SpecificAbstractRole = role1;
       AccessTypeDefinition readAccessType = _testHelper.CreateReadAccessType (ace1, true);
       AccessTypeDefinition writeAccessType = _testHelper.CreateWriteAccessType (ace1, null);
       AccessTypeDefinition deleteAccessType = _testHelper.CreateDeleteAccessType (ace1, null);
 
-      AbstractRoleDefinition role2 = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
-      AccessControlEntry ace2 = new AccessControlEntry (_testHelper.Transaction);
+      AbstractRoleDefinition role2 = AbstractRoleDefinition.NewObject (_testHelper.Transaction, Guid.NewGuid (), "SoftwareDeveloper", 1);
+      AccessControlEntry ace2 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace2.SpecificAbstractRole = role2;
       ace2.Priority = 42;
       _testHelper.AttachAccessType (ace2, readAccessType, null);
@@ -166,7 +166,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FilterAcesByPriority_OnlyOne ()
     {
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       AccessControlList acl = _testHelper.CreateAcl (ace1);
       AccessControlEntry[] aces = new AccessControlEntry[] { ace1 };
@@ -180,9 +180,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FilterAcesByPriority_Multiple ()
     {
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace1.Priority = 24;
-      AccessControlEntry ace2 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace2 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace2.Priority = 42;
 
       AccessControlList acl = _testHelper.CreateAcl (ace1, ace2);
@@ -197,11 +197,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void FilterAcesByPriority_MultipleAndMultipleFiltered ()
     {
-      AccessControlEntry ace1 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace1 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace1.Priority = 24;
-      AccessControlEntry ace2 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace2 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace2.Priority = 42;
-      AccessControlEntry ace3 = new AccessControlEntry (_testHelper.Transaction);
+      AccessControlEntry ace3 = AccessControlEntry.NewObject (_testHelper.Transaction);
       ace3.Priority = 42;
 
       AccessControlList acl = _testHelper.CreateAcl (ace1, ace2, ace3);
@@ -239,7 +239,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       DateTime aclChangedAt = acl.ChangedAt;
       Thread.Sleep (50);
 
-      acl.StateCombinations.Add (new StateCombination  (acl.ClientTransaction));
+      acl.StateCombinations.Add (StateCombination.NewObject (acl.ClientTransaction));
 
       Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) aclChangedAt.Ticks);
     }
@@ -247,7 +247,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void CreateStateCombination_TwoNewEntries ()
     {
-      AccessControlList acl = new AccessControlList (_testHelper.Transaction);
+      AccessControlList acl = AccessControlList.NewObject (_testHelper.Transaction);
       acl.Class = _testHelper.CreateClassDefinition ("SecurableClass");
       DateTime changedAt = acl.ChangedAt;
       Thread.Sleep (50);
@@ -330,7 +330,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void SetAndGet_Index ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      AccessControlList acl = new AccessControlList(_testHelper.Transaction);
+      AccessControlList acl = AccessControlList.NewObject (_testHelper.Transaction);
 
       acl.Index = 1;
       Assert.AreEqual (1, acl.Index);
@@ -368,7 +368,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateStateCombination_BeforeClassIsSet ()
     {
-      AccessControlList acl = new AccessControlList (_testHelper.Transaction);
+      AccessControlList acl = AccessControlList.NewObject (_testHelper.Transaction);
       acl.CreateStateCombination ();
     }
 
@@ -376,7 +376,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.")]
     public void CreateAccessControlEntry_BeforeClassIsSet ()
     {
-      AccessControlList acl = new AccessControlList (_testHelper.Transaction);
+      AccessControlList acl = AccessControlList.NewObject (_testHelper.Transaction);
       acl.CreateAccessControlEntry ();      
     }
   }

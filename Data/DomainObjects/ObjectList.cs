@@ -25,5 +25,10 @@ namespace Rubicon.Data.DomainObjects
     {
       get { return (T) base[id]; }
     }
+
+    public new ObjectList<T> Clone ()
+    {
+      return (ObjectList<T>) base.Clone();
+    }
   }
 }

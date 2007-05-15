@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
@@ -9,29 +8,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
   [PermanentGuid ("C9FC9EC0-9F41-4636-9A4C-4927A9B47E85")]
   public abstract class BaseSecurableObject : BaseObject, ISecurableObject, ISecurityContextFactory
   {
-    // types
-
-    // static members
-
-    // member fields
-
     private IObjectSecurityStrategy _objectSecurityStrategy;
 
-    // construction and disposing
-
-    protected BaseSecurableObject (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected BaseSecurableObject ()
     {
     }
-
-    protected BaseSecurableObject (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
-    // methods and properties
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
@@ -43,12 +24,13 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public SecurityContext CreateSecurityContext ()
     {
-      return new SecurityContext (GetType (), GetOwnerName (), GetOwnerGroupName (), GetOwnerClientName (), GetStates (), GetAbstractRoles ());
+      return new SecurityContext (
+          GetPublicDomainObjectType(), GetOwnerName(), GetOwnerGroupName(), GetOwnerClientName(), GetStates(), GetAbstractRoles());
     }
 
     private string GetOwnerClientName ()
     {
-      Client client = GetOwnerClient ();
+      Client client = GetOwnerClient();
       if (client == null)
         return null;
       return client.Name;
@@ -56,7 +38,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     private string GetOwnerGroupName ()
     {
-      Group group = GetOwnerGroup ();
+      Group group = GetOwnerGroup();
       if (group == null)
         return null;
       return group.Name;
@@ -64,7 +46,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     private string GetOwnerName ()
     {
-      User user = GetOwner ();
+      User user = GetOwner();
       if (user == null)
         return null;
       return user.UserName;
@@ -78,7 +60,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public virtual IDictionary<string, Enum> GetStates ()
     {
-      return new Dictionary<string, Enum> ();
+      return new Dictionary<string, Enum>();
     }
 
     public virtual ICollection<Enum> GetAbstractRoles ()

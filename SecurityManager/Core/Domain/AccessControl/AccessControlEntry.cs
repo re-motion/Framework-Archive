@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Utilities;
@@ -11,7 +11,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
   [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
-  public class AccessControlEntry : AccessControlObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class AccessControlEntry : AccessControlObject
   {
     // types
 
@@ -21,6 +24,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public const int AbstractRolePriority = 4;
     public const int GroupPriority = 2;
     public const int ClientPriority = 1;
+
+    public static AccessControlEntry NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<AccessControlEntry>().With();
+      }
+    }
 
     public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
@@ -38,117 +49,85 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // construction and disposing
 
-    public AccessControlEntry (ClientTransaction clientTransaction)
-        : base (clientTransaction)
+    protected AccessControlEntry ()
     {
       Touch();
     }
 
-    protected AccessControlEntry (DataContainer dataContainer)
-        : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
     // methods and properties
 
-    public ClientSelection Client
+    public virtual DateTime ChangedAt
     {
-      get { return (ClientSelection) DataContainer["Client"]; }
-      set { DataContainer["Client"] = value; }
+      get { return CurrentProperty<DateTime>().GetValue(); }
+      private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.ChangedAt", value); }
     }
 
-    public GroupSelection Group
+    public void Touch ()
     {
-      get { return (GroupSelection) DataContainer["Group"]; }
-      set { DataContainer["Group"] = value; }
+      ChangedAt = DateTime.Now;
     }
 
-    public UserSelection User
-    {
-      get { return (UserSelection) DataContainer["User"]; }
-      set { DataContainer["User"] = value; }
-    }
+    public abstract int Index { get; set; }
 
-    public NaInt32 Priority
-    {
-      get { return (NaInt32) DataContainer["Priority"]; }
-      set { DataContainer["Priority"] = value; }
-    }
+    [DBColumn ("ClientSelection")]
+    public abstract ClientSelection Client { get; set; }
 
+    [DBColumn ("GroupSelection")]
+    public abstract GroupSelection Group { get; set; }
+
+    [DBColumn ("UserSelection")]
+    public abstract UserSelection User { get; set; }
+
+    public abstract int? Priority { get; set; }
+
+    [StorageClassNone]
     public int ActualPriority
     {
       get
       {
-        if (Priority.IsNull)
+        if (!Priority.HasValue)
           return CalculatePriority();
 
         return Priority.Value;
       }
     }
 
-    public Client SpecificClient
+    [DBColumn ("ClientID")]
+    public abstract Client SpecificClient { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBColumn ("GroupID")]
+    public abstract Group SpecificGroup { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBColumn ("GroupTypeID")]
+    public abstract GroupType SpecificGroupType { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBColumn ("PositionID")]
+    public abstract Position SpecificPosition { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBColumn ("UserID")]
+    public abstract User SpecificUser { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    [DBColumn ("AbstractRoleID")]
+    public abstract AbstractRoleDefinition SpecificAbstractRole { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntries")]
+    public abstract AccessControlList AccessControlList { get; set; }
+
+    [DBBidirectionalRelation ("AccessControlEntry", SortExpression = "[Index] ASC")]
+    [IsReadOnly]
+    public virtual ObjectList<Permission> Permissions
     {
-      get { return (Client) GetRelatedObject ("SpecificClient"); }
-      set { SetRelatedObject ("SpecificClient", value); }
+      get { return new ObjectList<Permission> (CurrentProperty<ObjectList<Permission>>().GetValue(), true); }
     }
 
-    public Group SpecificGroup
+    private ObjectList<Permission> GetPermissions ()
     {
-      get { return (Group) GetRelatedObject ("SpecificGroup"); }
-      set { SetRelatedObject ("SpecificGroup", value); }
-    }
-
-    public GroupType SpecificGroupType
-    {
-      get { return (GroupType) GetRelatedObject ("SpecificGroupType"); }
-      set { SetRelatedObject ("SpecificGroupType", value); }
-    }
-
-    public Position SpecificPosition
-    {
-      get { return (Position) GetRelatedObject ("SpecificPosition"); }
-      set { SetRelatedObject ("SpecificPosition", value); }
-    }
-
-    public User SpecificUser
-    {
-      get { return (User) GetRelatedObject ("SpecificUser"); }
-      set { SetRelatedObject ("SpecificUser", value); }
-    }
-
-    public AbstractRoleDefinition SpecificAbstractRole
-    {
-      get { return (AbstractRoleDefinition) GetRelatedObject ("SpecificAbstractRole"); }
-      set { SetRelatedObject ("SpecificAbstractRole", value); }
-    }
-
-    public AccessControlList AccessControlList
-    {
-      get { return (AccessControlList) GetRelatedObject ("AccessControlList"); }
-      set { SetRelatedObject ("AccessControlList", value); }
-    }
-
-    public DomainObjectCollection Permissions
-    {
-      get { return new DomainObjectCollection (GetPermissions(), true); }
-    }
-
-    public DateTime ChangedAt
-    {
-      get { return (DateTime) DataContainer["ChangedAt"]; }
-    }
-
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
-
-    public void Touch ()
-    {
-      DataContainer["ChangedAt"] = DateTime.Now;
+      return (ObjectList<Permission>) GetRelatedObjects ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.Permissions");
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
@@ -157,7 +136,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       foreach (Permission permission in Permissions)
       {
-        if (permission.Allowed.IsTrue)
+        if (permission.Allowed ?? false)
           allowedAccessTypes.Add (permission.AccessType);
       }
 
@@ -169,12 +148,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
       if (FindPermission (accessType) != null)
+      {
         throw new ArgumentException (
             string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
+      }
 
-      Permission permission = new Permission (ClientTransaction);
+      Permission permission = Permission.NewObject (ClientTransaction);
       permission.AccessType = accessType;
-      permission.Allowed = NaBoolean.Null;
+      permission.Allowed = null;
       DomainObjectCollection permissions = GetPermissions();
       permissions.Add (permission);
       if (permissions.Count == 1)
@@ -189,7 +170,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
       Permission permission = GetPermission (accessType);
-      permission.Allowed = NaBoolean.True;
+      permission.Allowed = true;
     }
 
     public void RemoveAccess (AccessTypeDefinition accessType)
@@ -197,7 +178,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
       Permission permission = GetPermission (accessType);
-      permission.Allowed = NaBoolean.Null;
+      permission.Allowed = null;
     }
 
     public bool MatchesToken (SecurityToken token)
@@ -316,11 +297,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         priority += ClientPriority;
 
       return priority;
-    }
-
-    private DomainObjectCollection GetPermissions ()
-    {
-      return GetRelatedObjects ("Permissions");
     }
 
     //TODO: Rewrite with test

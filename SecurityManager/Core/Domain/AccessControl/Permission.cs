@@ -6,67 +6,41 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  public class Permission : AccessControlObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class Permission : AccessControlObject
   {
-    // types
-
-    // static members and constants
-
-    public static new Permission GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static Permission NewObject (ClientTransaction clientTransaction)
     {
-      return (Permission) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<Permission> ().With ();
+      }
     }
 
-    public static new Permission GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Permission) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public Permission (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected Permission ()
     {
     }
 
-    protected Permission (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    public abstract int Index { get; set; }
 
-    // methods and properties
-
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
-
+    [StorageClassNone]
     public bool BinaryAllowed
     {
-      get { return Allowed.IsTrue; }
-      set { Allowed = value ? NaBoolean.True : NaBoolean.Null;  }
+      get { return Allowed ?? false; }
+      set { Allowed = value ? (bool?) true : null; }
     }
 
-    public NaBoolean Allowed
-    {
-      get { return (NaBoolean) DataContainer["Allowed"]; }
-      set { DataContainer["Allowed"] = value; }
-    }
+    public abstract bool? Allowed { get; set; }
 
-    public AccessTypeDefinition AccessType
-    {
-      get { return (Rubicon.SecurityManager.Domain.Metadata.AccessTypeDefinition) GetRelatedObject ("AccessType"); }
-      set { SetRelatedObject ("AccessType", value); }
-    }
+    [DBBidirectionalRelation ("Permissions")]
+    [DBColumn ("AccessTypeDefinitionID")]
+    [Mandatory]
+    public abstract AccessTypeDefinition AccessType { get; set; }
 
-    public AccessControlEntry AccessControlEntry
-    {
-      get { return (AccessControlEntry) GetRelatedObject ("AccessControlEntry"); }
-    }
+    [DBBidirectionalRelation ("Permissions")]
+    [Mandatory]
+    public abstract AccessControlEntry AccessControlEntry { get; }
   }
 }

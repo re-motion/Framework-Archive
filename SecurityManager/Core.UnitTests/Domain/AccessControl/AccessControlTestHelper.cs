@@ -52,7 +52,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateClassDefinition (string name, SecurableClassDefinition baseClass)
     {
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (_transaction);
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (_transaction);
       classDefinition.Name = name;
       classDefinition.BaseClass = baseClass;
 
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      AccessControlList acl = new AccessControlList (_transaction);
+      AccessControlList acl = AccessControlList.NewObject (_transaction);
       acl.Class = classDefinition;
       StateCombination stateCombination = CreateStateCombination (acl);
 
@@ -82,7 +82,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (AccessControlList acl)
     {
-      StateCombination stateCombination = new StateCombination (_transaction);
+      StateCombination stateCombination = StateCombination.NewObject (_transaction);
       stateCombination.AccessControlList = acl;
       stateCombination.Class = acl.Class;
 
@@ -97,7 +97,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatePropertyDefinition CreateStateProperty (string name)
     {
-      return new StatePropertyDefinition (_transaction, Guid.NewGuid (), name);
+      return StatePropertyDefinition.NewObject  (_transaction, Guid.NewGuid (), name);
     }
 
     public StatePropertyDefinition CreateOrderStateProperty (SecurableClassDefinition classDefinition)
@@ -243,7 +243,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
     {
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_transaction, metadataItemID, name, value);
       classDefinition.AddAccessType (accessType);
       
       return accessType;
@@ -259,7 +259,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateJournalizeAccessType ()
     {
-      return new AccessTypeDefinition (_transaction, Guid.NewGuid (), "Journalize", 42);
+      return AccessTypeDefinition.NewObject  (_transaction, Guid.NewGuid (), "Journalize", 42);
     }
 
     public SecurityToken CreateEmptyToken ()
@@ -303,12 +303,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
     {
-      return new AbstractRoleDefinition (_transaction, Guid.NewGuid (), name, value);
+      return AbstractRoleDefinition.NewObject (_transaction, Guid.NewGuid (), name, value);
     }
 
     public AccessControlEntry CreateAceWithOwningClient ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
       entry.Client = ClientSelection.OwningClient;
 
       return entry;
@@ -316,7 +316,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecficClient (Client client)
     {
-      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
       entry.Client = ClientSelection.SpecificClient;
       entry.SpecificClient = client;
 
@@ -325,7 +325,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithAbstractRole ()
     {
-      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
       entry.SpecificAbstractRole = CreateTestAbstractRole ();
 
       return entry;
@@ -333,7 +333,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithPosition (Position position, GroupSelection groupSelection)
     {
-      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
       entry.User = UserSelection.SpecificPosition;
       entry.SpecificPosition = position;
       entry.Group = groupSelection;
@@ -343,7 +343,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlList CreateAcl (params AccessControlEntry[] aces)
     {
-      AccessControlList acl = new AccessControlList (_transaction);
+      AccessControlList acl = AccessControlList.NewObject (_transaction);
 
       foreach (AccessControlEntry ace in aces)
         acl.AccessControlEntries.Add (ace);
@@ -375,7 +375,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateAccessTypeForAce (AccessControlEntry ace, bool? allowAccess, Guid metadataItemID, string name, int value)
     {
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
+      AccessTypeDefinition accessType = AccessTypeDefinition.NewObject  (_transaction, metadataItemID, name, value);
       AttachAccessType (ace, accessType, allowAccess);
 
       return accessType;
@@ -383,7 +383,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Client CreateClient (string name)
     {
-      Client client = new Client (_transaction);
+      Client client = _factory.CreateClient (_transaction);
       client.Name = name;
 
       return client;
@@ -422,7 +422,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public Role CreateRole (User user, Group group, Position position)
     {
-      Role role = new Role (_transaction);
+      Role role = Role.NewObject (_transaction);
       role.User = user;
       role.Group = group;
       role.Position = position;

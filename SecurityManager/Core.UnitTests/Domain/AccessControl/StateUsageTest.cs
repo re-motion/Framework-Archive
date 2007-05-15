@@ -34,9 +34,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
       StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
       StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
-      combination2.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
-      combination3.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
+      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
+      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject (_testHelper.Transaction));
 
       _testHelper.Transaction.Commit ();
 

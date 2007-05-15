@@ -158,9 +158,16 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
 
   #endregion
 
+  protected override void OnLoaded ()
+  {
+    base.OnLoaded ();
+    Initialize ();
+  }
+
   private void Initialize ()
   {
-    _objectReflector = new BusinessObjectReflector (this);
+    if (_objectReflector == null)
+      _objectReflector = new BusinessObjectReflector (this);
   }
 
   // methods and properties

@@ -5,83 +5,53 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {
   [PermanentGuid ("BAA77408-32E6-4979-9914-8A12B71808F2")]
-  public class File : BaseSecurableObject
+  [Instantiable]
+  [DBTable]
+  [DBStorageGroup]
+  public abstract class File : BaseSecurableObject
   {
-    // types
-
     public enum Method
     {
       CreateFileItem
     }
-    // static members and constants
 
+    public static File NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<File> ().With ();
+      }
+    }
+    
     public static new File GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (File) DomainObject.GetObject (id, clientTransaction);
     }
 
-    // member fields
-
-    // construction and disposing
-
-    public File (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    protected File ()
     {
     }
 
-    protected File (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
-
-    // methods and properties
-
-    public Client Client
-    {
-      get { return (Client) GetRelatedObject ("Client"); }
-      set { SetRelatedObject ("Client", value); }
-    }
+    [Mandatory]
+    public abstract Client Client { get; set; }
 
     //[DemandPropertyGetterPermission (DomainAccessTypes.ReadName)]
     //[DemandPropertySetterPermission (DomainAccessTypes.WriteName)]
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
+    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    public abstract string Name { get; set; }
 
     [PermanentGuid ("4B073E2B-C56D-419c-8358-808FDEF669EF")]
-    public Confidentiality Confidentiality
-    {
-      get { return (Confidentiality) DataContainer["Confidentiality"]; }
-      set { DataContainer["Confidentiality"] = value; }
-    }
+    public abstract Confidentiality Confidentiality { get; set; }
 
-    public User Creator
-    {
-      get { return (Rubicon.SecurityManager.Domain.OrganizationalStructure.User) GetRelatedObject ("Creator"); }
-      set { SetRelatedObject ("Creator", value); }
-    }
+    [Mandatory]
+    public abstract User Creator { get; set; }
 
-    public User Clerk
-    {
-      get { return (Rubicon.SecurityManager.Domain.OrganizationalStructure.User) GetRelatedObject ("Clerk"); }
-      set { SetRelatedObject ("Clerk", value); }
-    }
+    public abstract User Clerk { get; set; }
 
-    public Group Group
-    {
-      get { return (Rubicon.SecurityManager.Domain.OrganizationalStructure.Group) GetRelatedObject ("Group"); }
-      set { SetRelatedObject ("Group", value); }
-    }
+    public abstract Group Group { get; set; }
 
-    public DomainObjectCollection Files
-    {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("Files"); }
-      set { } // marks property Files as modifiable
-    }
+    [DBBidirectionalRelation ("File")]
+    public abstract ObjectList<FileItem> Files { get; set; }
 
     public override User GetOwner ()
     {

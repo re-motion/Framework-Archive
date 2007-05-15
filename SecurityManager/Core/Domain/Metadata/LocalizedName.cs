@@ -5,66 +5,38 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class LocalizedName : BaseSecurityManagerObject
+  [Instantiable]
+  [DBTable]
+  [SecurityManagerStorageGroup]
+  public abstract class LocalizedName : BaseSecurityManagerObject
   {
-    // types
-
-    // static members and constants
-
-    public static new LocalizedName GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public static LocalizedName NewObject (ClientTransaction clientTransaction, string text, Culture culture, MetadataObject metadataObject)
     {
-      return (LocalizedName) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<LocalizedName> ().With (text, culture, metadataObject);
+      }
     }
 
-    public static new LocalizedName GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (LocalizedName) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    // member fields
-
-    // construction and disposing
-
-    public LocalizedName (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
-    public LocalizedName (ClientTransaction clientTransaction, string text, Culture culture, MetadataObject metadataObject)
-      : base (clientTransaction)
+    protected LocalizedName (string text, Culture culture, MetadataObject metadataObject)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("text", text);
       ArgumentUtility.CheckNotNull ("culture", culture);
       ArgumentUtility.CheckNotNull ("metadataObject", metadataObject);
 
-      DataContainer["Text"] = text;
-      SetRelatedObject ("Culture", culture);
-      SetRelatedObject ("MetadataObject", metadataObject);
+      Text = text;
+      Culture = culture;
+      MetadataObject = metadataObject;
     }
 
-    protected LocalizedName (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-      // This infrastructure constructor is necessary for the DomainObjects framework.
-      // Do not remove the constructor or place any code here.
-    }
+    [StringProperty (IsNullable = false)]
+    public abstract string Text { get; set; }
 
-    // methods and properties
+    [Mandatory]
+    public abstract Culture Culture { get; protected set; }
 
-    public string Text
-    {
-      get { return (string) DataContainer["Text"]; }
-      set { DataContainer["Text"] = value; }
-    }
-
-    public Culture Culture
-    {
-      get { return (Culture) GetRelatedObject ("Culture"); }
-    }
-
-    public MetadataObject MetadataObject
-    {
-      get { return (MetadataObject) GetRelatedObject ("MetadataObject"); }
-    }
+    [DBBidirectionalRelation ("LocalizedNames")]
+    [Mandatory]
+    public abstract MetadataObject MetadataObject { get; protected set; }
   }
 }

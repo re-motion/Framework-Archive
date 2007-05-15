@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       // TODO check CurrentTransaction
       if (CurrentObject == null)
       {
-        GroupType = new GroupType (CurrentTransaction);
+        GroupType = GroupType.NewObject (CurrentTransaction);
       }
     }
 

@@ -159,7 +159,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private SecurableClassDefinition CreateSecurableClassDefinition (XmlNamespaceManager namespaceManager, XmlNode securableClassDefinitionNode)
     {
-      SecurableClassDefinition securableClassDefinition = new SecurableClassDefinition (_clientTransaction);
+      SecurableClassDefinition securableClassDefinition = SecurableClassDefinition.NewObject (_clientTransaction);
       securableClassDefinition.Name = securableClassDefinitionNode.Attributes["name"].Value;
       securableClassDefinition.MetadataItemID = new Guid (securableClassDefinitionNode.Attributes["id"].Value);
       securableClassDefinition.Index = _securableClassDefinitionCount;
@@ -195,7 +195,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private AbstractRoleDefinition CreateAbstractRoleDefinition (XmlNamespaceManager namespaceManager, XmlNode abstractRoleDefinitionNode)
     {
-      AbstractRoleDefinition roleDefinition = new AbstractRoleDefinition (_clientTransaction);
+      AbstractRoleDefinition roleDefinition = AbstractRoleDefinition.NewObject (_clientTransaction);
       roleDefinition.Name = abstractRoleDefinitionNode.Attributes["name"].Value;
       roleDefinition.MetadataItemID = new Guid (abstractRoleDefinitionNode.Attributes["id"].Value);
       roleDefinition.Index = _abstractRoleDefinitionCount;
@@ -207,7 +207,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private AccessTypeDefinition CreateAccessTypeDefinition (XmlNamespaceManager namespaceManager, XmlNode accessTypeDefinitionNode)
     {
-      AccessTypeDefinition accessTypeDefinition = new AccessTypeDefinition (_clientTransaction);
+      AccessTypeDefinition accessTypeDefinition = AccessTypeDefinition.NewObject (_clientTransaction);
       accessTypeDefinition.Name = accessTypeDefinitionNode.Attributes["name"].Value;
       accessTypeDefinition.MetadataItemID = new Guid (accessTypeDefinitionNode.Attributes["id"].Value);
       accessTypeDefinition.Value = int.Parse (accessTypeDefinitionNode.Attributes["value"].Value);
@@ -219,7 +219,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private StatePropertyDefinition CreateStatePropertyDefinition (XmlNamespaceManager namespaceManager, XmlNode statePropertyDefinitionNode)
     {
-      StatePropertyDefinition statePropertyDefinition = new StatePropertyDefinition (_clientTransaction);
+      StatePropertyDefinition statePropertyDefinition = StatePropertyDefinition.NewObject (_clientTransaction);
       statePropertyDefinition.MetadataItemID = new Guid (statePropertyDefinitionNode.Attributes["id"].Value);
       statePropertyDefinition.Name = statePropertyDefinitionNode.Attributes["name"].Value;
       statePropertyDefinition.Index = _statePropertyDefinitionCount;
@@ -234,7 +234,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     private StateDefinition CreateStateDefinition (XmlNamespaceManager namespaceManager, XmlNode stateDefinitionNode)
     {
-      StateDefinition stateDefinition = new StateDefinition (_clientTransaction);
+      StateDefinition stateDefinition = StateDefinition.NewObject (_clientTransaction);
       stateDefinition.Name = stateDefinitionNode.Attributes["name"].Value;
       stateDefinition.Value = int.Parse (stateDefinitionNode.Attributes["value"].Value);
       stateDefinition.Index = stateDefinition.Value;
