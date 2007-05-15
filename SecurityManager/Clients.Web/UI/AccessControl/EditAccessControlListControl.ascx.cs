@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using Rubicon.Data.DomainObjects;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.Classes;
@@ -24,6 +25,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     
     private List<EditStateCombinationControl> _editStateCombinationControls = new List<EditStateCombinationControl> ();
     private List<EditAccessControlEntryControl> _editAccessControlEntryControls = new List<EditAccessControlEntryControl> ();
+    private bool _isCreatingNewStateCombination;
 
     // construction and disposing
 
@@ -171,7 +173,18 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
           isValid &= control.Validate ();
       }
 
+      if (!_isCreatingNewStateCombination)
+      {
+        MissingStateCombinationsValidator.Validate ();
+        isValid &= MissingStateCombinationsValidator.IsValid;
+      }
+
       return isValid;
+    }
+
+    protected void MissingStateCombinationsValidator_ServerValidate (object source, ServerValidateEventArgs args)
+    {
+      args.IsValid = CurrentAccessControlList.StateCombinations.Count > 0;
     }
 
     private bool ValidateAccessControlEntries (params EditAccessControlEntryControl[] excludedControls)
@@ -190,6 +203,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void NewStateCombinationButton_Click (object sender, EventArgs e)
     {
+      _isCreatingNewStateCombination = true;
       Page.PrepareValidation ();
       bool isValid = Validate ();
       if (!isValid)
@@ -204,6 +218,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       LoadStateCombinations (false);
       //StateCombinationsRepeater.LoadValue (false);
       //StateCombinationsRepeater.IsDirty = true;
+      _isCreatingNewStateCombination = false;
     }
 
     protected void NewAccessControlEntryButton_Click (object sender, EventArgs e)

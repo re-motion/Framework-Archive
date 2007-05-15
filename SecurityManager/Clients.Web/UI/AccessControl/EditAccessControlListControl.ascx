@@ -28,6 +28,7 @@
           <ItemTemplate><securityManager:EditStateCombinationControl id="EditStateCombinationControl" runat="server"/></ItemTemplate>
         </securityManager:ObjectBoundRepeater>
         --%></div>
+      <asp:CustomValidator ID="MissingStateCombinationsValidator" runat="server" ErrorMessage="###" OnServerValidate="MissingStateCombinationsValidator_ServerValidate" />
     </td>
     <td class="accessControlEntriesContainer">
       <div id="AccessControlEntryControls" runat="server" class="accessControlEntriesContainer"><%-- 

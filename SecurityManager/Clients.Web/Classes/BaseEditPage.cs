@@ -54,8 +54,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
           dataEditUserControl.SaveValues (false);
         SaveValues (false);
 
-        CurrentFunction.CurrentTransaction.Commit ();
-        ExecuteNextStep ();
+        if (ValidatePagePostSaveValues ())
+        {
+          CurrentFunction.CurrentTransaction.Commit ();
+          ExecuteNextStep ();
+        }
+        else
+        {
+          ShowErrors ();
+        }
       }
       else
       {
@@ -74,6 +81,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
 
     protected virtual void SaveValues (bool interim)
     {
+    }
+
+    protected virtual bool ValidatePagePostSaveValues ()
+    {
+      return true;
     }
 
 

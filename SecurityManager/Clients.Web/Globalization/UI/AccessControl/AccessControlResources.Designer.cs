@@ -89,6 +89,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please assign at least one state..
+        /// </summary>
+        internal static string auto_MissingStateCombinationsValidator_ErrorMessage {
+            get {
+                return ResourceManager.GetString("auto:MissingStateCombinationsValidator:ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permissions.
         /// </summary>
         internal static string auto_PermissionsLabel_Text {
@@ -130,6 +139,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static string DeleteStateCombinationCommand {
             get {
                 return ResourceManager.GetString("DeleteStateCombinationCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to States must be unqiue within the ACL..
+        /// </summary>
+        internal static string DuplicateStateCombinationsValidatorErrorMessage {
+            get {
+                return ResourceManager.GetString("DuplicateStateCombinationsValidatorErrorMessage", resourceCulture);
             }
         }
         

@@ -15,6 +15,7 @@
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder" />
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
   <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" />
+  <asp:CustomValidator ID="DuplicateStateCombinationsValidator" runat="server" ErrorMessage="<%$ res:DuplicateStateCombinationsValidatorErrorMessage %>" OnServerValidate="DuplicateStateCombinationsValidator_ServerValidate"/>
   <asp:PlaceHolder ID="AccessControlListsPlaceHolder" runat="server"/>
   <%-- 
   <securityManager:ObjectBoundRepeater ID="AccessControlListsRepeater" runat="server" PropertyIdentifier="AccessControlLists">
@@ -28,6 +29,6 @@
 <asp:Content ID="ActualBottomControlsPlaceHolder" runat="server" ContentPlaceHolderID="BottomControlsPlaceHolder">
   <rubicon:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false" />
   <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" Style="margin-left: 1em;" OnClick="CancelButton_Click" CausesValidation="false" />
-  <rubicon:WebButton ID="NewAccessControlListButton" runat="server" Text="$res:NewAccessControlListButton" Style="margin-left: 1em;" OnClick="NewAccessControlListButton_Click" CausesValidation="false" />
+  <rubicon:WebButton ID="NewAccessControlListButton" runat="server" Text="$res:NewAccessControlListButton" Style="margin-left: 1em;" OnClick="NewAccessControlListButton_Click" CausesValidation="False" />
   <%--<rubicon:WebButton ID="PostBackButton" runat="server" Text="PostBack" Style="margin-left: 1em;" CausesValidation="false" />--%>
 </asp:Content>

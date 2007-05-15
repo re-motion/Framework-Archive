@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
@@ -62,7 +63,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void CreateEditAccessControlListControls (DomainObjectCollection accessControlLists)
     {
-      AccessControlListsPlaceHolder.Controls.Clear();
+      AccessControlListsPlaceHolder.Controls.Clear ();
       _editAccessControlListControls.Clear ();
       for (int i = 0; i < accessControlLists.Count; i++)
       {
@@ -109,6 +110,16 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       return isValid;
     }
 
+    protected override bool ValidatePagePostSaveValues ()
+    {
+      bool isValid = true;
+      isValid &= base.ValidatePagePostSaveValues ();
+      DuplicateStateCombinationsValidator.Validate ();
+      isValid &= DuplicateStateCombinationsValidator.IsValid;
+
+      return isValid;
+    }
+
     private bool ValidateAccessControlLists (params EditAccessControlListControl[] excludedControls)
     {
       List<EditAccessControlListControl> excludedControlList = new List<EditAccessControlListControl> (excludedControls);
@@ -117,10 +128,52 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       foreach (EditAccessControlListControl control in _editAccessControlListControls)
       {
         if (!excludedControlList.Contains (control))
+        {
           isValid &= control.Validate ();
+        }
       }
-      
+
       return isValid;
+    }
+
+    protected void DuplicateStateCombinationsValidator_ServerValidate (object source, ServerValidateEventArgs args)
+    {
+      if (CurrentFunction.SecurableClassDefinition.StateProperties.Count > 1)
+        throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
+
+      Dictionary<StateDefinition, object> usedStates = new Dictionary<StateDefinition, object> ();
+      bool hasEmptyStateUsage = false;
+      foreach (AccessControlList accessControlList in CurrentFunction.SecurableClassDefinition.AccessControlLists)
+      {
+        foreach (StateCombination stateCombination in accessControlList.StateCombinations)
+        {
+          if (stateCombination.StateUsages.Count == 0)
+          {
+            if (hasEmptyStateUsage)
+              args.IsValid = false;
+            else
+              hasEmptyStateUsage = true;
+          }
+          else
+          {
+            StateUsage stateUsage = (StateUsage) stateCombination.StateUsages[0];
+            if (usedStates.ContainsKey (stateUsage.StateDefinition))
+            {
+              args.IsValid = false;
+            }
+            else
+            {
+              usedStates.Add (stateUsage.StateDefinition, null);
+            }
+          }
+
+          if (!args.IsValid)
+            break;
+        }
+
+        if (!args.IsValid)
+          break;
+      }
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)

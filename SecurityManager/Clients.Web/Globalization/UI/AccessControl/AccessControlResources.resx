@@ -126,6 +126,9 @@
   <data name="auto:AccessControlListTitle:InnerText" xml:space="preserve">
     <value>ACL (Access Control List)</value>
   </data>
+  <data name="auto:MissingStateCombinationsValidator:ErrorMessage" xml:space="preserve">
+    <value>Please assign at least one state.</value>
+  </data>
   <data name="auto:PermissionsLabel:Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="DeleteStateCombinationCommand" xml:space="preserve">
     <value>Remove State</value>
+  </data>
+  <data name="DuplicateStateCombinationsValidatorErrorMessage" xml:space="preserve">
+    <value>States must be unqiue within the ACL.</value>
   </data>
   <data name="NewAccessControlEntryButton" xml:space="preserve">
     <value>New ACE</value>
