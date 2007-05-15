@@ -7,14 +7,14 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   [Serializable]
-  public class DomainObjectInterceptorSelector : IInterceptorSelector<DomainObject>
+  internal class DomainObjectInterceptorSelector : IInterceptorSelector<DomainObject>
   {
-    public readonly DomainObjectTypeInterceptor TypeInterceptor = new DomainObjectTypeInterceptor ();
-    public readonly DomainObjectPropertyInterceptor PropertyInterceptor = new DomainObjectPropertyInterceptor ();
+    private readonly DomainObjectTypeInterceptor _typeInterceptor = new DomainObjectTypeInterceptor ();
+    private readonly DomainObjectPropertyInterceptor _propertyInterceptor = new DomainObjectPropertyInterceptor ();
 
     public bool ShouldInterceptMethod (Type type, MethodInfo memberInfo)
     {
-      bool hasInterceptor = (TypeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo) || PropertyInterceptor.Selector.ShouldInterceptMethod (type, memberInfo));
+      bool hasInterceptor = (_typeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo) || _propertyInterceptor.Selector.ShouldInterceptMethod (type, memberInfo));
       if (!hasInterceptor && memberInfo.IsAbstract)
       {
         string message = string.Format ("Cannot instantiate type {0} as its member {1} is abstract (and not an automatic property).",
@@ -26,13 +26,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     public IInterceptor<DomainObject> SelectInterceptor (Type type, MethodInfo memberInfo)
     {
-      if (TypeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo))
+      if (_typeInterceptor.Selector.ShouldInterceptMethod (type, memberInfo))
       {
-        return TypeInterceptor.Selector.SelectInterceptor (type, memberInfo);
+        return _typeInterceptor.Selector.SelectInterceptor (type, memberInfo);
       }
       else
       {
-        return PropertyInterceptor.Selector.SelectInterceptor (type, memberInfo);
+        return _propertyInterceptor.Selector.SelectInterceptor (type, memberInfo);
       }
     }
   }

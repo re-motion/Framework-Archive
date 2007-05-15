@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   [Serializable]
-  public class DomainObjectTypeInterceptor : IInterceptor<DomainObject>
+  internal class DomainObjectTypeInterceptor : IInterceptor<DomainObject>
   {
     public readonly IInterceptorSelector<DomainObject> Selector;
 
@@ -19,6 +19,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     public void Intercept (IInvocation<DomainObject> invocation)
     {
+      ArgumentUtility.CheckNotNull ("invocation", invocation);
       invocation.ReturnValue = invocation.TargetType;
     }
   }

@@ -153,15 +153,11 @@ namespace Rubicon.Data.DomainObjects
         return null;
       else
       {
-        BindingFlags bindingFlags;
+        BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic;
         if (method.IsStatic)
-          bindingFlags = BindingFlags.Static;
+          bindingFlags |= BindingFlags.Static;
         else
-          bindingFlags = BindingFlags.Instance;
-        if (method.IsPublic)
-          bindingFlags |= BindingFlags.Public;
-        else
-          bindingFlags |= BindingFlags.NonPublic;
+          bindingFlags |= BindingFlags.Instance;
 
         return method.DeclaringType.GetProperty (propertyName, bindingFlags);
       }

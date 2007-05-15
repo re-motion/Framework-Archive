@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 {
   [Serializable]
-  public class DomainObjectPropertyInterceptorSelector : IInterceptorSelector<DomainObject>
+  internal class DomainObjectPropertyInterceptorSelector : IInterceptorSelector<DomainObject>
   {
     private DomainObjectPropertyInterceptor _interceptor;
 
@@ -61,6 +61,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
     /// <returns>The class devinition for the property, or null if it is not a valid mapping property.</returns>
     public static ClassDefinition GetClassDefinitionIfRelevantProperty (Type type, string propertyID)
     {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("propertyID", propertyID);
+
       if (!MappingConfiguration.Current.ClassDefinitions.Contains (type))
         return null;
       else

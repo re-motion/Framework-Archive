@@ -9,10 +9,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
   /// Handles property accessor calls of domain objects and prepares the properties accordingly.
   /// </summary>
   [Serializable]
-  public class DomainObjectPropertyInterceptor : IInterceptor<DomainObject>
+  internal class DomainObjectPropertyInterceptor : IInterceptor<DomainObject>
   {
     public static string GetIdentifierFromProperty (PropertyInfo property)
     {
+      ArgumentUtility.CheckNotNull ("property", property);
       return ReflectionUtility.GetPropertyName (property);
     }
 
@@ -25,6 +26,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     public void Intercept (IInvocation<DomainObject> invocation)
     {
+      ArgumentUtility.CheckNotNull ("invocation", invocation);
+
       DomainObject target = invocation.InvocationTarget;
       Assertion.Assert (target != null);
 
@@ -32,6 +35,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.DebugAssert (ReflectionUtility.IsPropertyAccessor (invocation.Method));
 
       PropertyInfo property = ReflectionUtility.GetPropertyForMethod (invocation.Method);
+      Assertion.DebugAssert (property != null);
+
       string id = GetIdentifierFromProperty (property);
 
       target.PreparePropertyAccess (id);
@@ -50,6 +55,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
 
     private void HandleAutomaticProperty (IInvocation<DomainObject> invocation, DomainObject target, string id)
     {
+      Assertion.DebugAssert (target != null);
+      Assertion.DebugAssert (id != null);
+      Assertion.DebugAssert (invocation != null);
+
       PropertyAccessor<object> propertyAccessor = new PropertyAccessor<object> (target, id, false);
       if (ReflectionUtility.IsPropertyGetter (invocation.Method))
         invocation.ReturnValue = propertyAccessor.GetValue ();
