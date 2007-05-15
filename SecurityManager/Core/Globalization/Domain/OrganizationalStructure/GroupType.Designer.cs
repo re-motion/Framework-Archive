@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Globalization.Domain.OrganizationalStructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Groupes.
+        ///   Looks up a localized string similar to Groups.
         /// </summary>
         internal static string property_Groups {
             get {

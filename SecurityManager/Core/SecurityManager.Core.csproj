@@ -163,7 +163,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.de.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessControlEntry.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\AccessControlEntry.resx">
@@ -181,7 +180,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.de.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GroupSelection.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.resx">
@@ -195,43 +193,35 @@
       <LastGenOutput>Client.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Client.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>User.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Role.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Position.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupTypePosition.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GroupTypePosition.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GroupType.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.de.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Group.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.de.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Delegation.de.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Delegation.resx">

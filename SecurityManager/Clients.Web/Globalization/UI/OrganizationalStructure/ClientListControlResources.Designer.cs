@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrate client.
+        ///   Looks up a localized string similar to Administrate clients.
         /// </summary>
         internal static string auto_ClientListLabel_Text {
             get {

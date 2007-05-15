@@ -10,14 +10,85 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
+    
+    /// <summary>
+    /// EditClientControl class.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated class.
+    /// </remarks>
     public partial class EditClientControl {
-        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
-        protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.Web.UI.Controls.SmartLabel ClientLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue IsAbstractField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenList;
+        
+        /// <summary>
+        /// FormGridManager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        
+        /// <summary>
+        /// CurrentObject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        
+        /// <summary>
+        /// FormGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
+        
+        /// <summary>
+        /// ClientLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.SmartLabel ClientLabel;
+        
+        /// <summary>
+        /// NameField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
+        
+        /// <summary>
+        /// IsAbstractField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue IsAbstractField;
+        
+        /// <summary>
+        /// ParentField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
+        
+        /// <summary>
+        /// ChildrenList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenList;
     }
 }
