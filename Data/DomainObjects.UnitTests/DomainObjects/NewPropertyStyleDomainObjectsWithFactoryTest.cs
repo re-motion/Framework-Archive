@@ -136,8 +136,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       int IPropertyInterface.Property
       {
-        get { return GetPropertyValue<int>(); }
-        set { SetPropertyValue (value); }
+        get { return CurrentProperty<int>().GetValue(); }
+        set { CurrentProperty<int>().SetValue (value); }
       }
     }
 

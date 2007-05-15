@@ -109,11 +109,11 @@
     set { DataContainer["Namespace.Type.IntProperty"] = value; }
   }
   
-  Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein:
+  Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein (funktioniert auch für Beziehungsproperties):
   public virtual int IntProperty
   {
-    get { return GetPropertyValue<int> (); }
-    set { SetPropertyValue (value); }
+    get { return CurrentProperty<int>().GetValue(); }
+    set { CurrentProperty<int>.SetValue (value); }
   }
   
   Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit InstantiableAttribute gekennzeichnet werden:

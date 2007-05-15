@@ -28,9 +28,18 @@ namespace Rubicon.Data.DomainObjects
   /// <summary>
   /// Provides an encapsulation of a <see cref="DomainObject">DomainObject's</see> property for simple access.
   /// </summary>
-  /// <typeparam name="T">The property value type. For simple value properties, this must be the simple property type. For related objects, this
-  /// must be the related object's type. For related object collections, this must be of type <see cref="ObjectList{T}"/>, where "T" is the related
-  /// objects' type.</typeparam>
+  /// <typeparam name="T">
+  /// <para>
+  /// The property value type. For simple value properties, this should be the simple property type. For related objects, this
+  /// should be the related object's type. For related object collections, this should be of type <see cref="ObjectList{T}"/>, where "T" is the
+  /// related objects' type.
+  /// </para>
+  /// <para>
+  /// For internal usage, it is possible to specify a more general or a more restricted type for <typeparamref name="T"/> via the internal constructor,
+  /// in which case the <see cref="GetValue"/> and <see cref="SetValue"/> methods can throw
+  /// <see cref="InvalidTypeException">InvalidTypeExceptions</see> they wouldn't throw otherwise.
+  /// </para>
+  /// </typeparam>
   public struct PropertyAccessor<T>
   {
     private DomainObject _domainObject;
@@ -50,6 +59,21 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier or the property's type
     /// does not equal the type of <typeparamref name="T"/>.</exception>
     public PropertyAccessor(DomainObject domainObject, string propertyIdentifier)
+      : this (domainObject, propertyIdentifier, true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes the <see cref="PropertyAccessor"/> object.
+    /// </summary>
+    /// <param name="domainObject">The domain object whose property is to be encapsulated.</param>
+    /// <param name="propertyIdentifier">The identifier of the property to be encapsulated.</param>
+    /// <param name="requireExactType">Indicates whether the constructor should check the type of <typeparamref name="T"/> against the
+    /// property's type.</param>
+    /// <exception cref="ArgumentNullException">One of the parameters passed to the constructor is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier or the property's type
+    /// does not equal the type of <typeparamref name="T"/>.</exception>
+    internal PropertyAccessor(DomainObject domainObject, string propertyIdentifier, bool requireExactType)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
@@ -68,8 +92,11 @@ namespace Rubicon.Data.DomainObjects
       AnalyzePropertyKind ();
 
       Type propertyType = PropertyAccessor.GetPropertyType (_classDefinition, _propertyIdentifier);
-      if (!typeof (T).Equals (propertyType))
-        throw new ArgumentTypeException ("T", propertyType, typeof (T));
+      if (requireExactType)
+      {
+        if (!typeof (T).Equals (propertyType))
+          throw new ArgumentTypeException ("T", propertyType, typeof (T));
+      }
     }
 
     private void AnalyzePropertyKind ()
@@ -105,7 +132,8 @@ namespace Rubicon.Data.DomainObjects
     /// Gets the property's value.
     /// </summary>
     /// <returns>The value of the encapsulated property.</returns>
-    /// <remarks>Depending on the property's <see cref="Kind"/>, this either calls GetPropertyValue, GetRelatedObject, or GetRelatedObjects.</remarks>
+    /// <remarks>Depending on the property's <see cref="Kind"/>, this either calls <see cref="DomainObject.GetPropertyValue"/>,
+    /// <see cref="DomainObject.GetRelatedObject"/>, or <see cref="DomainObject.GetRelatedObjects"/>.</remarks>
     public T GetValue()
     {
       switch (Kind)
@@ -124,7 +152,8 @@ namespace Rubicon.Data.DomainObjects
     /// Sets the property's value.
     /// </summary>
     /// <param name="value">The value to be set.</param>
-    /// <remarks>Depending on the property's <see cref="Kind"/>, this either calls SetPropertyValue or SetRelatedObject.</remarks>
+    /// <remarks>Depending on the property's <see cref="Kind"/>, this either calls <see cref="DomainObject.SetPropertyValue"/> or
+    /// <see cref="DomainObject.SetRelatedObject"/>.</remarks>
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
     public void SetValue (T value)
     {
@@ -252,6 +281,11 @@ namespace Rubicon.Data.DomainObjects
       {
         return new Tuple<PropertyDefinition, IRelationEndPointDefinition> (propertyDefinition, relationEndPointDefinition);
       }
+    }
+
+    public static bool IsValidProperty (ClassDefinition classDefinition, string propertyID)
+    {
+      return classDefinition.GetPropertyDefinition (propertyID) != null || classDefinition.GetRelationEndPointDefinition (propertyID) != null;
     }
   }
 }

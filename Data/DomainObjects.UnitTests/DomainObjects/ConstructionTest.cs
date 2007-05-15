@@ -46,5 +46,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNull (d2.S);
       Assert.AreSame (obj, d2.O);
     }
+
+
   }
 }

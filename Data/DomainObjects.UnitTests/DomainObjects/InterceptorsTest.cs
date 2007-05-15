@@ -217,59 +217,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void IsPropertyValue ()
+    public void GetClassDefinitionIfRelevantProperty ()
     {
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("OrderNumber")));
+      Assert.IsNotNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("OrderItems")));
+      Assert.IsNotNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("OrderNumber")));
+      Assert.IsNotNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("Customer")));
 
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("Customer")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("OrderItems")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMapping")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelated")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelatedObjects")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsPropertyValue (typeof (OrderWithNewPropertyAccess), MakeID ("Bla")));
-    }
-
-    [Test]
-    public void IsRelatedObject ()
-    {
-     
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("Customer")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("OrderNumber")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("OrderItems")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMapping")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelated")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelatedObjects")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObject (typeof (OrderWithNewPropertyAccess), MakeID ("Bla")));
-    }
-
-    [Test]
-    public void IsRelatedObjectCollection ()
-    {
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("OrderItems")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("OrderNumber")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("Customer")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMapping")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelated")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelatedObjects")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsRelatedObjectCollection (typeof (OrderWithNewPropertyAccess), MakeID ("Bla")));
-    }
-
-    [Test]
-    public void IsInterceptable ()
-    {
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("OrderItems")));
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("OrderNumber")));
-      Assert.IsTrue (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("Customer")));
-
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMapping")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelated")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("NotInMappingRelatedObjects")));
-      Assert.IsFalse (DomainObjectPropertyInterceptor.IsInterceptable (typeof (OrderWithNewPropertyAccess), MakeID ("Bla")));
+      Assert.IsNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("NotInMapping")));
+      Assert.IsNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("NotInMappingRelated")));
+      Assert.IsNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("NotInMappingRelatedObjects")));
+      Assert.IsNull (DomainObjectPropertyInterceptorSelector.GetClassDefinitionIfRelevantProperty (typeof (OrderWithNewPropertyAccess),
+          MakeID ("Bla")));
     }
 
     private string MakeID (string propertyName)

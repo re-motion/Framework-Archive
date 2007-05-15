@@ -24,34 +24,52 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
 
-      if (!MappingConfiguration.Current.ClassDefinitions.Contains(type))
-      {
+      if (!MappingConfiguration.Current.ClassDefinitions.Contains (type))
         return false;
-      }
 
       if (ReflectionUtility.IsPropertyAccessor (memberInfo))
       {
         PropertyInfo property = ReflectionUtility.GetPropertyForMethod (memberInfo);
         string id = DomainObjectPropertyInterceptor.GetIdentifierFromProperty (property);
 
-        bool isDefined = DomainObjectPropertyInterceptor.IsInterceptable (type, id);
-        if (!isDefined && memberInfo.IsAbstract)
+        ClassDefinition classDefinition = GetClassDefinitionIfRelevantProperty (type, id);
+
+        if (classDefinition == null && memberInfo.IsAbstract)
         {
           throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, property {1} is abstract "
               + "but not defined in the mapping (assumed property id: {2}).", type.FullName, property.Name, id), type);
         }
 
-        if (ReflectionUtility.IsPropertySetter(memberInfo) && DomainObjectPropertyInterceptor.IsRelatedObjectCollection (type, id))
+        if (classDefinition != null && memberInfo.IsAbstract && ReflectionUtility.IsPropertySetter (memberInfo)
+            && PropertyAccessor.GetPropertyKind(classDefinition, id) == PropertyKind.RelatedObjectCollection)
         {
           throw new NonInterceptableTypeException (string.Format ("Cannot instantiate type {0}, automatic properties for related object collections "
               + "cannot have setters: property '{1}', property id '{2}'.", type.FullName, property.Name, id), type);
         }
 
-        return isDefined;
+        return classDefinition != null;
       }
       else
         return false;
     }
+
+    /// <summary>
+    /// Returns the relevant class definition for the given property data, or null if this is not a valid mapping property.
+    /// </summary>
+    /// <param name="type">The type containing the property.</param>
+    /// <param name="propertyID">The property identifier.</param>
+    /// <returns>The class devinition for the property, or null if it is not a valid mapping property.</returns>
+    public static ClassDefinition GetClassDefinitionIfRelevantProperty (Type type, string propertyID)
+    {
+      if (!MappingConfiguration.Current.ClassDefinitions.Contains (type))
+        return null;
+      else
+      {
+        ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+        return PropertyAccessor.IsValidProperty (classDefinition, propertyID) ? classDefinition : null;
+      }
+    }
+
 
     public IInterceptor<DomainObject> SelectInterceptor (Type type, MethodInfo memberInfo)
     {
