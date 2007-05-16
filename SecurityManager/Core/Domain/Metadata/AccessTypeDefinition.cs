@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<AccessTypeDefinition> ().With ();
+        return NewObject<AccessTypeDefinition> ().With ();
       }
     }
 
@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<AccessTypeDefinition> ().With (metadataItemID, name, value);
+        return NewObject<AccessTypeDefinition> ().With (metadataItemID, name, value);
       }
     }
 

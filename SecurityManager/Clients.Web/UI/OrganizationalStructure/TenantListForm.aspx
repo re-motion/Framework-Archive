@@ -1,4 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TenantListForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TenantListForm.aspx.cs" Inherits="TenantListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Import namespace="System.Web.UI.WebControls"%>
+<%@ Import namespace="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure"%>
 <%@ Register TagPrefix="securityManager" Src="TenantListControl.ascx" TagName="TenantListControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 

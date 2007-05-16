@@ -6,7 +6,6 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Utilities.ReflectionUtility;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -23,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<SecurableClassDefinition> ().With ();
+        return NewObject<SecurableClassDefinition> ().With ();
       }
     }
 

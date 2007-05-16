@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<StatePropertyReference> ().With ();
+        return NewObject<StatePropertyReference> ().With ();
       }
     }
 

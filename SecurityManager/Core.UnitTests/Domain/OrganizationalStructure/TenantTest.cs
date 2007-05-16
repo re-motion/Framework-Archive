@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using Rubicon.Development.UnitTesting;
+using Rubicon.ObjectBinding;
+using Rubicon.Security;
 using Rubicon.Security.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Security;
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding;
-using Rubicon.Data.DomainObjects.ObjectBinding;
-using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

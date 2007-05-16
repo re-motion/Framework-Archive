@@ -1,6 +1,5 @@
 using System;
 using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
 using Rubicon.SecurityManager.Domain.Metadata;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
@@ -15,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Permission> ().With ();
+        return NewObject<Permission> ().With ();
       }
     }
 

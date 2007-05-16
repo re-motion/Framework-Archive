@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

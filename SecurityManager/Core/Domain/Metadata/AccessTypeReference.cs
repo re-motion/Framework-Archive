@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<AccessTypeReference> ().With ();
+        return NewObject<AccessTypeReference> ().With ();
       }
     }
 

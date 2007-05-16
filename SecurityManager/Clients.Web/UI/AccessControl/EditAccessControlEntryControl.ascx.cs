@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
 using Rubicon.Data.DomainObjects;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.Security;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {

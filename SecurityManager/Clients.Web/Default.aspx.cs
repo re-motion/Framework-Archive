@@ -1,8 +1,9 @@
 using System;
+using System.Web.UI;
 
 namespace Rubicon.SecurityManager.Clients.Web
 {
-  public partial class DefaultPage : System.Web.UI.Page
+  public partial class DefaultPage : Page
   {
 
     // types

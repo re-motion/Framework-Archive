@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<StateCombination> ().With ();
+        return NewObject<StateCombination> ().With ();
       }
     }
 

@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
@@ -17,7 +16,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<AbstractRoleDefinition> ().With ();
+        return NewObject<AbstractRoleDefinition> ().With ();
       }
     }
 
@@ -25,7 +24,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
+        return NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
       }
     }
 

@@ -1,9 +1,8 @@
 using System;
-using Rubicon.Data.DomainObjects;
+using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Security.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {

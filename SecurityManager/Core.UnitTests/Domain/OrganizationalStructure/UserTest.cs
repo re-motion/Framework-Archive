@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Security;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Security.Data.DomainObjects;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Security;
+using Rubicon.Security.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

@@ -1,13 +1,12 @@
 using System;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Globalization;
-using Rubicon.Data.DomainObjects.Queries;
-using Rubicon.Utilities;
-using System.Runtime.Remoting.Messaging;
-using Rubicon.Data;
-using Rubicon.Security;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.Remoting.Messaging;
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Globalization;
+using Rubicon.Security;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -42,7 +41,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Tenant> ().With ();
+        return NewObject<Tenant> ().With ();
       }
     }
 
@@ -120,7 +119,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       List<Tenant> clients = new List<Tenant> ();
 
-      foreach (Tenant tenant in Tenant.FindAll (ClientTransaction))
+      foreach (Tenant tenant in FindAll (ClientTransaction))
       {
         if ((!Children.Contains (tenant.ID)) && (tenant.ID != this.ID))
           clients.Add (tenant);

@@ -1,6 +1,5 @@
 using System;
 using System.Web.UI;
-using Rubicon.Data.DomainObjects;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;

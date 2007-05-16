@@ -1,10 +1,11 @@
 using System;
+using System.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.UI;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI
 {
-  public partial class SecurityManagerMasterPage : System.Web.UI.MasterPage
+  public partial class SecurityManagerMasterPage : MasterPage
   {
     // types
 

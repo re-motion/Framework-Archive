@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       if (CurrentObject == null)
       {
         Group = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup (CurrentTransaction);
-        Group.Tenant = Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.GetObject (TenantID, CurrentTransaction);
+        Group.Tenant = Tenant.GetObject (TenantID, CurrentTransaction);
       }
     }
 

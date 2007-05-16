@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void RolesList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void RolesList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
@@ -124,7 +124,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       Page.ExecuteFunction (editRoleFormFunction);
     }
 
-    protected void ChildrenList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void ChildrenList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddItem")
       {

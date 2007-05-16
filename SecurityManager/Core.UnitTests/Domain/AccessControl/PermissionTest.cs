@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
-using Rubicon.NullableValueTypes;
 using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl

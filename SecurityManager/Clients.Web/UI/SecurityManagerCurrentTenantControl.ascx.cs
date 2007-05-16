@@ -1,25 +1,17 @@
 using System;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Clients.Web.Globalization.UI;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data.DomainObjects;
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.NullableValueTypes;
-using Rubicon.SecurityManager.Clients.Web.Classes;
-using Rubicon.Web.UI.Controls;
 using System.ComponentModel;
+using System.Web.UI;
+using Rubicon.Data.DomainObjects;
+using Rubicon.NullableValueTypes;
+using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.SecurityManager.Clients.Web.Classes;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Utilities;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI
 {
-  public partial class CurrentTenantControl : System.Web.UI.UserControl
+  public partial class CurrentTenantControl : UserControl
   {
     private static readonly string s_isTenantSelectionEnabledKey = typeof (CurrentTenantControl).FullName + "_IsTenantSelectionEnabled";
     private static readonly string s_enableAbstractTenantsKey = typeof (CurrentTenantControl).FullName + "_EnableAbstractTenants";

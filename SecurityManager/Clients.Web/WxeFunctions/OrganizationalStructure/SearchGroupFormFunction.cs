@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.ExecutionEngine;

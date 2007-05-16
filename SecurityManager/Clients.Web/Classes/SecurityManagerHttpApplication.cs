@@ -1,18 +1,13 @@
 using System;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.SessionState;
 using System.Security.Principal;
-
-using Rubicon.Utilities;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data.DomainObjects;
-
-using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
 using System.Threading;
+using System.Web;
+using System.Web.SessionState;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Utilities;
+using SecurityManagerUser = Rubicon.SecurityManager.Domain.OrganizationalStructure.User;
 
 namespace Rubicon.SecurityManager.Clients.Web.Classes
 {

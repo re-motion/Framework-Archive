@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Remoting.Messaging;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
-using Rubicon.Security.Data.DomainObjects;
-using System.Runtime.Remoting.Messaging;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -38,7 +37,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<User> ().With ();
+        return NewObject<User> ().With ();
       }
     }
 

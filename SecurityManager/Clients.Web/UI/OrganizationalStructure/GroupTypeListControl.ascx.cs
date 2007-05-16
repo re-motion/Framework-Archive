@@ -1,13 +1,13 @@
 using System;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.Security;
+using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Security.Configuration;
-using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {

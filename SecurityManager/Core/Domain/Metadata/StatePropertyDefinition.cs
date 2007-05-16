@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<StatePropertyDefinition> ().With ();
+        return NewObject<StatePropertyDefinition> ().With ();
       }
     }
 
@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<StatePropertyDefinition> ().With (metadataItemID, name);
+        return NewObject<StatePropertyDefinition> ().With (metadataItemID, name);
       }
     }
 

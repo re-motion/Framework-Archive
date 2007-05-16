@@ -1,4 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PositionListForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.PositionListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PositionListForm.aspx.cs" Inherits="PositionListForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
+<%@ Import namespace="System.Web.UI.WebControls"%>
+<%@ Import namespace="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure"%>
 <%@ Register TagPrefix="securityManager" Src="PositionListControl.ascx" TagName="PositionListControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 

@@ -3,9 +3,9 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {

@@ -8,7 +8,6 @@ using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
-using Rubicon.Security.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -58,7 +57,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Group> ().With ();
+        return NewObject<Group> ().With ();
       }
     }
 
@@ -164,7 +163,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in Group.FindByTenantID (tenantID, ClientTransaction))
+      foreach (Group group in FindByTenantID (tenantID, ClientTransaction))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);

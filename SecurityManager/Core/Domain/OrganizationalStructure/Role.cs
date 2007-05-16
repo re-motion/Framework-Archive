@@ -4,7 +4,6 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
 using Rubicon.Security;
 using Rubicon.Utilities;
-using Rubicon.Data;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -20,7 +19,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Role> ().With ();
+        return NewObject<Role> ().With ();
       }
     }
 

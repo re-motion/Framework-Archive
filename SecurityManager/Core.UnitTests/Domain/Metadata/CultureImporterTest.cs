@@ -1,5 +1,6 @@
 using System;
 using System.Xml;
+using System.Xml.Schema;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
@@ -122,7 +123,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    [ExpectedException (typeof (System.Xml.Schema.XmlSchemaValidationException))]
+    [ExpectedException (typeof (XmlSchemaValidationException))]
     public void Import_InvalidXml ()
     {
       string cultureXml = @"

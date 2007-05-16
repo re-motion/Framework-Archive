@@ -1,16 +1,6 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Development;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Mapping.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.SecurityManager.Persistence;
-using Rubicon.SecurityManager.UnitTests.Configuration;
 
 namespace Rubicon.SecurityManager.UnitTests
 {

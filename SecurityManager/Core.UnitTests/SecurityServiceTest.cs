@@ -5,6 +5,7 @@ using System.Security.Principal;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
+using log4net.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects;
@@ -17,6 +18,7 @@ using Rubicon.SecurityManager.UnitTests.TestDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
+using SecurityContext=Rubicon.Security.SecurityContext;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -145,10 +147,10 @@ namespace Rubicon.SecurityManager.UnitTests
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
-      log4net.Core.LoggingEvent[] events = _memoryAppender.GetEvents ();
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
       Assert.AreSame (expectedException, events[0].ExceptionObject);
-      Assert.AreEqual (log4net.Core.Level.Error, events[0].Level);
+      Assert.AreEqual (Level.Error, events[0].Level);
     }
 
     [Test]
@@ -165,10 +167,10 @@ namespace Rubicon.SecurityManager.UnitTests
 
       _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
-      log4net.Core.LoggingEvent[] events = _memoryAppender.GetEvents ();
+      LoggingEvent[] events = _memoryAppender.GetEvents ();
       Assert.AreEqual (1, events.Length);
       Assert.AreSame (expectedException, events[0].ExceptionObject);
-      Assert.AreEqual (log4net.Core.Level.Error, events[0].Level);
+      Assert.AreEqual (Level.Error, events[0].Level);
     }
 
     [Test]

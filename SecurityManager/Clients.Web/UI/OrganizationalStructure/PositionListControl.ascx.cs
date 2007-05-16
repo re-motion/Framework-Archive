@@ -6,9 +6,9 @@ using Rubicon.Security.Configuration;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
+using Rubicon.SecurityManager.Configuration;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {

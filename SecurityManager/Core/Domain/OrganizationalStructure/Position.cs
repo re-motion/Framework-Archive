@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<Position> ().With ();
+        return NewObject<Position> ().With ();
       }
     }
 

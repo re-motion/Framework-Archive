@@ -1,9 +1,9 @@
 using System;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Data.DomainObjects;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.SecurityManager.Clients.Web.Classes

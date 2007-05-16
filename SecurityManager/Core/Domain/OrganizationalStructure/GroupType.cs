@@ -1,11 +1,11 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Globalization;
+using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
-using System.ComponentModel;
-using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
-        return DomainObject.NewObject<GroupType> ().With ();
+        return NewObject<GroupType> ().With ();
       }
     }
 

@@ -5,7 +5,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain

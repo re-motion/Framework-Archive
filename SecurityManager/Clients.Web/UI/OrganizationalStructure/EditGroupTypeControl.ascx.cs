@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return isValid;
     }
 
-    protected void PositionsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void PositionsList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "NewItem")
       {
@@ -119,7 +119,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       Page.ExecuteFunction (editGroupTypePositionFormFunction);
     }
 
-    protected void GroupsList_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    protected void GroupsList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
     {
       if (e.Item.ItemID == "AddItem")
       {
