@@ -1,7 +1,4 @@
-<%@ Import namespace="System.Web.UI.HtmlControls"%>
-<%@ Import namespace="System.Web.UI.WebControls"%>
-<%@ Import namespace="Rubicon.SecurityManager.Clients.Web.UI"%>
-<%@ Master Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerMasterPage.Master.cs" Inherits="SecurityManagerMasterPage" %>
+<%@ Master Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.SecurityManagerMasterPage" %>
 <%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="NavigationTabs" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>

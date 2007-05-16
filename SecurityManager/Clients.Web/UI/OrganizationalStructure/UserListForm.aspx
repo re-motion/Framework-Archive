@@ -1,6 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" Codebehind="UserListForm.aspx.cs" Inherits="UserListForm" MasterPageFile="../SecurityManagerMasterPage.Master" %>
-<%@ Import namespace="System.Web.UI.WebControls"%>
-<%@ Import namespace="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure"%>
+<%@ Page Language="C#" AutoEventWireup="true" Codebehind="UserListForm.aspx.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.UserListForm" MasterPageFile="../SecurityManagerMasterPage.Master" %>
 <%@ Register TagPrefix="securityManager" Src="UserListControl.ascx" TagName="UserListControl" %>
 <%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
