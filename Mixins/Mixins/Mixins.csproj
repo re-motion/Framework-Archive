@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxySerializationHelper.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ConditionExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ExpressionReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />

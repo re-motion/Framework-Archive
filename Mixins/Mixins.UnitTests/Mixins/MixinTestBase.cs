@@ -17,7 +17,7 @@ namespace Mixins.UnitTests.Mixins
     [SetUp]
     public virtual void SetUp()
     {
-      ConcreteTypeBuilder.Current.ResetScope ();
+      ConcreteTypeBuilder.SetCurrent(null);
       TypeFactory.SetCurrent (new TypeFactory (CreateConfiguration()));
     }
 
@@ -42,7 +42,7 @@ namespace Mixins.UnitTests.Mixins
       }
 
       TypeFactory.SetCurrent (null);
-      ConcreteTypeBuilder.Current.ResetScope();
+      ConcreteTypeBuilder.SetCurrent (null);
 
       if (path != null || !File.Exists(path))
       {

@@ -27,11 +27,12 @@ namespace Mixins.Definitions
 
       AggregatedDependencies = new DefinitionItemCollection<Type, TSelf> (
           delegate (TSelf d) { return d.RequiredType.Type; },
-          MustHaveSameDependerAsAggregator);
+          HasSameDependerAsAggregator);
     }
 
-    private bool MustHaveSameDependerAsAggregator (TSelf newAggregatedDependency)
+    public bool HasSameDependerAsAggregator (TSelf newAggregatedDependency)
     {
+      ArgumentUtility.CheckNotNull ("newAggregatedDependency", newAggregatedDependency);
       return newAggregatedDependency.Depender == _depender;
     }
 

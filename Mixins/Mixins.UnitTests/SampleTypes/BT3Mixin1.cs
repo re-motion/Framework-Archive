@@ -5,6 +5,7 @@ using System.Text;
 namespace Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (BaseType3))]
+  [Serializable]
   public class BT3Mixin1 : Mixin<IBaseType31, IBaseType31>
   {
     public new IBaseType31 This

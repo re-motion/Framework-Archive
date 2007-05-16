@@ -42,12 +42,12 @@ namespace Mixins.UnitTests.Mixins
       Type proxyType = t.GetNestedType ("BaseCallProxy");
       object proxy = Activator.CreateInstance (proxyType, new object[] { null, -1 });
 
-      Assert.IsNotNull (proxyType.GetField ("_depth"));
-      Assert.IsNotNull (proxyType.GetField ("_this"));
+      Assert.IsNotNull (proxyType.GetField ("__depth"));
+      Assert.IsNotNull (proxyType.GetField ("__this"));
 
-      Assert.AreEqual (-1, proxyType.GetField ("_depth").GetValue (proxy));
-      Assert.AreEqual (t, proxyType.GetField ("_this").FieldType);
-      Assert.IsNull (proxyType.GetField ("_this").GetValue (proxy));
+      Assert.AreEqual (-1, proxyType.GetField ("__depth").GetValue (proxy));
+      Assert.AreEqual (t, proxyType.GetField ("__this").FieldType);
+      Assert.IsNull (proxyType.GetField ("__this").GetValue (proxy));
     }
 
     [Test]

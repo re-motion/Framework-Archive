@@ -8,6 +8,7 @@ namespace Mixins.Definitions
   /// <summary>
   /// Set of base class definitions for configuríng a CodeBuilder.
   /// </summary>
+  [Serializable]
   public class ApplicationDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<Type, BaseClassDefinition> BaseClasses =

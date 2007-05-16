@@ -27,6 +27,7 @@ namespace Mixins
     }
   }
 
+  [Serializable]
   public class Mixin<[This]TThis, [Base]TBase>
       where TThis : class
       where TBase : class
@@ -71,6 +72,7 @@ namespace Mixins
     }
   }
 
+  [Serializable]
   public class Mixin<[This]TThis>
     where TThis : class
   {

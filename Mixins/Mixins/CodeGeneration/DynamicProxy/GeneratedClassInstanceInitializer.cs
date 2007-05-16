@@ -28,19 +28,20 @@ namespace Mixins.CodeGeneration.DynamicProxy
       object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
       FillUpExtensionsWithNewMixinInstances (extensions, configuration, instance, baseCallProxyType);
 
-      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, 0);
-      InitializeInstanceFields (instance, extensions, firstBaseCallProxy);
+      InitializeInstanceFields (instance, extensions);
     }
 
 
-    public static void InitializeInstanceFields (object instance, object[] extensions, object firstBaseCallProxy)
+    public static void InitializeInstanceFields (object instance, object[] extensions)
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
       ArgumentUtility.CheckNotNull ("extensions", extensions);
-      ArgumentUtility.CheckNotNull ("firstBaseCallProxy", firstBaseCallProxy);
 
       Type type = instance.GetType ();
       type.GetField ("__extensions").SetValue (instance, extensions);
+
+      Type baseCallProxyType = instance.GetType ().GetNestedType ("BaseCallProxy");
+      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, 0);
       type.GetField ("__first").SetValue (instance, firstBaseCallProxy);
     }
 

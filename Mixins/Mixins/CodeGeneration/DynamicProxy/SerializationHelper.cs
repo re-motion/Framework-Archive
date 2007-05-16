@@ -14,7 +14,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter s_formatter = new BinaryFormatter (); // HACK: this is used to circumvent serialization bug
 
     public static void GetObjectDataForGeneratedTypes (SerializationInfo info, StreamingContext context, object concreteObject,
-        BaseClassDefinition configuration, object[] extensions, object first, bool serializeBaseMembers)
+        BaseClassDefinition configuration, object[] extensions, bool serializeBaseMembers)
     {
       info.SetType (typeof (SerializationHelper));
 
@@ -27,7 +27,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
 
       SerializeArray(extensions, "__extension", info);
-      info.AddValue ("__first", first);
 
       object[] baseMemberValues;
       if (serializeBaseMembers)
@@ -76,7 +75,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (configuration);
 
       object[] extensions = DeserializeArray<object> ("__extension", info);
-      object first = info.GetValue ("__first", typeof (object));
       object[] baseMemberValues = DeserializeArray<object> ("__baseMemberValue", info);
 
       if (baseMemberValues != null)
@@ -91,10 +89,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
         _deserializedObject = Activator.CreateInstance (concreteType, new object[] {info, context});
       }
 
-      if (extensions != null)
-      {
-        ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, extensions, first);
-      }
+      Assertion.Assert (extensions != null);
+      ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, extensions);
     }
 
     private T[] DeserializeArray<T> (string id, SerializationInfo info)

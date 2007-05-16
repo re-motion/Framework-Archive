@@ -8,6 +8,9 @@ using Mixins.Definitions.Building;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Mixins.CodeGeneration;
+using Rubicon;
+using Rubicon.Utilities;
+using ReflectionUtility=Mixins.CodeGeneration.ReflectionUtility;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -171,6 +174,155 @@ namespace Mixins.UnitTests.Mixins
             typeof (Mixin<IBaseType33, IBaseType33>).GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
             ReflectionUtility.GetBaseProperty (concreteType));
       }
+    }
+
+    class Base1
+    {
+      public virtual void Foo (int i) { }
+      public virtual void Bar (int i) { }
+      public virtual void Fred (int i) { }
+
+      public virtual int FooP { get { return 0; } set { } }
+      public virtual int BarP { get { return 0; } set { } }
+      public virtual int FredP { get { return 0; } set { } }
+
+      public virtual event Func<int> FooE;
+      public virtual event Func<int> BarE;
+      public virtual event Func<int> FredE;
+    }
+
+    class Derived1 : Base1
+    {
+      public new void Foo (int i) { }
+      public override void Bar (int i) { }
+      public void Baz (int i) { }
+
+      public new int FooP { get { return 0; } set { } }
+      public override int BarP { get { return 0; } set { } }
+      public int BazP { get { return 0; } set { } }
+
+      public new event Func<int> FooE;
+      public override event Func<int> BarE;
+      public event Func<int> BazE;
+    }
+
+    private bool ContainsNotNull<T> (IList<T> list, T item)
+    {
+      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull ("item", item);
+      return list.Contains (item);
+    }
+
+    [Test]
+    public void GetAllInstanceMethodsExceptOverridden1()
+    {
+      List<MethodInfo> methods = new List<MethodInfo> (ReflectionUtility.GetAllInstanceMethodBaseDefinitions (typeof (Derived1)));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base1).GetMethod ("Foo")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base1).GetMethod ("Bar")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base1).GetMethod ("Fred")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Derived1).GetMethod ("Foo")));
+      Assert.IsFalse (ContainsNotNull (methods, typeof (Derived1).GetMethod ("Bar")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Derived1).GetMethod ("Baz")));
+      Assert.IsFalse (ContainsNotNull(methods, typeof (Derived1).GetMethod ("Fred")));
+    }
+
+    [Test]
+    [Ignore("TODO")]
+    public void GetAllInstancePropertiesExceptOverridden1 ()
+    {
+      List<PropertyInfo> properties = new List<PropertyInfo> (ReflectionUtility.GetAllInstancePropertyBaseDefinitions (typeof (Derived1)));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base1).GetProperty ("FooP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base1).GetProperty ("BarP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base1).GetProperty ("FredP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Derived1).GetProperty ("FooP")));
+      Assert.IsFalse (ContainsNotNull (properties, typeof (Derived1).GetProperty ("BarP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Derived1).GetProperty ("BazP")));
+      Assert.IsFalse (ContainsNotNull (properties, typeof (Derived1).GetProperty ("FredP")));
+    }
+
+    [Test]
+    [Ignore ("TODO")]
+    public void GetAllInstanceEventsExceptOverridden1 ()
+    {
+      List<EventInfo> events = new List<EventInfo> (ReflectionUtility.GetAllInstanceEventBaseDefinitions (typeof (Derived1)));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base1).GetEvent ("FooE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base1).GetEvent ("BarE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base1).GetEvent ("FredE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Derived1).GetEvent ("FooE")));
+      Assert.IsFalse (ContainsNotNull (events, typeof (Derived1).GetEvent ("BarE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Derived1).GetEvent ("BazE")));
+      Assert.IsFalse (ContainsNotNull (events, typeof (Derived1).GetEvent ("FredE")));
+    }
+
+    class Base2<T>
+    {
+      public virtual void Foo (T i) { }
+      public virtual void Bar (T i) { }
+      public virtual void Fred (T i) { }
+
+      public virtual T FooP { get { return default (T); } set { } }
+      public virtual T BarP { get { return default (T); } set { } }
+      public virtual T FredP { get { return default (T); } set { } }
+
+      public virtual event Func<T> FooE;
+      public virtual event Func<T> BarE;
+      public virtual event Func<T> FredE;
+    }
+
+    class Derived2 : Base2<int>
+    {
+      public new void Foo (int i) { }
+      public override void Bar (int i) { }
+      public void Baz (int i) { }
+
+      public new int FooP { get { return 0; } set { } }
+      public override int BarP { get { return 0; } set { } }
+      public int BazP { get { return 0; } set { } }
+
+      public new event Func<int> FooE;
+      public override event Func<int> BarE;
+      public event Func<int> BazE;
+    }
+
+    [Test]
+    public void GetAllInstanceMethodsExceptOverridden2 ()
+    {
+      List<MethodInfo> methods = new List<MethodInfo> (ReflectionUtility.GetAllInstanceMethodBaseDefinitions (typeof (Derived2)));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base2<int>).GetMethod ("Foo")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base2<int>).GetMethod ("Bar")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Base2<int>).GetMethod ("Fred")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Derived2).GetMethod ("Foo")));
+      Assert.IsFalse (ContainsNotNull (methods, typeof (Derived2).GetMethod ("Bar")));
+      Assert.IsTrue (ContainsNotNull (methods, typeof (Derived2).GetMethod ("Baz")));
+      Assert.IsFalse (ContainsNotNull (methods, typeof (Derived2).GetMethod ("Fred")));
+    }
+
+    [Test]
+    [Ignore ("TODO")]
+    public void GetAllInstancePropertiesExceptOverridden2 ()
+    {
+      List<PropertyInfo> properties = new List<PropertyInfo> (ReflectionUtility.GetAllInstancePropertyBaseDefinitions (typeof (Derived2)));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base2<int>).GetProperty ("FooP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base2<int>).GetProperty ("BarP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Base2<int>).GetProperty ("FredP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Derived2).GetProperty ("FooP")));
+      Assert.IsFalse (ContainsNotNull (properties, typeof (Derived2).GetProperty ("BarP")));
+      Assert.IsTrue (ContainsNotNull (properties, typeof (Derived2).GetProperty ("BazP")));
+      Assert.IsFalse (ContainsNotNull (properties, typeof (Derived2).GetProperty ("FredP")));
+    }
+
+    [Test]
+    [Ignore ("TODO")]
+    public void GetAllInstanceEventsExceptOverridden2 ()
+    {
+      List<EventInfo> events = new List<EventInfo> (ReflectionUtility.GetAllInstanceEventBaseDefinitions (typeof (Derived2)));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base2<int>).GetEvent ("FooE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base2<int>).GetEvent ("BarE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Base2<int>).GetEvent ("FredE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Derived2).GetEvent ("FooE")));
+      Assert.IsFalse (ContainsNotNull (events, typeof (Derived2).GetEvent ("BarE")));
+      Assert.IsTrue (ContainsNotNull (events, typeof (Derived2).GetEvent ("BazE")));
+      Assert.IsFalse (ContainsNotNull (events, typeof (Derived2).GetEvent ("FredE")));
     }
   }
 }

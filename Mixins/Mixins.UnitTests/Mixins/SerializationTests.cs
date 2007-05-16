@@ -5,13 +5,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Mixins.CodeGeneration;
+using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
 namespace Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  [Ignore ("TODO: Fix serialization on nested class")]
   public class SerializationTests : MixinTestBase
   {
     [Serializable]
@@ -45,6 +45,30 @@ namespace Mixins.UnitTests.Mixins
       {
         S = i.ToString();
       }
+    }
+
+    public static byte[] Serialize (object o)
+    {
+      using (MemoryStream stream = new MemoryStream ())
+      {
+        BinaryFormatter formatter = new BinaryFormatter ();
+        formatter.Serialize (stream, o);
+        return stream.GetBuffer ();
+      }
+    }
+
+    public static object Deserialize (byte[] bytes)
+    {
+      using (MemoryStream stream = new MemoryStream (bytes))
+      {
+        BinaryFormatter formatter = new BinaryFormatter ();
+        return formatter.Deserialize (stream);
+      }
+    }
+
+    public static T SerializeAndDeserialize<T> (T t)
+    {
+      return (T) Deserialize (Serialize (t));
     }
 
     [Test]
@@ -95,7 +119,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreNotSame (bt1, bt1a);
       Assert.AreEqual (bt1.I, bt1a.I);
 
-      BaseType2 bt2 = ObjectFactory.Create<BaseType2> ().With ();
+      BaseType2 bt2 = CreateMixedObject<BaseType2> (typeof(BT2Mixin1)).With();
       Assert.IsTrue (bt2.GetType ().IsSerializable);
 
       bt2.S = "Bla";
@@ -105,7 +129,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void ExtensionsFirstAndConfigurationSerialized ()
+    public void ExtensionsAndConfigurationSerializedFirstFits ()
     {
       BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
       IMixinTarget mixinTarget = (IMixinTarget) bt1;
@@ -121,7 +145,10 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (mixinTarget.Mixins[0].GetType(), mixinTargetA.Mixins[0].GetType());
 
       Assert.IsNotNull (mixinTargetA.FirstBaseCallProxy);
-      Assert.AreEqual(mixinTarget.FirstBaseCallProxy.GetType(), mixinTargetA.FirstBaseCallProxy.GetType());
+      Assert.AreNotEqual (mixinTarget.FirstBaseCallProxy.GetType (), mixinTargetA.FirstBaseCallProxy.GetType ());
+      Assert.AreEqual (mixinTargetA.GetType ().GetNestedType ("BaseCallProxy"), mixinTargetA.FirstBaseCallProxy.GetType ());
+      Assert.AreEqual (0, mixinTargetA.FirstBaseCallProxy.GetType ().GetField ("__depth").GetValue (mixinTargetA.FirstBaseCallProxy));
+      Assert.AreSame (mixinTargetA, mixinTargetA.FirstBaseCallProxy.GetType ().GetField ("__this").GetValue(mixinTargetA.FirstBaseCallProxy));
     }
 
     [Test]
@@ -152,8 +179,50 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
+    [Ignore("TODO: Filter out base property definition when \"new\" is used in derived class")]
+    public void ConfigSerializationSpike()
+    {
+      ApplicationDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2));
+      SerializeAndDeserialize (def);
+    }
+
+    [Test]
+    [Ignore ("TODO: Filter out base property definition when \"new\" is used in derived class")]
+    public void SerializationOfMixinThisWorks ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
+      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (bt3);
+      Assert.AreSame (bt3, mixin.This);
+
+      BaseType3 bt3A = SerializeAndDeserialize (bt3);
+      BT3Mixin2 mixinA = Mixin.Get<BT3Mixin2> (bt3A);
+      Assert.AreNotSame (mixin, mixinA);
+      Assert.AreSame (bt3A, mixinA.This);
+    }
+
+    [Test]
+    [Ignore ("TODO: Filter out base property definition when \"new\" is used in derived class")]
+    public void SerializationOfMixinBaseWorks ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
+      Assert.IsNotNull (mixin.Base);
+      Assert.AreSame (bt3.GetType().GetField ("__first").FieldType, mixin.Base.GetType());
+
+      SerializeAndDeserialize (mixin);
+
+      BaseType3 bt3A = SerializeAndDeserialize (bt3);
+      BT3Mixin1 mixinA = Mixin.Get<BT3Mixin1> (bt3A);
+      Assert.AreNotSame (mixin, mixinA);
+      Assert.IsNotNull (mixinA.Base);
+      Assert.AreSame (bt3A.GetType ().GetField ("__first").FieldType, mixinA.Base.GetType ());
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement serialization for generated mixin classes")]
     public void SerializationOfDerivedMixinWorks ()
     {
+      Assert.Fail ();
       ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
       IMixinOverridingClassMethod comAsIfc = com as IMixinOverridingClassMethod;
       Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com));
@@ -171,30 +240,6 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (com2AsIfc);
       Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com2.OverridableMethod (13));
-    }
-
-    private byte[] Serialize (object o)
-    {
-      using (MemoryStream stream = new MemoryStream ())
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (stream, o);
-        return stream.GetBuffer ();
-      }
-    }
-
-    private object Deserialize (byte[] bytes)
-    {
-      using (MemoryStream stream = new MemoryStream (bytes))
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        return formatter.Deserialize (stream);
-      }
-    }
-
-    private T SerializeAndDeserialize<T> (T t)
-    {
-      return (T) Deserialize (Serialize (t));
     }
   }
 }

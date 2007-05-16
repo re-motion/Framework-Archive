@@ -123,7 +123,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData()
     {
-      Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (ISerializable)) != 0);
       bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (_emitter.BaseType);
 
       MethodInfo getObjectDataMethod =
@@ -140,7 +139,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
                   new ReferenceExpression (SelfReference.Self),
                   new ReferenceExpression (_configurationField),
                   new ReferenceExpression (_extensionsField),
-                  new ReferenceExpression (_firstField),
                   new ReferenceExpression (new ConstReference (!baseIsISerializable)))));
 
       if (baseIsISerializable)
@@ -288,7 +286,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementOverride (MethodDefinition method)
     {
-      Console.WriteLine (method.FullName);
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
       CustomMethodEmitter methodOverride = _emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
       methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);

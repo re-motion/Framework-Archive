@@ -1,6 +1,7 @@
 using System;
 using Mixins.CodeGeneration.SingletonUtilities;
 using Mixins.Definitions;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Mixins.CodeGeneration
@@ -8,6 +9,7 @@ namespace Mixins.CodeGeneration
   public class ConcreteTypeBuilder : CallContextSingletonBase<ConcreteTypeBuilder, DefaultInstanceCreator<ConcreteTypeBuilder>>
   {
     private IModuleManager _scope;
+    private InterlockedCache<BaseClassDefinition, Type> _typeCache = new InterlockedCache<BaseClassDefinition, Type>();
 
     public IModuleManager Scope
     {
@@ -26,18 +28,16 @@ namespace Mixins.CodeGeneration
       }
     }
 
-    public void ResetScope()
-    {
-      _scope = null;
-    }
-
     // TODO: Add type caching to this class
     public Type GetConcreteType (BaseClassDefinition configuration)
     {
-      ITypeGenerator generator = Scope.CreateTypeGenerator (configuration);
-      Type finishedType = generator.GetBuiltType().CreateType();
-      generator.InitializeStaticFields (finishedType);
-      return finishedType;
+      return _typeCache.GetOrCreateValue (configuration, delegate (BaseClassDefinition classConfiguration)
+      {
+        ITypeGenerator generator = Scope.CreateTypeGenerator (classConfiguration);
+        Type finishedType = generator.GetBuiltType ().CreateType ();
+        generator.InitializeStaticFields (finishedType);
+        return finishedType;
+      });
     }
 
     // TODO: Add type caching to this class
