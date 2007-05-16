@@ -10,8 +10,31 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI {
     
+    
+    /// <summary>
+    /// SecurityManagerNavigationTabs class.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated class.
+    /// </remarks>
     public partial class SecurityManagerNavigationTabs {
-        protected Rubicon.SecurityManager.Clients.Web.UI.CurrentClientControl SecurityManagerCurrentClientControl;
-        protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
+        
+        /// <summary>
+        /// SecurityManagerCurrentTenantControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl SecurityManagerCurrentTenantControl;
+        
+        /// <summary>
+        /// TabbedMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
     }
 }

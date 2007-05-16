@@ -16,7 +16,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     
     public static SecurityClientTestHelper CreateForStatefulSecurity ()
     {
-      SecurityContext context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      SecurityContext context = new SecurityContext (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum> (), new Enum[0]);
       return new SecurityClientTestHelper (context);
     }
 

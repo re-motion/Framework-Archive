@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create new position.
+        ///   Looks up a localized string similar to Create New Position.
         /// </summary>
         internal static string auto_NewPositionButton_Text {
             get {
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrate postions.
+        ///   Looks up a localized string similar to Administrate Postions.
         /// </summary>
         internal static string auto_PositionListLabel_Text {
             get {

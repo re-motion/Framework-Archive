@@ -165,7 +165,7 @@
   <data name="SecurableClassDefinition" xml:space="preserve">
     <value>Klassen</value>
   </data>
-  <data name="Client" xml:space="preserve">
+  <data name="Tenant" xml:space="preserve">
     <value>Mandant</value>
   </data>
 </root>

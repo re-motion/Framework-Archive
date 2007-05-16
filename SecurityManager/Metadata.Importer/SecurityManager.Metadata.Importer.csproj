@@ -65,7 +65,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml" />
     <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

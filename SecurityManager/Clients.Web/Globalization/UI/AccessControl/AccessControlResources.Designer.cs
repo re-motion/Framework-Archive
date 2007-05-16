@@ -107,11 +107,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select a client..
+        ///   Looks up a localized string similar to Please select a tenant..
         /// </summary>
-        internal static string auto_SpecificClientField_ErrorMessage {
+        internal static string auto_SpecificTenantField_ErrorMessage {
             get {
-                return ResourceManager.GetString("auto:SpecificClientField:ErrorMessage", resourceCulture);
+                return ResourceManager.GetString("auto:SpecificTenantField:ErrorMessage", resourceCulture);
             }
         }
         

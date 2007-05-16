@@ -61,15 +61,6 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Client.
-        /// </summary>
-        internal static string property_Client {
-            get {
-                return ResourceManager.GetString("property:Client", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         internal static string property_Group {
@@ -97,20 +88,29 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Client.
-        /// </summary>
-        internal static string property_SpecificClient {
-            get {
-                return ResourceManager.GetString("property:SpecificClient", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         internal static string property_SpecificPosition {
             get {
                 return ResourceManager.GetString("property:SpecificPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant.
+        /// </summary>
+        internal static string property_SpecificTenant {
+            get {
+                return ResourceManager.GetString("property:SpecificTenant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant.
+        /// </summary>
+        internal static string property_Tenant {
+            get {
+                return ResourceManager.GetString("property:Tenant", resourceCulture);
             }
         }
     }

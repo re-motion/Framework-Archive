@@ -40,7 +40,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         GroupList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) GroupList.FixedColumns[0], SortingDirection.Ascending));
-      GroupList.LoadUnboundValue (Group.FindByClientID (CurrentClientID, CurrentFunction.CurrentTransaction), IsPostBack);
+      GroupList.LoadUnboundValue (Group.FindByTenantID (CurrentTenantID, CurrentFunction.CurrentTransaction), IsPostBack);
 
       if (!SecurityConfiguration.Current.SecurityProvider.IsNull)
       {
@@ -54,8 +54,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnPreRender (e);
 
-      if (HasClientChanged)
-        GroupList.LoadUnboundValue (Group.FindByClientID (CurrentClientID, CurrentFunction.CurrentTransaction), false);
+      if (HasTenantChanged)
+        GroupList.LoadUnboundValue (Group.FindByTenantID (CurrentTenantID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditGroupFormFunction) Page.ReturningFunction).HasUserCancelled)
-          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          GroupList.LoadUnboundValue (Group.FindByTenantID (CurrentFunction.TenantID, CurrentFunction.CurrentTransaction), false);
       }
     }
 
@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditGroupFormFunction) Page.ReturningFunction).HasUserCancelled)
-          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          GroupList.LoadUnboundValue (Group.FindByTenantID (CurrentFunction.TenantID, CurrentFunction.CurrentTransaction), false);
       }
     }
   }

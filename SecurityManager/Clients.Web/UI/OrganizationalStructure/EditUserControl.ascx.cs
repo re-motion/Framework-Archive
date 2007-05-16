@@ -56,7 +56,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillOwningGroupField ()
     {
-      OwningGroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
+      OwningGroupField.SetBusinessObjectList (Group.FindByTenantID (CurrentFunction.TenantID, CurrentFunction.CurrentTransaction));
     }
 
     public override bool Validate ()

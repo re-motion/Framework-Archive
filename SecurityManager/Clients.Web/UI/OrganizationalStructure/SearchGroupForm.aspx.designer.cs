@@ -10,9 +10,40 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
     
+    
+    /// <summary>
+    /// SearchGroupForm class.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated class.
+    /// </remarks>
     public partial class SearchGroupForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.SearchGroupControl SearchGroupControl;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+        
+        /// <summary>
+        /// ErrorMessageControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+        
+        /// <summary>
+        /// SearchGroupControl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.SearchGroupControl SearchGroupControl;
+        
+        /// <summary>
+        /// CancelButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Rubicon.Web.UI.Controls.WebButton CancelButton;
     }
 }

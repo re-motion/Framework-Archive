@@ -1,4 +1,4 @@
-ID,ClassID,ChangedAt,Index,ClientSelection,GroupSelection,UserSelection,Priority,AccessControlListID,ClientID,GroupID,GroupTypeID,PositionID,UserID,AbstractRoleID,AbstractRoleIDClassID
+ID,ClassID,ChangedAt,Index,TenantSelection,GroupSelection,UserSelection,Priority,AccessControlListID,TenantID,GroupID,GroupTypeID,PositionID,UserID,AbstractRoleID,AbstractRoleIDClassID
 0c304dde-178a-48d8-9d4a-166d90957676,AccessControlEntry,8/2/2006 16:09,0,0,0,3,,ee0dc67d-a413-4906-ac64-8be169f29b23,,,,00000006-0000-0000-0000-000000000001,,,
 ccf7624d-eccd-499c-a36c-1fcf396579c5,AccessControlEntry,8/11/2006 11:26,1,0,0,3,,813f0892-f620-4435-a6ea-58210cbe4583,,,,00000006-0000-0000-0000-000000000002,,,
 61ac3e11-a29b-4076-a2fc-3d36df2640d2,AccessControlEntry,8/11/2006 11:25,0,0,0,3,,813f0892-f620-4435-a6ea-58210cbe4583,,,,00000006-0000-0000-0000-000000000001,,,

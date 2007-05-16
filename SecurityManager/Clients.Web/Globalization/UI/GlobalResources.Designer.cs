@@ -61,7 +61,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Access control.
+        ///   Looks up a localized string similar to Access Control.
         /// </summary>
         internal static string AccessControl {
             get {
@@ -93,15 +93,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         internal static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Client.
-        /// </summary>
-        internal static string Client {
-            get {
-                return ResourceManager.GetString("Client", resourceCulture);
             }
         }
         
@@ -142,7 +133,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group type.
+        ///   Looks up a localized string similar to Group Type.
         /// </summary>
         internal static string GroupType {
             get {
@@ -160,7 +151,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Organizational structure.
+        ///   Looks up a localized string similar to Organizational Structure.
         /// </summary>
         internal static string OrganizationalStructure {
             get {
@@ -201,6 +192,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         internal static string SecurableClassDefinition {
             get {
                 return ResourceManager.GetString("SecurableClassDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant.
+        /// </summary>
+        internal static string Tenant {
+            get {
+                return ResourceManager.GetString("Tenant", resourceCulture);
             }
         }
         

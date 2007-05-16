@@ -33,10 +33,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    public void ValidateSpecificClient_IsValid ()
+    public void ValidateSpecificTenant_IsValid ()
     {
-      Client client = _testHelper.CreateClient ("TestClient");
-      AccessControlEntry ace = _testHelper.CreateAceWithSpecficClient (client);
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant");
+      AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
 
       AccessControlEntryValidationResult result = ace.Validate ();
 
@@ -44,26 +44,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    public void ValidateSpecificClient_IsNull ()
+    public void ValidateSpecificTenant_IsNull ()
     {
-      Client client = _testHelper.CreateClient ("TestClient");
-      AccessControlEntry ace = _testHelper.CreateAceWithSpecficClient (client);
-      ace.SpecificClient = null;
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant");
+      AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
+      ace.SpecificTenant = null;
 
       AccessControlEntryValidationResult result = ace.Validate ();
 
       Assert.IsFalse (result.IsValid);
-      Assert.IsTrue (result.IsSpecificClientMissing);
+      Assert.IsTrue (result.IsSpecificTenantMissing);
     }
 
     [Test]
     [ExpectedException (typeof (ConstraintViolationException), ExpectedMessage =
-       "The access control entry has the Client property set to SpecificClient, but no Client is assigned.")]
-    public void Commit_SpecificClientIsNull ()
+       "The access control entry has the Tenant property set to SpecificTenant, but no Tenant is assigned.")]
+    public void Commit_SpecificTenantIsNull ()
     {
-      Client client = _testHelper.CreateClient ("TestClient");
-      AccessControlEntry ace = _testHelper.CreateAceWithSpecficClient (client);
-      ace.SpecificClient = null;
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant");
+      AccessControlEntry ace = _testHelper.CreateAceWithSpecficTenant (tenant);
+      ace.SpecificTenant = null;
 
       _testHelper.Transaction.Commit ();
     }

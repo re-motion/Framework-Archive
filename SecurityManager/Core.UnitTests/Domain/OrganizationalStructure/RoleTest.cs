@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class RoleTest : DomainTest
   {
-    private ObjectID _expectedClientID;
+    private ObjectID _expectedTenantID;
     private ObjectID _expectedRootGroupID;
     private ObjectID _expectedParentGroup0ID;
     private ObjectID _expectedGroup0ID;
@@ -30,10 +30,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      Client client = dbFixtures.CreateOrganizationalStructureWithTwoClients ();
-      _expectedClientID = client.ID;
+      Tenant tenant = dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      _expectedTenantID = tenant.ID;
 
-      DomainObjectCollection groups = Group.FindByClientID (_expectedClientID, client.ClientTransaction);
+      DomainObjectCollection groups = Group.FindByTenantID (_expectedTenantID, tenant.ClientTransaction);
       foreach (Group group in groups)
       {
         if (group.UniqueIdentifier == "UID: rootGroup")
@@ -73,20 +73,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       IPrincipal principal = new GenericPrincipal (new GenericIdentity ("group0/user1"), new string[0]);
       SetupResult.For (_mockUserProvider.GetUser()).Return (principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", "UID: testClient", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityProviderGetAccessForGroup ("UID: group0", "UID: testClient", principal, SecurityManagerAccessTypes.AssignRole);
-      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: group1", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwningGroup", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", "UID: testClient", principal);
-      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", "UID: testClient", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: rootGroup", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup0", "UID: testTenant", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group0", "UID: testTenant", principal, SecurityManagerAccessTypes.AssignRole);
+      ExpectSecurityProviderGetAccessForGroup ("UID: parentGroup1", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: group1", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testRootGroup", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testParentOfOwningGroup", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", "UID: testTenant", principal);
+      ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", "UID: testTenant", principal);
       ClientTransaction transaction = new ClientTransaction ();
       Role role = Role.NewObject (transaction);
       _mocks.ReplayAll ();
 
-      List<Group> groups = role.GetPossibleGroups (_expectedClientID);
+      List<Group> groups = role.GetPossibleGroups (_expectedTenantID);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (2, groups.Count);
@@ -107,7 +107,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       ClientTransaction transaction = new ClientTransaction ();
       Role role = Role.NewObject (transaction);
 
-      List<Group> groups = role.GetPossibleGroups (_expectedClientID);
+      List<Group> groups = role.GetPossibleGroups (_expectedTenantID);
 
       Assert.AreEqual (9, groups.Count);
     }
@@ -191,13 +191,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (3, positions.Count);
     }
 
-    private void ExpectSecurityProviderGetAccessForGroup (string owningGroup, string owningClient, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
+    private void ExpectSecurityProviderGetAccessForGroup (string owningGroup, string owningTenant, IPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
       Type classType = typeof (Group);
       string owner = string.Empty;
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       List<Enum> abstractRoles = new List<Enum> ();
-      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningClient, states, abstractRoles);
+      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningTenant, states, abstractRoles);
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 
@@ -209,11 +209,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Type classType = typeof (Position);
       string owner = string.Empty;
       string owningGroup = string.Empty;
-      string owningClient = string.Empty;
+      string owningTenant = string.Empty;
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("Delegation", delegation);
       List<Enum> abstractRoles = new List<Enum> ();
-      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningClient, states, abstractRoles);
+      SecurityContext securityContext = new SecurityContext (classType, owner, owningGroup, owningTenant, states, abstractRoles);
 
       AccessType[] returnedAccessTypes = Array.ConvertAll<Enum, AccessType> (returnedAccessTypeEnums, AccessType.Get);
 

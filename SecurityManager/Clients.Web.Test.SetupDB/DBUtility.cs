@@ -79,7 +79,7 @@ public class DBUtility
     string[] tables = {
         "File",
         "FileItem",
-        "Client", 
+        "Tenant", 
         "Group", 
         "GroupType", 
         "GroupTypePosition", 

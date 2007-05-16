@@ -267,9 +267,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return CreateToken (null, null, null, null);
     }
 
-    public SecurityToken CreateTokenWithOwningClient (User user, Client owningClient)
+    public SecurityToken CreateTokenWithOwningTenant (User user, Tenant owningTenant)
     {
-      return CreateToken (user, owningClient, null, null);
+      return CreateToken (user, owningTenant, null, null);
     }
 
     public SecurityToken CreateTokenWithAbstractRole (params AbstractRoleDefinition[] roleDefinitions)
@@ -282,7 +282,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return CreateToken (user, null, owningGroups, null);
     }
 
-    public SecurityToken CreateToken (User user, Client owningClient, Group[] owningGroups, AbstractRoleDefinition[] abstractRoleDefinitions)
+    public SecurityToken CreateToken (User user, Tenant owningTenant, Group[] owningGroups, AbstractRoleDefinition[] abstractRoleDefinitions)
     {
       List<Group> owningGroupList = new List<Group> ();
       List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
@@ -293,7 +293,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       if (abstractRoleDefinitions != null)
         abstractRoles.AddRange (abstractRoleDefinitions);
 
-      return new SecurityToken (user, owningClient, owningGroupList, abstractRoles);
+      return new SecurityToken (user, owningTenant, owningGroupList, abstractRoles);
     }
 
     public AbstractRoleDefinition CreateTestAbstractRole ()
@@ -306,19 +306,19 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return AbstractRoleDefinition.NewObject (_transaction, Guid.NewGuid (), name, value);
     }
 
-    public AccessControlEntry CreateAceWithOwningClient ()
+    public AccessControlEntry CreateAceWithOwningTenant ()
     {
       AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.Client = ClientSelection.OwningClient;
+      entry.Tenant = TenantSelection.OwningTenant;
 
       return entry;
     }
 
-    public AccessControlEntry CreateAceWithSpecficClient (Client client)
+    public AccessControlEntry CreateAceWithSpecficTenant (Tenant tenant)
     {
       AccessControlEntry entry = AccessControlEntry.NewObject (_transaction);
-      entry.Client = ClientSelection.SpecificClient;
-      entry.SpecificClient = client;
+      entry.Tenant = TenantSelection.SpecificTenant;
+      entry.SpecificTenant = tenant;
 
       return entry;
     }
@@ -381,32 +381,32 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return accessType;
     }
 
-    public Client CreateClient (string name)
+    public Tenant CreateTenant (string name)
     {
-      Client client = _factory.CreateClient (_transaction);
-      client.Name = name;
+      Tenant tenant = _factory.CreateTenant (_transaction);
+      tenant.Name = name;
 
-      return client;
+      return tenant;
     }
 
-    public Group CreateGroup (string name, Group parent, Client client)
+    public Group CreateGroup (string name, Group parent, Tenant tenant)
     {
       Group group = _factory.CreateGroup (_transaction);
       group.Name = name;
       group.Parent = parent;
-      group.Client = client;
+      group.Tenant = tenant;
 
       return group;
     }
 
-    public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Client client)
+    public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
       User user = _factory.CreateUser (_transaction);
       user.UserName = userName;
       user.FirstName = firstName;
       user.LastName = lastName;
       user.Title = title;
-      user.Client = client;
+      user.Tenant = tenant;
       user.OwningGroup = owningGroup;
 
       return user;

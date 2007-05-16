@@ -25,8 +25,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    public SecurableClassDefinitionListFormFunction (ObjectID clientID)
-      : base (clientID)
+    public SecurableClassDefinitionListFormFunction (ObjectID tenantID)
+      : base (tenantID)
     {
     }
 

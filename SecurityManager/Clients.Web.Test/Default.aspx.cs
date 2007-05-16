@@ -25,9 +25,9 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
         {
           ClientTransaction clientTransaction = new ClientTransaction();
           DomainObjectCollection users =
-              SecurityManagerUser.FindByClientID (ObjectID.Parse ("Client|00000001-0000-0000-0000-000000000001|System.Guid"), clientTransaction);
+              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000001|System.Guid"), clientTransaction);
           users.Combine (
-              SecurityManagerUser.FindByClientID (ObjectID.Parse ("Client|00000001-0000-0000-0000-000000000002|System.Guid"), clientTransaction));
+              SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000002|System.Guid"), clientTransaction));
 
           UsersField.SetBusinessObjectList (users);
           UsersField.LoadUnboundValue (ApplicationInstance.LoadUserFromSession (clientTransaction), false);
@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
               typeof (File),
               "1A",
               "{00000004-1000-0000-0000-000000000007}",
-              "",
+              string.Empty,
               new Dictionary<string, Enum>(),
               new Enum[] {DomainAbstractRoles.Creator});
       GenericPrincipal user = new GenericPrincipal (new GenericIdentity ("1A"), new string[0]);

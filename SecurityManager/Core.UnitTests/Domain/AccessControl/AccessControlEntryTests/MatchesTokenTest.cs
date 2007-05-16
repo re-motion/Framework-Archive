@@ -31,9 +31,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    public void EmptyToken_AceForOwningClient_DoesNotMatch ()
+    public void EmptyToken_AceForOwningTenant_DoesNotMatch ()
     {
-      AccessControlEntry entry = _testHelper.CreateAceWithOwningClient ();
+      AccessControlEntry entry = _testHelper.CreateAceWithOwningTenant ();
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
       Assert.IsFalse (entry.MatchesToken (token));
@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void EmptyToken_AceForPositionFromOwningGroup_DoesNotMatch ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateEmptyToken ();
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void EmptyToken_AceForPositionFromAllGroups_DoesNotMatch ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.All);
       SecurityToken token = _testHelper.CreateEmptyToken ();
@@ -72,57 +72,57 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
 
 
     [Test]
-    public void TokenWithClient_EmptyAce_Matches ()
+    public void TokenWithTenant_EmptyAce_Matches ()
     {
       AccessControlEntry entry = AccessControlEntry.NewObject (_testHelper.Transaction);
-      SecurityToken token = _testHelper.CreateTokenWithOwningClient (null, entry.SpecificClient);
+      SecurityToken token = _testHelper.CreateTokenWithOwningTenant (null, entry.SpecificTenant);
  
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithClient_AceForOwningClient_Matches ()
+    public void TokenWithTenant_AceForOwningTenant_Matches ()
     {
-      AccessControlEntry entry = _testHelper.CreateAceWithOwningClient ();
-      Client client = _testHelper.CreateClient ("Testclient");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      SecurityToken token = _testHelper.CreateTokenWithOwningClient (user, client);
+      AccessControlEntry entry = _testHelper.CreateAceWithOwningTenant ();
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      SecurityToken token = _testHelper.CreateTokenWithOwningTenant (user, tenant);
 
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithClient_AceForOtherOwningClient_DoesNotMatch ()
+    public void TokenWithTenant_AceForOtherOwningTenant_DoesNotMatch ()
     {
-      AccessControlEntry entry = _testHelper.CreateAceWithOwningClient ();
-      Client client = _testHelper.CreateClient ("Testclient");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      SecurityToken token = _testHelper.CreateTokenWithOwningClient (user, _testHelper.CreateClient ("Other Client"));
+      AccessControlEntry entry = _testHelper.CreateAceWithOwningTenant ();
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      SecurityToken token = _testHelper.CreateTokenWithOwningTenant (user, _testHelper.CreateTenant ("Other Tenant"));
 
       Assert.IsFalse (entry.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithClient_AceForSpecificClient_Matches ()
+    public void TokenWithTenant_AceForSpecificTenant_Matches ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      AccessControlEntry entry = _testHelper.CreateAceWithSpecficClient (client);
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      AccessControlEntry entry = _testHelper.CreateAceWithSpecficTenant (tenant);
       SecurityToken token = _testHelper.CreateToken (user, null, new Group[0], new AbstractRoleDefinition[0]);
 
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithClient_AceForOtherSpecificClient_DoesNotMatch ()
+    public void TokenWithTenant_AceForOtherSpecificTenant_DoesNotMatch ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      AccessControlEntry entry = _testHelper.CreateAceWithSpecficClient (_testHelper.CreateClient ("Other Client"));
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      AccessControlEntry entry = _testHelper.CreateAceWithSpecficTenant (_testHelper.CreateTenant ("Other Tenant"));
       SecurityToken token = _testHelper.CreateToken (user, null, new Group[0], new AbstractRoleDefinition[0]);
 
       Assert.IsFalse (entry.MatchesToken (token));
@@ -160,10 +160,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithRole_AceForPositionFromOwningGroup_Matches ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateTokenWithOwningGroups (user, group);
@@ -174,10 +174,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithRole_AceForPositionFromAllGroups_Matches ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.All);
       SecurityToken token = _testHelper.CreateToken (user, null, null, null);
@@ -189,10 +189,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithRole_AceForPositionFromOwningGroupAndAbstractRole_DoesNotMatch ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       entry.SpecificAbstractRole = _testHelper.CreateTestAbstractRole ();
@@ -204,10 +204,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void TokenWithRoleAndAbstractRole_AceForPositionFromOwningGroup_Matches ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
       AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateToken (user, null, new Group[] { group }, new AbstractRoleDefinition[] { _testHelper.CreateTestAbstractRole() });
@@ -216,35 +216,35 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    public void TokenWithClient_AceForOwningClientAndAbstractRole_DoesNotMatch ()
+    public void TokenWithTenant_AceForOwningTenantAndAbstractRole_DoesNotMatch ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      AccessControlEntry entry = _testHelper.CreateAceWithOwningClient ();
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      AccessControlEntry entry = _testHelper.CreateAceWithOwningTenant ();
       entry.SpecificAbstractRole = _testHelper.CreateTestAbstractRole ();
-      SecurityToken token = _testHelper.CreateTokenWithOwningClient (user, client);
+      SecurityToken token = _testHelper.CreateTokenWithOwningTenant (user, tenant);
 
       Assert.IsFalse (entry.MatchesToken (token));
     }
 
     [Test]
-    public void TokenWithClientAndAbstractRole_AceForOwningClient_Matches ()
+    public void TokenWithTenantAndAbstractRole_AceForOwningTenant_Matches ()
     {
-      Client client = _testHelper.CreateClient ("Testclient");
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant");
       Position managerPosition = _testHelper.CreatePosition ("Manager");
-      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
-      User user = CreateUser (client, group);
-      AccessControlEntry entry = _testHelper.CreateAceWithOwningClient ();
-      SecurityToken token = _testHelper.CreateToken (user, client, new Group[0], new AbstractRoleDefinition[] { _testHelper.CreateTestAbstractRole () });
+      Group group = _testHelper.CreateGroup ("Testgroup", null, tenant);
+      User user = CreateUser (tenant, group);
+      AccessControlEntry entry = _testHelper.CreateAceWithOwningTenant ();
+      SecurityToken token = _testHelper.CreateToken (user, tenant, new Group[0], new AbstractRoleDefinition[] { _testHelper.CreateTestAbstractRole () });
 
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
 
-    private User CreateUser (Client client, Group group)
+    private User CreateUser (Tenant tenant, Group group)
     {
-      return _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
+      return _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, tenant);
     }
   }
 }

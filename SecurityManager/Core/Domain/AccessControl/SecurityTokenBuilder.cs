@@ -23,23 +23,23 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("context", context);
 
       User user = GetUser (transaction, principal.Identity.Name);
-      Client owningClient = GetClient (transaction, context.OwnerClient);
+      Tenant owningTenant = GetTenant (transaction, context.OwnerTenant);
       List<Group> owningGroups = GetGroups (transaction, context.OwnerGroup);
       List<AbstractRoleDefinition> abstractRoles = GetAbstractRoles (transaction, context.AbstractRoles);
 
-      return new SecurityToken (user, owningClient, owningGroups, abstractRoles);
+      return new SecurityToken (user, owningTenant, owningGroups, abstractRoles);
     }
 
-    private Client GetClient (ClientTransaction transaction, string clientUniqueIdentifier)
+    private Tenant GetTenant (ClientTransaction transaction, string tenantUniqueIdentifier)
     {
-      if (StringUtility.IsNullOrEmpty (clientUniqueIdentifier))
+      if (StringUtility.IsNullOrEmpty (tenantUniqueIdentifier))
         return null;
 
-      Client client = Client.FindByUnqiueIdentifier (clientUniqueIdentifier, transaction);
-      if (client == null)
-        throw CreateAccessControlException ("The client '{0}' could not be found.", clientUniqueIdentifier);
+      Tenant tenant = Tenant.FindByUnqiueIdentifier (tenantUniqueIdentifier, transaction);
+      if (tenant == null)
+        throw CreateAccessControlException ("The tenant '{0}' could not be found.", tenantUniqueIdentifier);
 
-      return client;
+      return tenant;
     }
 
     private User GetUser (ClientTransaction transaction, string userName)

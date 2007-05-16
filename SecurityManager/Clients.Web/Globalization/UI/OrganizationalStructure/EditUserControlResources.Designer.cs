@@ -80,7 +80,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit user.
+        ///   Looks up a localized string similar to Edit User.
         /// </summary>
         internal static string auto_UserLabel_Text {
             get {

@@ -61,12 +61,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (User) users[0];
     }
 
-    public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindByTenantID (ObjectID tenantID, ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID");
-      query.Parameters.Add ("@clientID", clientID);
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByTenantID");
+      query.Parameters.Add ("@tenantID", tenantID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
@@ -105,7 +105,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract ObjectList<Role> Roles { get; }
 
     [Mandatory]
-    public abstract Client Client { get; set; }
+    public abstract Tenant Tenant { get; set; }
 
     [Mandatory]
     public abstract Group OwningGroup { get; set; }
@@ -154,9 +154,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return UserName;
     }
 
-    protected override string GetOwningClient ()
+    protected override string GetOwningTenant ()
     {
-      return Client == null ? null : Client.UniqueIdentifier;
+      return Tenant == null ? null : Tenant.UniqueIdentifier;
     }
 
     protected override string GetOwningGroup ()

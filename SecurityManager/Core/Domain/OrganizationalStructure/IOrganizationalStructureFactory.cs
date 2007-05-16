@@ -5,11 +5,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   public interface IOrganizationalStructureFactory
   {
-    Client CreateClient (ClientTransaction CurrentTransaction);
+    Tenant CreateTenant (ClientTransaction CurrentTransaction);
     Group CreateGroup (ClientTransaction transaction);
     User CreateUser (ClientTransaction transaction);
     Position CreatePosition (ClientTransaction transaction);
-    Type GetClientType ();
+    Type GetTenantType ();
     Type GetGroupType ();
     Type GetUserType ();
     Type GetPositionType ();

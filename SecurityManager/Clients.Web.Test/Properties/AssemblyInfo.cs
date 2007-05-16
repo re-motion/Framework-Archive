@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("SecurityManager.Client.Web.Test")]
+[assembly: AssemblyTitle ("SecurityManager.Tenant.Web.Test")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("rubicon")]
-[assembly: AssemblyProduct ("SecurityManager.Client.Web.Test")]
+[assembly: AssemblyProduct ("SecurityManager.Tenant.Web.Test")]
 [assembly: AssemblyCopyright ("Copyright © rubicon 2006")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

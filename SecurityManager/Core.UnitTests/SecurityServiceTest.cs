@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.UnitTests
      _mockTokenBuilder = _mocks.CreateMock<ISecurityTokenBuilder> ();
 
      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
-     _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerClient", null, null);
+     _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
      _transaction = new ClientTransaction ();
      _ace = CreateAce (_transaction);
      _principal = CreateUser ();

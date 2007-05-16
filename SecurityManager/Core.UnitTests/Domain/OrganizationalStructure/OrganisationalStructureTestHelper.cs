@@ -20,44 +20,44 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       get { return _transaction; }
     }
 
-    public Client CreateClient (string name, string uniqueIdentifier)
+    public Tenant CreateTenant (string name, string uniqueIdentifier)
     {
-      return CreateClient (_transaction, name, uniqueIdentifier);
+      return CreateTenant (_transaction, name, uniqueIdentifier);
     }
 
-    public Client CreateClient (ClientTransaction transaction, string name, string uniqueIdentifier)
+    public Tenant CreateTenant (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
-      Client client = _factory.CreateClient (transaction);
-      client.UniqueIdentifier = uniqueIdentifier;
-      client.Name = name;
+      Tenant tenant = _factory.CreateTenant (transaction);
+      tenant.UniqueIdentifier = uniqueIdentifier;
+      tenant.Name = name;
 
-      return client;
+      return tenant;
     }
 
-    public Group CreateGroup (string name, string uniqueIdentifier, Group parent, Client client)
+    public Group CreateGroup (string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
-      return CreateGroup (_transaction, name, uniqueIdentifier, parent, client);
+      return CreateGroup (_transaction, name, uniqueIdentifier, parent, tenant);
     }
 
-    public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
+    public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
       Group group = _factory.CreateGroup (transaction);
       group.Name = name;
       group.Parent = parent;
-      group.Client = client;
+      group.Tenant = tenant;
       group.UniqueIdentifier = uniqueIdentifier;
 
       return group;
     }
     
-    public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Client client)
+    public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
       User user = _factory.CreateUser (_transaction);
       user.UserName = userName;
       user.FirstName = firstName;
       user.LastName = lastName;
       user.Title = title;
-      user.Client = client;
+      user.Tenant = tenant;
       user.OwningGroup = owningGroup;
 
       return user;

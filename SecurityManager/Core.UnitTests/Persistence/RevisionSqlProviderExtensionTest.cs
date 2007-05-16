@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
     [Test]
     public void Saving_OneSecurityManagerDomainObject ()
     {
-      Client client = _factory.CreateClient (_clientTransaction);
+      Tenant tenant = _factory.CreateTenant (_clientTransaction);
 
       _clientTransaction.Commit ();
 
@@ -37,8 +37,8 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
     [Test]
     public void Saving_DisacardedDomainObject ()
     {
-      Client client = _factory.CreateClient (_clientTransaction);
-      client.Delete ();
+      Tenant tenant = _factory.CreateTenant (_clientTransaction);
+      tenant.Delete ();
 
       _clientTransaction.Commit ();
 

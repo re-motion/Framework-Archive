@@ -33,7 +33,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
     }
 
     [Mandatory]
-    public abstract Client Client { get; set; }
+    public abstract Tenant Tenant { get; set; }
 
     //[DemandPropertyGetterPermission (DomainAccessTypes.ReadName)]
     //[DemandPropertySetterPermission (DomainAccessTypes.WriteName)]
@@ -65,9 +65,9 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       return Clerk.OwningGroup;
     }
 
-    public override Client GetOwnerClient ()
+    public override Tenant GetOwnerTenant ()
     {
-      return Client;
+      return Tenant;
     }
   }
 }

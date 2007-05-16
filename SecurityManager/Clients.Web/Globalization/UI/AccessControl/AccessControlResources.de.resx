@@ -132,7 +132,7 @@
   <data name="auto:PermissionsLabel:Text" xml:space="preserve">
     <value>Berechtigungen</value>
   </data>
-  <data name="auto:SpecificClientField:ErrorMessage" xml:space="preserve">
+  <data name="auto:SpecificTenantField:ErrorMessage" xml:space="preserve">
     <value>Bitte wählen Sie einen Mandanten aus.</value>
   </data>
   <data name="DeleteAccessControlEntryButton" xml:space="preserve">

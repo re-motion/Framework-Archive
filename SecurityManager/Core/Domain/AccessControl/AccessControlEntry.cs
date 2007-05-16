@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public const int UserPriority = 8;
     public const int AbstractRolePriority = 4;
     public const int GroupPriority = 2;
-    public const int ClientPriority = 1;
+    public const int TenantPriority = 1;
 
     public static AccessControlEntry NewObject (ClientTransaction clientTransaction)
     {
@@ -36,11 +36,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (AccessControlEntry) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (AccessControlEntry) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
     // member fields
@@ -69,8 +64,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public abstract int Index { get; set; }
 
-    [DBColumn ("ClientSelection")]
-    public abstract ClientSelection Client { get; set; }
+    [DBColumn ("TenantSelection")]
+    public abstract TenantSelection Tenant { get; set; }
 
     [DBColumn ("GroupSelection")]
     public abstract GroupSelection Group { get; set; }
@@ -92,8 +87,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       }
     }
 
-    [DBColumn ("ClientID")]
-    public abstract Client SpecificClient { get; set; }
+    [DBColumn ("TenantID")]
+    public abstract Tenant SpecificTenant { get; set; }
 
     [DBBidirectionalRelation ("AccessControlEntries")]
     [DBColumn ("GroupID")]
@@ -185,7 +180,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
-      if (!MatchesClient (token))
+      if (!MatchesTenant (token))
         return false;
 
       if (!MatchesAbstractRole (token))
@@ -197,18 +192,18 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return true;
     }
 
-    private bool MatchesClient (SecurityToken token)
+    private bool MatchesTenant (SecurityToken token)
     {
-      switch (Client)
+      switch (Tenant)
       {
-        case ClientSelection.All:
+        case TenantSelection.All:
           return true;
 
-        case ClientSelection.OwningClient:
-          return token.OwningClient != null && token.MatchesUserClient (token.OwningClient);
+        case TenantSelection.OwningTenant:
+          return token.OwningTenant != null && token.MatchesUserTenant (token.OwningTenant);
 
-        case ClientSelection.SpecificClient:
-          return token.MatchesUserClient (SpecificClient);
+        case TenantSelection.SpecificTenant:
+          return token.MatchesUserTenant (SpecificTenant);
 
         default:
           return false;
@@ -293,8 +288,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (Group != GroupSelection.All)
         priority += GroupPriority;
 
-      if (Client != ClientSelection.All)
-        priority += ClientPriority;
+      if (Tenant != TenantSelection.All)
+        priority += TenantPriority;
 
       return priority;
     }
@@ -322,8 +317,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult();
 
-      if (Client == ClientSelection.SpecificClient && SpecificClient == null)
-        result.SetSpecificClientMissing();
+      if (Tenant == TenantSelection.SpecificTenant && SpecificTenant == null)
+        result.SetSpecificTenantMissing();
 
       return result;
     }
@@ -333,18 +328,18 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       AccessControlEntryValidationResult result = Validate();
       if (!result.IsValid)
       {
-        if (result.IsSpecificClientMissing)
+        if (result.IsSpecificTenantMissing)
         {
           throw new ConstraintViolationException (
-              "The access control entry has the Client property set to SpecificClient, but no Client is assigned.");
+              "The access control entry has the Tenant property set to SpecificTenant, but no Tenant is assigned.");
         }
 
         //TODO: Move the message into the validation logic.
         throw new ConstraintViolationException ("The access control entry is in an invalid state.");
       }
 
-      if (State != StateType.Deleted && Client != ClientSelection.SpecificClient)
-        SpecificClient = null;
+      if (State != StateType.Deleted && Tenant != TenantSelection.SpecificTenant)
+        SpecificTenant = null;
 
       base.OnCommitting (args);
     }

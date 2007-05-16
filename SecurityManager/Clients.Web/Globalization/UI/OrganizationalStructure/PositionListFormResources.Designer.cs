@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search position.
+        ///   Looks up a localized string similar to Search Positions.
         /// </summary>
         internal static string auto_this_Title {
             get {

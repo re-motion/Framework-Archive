@@ -53,7 +53,7 @@
     <Compile Include="Domain\AccessControl\AccessControlList.cs" />
     <Compile Include="Domain\AccessControl\AccessControlListFinder.cs" />
     <Compile Include="Domain\AccessControl\AccessControlObject.cs" />
-    <Compile Include="Domain\AccessControl\ClientSelection.cs" />
+    <Compile Include="Domain\AccessControl\TenantSelection.cs" />
     <Compile Include="Domain\AccessControl\GroupSelection.cs" />
     <Compile Include="Domain\AccessControl\IAccessControlListFinder.cs" />
     <Compile Include="Domain\AccessControl\ISecurityTokenBuilder.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="Domain\Metadata\StatePropertyDefinition.cs" />
     <Compile Include="Domain\Metadata\StatePropertyReference.cs" />
     <Compile Include="Domain\OrganizationalStructure\Delegation.cs" />
-    <Compile Include="Domain\OrganizationalStructure\Client.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Tenant.cs" />
     <Compile Include="Domain\OrganizationalStructure\Group.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupType.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypePosition.cs" />
@@ -105,20 +105,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessControlEntry.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\Domain\AccessControl\ClientSelection.Designer.cs">
+    <Compile Include="Globalization\Domain\AccessControl\TenantSelection.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ClientSelection.resx</DependentUpon>
+      <DependentUpon>TenantSelection.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\Domain\AccessControl\GroupSelection.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GroupSelection.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\Domain\OrganizationalStructure\Client.Designer.cs">
+    <Compile Include="Globalization\Domain\OrganizationalStructure\Tenant.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Client.resx</DependentUpon>
+      <DependentUpon>Tenant.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\Domain\OrganizationalStructure\Delegation.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -171,13 +171,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessControlEntry.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Domain\AccessControl\ClientSelection.de.resx">
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantSelection.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Domain\AccessControl\ClientSelection.resx">
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\TenantSelection.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ClientSelection.Designer.cs</LastGenOutput>
+      <LastGenOutput>TenantSelection.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.de.resx">
       <SubType>Designer</SubType>
@@ -188,12 +188,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GroupSelection.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.resx">
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Client.Designer.cs</LastGenOutput>
+      <LastGenOutput>Tenant.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.de.resx">
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Tenant.de.resx">
       <LastGenOutput>Client.de.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>

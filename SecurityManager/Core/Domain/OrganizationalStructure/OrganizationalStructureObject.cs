@@ -15,7 +15,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    protected virtual string GetOwningClient ()
+    protected virtual string GetOwningTenant ()
     {
       return null;
     }
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       using (new SecurityFreeSection())
       {
-        return new SecurityContext (GetPublicDomainObjectType(), GetOwner(), GetOwningGroup(), GetOwningClient(), GetStates(), GetAbstractRoles());
+        return new SecurityContext (GetPublicDomainObjectType(), GetOwner(), GetOwningGroup(), GetOwningTenant(), GetStates(), GetAbstractRoles());
       }
     }
 

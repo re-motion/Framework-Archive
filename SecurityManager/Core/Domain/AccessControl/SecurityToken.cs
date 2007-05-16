@@ -11,19 +11,19 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   public sealed class SecurityToken
   {
     private User _user;
-    private Client _owningClient;
+    private Tenant _owningTenant;
     private ReadOnlyCollection<Group> _owningGroups;
     private ReadOnlyCollection<Group> _userGroups;
     private ReadOnlyCollection<Role> _owningGroupRoles;
     private ReadOnlyCollection<AbstractRoleDefinition> _abstractRoles;
 
-    public SecurityToken (User user, Client owningClient, List<Group> owningGroups, List<AbstractRoleDefinition> abstractRoles)
+    public SecurityToken (User user, Tenant owningTenant, List<Group> owningGroups, List<AbstractRoleDefinition> abstractRoles)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("owningGroups", owningGroups);
       ArgumentUtility.CheckNotNullOrItemsNull ("abstractRoles", abstractRoles);
 
       _user = user;
-      _owningClient = owningClient;
+      _owningTenant = owningTenant;
       _owningGroups = owningGroups.AsReadOnly ();
       _abstractRoles = abstractRoles.AsReadOnly ();
     }
@@ -44,9 +44,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       }
     }
 
-    public Client OwningClient
+    public Tenant OwningTenant
     {
-      get { return _owningClient; }
+      get { return _owningTenant; }
     }
 
     public ReadOnlyCollection<Group> OwningGroups
@@ -69,18 +69,18 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get { return _abstractRoles; }
     }
 
-    public bool MatchesUserClient (Client client)
+    public bool MatchesUserTenant (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull ("client", client);
+      ArgumentUtility.CheckNotNull ("tenant", tenant);
 
       if (User == null)
         return false;
 
-      while (client != null)
+      while (tenant != null)
       {
-        if (User.Client.ID == client.ID)
+        if (User.Tenant.ID == tenant.ID)
           return true;
-        client = client.Parent;
+        tenant = tenant.Parent;
       }
       return false;
     }

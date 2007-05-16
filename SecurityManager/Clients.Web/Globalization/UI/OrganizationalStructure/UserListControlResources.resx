@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="auto:UserListLabel:Text" xml:space="preserve">
-    <value>Administrate users</value>
+    <value>Administrate Users</value>
   </data>
   <data name="auto:NewUserButton:Text" xml:space="preserve">
-    <value>Create new user</value>
-  </data> 
+    <value>Create New User</value>
+  </data>
 </root>

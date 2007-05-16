@@ -15,7 +15,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     // member fields
 
     private bool _isValid = true;
-    private bool _isSpecificClientMissing = false;
+    private bool _isSpecificTenantMissing = false;
 
     // construction and disposing
 
@@ -30,15 +30,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get { return _isValid; }
     }
 
-    public bool IsSpecificClientMissing
+    public bool IsSpecificTenantMissing
     {
-      get { return _isSpecificClientMissing; }
+      get { return _isSpecificTenantMissing; }
     }
 
-    public void SetSpecificClientMissing ()
+    public void SetSpecificTenantMissing ()
     {
       _isValid = false;
-      _isSpecificClientMissing = true;
+      _isSpecificTenantMissing = true;
     }
   }
 }

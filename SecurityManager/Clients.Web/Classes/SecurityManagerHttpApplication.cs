@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
 
     // static members
 
-    private static readonly string s_clientKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_Client";
+    private static readonly string s_tenantKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_Tenant";
     private static readonly string s_userKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_User";
 
     // member fields
@@ -37,21 +37,21 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
 
     // methods and properties
 
-    public void SetCurrentUser (SecurityManagerUser user, bool setCurrentClient)
+    public void SetCurrentUser (SecurityManagerUser user, bool setCurrentTenant)
     {
       IPrincipal principal = GetPrincipal (user);
       HttpContext.Current.User = principal;
       Thread.CurrentPrincipal = principal;
       SaveUserToSession (user, false);
       SecurityManagerUser.Current = user;
-      if (setCurrentClient)
+      if (setCurrentTenant)
       {
-        Client client;
+        Tenant tenant;
         using (new SecurityFreeSection ())
         {
-          client = (user != null) ? user.Client : null;
+          tenant = (user != null) ? user.Tenant : null;
         }
-        SetCurrentClient (client);
+        SetCurrentTenant (tenant);
       }
     }
 
@@ -77,52 +77,52 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       return SecurityManagerUser.GetObject (userID, clientTransaction);
     }
 
-    public void SaveUserToSession (SecurityManagerUser user, bool saveCurrentClient)
+    public void SaveUserToSession (SecurityManagerUser user, bool saveCurrentTenant)
     {
       if (user == null)
         Session.Remove (s_userKey);
       else
         Session[s_userKey] = user.ID;
 
-      if (saveCurrentClient)
+      if (saveCurrentTenant)
       {
-        Client client;
+        Tenant tenant;
         using (new SecurityFreeSection ())
         {
-          client = (user != null) ? user.Client : null;
+          tenant = (user != null) ? user.Tenant : null;
         }
-        SaveClientToSession (client);
+        SaveTenantToSession (tenant);
       }
     }
 
-    public void SetCurrentClient (Client client)
+    public void SetCurrentTenant (Tenant tenant)
     {
-      SaveClientToSession (client);
-      Client.Current = client;
+      SaveTenantToSession (tenant);
+      Tenant.Current = tenant;
     }
 
-    public ObjectID LoadClientIDFromSession ()
+    public ObjectID LoadTenantIDFromSession ()
     {
-      return (ObjectID) Session[s_clientKey];
+      return (ObjectID) Session[s_tenantKey];
     }
 
-    public Client LoadClientFromSession (ClientTransaction clientTransaction)
+    public Tenant LoadTenantFromSession (ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-      ObjectID clientID = LoadClientIDFromSession ();
-      if (clientID == null)
+      ObjectID tenantID = LoadTenantIDFromSession ();
+      if (tenantID == null)
         return null;
 
-      return Client.GetObject (clientID, clientTransaction);
+      return Tenant.GetObject (tenantID, clientTransaction);
     }
 
-    public void SaveClientToSession (Client client)
+    public void SaveTenantToSession (Tenant tenant)
     {
-      if (client == null)
-        Session.Remove (s_clientKey);
+      if (tenant == null)
+        Session.Remove (s_tenantKey);
       else
-        Session[s_clientKey] = client.ID;
+        Session[s_tenantKey] = tenant.ID;
     }
 
     protected bool HasSessionState
@@ -152,7 +152,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
         else
         {
           SetCurrentUser (user, false);
-          SetCurrentClient (LoadClientFromSession (clientTransaction));
+          SetCurrentTenant (LoadTenantFromSession (clientTransaction));
         }
       }
     }

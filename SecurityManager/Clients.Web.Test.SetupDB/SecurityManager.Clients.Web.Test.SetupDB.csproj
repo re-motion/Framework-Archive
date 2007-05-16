@@ -48,7 +48,7 @@
     <None Include="TestData\AccessControlEntry.csv" />
     <None Include="TestData\AccessControlList.csv" />
     <None Include="TestData\AccessTypeReference.csv" />
-    <None Include="TestData\Client.csv" />
+    <None Include="TestData\Tenant.csv" />
     <None Include="TestData\Culture.csv" />
     <None Include="TestData\EnumValueDefinition.csv" />
     <None Include="TestData\File.csv" />

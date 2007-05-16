@@ -2,8 +2,8 @@ USE RubiconSecurityManager
 GO
 
 -- Drop all views that will be created below
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClientView')
-  DROP VIEW [dbo].[ClientView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TenantView')
+  DROP VIEW [dbo].[TenantView]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'GroupView')
   DROP VIEW [dbo].[GroupView]
@@ -77,14 +77,14 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'GroupTypePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
+    WHERE fk.xtype = 'F' AND t.name IN ('Tenant', 'Group', 'GroupType', 'GroupTypePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
 
 -- Drop all tables that will be created below
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Client')
-  DROP TABLE [dbo].[Client]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Tenant')
+  DROP TABLE [dbo].[Tenant]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Group')
   DROP TABLE [dbo].[Group]
@@ -142,19 +142,19 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Localized
 GO
 
 -- Create all tables
-CREATE TABLE [dbo].[Client]
+CREATE TABLE [dbo].[Tenant]
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
 
-  -- Client columns
+  -- Tenant columns
   [Name] nvarchar (100) NOT NULL,
   [UniqueIdentifier] nvarchar (100) NOT NULL,
   [IsAbstract] bit NOT NULL,
   [ParentID] uniqueidentifier NULL,
 
-  CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID])
+  CONSTRAINT [PK_Tenant] PRIMARY KEY CLUSTERED ([ID])
 )
 
 CREATE TABLE [dbo].[Group]
@@ -167,7 +167,7 @@ CREATE TABLE [dbo].[Group]
   [Name] nvarchar (100) NOT NULL,
   [ShortName] nvarchar (10) NULL,
   [UniqueIdentifier] nvarchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
+  [TenantID] uniqueidentifier NULL,
   [ParentID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
 
@@ -237,7 +237,7 @@ CREATE TABLE [dbo].[User]
   [FirstName] nvarchar (100) NULL,
   [LastName] nvarchar (100) NOT NULL,
   [UserName] nvarchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
+  [TenantID] uniqueidentifier NULL,
   [OwningGroupID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([ID])
@@ -387,12 +387,12 @@ CREATE TABLE [dbo].[AccessControlEntry]
   -- AccessControlEntry columns
   [ChangedAt] datetime NOT NULL,
   [Index] int NOT NULL,
-  [ClientSelection] int NOT NULL,
+  [TenantSelection] int NOT NULL,
   [GroupSelection] int NOT NULL,
   [UserSelection] int NOT NULL,
   [Priority] int NULL,
   [AccessControlListID] uniqueidentifier NULL,
-  [ClientID] uniqueidentifier NULL,
+  [TenantID] uniqueidentifier NULL,
   [GroupID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
   [PositionID] uniqueidentifier NULL,
@@ -448,11 +448,11 @@ CREATE TABLE [dbo].[LocalizedName]
 GO
 
 -- Create constraints for tables that were created above
-ALTER TABLE [dbo].[Client] ADD
-  CONSTRAINT [FK_ChildrenToParentClient] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Client] ([ID])
+ALTER TABLE [dbo].[Tenant] ADD
+  CONSTRAINT [FK_ChildrenToParentTenant] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Tenant] ([ID])
 
 ALTER TABLE [dbo].[Group] ADD
-  CONSTRAINT [FK_ClientToGroup] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
+  CONSTRAINT [FK_TenantToGroup] FOREIGN KEY ([TenantID]) REFERENCES [dbo].[Tenant] ([ID]),
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Group] ([ID]),
   CONSTRAINT [FK_GroupTypeToGroup] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID])
 
@@ -466,7 +466,7 @@ ALTER TABLE [dbo].[Role] ADD
   CONSTRAINT [FK_UserToRole] FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID])
 
 ALTER TABLE [dbo].[User] ADD
-  CONSTRAINT [FK_ClientToUser] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
+  CONSTRAINT [FK_TenantToUser] FOREIGN KEY ([TenantID]) REFERENCES [dbo].[Tenant] ([ID]),
   CONSTRAINT [FK_OwningGroupToUser] FOREIGN KEY ([OwningGroupID]) REFERENCES [dbo].[Group] ([ID])
 
 ALTER TABLE [dbo].[EnumValueDefinition] ADD
@@ -501,7 +501,7 @@ ALTER TABLE [dbo].[AccessControlEntry] ADD
   CONSTRAINT [FK_UserToAccessControlEntry] FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]),
   CONSTRAINT [FK_AbstractRoleToAccessControlEntry] FOREIGN KEY ([AbstractRoleID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
   CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID]),
-  CONSTRAINT [FK_ClientToAccessControlEntry] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID])
+  CONSTRAINT [FK_TenantToAccessControlEntry] FOREIGN KEY ([TenantID]) REFERENCES [dbo].[Tenant] ([ID])
 
 ALTER TABLE [dbo].[Permission] ADD
   CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
@@ -512,17 +512,17 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [IsAbstract], [ParentID])
+CREATE VIEW [dbo].[TenantView] ([ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [IsAbstract], [ParentID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name], [UniqueIdentifier], [IsAbstract], [ParentID]
-    FROM [dbo].[Client]
-    WHERE [ClassID] IN ('Client')
+    FROM [dbo].[Tenant]
+    WHERE [ClassID] IN ('Tenant')
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID])
+CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [TenantID], [ParentID], [GroupTypeID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [TenantID], [ParentID], [GroupTypeID]
     FROM [dbo].[Group]
     WHERE [ClassID] IN ('Group')
   WITH CHECK OPTION
@@ -560,9 +560,9 @@ CREATE VIEW [dbo].[RoleView] ([ID], [ClassID], [Timestamp], [PositionID], [Group
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [OwningGroupID])
+CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [TenantID], [OwningGroupID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [ClientID], [OwningGroupID]
+  SELECT [ID], [ClassID], [Timestamp], [Title], [FirstName], [LastName], [UserName], [TenantID], [OwningGroupID]
     FROM [dbo].[User]
     WHERE [ClassID] IN ('User')
   WITH CHECK OPTION
@@ -671,9 +671,9 @@ CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [Change
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [ClientID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
+CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [Index], [TenantSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [TenantID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [ClientID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [Index], [TenantSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [TenantID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
     FROM [dbo].[AccessControlEntry]
     WHERE [ClassID] IN ('AccessControlEntry')
   WITH CHECK OPTION

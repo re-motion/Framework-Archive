@@ -67,12 +67,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Group) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
+    public static DomainObjectCollection FindByTenantID (ObjectID tenantID, ClientTransaction clientTransaction)
     {
+      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID");
-      query.Parameters.Add ("@clientID", clientID);
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByTenantID");
+      query.Parameters.Add ("@tenantID", tenantID);
 
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
@@ -125,7 +126,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract string UniqueIdentifier { get; set; }
 
     [Mandatory]
-    public abstract Client Client { get; set; }
+    public abstract Tenant Tenant { get; set; }
 
     [DBBidirectionalRelation ("Children")]
     public abstract Group Parent { get; set; }
@@ -158,11 +159,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     }
 
     // TODO: UnitTests
-    public List<Group> GetPossibleParentGroups (ObjectID clientID)
+    public List<Group> GetPossibleParentGroups (ObjectID tenantID)
     {
+      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
+
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in Group.FindByClientID (clientID, ClientTransaction))
+      foreach (Group group in Group.FindByTenantID (tenantID, ClientTransaction))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);
@@ -170,9 +173,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return groups;
     }
 
-    protected override string GetOwningClient ()
+    protected override string GetOwningTenant ()
     {
-      return Client == null ? null : Client.UniqueIdentifier;
+      return Tenant == null ? null : Tenant.UniqueIdentifier;
     }
 
     protected override string GetOwningGroup ()

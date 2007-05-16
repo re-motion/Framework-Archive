@@ -25,15 +25,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
     public SecurityContext CreateSecurityContext ()
     {
       return new SecurityContext (
-          GetPublicDomainObjectType(), GetOwnerName(), GetOwnerGroupName(), GetOwnerClientName(), GetStates(), GetAbstractRoles());
+          GetPublicDomainObjectType(), GetOwnerName(), GetOwnerGroupName(), GetOwnerTenantName(), GetStates(), GetAbstractRoles());
     }
 
-    private string GetOwnerClientName ()
+    private string GetOwnerTenantName ()
     {
-      Client client = GetOwnerClient();
-      if (client == null)
+      Tenant tenant = GetOwnerTenant();
+      if (tenant == null)
         return null;
-      return client.Name;
+      return tenant.Name;
     }
 
     private string GetOwnerGroupName ()
@@ -56,7 +56,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public abstract Group GetOwnerGroup ();
 
-    public abstract Client GetOwnerClient ();
+    public abstract Tenant GetOwnerTenant ();
 
     public virtual IDictionary<string, Enum> GetStates ()
     {

@@ -4,13 +4,14 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
+  //TODO: Hashcode basebase
   /// <summary>Collects all security-specific information for an instance or type, and is passed as parameter during the permission check.</summary>
   public sealed class SecurityContext : IEquatable<SecurityContext>
   {
     private readonly string _class;
     private readonly string _owner;
     private readonly string _ownerGroup;
-    private readonly string _ownerClient;
+    private readonly string _ownerTenant;
     private IDictionary<string, EnumWrapper> _states;
     private EnumWrapper[] _abstractRoles;
 
@@ -23,7 +24,7 @@ namespace Rubicon.Security
         Type classType,
         string owner,
         string ownerGroup,
-        string ownerClient,
+        string ownerTenant,
         IDictionary<string, Enum> states,
         ICollection<Enum> abstractRoles)
     {
@@ -32,7 +33,7 @@ namespace Rubicon.Security
       _class = TypeUtility.GetPartialAssemblyQualifiedName (classType);
       _owner = StringUtility.NullToEmpty (owner);
       _ownerGroup = StringUtility.NullToEmpty (ownerGroup);
-      _ownerClient = StringUtility.NullToEmpty (ownerClient);
+      _ownerTenant = StringUtility.NullToEmpty (ownerTenant);
       _abstractRoles = InitializeAbstractRoles (abstractRoles);
       _states = InitializeStates (states);
     }
@@ -52,9 +53,9 @@ namespace Rubicon.Security
       get { return _ownerGroup; }
     }
 
-    public string OwnerClient
+    public string OwnerTenant
     {
-      get { return _ownerClient; }
+      get { return _ownerTenant; }
     }
 
     public EnumWrapper[] AbstractRoles
@@ -89,8 +90,8 @@ namespace Rubicon.Security
         hashCode ^= _owner.GetHashCode ();
       if (_ownerGroup != null)
         hashCode ^= _ownerGroup.GetHashCode ();
-      if (_ownerClient != null)
-        hashCode ^= _ownerClient.GetHashCode ();
+      if (_ownerTenant != null)
+        hashCode ^= _ownerTenant.GetHashCode ();
 
       return hashCode;
     }
@@ -117,7 +118,7 @@ namespace Rubicon.Security
       if (!string.Equals (this._ownerGroup, other._ownerGroup, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._ownerClient, other._ownerClient, StringComparison.Ordinal))
+      if (!string.Equals (this._ownerTenant, other._ownerTenant, StringComparison.Ordinal))
         return false;
 
       if (!EqualsStates (this._states, other._states))

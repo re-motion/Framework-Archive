@@ -5,9 +5,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
   public class OrganizationalStructureFactory : IOrganizationalStructureFactory
   {
-    public virtual Client CreateClient (ClientTransaction transaction)
+    public virtual Tenant CreateTenant (ClientTransaction transaction)
     {
-      return Client.NewObject (transaction);
+      return Tenant.NewObject (transaction);
     }
 
     public virtual Group CreateGroup (ClientTransaction transaction)
@@ -25,9 +25,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return Position.NewObject (transaction);
     }
 
-    public virtual Type GetClientType ()
+    public virtual Type GetTenantType ()
     {
-      return typeof (Client);
+      return typeof (Tenant);
     }
 
     public virtual Type GetGroupType ()

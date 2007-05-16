@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
       if (!IsPostBack)
         UserList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) UserList.FixedColumns[0], SortingDirection.Ascending));
-      UserList.LoadUnboundValue (User.FindByClientID (CurrentClientID, CurrentFunction.CurrentTransaction), IsPostBack);
+      UserList.LoadUnboundValue (User.FindByTenantID (CurrentTenantID, CurrentFunction.CurrentTransaction), IsPostBack);
 
       if (!SecurityConfiguration.Current.SecurityProvider.IsNull)
       {
@@ -55,8 +55,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnPreRender (e);
 
-      if (HasClientChanged)
-        UserList.LoadUnboundValue (User.FindByClientID (CurrentClientID, CurrentFunction.CurrentTransaction), false);
+      if (HasTenantChanged)
+        UserList.LoadUnboundValue (User.FindByTenantID (CurrentTenantID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void UserList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -70,7 +70,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditUserFormFunction) Page.ReturningFunction).HasUserCancelled)
-          UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          UserList.LoadUnboundValue (User.FindByTenantID (CurrentFunction.TenantID, CurrentFunction.CurrentTransaction), false);
       }
     }
 
@@ -85,7 +85,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
       else
       {
         if (!((EditUserFormFunction) Page.ReturningFunction).HasUserCancelled)
-          UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
+          UserList.LoadUnboundValue (User.FindByTenantID (CurrentFunction.TenantID, CurrentFunction.CurrentTransaction), false);
       }
     }
   }

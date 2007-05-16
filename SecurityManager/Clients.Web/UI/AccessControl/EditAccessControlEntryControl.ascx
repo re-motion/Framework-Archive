@@ -16,15 +16,15 @@
     </td>
   </tr>
   <tr>
-    <td><rubicon:SmartLabel ID="ClientLabel" runat="server" ForControl="ClientField"/></td>
+    <td><rubicon:SmartLabel ID="TenantLabel" runat="server" ForControl="TenantField"/></td>
     <td>
       <table cellpadding="0" cellspacing="0">
         <tr>
-          <td><rubicon:BocEnumValue ID="ClientField" runat="server" PropertyIdentifier="Client" DataSourceControl="CurrentObject" OnSelectionChanged="ClientField_SelectionChanged" Width="20em" >
+          <td><rubicon:BocEnumValue ID="TenantField" runat="server" PropertyIdentifier="Tenant" DataSourceControl="CurrentObject" OnSelectionChanged="TenantField_SelectionChanged" Width="20em" >
             <ListControlStyle AutoPostBack="True" RadioButtonListCellPadding="" RadioButtonListCellSpacing="" />
           </rubicon:BocEnumValue></td>
           <td>
-            <rubicon:BocReferenceValue ID="SpecificClientField" runat="server" PropertyIdentifier="SpecificClient" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.FindAll" Required="True" >
+            <rubicon:BocReferenceValue ID="SpecificTenantField" runat="server" PropertyIdentifier="SpecificTenant" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.FindAll" Required="True" >
               <PersistedCommand>
                 <rubicon:BocCommand />
               </PersistedCommand>

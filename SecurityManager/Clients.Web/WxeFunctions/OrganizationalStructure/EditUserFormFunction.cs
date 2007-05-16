@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
       if (CurrentObject == null)
       {
         User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (CurrentTransaction);
-        User.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);
+        User.Tenant = Rubicon.SecurityManager.Domain.OrganizationalStructure.Tenant.GetObject (TenantID, CurrentTransaction);
       }
     }
 

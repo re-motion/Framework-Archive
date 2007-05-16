@@ -14,11 +14,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
 
     // static members and constants
 
-    private static readonly string s_currentClientIDKey = typeof (BaseControl).FullName + "_CurrentClientID";
+    private static readonly string s_currentTenantIDKey = typeof (BaseControl).FullName + "_CurrentTenantID";
 
     // member fields
 
-    private bool _hasClientChanged;
+    private bool _hasTenantChanged;
 
     // construction and disposing
 
@@ -40,15 +40,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       get { return null; }
     }
 
-    protected ObjectID CurrentClientID
+    protected ObjectID CurrentTenantID
     {
-      get { return (ObjectID) ViewState[s_currentClientIDKey]; }
-      set { ViewState[s_currentClientIDKey] = value; }
+      get { return (ObjectID) ViewState[s_currentTenantIDKey]; }
+      set { ViewState[s_currentTenantIDKey] = value; }
     }
 
-    protected bool HasClientChanged
+    protected bool HasTenantChanged
     {
-      get { return _hasClientChanged; }
+      get { return _hasTenantChanged; }
     }
 
     protected override void OnLoad (EventArgs e)
@@ -56,15 +56,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       base.OnLoad (e);
 
       if (!IsPostBack)
-        CurrentClientID = CurrentFunction.ClientID;
+        CurrentTenantID = CurrentFunction.TenantID;
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      if (CurrentClientID != CurrentFunction.ClientID)
+      if (CurrentTenantID != CurrentFunction.TenantID)
       {
-        CurrentClientID = CurrentFunction.ClientID;
-        _hasClientChanged = true;
+        CurrentTenantID = CurrentFunction.TenantID;
+        _hasTenantChanged = true;
       }
 
       ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));

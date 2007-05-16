@@ -41,12 +41,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public abstract User User { get; set; }
 
 
-    public List<Group> GetPossibleGroups (ObjectID clientID)
+    public List<Group> GetPossibleGroups (ObjectID tenantID)
     {
-      ArgumentUtility.CheckNotNull ("clientID", clientID);
+      ArgumentUtility.CheckNotNull ("tenantID", tenantID);
 
       List<Group> groups = new List<Group> ();
-      foreach (Group group in Group.FindByClientID (clientID, ClientTransaction))
+      foreach (Group group in Group.FindByTenantID (tenantID, ClientTransaction))
         groups.Add (group);
 
       return FilterByAccess (groups, SecurityManagerAccessTypes.AssignRole);
@@ -88,13 +88,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return filteredObjects;
     }
 
-    protected override string GetOwningClient ()
+    protected override string GetOwningTenant ()
     {
       if (User != null)
-        return User.Client.UniqueIdentifier;
+        return User.Tenant.UniqueIdentifier;
 
       if (Group != null)
-        return Group.Client.UniqueIdentifier;
+        return Group.Tenant.UniqueIdentifier;
 
       return null;
     }

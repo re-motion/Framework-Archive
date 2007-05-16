@@ -160,33 +160,33 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     }
 
     [Test]
-    public void ClearSpecificClientOnCommit ()
+    public void ClearSpecificTenantOnCommit ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0);
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID, _testHelper.Transaction);
-      ace.Client = ClientSelection.OwningClient;
-      ace.SpecificClient = _testHelper.CreateClient ("TestClient");
+      ace.Tenant = TenantSelection.OwningTenant;
+      ace.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
 
-      Assert.IsNotNull (ace.SpecificClient);
+      Assert.IsNotNull (ace.SpecificTenant);
       _testHelper.Transaction.Commit ();
-      Assert.IsNull (ace.SpecificClient);      
+      Assert.IsNull (ace.SpecificTenant);      
     }
 
     [Test]
-    public void ClearSpecificClientOnCommitWhenObjectIsDeleted ()
+    public void ClearSpecificTenantOnCommitWhenObjectIsDeleted ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (0);
       AccessControlEntry aceExpected = AccessControlEntry.GetObject (aceID, _testHelper.Transaction);
-      aceExpected.Client = ClientSelection.SpecificClient;
-      aceExpected.SpecificClient = _testHelper.CreateClient ("TestClient");
+      aceExpected.Tenant = TenantSelection.SpecificTenant;
+      aceExpected.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
       _testHelper.Transaction.Commit ();
       ClientTransaction clientTransaction = new ClientTransaction ();
       AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID, clientTransaction);
-      aceActual.Client = ClientSelection.OwningClient;
+      aceActual.Tenant = TenantSelection.OwningTenant;
 
-      Assert.IsNotNull (aceActual.SpecificClient);
+      Assert.IsNotNull (aceActual.SpecificTenant);
       aceActual.Delete ();
       clientTransaction.Commit ();
     }

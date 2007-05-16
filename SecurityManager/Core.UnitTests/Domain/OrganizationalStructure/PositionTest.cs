@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void FindAll ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
       ClientTransaction transaction = new ClientTransaction ();
 
       DomainObjectCollection positions = Position.FindAll (transaction);
@@ -40,10 +40,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithRole ()
     {
       OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
-      Client client = testHelper.CreateClient ("TestClient", "UID: testClient");
-      Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, client);
-      Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, client);
-      User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, client);
+      Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
+      Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, tenant);
+      Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, tenant);
+      User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
       Position position = testHelper.CreatePosition ("Position");
       Role role = testHelper.CreateRole (user, roleGroup, position);
 
@@ -123,7 +123,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (position.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.IsEmpty (securityContext.Owner);
       Assert.IsEmpty (securityContext.OwnerGroup);
-      Assert.IsEmpty (securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.OwnerTenant);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.AreEqual (1, securityContext.GetNumberOfStates());
       Assert.AreEqual (new EnumWrapper (Delegation.Enabled), securityContext.GetState ("Delegation"));

@@ -32,11 +32,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction);
     }
 
-    public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     public static SecurableClassDefinition FindByName (string name, ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);

@@ -17,18 +17,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult ();
 
       Assert.IsTrue (result.IsValid);
-      Assert.IsFalse (result.IsSpecificClientMissing);
+      Assert.IsFalse (result.IsSpecificTenantMissing);
     }
 
     [Test]
-    public void IsValid_IsSpecificClientMissing ()
+    public void IsValid_IsSpecificTenantMissing ()
     {
       AccessControlEntryValidationResult result = new AccessControlEntryValidationResult ();
 
-      result.SetSpecificClientMissing ();
+      result.SetSpecificTenantMissing ();
 
       Assert.IsFalse (result.IsValid);
-      Assert.IsTrue (result.IsSpecificClientMissing);
+      Assert.IsTrue (result.IsSpecificTenantMissing);
     }
 
   }

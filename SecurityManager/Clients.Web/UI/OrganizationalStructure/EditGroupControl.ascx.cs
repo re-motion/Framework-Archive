@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void FillParentField ()
     {
-      ParentField.SetBusinessObjectList (CurrentFunction.Group.GetPossibleParentGroups (CurrentFunction.ClientID));
+      ParentField.SetBusinessObjectList (CurrentFunction.Group.GetPossibleParentGroups (CurrentFunction.TenantID));
     }
 
     public override bool Validate ()

@@ -32,9 +32,9 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 
     // methods and properties
 
-    public ObjectID ClientID
+    public ObjectID TenantID
     {
-      get { return (Client.Current != null) ? Client.Current.ID : null; }
+      get { return (Tenant.Current != null) ? Tenant.Current.ID : null; }
     }
 
     public bool HasUserCancelled

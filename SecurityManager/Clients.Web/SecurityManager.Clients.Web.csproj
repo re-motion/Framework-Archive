@@ -49,11 +49,11 @@
     <Content Include="UI\AccessControl\EditAccessControlListControl.ascx" />
     <Content Include="UI\AccessControl\EditPermissionsForm.aspx" />
     <Content Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx" />
-    <Content Include="UI\OrganizationalStructure\ClientListForm.aspx" />
-    <Content Include="UI\OrganizationalStructure\ClientListControl.ascx" />
-    <Content Include="UI\OrganizationalStructure\EditClientForm.aspx" />
-    <Content Include="UI\OrganizationalStructure\EditClientControl.ascx" />
-    <Content Include="UI\SecurityManagerCurrentClientControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\TenantListForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\TenantListControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditTenantForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditTenantControl.ascx" />
+    <Content Include="UI\SecurityManagerCurrentTenantControl.ascx" />
     <Content Include="UI\SecurityManagerMasterPage.Master" />
     <Content Include="UI\ErrorMessageControl.ascx" />
     <Content Include="SecurityManagerUrlMapping.xml" />
@@ -129,23 +129,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SecurableClassDefinitionListFormResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\ClientListControlResources.Designer.cs">
-      <DependentUpon>ClientListControlResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\TenantListControlResources.Designer.cs">
+      <DependentUpon>TenantListControlResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\ClientListFormResources.Designer.cs">
-      <DependentUpon>ClientListFormResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\TenantListFormResources.Designer.cs">
+      <DependentUpon>TenantListFormResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\EditClientControlResources.Designer.cs">
-      <DependentUpon>EditClientControlResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditTenantControlResources.Designer.cs">
+      <DependentUpon>EditTenantControlResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Globalization\UI\OrganizationalStructure\EditClientFormResources.Designer.cs">
-      <DependentUpon>EditClientFormResources.resx</DependentUpon>
+    <Compile Include="Globalization\UI\OrganizationalStructure\EditTenantFormResources.Designer.cs">
+      <DependentUpon>EditTenantFormResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -307,40 +307,40 @@
     <Compile Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx.designer.cs">
       <DependentUpon>SecurableClassDefinitionListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\ClientListForm.aspx.cs">
-      <DependentUpon>ClientListForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\TenantListForm.aspx.cs">
+      <DependentUpon>TenantListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\ClientListForm.aspx.designer.cs">
-      <DependentUpon>ClientListForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\TenantListForm.aspx.designer.cs">
+      <DependentUpon>TenantListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\ClientListControl.ascx.cs">
-      <DependentUpon>ClientListControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\TenantListControl.ascx.cs">
+      <DependentUpon>TenantListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\ClientListControl.ascx.designer.cs">
-      <DependentUpon>ClientListControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\TenantListControl.ascx.designer.cs">
+      <DependentUpon>TenantListControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditClientForm.aspx.cs">
-      <DependentUpon>EditClientForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditTenantForm.aspx.cs">
+      <DependentUpon>EditTenantForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditClientForm.aspx.designer.cs">
-      <DependentUpon>EditClientForm.aspx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditTenantForm.aspx.designer.cs">
+      <DependentUpon>EditTenantForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditClientControl.ascx.cs">
-      <DependentUpon>EditClientControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditTenantControl.ascx.cs">
+      <DependentUpon>EditTenantControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\OrganizationalStructure\EditClientControl.ascx.designer.cs">
-      <DependentUpon>EditClientControl.ascx</DependentUpon>
+    <Compile Include="UI\OrganizationalStructure\EditTenantControl.ascx.designer.cs">
+      <DependentUpon>EditTenantControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="UI\SecurityManagerCurrentClientControl.ascx.cs">
-      <DependentUpon>SecurityManagerCurrentClientControl.ascx</DependentUpon>
+    <Compile Include="UI\SecurityManagerCurrentTenantControl.ascx.cs">
+      <DependentUpon>SecurityManagerCurrentTenantControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\SecurityManagerCurrentClientControl.ascx.designer.cs">
-      <DependentUpon>SecurityManagerCurrentClientControl.ascx</DependentUpon>
+    <Compile Include="UI\SecurityManagerCurrentTenantControl.ascx.designer.cs">
+      <DependentUpon>SecurityManagerCurrentTenantControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorMessageControl.ascx.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
@@ -521,8 +521,8 @@
     <Compile Include="WxeFunctions\AccessControl\SecurableClassDefinitionListFormFunction.cs" />
     <Compile Include="WxeFunctions\BaseTransactedFunction.cs" />
     <Compile Include="WxeFunctions\FormFunction.cs" />
-    <Compile Include="WxeFunctions\OrganizationalStructure\EditClientFormFunction.cs" />
-    <Compile Include="WxeFunctions\OrganizationalStructure\ClientListFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditTenantFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\TenantListFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypePositionFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypeFormFunction.cs" />
@@ -619,36 +619,36 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SecurableClassDefinitionListFormResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\ClientListControlResources.de.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\TenantListControlResources.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\ClientListControlResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\TenantListControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ClientListControlResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>TenantListControlResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\ClientListFormResources.de.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\TenantListFormResources.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\ClientListFormResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\TenantListFormResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ClientListFormResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>TenantListFormResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditClientControlResources.de.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditTenantControlResources.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditClientControlResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditTenantControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EditClientControlResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>EditTenantControlResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditClientFormResources.de.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditTenantFormResources.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditClientFormResources.resx">
+    <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditTenantFormResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EditClientFormResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>EditTenantFormResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\UserListFormResources.de.resx">
@@ -862,7 +862,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />
   <ItemGroup>
-    <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml" />
     <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

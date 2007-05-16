@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create new user.
+        ///   Looks up a localized string similar to Create New User.
         /// </summary>
         internal static string auto_NewUserButton_Text {
             get {
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrate users.
+        ///   Looks up a localized string similar to Administrate Users.
         /// </summary>
         internal static string auto_UserListLabel_Text {
             get {

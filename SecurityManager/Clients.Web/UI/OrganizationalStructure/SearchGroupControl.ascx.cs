@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       base.OnLoad (e);
 
-      GroupList.LoadUnboundValue (Group.FindByClientID (CurrentClientID, CurrentFunction.CurrentTransaction), false);
+      GroupList.LoadUnboundValue (Group.FindByTenantID (CurrentTenantID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit group type.
+        ///   Looks up a localized string similar to Edit Group Type.
         /// </summary>
         internal static string auto_this_Title {
             get {

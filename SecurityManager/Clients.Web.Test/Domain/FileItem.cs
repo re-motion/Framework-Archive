@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
     }
 
     [Mandatory]
-    public abstract Client Client { get; set; }
+    public abstract Tenant Tenant { get; set; }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
@@ -51,11 +51,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       return File.GetOwnerGroup ();
     }
 
-    public override Client GetOwnerClient ()
+    public override Tenant GetOwnerTenant ()
     {
       if (File == null)
         return null;
-      return File.GetOwnerClient ();
+      return File.GetOwnerTenant ();
     }
   }
 }

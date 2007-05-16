@@ -1,8 +1,8 @@
 USE <Database>
 GO
 
-ALTER TABLE [Client]
-  ADD CONSTRAINT ClientUniqueIdentifier UNIQUE NONCLUSTERED ([UniqueIdentifier])
+ALTER TABLE [Tenant]
+  ADD CONSTRAINT TenantUniqueIdentifier UNIQUE NONCLUSTERED ([UniqueIdentifier])
 
 ALTER TABLE [User]
   ADD CONSTRAINT UniqueUserName UNIQUE NONCLUSTERED ([UserName])

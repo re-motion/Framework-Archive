@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       base.TestFixtureSetUp ();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
     }
 
     [Test]
@@ -96,7 +96,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Create_WithValidOwningClient ()
+    public void Create_WithValidOwningTenant ()
     {
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
@@ -105,29 +105,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      Assert.IsNotNull (token.OwningClient);
-      Assert.AreEqual ("UID: testClient", token.OwningClient.UniqueIdentifier);
+      Assert.IsNotNull (token.OwningTenant);
+      Assert.AreEqual ("UID: testTenant", token.OwningTenant.UniqueIdentifier);
     }
 
     [Test]
-    public void Create_WithoutOwningClient ()
+    public void Create_WithoutOwningTenant ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurityContext context = CreateContextWithoutOwningClient ();
+      SecurityContext context = CreateContextWithoutOwningTenant ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      Assert.IsNull (token.OwningClient);
+      Assert.IsNull (token.OwningTenant);
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The client 'UID: NotExistingClient' could not be found.")]
-    public void Create_WithNotExistingOwningClient ()
+    [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The tenant 'UID: NotExistingTenant' could not be found.")]
+    public void Create_WithNotExistingOwningTenant ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      SecurityContext context = CreateContextWithNotExistingOwningClient ();
+      SecurityContext context = CreateContextWithNotExistingOwningTenant ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
@@ -202,27 +202,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContext (params Enum[] abstractRoles)
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: testClient", null, abstractRoles);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: testTenant", null, abstractRoles);
     }
 
-    private SecurityContext CreateContextWithoutOwningClient ()
+    private SecurityContext CreateContextWithoutOwningTenant ()
     {
       return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", null, null, null);
     }
 
-    private SecurityContext CreateContextWithNotExistingOwningClient ()
+    private SecurityContext CreateContextWithNotExistingOwningTenant ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: NotExistingClient", null, null);
+      return new SecurityContext (typeof (Order), "owner", "UID: testOwningGroup", "UID: NotExistingTenant", null, null);
     }
 
     private SecurityContext CreateContextWithoutOwningGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", null, "UID: testClient", null, null);
+      return new SecurityContext (typeof (Order), "owner", null, "UID: testTenant", null, null);
     }
 
     private SecurityContext CreateContextWithNotExistingOwningGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", "UID: NotExistingGroup", "UID: testClient", null, null);
+      return new SecurityContext (typeof (Order), "owner", "UID: NotExistingGroup", "UID: testTenant", null, null);
     }
   }
 }

@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
-    public Client CreateOrganizationalStructureWithTwoClients ()
+    public Tenant CreateOrganizationalStructureWithTwoTenants ()
     {
       CreateEmptyDomain ();
 
@@ -70,42 +70,42 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       groupType2_officialPosition.GroupType = groupType2;
       groupType2_officialPosition.Position = officialPosition;
 
-      Client client1 = CreateClient (transaction, "TestClient");
-      client1.UniqueIdentifier = "UID: testClient";
-      Group rootGroup = CreateGroup (transaction, "rootGroup", "UID: rootGroup", null, client1);
+      Tenant tenant1 = CreateTenant (transaction, "TestTenant");
+      tenant1.UniqueIdentifier = "UID: testTenant";
+      Group rootGroup = CreateGroup (transaction, "rootGroup", "UID: rootGroup", null, tenant1);
       for (int i = 0; i < 2; i++)
       {
-        Group parentGroup = CreateGroup (transaction, string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, client1);
+        Group parentGroup = CreateGroup (transaction, string.Format ("parentGroup{0}", i), string.Format ("UID: parentGroup{0}", i), rootGroup, tenant1);
         parentGroup.GroupType = groupType1;
         
-        Group group = CreateGroup (transaction, string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, client1);
+        Group group = CreateGroup (transaction, string.Format ("group{0}", i), string.Format ("UID: group{0}", i), parentGroup, tenant1);
         group.GroupType = groupType2;
         
-        User user1 = CreateUser (transaction, string.Format ("group{0}/user1", i), string.Empty, "user1", string.Empty, group, client1);
-        User user2 = CreateUser (transaction, string.Format ("group{0}/user2", i), string.Empty, "user2", string.Empty, group, client1);
+        User user1 = CreateUser (transaction, string.Format ("group{0}/user1", i), string.Empty, "user1", string.Empty, group, tenant1);
+        User user2 = CreateUser (transaction, string.Format ("group{0}/user2", i), string.Empty, "user2", string.Empty, group, tenant1);
 
         CreateRole (transaction, user1, parentGroup, managerPosition);
         CreateRole (transaction, user2, parentGroup, officialPosition);
       }
 
-      Group testRootGroup = CreateGroup (transaction, "testRootGroup", "UID: testRootGroup", null, client1);
-      Group testParentOfOwningGroup = CreateGroup (transaction, "testParentOfOwningGroup", "UID: testParentOfOwningGroup", testRootGroup, client1);
-      Group testOwningGroup = CreateGroup (transaction, "testOwningGroup", "UID: testOwningGroup", testParentOfOwningGroup, client1);
-      Group testGroup = CreateGroup (transaction, "testGroup", "UID: testGroup", null, client1);
-      User testUser = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwningGroup, client1);
+      Group testRootGroup = CreateGroup (transaction, "testRootGroup", "UID: testRootGroup", null, tenant1);
+      Group testParentOfOwningGroup = CreateGroup (transaction, "testParentOfOwningGroup", "UID: testParentOfOwningGroup", testRootGroup, tenant1);
+      Group testOwningGroup = CreateGroup (transaction, "testOwningGroup", "UID: testOwningGroup", testParentOfOwningGroup, tenant1);
+      Group testGroup = CreateGroup (transaction, "testGroup", "UID: testGroup", null, tenant1);
+      User testUser = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", testOwningGroup, tenant1);
 
       CreateRole (transaction, testUser, testGroup, officialPosition);
       CreateRole (transaction, testUser, testGroup, managerPosition);
       CreateRole (transaction, testUser, testOwningGroup, managerPosition);
       CreateRole (transaction, testUser, testRootGroup, officialPosition);
 
-      Client client2 = CreateClient (transaction, "Client 2");
-      Group groupClient2 = CreateGroup (transaction, "Group Client 2", "UID: group Client 2", null, client2);
-      User userClient2 = CreateUser (transaction, "User.Client2", "User", "Client 2", string.Empty, groupClient2, client2);
+      Tenant tenant2 = CreateTenant (transaction, "Tenant 2");
+      Group groupTenant2 = CreateGroup (transaction, "Group Tenant 2", "UID: group Tenant 2", null, tenant2);
+      User userTenant2 = CreateUser (transaction, "User.Tenant2", "User", "Tenant 2", string.Empty, groupTenant2, tenant2);
 
       transaction.Commit ();
 
-      return client1;
+      return tenant1;
     }
 
     public SecurableClassDefinition[] CreateSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount)
@@ -249,33 +249,33 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return ace.ID;
     }
 
-    private Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
+    private Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
       Group group = _factory.CreateGroup (transaction);
       group.Name = name;
       group.Parent = parent;
-      group.Client = client;
+      group.Tenant = tenant;
       group.UniqueIdentifier = uniqueIdentifier;
 
       return group;
     }
 
-    private Client CreateClient (ClientTransaction transaction, string name)
+    private Tenant CreateTenant (ClientTransaction transaction, string name)
     {
-      Client client = _factory.CreateClient (transaction);
-      client.Name = name;
+      Tenant tenant = _factory.CreateTenant (transaction);
+      tenant.Name = name;
 
-      return client;
+      return tenant;
     }
 
-    private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
+    private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Tenant tenant)
     {
       User user = _factory.CreateUser (transaction);
       user.UserName = userName;
       user.FirstName = firstName;
       user.LastName = lastName;
       user.Title = title;
-      user.Client = client;
+      user.Tenant = tenant;
       user.OwningGroup = group;
 
       return user;

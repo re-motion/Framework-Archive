@@ -132,8 +132,8 @@
   <data name="auto:PermissionsLabel:Text" xml:space="preserve">
     <value>Permissions</value>
   </data>
-  <data name="auto:SpecificClientField:ErrorMessage" xml:space="preserve">
-    <value>Please select a client.</value>
+  <data name="auto:SpecificTenantField:ErrorMessage" xml:space="preserve">
+    <value>Please select a tenant.</value>
   </data>
   <data name="DeleteAccessControlEntryButton" xml:space="preserve">
     <value>Delete ACE</value>

@@ -57,7 +57,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       base.LoadValues (interim);
 
       LoadPermissions (interim);
-      AdjustSpecificClientField ();
+      AdjustSpecificTenantField ();
       AdjustPositionFields ();
     }
 
@@ -94,9 +94,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         handler (this, e);
     }
 
-    protected void ClientField_SelectionChanged (object sender, EventArgs e)
+    protected void TenantField_SelectionChanged (object sender, EventArgs e)
     {
-      AdjustSpecificClientField ();
+      AdjustSpecificTenantField ();
     }
 
     protected void SpecificPositionField_SelectionChanged (object sender, EventArgs e)
@@ -104,16 +104,16 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       AdjustPositionFields ();
     }
 
-    private void AdjustSpecificClientField ()
+    private void AdjustSpecificTenantField ()
     {
-      if ((ClientSelection) ClientField.Value == ClientSelection.SpecificClient)
+      if ((TenantSelection) TenantField.Value == TenantSelection.SpecificTenant)
       {
-        SpecificClientField.Visible = true;
+        SpecificTenantField.Visible = true;
       }
       else
       {
-        SpecificClientField.Visible = false;
-        SpecificClientField.Value = null;
+        SpecificTenantField.Visible = false;
+        SpecificTenantField.Value = null;
       }
     }
 

@@ -15,15 +15,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   {
     private DatabaseFixtures _dbFixtures;
     private OrganisationalStructureTestHelper _testHelper;
-    private ObjectID _expectedClientID;
+    private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
 
       _dbFixtures = new DatabaseFixtures ();
-      Client client = _dbFixtures.CreateOrganizationalStructureWithTwoClients ();
-      _expectedClientID = client.ID;
+      Tenant tenant = _dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
+      _expectedTenantID = tenant.ID;
     }
 
     public override void SetUp ()
@@ -70,9 +70,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void Find_UsersByClientID ()
+    public void Find_UsersByTenantID ()
     {
-      DomainObjectCollection users = User.FindByClientID (_expectedClientID, _testHelper.Transaction);
+      DomainObjectCollection users = User.FindByTenantID (_expectedTenantID, _testHelper.Transaction);
 
       Assert.AreEqual (5, users.Count);
     }
@@ -81,9 +81,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UserName_SameNameTwice ()
     {
-      Client client = _testHelper.CreateClient ("Testclient", "UID: testClient");
-      Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, client);
-      User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
+      Tenant tenant = _testHelper.CreateTenant ("Testtenant", "UID: testTenant");
+      Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, tenant);
+      User newUser = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, tenant);
 
       _testHelper.Transaction.Commit ();
     }
@@ -114,9 +114,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       ThreadRunner.Run (delegate ()
           {
-            Client otherClient = _testHelper.CreateClient ("OtherClient", "UID: otherClient");
-            Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherClient);
-            User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherClient);
+            Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: otherTenant");
+            Group otherGroup = _testHelper.CreateGroup ("OtherGroup", "UID: otherGroup", null, otherTenant);
+            User otherUser = _testHelper.CreateUser ("other.user", "Other", "User", "Ing.", otherGroup, otherTenant);
 
             Assert.IsNull (User.Current);
             User.Current = otherUser;
@@ -171,7 +171,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (user.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
       Assert.AreEqual (user.OwningGroup.UniqueIdentifier, securityContext.OwnerGroup);
-      Assert.AreEqual (user.Client.UniqueIdentifier, securityContext.OwnerClient);
+      Assert.AreEqual (user.Tenant.UniqueIdentifier, securityContext.OwnerTenant);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
     }
@@ -186,31 +186,31 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.AreEqual (user.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
       Assert.IsEmpty (securityContext.OwnerGroup);
-      Assert.AreEqual (user.Client.UniqueIdentifier, securityContext.OwnerClient);
+      Assert.AreEqual (user.Tenant.UniqueIdentifier, securityContext.OwnerTenant);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
     }
 
     [Test]
-    public void CreateSecurityContext_WithNoClient ()
+    public void CreateSecurityContext_WithNoTenant ()
     {
       User user = CreateUser ();
-      user.Client = null;
+      user.Tenant = null;
 
       SecurityContext securityContext = ((ISecurityContextFactory) user).CreateSecurityContext ();
       Assert.AreEqual (user.GetPublicDomainObjectType (), Type.GetType (securityContext.Class));
       Assert.AreEqual (user.UserName, securityContext.Owner);
       Assert.AreEqual (user.OwningGroup.UniqueIdentifier, securityContext.OwnerGroup);
-      Assert.IsEmpty (securityContext.OwnerClient);
+      Assert.IsEmpty (securityContext.OwnerTenant);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
     }
 
     private User CreateUser ()
     {
-      Client client = _testHelper.CreateClient ("TestClient", "UID: testClient");
-      Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, client);
-      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, client);
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
+      Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, tenant);
+      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, tenant);
    
       return user;
     }
