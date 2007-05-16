@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class GroupTest : DomainTest
   {
     private DatabaseFixtures _dbFixtures;
-    private OrganisationalStructureTestHelper _testHelper;
+    private OrganizationalStructureTestHelper _testHelper;
     private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
@@ -32,7 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       base.SetUp ();
 
-      _testHelper = new OrganisationalStructureTestHelper ();
+      _testHelper = new OrganizationalStructureTestHelper ();
     }
 
     [Test]
@@ -141,6 +141,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Group group = factory.CreateGroup (_testHelper.Transaction);
 
       Assert.IsNotEmpty (group.UniqueIdentifier);
+    }
+
+    [Test]
+    public void GetDisplayName_WithShortName ()
+    {
+      Group group = CreateGroup ();
+      group.Name = "LongGroupName";
+      group.ShortName = "ShortName";
+
+      Assert.AreEqual ("ShortName (LongGroupName)", group.DisplayName);
+    }
+
+    [Test]
+    public void GetDisplayName_NoShortName ()
+    {
+      Group group = CreateGroup ();
+      group.Name = "LongGroupName";
+      group.ShortName = null;
+
+      Assert.AreEqual ("LongGroupName", group.DisplayName);
     }
 
     #region IBusinessObjectWithIdentifier.UniqueIdentifier tests

@@ -4,12 +4,12 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
-  public class OrganisationalStructureTestHelper
+  public class OrganizationalStructureTestHelper
   {
     private ClientTransaction _transaction;
     private OrganizationalStructureFactory _factory;
 
-    public OrganisationalStructureTestHelper ()
+    public OrganizationalStructureTestHelper ()
     {
       _transaction = new ClientTransaction ();
       _factory = new OrganizationalStructureFactory ();

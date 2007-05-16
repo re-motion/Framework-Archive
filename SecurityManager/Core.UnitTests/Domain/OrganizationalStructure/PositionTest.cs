@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DeletePosition_WithRole ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
       Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, tenant);
       Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, tenant);
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DeletePosition_WithGroupTypePosition ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       GroupType groupType = testHelper.CreateGroupType ("GroupType");
       Position position = testHelper.CreatePosition ("Position");
       GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
@@ -68,7 +68,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetDisplayName ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       Position position = testHelper.CreatePosition ("PositionName");
 
       Assert.AreEqual ("PositionName", position.DisplayName);
@@ -77,7 +77,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetSecurityStrategy ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
       IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy ();
@@ -90,7 +90,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetSecurityStrategy_SameTwice ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       ISecurableObject position = testHelper.CreatePosition ("PositionName");
 
       Assert.AreSame (position.GetSecurityStrategy (), position.GetSecurityStrategy ());
@@ -99,7 +99,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       Position position = testHelper.CreatePosition ("PositionName");
       IDomainObjectSecurityContextFactory factory = position;
 
@@ -115,7 +115,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void CreateSecurityContext ()
     {
-      OrganisationalStructureTestHelper testHelper = new OrganisationalStructureTestHelper ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
       Position position = testHelper.CreatePosition ("PositionName");
       position.Delegation = Delegation.Enabled;
 

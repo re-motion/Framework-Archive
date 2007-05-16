@@ -128,12 +128,12 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return clients;
     }
 
-    public DomainObjectCollection GetHierachy ()
+    public ObjectList<Tenant> GetHierachy ()
     {
-      DomainObjectCollection tenants = new DomainObjectCollection ();
+      ObjectList<Tenant> tenants = new ObjectList<Tenant> ();
       tenants.Add (this);
-      foreach (Tenant client in Children)
-        tenants.Combine (client.GetHierachy ());
+      foreach (Tenant tenant in Children)
+        tenants.Combine (tenant.GetHierachy ());
 
       return tenants;
     }

@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class TenantTest : DomainTest
   {
     private DatabaseFixtures _dbFixtures;
-    private OrganisationalStructureTestHelper _testHelper;
+    private OrganizationalStructureTestHelper _testHelper;
     private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
@@ -34,7 +34,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       base.SetUp ();
 
-      _testHelper = new OrganisationalStructureTestHelper ();
+      _testHelper = new OrganizationalStructureTestHelper ();
     }
 
     [Test]
@@ -181,7 +181,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       Tenant root = _testHelper.CreateTenant ("Root", "UID: Root");
 
-      DomainObjectCollection tenants = root.GetHierachy ();
+      ObjectList<Tenant> tenants = root.GetHierachy ();
 
       Assert.AreEqual (1, tenants.Count);
       Assert.Contains (root, tenants);
@@ -196,7 +196,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Tenant child2 = _testHelper.CreateTenant ("Child2", "UID: Child2");
       child2.Parent = root;
 
-      DomainObjectCollection tenants = root.GetHierachy ();
+      ObjectList<Tenant> tenants = root.GetHierachy ();
 
       Assert.AreEqual (3, tenants.Count);
       Assert.Contains (root, tenants);
@@ -215,7 +215,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Tenant grandChild1 = _testHelper.CreateTenant ("GrandChild1", "UID: GrandChild1");
       grandChild1.Parent = child1;
 
-      DomainObjectCollection tenants = root.GetHierachy ();
+      ObjectList<Tenant> tenants = root.GetHierachy ();
 
       Assert.AreEqual (4, tenants.Count);
       Assert.Contains (root, tenants);

@@ -146,7 +146,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     [DBBidirectionalRelation ("SpecificGroup")]
     protected abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
 
-    //TODO: UnitTests
     public override string DisplayName
     {
       get

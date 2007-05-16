@@ -86,10 +86,12 @@
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypePositionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureFactoryTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\TenantTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
-    <Compile Include="Domain\OrganizationalStructure\OrganisationalStructureTestHelper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureTestHelper.cs" />
     <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\RoleTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />

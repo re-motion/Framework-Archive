@@ -54,7 +54,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     [Mandatory]
     public abstract StatePropertyDefinition StateProperty { get; set; }
 
-    public override Guid MetadataItemID
+    public override sealed Guid MetadataItemID
     {
       get { throw new NotSupportedException ("States do not support MetadataItemID"); }
       set { throw new NotSupportedException ("States do not support MetadataItemID"); }

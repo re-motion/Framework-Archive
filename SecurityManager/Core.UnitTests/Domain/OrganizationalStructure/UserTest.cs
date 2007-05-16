@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class UserTest : DomainTest
   {
     private DatabaseFixtures _dbFixtures;
-    private OrganisationalStructureTestHelper _testHelper;
+    private OrganizationalStructureTestHelper _testHelper;
     private ObjectID _expectedTenantID;
 
     public override void TestFixtureSetUp ()
@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       base.SetUp ();
 
-      _testHelper = new OrganisationalStructureTestHelper ();
+      _testHelper = new OrganizationalStructureTestHelper ();
     }
 
     [Test]
@@ -204,6 +204,39 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.IsEmpty (securityContext.OwnerTenant);
       Assert.IsEmpty (securityContext.AbstractRoles);
       Assert.IsTrue (securityContext.IsStateless);
+    }
+
+    [Test]
+    public void GetDisplayName_WithLastNameAndFirstNameAndTitle ()
+    {
+      User user = CreateUser ();
+      user.LastName = "UserLastName";
+      user.FirstName = "UserFirstName";
+      user.Title = "UserTitle";
+
+      Assert.AreEqual ("UserLastName UserFirstName, UserTitle", user.DisplayName);
+    }
+
+    [Test]
+    public void GetDisplayName_WithLastNameAndFirstName ()
+    {
+      User user = CreateUser ();
+      user.LastName = "UserLastName";
+      user.FirstName = "UserFirstName";
+      user.Title = null;
+
+      Assert.AreEqual ("UserLastName UserFirstName", user.DisplayName);
+    }
+
+    [Test]
+    public void GetDisplayName_WithLastName ()
+    {
+      User user = CreateUser ();
+      user.LastName = "UserLastName";
+      user.FirstName = null;
+      user.Title = null;
+
+      Assert.AreEqual ("UserLastName", user.DisplayName);
     }
 
     private User CreateUser ()

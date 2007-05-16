@@ -19,5 +19,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       Assert.AreEqual (2, groupTypes.Count);
     }
+
+    [Test]
+    public void GetDisplayName ()
+    {
+      GroupType groupType = GroupType.NewObject (new ClientTransaction());
+      groupType.Name = "GroupTypeName";
+
+      Assert.AreEqual ("GroupTypeName", groupType.DisplayName);
+    }
   }
 }

@@ -32,7 +32,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     [Mandatory]
     public abstract Position Position { get; set; }
 
-    //TODO: UnitTests
     public override string DisplayName
     {
       get
