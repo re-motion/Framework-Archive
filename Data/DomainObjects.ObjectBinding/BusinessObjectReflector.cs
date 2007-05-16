@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -120,7 +121,16 @@ public class BusinessObjectReflector
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
     ArgumentUtility.CheckNotNullAndType <BaseProperty> ("property", property);
+    
     BaseProperty reflectionProperty = (BaseProperty) property;
+    if (reflectionProperty is ReferenceProperty 
+        && reflectionProperty.IsList 
+        && reflectionProperty.BusinessObjectClass is DomainObjectClass
+        && ((DomainObjectClass)reflectionProperty.BusinessObjectClass).ClassDefinition is ReflectionBasedClassDefinition)
+    {
+      return;
+    }
+
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = reflectionProperty.ToInternalType (value);
