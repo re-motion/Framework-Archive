@@ -80,6 +80,29 @@ namespace Mixins.UnitTestsUtilities
       return default (R);
     }
 
+    interface IGeneric<A, B>
+    {
+      void Method (A one, B two);
+    }
+
+    class GenericClass<A, B> : IGeneric<B, A>
+    {
+      public void Method (B one, A two)
+      {
+        throw new NotImplementedException();
+      }
+
+      public void Method2 (B one, A two)
+      {
+        throw new NotImplementedException ();
+      }
+
+      public void Method3 (A one, B two)
+      {
+        throw new NotImplementedException ();
+      }
+    }
+
     public int SimpleProperty1
     {
       get { return 1; }
@@ -156,6 +179,22 @@ namespace Mixins.UnitTestsUtilities
       Assert.IsFalse (sc.MethodSignaturesMatch (m1, m2));
       Assert.IsTrue (sc.MethodSignaturesMatch (m1, m3));
       Assert.IsFalse (sc.MethodSignaturesMatch (m1, m4));
+    }
+
+    [Test]
+    public void MethodsInGenericClasses ()
+    {
+      MethodInfo m1 = typeof (SignatureCheckerTests.GenericClass<,>).GetMethod ("Method");
+      MethodInfo m2 = typeof (SignatureCheckerTests.GenericClass<,>).GetMethod ("Method2");
+      MethodInfo m3 = typeof (SignatureCheckerTests.GenericClass<,>).GetMethod ("Method3");
+
+      SignatureChecker sc = new SignatureChecker ();
+
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m1));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m1, m2));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m1, m3));
+      Assert.IsFalse (sc.MethodSignaturesMatch (m2, m3));
+      Assert.IsTrue (sc.MethodSignaturesMatch (m3, m3));
     }
 
     [Test]

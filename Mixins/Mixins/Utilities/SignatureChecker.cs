@@ -11,7 +11,10 @@ namespace Mixins.Utilities
       ArgumentUtility.CheckNotNull ("propertyOne", propertyOne);
       ArgumentUtility.CheckNotNull ("propertyTwo", propertyTwo);
 
-      return TypeEquals (propertyOne.PropertyType, propertyTwo.PropertyType);
+      ParameterInfo[] parametersOne = propertyOne.GetIndexParameters();
+      ParameterInfo[] parametersTwo = propertyTwo.GetIndexParameters();
+
+      return ParametersMatch (parametersOne, parametersTwo) && TypesMatch (propertyOne.PropertyType, propertyTwo.PropertyType);
     }
 
     public bool EventSignaturesMatch (EventInfo eventOne, EventInfo eventTwo)
@@ -19,7 +22,7 @@ namespace Mixins.Utilities
       ArgumentUtility.CheckNotNull ("eventOne", eventOne);
       ArgumentUtility.CheckNotNull ("eventTwo", eventTwo);
 
-      return TypeEquals (eventOne.EventHandlerType, eventTwo.EventHandlerType);
+      return TypesMatch (eventOne.EventHandlerType, eventTwo.EventHandlerType);
     }
 
 
@@ -28,95 +31,82 @@ namespace Mixins.Utilities
       ArgumentUtility.CheckNotNull ("methodOne", methodOne);
       ArgumentUtility.CheckNotNull ("methodTwo", methodTwo);
 
-      if (!TypeEquals (methodOne.ReturnType, methodTwo.ReturnType))
-      {
+      if (!TypesMatch (methodOne.ReturnType, methodTwo.ReturnType))
         return false;
-      }
 
-      if (!ParametersMatch (methodOne, methodTwo))
-      {
+      if (!ParametersMatch (methodOne.GetParameters(), methodTwo.GetParameters()))
         return false;
-      }
 
       if (!GenericParametersMatch (methodOne, methodTwo))
-      {
         return false;
-      }
 
-      return true;
-    }
-
-    private bool ParametersMatch (MethodInfo methodOne, MethodInfo methodTwo)
-    {
-      ParameterInfo[] paramsOne = methodOne.GetParameters ();
-      ParameterInfo[] paramsTwo = methodTwo.GetParameters ();
-      if (paramsOne.Length != paramsTwo.Length)
-      {
-        return false;
-      }
-
-      for (int i = 0; i < paramsOne.Length; ++i)
-      {
-        if (!ParametersEqual (paramsOne[i], paramsTwo[i]))
-        {
-          return false;
-        }
-      }
       return true;
     }
 
     private bool GenericParametersMatch (MethodInfo methodOne, MethodInfo methodTwo)
     {
       if (methodOne.IsGenericMethod != methodTwo.IsGenericMethod)
-      {
         return false;
-      }
 
       if (!methodOne.IsGenericMethod)
-      {
         return true;
-      }
 
-      Type[] genericArgsOne = methodOne.GetGenericArguments ();
-      Type[] genericArgsTwo = methodTwo.GetGenericArguments ();
+      Type[] genericArgsOne = methodOne.GetGenericArguments();
+      Type[] genericArgsTwo = methodTwo.GetGenericArguments();
 
       if (genericArgsOne.Length != genericArgsTwo.Length)
-      {
         return false;
-      }
 
       for (int i = 0; i < genericArgsOne.Length; ++i)
       {
-        if (!TypeEquals (genericArgsOne[i], genericArgsTwo[i]))
-        {
+        if (!TypesMatch (genericArgsOne[i], genericArgsTwo[i]))
           return false;
-        }
       }
       return true;
     }
 
-    private bool ParametersEqual (ParameterInfo one, ParameterInfo two)
+    private bool ParametersMatch (ParameterInfo[] paramsOne, ParameterInfo[] paramsTwo)
+    {
+      if (paramsOne.Length != paramsTwo.Length)
+        return false;
+
+      for (int i = 0; i < paramsOne.Length; ++i)
+      {
+        if (!ParametersMatch (paramsOne[i], paramsTwo[i]))
+          return false;
+      }
+      return true;
+    }
+
+    private bool ParametersMatch (ParameterInfo one, ParameterInfo two)
     {
       return one.IsIn == two.IsIn
           && one.IsOut == two.IsOut
-              && TypeEquals (one.ParameterType, two.ParameterType);
+              && TypesMatch (one.ParameterType, two.ParameterType);
     }
 
-    private bool TypeEquals (Type one, Type two)
+    private bool TypesMatch (Type one, Type two)
     {
-      if (one.IsGenericParameter != two.IsGenericParameter)
-      {
+      if (one.IsGenericParameter != two.IsGenericParameter) // both must be generic parameters _or_ no generic parameters
         return false;
-      }
 
-      if (one.IsGenericParameter)
+      if (one.IsGenericParameter) // comparing generic parameters
       {
-        return (one.GenericParameterAttributes == two.GenericParameterAttributes) && (one.GenericParameterPosition == two.GenericParameterPosition);
+        if ((one.DeclaringMethod == null) != (two.DeclaringMethod == null)) // both must come either from a method _or_ from a type
+          return false;
+
+        if (one.DeclaringMethod != null) // comparing types from two generic methods? check position and attributes of parameter
+          return (one.GenericParameterAttributes == two.GenericParameterAttributes) && (one.GenericParameterPosition == two.GenericParameterPosition);
+        else // no, the generic parameters come from a type
+          return GenericParametersFromTypeMatch (one, two);
       }
-      else
-      {
+      else // comparing normal types
         return one.Equals (two);
-      }
+    }
+
+    private bool GenericParametersFromTypeMatch (Type one, Type two)
+    {
+      return one.Equals (two);
     }
   }
 }

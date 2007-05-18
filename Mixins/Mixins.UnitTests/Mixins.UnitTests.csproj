@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
+    <Compile Include="Utilities\NameAndSignatureEqualityComparerTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />

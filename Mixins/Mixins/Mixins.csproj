@@ -74,6 +74,11 @@
     <Compile Include="CodeGeneration\DynamicProxy\GeneratedClassInstanceInitializer.cs" />
     <Compile Include="CodeGeneration\IModuleManager.cs" />
     <Compile Include="CodeGeneration\ITypeGenerator.cs" />
+    <Compile Include="Utilities\EventNameAndSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\EventSignatureEqualityComparaer.cs" />
+    <Compile Include="Utilities\MethodNameAndSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\PropertyNameAndSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\PropertySignatureEqualityComparer.cs" />
     <Compile Include="Utilities\ReflectionEmitUtility.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
