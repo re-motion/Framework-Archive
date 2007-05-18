@@ -93,8 +93,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
 
       public Throws ()
-        : base (((int) (object) "this always throws before entering base constructor!") == 5 ? (DataContainer) null : (DataContainer) null)
+        : base (ThrowException())
       {
+      }
+
+      private static DataContainer ThrowException ()
+      {
+        throw new Exception ("Thrown in ThrowException()");
       }
     }
 
@@ -278,14 +283,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException))]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "Thrown in ThrowException()")]
     public void OldConstructorThrowIsPropagated ()
     {
       Throws.NewObject ();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException))]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "Thrown in ThrowException()")]
     public void NewConstructorThrowIsPropagated ()
     {
       using (new FactoryInstantiationScope ())
