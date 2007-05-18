@@ -15,6 +15,7 @@
         <include name="**/*.cs" />
         <exclude name="bin/**" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
+        <exclude name="Reflection/TestAssemblies/**/*.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Castle.DynamicProxy.dll" />
@@ -32,7 +33,13 @@
         <include name="**/*.xsd" />
       </resources>
     </csc>
-        
+
+    <copy todir="${build.test.outputdir}" overwrite="true">
+      <fileset>
+        <include name="Reflection/TestAssemblies/**/*.cs" />
+      </fileset>
+    </copy>
+
   </target>
 
 </project>

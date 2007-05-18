@@ -11,10 +11,14 @@ namespace Rubicon.Development.UnitTesting
   [Serializable]
   public class AssemblyCompiler
   {
+    public static AssemblyCompiler CreateInMemoryAssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)
+    {
+      return new AssemblyCompiler (sourceDirectory, referencedAssemblies);
+    }
+    
     private readonly string _sourceDirectory;
-    private readonly string _outputAssembly;
-    private readonly string[] _referencedAssemblies;
     private Assembly _compiledAssembly;
+    private readonly CompilerParameters _compilerParameters;
 
     public AssemblyCompiler (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
     {
@@ -23,8 +27,28 @@ namespace Rubicon.Development.UnitTesting
       ArgumentUtility.CheckNotNullOrItemsNull ("referencedAssemblies", referencedAssemblies);
 
       _sourceDirectory = sourceDirectory;
-      _outputAssembly = outputAssembly;
-      _referencedAssemblies = referencedAssemblies;
+
+      _compilerParameters = new CompilerParameters ();
+      _compilerParameters.GenerateExecutable = false;
+      _compilerParameters.OutputAssembly = outputAssembly;
+      _compilerParameters.GenerateInMemory = false;
+      _compilerParameters.TreatWarningsAsErrors = false;
+      _compilerParameters.ReferencedAssemblies.AddRange (referencedAssemblies);
+    }
+
+    private AssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("sourceDirectory", sourceDirectory);
+      ArgumentUtility.CheckNotNullOrItemsNull ("referencedAssemblies", referencedAssemblies);
+
+      _sourceDirectory = sourceDirectory;
+
+      _compilerParameters = new CompilerParameters ();
+      _compilerParameters.GenerateExecutable = false;
+      _compilerParameters.OutputAssembly = null;
+      _compilerParameters.GenerateInMemory = true;
+      _compilerParameters.TreatWarningsAsErrors = false;
+      _compilerParameters.ReferencedAssemblies.AddRange (referencedAssemblies);
     }
 
     public Assembly CompiledAssembly
@@ -34,17 +58,7 @@ namespace Rubicon.Development.UnitTesting
 
     public string OutputAssembly
     {
-      get { return _outputAssembly; }
-    }
-
-    public string SourceDirectory
-    {
-      get { return _sourceDirectory; }
-    }
-
-    public string[] ReferencedAssemblies
-    {
-      get { return _referencedAssemblies; }
+      get { return _compilerParameters.OutputAssembly; }
     }
 
     public void Compile ()
@@ -54,14 +68,7 @@ namespace Rubicon.Development.UnitTesting
 
       string[] sourceFiles = Directory.GetFiles (_sourceDirectory);
 
-      CompilerParameters compilerParameters = new CompilerParameters ();
-      compilerParameters.GenerateExecutable = false;
-      compilerParameters.OutputAssembly = _outputAssembly;
-      compilerParameters.GenerateInMemory = false;
-      compilerParameters.TreatWarningsAsErrors = false;
-      compilerParameters.ReferencedAssemblies.AddRange (_referencedAssemblies);
-
-      CompilerResults compilerResults = provider.CompileAssemblyFromFile (compilerParameters, sourceFiles);
+      CompilerResults compilerResults = provider.CompileAssemblyFromFile (_compilerParameters, sourceFiles);
 
       if (compilerResults.Errors.Count > 0)
       {
@@ -76,7 +83,7 @@ namespace Rubicon.Development.UnitTesting
       _compiledAssembly = compilerResults.CompiledAssembly;
     }
 
-    public string CompileInSeparateAppDomain ()
+    public void CompileInSeparateAppDomain ()
     {
       AppDomain appDomain = null;
       try
@@ -94,9 +101,7 @@ namespace Rubicon.Development.UnitTesting
       {
         if (appDomain != null)
           AppDomain.Unload (appDomain);
-      }
-
-      return OutputAssembly;
+      }     
     }
   }
 }

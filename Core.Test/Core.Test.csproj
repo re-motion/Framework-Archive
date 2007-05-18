@@ -203,6 +203,14 @@
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
+    <Compile Include="Reflection\AssemblyFinderTest.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\UnmarkedAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\UnmarkedInMemoryAssembly\AssemblyInfo.cs" />
+    <Compile Include="Reflection\TestAssemblyMarkerAttribute.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\SecondInMemoryAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\FirstInMemoryAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedAssembly\AssemblyInfo.cs" />
     <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>
@@ -321,4 +329,8 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Target Name="AfterBuild">
+    <Delete Files="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Directory)')" />
+    <Copy SourceFiles="@(TestAssembly->'%(Fullpath)')" DestinationFiles="@(TestAssembly->'$(MSBuildProjectDirectory)\$(OutputPath)\%(Identity)')" />
+  </Target>
 </Project>

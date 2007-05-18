@@ -265,6 +265,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PermanentGuidAttribute.cs" />
+    <Compile Include="Reflection\AssemblyFinder.cs" />
     <Compile Include="Reflection\ConstructorWrapper.cs" />
     <Compile Include="Reflection\IInvokeWith.cs" />
     <Compile Include="Reflection\InvokeWithBoundFirst.cs" />
