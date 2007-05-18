@@ -43,7 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AttributeDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Utilities\NameAndSignatureEqualityComparerTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
@@ -81,7 +87,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="DefBuilder.cs" />
-    <Compile Include="Configuration\DefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\MixinDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\DefaultContextBuilderTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
     <Compile Include="Mixins\CodeGenerationTests.cs" />
