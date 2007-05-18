@@ -1,6 +1,9 @@
 using System;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Security.Metadata;
+using Rubicon.SecurityManager.Domain;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Text.CommandLine;
 using Rubicon.Utilities;
@@ -56,6 +59,8 @@ namespace Rubicon.SecurityManager.Metadata.Importer
     {
       try
       {
+        MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (BaseSecurityManagerObject).Assembly)));
+
         ClientTransaction transaction = new ClientTransaction ();
         
         if (_arguments.ImportMetadata)
