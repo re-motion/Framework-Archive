@@ -93,6 +93,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTesting\AssemblyCompiler.cs" />
+    <Compile Include="UnitTesting\AssemblyCompilationException.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigSystemHelper.cs" />
     <Compile Include="UnitTesting\Configuration\ConfigurationHelper.cs" />
     <Compile Include="UnitTesting\Configuration\FakeConfigurationWrapper.cs" />

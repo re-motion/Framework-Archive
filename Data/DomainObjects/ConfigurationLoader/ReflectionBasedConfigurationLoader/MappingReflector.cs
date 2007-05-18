@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Design;
 using Rubicon.Utilities;
@@ -8,15 +8,19 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   [DesignModeMappingLoader (typeof (DesignModeMappingReflector))]
-  public class MappingReflector: MappingReflectorBase
+  public class MappingReflector : MappingReflectorBase
   {
     private readonly Assembly[] _rootAssemblies;
 
-    public MappingReflector()
+    //TODO: Test
+    public MappingReflector ()
     {
-      _rootAssemblies = Array.FindAll (
-          AppDomain.CurrentDomain.GetAssemblies(),
-          delegate (Assembly assembly) { return assembly.IsDefined (typeof (MappingAssemblyAttribute), false); });
+      List<Assembly> assemblies = new List<Assembly> (AppDomain.CurrentDomain.GetAssemblies());
+      LoadAssemblies(assemblies, Directory.GetFiles (AppDomain.CurrentDomain.BaseDirectory, "*.dll"));
+      LoadAssemblies (assemblies, Directory.GetFiles (AppDomain.CurrentDomain.BaseDirectory, "*.exe"));
+
+      _rootAssemblies =
+          assemblies.FindAll (delegate (Assembly assembly) { return assembly.IsDefined (typeof (MappingAssemblyAttribute), false); }).ToArray();
     }
 
     public MappingReflector (params Assembly[] rootAssemblies)
@@ -26,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       _rootAssemblies = rootAssemblies;
     }
 
-    protected override Type[] GetDomainObjectTypes()
+    protected override Type[] GetDomainObjectTypes ()
     {
       List<Assembly> assemblies = new List<Assembly>();
       foreach (Assembly assembly in _rootAssemblies)
@@ -60,6 +64,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
 
       return referencesAssemblies;
+    }
+
+    private void LoadAssemblies (List<Assembly> assemblies, string[] paths)
+    {
+      foreach (string path in paths)
+      {
+        Assembly assembly = TryLoadAssembly (path);
+        if (assembly != null && !assemblies.Contains (assembly))
+          assemblies.Add (assembly);
+      }
+    }
+
+    private Assembly TryLoadAssembly (string path)
+    {
+      try
+      {
+        return Assembly.LoadFile (path);
+      }
+      catch (BadImageFormatException)
+      {
+        return null;
+      }
     }
   }
 }
