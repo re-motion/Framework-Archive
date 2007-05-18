@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
+    <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="SampleTypes\BT5Mixin3.cs" />
     <Compile Include="SampleTypes\BT5MixinCircular.cs" />
     <Compile Include="SampleTypes\BT3CompleteIfaces.cs" />
-    <Compile Include="Configuration\SignatureCheckerTests.cs" />
+    <Compile Include="Utilities\SignatureCheckerTests.cs" />
     <Compile Include="Configuration\ValidationTests.cs" />
     <Compile Include="SampleTypes\BT5Mixin4.cs" />
     <Compile Include="SampleTypes\BT5Mixin5.cs" />

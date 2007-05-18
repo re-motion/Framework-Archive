@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Mixins.Definitions;
+using Mixins.Utilities;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;

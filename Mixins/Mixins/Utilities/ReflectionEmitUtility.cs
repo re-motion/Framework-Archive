@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Rubicon.Utilities;
 
-namespace Mixins.CodeGeneration
+namespace Mixins.Utilities
 {
   public static class ReflectionEmitUtility
   {
@@ -38,7 +38,7 @@ namespace Mixins.CodeGeneration
       }
 
       return new CustomAttributeBuilder (attributeData.Constructor, constructorArgs, namedProperties.ToArray (),
-                                        propertyValues.ToArray (), namedFields.ToArray (), fieldValues.ToArray ());
+                                         propertyValues.ToArray (), namedFields.ToArray (), fieldValues.ToArray ());
     }
   }
 }

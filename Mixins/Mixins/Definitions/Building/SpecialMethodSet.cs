@@ -1,9 +1,10 @@
 using System;
 using System.Reflection;
+using Mixins.Utilities;
 
 namespace Mixins.Definitions.Building
 {
-  public class SpecialMethodSet : Set<MethodInfo>
+  internal class SpecialMethodSet : Set<MethodInfo>
   {
     protected override bool ShouldAddItem (MethodInfo item)
     {

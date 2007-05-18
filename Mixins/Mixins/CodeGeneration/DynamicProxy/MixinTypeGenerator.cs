@@ -7,6 +7,7 @@ using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Mixins.Definitions;
 using Mixins.Definitions.Building;
 using Rubicon.Utilities;
+using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {

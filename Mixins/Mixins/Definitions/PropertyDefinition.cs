@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Mixins.Utilities;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions

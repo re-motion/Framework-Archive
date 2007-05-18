@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Mixins.Definitions
+namespace Mixins.Utilities
 {
   [DebuggerDisplay ("Count = {_items.Count}")]
-  public class Set<T> : IEnumerable<T>
+  internal class Set<T> : IEnumerable<T>
   {
     private Dictionary<T, T> _items = new Dictionary<T, T>();
 

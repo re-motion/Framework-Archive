@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Mixins.Definitions
+namespace Mixins.Utilities
 {
   [Serializable]
   internal class MultiDictionary<TKey, TValue>

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Mixins.Definitions;
+using Mixins.Utilities;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Mixins.UnitTests.Configuration
+namespace Mixins.UnitTestsUtilities
 {
   [TestFixture]
   public class SignatureCheckerTests

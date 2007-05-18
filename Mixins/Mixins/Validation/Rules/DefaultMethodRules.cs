@@ -1,6 +1,7 @@
 using System;
 using Mixins.Definitions;
 using System.Reflection;
+using Mixins.Utilities;
 using Mixins.Validation;
 using Mixins.CodeGeneration;
 

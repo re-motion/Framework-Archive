@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Mixins.Utilities
 {
   public class SignatureChecker
   {
@@ -98,8 +98,8 @@ namespace Mixins.Definitions
     private bool ParametersEqual (ParameterInfo one, ParameterInfo two)
     {
       return one.IsIn == two.IsIn
-            && one.IsOut == two.IsOut
-            && TypeEquals (one.ParameterType, two.ParameterType);
+          && one.IsOut == two.IsOut
+              && TypeEquals (one.ParameterType, two.ParameterType);
     }
 
     private bool TypeEquals (Type one, Type two)

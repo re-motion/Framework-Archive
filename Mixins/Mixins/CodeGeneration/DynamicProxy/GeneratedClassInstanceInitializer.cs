@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mixins.Definitions;
 using Rubicon.Utilities;
 using System.Reflection;
+using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {

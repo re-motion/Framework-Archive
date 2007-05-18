@@ -10,7 +10,7 @@ using NUnit.Framework;
 using Mixins.CodeGeneration;
 using Rubicon;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.CodeGeneration.ReflectionUtility;
+using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
 namespace Mixins.UnitTests.Mixins
 {

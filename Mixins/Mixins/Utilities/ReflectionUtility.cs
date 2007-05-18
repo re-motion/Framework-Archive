@@ -5,7 +5,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 using Mixins.Definitions;
 
-namespace Mixins.CodeGeneration
+namespace Mixins.Utilities
 {
   public static class ReflectionUtility
   {
