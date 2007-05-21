@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using Rubicon.Utilities;
+using Mixins.Utilities;
 
 namespace Mixins.Definitions.Building
 {
@@ -64,13 +63,14 @@ namespace Mixins.Definitions.Building
 
     private void AnalyzeMethods(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
     {
-      InterfaceMapping mapping = _mixin.Type.GetInterfaceMap (introducedInterface.Type);
+      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap(introducedInterface.Type);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = mapping.InterfaceMethods[i];
         if (!specialMethods.Contains (interfaceMethod))
         {
-          MethodDefinition implementer = _mixin.Methods[mapping.TargetMethods[i]];
+          MethodInfo targetMethod = mapping.TargetMethods[i];
+          MethodDefinition implementer = _mixin.Methods[targetMethod];
           CheckMemberImplementationFound (implementer, mapping.InterfaceMethods[i]);
           introducedInterface.IntroducedMethods.Add (new MethodIntroductionDefinition (introducedInterface, mapping.InterfaceMethods[i], implementer));
         }

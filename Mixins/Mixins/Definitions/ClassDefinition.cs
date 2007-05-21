@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
+using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
 namespace Mixins.Definitions
 {
@@ -39,6 +40,23 @@ namespace Mixins.Definitions
     public string FullName
     {
       get { return Type.FullName; }
+    }
+
+    public InterfaceMapping GetAdjustedInterfaceMap(Type interfaceType)
+    {
+      const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+      InterfaceMapping mapping = Type.GetInterfaceMap (interfaceType);
+      for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
+      {
+        MethodInfo targetMethod = mapping.TargetMethods[i];
+        if (!targetMethod.DeclaringType.Equals (Type))
+        {
+          Type[] types = ReflectionUtility.GetMethodParameterTypes (targetMethod);
+          mapping.TargetMethods[i] = targetMethod.DeclaringType.GetMethod (targetMethod.Name, bindingFlags, null, types, null);
+        }
+      }
+      return mapping;
     }
 
     public abstract IVisitableDefinition Parent { get; }

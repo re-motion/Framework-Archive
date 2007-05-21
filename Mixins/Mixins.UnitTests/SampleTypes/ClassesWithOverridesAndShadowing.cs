@@ -48,30 +48,6 @@ namespace Mixins.UnitTests.SampleTypes
     public override event EventHandler Event;
   }
 
-  public class DerivedWithAdditionalOverrideAttributesMethod : BaseWithOverrideAttributes
-  {
-    [Override]
-    public override void Method (int i)
-    {
-    }
-  }
-
-  public class DerivedWithAdditionalOverrideAttributesProperty : BaseWithOverrideAttributes
-  {
-    [Override]
-    public override int Property
-    {
-      get { return 0; }
-      set { }
-    }
-  }
-
-  public class DerivedWithAdditionalOverrideAttributesEvent : BaseWithOverrideAttributes
-  {
-    [Override]
-    public override event EventHandler Event;
-  }
-
   public class DerivedNewWithAdditionalOverrideAttributes : BaseWithOverrideAttributes
   {
     [Override]
@@ -137,29 +113,5 @@ namespace Mixins.UnitTests.SampleTypes
     }
 
     public new event EventHandler Event;
-  }
-
-  public class DerivedWithWrongPlaceOverrideAttributesMethod : BaseWithoutOverrideAttributes
-  {
-    [Override]
-    public override void Method (int i)
-    {
-    }
-  }
-
-  public class DerivedWithWrongPlaceOverrideAttributesProperty : BaseWithoutOverrideAttributes
-  {
-    [Override]
-    public override int Property
-    {
-      get { return 0; }
-      set { }
-    }
-  }
-
-  public class DerivedWithWrongPlaceOverrideAttributesEvent : BaseWithoutOverrideAttributes
-  {
-    [Override]
-    public override event EventHandler Event;
   }
 }

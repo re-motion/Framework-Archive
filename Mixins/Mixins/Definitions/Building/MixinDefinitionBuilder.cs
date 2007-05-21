@@ -40,9 +40,8 @@ namespace Mixins.Definitions.Building
       MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m)
       {
         return m.IsPublic || m.IsFamily || (m.IsPrivate && m.IsVirtual);
-      });
-      membersBuilder.Apply (mixin.Type.GetProperties (bindingFlags), mixin.Type.GetEvents (bindingFlags),
-        mixin.Type.GetMethods (bindingFlags));
+      }, bindingFlags);
+      membersBuilder.Apply (mixin.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
       attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (mixin.Type));
@@ -84,6 +83,12 @@ namespace Mixins.Definitions.Building
     private void InitializeOverride (MemberDefinition overrider, MemberDefinition baseMember)
     {
       overrider.BaseAsMember = baseMember;
+      if (baseMember.Overrides.HasItem (overrider.DeclaringClass.Type))
+      {
+        string message = string.Format ("Mixin {0} overrides method {1} twice: {2} and {3} both target the same method.",
+            overrider.DeclaringClass.FullName, baseMember.FullName, overrider.FullName, baseMember.Overrides[overrider.DeclaringClass.Type].FullName);
+        throw new ConfigurationException (message);
+      }
       baseMember.AddOverride (overrider);
     }
 

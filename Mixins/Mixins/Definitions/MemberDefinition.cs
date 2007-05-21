@@ -16,6 +16,8 @@ namespace Mixins.Definitions
     private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
         new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
+    private IDefinitionItemCollection<Type, MemberDefinition> _internalOverridesWrapper = null;
+
     public MemberDefinition (MemberInfo memberInfo, ClassDefinition declaringClass)
     {
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
@@ -62,7 +64,7 @@ namespace Mixins.Definitions
 
     public string FullName
     {
-      get { return string.Format ("{0}.{1}", DeclaringClass.FullName, Name); }
+      get { return string.Format ("{0}.{1}", MemberInfo.DeclaringType.FullName, Name); }
     }
 
     public abstract MemberDefinition BaseAsMember { get; set; }
@@ -76,6 +78,20 @@ namespace Mixins.Definitions
     {
       get { return _customAttributes; }
     }
+
+    public IDefinitionItemCollection<Type, MemberDefinition> Overrides
+    {
+      get
+      {
+        if (_internalOverridesWrapper == null)
+        {
+          _internalOverridesWrapper = GetInternalOverridesWrapper();
+        }
+        return _internalOverridesWrapper;
+      }
+    }
+
+    protected abstract IDefinitionItemCollection<Type, MemberDefinition> GetInternalOverridesWrapper();
 
     public virtual bool CanBeOverriddenBy (MemberDefinition overrider)
     {

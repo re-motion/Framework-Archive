@@ -11,7 +11,7 @@ namespace Mixins.Definitions
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker ();
 
-    public readonly DefinitionItemCollection<Type, MethodDefinition> Overrides =
+    public readonly new DefinitionItemCollection<Type, MethodDefinition> Overrides =
         new DefinitionItemCollection<Type, MethodDefinition> (delegate (MethodDefinition m) { return m.DeclaringClass.Type; });
 
     private MethodDefinition _base;
@@ -44,6 +44,11 @@ namespace Mixins.Definitions
     {
       get { return _base; }
       set { BaseAsMember = value; }
+    }
+
+    protected override IDefinitionItemCollection<Type, MemberDefinition> GetInternalOverridesWrapper()
+    {
+      return new CovariantDefinitionItemCollectionWrapper<Type, MethodDefinition, MemberDefinition>(Overrides);
     }
 
     protected override bool IsSignatureCompatibleWith (MemberDefinition overrider)

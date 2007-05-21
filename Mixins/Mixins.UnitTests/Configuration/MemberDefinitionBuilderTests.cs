@@ -5,6 +5,7 @@ using System.Text;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
+using Rubicon;
 
 namespace Mixins.UnitTests.Configuration
 {
@@ -178,6 +179,119 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsNotNull (member.AddMethod);
       Assert.IsNotNull (member.RemoveMethod);
+    }
+
+    class Base<T>
+    {
+      public virtual void Method(T t)
+      {
+      }
+
+      public virtual T Property
+      {
+        get { return default(T);}
+        set { }
+      }
+
+      public virtual event Func<T> Event;
+    }
+
+    class Derived : Base<int>
+    {
+      public virtual new void Method (int t)
+      {
+      }
+
+      public virtual new int Property
+      {
+        get { return default (int); }
+        set { }
+      }
+
+      public virtual new event Func<int> Event;
+    }
+
+    class ExtraDerived : Derived
+    {
+      public virtual new void Method (int t)
+      {
+      }
+
+      public virtual new int Property
+      {
+        get { return default (int); }
+        set { }
+      }
+
+      public virtual new event Func<int> Event;
+    }
+
+    class DerivedWithOverrides : ExtraDerived
+    {
+      public override void Method (int t)
+      {
+      }
+
+      public override int Property
+      {
+        get { return default (int); }
+        set { }
+      }
+
+      public override event Func<int> Event;
+    }
+
+    class ExtraExtraDerived : DerivedWithOverrides
+    {
+      public new void Method (int t)
+      {
+      }
+
+      public new int Property
+      {
+        get { return default (int); }
+        set { }
+      }
+
+      public new event Func<int> Event;
+    }
+
+    [Test]
+    public void ShadowedMembersExplicitlyRetrievedButOverriddenNot()
+    {
+      BaseClassDefinition d = DefBuilder.Build (typeof (ExtraExtraDerived)).BaseClasses[typeof (ExtraExtraDerived)];
+      BindingFlags bf = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+      Assert.IsTrue (d.Methods.HasItem (typeof (ExtraExtraDerived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.HasItem (typeof (DerivedWithOverrides).GetMethod ("Method", bf)));
+      Assert.IsFalse (d.Methods.HasItem (typeof (ExtraDerived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.HasItem (typeof (Derived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.HasItem (typeof (Base<int>).GetMethod ("Method", bf)));
+
+      Assert.IsTrue (d.Properties.HasItem (typeof (ExtraExtraDerived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.HasItem (typeof (DerivedWithOverrides).GetProperty ("Property", bf)));
+      Assert.IsFalse (d.Properties.HasItem (typeof (ExtraDerived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.HasItem (typeof (Derived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.HasItem (typeof (Base<int>).GetProperty ("Property", bf)));
+
+      Assert.IsTrue (d.Events.HasItem (typeof (ExtraExtraDerived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.HasItem (typeof (DerivedWithOverrides).GetEvent ("Event", bf)));
+      Assert.IsFalse (d.Events.HasItem (typeof (ExtraDerived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.HasItem (typeof (Derived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.HasItem (typeof (Base<int>).GetEvent ("Event", bf)));
+
+      Assert.AreEqual (18, new List<MemberDefinition> (d.GetAllMembers ()).Count);
+    }
+
+    [Test]
+    public void ShadowedMixinMembersExplicitlyRetrieved()
+    {
+      MixinDefinition d = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2)).BaseClasses[typeof (BaseType3)].Mixins[typeof(BT3Mixin2)];
+
+      Assert.IsTrue (d.Properties.HasItem (typeof (BT3Mixin2).GetProperty ("This")));
+      Assert.IsTrue (d.Properties.HasItem (typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance)));
+
+      Assert.AreEqual (9, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }
   }
 }

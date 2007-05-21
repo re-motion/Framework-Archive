@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Mixins.Definitions;
+using Mixins.Definitions.Building;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
 namespace Mixins.UnitTests.Configuration
 {
   [TestFixture]
-  [Ignore("TODO: Implement clean override model with regards to override and new")]
   public class OverrideAttributeHierarchyDefinitionBuilderTests
   {
     [Test]
@@ -57,7 +57,7 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Find sensible way to have one mixin override a method twice. (Eg. by having Overrides[typeof(xxx)] return a list.)")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin .* overrides method .* twice", MatchType = MessageMatch.Regex)]
     public void DerivedWithNewAdditionalOverrides ()
     {
       MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
@@ -65,58 +65,6 @@ namespace Mixins.UnitTests.Configuration
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
       BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-      MixinDefinition mix1 = def1.Mixins[typeof (DerivedWithoutOverrideAttributes)];
-      Assert.IsNotNull (mix1);
-
-      Assert.Fail ("Find sensible way to have one mixin override a method twice.");
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithAdditionalAttributesThrowsMethod ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithAdditionalOverrideAttributesMethod))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithAdditionalAttributesThrowsProperty ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithAdditionalOverrideAttributesProperty))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithAdditionalAttributesThrowsEvent ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithAdditionalOverrideAttributesEvent))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithWrongPlaceAttributesThrowsMethod ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithWrongPlaceOverrideAttributesMethod))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithWrongPlaceAttributesThrowsProperty ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithWrongPlaceOverrideAttributesProperty))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
-    }
-
-    [Test]
-    [ExpectedException (typeof (NotImplementedException))]
-    public void DerivedWithOverridesWithWrongPlaceAttributesThrowsEvent ()
-    {
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithWrongPlaceOverrideAttributesEvent))
           .BaseClasses[typeof (TargetForOverridesAndShadowing)];
     }
 

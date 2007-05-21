@@ -31,9 +31,8 @@ namespace Mixins.Definitions.Building
       Application.BaseClasses.Add (classDefinition);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritors);
-      membersBuilder.Apply (classDefinition.Type.GetProperties (bindingFlags), classDefinition.Type.GetEvents (bindingFlags), 
-        classDefinition.Type.GetMethods (bindingFlags));
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritors, bindingFlags);
+      membersBuilder.Apply (classDefinition.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (classDefinition);
       attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (classDefinition.Type));

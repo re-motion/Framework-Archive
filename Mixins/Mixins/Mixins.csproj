@@ -48,6 +48,9 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
+    <Compile Include="Definitions\Building\MemberChain.cs" />
+    <Compile Include="Definitions\IDefinitionItemCollection.cs" />
+    <Compile Include="Definitions\CovariantDefinitionItemCollectionWrapper.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\CurrentTypeFactoryScope.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Utilities\EventNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\EventSignatureEqualityComparaer.cs" />
     <Compile Include="Utilities\MethodNameAndSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\MultiSet.cs" />
     <Compile Include="Utilities\PropertyNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\PropertySignatureEqualityComparer.cs" />
     <Compile Include="Utilities\ReflectionEmitUtility.cs" />

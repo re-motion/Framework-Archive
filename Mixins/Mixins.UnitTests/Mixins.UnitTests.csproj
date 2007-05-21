@@ -44,9 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\AttributeDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\ClassDefinitionTests.cs" />
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\MemberChainTests.cs" />
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
@@ -77,7 +79,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithNonVirtualMethodToBeOverridden.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithThisAsBase.cs" />
     <Compile Include="Mixins\CustomConfigurationTests.cs" />
-    <Compile Include="Mixins\ReflectionUtilityTests.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests.cs" />
     <Compile Include="SampleTypes\AbstractMixin.cs" />
     <Compile Include="SampleTypes\ClassOverridingMixinMethod.cs" />
     <Compile Include="SampleTypes\ClassOverridingMixinMethodWrongSig.cs" />

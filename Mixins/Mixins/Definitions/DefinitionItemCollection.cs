@@ -8,7 +8,7 @@ namespace Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
-  public class DefinitionItemCollection<TKey, TValue> : DefinitionItemCollectionBase<TKey, TValue>
+  public class DefinitionItemCollection<TKey, TValue> : DefinitionItemCollectionBase<TKey, TValue>, IDefinitionItemCollection<TKey, TValue>
       where TValue : IVisitableDefinition
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();

@@ -43,7 +43,7 @@ namespace Mixins.Definitions.Building
 
     private void ApplyForImplementedInterface (RequiredBaseCallTypeDefinition declaringRequirement, Type requiredType)
     {
-      InterfaceMapping interfaceMapping = _classDefinition.Type.GetInterfaceMap (requiredType);
+      InterfaceMapping interfaceMapping = _classDefinition.GetAdjustedInterfaceMap (requiredType);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];

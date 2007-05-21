@@ -179,7 +179,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Filter out base property definition when \"new\" is used in derived class")]
     public void ConfigSerializationSpike()
     {
       ApplicationDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2));
@@ -187,7 +186,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Filter out base property definition when \"new\" is used in derived class")]
     public void SerializationOfMixinThisWorks ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
@@ -201,7 +199,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Filter out base property definition when \"new\" is used in derived class")]
+    [Ignore ("TODO: Implement serialization for base call proxies")]
     public void SerializationOfMixinBaseWorks ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();

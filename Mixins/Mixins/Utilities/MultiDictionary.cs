@@ -7,11 +7,33 @@ namespace Mixins.Utilities
   [Serializable]
   internal class MultiDictionary<TKey, TValue>
   {
-    private Dictionary<TKey, List<TValue>> _innerDictionary = new Dictionary<TKey, List<TValue>> ();
+    private Dictionary<TKey, List<TValue>> _innerDictionary;
+    private int _count = 0;
+
+    public MultiDictionary ()
+    {
+      _innerDictionary = new Dictionary<TKey, List<TValue>> ();
+    }
+
+    public MultiDictionary (IEqualityComparer<TKey> comparer)
+    {
+      _innerDictionary = new Dictionary<TKey, List<TValue>> (comparer);
+    }
+
+    public IEnumerable<TKey> Keys
+    {
+      get { return _innerDictionary.Keys; }
+    }
+
+    public int Count
+    {
+      get { return _count; }
+    }
 
     public void Add (TKey key, TValue value)
     {
       GetOrCreateValueList (key).Add (value);
+      ++_count;
     }
 
     private List<TValue> GetOrCreateValueList (TKey key)

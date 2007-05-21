@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Mixins.Utilities;
 using Rubicon.Utilities;
+using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
 namespace Mixins.Definitions.Building
 {
@@ -10,21 +12,41 @@ namespace Mixins.Definitions.Building
     private ClassDefinition _classDefinition;
     private Predicate<MethodInfo> _methodFilter;
     private SpecialMethodSet _specialMethods = new SpecialMethodSet ();
+    private BindingFlags _bindingFlags;
 
-    public MemberDefinitionBuilder (ClassDefinition classDefinition, Predicate<MethodInfo> methodFilter)
+    public MemberDefinitionBuilder (ClassDefinition classDefinition, Predicate<MethodInfo> methodFilter, BindingFlags bindingFlags)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("methodFilter", methodFilter);
 
       _classDefinition = classDefinition;
       _methodFilter = methodFilter;
+      _bindingFlags = bindingFlags;
     }
 
-    public void Apply (IEnumerable<PropertyInfo> properties, IEnumerable<EventInfo> events, IEnumerable<MethodInfo> methods)
+    public void Apply (Type type)
     {
-      AnalyzeProperties (properties);
-      AnalyzeEvents (events);
-      AnalyzeMethods (methods);
+      IEnumerable<MethodInfo> methods = ReflectionUtility.RecursiveGetAllMethods (type, _bindingFlags);
+      IEnumerable<PropertyInfo> properties = ReflectionUtility.RecursiveGetAllProperties (type, _bindingFlags);
+      IEnumerable<EventInfo> events = ReflectionUtility.RecursiveGetAllEvents (type, _bindingFlags);
+
+      AnalyzeProperties (CleanupMembers(properties, new PropertyNameAndSignatureEqualityComparer()));
+      AnalyzeEvents (CleanupMembers(events, new EventNameAndSignatureEqualityComparer()));
+      AnalyzeMethods (CleanupMembers(methods, new MethodNameAndSignatureEqualityComparer()));
+    }
+
+    private IEnumerable<T> CleanupMembers<T> (IEnumerable<T> members, IEqualityComparer<T> comparer) where T : MemberInfo
+    {
+      MultiSet<T> memberSet = new MultiSet<T>(comparer);
+      memberSet.AddRange (members);
+      Set<T> result = new Set<T>();
+      
+      foreach (T member in members)
+      {
+        MemberChain<T> chain = new MemberChain<T> (memberSet[member]);
+        result.AddRange (chain.GetNonOverriddenMembers());
+      }
+      return result;
     }
 
     private void AnalyzeProperties (IEnumerable<PropertyInfo> properties)

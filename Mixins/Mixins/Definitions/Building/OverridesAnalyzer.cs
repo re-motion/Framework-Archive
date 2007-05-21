@@ -21,7 +21,7 @@ namespace Mixins.Definitions.Building
     {
       foreach (T member in overriderMembers)
       {
-        if (member.MemberInfo.IsDefined (typeof (OverrideAttribute), true))
+        if (Attribute.IsDefined(member.MemberInfo, typeof (OverrideAttribute), true))
         {
           T baseMember;
           if (BaseMembersByName.ContainsKey (member.Name))
