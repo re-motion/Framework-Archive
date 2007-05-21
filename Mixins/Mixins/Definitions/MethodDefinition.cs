@@ -86,14 +86,6 @@ namespace Mixins.Definitions
       Overrides.Add (method);
     }
 
-    public override IEnumerable<MemberDefinition> GetOverridesAsMemberDefinitions()
-    {
-      foreach (MethodDefinition overrider in Overrides)
-      {
-        yield return overrider;
-      }
-    }
-
     public override void Accept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);

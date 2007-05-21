@@ -46,7 +46,7 @@ namespace Mixins.Definitions
     {
       foreach (MemberDefinition member in GetAllMembers ())
       {
-        if (member.GetOverridesAsMemberDefinitions ().GetEnumerator ().MoveNext ())
+        if (member.Overrides.Count > 0)
           return true;
       }
       return false;

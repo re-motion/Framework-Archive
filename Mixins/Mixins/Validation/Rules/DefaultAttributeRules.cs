@@ -86,7 +86,7 @@ namespace Mixins.Validation.Rules
 
     private bool MemberHasAttributeDuplicates (AttributeDefinition attributeDefinition, MemberDefinition member)
     {
-      foreach (MemberDefinition overrider in member.GetOverridesAsMemberDefinitions ())
+      foreach (MemberDefinition overrider in member.Overrides)
       {
         if (overrider.CustomAttributes.HasItem (attributeDefinition.AttributeType))
           return true;
