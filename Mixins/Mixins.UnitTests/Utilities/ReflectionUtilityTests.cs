@@ -1,16 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Mixins.Context;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
 using Mixins.Utilities;
 using NUnit.Framework;
-using Mixins.CodeGeneration;
 using Rubicon;
-using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 using Rubicon.Collections;
 
 namespace Mixins.UnitTests.Utilities

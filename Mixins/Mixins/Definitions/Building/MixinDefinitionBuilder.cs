@@ -2,9 +2,7 @@ using System;
 using System.Reflection;
 using Mixins;
 using Mixins.Context;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Rubicon;
+using Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
@@ -33,7 +31,8 @@ namespace Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
 
-      MixinDefinition mixin = new MixinDefinition (mixinContext.MixinType, BaseClass);
+      Type mixinType = mixinContext.MixinType; // GenericTypeInstantiator.EnsureClosedType (mixinContext.MixinType);
+      MixinDefinition mixin = new MixinDefinition (mixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;

@@ -281,8 +281,8 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
-    public void MixinCanIntroduceGenericInterface()
+    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
+    public void MixinCanIntroduceGenericInterface ()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinIntroducingGenericInterface<>)).With ();
       IGeneric<BaseType1> generic = bt1 as IGeneric<BaseType1>;

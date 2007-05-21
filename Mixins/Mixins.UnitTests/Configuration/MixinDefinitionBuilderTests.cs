@@ -103,5 +103,20 @@ namespace Mixins.UnitTests.Configuration
     {
       DefBuilder.Build (typeof (ClassOverridingMixinMethod));
     }
+
+    [Test]
+    public void GenericMixinAreAllowed()
+    {
+      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof(BaseType3)].Mixins[typeof(BT3Mixin3<,>)];
+      Assert.IsNotNull (def);
+    }
+
+    [Test]
+    [Ignore("TODO: Implement generic mixins")]
+    public void GenericMixinsAreClosed ()
+    {
+      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin3<,>)];
+      Assert.IsFalse (def.Type.IsGenericTypeDefinition);
+    }
   }
 }
