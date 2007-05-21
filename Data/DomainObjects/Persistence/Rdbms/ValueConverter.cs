@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Globalization;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -33,9 +34,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         else
           return DBNull.Value;
       }
-
+      
       if (type.IsEnum)
-        return (int) value;
+        return Convert.ChangeType (value, Enum.GetUnderlyingType (type), CultureInfo.InvariantCulture);
 
       return value;
     }
