@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
-using Mixins.Definitions;
 using Rubicon.Utilities;
+using Mixins.Utilities;
 
 namespace Mixins
 {
@@ -9,28 +9,22 @@ namespace Mixins
   {
     public static TMixin Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      return (TMixin) Get (typeof (TMixin), mixinTarget);
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      return MixinReflector.Get<TMixin> (mixinTarget);
     }
 
     public static object Get (Type mixinType, object mixinTarget)
     {
-      IMixinTarget castMixinTarget = mixinTarget as IMixinTarget;
-      if (castMixinTarget != null)
-      {
-        MixinDefinition mixinDefinition = castMixinTarget.Configuration.Mixins[mixinType];
-        if (mixinDefinition != null)
-        {
-          return castMixinTarget.Mixins[mixinDefinition.MixinIndex];
-        }
-      }
-      return null;
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      return MixinReflector.Get (mixinType, mixinTarget);
     }
   }
 
   [Serializable]
   public class Mixin<[This]TThis, [Base]TBase>
-      where TThis : class
-      where TBase : class
+      where TThis: class
+      where TBase: class
   {
     private TThis _this;
     private TBase _base;
@@ -57,16 +51,16 @@ namespace Mixins
       }
     }
 
-    internal void Initialize([This]TThis @this, [Base]TBase @base)
+    internal void Initialize ([This] TThis @this, [Base] TBase @base)
     {
       Assertion.Assert (@this != null);
       Assertion.Assert (@base != null);
       _this = @this;
       _base = @base;
-      OnInitialized ();
+      OnInitialized();
     }
 
-    protected virtual void OnInitialized ()
+    protected virtual void OnInitialized()
     {
       // nothing
     }
@@ -74,7 +68,7 @@ namespace Mixins
 
   [Serializable]
   public class Mixin<[This]TThis>
-    where TThis : class
+      where TThis: class
   {
     private TThis _this;
 
@@ -89,7 +83,7 @@ namespace Mixins
       }
     }
 
-    internal void Initialize ([This]TThis @this)
+    internal void Initialize ([This] TThis @this)
     {
       Assertion.Assert (@this != null);
       _this = @this;

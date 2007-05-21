@@ -4,6 +4,7 @@ using Mixins.Definitions;
 using Rubicon.Utilities;
 using System.Reflection;
 using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using Mixins.Utilities;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
@@ -150,7 +151,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private static void InitializeMixin (object mixinInstance, object mixinTargetInstance, object baseCallProxyInstance)
     {
-      MethodInfo initializationMethod = ReflectionUtility.GetInitializationMethod (mixinInstance.GetType ());
+      MethodInfo initializationMethod = MixinReflector.GetInitializationMethod (mixinInstance.GetType ());
       if (initializationMethod != null)
       {
         Assertion.Assert (!initializationMethod.ContainsGenericParameters);

@@ -45,7 +45,7 @@ namespace Mixins.Validation.Rules
     private void OverriddenMixinMustHaveThisProperty (DelegateValidationRule<MethodDefinition>.Args args)
     {
       SingleMust (args.Definition.Base == null || !(args.Definition.Base.DeclaringClass is MixinDefinition)
-          || ReflectionUtility.GetTargetProperty (args.Definition.Base.DeclaringClass.Type) != null, args.Log, args.Self);
+          || MixinReflector.GetTargetProperty (args.Definition.Base.DeclaringClass.Type) != null, args.Log, args.Self);
     }
   }
 }

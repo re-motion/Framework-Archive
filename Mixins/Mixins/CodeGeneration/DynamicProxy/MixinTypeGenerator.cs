@@ -6,6 +6,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Mixins.Definitions;
 using Mixins.Definitions.Building;
+using Mixins.Utilities;
 using Rubicon.Utilities;
 using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
@@ -52,7 +53,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementOverrides ()
     {
-      PropertyReference targetReference = new PropertyReference (SelfReference.Self, ReflectionUtility.GetTargetProperty(TypeBuilder.BaseType));
+      PropertyReference targetReference = new PropertyReference (SelfReference.Self, MixinReflector.GetTargetProperty(TypeBuilder.BaseType));
       foreach (MethodDefinition method in _configuration.Methods)
       {
         if (method.Overrides.Count > 1)

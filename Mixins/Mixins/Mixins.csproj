@@ -80,6 +80,7 @@
     <Compile Include="Utilities\EventNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\EventSignatureEqualityComparaer.cs" />
     <Compile Include="Utilities\MethodNameAndSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\MixinReflector.cs" />
     <Compile Include="Utilities\MultiSet.cs" />
     <Compile Include="Utilities\PropertyNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\PropertySignatureEqualityComparer.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="ExtendsAttribute.cs" />
-    <Compile Include="MixinParameterttributes.cs" />
+    <Compile Include="MixinParameterAttributes.cs" />
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
