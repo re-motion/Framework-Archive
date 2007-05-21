@@ -5,7 +5,6 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
-using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -414,7 +413,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newOrder.Delete ();
 
-      NaInt32 maxLength = _orderNumberValue.MaxLength;
+      int? maxLength = _orderNumberValue.MaxLength;
     }
 
     [Test]

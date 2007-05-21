@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -191,12 +190,12 @@ public class PropertyValue
   /// Gets the maximum length of the <see cref="Value"/> of the <see cref="PropertyValue"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  public NaInt32 MaxLength 
+  public int? MaxLength 
   {
     get 
     {
       CheckDiscarded ();
-      return NaInt32.FromBoxedInt32 (_definition.MaxLength); 
+      return _definition.MaxLength; 
     }
   }
 
