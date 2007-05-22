@@ -1,4 +1,6 @@
-namespace Rubicon.Core.UnitTests.Utilities
+using System;
+
+namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [Inherited]
   public class SampleClass

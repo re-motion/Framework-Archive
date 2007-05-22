@@ -1,4 +1,4 @@
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   public class DerivedSampleClass : SampleClass
   {

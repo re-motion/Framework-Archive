@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
-namespace Rubicon.Core.UnitTests.Utilities
+namespace Rubicon.Core.UnitTests.Utilities.AttributeUtilityTests
 {
   [TestFixture]
   public class GetCustomAttributesFromMemberInfo
@@ -13,7 +13,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     private PropertyInfo _derivedPropertyWithMultipleAttribute;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _basePropertyWithSingleAttribute = typeof (SampleClass).GetProperty ("PropertyWithSingleAttribute");
       _derivedPropertyWithSingleAttribute = typeof (DerivedSampleClass).GetProperty ("PropertyWithSingleAttribute");
@@ -21,7 +21,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromBaseWithAttribute()
+    public void TestGeneric_FromBaseWithAttribute ()
     {
       InheritedAttribute[] attributes = AttributeUtility.GetCustomAttributes<InheritedAttribute> (_basePropertyWithSingleAttribute, true);
 
@@ -30,7 +30,17 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromBaseWithInterface()
+    public void Test_FromBaseWithAttribute ()
+    {
+      Attribute[] attributes = AttributeUtility.GetCustomAttributes (_basePropertyWithSingleAttribute, typeof (InheritedAttribute), true);
+
+      Assert.AreEqual (1, attributes.Length);
+      Assert.IsNotNull (attributes[0]);
+      Assert.IsInstanceOfType (typeof (InheritedAttribute), attributes[0]);
+    }
+
+    [Test]
+    public void TestGeneric_FromBaseWithInterface ()
     {
       ICustomAttribute[] attributes = AttributeUtility.GetCustomAttributes<ICustomAttribute> (_basePropertyWithSingleAttribute, true);
 
@@ -39,15 +49,33 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type parameter must be assignable to System.Attribute or an interface.\r\nParameter name: T")
-    ]
-    public void Test_FromBaseWithInvalidType()
+    public void Test_FromBaseWithInterface ()
+    {
+      Attribute[] attributes = AttributeUtility.GetCustomAttributes (_basePropertyWithSingleAttribute, typeof (ICustomAttribute), true);
+
+      Assert.AreEqual (1, attributes.Length);
+      Assert.IsNotNull (attributes[0]);
+      Assert.IsInstanceOfType (typeof (ICustomAttribute), attributes[0]);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage =
+        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: T")]
+    public void TestGeneric_FromBaseWithInvalidType ()
     {
       AttributeUtility.GetCustomAttributes<object> (_basePropertyWithSingleAttribute, true);
     }
 
     [Test]
-    public void Test_FromOverrideWithAttribute()
+    [ExpectedException (typeof (ArgumentTypeException), ExpectedMessage =
+        "The attribute type must be assignable to System.Attribute or an interface.\r\nParameter name: attributeType")]
+    public void Test_FromBaseWithInvalidType ()
+    {
+      AttributeUtility.GetCustomAttributes (_basePropertyWithSingleAttribute, typeof (object), true);
+    }
+
+    [Test]
+    public void Test_FromOverrideWithAttribute ()
     {
       InheritedAttribute[] attributes = AttributeUtility.GetCustomAttributes<InheritedAttribute> (_derivedPropertyWithSingleAttribute, true);
 
@@ -56,7 +84,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromOverrideWithInterface()
+    public void Test_FromOverrideWithInterface ()
     {
       ICustomAttribute[] attributes = AttributeUtility.GetCustomAttributes<ICustomAttribute> (_derivedPropertyWithSingleAttribute, true);
 
@@ -65,7 +93,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromOverrideWithAttributeAndMultiple()
+    public void Test_FromOverrideWithAttributeAndMultiple ()
     {
       MultipleAttribute[] attributes = AttributeUtility.GetCustomAttributes<MultipleAttribute> (_derivedPropertyWithMultipleAttribute, true);
 
@@ -75,7 +103,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromOverrideWithInterfaceAndMultiple()
+    public void Test_FromOverrideWithInterfaceAndMultiple ()
     {
       ICustomAttribute[] attributes = AttributeUtility.GetCustomAttributes<ICustomAttribute> (_derivedPropertyWithMultipleAttribute, true);
 
@@ -85,7 +113,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromOverrideWithAttributeAndWithoutInherited()
+    public void Test_FromOverrideWithAttributeAndWithoutInherited ()
     {
       InheritedAttribute[] attributes = AttributeUtility.GetCustomAttributes<InheritedAttribute> (_derivedPropertyWithSingleAttribute, false);
 
@@ -93,7 +121,7 @@ namespace Rubicon.Core.UnitTests.Utilities
     }
 
     [Test]
-    public void Test_FromOverrideWithInterfaceAndWithoutInherited()
+    public void Test_FromOverrideWithInterfaceAndWithoutInherited ()
     {
       ICustomAttribute[] attributes = AttributeUtility.GetCustomAttributes<ICustomAttribute> (_derivedPropertyWithSingleAttribute, false);
 
