@@ -24,6 +24,8 @@ namespace Mixins.Definitions
     public ClassDefinition (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+      if (type.ContainsGenericParameters)
+        throw new ArgumentException (string.Format ("The type {0} contains generic parameters, which is not allowed.", type.FullName), "type");
       _type = type;
     }
 

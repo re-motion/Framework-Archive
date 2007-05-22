@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Mixins.Utilities;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
@@ -58,6 +59,18 @@ namespace Mixins.Definitions
       Mixins.Accept (visitor);
       RequiredFaceTypes.Accept (visitor);
       RequiredBaseCallTypes.Accept (visitor);
+    }
+
+    public bool HasMixinWithConfiguredType(Type configuredType)
+    {
+      Type realType = GenericTypeInstantiator.EnsureClosedType (configuredType);
+      return Mixins.HasItem (realType);
+    }
+
+    public MixinDefinition GetMixinByConfiguredType(Type configuredType)
+    {
+      Type realType = GenericTypeInstantiator.EnsureClosedType (configuredType);
+      return Mixins[realType];
     }
 
     public IEnumerable<MethodDefinition> GetAllMixinMethods()

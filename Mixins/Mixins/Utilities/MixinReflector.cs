@@ -21,7 +21,7 @@ namespace Mixins.Utilities
       IMixinTarget castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)
       {
-        MixinDefinition mixinDefinition = castMixinTarget.Configuration.Mixins[mixinType];
+        MixinDefinition mixinDefinition = castMixinTarget.Configuration.GetMixinByConfiguredType (mixinType);
         if (mixinDefinition != null)
           return castMixinTarget.Mixins[mixinDefinition.MixinIndex];
       }

@@ -130,7 +130,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m1));
       MixinDefinition bt3m2 = bt3.Mixins[typeof (BT3Mixin2)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m2));
-      MixinDefinition bt3m3 = bt3.Mixins[typeof (BT3Mixin3<,>)];
+      MixinDefinition bt3m3 = bt3.GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m3));
       MixinDefinition bt3m4 = bt3.Mixins[typeof (BT3Mixin4)];
       Assert.IsTrue (visitedDefinitions.ContainsKey (bt3m4));

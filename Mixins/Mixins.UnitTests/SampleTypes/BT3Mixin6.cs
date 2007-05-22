@@ -4,10 +4,18 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
+  public interface IBT3Mixin6ThisDependencies : IBaseType31, IBaseType32, IBaseType33, IBT3Mixin4
+  {
+  }
+
+  public interface IBT3Mixin6BaseDependencies : IBaseType34, IBT3Mixin4
+  {
+  }
+
   [Extends(typeof(BaseType3))]
   public class BT3Mixin6<TThis, TBase> : Mixin<TThis, TBase>
-      where TThis : class, IBaseType31, IBaseType32, IBaseType33, IBT3Mixin4
-      where TBase : class, IBaseType34, IBT3Mixin4
+      where TThis : class, IBT3Mixin6ThisDependencies
+      where TBase : class, IBT3Mixin6BaseDependencies
   {
   }
 }

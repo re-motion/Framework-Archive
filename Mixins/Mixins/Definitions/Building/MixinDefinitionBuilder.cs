@@ -5,6 +5,7 @@ using Mixins.Context;
 using Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using System.Collections.Generic;
 
 namespace Mixins.Definitions.Building
 {
@@ -31,7 +32,16 @@ namespace Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
 
-      Type mixinType = mixinContext.MixinType; // GenericTypeInstantiator.EnsureClosedType (mixinContext.MixinType);
+      Type mixinType;
+      try
+      {
+        mixinType = GenericTypeInstantiator.EnsureClosedType (mixinContext.MixinType);
+      }
+      catch (NotSupportedException ex)
+      {
+        string message = string.Format ("Invalid mixin configuration: {0}", ex.Message);
+        throw new ConfigurationException (message, ex);
+      }
       MixinDefinition mixin = new MixinDefinition (mixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 

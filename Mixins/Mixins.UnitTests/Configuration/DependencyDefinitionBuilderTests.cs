@@ -32,7 +32,7 @@ namespace Mixins.UnitTests.Configuration
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins ());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin4)], requirers, "indirect dependency");
-      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin6<,>)], requirers);
+      Assert.Contains (baseClass.GetMixinByConfiguredType(typeof (BT3Mixin6<,>)), requirers);
       Assert.AreEqual (3, requirers.Count);
 
       Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
@@ -58,7 +58,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsFalse (requiredBaseCallTypes.Contains (typeof (IBaseType35)));
 
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IBaseType33)].FindRequiringMixins ());
-      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin3<,>)], requirers);
+      Assert.Contains (baseClass.GetMixinByConfiguredType(typeof (BT3Mixin3<,>)), requirers);
     }
 
     [Test]
@@ -127,7 +127,7 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.AreEqual (0, bt3Mixin2.BaseDependencies.Count);
 
-      MixinDefinition bt3Mixin6 = application.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin6<,>)];
+      MixinDefinition bt3Mixin6 = application.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType(typeof (BT3Mixin6<,>));
 
       Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType31)));
       Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType32)));

@@ -26,6 +26,11 @@ namespace Mixins.Definitions.Building
     public void Apply (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
+      if (classContext.Type.ContainsGenericParameters)
+      {
+        string message = string.Format ("The base class {0} contains generic parameters. This is not supported.", classContext.Type.FullName);
+        throw new ConfigurationException (message);
+      }
 
       BaseClassDefinition classDefinition = new BaseClassDefinition (_application, classContext.Type);
       Application.BaseClasses.Add (classDefinition);

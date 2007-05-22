@@ -7,6 +7,7 @@ using System.Reflection;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 using System.Runtime.Serialization;
+using Mixins.UnitTests.Utilities;
 
 namespace Mixins.UnitTests.Configuration
 {
@@ -105,18 +106,25 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void GenericMixinAreAllowed()
+    public void GenericMixinsAreAllowed()
     {
-      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof(BaseType3)].Mixins[typeof(BT3Mixin3<,>)];
-      Assert.IsNotNull (def);
+      Assert.IsTrue (DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof(BaseType3)]
+          .HasMixinWithConfiguredType(typeof(BT3Mixin3<,>)));
     }
 
     [Test]
-    [Ignore("TODO: Implement generic mixins")]
     public void GenericMixinsAreClosed ()
     {
-      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin3<,>)];
+      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof (BaseType3)]
+          .GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
       Assert.IsFalse (def.Type.IsGenericTypeDefinition);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "incompatible constraints", MatchType = MessageMatch.Contains)]
+    public void MixinWithUnsatisfiableGenericConstraintsThrows()
+    {
+      DefBuilder.Build (typeof (BaseType3), typeof (GenericTypeInstantiatorTests.IncompatibleConstraints1<>));
     }
   }
 }

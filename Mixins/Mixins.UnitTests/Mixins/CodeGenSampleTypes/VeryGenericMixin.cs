@@ -35,9 +35,12 @@ namespace Mixins.UnitTests.Mixins.CodeGenSampleTypes
     string GetMessage<T> (T t);
   }
 
+  public interface IADUGMThisDependencies : IBaseType31, IBaseType32, IBT3Mixin4 {}
+  public interface IADUGMBaseDependencies : IBaseType31, IBaseType32, IBT3Mixin4, IVeryGenericMixin<IADUGMThisDependencies, IADUGMBaseDependencies> {}
+
   public abstract class AbstractDerivedUltraGenericMixin<TThis, TBase> : VeryGenericMixin<TThis, TBase>, IUltraGenericMixin
-    where TThis : class, IBaseType31, IBaseType32, IBT3Mixin4
-    where TBase : class, IBaseType31, IBaseType32, IBT3Mixin4, IVeryGenericMixin<TThis, TBase>
+    where TThis : class, IADUGMThisDependencies
+    where TBase : class, IADUGMBaseDependencies
   {
     protected abstract string AbstractGenericMethod<T>();
 

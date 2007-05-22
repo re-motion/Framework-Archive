@@ -86,10 +86,10 @@ namespace Mixins.UnitTests.Utilities
           GenericTypeInstantiator.EnsureClosedType (typeof (CompatibleConstraints2<>)));
     }
 
-    class IncompatibleConstraints1<T> where T : BaseType3, IBaseType31, IBaseType2 { }
+    public class IncompatibleConstraints1<T> where T : BaseType3, IBaseType31, IBaseType2 { }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
         MatchType = MessageMatch.Contains)]
     public void MultipleIncompatibleConstraintsThrows1 ()
     {
@@ -99,7 +99,7 @@ namespace Mixins.UnitTests.Utilities
     class IncompatibleConstraints2<T> where T : struct, IBaseType2 { }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
         MatchType = MessageMatch.Contains)]
     public void MultipleIncompatibleConstraintsThrows2 ()
     {
@@ -109,11 +109,26 @@ namespace Mixins.UnitTests.Utilities
     class IncompatibleConstraints3<T> where T : IBaseType31, IBaseType32 { }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "The generic type parameter T has incompatible constraints",
         MatchType = MessageMatch.Contains)]
     public void MultipleIncompatibleConstraintsThrows3 ()
     {
       GenericTypeInstantiator.EnsureClosedType (typeof (IncompatibleConstraints3<>));
+    }
+
+    class Uninstantiable<T>
+        where T : GenericTypeInstantiatorTests.Uninstantiable<T>.IT
+    {
+      public interface IT {}
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException),
+        ExpectedMessage = "The generic type parameter T has a constraint IT which itself contains generic parameters",
+        MatchType = MessageMatch.Contains)]
+    public void UninstantiableClass()
+    {
+      GenericTypeInstantiator.EnsureClosedType (typeof (Uninstantiable<>));
     }
   }
 }

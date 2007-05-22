@@ -177,13 +177,14 @@ namespace Mixins.UnitTests.Mixins
 
       Assert.IsNotNull (thisProperty.GetValue (mixin, null));
       Assert.AreSame (bt3, thisProperty.GetValue (mixin, null));
-      Assert.AreEqual (typeof (BaseType3), thisProperty.PropertyType);
+      Assert.AreEqual (typeof (IBaseType33), thisProperty.PropertyType);
 
       PropertyInfo baseProperty = mixin.GetType ().BaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.IsNotNull (baseProperty);
 
       Assert.IsNotNull (baseProperty.GetValue (mixin, null));
-      Assert.AreEqual (bt3.GetType().GetNestedType("BaseCallProxy"), baseProperty.PropertyType);
+      Assert.AreSame (bt3.GetType().GetField("__first").FieldType, baseProperty.GetValue (mixin, null).GetType());
+      Assert.AreEqual (typeof (IBaseType33), baseProperty.PropertyType);
     }
 
     [Test]

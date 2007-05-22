@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
 
@@ -35,10 +36,10 @@ namespace Mixins.Utilities
         {
           arguments[i] = GetGenericParameterInstantiation (genericParameters[i]);
         }
-        catch (ArgumentException ex)
+        catch (NotSupportedException ex)
         {
-          string message = string.Format ("Cannot make a closed type of {0}: {1}.", typeDefinition.FullName, ex.Message);
-          throw new ArgumentException (message, "typeDefinition", ex);
+          string message = string.Format ("Cannot make a closed type of {0}: {1}", typeDefinition.FullName, ex.Message);
+          throw new NotSupportedException (message, ex);
         }
       }
 
@@ -55,6 +56,13 @@ namespace Mixins.Utilities
 
       foreach (Type constraint in typeParameter.GetGenericParameterConstraints())
       {
+        if (constraint.ContainsGenericParameters)
+        {
+          string message = string.Format ("The generic type parameter {0} has a constraint {1} which itself contains generic parameters.",
+              typeParameter.Name, constraint.Name);
+          throw new NotSupportedException (message);
+        }
+
         if (candidate == null)
           candidate = constraint;
         else if (candidate.IsAssignableFrom (constraint))
@@ -63,7 +71,7 @@ namespace Mixins.Utilities
         {
           string message = string.Format ("The generic type parameter {0} has incompatible constraints {1} and {2}.", typeParameter.Name,
               candidate.FullName, constraint.FullName);
-          throw new ArgumentException (message, "type");
+          throw new NotSupportedException (message);
         }
       }
 
