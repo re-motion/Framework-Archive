@@ -79,6 +79,7 @@
     <Compile Include="CodeGeneration\ITypeGenerator.cs" />
     <Compile Include="Utilities\EventNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\EventSignatureEqualityComparaer.cs" />
+    <Compile Include="Utilities\MixinTypeInstantiator.cs" />
     <Compile Include="Utilities\GenericTypeInstantiator.cs" />
     <Compile Include="Utilities\MethodNameAndSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\MixinReflector.cs" />

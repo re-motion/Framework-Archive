@@ -57,6 +57,32 @@ namespace Mixins.UnitTests.Utilities
     public void SingleInterfaceConstraint ()
     {
       Assert.AreEqual (typeof (InterfaceConstraint<IServiceProvider>), GenericTypeInstantiator.EnsureClosedType (typeof (InterfaceConstraint<>)));
+      
+      Type parameter = typeof (InterfaceConstraint<>).GetGenericArguments()[0];
+      Assert.AreEqual (typeof (IServiceProvider), GenericTypeInstantiator.GetGenericParameterInstantiation(parameter, null));
+    }
+
+    class SPImpl : IServiceProvider
+    {
+      public object GetService (Type serviceType)
+      {
+        throw new Exception ("The method or operation is not implemented.");
+      }
+    }
+
+    [Test]
+    public void SingleConstraintWithHint ()
+    {
+      Type parameter = typeof (InterfaceConstraint<>).GetGenericArguments()[0];
+      Assert.AreEqual (typeof (SPImpl), GenericTypeInstantiator.GetGenericParameterInstantiation (parameter, typeof (SPImpl)));
+    }
+
+    [Test]
+    public void SingleConstraintWithUnfittingHint ()
+    {
+      Type parameter = typeof (InterfaceConstraint<>).GetGenericArguments()[0];
+      Assert.AreEqual (typeof (IServiceProvider),
+        GenericTypeInstantiator.GetGenericParameterInstantiation (parameter, typeof (GenericTypeInstantiatorTests)));
     }
 
     class BaseClassConstraint<T> where T : GenericTypeInstantiatorTests { }
@@ -114,6 +140,13 @@ namespace Mixins.UnitTests.Utilities
     public void MultipleIncompatibleConstraintsThrows3 ()
     {
       GenericTypeInstantiator.EnsureClosedType (typeof (IncompatibleConstraints3<>));
+    }
+
+    [Test]
+    public void MultipleIncompatibleConstraintsWithHint ()
+    {
+      Type parameter = typeof (IncompatibleConstraints3<>).GetGenericArguments()[0];
+      Assert.AreEqual (typeof (BaseType3), GenericTypeInstantiator.GetGenericParameterInstantiation (parameter, typeof (BaseType3)));
     }
 
     class Uninstantiable<T>

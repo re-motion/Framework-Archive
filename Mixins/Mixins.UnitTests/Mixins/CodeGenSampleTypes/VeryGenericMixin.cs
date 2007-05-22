@@ -16,8 +16,8 @@ namespace Mixins.UnitTests.Mixins.CodeGenSampleTypes
   }
 
   public class VeryGenericMixin<TThis, TBase> : Mixin<TThis, TBase>, IVeryGenericMixin<TThis, TBase>, IVeryGenericMixin
-    where TThis : class, IBaseType31, IBaseType32, IBT3Mixin4
-    where TBase : class, IBaseType31, IBaseType32, IBT3Mixin4
+    where TThis : class
+    where TBase : class
   {
     public string GenericIfcMethod<T3> (TThis t1, TBase t2, T3 t3)
     {

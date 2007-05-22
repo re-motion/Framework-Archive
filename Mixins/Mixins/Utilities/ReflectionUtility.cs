@@ -155,5 +155,48 @@ namespace Mixins.Utilities
       return new Tuple<Type, Type[]> (method.ReturnType, parameterTypes);
     }
 
+    public static bool IsGenericParameterAssociatedWithAttribute (Type genericParameter, Type attributeType)
+    {
+      ArgumentUtility.CheckNotNull ("genericParameter", genericParameter);
+      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+
+      if (genericParameter.IsDefined(attributeType, false))
+        return true;
+      
+      Type declaringType = genericParameter.DeclaringType;
+      Type baseClass = declaringType.BaseType;
+
+      if (!baseClass.IsGenericType)
+        return false;
+
+      Type baseClassDefinition = baseClass.GetGenericTypeDefinition();
+      Type[] baseClassGenericParameters = baseClassDefinition.GetGenericArguments();
+
+      Type[] genericArguments = baseClass.GetGenericArguments();
+      for (int i = 0; i < genericArguments.Length; i++)
+      {
+        Type baseGenericArgument = genericArguments[i];
+        if (baseGenericArgument.Equals (genericParameter))
+          return baseClassGenericParameters[i].IsDefined (attributeType, false);
+      }
+      return false;
+    }
+
+    public static IEnumerable<Type> GetGenericParametersAssociatedWithAttribute (Type genericTypeDefinition, Type attributeType)
+    {
+      ArgumentUtility.CheckNotNull ("genericTypeDefinition", genericTypeDefinition);
+      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+
+      if (!genericTypeDefinition.ContainsGenericParameters)
+        throw new ArgumentException ("Argument must contain generic parameters.", "genericTypeDefinition");
+
+      foreach (Type genericArgument in genericTypeDefinition.GetGenericArguments ())
+      {
+        if (genericArgument.IsGenericParameter && ReflectionUtility.IsGenericParameterAssociatedWithAttribute (genericArgument, typeof (ThisAttribute)))
+        {
+          yield return genericArgument;
+        }
+      }
+    }
   }
 }

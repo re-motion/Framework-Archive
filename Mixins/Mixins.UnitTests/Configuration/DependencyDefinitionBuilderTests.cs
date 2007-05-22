@@ -32,8 +32,9 @@ namespace Mixins.UnitTests.Configuration
       List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins ());
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
       Assert.Contains (baseClass.Mixins[typeof (BT3Mixin4)], requirers, "indirect dependency");
-      Assert.Contains (baseClass.GetMixinByConfiguredType(typeof (BT3Mixin6<,>)), requirers);
-      Assert.AreEqual (3, requirers.Count);
+      Assert.Contains (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin6<,>)), requirers);
+      Assert.Contains (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)), requirers);
+      Assert.AreEqual (4, requirers.Count);
 
       Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
 
@@ -171,19 +172,26 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The base call dependency .* is not fulfilled",
+        MatchType = MessageMatch.Regex)]
     public void ThrowsIfBaseDependencyNotFulfilled ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin7Base));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException))]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Base call dependencies must be interfaces",
+        MatchType = MessageMatch.Contains)]
     public void ThrowsIfRequiredBaseIsNotInterface ()
     {
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithClassBase));
     }
 
+    [Test]
+    public void WorksIfRequiredBaseIsSystemObject ()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (MixinWithObjectBase));
+    }
 
     [Test]
     public void CompleteInterfacesAndDependenciesForFace ()

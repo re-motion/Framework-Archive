@@ -28,8 +28,11 @@ namespace Mixins.Definitions.Building
 
       foreach (Type type in dependencyTypes)
       {
-        TDependency dependency = BuildDependency(type, null);
-        AddDependency (_mixin, dependency);
+        if (!type.Equals (typeof (object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
+        {
+          TDependency dependency = BuildDependency (type, null);
+          AddDependency (_mixin, dependency);
+        }
       }
     }
 

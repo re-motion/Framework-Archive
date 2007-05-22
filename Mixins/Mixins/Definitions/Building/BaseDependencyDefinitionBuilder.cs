@@ -23,6 +23,14 @@ namespace Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
+      if (!type.IsInterface)
+      {
+        string message = string.Format ("Base call dependencies must be interfaces (or System.Object), but base class {0} has a dependency on " +
+            "a class: {1}.", baseClass.FullName, type.FullName);
+        throw new ConfigurationException (message);
+      }
+
+
       return new RequiredBaseCallTypeDefinition (baseClass, type);
     }
 

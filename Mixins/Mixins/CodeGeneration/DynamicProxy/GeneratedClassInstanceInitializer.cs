@@ -116,9 +116,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private static Type BindGenericParameter (Type parameter, object mixinTargetInstance, object baseCallProxyInstance)
     {
-      if (IsGenericParameterAssociatedWithAttribute (parameter, typeof (ThisAttribute)))
+      if (ReflectionUtility.IsGenericParameterAssociatedWithAttribute (parameter, typeof (ThisAttribute)))
         return mixinTargetInstance.GetType().BaseType;
-      else if (IsGenericParameterAssociatedWithAttribute (parameter, typeof (BaseAttribute)))
+      else if (ReflectionUtility.IsGenericParameterAssociatedWithAttribute (parameter, typeof (BaseAttribute)))
         return baseCallProxyInstance.GetType();
       else
       {
@@ -127,26 +127,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
             parameter.DeclaringType.FullName);
         throw new NotSupportedException (message);
       }
-    }
-
-    private static bool IsGenericParameterAssociatedWithAttribute (Type genericParameter, Type attributeType)
-    {
-      Type mixinType = genericParameter.DeclaringType;
-      Type baseClass = mixinType.BaseType;
-      if (!baseClass.IsGenericType)
-        return false;
-
-      Type baseClassDefinition = baseClass.GetGenericTypeDefinition();
-      Type[] baseClassGenericParameters = baseClassDefinition.GetGenericArguments();
-
-      foreach (Type baseGenericArgument in baseClass.GetGenericArguments())
-      {
-        if (baseGenericArgument.Equals (genericParameter))
-        {
-          return baseClassGenericParameters[baseGenericArgument.GenericParameterPosition].IsDefined (attributeType, false);
-        }
-      }
-      return false;
     }
 
     private static void InitializeMixin (object mixinInstance, object mixinTargetInstance, object baseCallProxyInstance)

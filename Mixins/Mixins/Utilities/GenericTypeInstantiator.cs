@@ -28,28 +28,38 @@ namespace Mixins.Utilities
     {
       Assertion.Assert (typeDefinition.IsGenericTypeDefinition);
 
-      Type[] genericParameters = Array.FindAll (typeDefinition.GetGenericArguments (), delegate (Type t) { return t.IsGenericParameter; });
-      Type[] arguments = new Type[genericParameters.Length];
-      for (int i = 0; i < arguments.Length; ++i)
+      List<Type> instantiations = new List<Type> ();
+
+      foreach (Type genericArgument in typeDefinition.GetGenericArguments ())
       {
-        try
+        if (genericArgument.IsGenericParameter)
         {
-          arguments[i] = GetGenericParameterInstantiation (genericParameters[i]);
-        }
-        catch (NotSupportedException ex)
-        {
-          string message = string.Format ("Cannot make a closed type of {0}: {1}", typeDefinition.FullName, ex.Message);
-          throw new NotSupportedException (message, ex);
+          Type instantiation;
+          try
+          {
+            instantiation = GetGenericParameterInstantiation (genericArgument, null);
+          }
+          catch (NotSupportedException ex)
+          {
+            string message = string.Format ("Cannot make a closed type of {0}: {1}", typeDefinition.FullName, ex.Message);
+            throw new NotSupportedException (message, ex);
+          }
+          instantiations.Add (instantiation);
         }
       }
 
-      Type closedType = typeDefinition.MakeGenericType (arguments);
+      Type closedType = typeDefinition.MakeGenericType (instantiations.ToArray ());
       Assertion.Assert (!closedType.ContainsGenericParameters);
       return closedType;
     }
 
-    private static Type GetGenericParameterInstantiation (Type typeParameter)
+    public static Type GetGenericParameterInstantiation (Type typeParameter, Type suggestedInstantiation)
     {
+      ArgumentUtility.CheckNotNull ("typeParameter", typeParameter);
+
+      if (!typeParameter.IsGenericParameter)
+        throw new ArgumentException ("Type must be a generic parameter.", "typeParameter");
+
       Type candidate = null;
       if ((typeParameter.GenericParameterAttributes & GenericParameterAttributes.NotNullableValueTypeConstraint) == GenericParameterAttributes.NotNullableValueTypeConstraint)
         candidate = typeof (ValueType);
@@ -69,9 +79,17 @@ namespace Mixins.Utilities
           candidate = constraint;
         else if (!constraint.IsAssignableFrom (candidate))
         {
-          string message = string.Format ("The generic type parameter {0} has incompatible constraints {1} and {2}.", typeParameter.Name,
-              candidate.FullName, constraint.FullName);
-          throw new NotSupportedException (message);
+          if (constraint.IsAssignableFrom (suggestedInstantiation) && candidate.IsAssignableFrom (suggestedInstantiation))
+            candidate = suggestedInstantiation;
+          else
+          {
+            string message = string.Format (
+                "The generic type parameter {0} has incompatible constraints {1} and {2}.",
+                typeParameter.Name,
+                candidate.FullName,
+                constraint.FullName);
+            throw new NotSupportedException (message);
+          }
         }
       }
 
@@ -79,6 +97,10 @@ namespace Mixins.Utilities
         candidate = typeof (object);
       else if (candidate.Equals (typeof (ValueType)))
         candidate = typeof (int);
+
+      if (suggestedInstantiation != null && candidate.IsAssignableFrom (suggestedInstantiation))
+        candidate = suggestedInstantiation;
+
       return candidate;
     }
   }

@@ -20,6 +20,8 @@ namespace Mixins.Definitions
     public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
 
+    private MixinTypeInstantiator _mixinTypeInstantiator;
+
     [NonSerialized]
     private ApplicationDefinition _application;
 
@@ -30,12 +32,18 @@ namespace Mixins.Definitions
       ArgumentUtility.CheckNotNull ("type", type);
 
       _application = application;
+      _mixinTypeInstantiator = new MixinTypeInstantiator (type);
     }
 
     // Will be null if the class definition is deserialized.
     public ApplicationDefinition Application
     {
       get { return _application; }
+    }
+
+    internal MixinTypeInstantiator MixinTypeInstantiator
+    {
+      get { return _mixinTypeInstantiator; }
     }
 
     public bool IsInterface
@@ -63,13 +71,13 @@ namespace Mixins.Definitions
 
     public bool HasMixinWithConfiguredType(Type configuredType)
     {
-      Type realType = GenericTypeInstantiator.EnsureClosedType (configuredType);
+      Type realType = _mixinTypeInstantiator.GetConcreteMixinType (configuredType);
       return Mixins.HasItem (realType);
     }
 
     public MixinDefinition GetMixinByConfiguredType(Type configuredType)
     {
-      Type realType = GenericTypeInstantiator.EnsureClosedType (configuredType);
+      Type realType = _mixinTypeInstantiator.GetConcreteMixinType (configuredType);
       return Mixins[realType];
     }
 

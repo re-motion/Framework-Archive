@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Mixins.Utilities;
 using NUnit.Framework;
 using Rubicon;
@@ -125,6 +126,20 @@ namespace Mixins.UnitTests.Utilities
       Assert.AreEqual (2, methodSignature.B.Length);
       Assert.AreEqual (typeof (object), methodSignature.B[0]);
       Assert.AreEqual (typeof (object), methodSignature.B[1]);
+    }
+
+    class C<T1, T2, [ThisAttribute]T3> : Mixin<T2>
+        where T2 : class
+    {
+    }
+
+    [Test]
+    public void GetGenericArgumentsBoundToAttribute()
+    {
+      List<Type> arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), typeof (ThisAttribute)));
+      Assert.AreEqual (2, arguments.Count);
+      Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T2"; }));
+      Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T3"; }));
     }
   }
 }

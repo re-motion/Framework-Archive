@@ -14,7 +14,6 @@ namespace Mixins.Validation.Rules
       visitor.InterfaceIntroductionRules.Add (new DelegateValidationRule<InterfaceIntroductionDefinition> (IMixinTargetCannotBeIntroduced));
     }
 
-
     private void InterfaceWillShadowBaseClassInterface (DelegateValidationRule<InterfaceIntroductionDefinition>.Args args)
     {
       List<Type> interfaces = new List<Type> (args.Definition.BaseClass.ImplementedInterfaces);

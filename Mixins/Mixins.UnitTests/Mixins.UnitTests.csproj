@@ -53,7 +53,9 @@
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
+    <Compile Include="SampleTypes\MixinWithSystemObjectBase.cs" />
     <Compile Include="Utilities\GenericTypeInstantiatorTests.cs" />
+    <Compile Include="Utilities\MixinTypeInstantiatorTests.cs" />
     <Compile Include="Utilities\NameAndSignatureEqualityComparerTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />

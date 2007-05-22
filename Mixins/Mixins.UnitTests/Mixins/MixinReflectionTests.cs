@@ -78,7 +78,7 @@ namespace Mixins.UnitTests.Mixins
         Assert.AreEqual (m4.Type.BaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetInitializationMethod (m4.Type));
 
-        Assert.AreEqual (typeof (Mixin<IBaseType33, IBaseType33>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
+        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetInitializationMethod (m4.Type));
       }
     }
@@ -112,7 +112,7 @@ namespace Mixins.UnitTests.Mixins
             m4.Type.BaseType.GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetTargetProperty (m4.Type));
 
-        Assert.AreEqual (typeof (Mixin<IBaseType33, IBaseType33>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
+        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetTargetProperty (m4.Type));
       }
     }
@@ -144,7 +144,7 @@ namespace Mixins.UnitTests.Mixins
         Assert.AreEqual (
             m4.Type.BaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetBaseProperty (m4.Type));
-        Assert.AreEqual (typeof (Mixin<IBaseType33, IBaseType33>).GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
+        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetBaseProperty(m4.Type));
       }
     }

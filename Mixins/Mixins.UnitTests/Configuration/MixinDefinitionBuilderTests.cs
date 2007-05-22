@@ -121,10 +121,29 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "incompatible constraints", MatchType = MessageMatch.Contains)]
-    public void MixinWithUnsatisfiableGenericConstraintsThrows()
+    public void GenericMixinsAreSetToConstraintOrBaseType ()
     {
-      DefBuilder.Build (typeof (BaseType3), typeof (GenericTypeInstantiatorTests.IncompatibleConstraints1<>));
+      MixinDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin3<,>)).BaseClasses[typeof (BaseType3)]
+          .GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
+      Assert.AreEqual (typeof (BaseType3), def.Type.GetGenericArguments()[0]);
+      Assert.AreEqual (typeof (IBaseType33), def.Type.GetGenericArguments()[1]);
+    }
+
+    private class MixinIntroducingGenericInterfaceWithTargetAsThisType<T>: Mixin<T>, IEquatable<T>
+        where T: class
+    {
+      public bool Equals (T other)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    [Test]
+    public void GenericInterfaceArgumentIsBaseTypeWhenPossible()
+    {
+      BaseClassDefinition def = DefBuilder.Build (typeof (BaseType1), typeof (MixinIntroducingGenericInterfaceWithTargetAsThisType<>))
+          .BaseClasses[typeof (BaseType1)];
+      Assert.IsTrue (def.IntroducedInterfaces.HasItem (typeof (IEquatable<BaseType1>)));
     }
   }
 }

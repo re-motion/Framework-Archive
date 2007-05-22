@@ -177,7 +177,7 @@ namespace Mixins.UnitTests.Mixins
 
       Assert.IsNotNull (thisProperty.GetValue (mixin, null));
       Assert.AreSame (bt3, thisProperty.GetValue (mixin, null));
-      Assert.AreEqual (typeof (IBaseType33), thisProperty.PropertyType);
+      Assert.AreEqual (typeof (BaseType3), thisProperty.PropertyType);
 
       PropertyInfo baseProperty = mixin.GetType ().BaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance);
       Assert.IsNotNull (baseProperty);
@@ -282,7 +282,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
     public void MixinCanIntroduceGenericInterface ()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinIntroducingGenericInterface<>)).With ();
@@ -292,7 +291,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
     public void MuchGenericityWithoutOverriding ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (VeryGenericMixin<,>), typeof (BT3Mixin4)).With();
@@ -302,14 +300,13 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Configuration of generic mixins must be fixed up before generating code based on them.")]
     public void MuchGenericityWithOverriding ()
     {
       ClassOverridingUltraGenericStuff cougs = CreateMixedObject<ClassOverridingUltraGenericStuff> (typeof (AbstractDerivedUltraGenericMixin<,>),
           typeof(BT3Mixin4)).With ();
       IUltraGenericMixin m = cougs as IUltraGenericMixin;
       Assert.IsNotNull (m);
-      Assert.AreEqual ("string-IVeryGenericMixin.GenericIfcMethod-5", m.GetMessage ("5"));
+      Assert.AreEqual ("String-IVeryGenericMixin.GenericIfcMethod-5", m.GetMessage ("5"));
     }
 
     [Test]

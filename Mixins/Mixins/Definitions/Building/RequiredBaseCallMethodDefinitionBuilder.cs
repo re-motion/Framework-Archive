@@ -24,7 +24,7 @@ namespace Mixins.Definitions.Building
     {
       if (!declaringRequirement.IsEmptyInterface)
       {
-        if (_classDefinition.ImplementedInterfaces.Contains (requiredType))
+        if (_classDefinition.ImplementedInterfaces.Contains (requiredType)/* || requiredType.Equals (typeof (object))*/)
         {
           ApplyForImplementedInterface (declaringRequirement, requiredType);
         }
@@ -34,7 +34,7 @@ namespace Mixins.Definitions.Building
         }
         else
         {
-          string message = string.Format ("Could not find implementer for required base call type {0} in base class {1} - it is neither introduced "
+          string message = string.Format ("The base call dependency {0} in base class {1} is not fulfilled - the type is neither introduced "
               + "nor implemented.", declaringRequirement.FullName, _classDefinition.FullName);
           throw new ConfigurationException (message);
         }
