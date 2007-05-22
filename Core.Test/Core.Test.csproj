@@ -207,9 +207,6 @@
     <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\UnmarkedAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\UnmarkedInMemoryAssembly\AssemblyInfo.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\UnmarkedAssemblyInOtherDirectory\AssemblyInfo.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyInOtherDirectory\AssemblyInfo.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssemblyInOtherDirectory\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkerAttributeAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkerAttributeAssembly\MarkerAttribute.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\SecondInMemoryAssembly\AssemblyInfo.cs" />
@@ -221,9 +218,6 @@
     <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedAssembly\SampleType.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssembly\ReferencedSampleType.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssemblyInOtherDirectory\ReferencedSampleType.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssemblyInOtherDirectory\AssemblyInfo.cs" />
-    <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyInOtherDirectory\SampleType.cs" />
     <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>
