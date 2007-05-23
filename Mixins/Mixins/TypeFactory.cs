@@ -1,11 +1,12 @@
 using System;
+using Mixins.CodeGeneration;
 using Mixins.CodeGeneration.SingletonUtilities;
 using Mixins.Definitions;
 using Mixins.Validation.DefaultLog;
 using Rubicon.Utilities;
 using Mixins.Validation;
 
-namespace Mixins.CodeGeneration
+namespace Mixins
 {
   public class TypeFactory : CallContextSingletonBase<TypeFactory, TypeFactory.TypeFactoryCreator>
   {

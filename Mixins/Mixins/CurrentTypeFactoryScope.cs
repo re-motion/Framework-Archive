@@ -4,7 +4,7 @@ using Mixins.Context;
 using System.Reflection;
 using Mixins.Definitions.Building;
 
-namespace Mixins.CodeGeneration
+namespace Mixins
 {
   public struct CurrentTypeFactoryScope: IDisposable
   {
@@ -27,12 +27,12 @@ namespace Mixins.CodeGeneration
     }
 
     public CurrentTypeFactoryScope (ApplicationContext configuration)
-      : this (DefinitionBuilder.CreateApplicationDefinition(configuration))
+        : this (DefinitionBuilder.CreateApplicationDefinition(configuration))
     {
     }
 
     public CurrentTypeFactoryScope (Assembly assemblyToBeScanned)
-      : this (DefaultContextBuilder.BuildContextFromAssembly(assemblyToBeScanned))
+        : this (DefaultContextBuilder.BuildContextFromAssembly(assemblyToBeScanned))
     {
     }
 

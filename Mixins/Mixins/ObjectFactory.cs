@@ -5,33 +5,8 @@ using Rubicon.Reflection;
 using System.Reflection;
 using Rubicon.Text;
 
-namespace Mixins.CodeGeneration
+namespace Mixins
 {
-  public struct InvokeWithWrapper<T>
-  {
-    private readonly IInvokeWith<T> _invokeWith;
-
-    public InvokeWithWrapper(IInvokeWith<T> invokeWith)
-    {
-      _invokeWith = invokeWith;
-    }
-
-    public T With()
-    {
-      return _invokeWith.With();
-    }
-
-    public T With<A1> (A1 a1)
-    {
-      return _invokeWith.With (a1);
-    }
-
-    public T With<A1, A2> (A1 a1, A2 a2)
-    {
-      return _invokeWith.With (a1, a2);
-    }
-  }
-
   public class ObjectFactory
   {
     public static InvokeWithWrapper<T> Create<T> ()
@@ -46,7 +21,7 @@ namespace Mixins.CodeGeneration
             if (ctor == null)
             {
               string message = string.Format ("Type {0} does not contain constructor with signature {1}.", typeof (T).FullName,
-                                              SeparatedStringBuilder.Build (",", argumentTypes, delegate (Type t) { return t.FullName; }));
+                  SeparatedStringBuilder.Build (",", argumentTypes, delegate (Type t) { return t.FullName; }));
               throw new MissingMethodException (message);
             } 
             return CreateConstructionAndDelegate(ctor, delegateType);
@@ -92,7 +67,7 @@ namespace Mixins.CodeGeneration
             if (ctor == null)
             {
               string message = string.Format ("Type {0} does not contain constructor with signature {1}.", typeof (T).FullName,
-                                              SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
+                  SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
               throw new MissingMethodException (message);
             }
             return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);

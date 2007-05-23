@@ -11,4 +11,9 @@ namespace Mixins
   public class BaseAttribute : Attribute
   {
   }
+
+  [AttributeUsage (AttributeTargets.Parameter)]
+  public class ConfigurationAttribute : Attribute
+  {
+  }
 }

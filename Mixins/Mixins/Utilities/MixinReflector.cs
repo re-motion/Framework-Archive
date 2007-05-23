@@ -72,7 +72,7 @@ namespace Mixins.Utilities
       if (mixinBaseType == null)
         return null;
       else
-        return mixinBaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance);
+        return mixinBaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
     }
 
     public static Type GetBaseCallProxyType (object mixinTargetInstance)

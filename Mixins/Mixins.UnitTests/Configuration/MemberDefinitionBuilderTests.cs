@@ -291,7 +291,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (d.Properties.HasItem (typeof (BT3Mixin2).GetProperty ("This")));
       Assert.IsTrue (d.Properties.HasItem (typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance)));
 
-      Assert.AreEqual (9, new List<MemberDefinition> (d.GetAllMembers ()).Count);
+      Assert.AreEqual (10, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }
   }
 }

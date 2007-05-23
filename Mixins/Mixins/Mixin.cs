@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Mixins.Utilities;
 using Mixins.CodeGeneration.DynamicProxy;
+using Mixins.Definitions;
 
 namespace Mixins
 {
@@ -24,25 +25,12 @@ namespace Mixins
   }
 
   [Serializable]
-  public class Mixin<[This]TThis, [Base]TBase>
+  public class Mixin<[This]TThis, [Base]TBase> : Mixin<TThis>
       where TThis: class
       where TBase: class
   {
-    private TThis _this;
-    
     [NonSerialized]
     private TBase _base;
-
-    protected TThis This
-    {
-      [DebuggerStepThrough]
-      get
-      {
-        if (_this == null)
-          throw new InvalidOperationException ("Mixin has not yet been initialized.");
-        return _this;
-      }
-    }
 
     protected TBase Base
     {
@@ -55,18 +43,12 @@ namespace Mixins
       }
     }
 
-    internal void Initialize ([This] TThis @this, [Base] TBase @base)
+    internal void Initialize ([This] TThis @this, [Base] TBase @base, [Configuration] MixinDefinition configuration)
     {
       Assertion.Assert (@this != null);
       Assertion.Assert (@base != null);
-      _this = @this;
       _base = @base;
-      OnInitialized();
-    }
-
-    protected virtual void OnInitialized()
-    {
-      // nothing
+      base.Initialize (@this, configuration);
     }
 
     [OnDeserialized]
@@ -81,6 +63,7 @@ namespace Mixins
       where TThis: class
   {
     private TThis _this;
+    private MixinDefinition _configuration;
 
     protected TThis This
     {
@@ -93,10 +76,22 @@ namespace Mixins
       }
     }
 
-    internal void Initialize ([This] TThis @this)
+    protected MixinDefinition Configuration
+    {
+      [DebuggerStepThrough]
+      get
+      {
+        if (_configuration == null)
+          throw new InvalidOperationException ("Mixin has not yet been initialized.");
+        return _configuration;
+      }
+    }
+
+    internal void Initialize ([This] TThis @this, [Configuration] MixinDefinition configuration)
     {
       Assertion.Assert (@this != null);
       _this = @this;
+      _configuration = @configuration;
       OnInitialized();
     }
 
