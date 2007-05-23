@@ -24,7 +24,7 @@ namespace Mixins.UnitTests.Configuration
     public static void Main ()
     {
       ApplicationDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2));
-      Mixins.SerializationTests.SerializeAndDeserialize (def);
+      Serializer.SerializeAndDeserialize (def);
 
       ValidationTests t = new ValidationTests ();
       t.ValidationDump ();

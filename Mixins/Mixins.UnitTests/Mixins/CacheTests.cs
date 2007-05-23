@@ -55,7 +55,7 @@ namespace Mixins.UnitTests.Mixins
 
       Assert.AreSame (bt1.GetType(), bt2.GetType());
 
-      BaseType1[] array = SerializationTests.SerializeAndDeserialize (new BaseType1[] {bt1, bt2});
+      BaseType1[] array = Serializer.SerializeAndDeserialize (new BaseType1[] {bt1, bt2});
       Assert.AreNotSame (bt1.GetType(), array[0].GetType());
 
       Assert.AreSame (array[0].GetType(), array[1].GetType());
