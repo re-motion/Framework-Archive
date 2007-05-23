@@ -16,7 +16,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
   {
     private MockRepository _mocks;
     private ISecurityStrategy _mockSecurityStrategy;
-    private ISecurityService _stubSecurityService;
+    private ISecurityProvider _stubSecurityProvider;
     private IDomainObjectSecurityContextFactory _stubContextFactory;
     private IPrincipal _user;
     private AccessType[] _accessTypeResult;
@@ -26,7 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
     {
       _mocks = new MockRepository ();
       _mockSecurityStrategy = _mocks.CreateMock<ISecurityStrategy> ();
-      _stubSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _stubSecurityProvider = _mocks.CreateMock<ISecurityProvider> ();
       _stubContextFactory = _mocks.CreateMock<IDomainObjectSecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
@@ -70,11 +70,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
         Expect.Call (_stubContextFactory.IsDiscarded).Return (false);
         Expect.Call (_stubContextFactory.IsNew).Return (false);
         Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _user, _accessTypeResult)).Return (true);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -91,7 +91,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -109,7 +109,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -123,11 +123,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       {
         Expect.Call (_stubContextFactory.IsDiscarded).Return (false);
         Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _user, _accessTypeResult)).Return (true);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -141,11 +141,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       {
         Expect.Call (_stubContextFactory.IsDiscarded).Return (false);
         Expect.Call (_stubContextFactory.IsNew).Return (false);
-        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _user, _accessTypeResult)).Return (true);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -158,11 +158,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       using (_mocks.Ordered ())
       {
         Expect.Call (_stubContextFactory.IsDiscarded).Return (false);
-        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _user, _accessTypeResult)).Return (true);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -177,7 +177,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -192,11 +192,11 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
         Expect.Call (_stubContextFactory.IsDiscarded).Return (false);
         Expect.Call (_stubContextFactory.IsNew).Return (false);
         Expect.Call (_stubContextFactory.IsDeleted).Return (false);
-        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (false);
+        Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityProvider, _user, _accessTypeResult)).Return (false);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
+      bool hasAccess = strategy.HasAccess (_stubSecurityProvider, _user, _accessTypeResult);
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
