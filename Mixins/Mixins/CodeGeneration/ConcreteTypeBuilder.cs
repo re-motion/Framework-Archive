@@ -31,6 +31,8 @@ namespace Mixins.CodeGeneration
     // TODO: Add type caching to this class
     public Type GetConcreteType (BaseClassDefinition configuration)
     {
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+
       return _typeCache.GetOrCreateValue (configuration, delegate (BaseClassDefinition classConfiguration)
       {
         ITypeGenerator generator = Scope.CreateTypeGenerator (classConfiguration);
@@ -41,9 +43,11 @@ namespace Mixins.CodeGeneration
     }
 
     // TODO: Add type caching to this class
-    public Type GetConcreteMixinType (MixinDefinition configuration, Type[] genericArguments)
+    public Type GetConcreteMixinType (MixinDefinition configuration)
     {
-      IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator (configuration, genericArguments);
+      ArgumentUtility.CheckNotNull ("configuration", configuration);
+
+      IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator (configuration);
       Type finishedType = generator.GetBuiltType ().CreateType ();
       return finishedType;
     }

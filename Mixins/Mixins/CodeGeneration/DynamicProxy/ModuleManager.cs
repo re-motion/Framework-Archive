@@ -15,9 +15,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return new TypeGenerator (this, configuration);
     }
 
-    public IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration, Type[] genericArguments)
+    public IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration)
     {
-      return new MixinTypeGenerator (this, configuration, genericArguments);
+      return new MixinTypeGenerator (this, configuration);
     }
 
     internal ModuleScope Scope
@@ -51,6 +51,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public void InitializeInstanceWithMixins (object instance, object[] mixinInstances)
     {
       GeneratedClassInstanceInitializer.InitializeInstanceFieldsWithMixins (instance, mixinInstances);
+    }
+
+    public void InitializeMixinInstance (object instance)
+    {
+      // GeneratedClassInstanceInitializer.InitializeMixinInstance (instance, null);
     }
   }
 }

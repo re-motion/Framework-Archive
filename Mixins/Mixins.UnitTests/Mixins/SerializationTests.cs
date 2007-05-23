@@ -199,7 +199,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement serialization for base call proxies")]
+    [Ignore ("TODO: Implement serialization for generated mixin classes")]
     public void SerializationOfMixinBaseWorks ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();

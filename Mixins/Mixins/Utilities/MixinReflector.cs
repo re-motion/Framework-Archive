@@ -74,5 +74,20 @@ namespace Mixins.Utilities
       else
         return mixinBaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance);
     }
+
+    public static Type GetBaseCallProxyType (object mixinTargetInstance)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTargetInstance", mixinTargetInstance);
+      IMixinTarget castTarget = mixinTargetInstance as IMixinTarget;
+      if (castTarget == null)
+      {
+        string message = string.Format ("The given object of type {0} is not a mixin target.", mixinTargetInstance.GetType().FullName);
+        throw new ArgumentException (message, "mixinTargetInstance");
+      }
+
+      Assertion.Assert (castTarget.FirstBaseCallProxy != null);
+      Type baseCallProxyType = castTarget.FirstBaseCallProxy.GetType();
+      return baseCallProxyType;
+    }
   }
 }

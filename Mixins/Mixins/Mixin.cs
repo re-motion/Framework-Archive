@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 using Rubicon.Utilities;
 using Mixins.Utilities;
+using Mixins.CodeGeneration.DynamicProxy;
 
 namespace Mixins
 {
@@ -27,6 +29,8 @@ namespace Mixins
       where TBase: class
   {
     private TThis _this;
+    
+    [NonSerialized]
     private TBase _base;
 
     protected TThis This
@@ -63,6 +67,12 @@ namespace Mixins
     protected virtual void OnInitialized()
     {
       // nothing
+    }
+
+    [OnDeserialized]
+    private void OnDeserialized (StreamingContext context)
+    {
+      SerializationHelper.InitializeDeserializedMixin (this);
     }
   }
 

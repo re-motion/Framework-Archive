@@ -148,5 +148,21 @@ namespace Mixins.UnitTests.Mixins
             MixinReflector.GetBaseProperty(m4.Type));
       }
     }
+
+    [Test]
+    public void GetMixinBaseCallProxyType()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> ().With ();
+      Type bcpt = MixinReflector.GetBaseCallProxyType (bt1);
+      Assert.IsNotNull (bcpt);
+      Assert.AreEqual (bt1.GetType ().GetNestedType ("BaseCallProxy"), bcpt);
+    }
+
+    [Test]
+    [ExpectedException(typeof (ArgumentException), ExpectedMessage = "not a mixin target", MatchType = MessageMatch.Contains)]
+    public void GetMixinBaseCallProxyTypeThrowsIfWrongType1 ()
+    {
+      MixinReflector.GetBaseCallProxyType (new object());
+    }
   }
 }

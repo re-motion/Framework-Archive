@@ -18,11 +18,12 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private MixinDefinition _configuration;
     private ExtendedClassEmitter _emitter;
 
-    public MixinTypeGenerator (ModuleManager module, MixinDefinition configuration, Type[] genericArguments)
+    public MixinTypeGenerator (ModuleManager module, MixinDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
-      ArgumentUtility.CheckNotNull ("genericArguments", genericArguments);
+
+      Assertion.Assert (!configuration.Type.ContainsGenericParameters);
 
       _module = module;
       _configuration = configuration;
@@ -31,13 +32,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
 
-      Type baseType = configuration.Type;
-      if (baseType.ContainsGenericParameters)
-        baseType = baseType.MakeGenericType (genericArguments);
-      else if (genericArguments.Length != 0)
-        throw new ArgumentException ("Generic arguments specified for non-generic or closed generic type.", "genericArguments");
-
-      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, baseType, new Type[0], isSerializable);
+      ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, new Type[0], isSerializable);
       _emitter = new ExtendedClassEmitter (classEmitter);
 
       _emitter.ReplicateBaseTypeConstructors ();

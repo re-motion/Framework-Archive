@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using Mixins;
 using Mixins.Definitions;
 using Rubicon.Utilities;
 
@@ -119,6 +120,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       throw new NotImplementedException("This should never be called.");
+    }
+
+    public static void InitializeDeserializedMixin (object mixinInstance)
+    {
+      // ConcreteTypeBuilder.Current.Scope.InitializeMixinInstance (mixinInstance);
     }
   }
 }
