@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mixins.Definitions;
 
 namespace Mixins.UnitTests.SampleTypes
 {
@@ -16,6 +17,11 @@ namespace Mixins.UnitTests.SampleTypes
     public new IBaseType31 Base
     {
       get { return base.Base; }
+    }
+
+    public new MixinDefinition Configuration
+    {
+      get { return base.Configuration; }
     }
   }
 }

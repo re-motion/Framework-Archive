@@ -218,6 +218,24 @@ namespace Mixins.UnitTests.Mixins
 
     [Test]
     [Ignore ("TODO: Implement serialization for generated mixin classes")]
+    public void SerializationOfMixinConfigurationWorks ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
+      Assert.IsNotNull (mixin.Configuration);
+      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof(BT3Mixin1)], mixin.Configuration);
+
+      SerializeAndDeserialize (mixin);
+
+      BaseType3 bt3A = SerializeAndDeserialize (bt3);
+      BT3Mixin1 mixinA = Mixin.Get<BT3Mixin1> (bt3A);
+      Assert.AreNotSame (mixin, mixinA);
+      Assert.IsNotNull (mixinA.Configuration);
+      Assert.AreSame (((IMixinTarget) bt3A).Configuration.Mixins[typeof (BT3Mixin1)], mixinA.Configuration);
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement serialization for generated mixin classes")]
     public void SerializationOfDerivedMixinWorks ()
     {
       Assert.Fail ();

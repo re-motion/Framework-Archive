@@ -61,9 +61,8 @@ namespace Mixins.UnitTests.Mixins
 
         MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m2.Type));
-        Assert.AreEqual (
-            typeof (Mixin<IBaseType31, IBaseType31>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
-            MixinReflector.GetInitializationMethod (m2.Type));
+        Assert.AreEqual (typeof (Mixin<IBaseType31, IBaseType31>).GetMethod ("Initialize",
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly), MixinReflector.GetInitializationMethod (m2.Type));
 
         MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m3.Type));
@@ -73,13 +72,13 @@ namespace Mixins.UnitTests.Mixins
 
         MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m4.Type));
-        Assert.AreNotEqual (typeof (Mixin<,>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
+        Assert.AreNotEqual (typeof (Mixin<,>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
             MixinReflector.GetInitializationMethod (m4.Type));
-        Assert.AreEqual (m4.Type.BaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
+        Assert.AreEqual (m4.Type.BaseType.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
             MixinReflector.GetInitializationMethod (m4.Type));
 
-        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
-            MixinReflector.GetInitializationMethod (m4.Type));
+        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetMethod ("Initialize",
+            BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly), MixinReflector.GetInitializationMethod (m4.Type));
       }
     }
 

@@ -166,6 +166,18 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void MixinsAreInitializedWithConfiguration ()
+    {
+      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> ((object) bt3);
+      Assert.IsNotNull (mixin);
+      Assert.AreSame (bt3, mixin.This);
+      Assert.IsNotNull (mixin.Base);
+      Assert.AreNotSame (bt3, mixin.Base);
+      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof (BT3Mixin1)], mixin.Configuration);
+    }
+
+    [Test]
     public void GenericMixinsAreSpecialized ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();
