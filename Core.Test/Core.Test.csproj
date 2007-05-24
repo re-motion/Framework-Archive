@@ -218,6 +218,10 @@
     <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedAssembly\SampleType.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedReferencedAssembly\ReferencedSampleType.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyInRelativeSearchPath\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssemblyInRelativeSearchPath\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedAssemblyInDynamicDirectory\AssemblyInfo.cs" />
+    <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssemblyInDynamicDirectory\AssemblyInfo.cs" />
     <Compile Include="Reflection\TypesafeActivatorTest.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
       <SubType>Code</SubType>

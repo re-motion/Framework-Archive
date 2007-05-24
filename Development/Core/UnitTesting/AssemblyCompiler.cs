@@ -94,7 +94,6 @@ namespace Rubicon.Development.UnitTesting
             AppDomain.CurrentDomain.BaseDirectory,
             AppDomain.CurrentDomain.RelativeSearchPath,
             AppDomain.CurrentDomain.ShadowCopyFiles);
-
         appDomain.DoCallBack (Compile);
       }
       finally

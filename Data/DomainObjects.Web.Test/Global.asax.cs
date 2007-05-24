@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{
-		 // MappingConfiguration.SetCurrent (new MappingConfiguration (new MappingReflector (typeof (ClassWithAllDataTypes).Assembly)));
+		  MappingConfiguration mappingConfiguration = MappingConfiguration.Current;
 		}
  
 		protected void Session_Start(Object sender, EventArgs e)
@@ -41,11 +41,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
 		protected void Application_BeginRequest(Object sender, EventArgs e)
 		{
-      //MappingLoaderConfiguration mappingloader = (MappingLoaderConfiguration) ConfigurationManager.GetSection ("rubicon.data.domainObjects/mapping");
-      //PersistenceConfiguration storage = (PersistenceConfiguration) ConfigurationManager.GetSection ("rubicon.data.domainObjects/storage");
-      //IDomainObjectsConfiguration group = DomainObjectsConfiguration.Current;
-      //PersistenceConfiguration s2 = group.Storage;
-      //MappingLoaderConfiguration m2 = group.MappingLoader;
     }
 
 		protected void Application_EndRequest(Object sender, EventArgs e)
