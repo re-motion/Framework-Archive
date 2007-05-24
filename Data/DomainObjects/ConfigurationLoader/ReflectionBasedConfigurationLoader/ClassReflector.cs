@@ -94,7 +94,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     }
 
     //TODO: Write test for abstract DomainObject with infrasturcture constructor
-    //TOOD: Write test for fail
+    //TODO: Write test for fail
+    //TODO: Write test that fails for Generic DomainObject
     private void ValidateClassDefinition (ReflectionBasedClassDefinition classDefinition)
     {
       if (!classDefinition.IsAbstract)

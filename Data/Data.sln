@@ -157,6 +157,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsToo
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools.Console", "DomainObjects.RdbmsTools.Console\Data.DomainObjects.RdbmsTools.Console.csproj", "{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,6 +253,10 @@ Global
 		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
