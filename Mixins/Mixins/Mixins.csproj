@@ -132,6 +132,7 @@
     <Compile Include="Definitions\RequiredBaseCallMethodDefinition.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
     <Compile Include="Utilities\Serialization\SafeISerializableBase.cs" />
+    <Compile Include="Utilities\Serialization\ReflectionObjectSerializer.cs" />
     <Compile Include="Utilities\Set.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />

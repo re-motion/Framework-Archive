@@ -19,6 +19,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       info.SetType (typeof (SerializationHelper));
 
+      // TODO: serialize context instead of configuration
+      // Remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any ordering
+
       // info.AddValue ("__configuration", configuration); => doesn't work, CLR bug, serialize into byte array
 
       using (System.IO.MemoryStream stream = new MemoryStream ())
