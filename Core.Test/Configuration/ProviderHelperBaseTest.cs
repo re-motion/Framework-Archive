@@ -16,16 +16,16 @@ namespace Rubicon.Core.UnitTests.Configuration
     private StubExtendedConfigurationSection _stubConfigurationSection;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      _stubConfigurationSection = new StubExtendedConfigurationSection();
+      _stubConfigurationSection = new StubExtendedConfigurationSection ("WellKnown", "defaultProvider", "Default Value", "providers");
       _providerHelper = _stubConfigurationSection.GetStubProviderHelper();
       _propertyCollection = _stubConfigurationSection.GetProperties();
       _providerHelper.InitializeProperties (_propertyCollection);
     }
 
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       Assert.AreEqual (2, _propertyCollection.Count);
 
@@ -45,9 +45,10 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    public void GetProviders()
+    public void GetProviders ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <stubConfigSection>
             <providers>
               <add name=""Fake"" type=""Rubicon.Core.UnitTests::Configuration.FakeProvider"" />
@@ -61,9 +62,10 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    public void GetProvider()
+    public void GetProvider ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <stubConfigSection defaultProvider=""Fake"">
             <providers>
               <add name=""Fake"" type=""Rubicon.Core.UnitTests::Configuration.FakeProvider"" />
@@ -85,11 +87,23 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
+    public void GetProvider_WithoutDefaultProvider ()
+    {
+      StubExtendedConfigurationSection stubConfigurationSection =
+          new StubExtendedConfigurationSection ("WellKnown", "defaultProvider", null, "providers");
+      StubProviderHelper providerHelper = stubConfigurationSection.GetStubProviderHelper ();
+      providerHelper.InitializeProperties (_stubConfigurationSection.GetProperties ());
+
+      Assert.IsNull (providerHelper.Provider);
+    }
+
+    [Test]
     [ExpectedException (typeof (ConfigurationErrorsException),
         ExpectedMessage = "The provider 'Invalid' specified for the defaultProvider does not exist in the providers collection.")]
-    public void GetProvider_WithInvalidProviderName()
+    public void GetProvider_WithInvalidProviderName ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <stubConfigSection defaultProvider=""Invalid"">
             <providers>
               <add name=""Fake"" type=""Rubicon.Core.UnitTests::Configuration.FakeProvider"" />
@@ -106,7 +120,8 @@ namespace Rubicon.Core.UnitTests.Configuration
         ExpectedMessage = "The name of the entry 'WellKnown' identifies a well known provider and cannot be reused for custom providers.")]
     public void PostDeserialize_DuplicateWellKnownProvider ()
     {
-      string xmlFragment = @"
+      string xmlFragment =
+          @"
           <stubConfigSection defaultProvider=""WellKnown"">
             <providers>
               <add name=""WellKnown"" type=""Rubicon.Core.UnitTests::Configuration.FakeProvider"" />
@@ -120,16 +135,18 @@ namespace Rubicon.Core.UnitTests.Configuration
     public void GetType_Test ()
     {
       Type type = _providerHelper.GetType (
-          _propertyCollection["defaultProvider"], 
-          typeof (FakeProvider).Assembly.GetName(), 
+          _propertyCollection["defaultProvider"],
+          typeof (FakeProvider).Assembly.GetName(),
           "Rubicon.Core.UnitTests.Configuration.FakeProvider");
 
       Assert.AreSame (typeof (FakeProvider), type);
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), 
-        ExpectedMessage = "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application.")]
+    [ExpectedException (typeof (ConfigurationErrorsException),
+        ExpectedMessage =
+            "The current value of property 'defaultProvider' requires that the assembly 'Invalid' is placed within the CLR's probing path for this application."
+        )]
     public void GetType_WithInvalidAssemblyName ()
     {
       _providerHelper.GetType (
@@ -137,7 +154,7 @@ namespace Rubicon.Core.UnitTests.Configuration
           new AssemblyName ("Invalid"),
           "Rubicon.Core.UnitTests.Configuration.FakeProvider");
     }
-    
+
     [Test]
     public void GetTypeWithMatchingVersionNumber ()
     {
@@ -154,9 +171,9 @@ namespace Rubicon.Core.UnitTests.Configuration
     public void GetTypeWithMatchingVersionNumber_WithInvalidAssemblyName ()
     {
       _providerHelper.GetTypeWithMatchingVersionNumber (
-         _propertyCollection["defaultProvider"],
-         "Invalid",
-         "Rubicon.Core.UnitTests.Configuration.FakeProvider");
+          _propertyCollection["defaultProvider"],
+          "Invalid",
+          "Rubicon.Core.UnitTests.Configuration.FakeProvider");
     }
 
     [Test]
@@ -177,11 +194,12 @@ namespace Rubicon.Core.UnitTests.Configuration
     [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Type name must be specified for this provider.")]
     public void InstantiateProvider_WithMissingTypeName ()
     {
-      _providerHelper.InstantiateProvider (new ProviderSettings (), typeof (FakeProviderBase));
+      _providerHelper.InstantiateProvider (new ProviderSettings(), typeof (FakeProviderBase));
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
+        ExpectedMessage = "Provider must implement the class 'Rubicon.Core.UnitTests.Configuration.FakeProviderBase'.")]
     public void InstantiateProvider_WithTypeNotDerivedFromRequiredBaseType ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeOtherProvider");
@@ -189,7 +207,8 @@ namespace Rubicon.Core.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException), ExpectedMessage = "Provider must implement the interface 'Rubicon.Core.UnitTests.Configuration.IFakeProvider'.")]
+    [ExpectedExceptionAttribute (typeof (ConfigurationErrorsException),
+        ExpectedMessage = "Provider must implement the interface 'Rubicon.Core.UnitTests.Configuration.IFakeProvider'.")]
     public void InstantiateProvider_WithTypeNotImplementingRequiredInterface ()
     {
       ProviderSettings providerSettings = new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProviderBase");
@@ -199,9 +218,9 @@ namespace Rubicon.Core.UnitTests.Configuration
     [Test]
     public void InstantiateProviders ()
     {
-      ProviderSettingsCollection providerSettingsCollection = new ProviderSettingsCollection ();
+      ProviderSettingsCollection providerSettingsCollection = new ProviderSettingsCollection();
       providerSettingsCollection.Add (new ProviderSettings ("Custom", "Rubicon.Core.UnitTests::Configuration.FakeProvider"));
-      ProviderCollection providerCollection = new ProviderCollection ();
+      ProviderCollection providerCollection = new ProviderCollection();
 
       _providerHelper.InstantiateProviders (providerSettingsCollection, providerCollection, typeof (FakeProviderBase), typeof (IFakeProvider));
 

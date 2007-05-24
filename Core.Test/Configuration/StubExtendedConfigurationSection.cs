@@ -4,7 +4,7 @@ using Rubicon.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
-  public class StubExtendedConfigurationSection: ExtendedConfigurationSection
+  public class StubExtendedConfigurationSection : ExtendedConfigurationSection
   {
     // constants
 
@@ -19,25 +19,30 @@ namespace Rubicon.Core.UnitTests.Configuration
 
     // construction and disposing
 
-    public StubExtendedConfigurationSection ()
+    public StubExtendedConfigurationSection (
+        string wellKnownProviderID,
+        string defaultProviderName,
+        string defaultProviderID,
+        string providerCollectionName
+        )
     {
-      _stubProviderHelper = new StubProviderHelper (this);
+      _stubProviderHelper = new StubProviderHelper (this, wellKnownProviderID, defaultProviderName, defaultProviderID, providerCollectionName);
       _stubProviderHelper.InitializeProperties (_properties);
     }
 
     // methods and properties
 
-    public StubProviderHelper GetStubProviderHelper()
+    public StubProviderHelper GetStubProviderHelper ()
     {
-       return _stubProviderHelper;
+      return _stubProviderHelper;
     }
 
-    public ConfigurationPropertyCollection GetProperties()
+    public ConfigurationPropertyCollection GetProperties ()
     {
       return _properties;
     }
 
-    protected override void PostDeserialize()
+    protected override void PostDeserialize ()
     {
       base.PostDeserialize();
 

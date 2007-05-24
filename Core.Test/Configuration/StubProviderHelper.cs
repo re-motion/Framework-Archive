@@ -7,30 +7,32 @@ using Rubicon.Configuration;
 
 namespace Rubicon.Core.UnitTests.Configuration
 {
-  public class StubProviderHelper: ProviderHelperBase<IFakeProvider>
+  public class StubProviderHelper : ProviderHelperBase<IFakeProvider>
   {
-    // constants
+    private string _wellKnownProviderID;
+    private string _defaultProviderName;
+    private string _defaultProviderID;
+    private string _providerCollectionName;
 
-    // types
-
-    // static members
-
-    // member fields
-
-    // construction and disposing
-
-    public StubProviderHelper (ExtendedConfigurationSection configurationSection)
+    public StubProviderHelper (
+        ExtendedConfigurationSection configurationSection,
+        string wellKnownProviderID,
+        string defaultProviderName,
+        string defaultProviderID,
+        string providerCollectionName)
         : base (configurationSection)
     {
+      _wellKnownProviderID = wellKnownProviderID;
+      _defaultProviderName = defaultProviderName;
+      _defaultProviderID = defaultProviderID;
+      _providerCollectionName = providerCollectionName;
     }
 
-    // methods and properties
-
-    public override void PostDeserialze()
+    public override void PostDeserialze ()
     {
       base.PostDeserialze();
-      
-      CheckForDuplicateWellKownProviderName ("WellKnown");
+
+      CheckForDuplicateWellKownProviderName (_wellKnownProviderID);
     }
 
     public new Type GetTypeWithMatchingVersionNumber (ConfigurationProperty property, string assemblyName, string typeName)
@@ -61,17 +63,17 @@ namespace Rubicon.Core.UnitTests.Configuration
     {
       base.EnsureWellKownProviders (collection);
 
-      collection.Add (new FakeWellKnownProvider ("WellKnown", new NameValueCollection()));
+      collection.Add (new FakeWellKnownProvider (_wellKnownProviderID, new NameValueCollection()));
     }
 
-    protected override ConfigurationProperty CreateDefaultProviderNameProperty()
+    protected override ConfigurationProperty CreateDefaultProviderNameProperty ()
     {
-      return CreateDefaultProviderNameProperty ("defaultProvider", "Default Value");
+      return CreateDefaultProviderNameProperty (_defaultProviderName, _defaultProviderID);
     }
 
-    protected override ConfigurationProperty CreateProviderSettingsProperty()
+    protected override ConfigurationProperty CreateProviderSettingsProperty ()
     {
-      return CreateProviderSettingsProperty ("providers");
+      return CreateProviderSettingsProperty (_providerCollectionName);
     }
   }
 }

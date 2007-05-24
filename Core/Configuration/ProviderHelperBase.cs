@@ -255,6 +255,9 @@ namespace Rubicon.Configuration
 
     private TProvider GetProviderFromConfiguration()
     {
+      if (DefaultProviderName == null)
+        return null;
+
       if (Providers[DefaultProviderName] == null)
       {
         throw CreateConfigurationErrorsException (
