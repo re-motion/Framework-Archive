@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -113,6 +114,24 @@ namespace Rubicon.Utilities
           hc ^= value.GetHashCode ();
           Rotate (ref hc);
         }
+      }
+      return hc;
+    }
+
+    /// <summary>
+    /// Gets the rotated hash code for an enumeration of objects.
+    /// </summary>
+    /// <param name="objects">The objects whose combined hash code should be calculated.</param>
+    /// <returns>The rotate-combined hash codes of the <paramref name="objects"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="objects"/> parameter was <see langword="null"/>.</exception>
+    public static int GetRotatedHashCode (IEnumerable objects)
+    {
+      ArgumentUtility.CheckNotNull ("objects", objects);
+      int hc = 0;
+      foreach (object value in objects)
+      {
+        hc ^= SafeGetHashCode (value);
+        Rotate (ref hc);
       }
       return hc;
     }
