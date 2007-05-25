@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Mixins.Utilities;
+using Rubicon.Collections;
 
 namespace Mixins.Definitions.Building
 {
@@ -24,14 +25,14 @@ namespace Mixins.Definitions.Building
 
     private void AnalyzeIntroducedMembers (InterfaceIntroductionDefinition introducedInterface)
     {
-      SpecialMethodSet specialMethods = new SpecialMethodSet();
+      Set<MethodInfo> specialMethods = new Set<MethodInfo> ();
 
       AnalyzeProperties(introducedInterface, specialMethods);
       AnalyzeEvents(introducedInterface, specialMethods);
       AnalyzeMethods(introducedInterface, specialMethods);
     }
 
-    private void AnalyzeProperties(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    private void AnalyzeProperties(InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
       foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties ())
       {
@@ -41,12 +42,17 @@ namespace Mixins.Definitions.Building
         CheckMemberImplementationFound (implementer, interfaceProperty);
         introducedInterface.IntroducedProperties.Add (new PropertyIntroductionDefinition (introducedInterface, interfaceProperty, implementer));
 
-        specialMethods.Add (interfaceProperty.GetGetMethod());
-        specialMethods.Add (interfaceProperty.GetSetMethod());
+        MethodInfo getMethod = interfaceProperty.GetGetMethod();
+        if (getMethod != null)
+          specialMethods.Add (getMethod);
+
+        MethodInfo setMethod = interfaceProperty.GetSetMethod();
+        if (setMethod != null)
+          specialMethods.Add (setMethod);
       }
     }
 
-    private void AnalyzeEvents(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    private void AnalyzeEvents (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
       foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents ())
       {
@@ -61,7 +67,7 @@ namespace Mixins.Definitions.Building
       }
     }
 
-    private void AnalyzeMethods(InterfaceIntroductionDefinition introducedInterface, SpecialMethodSet specialMethods)
+    private void AnalyzeMethods (InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
       InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap(introducedInterface.Type);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)

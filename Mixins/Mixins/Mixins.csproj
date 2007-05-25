@@ -113,7 +113,6 @@
     <Compile Include="Definitions\Building\OverridesAnalyzer.cs" />
     <Compile Include="Definitions\Building\RequiredBaseCallMethodDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
-    <Compile Include="Definitions\Building\SpecialMethodSet.cs" />
     <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
     <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
@@ -133,7 +132,6 @@
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
     <Compile Include="Utilities\Serialization\SafeISerializableBase.cs" />
     <Compile Include="Utilities\Serialization\ReflectionObjectSerializer.cs" />
-    <Compile Include="Utilities\Set.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />
     <Compile Include="Definitions\DefinitionItemCollection.cs" />

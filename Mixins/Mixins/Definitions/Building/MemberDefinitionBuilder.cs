@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Mixins.Utilities;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
 
@@ -11,7 +12,7 @@ namespace Mixins.Definitions.Building
   {
     private ClassDefinition _classDefinition;
     private Predicate<MethodInfo> _methodFilter;
-    private SpecialMethodSet _specialMethods = new SpecialMethodSet ();
+    private Set<MethodInfo> _specialMethods = new Set<MethodInfo> ();
     private BindingFlags _bindingFlags;
 
     public MemberDefinitionBuilder (ClassDefinition classDefinition, Predicate<MethodInfo> methodFilter, BindingFlags bindingFlags)
