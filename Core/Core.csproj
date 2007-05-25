@@ -332,6 +332,8 @@
     <Compile Include="Text\SeparatedStringBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\AppDomainAssemblyResolver.cs" />
+    <Compile Include="Utilities\AppDomainRunnerBase.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Utilities\Assertion.cs" />
     <Compile Include="Utilities\EnumerableUtility.cs" />

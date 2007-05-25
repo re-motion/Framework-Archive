@@ -7,7 +7,8 @@ namespace Rubicon
   /// expose a public <c>Dispose</c> method.
   /// <see cref="DisposableBase"/>
   /// </summary>
-  public abstract class DisposableExplicitBase: IDisposable
+  [Serializable]
+  public abstract class DisposableExplicitBase : IDisposable
   {
     private bool _disposed = false;
 
@@ -52,6 +53,7 @@ namespace Rubicon
   /// This class can be used as a base class for any class that needs to implement <see cref="IDisposable"/>.
   /// <see cref="DisposableExplicitBase"/>
   /// </summary>
+  [Serializable]
   public abstract class DisposableBase: DisposableExplicitBase
   {
     public new void Dispose()
