@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mixins.Utilities;
 using Rubicon.Collections;
@@ -49,6 +50,24 @@ namespace Mixins.Context
         _mixins.Add (mixinType);
         _mixinsForFastLookup.Add (mixinType);
       }
+    }
+
+    public override bool Equals (object obj)
+    {
+      ClassContext other = obj as ClassContext;
+      if (other == null || !other.Type.Equals (Type) || other._mixins.Count != _mixins.Count)
+        return false;
+
+      for (int i = 0; i < _mixins.Count; ++i)
+        if (!_mixins[i].Equals (other._mixins[i]))
+          return false;
+
+      return true;
+    }
+
+    public override int GetHashCode ()
+    {
+      return Type.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (_mixins);
     }
   }
 }

@@ -93,7 +93,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Value equality for class contexts")]
     public void ClassContextHasValueEquality ()
     {
       ClassContext cc1 = new ClassContext (typeof (BaseType1));
@@ -111,7 +110,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreNotEqual (cc1, cc3);
 
       ClassContext cc4 = new ClassContext (typeof (BaseType2));
-      cc3.AddMixin (typeof (BT1Mixin1));
+      cc4.AddMixin (typeof (BT1Mixin1));
 
       Assert.AreEqual (cc4, cc3);
       Assert.AreEqual (cc4.GetHashCode (), cc3.GetHashCode ());
@@ -123,7 +122,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Value equality for class contexts")]
     public void ClassContextIsSerializable()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
