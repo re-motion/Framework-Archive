@@ -152,7 +152,8 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, 
       ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, ObjectBinding.Web.CodeGenerator, ObjectBinding.Web.CodeGenerator.Templates, 
       Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.Web, 
-      Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, Data.DomainObjects.Legacy, 
+      Data.DomainObjects.RdbmsTools, Data.DomainObjects.RdbmsTools.Console, 
+      Data.DomainObjects.Legacy, Data.DomainObjects.Legacy.CodeGenerator, Data.DomainObjects.Legacy.CodeGenerator.Console, 
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web, Security.Data.DomainObjects, 
       SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
@@ -160,7 +161,7 @@
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
-      Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
+      Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests, 
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
@@ -226,6 +227,22 @@
     <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.Console" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
+    <property name="project.extension" value="exe" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Data.DomainObjects.RdbmsTools" depends="Core, Data.DomainObjects">
+    <property name="project.name" value="Data.DomainObjects.RdbmsTools" />
+    <property name="project.dir" value="Data/DomainObjects.RdbmsTools" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.RdbmsTools" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Data.DomainObjects.RdbmsTools.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.RdbmsTools">
+    <property name="project.name" value="Data.DomainObjects.RdbmsTools.Console" />
+    <property name="project.dir" value="Data/DomainObjects.RdbmsTools.Console" />
+    <property name="project.output" value="dbschema" />
     <property name="project.extension" value="exe" />
     <call target="execute-buildstep" />
   </target>
@@ -482,6 +499,18 @@
     <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+  </target>
+
+  <target name="Data.DomainObjects.RdbmsTools.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Data.DomainObjects" cascade="false"/>
+    <call target="Data.DomainObjects.RdbmsTools" cascade="false"/>
+
+    <property name="project.name" value="Data.DomainObjects.RdbmsTools.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.RdbmsTools.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.RdbmsTools.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>

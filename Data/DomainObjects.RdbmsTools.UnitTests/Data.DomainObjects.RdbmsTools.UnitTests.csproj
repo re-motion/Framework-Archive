@@ -46,6 +46,7 @@
     <Compile Include="SchemaGeneration\SqlServer\ViewBuilderTest.cs" />
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Data.DomainObjects.RdbmsTools.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="SchemaGeneration\TableBuilderBaseTest.cs" />
     <Compile Include="SetupFixture.cs" />
