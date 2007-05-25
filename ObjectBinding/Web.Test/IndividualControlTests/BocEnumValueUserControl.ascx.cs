@@ -86,7 +86,7 @@ public class BocEnumValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    GenderField.LoadUnboundValue (null, IsPostBack);
+    GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
 
     UnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) person.GetBusinessObjectProperty("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
