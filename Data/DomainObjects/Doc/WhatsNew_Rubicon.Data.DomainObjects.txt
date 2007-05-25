@@ -146,6 +146,12 @@
   String: String.Empty
   Alle weiteren Typen: Default Constructor
 
+- dbschema.exe
+  Commandline-Utility um Datenbank-Scripte für das Mapping zu erzeugen.
+  
+- DOGen.exe
+  Man muss nun das Config-File für die Applikation angeben, für die die Domäne bzw. die Datenbank-Scripte erstellt werden sollen (Parameter: config).
+
 1.7.37.0
 ========
 

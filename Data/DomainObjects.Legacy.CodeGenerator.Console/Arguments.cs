@@ -37,15 +37,10 @@ public class Arguments
       Placeholder = "directory")]
   public string ClassOutput = string.Empty;
 
-  [CommandLineStringArgument ("config", true,
-      Description = "Search for XML files in this directory (default: current).",
-      Placeholder = "directory")]
-  public string ConfigDirectory = string.Empty;
-
-  [CommandLineStringArgument ("mappingFile", true,
-      Description = "Load this mapping file name (default: Mapping.xml).",
-      Placeholder = "filename")]
-  public string MappingFileName = MappingLoader.DefaultConfigurationFile;
+  [CommandLineStringArgument ("config", false,
+      Description = "The config file holding the application's configuration.",
+      Placeholder = "app.config")]
+  public string ConfigFile = string.Empty;
 
   [CommandLineStringArgument ("dobase", true, 
       Description = "Create domain object classes derived from this class (default: " + DomainObjectBuilder.DefaultBaseClass + ")",

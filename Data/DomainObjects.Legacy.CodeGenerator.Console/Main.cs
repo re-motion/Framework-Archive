@@ -1,23 +1,21 @@
 using System;
+using System.Configuration;
 using System.IO;
-using System.Collections;
-using System.Reflection;
+using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
-using Rubicon.Data.DomainObjects.Legacy;
+using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
-using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.ConfigurationLoader;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
-using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql.SqlServer;
+using Rubicon.Text.CommandLine;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
 {
   public class MainClass
   {
-    static int Main (string[] args)
+    private static int Main (string[] args)
     {
       Arguments arguments;
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
@@ -29,15 +27,23 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
       {
         System.Console.WriteLine (e.Message);
         System.Console.WriteLine ("Usage:");
-        System.Console.WriteLine (parser.GetAsciiSynopsis (System.Environment.GetCommandLineArgs ()[0], 79));
+        System.Console.WriteLine (parser.GetAsciiSynopsis (Environment.GetCommandLineArgs()[0], 79));
         return 1;
       }
 
       try
       {
+        ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
+        fileMap.ExeConfigFilename = arguments.ConfigFile;
+        System.Configuration.Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration (fileMap, ConfigurationUserLevel.None);
+        ConfigurationWrapper.SetCurrent (ConfigurationWrapper.CreateFromConfigurationObject (configuration));
+
         PersistenceConfiguration persistenceConfiguration = DomainObjectsConfiguration.Current.Storage;
 
-        MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create(Path.Combine (arguments.ConfigDirectory, arguments.MappingFileName), false);
+        string mappingFilename = Path.Combine (
+            Path.GetDirectoryName (arguments.ConfigFile),
+            ConfigurationWrapper.Current.GetAppSetting (MappingLoader.ConfigurationAppSettingKey) ?? MappingLoader.DefaultConfigurationFile);
+        MappingConfiguration mappingConfiguration = XmlBasedMappingConfiguration.Create (mappingFilename, false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
         {
@@ -50,7 +56,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
           DomainModelBuilder.Build (
               mappingConfiguration,
               arguments.ClassOutput,
-              arguments.DomainObjectBaseClass, arguments.DomainObjectCollectionBaseClass,
+              arguments.DomainObjectBaseClass,
+              arguments.DomainObjectCollectionBaseClass,
               arguments.Serializable,
               arguments.MultiLingualResources);
         }
@@ -61,9 +68,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
         {
           System.Console.Error.WriteLine ("Execution aborted. Exception stack:");
           for (; e != null; e = e.InnerException)
-          {
-            System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType ().FullName, e.Message, e.StackTrace);
-          }
+            System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType().FullName, e.Message, e.StackTrace);
         }
         else
         {
@@ -74,5 +79,4 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
       return 0;
     }
   }
-
 }
