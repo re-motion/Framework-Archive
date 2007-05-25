@@ -53,9 +53,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       GeneratedClassInstanceInitializer.InitializeInstanceFieldsWithMixins (instance, mixinInstances);
     }
 
-    public void InitializeMixinInstance (object instance)
+    public void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, object targetInstance)
     {
-      // GeneratedClassInstanceInitializer.InitializeMixinInstance (instance, null);
+      GeneratedClassInstanceInitializer.InitializeMixinInstance (mixinDefinition, mixinInstance, targetInstance);
     }
   }
 }

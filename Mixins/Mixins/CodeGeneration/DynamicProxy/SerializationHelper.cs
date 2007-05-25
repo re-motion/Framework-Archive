@@ -5,32 +5,26 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Mixins;
 using Mixins.Definitions;
+using Mixins.Definitions.Building;
 using Rubicon.Utilities;
+using Mixins.Context;
 
 namespace Mixins.CodeGeneration.DynamicProxy
 {
   [Serializable]
-  public class SerializationHelper : IObjectReference, ISerializable
+  public class SerializationHelper : IObjectReference, ISerializable, IDeserializationCallback
   {
     private static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter s_formatter = new BinaryFormatter (); // HACK: this is used to circumvent serialization bug
 
+    // Always remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any
+    // nested objects to be deserialized in the right order
     public static void GetObjectDataForGeneratedTypes (SerializationInfo info, StreamingContext context, object concreteObject,
         BaseClassDefinition configuration, object[] extensions, bool serializeBaseMembers)
     {
       info.SetType (typeof (SerializationHelper));
 
-      // TODO: serialize context instead of configuration
-      // Remember: the whole configuration must be serialized as one single, flat object (or SerializationInfo), we cannot rely on any ordering
-
-      // info.AddValue ("__configuration", configuration); => doesn't work, CLR bug, serialize into byte array
-
-      using (System.IO.MemoryStream stream = new MemoryStream ())
-      {
-        s_formatter.Serialize (stream, configuration);
-        info.AddValue ("__configurationBytes", stream.ToArray ());
-      }
-
-      SerializeArray(extensions, "__extension", info);
+      info.AddValue ("__configuration.ConfigurationContext", configuration.ConfigurationContext);
+      info.AddValue ("__extensions", extensions);
 
       object[] baseMemberValues;
       if (serializeBaseMembers)
@@ -39,80 +33,38 @@ namespace Mixins.CodeGeneration.DynamicProxy
         baseMemberValues = FormatterServices.GetObjectData (concreteObject, baseMembers);
       }
       else
-      {
         baseMemberValues = null;
-      }
-      SerializeArray (baseMemberValues, "__baseMemberValue", info);
-    }
 
-    // to work around CLR bug
-    private static void SerializeArray(object[] array, string id, SerializationInfo info)
-    {
-      if (array != null)
-      {
-        info.AddValue (id + "Count", array.Length);
-        for (int i = 0; i < array.Length; ++i)
-        {
-          info.AddValue (id + "_" + i, array[i]);
-        }
-      }
-      else
-      {
-        info.AddValue (id + "Count", -1);
-      }
+      info.AddValue ("__baseMemberValues", baseMemberValues);
     }
 
     private object _deserializedObject;
+    private object[] _extensions;
+    private object[] _baseMemberValues;
+    private BaseClassDefinition _baseClassDefinition;
 
     public SerializationHelper (SerializationInfo info, StreamingContext context)
     {
-      // BaseClassDefinition configuration = (BaseClassDefinition) info.GetValue ("__configuration", typeof (BaseClassDefinition));
+      ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
+      _baseClassDefinition = new BaseClassDefinitionBuilder ().Apply (configurationContext);
 
-      BaseClassDefinition configuration;
-      byte[] configurationBytes = (byte[]) info.GetValue ("__configurationBytes", typeof (byte[]));
+      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_baseClassDefinition);
 
-      using (System.IO.MemoryStream stream = new MemoryStream (configurationBytes))
-      {
-        configuration = (BaseClassDefinition) s_formatter.Deserialize (stream);
-      }
+      _extensions = (object[]) info.GetValue ("__extensions", typeof (object[]));
+      _baseMemberValues = (object[]) info.GetValue ("__baseMemberValues", typeof (object[]));
 
-      Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (configuration);
-
-      object[] extensions = DeserializeArray<object> ("__extension", info);
-      object[] baseMemberValues = DeserializeArray<object> ("__baseMemberValue", info);
-
-      if (baseMemberValues != null)
-      {
+      // Usually, instantiate a deserialized object using GetSafeUninitializedObject.
+      // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
+      // need to use the deserialization constructor to instantiate the object.
+      if (_baseMemberValues != null)
         _deserializedObject = FormatterServices.GetSafeUninitializedObject (concreteType);
-        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers(concreteType.BaseType);
-        FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, baseMemberValues);
-      }
       else
       {
-        Assertion.Assert (typeof (ISerializable).IsAssignableFrom(concreteType));
+        Assertion.Assert (typeof (ISerializable).IsAssignableFrom (concreteType));
         _deserializedObject = Activator.CreateInstance (concreteType, new object[] {info, context});
       }
 
-      Assertion.Assert (extensions != null);
-      ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, extensions);
-    }
-
-    private T[] DeserializeArray<T> (string id, SerializationInfo info)
-    {
-      int length = info.GetInt32 (id + "Count");
-      if (length == -1)
-      {
-        return null;
-      }
-      else
-      {
-        T[] array = new T[length];
-        for (int i = 0; i < length; ++i)
-        {
-          array[i] = (T) info.GetValue (id + "_" + i, typeof (T));
-        }
-        return array;
-      }
+      Assertion.Assert (_extensions != null);
     }
 
     public object GetRealObject (StreamingContext context)
@@ -125,9 +77,18 @@ namespace Mixins.CodeGeneration.DynamicProxy
       throw new NotImplementedException("This should never be called.");
     }
 
-    public static void InitializeDeserializedMixin (object mixinInstance)
+    // Here, we can rely on everything being deserialized as needed.
+    public void OnDeserialization (object sender)
     {
-      // ConcreteTypeBuilder.Current.Scope.InitializeMixinInstance (mixinInstance);
+      if (_baseMemberValues != null)
+      {
+        MemberInfo[] baseMembers = FormatterServices.GetSerializableMembers (_deserializedObject.GetType ().BaseType);
+        FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, _baseMemberValues);
+      }
+
+      ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, _extensions);
+      for (int i = 0; i < _extensions.Length; ++i)
+        ConcreteTypeBuilder.Current.Scope.InitializeMixinInstance (_baseClassDefinition.Mixins[i], _extensions[0], _deserializedObject);
     }
   }
 }

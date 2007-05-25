@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using Mixins.CodeGeneration;
 using Mixins.Definitions;
-using Mixins.UnitTests.Mixins;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
@@ -177,7 +171,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement serialization for generated mixin classes")]
     public void SerializationOfMixinBaseWorks ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
@@ -195,7 +188,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Implement serialization for generated mixin classes")]
     public void SerializationOfMixinConfigurationWorks ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();

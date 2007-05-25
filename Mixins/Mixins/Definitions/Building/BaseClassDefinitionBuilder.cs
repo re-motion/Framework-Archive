@@ -10,20 +10,11 @@ namespace Mixins.Definitions.Building
 {
   public class BaseClassDefinitionBuilder
   {
-    private ApplicationDefinition _application;
-
-    public BaseClassDefinitionBuilder (ApplicationDefinition application)
+    public BaseClassDefinitionBuilder ()
     {
-      ArgumentUtility.CheckNotNull ("application", application);
-      _application = application;
     }
 
-    public ApplicationDefinition Application
-    {
-      get { return _application; }
-    }
-
-    public void Apply (ClassContext classContext)
+    public BaseClassDefinition Apply (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       if (classContext.Type.ContainsGenericParameters)
@@ -33,7 +24,6 @@ namespace Mixins.Definitions.Building
       }
 
       BaseClassDefinition classDefinition = new BaseClassDefinition (classContext);
-      Application.BaseClasses.Add (classDefinition);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
       MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritors, bindingFlags);
@@ -46,6 +36,7 @@ namespace Mixins.Definitions.Building
       ApplyBaseCallMethodRequirements (classDefinition);
 
       AnalyzeOverrides (classDefinition);
+      return classDefinition;
     }
 
     private void AnalyzeOverrides (BaseClassDefinition definition)

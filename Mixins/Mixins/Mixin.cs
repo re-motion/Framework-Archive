@@ -50,12 +50,6 @@ namespace Mixins
       _base = @base;
       base.Initialize (@this, configuration);
     }
-
-    [OnDeserialized]
-    private void OnDeserialized (StreamingContext context)
-    {
-      SerializationHelper.InitializeDeserializedMixin (this);
-    }
   }
 
   [Serializable]

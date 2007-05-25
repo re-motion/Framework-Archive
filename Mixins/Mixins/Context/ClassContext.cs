@@ -2,22 +2,44 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mixins.Utilities;
+using Mixins.Utilities.Serialization;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using System.Runtime.Serialization;
 
 namespace Mixins.Context
 {
   [Serializable]
-  public class ClassContext
+  public class ClassContext : ISerializable
   {
     private Type _type;
-    private List<Type> _mixins = new List<Type> ();
-    private Set<Type> _mixinsForFastLookup = new Set<Type> ();
+    private List<Type> _mixins;
+    private Set<Type> _mixinsForFastLookup;
 
     public ClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       _type = type;
+      _mixins = new List<Type>();
+      _mixinsForFastLookup = new Set<Type>();
+    }
+
+    private ClassContext (SerializationInfo info, StreamingContext context)
+    {
+      _type = ReflectionObjectSerializer.DeserializeType ("_type", info);
+      int count = info.GetInt32 ("_mixins.Count");
+      _mixins = new List<Type> (count);
+      _mixinsForFastLookup = new Set<Type>();
+      for (int i = 0; i < count; ++i)
+        AddMixin (ReflectionObjectSerializer.DeserializeType ("_mixins[" + i + "]", info));
+    }
+
+    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+    {
+      ReflectionObjectSerializer.SerializeType (_type, "_type", info);
+      info.AddValue ("_mixins.Count", _mixins.Count);
+      for (int i = 0; i < _mixins.Count; ++i)
+        ReflectionObjectSerializer.SerializeType (_mixins[i], "_mixins[" + i + "]", info);
     }
 
     public Type Type
