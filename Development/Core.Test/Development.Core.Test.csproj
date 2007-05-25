@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="UnitTesting\DevNullTest.cs" />
     <Compile Include="UnitTesting\IO\TempFileTest.cs" />
+    <Compile Include="UnitTesting\SerializerTest.cs" />
     <Compile Include="UnitTesting\TestCreateInstance.cs">
       <SubType>Code</SubType>
     </Compile>

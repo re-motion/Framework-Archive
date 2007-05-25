@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Collections;
 using System.Collections.Generic;
 using Rubicon.Utilities;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.Collections
 {
@@ -256,6 +257,23 @@ namespace Rubicon.Core.UnitTests.Collections
       Assert.Contains (1, array);
       Assert.Contains (2, array);
       Assert.Contains ("a", array);
+    }
+
+    [Test]
+    public void SetIsSerializable()
+    {
+      Assert.IsTrue (typeof (Set<int>).IsSerializable);
+
+      Set<int> s1 = new Set<int> (new int[] {1, 2, 3, 1, 2});
+      Set<int> s2 = Serializer.SerializeAndDeserialize (s1);
+      Assert.AreNotSame (s1, s2);
+      Assert.AreEqual (s1.Count, s2.Count);
+
+      foreach (int i in s1)
+        Assert.IsTrue (s2.Contains (i));
+
+      foreach (int i in s2)
+        Assert.IsTrue (s1.Contains (i));
     }
   }
 }

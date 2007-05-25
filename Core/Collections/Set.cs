@@ -24,6 +24,7 @@ namespace Rubicon.Collections
   /// set to be read-only.</para>
   /// </remarks>
   [DebuggerDisplay ("Set - Count = {Count}")]
+  [Serializable]
   public class Set<T> : IEnumerable<T>, ICollection<T>
   {
     private Dictionary<T, T> _items;

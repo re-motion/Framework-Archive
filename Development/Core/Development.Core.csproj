@@ -105,6 +105,7 @@
     <Compile Include="UnitTesting\PrivateInvoke.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UnitTesting\Serializer.cs" />
     <Compile Include="UnitTesting\ThreadRunner.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="Development.Core.build" />
