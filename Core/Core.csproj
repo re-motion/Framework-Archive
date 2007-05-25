@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\InterlockedCache.cs" />
+    <Compile Include="Collections\Set.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="Configuration\ConfigurationWrapper.cs" />
     <Compile Include="Configuration\ConfigurationWrapperFromConfigurationObject.cs" />

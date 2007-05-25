@@ -114,6 +114,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\SetTest.cs" />
     <Compile Include="Configuration\ExtendedProviderBaseTest.cs" />
     <Compile Include="Configuration\FakeWellKnownProvider.cs" />
     <Compile Include="Configuration\IFakeProvider.cs" />
