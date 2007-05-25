@@ -6,6 +6,7 @@ using System.Diagnostics;
 namespace Mixins.Utilities
 {
   [DebuggerDisplay ("Count = {_items.Count}")]
+  [Serializable]
   internal class Set<T> : IEnumerable<T>
   {
     private Dictionary<T, T> _items = new Dictionary<T, T>();

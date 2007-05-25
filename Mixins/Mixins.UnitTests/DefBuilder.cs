@@ -22,7 +22,7 @@ namespace Mixins.UnitTests
       ClassContext classContext = applicationContext.GetOrAddClassContext (classType);
       foreach (Type mixinType in mixinTypes)
       {
-        classContext.AddMixinContext (new MixinContext (classType, mixinType));
+        classContext.AddMixin (mixinType);
       }
       return DefinitionBuilder.CreateApplicationDefinition (applicationContext);
     }

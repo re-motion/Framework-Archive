@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Runtime.Serialization;
 using Mixins.Utilities;
 using Rubicon;
+using Rubicon.Development.UnitTesting;
 
 namespace Mixins.UnitTests.Utilities.Serialization
 {

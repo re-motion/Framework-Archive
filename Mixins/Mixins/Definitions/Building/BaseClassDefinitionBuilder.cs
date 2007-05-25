@@ -32,7 +32,7 @@ namespace Mixins.Definitions.Building
         throw new ConfigurationException (message);
       }
 
-      BaseClassDefinition classDefinition = new BaseClassDefinition (_application, classContext.Type);
+      BaseClassDefinition classDefinition = new BaseClassDefinition (classContext);
       Application.BaseClasses.Add (classDefinition);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
@@ -80,7 +80,7 @@ namespace Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
-      IEnumerator<MixinContext> enumerator = classContext.MixinContexts.GetEnumerator();
+      IEnumerator<Type> enumerator = classContext.Mixins.GetEnumerator();
       for (int i = 0; enumerator.MoveNext(); ++i)
       {
         MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);

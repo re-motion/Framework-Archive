@@ -38,6 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\libraries\Commons\trunk\Core\bin\Debug\Rubicon.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Rubicon.Development, Version=1.7.40.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libraries\Commons\trunk\Development\Core\bin\Debug\Rubicon.Development.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -98,7 +102,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />
     <Compile Include="DefBuilder.cs" />
     <Compile Include="Configuration\MixinDefinitionBuilderTests.cs" />
-    <Compile Include="Configuration\DefaultContextBuilderTests.cs" />
+    <Compile Include="Configuration\ClassContextTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
     <Compile Include="Mixins\CodeGenerationTests.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGenerationTests.cs" />

@@ -27,8 +27,7 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (application.BaseClasses.HasItem (typeof (BaseType1)));
       BaseClassDefinition baseClass = application.BaseClasses[typeof (BaseType1)];
-      Assert.AreSame (application, baseClass.Parent);
-      Assert.AreSame (application, baseClass.Application);
+      Assert.IsNull (baseClass.Parent);
       Assert.AreEqual ("BaseType1", baseClass.Name);
 
       Assert.IsTrue (baseClass.Mixins.HasItem (typeof (BT1Mixin1)));

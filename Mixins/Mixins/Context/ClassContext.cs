@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using Mixins.Utilities;
 using Rubicon.Utilities;
 
 namespace Mixins.Context
 {
+  [Serializable]
   public class ClassContext
   {
     private Type _type;
-    private List<MixinContext> _mixinContexts = new List<MixinContext> ();
+    private List<Type> _mixins = new List<Type> ();
+    private Set<Type> _mixinsForFastLookup = new Set<Type> ();
 
     public ClassContext (Type type)
     {
@@ -20,20 +23,31 @@ namespace Mixins.Context
       get { return _type; }
     }
 
-    public IEnumerable<MixinContext> MixinContexts
+    public IEnumerable<Type> Mixins
     {
-      get { return _mixinContexts; }
+      get { return _mixins; }
     }
 
-    public void AddMixinContext (MixinContext mixinContext)
+    public int MixinCount
     {
-      ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
-      if (mixinContext.TargetType != Type)
+      get { return _mixins.Count; }
+    }
+
+    public bool ContainsMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      return _mixinsForFastLookup.Contains (mixinType);
+    }
+
+    public void AddMixin (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+
+      if (!ContainsMixin (mixinType))
       {
-        string message = string.Format("Cannot add mixin definition for different type {0} to context of class {1}.", mixinContext.TargetType, Type);
-        throw new ArgumentException (message, "mixinContext");
+        _mixins.Add (mixinType);
+        _mixinsForFastLookup.Add (mixinType);
       }
-      _mixinContexts.Add (mixinContext);
     }
   }
 }

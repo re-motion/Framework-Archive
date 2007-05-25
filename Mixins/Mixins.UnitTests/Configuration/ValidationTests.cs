@@ -9,6 +9,7 @@ using Mixins.Validation.DefaultLog;
 using NUnit.Framework;
 using Mixins.Definitions;
 using Mixins.Validation;
+using Rubicon.Development.UnitTesting;
 
 namespace Mixins.UnitTests.Configuration
 {

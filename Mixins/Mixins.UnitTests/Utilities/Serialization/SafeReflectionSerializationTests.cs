@@ -8,6 +8,7 @@ using Mixins.Utilities.Serialization;
 using NUnit.Framework;
 using System.Runtime.Serialization;
 using Rubicon;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 using AssertionException=NUnit.Framework.AssertionException;
 

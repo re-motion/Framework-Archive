@@ -50,8 +50,7 @@ namespace Mixins.Context
 
       foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes(typeof(ExtendsAttribute), false))
       {
-        MixinContext definition = new MixinContext(mixinAttribute.TargetType, mixinType);
-        targetContext.GetOrAddClassContext (definition.TargetType).AddMixinContext (definition);
+        targetContext.GetOrAddClassContext (mixinAttribute.TargetType).AddMixin (mixinType);
       }
     }
 
@@ -62,8 +61,7 @@ namespace Mixins.Context
 
       foreach (UsesAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
       {
-        MixinContext definition = new MixinContext (targetType, applyMixinAttribute.MixinType);
-        targetContext.GetOrAddClassContext (targetType).AddMixinContext (definition);
+        targetContext.GetOrAddClassContext (targetType).AddMixin (applyMixinAttribute.MixinType);
       }
     }
   }

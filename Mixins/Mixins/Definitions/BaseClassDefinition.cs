@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Mixins.Utilities;
 using Rubicon.Utilities;
+using Mixins.Context;
 
 namespace Mixins.Definitions
 {
@@ -21,24 +22,20 @@ namespace Mixins.Definitions
         new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
 
     private MixinTypeInstantiator _mixinTypeInstantiator;
+    private ClassContext _configurationContext;
 
-    [NonSerialized]
-    private ApplicationDefinition _application;
-
-    public BaseClassDefinition (ApplicationDefinition application, Type type)
-        : base (type)
+    public BaseClassDefinition (ClassContext configurationContext)
+        : base (configurationContext.Type)
     {
-      ArgumentUtility.CheckNotNull ("application", application);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("configurationContext", configurationContext);
 
-      _application = application;
-      _mixinTypeInstantiator = new MixinTypeInstantiator (type);
+      _configurationContext = configurationContext;
+      _mixinTypeInstantiator = new MixinTypeInstantiator (configurationContext.Type);
     }
 
-    // Will be null if the class definition is deserialized.
-    public ApplicationDefinition Application
+    public object ConfigurationContext
     {
-      get { return _application; }
+      get { return _configurationContext; }
     }
 
     internal MixinTypeInstantiator MixinTypeInstantiator
@@ -53,7 +50,7 @@ namespace Mixins.Definitions
 
     public override IVisitableDefinition Parent
     {
-      get { return Application; }
+      get { return null; }
     }
 
     public override void Accept (IDefinitionVisitor visitor)

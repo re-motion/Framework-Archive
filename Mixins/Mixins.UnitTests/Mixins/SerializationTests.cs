@@ -9,6 +9,7 @@ using Mixins.Definitions;
 using Mixins.UnitTests.Mixins;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
+using Rubicon.Development.UnitTesting;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -233,39 +234,6 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (com2AsIfc);
       Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com2.OverridableMethod (13));
-    }
-  }
-}
-
-namespace Mixins
-{
-  namespace UnitTests
-  {
-    class Serializer
-    {
-      public static T SerializeAndDeserialize<T> (T t)
-      {
-        return (T) Serializer.Deserialize (Serializer.Serialize ((object) t));
-      }
-
-      public static byte[] Serialize (object o)
-      {
-        using (MemoryStream stream = new MemoryStream ())
-        {
-          BinaryFormatter formatter = new BinaryFormatter ();
-          formatter.Serialize (stream, o);
-          return stream.GetBuffer ();
-        }
-      }
-
-      public static object Deserialize (byte[] bytes)
-      {
-        using (MemoryStream stream = new MemoryStream (bytes))
-        {
-          BinaryFormatter formatter = new BinaryFormatter ();
-          return formatter.Deserialize (stream);
-        }
-      }
     }
   }
 }

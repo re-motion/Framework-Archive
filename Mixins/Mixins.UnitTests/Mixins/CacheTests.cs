@@ -5,6 +5,7 @@ using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Mixins.CodeGeneration;
 using System.Reflection;
+using Rubicon.Development.UnitTesting;
 
 namespace Mixins.UnitTests.Mixins
 {

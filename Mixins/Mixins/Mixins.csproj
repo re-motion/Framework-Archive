@@ -148,7 +148,6 @@
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
     <Compile Include="Context\DefaultContextBuilder.cs" />
-    <Compile Include="Context\MixinContext.cs" />
     <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="ExtendsAttribute.cs" />

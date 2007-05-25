@@ -29,11 +29,11 @@ namespace Mixins.Definitions.Building
       get { return _baseClass; }
     }
 
-    public MixinDefinition Apply (MixinContext mixinContext)
+    public MixinDefinition Apply (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
-      Type mixinType = BaseClass.MixinTypeInstantiator.GetConcreteMixinType (mixinContext.MixinType);
+      mixinType = BaseClass.MixinTypeInstantiator.GetConcreteMixinType (mixinType);
       MixinDefinition mixin = new MixinDefinition (mixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 
