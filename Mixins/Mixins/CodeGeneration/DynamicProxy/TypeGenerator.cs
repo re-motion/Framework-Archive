@@ -37,7 +37,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _module = module;
       _configuration = configuration;
 
-      bool isSerializable = configuration.Type.IsSerializable;
+      bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom (configuration.Type);
 
       string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
 
@@ -55,11 +55,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       _emitter.ReplicateBaseTypeConstructors();
 
       if (isSerializable)
-      {
         ImplementGetObjectData();
-      }
 
-      ImplementIMixinTarget ();
+      ImplementIMixinTarget();
       ImplementIntroducedInterfaces();
       ImplementOverrides();
 
@@ -68,11 +66,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
       AddDebuggerAttributes();
     }
 
-    private List<Type> GetInterfacesToImplement(bool isSerializable)
+    private List<Type> GetInterfacesToImplement (bool isSerializable)
     {
-      List<Type> interfaces = new List<Type> ();
+      List<Type> interfaces = new List<Type>();
       interfaces.Add (typeof (IMixinTarget));
-      
+
       foreach (InterfaceIntroductionDefinition introduction in _configuration.IntroducedInterfaces)
         interfaces.Add (introduction.Type);
 
@@ -106,9 +104,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
       get { return _configuration; }
     }
 
-    public Type GetBuiltType()
+    public Type GetBuiltType ()
     {
-      return Emitter.InnerEmitter.BuildType ();
+      Type builtType = Emitter.InnerEmitter.BuildType();
+      InitializeStaticFields (builtType);
+      return builtType;
     }
 
     internal FieldInfo ExtensionsField
@@ -116,66 +116,29 @@ namespace Mixins.CodeGeneration.DynamicProxy
       get { return _extensionsField.Reference; }
     }
 
-    public void InitializeStaticFields (Type finishedType)
+    private void InitializeStaticFields (Type finishedType)
     {
       finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
     }
 
-    private void ImplementGetObjectData()
+    private void ImplementGetObjectData ()
     {
-      bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (Emitter.BaseType);
-
-      MethodInfo getObjectDataMethod =
-          typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      MethodEmitter newMethod = Emitter.CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
-
-      newMethod.CodeBuilder.AddStatement (
-          new ExpressionStatement (
-              new MethodInvocationExpression (
-                  null,
-                  typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"),
-                  new ReferenceExpression (newMethod.Arguments[0]),
-                  new ReferenceExpression (newMethod.Arguments[1]),
-                  new ReferenceExpression (SelfReference.Self),
-                  new ReferenceExpression (_configurationField),
-                  new ReferenceExpression (_extensionsField),
-                  new ReferenceExpression (new ConstReference (!baseIsISerializable)))));
-
-      if (baseIsISerializable)
-      {
-        ConstructorInfo baseConstructor = Emitter.BaseType.GetConstructor (
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-            null,
-            CallingConventions.Any,
-            new Type[] {typeof (SerializationInfo), typeof (StreamingContext)},
-            null);
-        if (baseConstructor == null || (!baseConstructor.IsPublic && !baseConstructor.IsFamily))
-        {
-          string message = string.Format (
-              "No public or protected deserialization constructor in type {0} - this is not supported.",
-              Emitter.BaseType.FullName);
-          throw new NotSupportedException (message);
-        }
-
-        MethodInfo baseGetObjectDataMethod =
-            Emitter.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (baseGetObjectDataMethod == null || (!baseGetObjectDataMethod.IsPublic && !baseGetObjectDataMethod.IsFamily))
-        {
-          string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", Emitter.BaseType.FullName);
-          throw new NotSupportedException (message);
-        }
-        newMethod.CodeBuilder.AddStatement (
-            new ExpressionStatement (
-                new MethodInvocationExpression (
-                    SelfReference.Self,
-                    baseGetObjectDataMethod,
-                    new ReferenceExpression (newMethod.Arguments[0]),
-                    new ReferenceExpression (newMethod.Arguments[1]))));
-      }
-      newMethod.CodeBuilder.AddStatement (new ReturnStatement());
+      Emitter.ImplementGetObjectDataByDelegation (
+          delegate (MethodEmitter newMethod, bool baseIsISerializable)
+          {
+            return new MethodInvocationExpression (
+                null,
+                typeof (SerializationHelper).GetMethod ("GetObjectDataForGeneratedTypes"),
+                new ReferenceExpression (newMethod.Arguments[0]),
+                new ReferenceExpression (newMethod.Arguments[1]),
+                new ReferenceExpression (SelfReference.Self),
+                new ReferenceExpression (_configurationField),
+                new ReferenceExpression (_extensionsField),
+                new ReferenceExpression (new ConstReference (!baseIsISerializable)));
+          });
     }
 
-    private void ImplementIMixinTarget()
+    private void ImplementIMixinTarget ()
     {
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
 
@@ -198,7 +161,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       firstProperty.ImplementPropertyWithField (_firstField);
     }
 
-    private void ImplementIntroducedInterfaces()
+    private void ImplementIntroducedInterfaces ()
     {
       foreach (InterfaceIntroductionDefinition introduction in _configuration.IntroducedInterfaces)
       {
@@ -224,7 +187,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       CustomMethodEmitter customMethodEmitter = Emitter.CreateMethodOverrideOrInterfaceImplementation (interfaceMember);
 
-      LocalReference localImplementer = Emitter.AddMakeReferenceOfExpressionStatements (customMethodEmitter, interfaceMember.DeclaringType,
+      LocalReference localImplementer = Emitter.AddMakeReferenceOfExpressionStatements (
+          customMethodEmitter,
+          interfaceMember.DeclaringType,
           implementerExpression);
       customMethodEmitter.ImplementMethodByDelegation (localImplementer, interfaceMember);
 
@@ -290,10 +255,10 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
     {
       foreach (AttributeDefinition attribute in attributes)
-        AttributeReplicator.ReplicateAttribute(target, attribute.Data);
+        AttributeReplicator.ReplicateAttribute (target, attribute.Data);
     }
 
-    private void ReplicateClassAttributes()
+    private void ReplicateClassAttributes ()
     {
       ReplicateAttributes (_configuration.CustomAttributes, Emitter);
       foreach (MixinDefinition mixin in _configuration.Mixins)
@@ -303,21 +268,23 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void AddDebuggerAttributes ()
     {
       string debuggerString = "Mix of " + _configuration.Type.FullName + " + "
-          + SeparatedStringBuilder.Build (" + ", _configuration.Mixins, delegate (MixinDefinition m) { return m.FullName; });
+                              + SeparatedStringBuilder.Build (" + ", _configuration.Mixins, delegate (MixinDefinition m) { return m.FullName; });
       CustomAttributeBuilder debuggerAttribute =
           new CustomAttributeBuilder (
-              typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) }),
-              new object[] { debuggerString });
+              typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] {typeof (string)}),
+              new object[] {debuggerString});
       Emitter.AddCustomAttribute (debuggerAttribute);
     }
 
     public MethodInfo GetBaseCallMethodFor (MethodInfo method)
     {
       ArgumentUtility.CheckNotNull ("method", method);
-      if (!method.DeclaringType.IsAssignableFrom(TypeBuilder.BaseType))
+      if (!method.DeclaringType.IsAssignableFrom (TypeBuilder.BaseType))
       {
-        string message = string.Format ("Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
-            method.DeclaringType.FullName, method.Name);
+        string message = string.Format (
+            "Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
+            method.DeclaringType.FullName,
+            method.Name);
         throw new ArgumentException (message, "method");
       }
       if (!_baseCallMethods.ContainsKey (method))

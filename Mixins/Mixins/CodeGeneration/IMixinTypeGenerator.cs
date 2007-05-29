@@ -1,9 +1,9 @@
-using System.Reflection.Emit;
+using System;
 
 namespace Mixins.CodeGeneration
 {
   public interface IMixinTypeGenerator
   {
-    TypeBuilder GetBuiltType ();
+    Type GetBuiltType ();
   }
 }

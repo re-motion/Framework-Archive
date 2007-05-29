@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Mixins.UnitTests.SampleTypes
 {
+  [Serializable]
   public class MixinOverridingClassMethod : Mixin<object>, IMixinOverridingClassMethod
   {
     [Override]

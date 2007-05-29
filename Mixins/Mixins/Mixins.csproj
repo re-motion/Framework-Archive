@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxySerializationHelper.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ConditionExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ExpressionReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />
@@ -89,12 +90,6 @@
     <Compile Include="Utilities\PropertySignatureEqualityComparer.cs" />
     <Compile Include="Utilities\ReflectionEmitUtility.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
-    <Compile Include="Utilities\Serialization\DelegateFixupData.cs" />
-    <Compile Include="Utilities\Serialization\TypeFixupData.cs" />
-    <Compile Include="Utilities\Serialization\EventInfoFixupData.cs" />
-    <Compile Include="Utilities\Serialization\PropertyInfoFixupData.cs" />
-    <Compile Include="Utilities\Serialization\MethodInfoFixupData.cs" />
-    <Compile Include="Utilities\Serialization\SerializationFixupRegistry.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="TypeFactory.cs" />
     <Compile Include="CodeGeneration\SingletonUtilities\IInstanceCreator.cs" />
@@ -130,7 +125,6 @@
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
     <Compile Include="Definitions\RequiredBaseCallMethodDefinition.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
-    <Compile Include="Utilities\Serialization\SafeISerializableBase.cs" />
     <Compile Include="Utilities\Serialization\ReflectionObjectSerializer.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />

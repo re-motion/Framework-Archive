@@ -149,6 +149,38 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void GetConfigurationProperty ()
+    {
+      using (
+          new CurrentTypeFactoryScope (
+              DefinitionBuilder.CreateApplicationDefinition (DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ()))))
+      {
+        MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
+        Assert.IsNull (MixinReflector.GetConfigurationProperty (m1.Type));
+
+        MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
+        Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m2.Type));
+        Assert.AreEqual (
+            typeof (Mixin<IBaseType31, IBaseType31>).GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),
+            MixinReflector.GetConfigurationProperty (m2.Type));
+
+        MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
+        Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m3.Type));
+
+        MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
+        Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m4.Type));
+        Assert.AreNotEqual (
+            typeof (Mixin<,>).GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),
+            MixinReflector.GetConfigurationProperty (m4.Type));
+        Assert.AreEqual (
+            m4.Type.BaseType.GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),
+            MixinReflector.GetConfigurationProperty (m4.Type));
+        Assert.AreEqual (typeof (Mixin<BaseType3, IBaseType33>).GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),
+            MixinReflector.GetConfigurationProperty (m4.Type));
+      }
+    }
+
+    [Test]
     public void GetMixinBaseCallProxyType()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> ().With ();

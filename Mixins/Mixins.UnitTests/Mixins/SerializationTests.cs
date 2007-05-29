@@ -137,6 +137,42 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (28, c2.I);
     }
 
+    public abstract class NotSerializableClass
+    {
+    }
+
+    [Test]
+    [ExpectedException (typeof (SerializationException), ExpectedMessage = "is not marked as serializable", MatchType = MessageMatch.Contains)]
+    public void ThrowsIfClassNotSerializable ()
+    {
+      NotSerializableClass targetInstance = CreateMixedObject<NotSerializableClass> ().With ();
+
+      Serializer.SerializeAndDeserialize (targetInstance);
+    }
+
+    public class NotSerializableClassWithISerializable : ISerializable
+    {
+      public NotSerializableClassWithISerializable ()
+      {
+      }
+
+      public NotSerializableClassWithISerializable (SerializationInfo info, StreamingContext context)
+      {
+      }
+
+      public void GetObjectData (SerializationInfo info, StreamingContext context)
+      {
+      }
+    }
+
+    [Test]
+    public void AllowsClassNotSerializableWithISerializable ()
+    {
+      NotSerializableClassWithISerializable targetInstance = CreateMixedObject<NotSerializableClassWithISerializable> ().With ();
+
+      Serializer.SerializeAndDeserialize (targetInstance);
+    }
+
     [Test]
     public void WorksIfNoDefaultCtor ()
     {
@@ -148,84 +184,6 @@ namespace Mixins.UnitTests.Mixins
       ClassWithoutDefaultCtor c2 = Serializer.SerializeAndDeserialize (c);
       Assert.AreNotEqual (c.GetType (), c2.GetType ());
       Assert.AreEqual ("35", c2.S);
-    }
-
-    [Test]
-    public void ConfigSerializationSpike()
-    {
-      ApplicationDefinition def = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin2));
-      Serializer.SerializeAndDeserialize (def);
-    }
-
-    [Test]
-    public void SerializationOfMixinThisWorks ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With();
-      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (bt3);
-      Assert.AreSame (bt3, mixin.This);
-
-      BaseType3 bt3A = Serializer.SerializeAndDeserialize (bt3);
-      BT3Mixin2 mixinA = Mixin.Get<BT3Mixin2> (bt3A);
-      Assert.AreNotSame (mixin, mixinA);
-      Assert.AreSame (bt3A, mixinA.This);
-    }
-
-    [Test]
-    public void SerializationOfMixinBaseWorks ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-      Assert.IsNotNull (mixin.Base);
-      Assert.AreSame (bt3.GetType().GetField ("__first").FieldType, mixin.Base.GetType());
-
-      Serializer.SerializeAndDeserialize (mixin);
-
-      BaseType3 bt3A = Serializer.SerializeAndDeserialize (bt3);
-      BT3Mixin1 mixinA = Mixin.Get<BT3Mixin1> (bt3A);
-      Assert.AreNotSame (mixin, mixinA);
-      Assert.IsNotNull (mixinA.Base);
-      Assert.AreSame (bt3A.GetType ().GetField ("__first").FieldType, mixinA.Base.GetType ());
-    }
-
-    [Test]
-    public void SerializationOfMixinConfigurationWorks ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-      Assert.IsNotNull (mixin.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof(BT3Mixin1)], mixin.Configuration);
-
-      Serializer.SerializeAndDeserialize (mixin);
-
-      BaseType3 bt3A = Serializer.SerializeAndDeserialize (bt3);
-      BT3Mixin1 mixinA = Mixin.Get<BT3Mixin1> (bt3A);
-      Assert.AreNotSame (mixin, mixinA);
-      Assert.IsNotNull (mixinA.Configuration);
-      Assert.AreSame (((IMixinTarget) bt3A).Configuration.Mixins[typeof (BT3Mixin1)], mixinA.Configuration);
-    }
-
-    [Test]
-    [Ignore ("TODO: Implement serialization for generated mixin classes")]
-    public void SerializationOfDerivedMixinWorks ()
-    {
-      Assert.Fail ();
-      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
-      IMixinOverridingClassMethod comAsIfc = com as IMixinOverridingClassMethod;
-      Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com));
-
-      Assert.IsNotNull (comAsIfc);
-      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIfc.AbstractMethod (25));
-      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
-
-      ClassOverridingMixinMethod com2 = Serializer.SerializeAndDeserialize (com);
-      IMixinOverridingClassMethod com2AsIfc = com as IMixinOverridingClassMethod;
-      Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com2));
-      Assert.AreNotSame(Mixin.Get<MixinOverridingClassMethod> ((object) com),
-          Mixin.Get<MixinOverridingClassMethod> ((object) com2));
-
-      Assert.IsNotNull (com2AsIfc);
-      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
-      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com2.OverridableMethod (13));
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Mixins.Definitions
       _mixinTypeInstantiator = new MixinTypeInstantiator (configurationContext.Type);
     }
 
-    public object ConfigurationContext
+    public ClassContext ConfigurationContext
     {
       get { return _configurationContext; }
     }

@@ -37,7 +37,6 @@ namespace Mixins.CodeGeneration
       {
         ITypeGenerator generator = Scope.CreateTypeGenerator (classConfiguration);
         Type finishedType = generator.GetBuiltType ();
-        generator.InitializeStaticFields (finishedType);
         return finishedType;
       });
     }
@@ -48,7 +47,7 @@ namespace Mixins.CodeGeneration
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
       IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator (configuration);
-      Type finishedType = generator.GetBuiltType ().CreateType ();
+      Type finishedType = generator.GetBuiltType ();
       return finishedType;
     }
   }

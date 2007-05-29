@@ -4,6 +4,7 @@ using System.Reflection;
 using Mixins.Context;
 using Mixins.Definitions.Building;
 using Mixins.UnitTests.Configuration.ValidationSampleTypes;
+using Mixins.UnitTests.Mixins;
 using Mixins.UnitTests.SampleTypes;
 using Mixins.Validation.DefaultLog;
 using NUnit.Framework;
@@ -24,10 +25,7 @@ namespace Mixins.UnitTests.Configuration
 
     public static void Main ()
     {
-      new UnitTests.Mixins.SerializationTests().SerializationOfMixinConfigurationWorks();
-
-      ValidationTests t = new ValidationTests ();
-      t.ValidationDump ();
+      new MixinSerializationTests().RespectsISerializable();
     }
 
     public static bool HasFailure (string ruleName, DefaultValidationLog log)

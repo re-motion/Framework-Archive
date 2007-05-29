@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon;
 using Rubicon.Utilities;
 
 namespace Mixins.CodeGeneration.DynamicProxy
@@ -108,7 +110,54 @@ namespace Mixins.CodeGeneration.DynamicProxy
       newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
 
       newConstructor.CodeBuilder.AddStatement (new ReturnStatement ());
-      newConstructor.Generate ();
+    }
+
+    public void ImplementGetObjectDataByDelegation(Func<MethodEmitter, bool, MethodInvocationExpression> delegatingMethodInvocationGetter)
+    {
+      ArgumentUtility.CheckNotNull ("delegatingMethodInvocationGetter", delegatingMethodInvocationGetter);
+
+      bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (BaseType);
+
+      MethodInfo getObjectDataMethod =
+          typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
+      MethodEmitter newMethod = CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
+
+      MethodInvocationExpression delegatingMethodInvocation = delegatingMethodInvocationGetter(newMethod, baseIsISerializable);
+      if (delegatingMethodInvocation != null)
+        newMethod.CodeBuilder.AddStatement (new ExpressionStatement (delegatingMethodInvocation));
+
+      if (baseIsISerializable)
+      {
+        ConstructorInfo baseConstructor = BaseType.GetConstructor (
+            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+            null,
+            CallingConventions.Any,
+            new Type[] {typeof (SerializationInfo), typeof (StreamingContext)},
+            null);
+        if (baseConstructor == null || (!baseConstructor.IsPublic && !baseConstructor.IsFamily))
+        {
+          string message = string.Format (
+              "No public or protected deserialization constructor in type {0} - this is not supported.",
+              BaseType.FullName);
+          throw new NotSupportedException (message);
+        }
+
+        MethodInfo baseGetObjectDataMethod =
+            BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (baseGetObjectDataMethod == null || (!baseGetObjectDataMethod.IsPublic && !baseGetObjectDataMethod.IsFamily))
+        {
+          string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", BaseType.FullName);
+          throw new NotSupportedException (message);
+        }
+        newMethod.CodeBuilder.AddStatement (
+            new ExpressionStatement (
+                new MethodInvocationExpression (
+                    SelfReference.Self,
+                    baseGetObjectDataMethod,
+                    new ReferenceExpression (newMethod.Arguments[0]),
+                    new ReferenceExpression (newMethod.Arguments[1]))));
+      }
+      newMethod.CodeBuilder.AddStatement (new ReturnStatement());
     }
   }
 }

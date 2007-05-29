@@ -48,7 +48,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Make serialization work")]
+    [Ignore ("TODO: Make caching of configurations by context work correctly")]
     public void CacheEvenWorksForSerialization ()
     {
       BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
@@ -91,7 +91,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Make serialization work, TODO: Cache generated mixin types")]
+    [Ignore ("TODO: Make caching of configurations by context work correctly, TODO: Cache generated mixin types")]
     public void MixinTypeCacheEvenWorksForSerialization ()
     {
       Assert.Fail ();

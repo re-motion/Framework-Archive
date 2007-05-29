@@ -57,13 +57,12 @@
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
+    <Compile Include="Mixins\MixinSerializationTests.cs" />
     <Compile Include="SampleTypes\MixinWithSystemObjectBase.cs" />
     <Compile Include="Utilities\GenericTypeInstantiatorTests.cs" />
     <Compile Include="Utilities\MixinTypeInstantiatorTests.cs" />
     <Compile Include="Utilities\NameAndSignatureEqualityComparerTests.cs" />
-    <Compile Include="Utilities\Serialization\FixupTests.cs" />
     <Compile Include="Utilities\Serialization\GenericType.cs" />
-    <Compile Include="Utilities\Serialization\SafeISerializableTests.cs" />
     <Compile Include="Utilities\Serialization\SafeReflectionSerializationTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\AbstractMixinWithoutBase.cs" />

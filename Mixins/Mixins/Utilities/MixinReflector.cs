@@ -64,6 +64,17 @@ namespace Mixins.Utilities
         return mixinBaseType.GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
+    public static PropertyInfo GetConfigurationProperty (Type concreteMixinType)
+    {
+      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
+
+      Type mixinBaseType = GetMixinBaseType (concreteMixinType);
+      if (mixinBaseType == null)
+        return null;
+      else
+        return mixinBaseType.GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance);
+    }
+
     public static MethodInfo GetInitializationMethod (Type concreteMixinType)
     {
       ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);

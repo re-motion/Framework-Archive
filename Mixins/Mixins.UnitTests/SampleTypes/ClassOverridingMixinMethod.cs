@@ -5,6 +5,7 @@ using System.Text;
 namespace Mixins.UnitTests.SampleTypes
 {
   [Uses(typeof(AbstractMixin))]
+  [Serializable]
   public class ClassOverridingMixinMethod
   {
     [Override]
