@@ -93,7 +93,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     public TypeBuilder TypeBuilder
     {
-      get { return _emitter.TypeBuilder; }
+      get { return Emitter.TypeBuilder; }
     }
 
     public ExtendedClassEmitter Emitter
@@ -106,10 +106,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       get { return _configuration; }
     }
 
-    public TypeBuilder GetBuiltType()
+    public Type GetBuiltType()
     {
-      _baseCallGenerator.Finish();
-      return TypeBuilder;
+      return Emitter.InnerEmitter.BuildType ();
     }
 
     internal FieldInfo ExtensionsField
@@ -124,11 +123,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementGetObjectData()
     {
-      bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (_emitter.BaseType);
+      bool baseIsISerializable = typeof (ISerializable).IsAssignableFrom (Emitter.BaseType);
 
       MethodInfo getObjectDataMethod =
           typeof (ISerializable).GetMethod ("GetObjectData", new Type[] {typeof (SerializationInfo), typeof (StreamingContext)});
-      MethodEmitter newMethod = _emitter.CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
+      MethodEmitter newMethod = Emitter.CreateMethodOverrideOrInterfaceImplementation (getObjectDataMethod).InnerEmitter;
 
       newMethod.CodeBuilder.AddStatement (
           new ExpressionStatement (
@@ -144,7 +143,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       if (baseIsISerializable)
       {
-        ConstructorInfo baseConstructor = _emitter.BaseType.GetConstructor (
+        ConstructorInfo baseConstructor = Emitter.BaseType.GetConstructor (
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
             null,
             CallingConventions.Any,
@@ -154,15 +153,15 @@ namespace Mixins.CodeGeneration.DynamicProxy
         {
           string message = string.Format (
               "No public or protected deserialization constructor in type {0} - this is not supported.",
-              _emitter.BaseType.FullName);
+              Emitter.BaseType.FullName);
           throw new NotSupportedException (message);
         }
 
         MethodInfo baseGetObjectDataMethod =
-            _emitter.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            Emitter.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         if (baseGetObjectDataMethod == null || (!baseGetObjectDataMethod.IsPublic && !baseGetObjectDataMethod.IsFamily))
         {
-          string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", _emitter.BaseType.FullName);
+          string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", Emitter.BaseType.FullName);
           throw new NotSupportedException (message);
         }
         newMethod.CodeBuilder.AddStatement (
@@ -174,7 +173,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
                     new ReferenceExpression (newMethod.Arguments[1]))));
       }
       newMethod.CodeBuilder.AddStatement (new ReturnStatement());
-      newMethod.Generate();
     }
 
     private void ImplementIMixinTarget()
@@ -182,25 +180,22 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Assertion.DebugAssert (Array.IndexOf (TypeBuilder.GetInterfaces(), typeof (IMixinTarget)) != 0);
 
       CustomPropertyEmitter configurationProperty =
-          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
+          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Configuration"));
       configurationProperty.GetMethod =
-          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
+          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Configuration")).InnerEmitter;
       configurationProperty.ImplementPropertyWithField (_configurationField);
-      configurationProperty.Generate();
 
       CustomPropertyEmitter mixinsProperty =
-          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
+          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("Mixins"));
       mixinsProperty.GetMethod =
-          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
+          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_Mixins")).InnerEmitter;
       mixinsProperty.ImplementPropertyWithField (_extensionsField);
-      mixinsProperty.Generate();
 
       CustomPropertyEmitter firstProperty =
-          _emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
+          Emitter.CreatePropertyOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetProperty ("FirstBaseCallProxy"));
       firstProperty.GetMethod =
-          _emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
+          Emitter.CreateMethodOverrideOrInterfaceImplementation (typeof (IMixinTarget).GetMethod ("get_FirstBaseCallProxy")).InnerEmitter;
       firstProperty.ImplementPropertyWithField (_firstField);
-      firstProperty.Generate ();
     }
 
     private void ImplementIntroducedInterfaces()
@@ -212,13 +207,13 @@ namespace Mixins.CodeGeneration.DynamicProxy
             new LoadArrayElementExpression (introduction.Implementer.MixinIndex, _extensionsField, typeof (object)));
 
         foreach (MethodIntroductionDefinition method in introduction.IntroducedMethods)
-          ImplementIntroducedMethod (implementerExpression, method.ImplementingMember, method.InterfaceMember).InnerEmitter.Generate();
+          ImplementIntroducedMethod (implementerExpression, method.ImplementingMember, method.InterfaceMember);
 
         foreach (PropertyIntroductionDefinition property in introduction.IntroducedProperties)
-          ImplementIntroducedProperty (implementerExpression, property).Generate();
+          ImplementIntroducedProperty (implementerExpression, property);
 
         foreach (EventIntroductionDefinition eventIntro in introduction.IntroducedEvents)
-          ImplementIntroducedEvent (eventIntro, implementerExpression).Generate();
+          ImplementIntroducedEvent (eventIntro, implementerExpression);
       }
     }
 
@@ -227,9 +222,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
         MethodDefinition implementingMember,
         MethodInfo interfaceMember)
     {
-      CustomMethodEmitter customMethodEmitter = _emitter.CreateMethodOverrideOrInterfaceImplementation (interfaceMember);
+      CustomMethodEmitter customMethodEmitter = Emitter.CreateMethodOverrideOrInterfaceImplementation (interfaceMember);
 
-      LocalReference localImplementer = _emitter.AddMakeReferenceOfExpressionStatements (customMethodEmitter, interfaceMember.DeclaringType,
+      LocalReference localImplementer = Emitter.AddMakeReferenceOfExpressionStatements (customMethodEmitter, interfaceMember.DeclaringType,
           implementerExpression);
       customMethodEmitter.ImplementMethodByDelegation (localImplementer, interfaceMember);
 
@@ -239,7 +234,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private CustomPropertyEmitter ImplementIntroducedProperty (Expression implementerExpression, PropertyIntroductionDefinition property)
     {
-      CustomPropertyEmitter propertyEmitter = _emitter.CreatePropertyOverrideOrInterfaceImplementation (property.InterfaceMember);
+      CustomPropertyEmitter propertyEmitter = Emitter.CreatePropertyOverrideOrInterfaceImplementation (property.InterfaceMember);
 
       if (property.ImplementingMember.GetMethod != null)
         propertyEmitter.GetMethod = ImplementIntroducedMethod (
@@ -262,7 +257,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       Assertion.Assert (eventIntro.ImplementingMember.AddMethod != null);
       Assertion.Assert (eventIntro.ImplementingMember.RemoveMethod != null);
 
-      CustomEventEmitter eventEmitter = _emitter.CreateEventOverrideOrInterfaceImplementation (eventIntro.InterfaceMember);
+      CustomEventEmitter eventEmitter = Emitter.CreateEventOverrideOrInterfaceImplementation (eventIntro.InterfaceMember);
       eventEmitter.AddMethod = ImplementIntroducedMethod (
           implementerExpression,
           eventIntro.ImplementingMember.AddMethod,
@@ -288,9 +283,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ImplementOverride (MethodDefinition method)
     {
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
-      CustomMethodEmitter methodOverride = _emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
+      CustomMethodEmitter methodOverride = Emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
       methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
-      methodOverride.InnerEmitter.Generate();
     }
 
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)
@@ -301,9 +295,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ReplicateClassAttributes()
     {
-      ReplicateAttributes (_configuration.CustomAttributes, _emitter);
+      ReplicateAttributes (_configuration.CustomAttributes, Emitter);
       foreach (MixinDefinition mixin in _configuration.Mixins)
-        ReplicateAttributes (mixin.CustomAttributes, _emitter);
+        ReplicateAttributes (mixin.CustomAttributes, Emitter);
     }
 
     private void AddDebuggerAttributes ()
@@ -314,7 +308,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
           new CustomAttributeBuilder (
               typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] { typeof (string) }),
               new object[] { debuggerString });
-      _emitter.AddCustomAttribute (debuggerAttribute);
+      Emitter.AddCustomAttribute (debuggerAttribute);
     }
 
     public MethodInfo GetBaseCallMethodFor (MethodInfo method)
@@ -334,10 +328,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private MethodInfo ImplementBaseCallMethod (MethodInfo method)
     {
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (_emitter.InnerEmitter, "__base__" + method.Name, attributes);
+      CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter.InnerEmitter, "__base__" + method.Name, attributes);
       baseCallMethod.CopyParametersAndReturnTypeFrom (method);
       baseCallMethod.ImplementMethodByBaseCall (method);
-      baseCallMethod.InnerEmitter.Generate();
       return baseCallMethod.MethodBuilder;
     }
   }

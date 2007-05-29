@@ -23,27 +23,22 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public MethodEmitter GetMethod
     {
       get { return getMethod; }
-      set { getMethod = value; }
+      set
+      {
+        getMethod = value;
+        if (getMethod != null)
+          builder.SetGetMethod (getMethod.MethodBuilder);
+      }
     }
 
     public MethodEmitter SetMethod
     {
       get { return setMethod; }
-      set { setMethod = value; }
-    }
-
-    public void Generate ()
-    {
-      if (setMethod != null)
+      set
       {
-        setMethod.Generate ();
-        builder.SetSetMethod (setMethod.MethodBuilder);
-      }
-
-      if (getMethod != null)
-      {
-        getMethod.Generate ();
-        builder.SetGetMethod (getMethod.MethodBuilder);
+        setMethod = value;
+        if (setMethod != null)
+          builder.SetSetMethod (setMethod.MethodBuilder);
       }
     }
 
@@ -61,9 +56,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
       if (SetMethod != null)
       {
         SetMethod.CodeBuilder.AddStatement (
-            new AssignStatement (backingField, SetMethod.Arguments[0].ToExpression ()));
+            new AssignStatement (backingField, SetMethod.Arguments[0].ToExpression()));
       }
     }
-
   }
 }

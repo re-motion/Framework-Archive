@@ -22,27 +22,21 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public MethodEmitter AddMethod
     {
       get { return addMethod; }
-      set { addMethod = value; }
+      set
+      {
+        addMethod = value;
+        builder.SetAddOnMethod (addMethod.MethodBuilder);
+      }
     }
 
     public MethodEmitter RemoveMethod
     {
       get { return removeMethod; }
-      set { removeMethod = value; }
-    }
-
-    public void Generate ()
-    {
-      if (addMethod == null)
-        throw new InvalidOperationException ("Cannot generate an event without add method.");
-      if (removeMethod == null)
-        throw new InvalidOperationException ("Cannot generate an event without remove method.");
-
-      addMethod.Generate ();
-      builder.SetAddOnMethod (addMethod.MethodBuilder);
-
-      removeMethod.Generate ();
-      builder.SetRemoveOnMethod (removeMethod.MethodBuilder);
+      set
+      {
+        removeMethod = value;
+        builder.SetRemoveOnMethod (removeMethod.MethodBuilder);
+      }
     }
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)

@@ -36,7 +36,7 @@ namespace Mixins.CodeGeneration
       return _typeCache.GetOrCreateValue (configuration, delegate (BaseClassDefinition classConfiguration)
       {
         ITypeGenerator generator = Scope.CreateTypeGenerator (classConfiguration);
-        Type finishedType = generator.GetBuiltType ().CreateType ();
+        Type finishedType = generator.GetBuiltType ();
         generator.InitializeStaticFields (finishedType);
         return finishedType;
       });
