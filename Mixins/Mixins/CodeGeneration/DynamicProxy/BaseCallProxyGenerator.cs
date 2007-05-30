@@ -29,14 +29,15 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
       List<Type> interfaces = new List<Type> ();
       foreach (RequiredBaseCallTypeDefinition requiredType in _baseClassConfiguration.RequiredBaseCallTypes)
-      {
         interfaces.Add (requiredType.Type);
-      }
-      interfaces.Add (typeof (ISerializable));
 
-      _emitter = new ExtendedClassEmitter (new NestedClassEmitter (surroundingTypeEmitter, "BaseCallProxy", typeof (object),
-          interfaces.ToArray ()));
-      _emitter.AddCustomAttribute (new CustomAttributeBuilder (typeof (SerializableAttribute).GetConstructor(Type.EmptyTypes), new object[0]));
+      _emitter = new ExtendedClassEmitter (
+          new NestedClassEmitter (
+              surroundingTypeEmitter,
+              "BaseCallProxy",
+              typeof (object),
+              interfaces.ToArray()));
+      _emitter.AddCustomAttribute (new CustomAttributeBuilder (typeof (SerializableAttribute).GetConstructor (Type.EmptyTypes), new object[0]));
 
       _thisField = _emitter.InnerEmitter.CreateField ("__this", _surroundingType.TypeBuilder);
       _depthField = _emitter.InnerEmitter.CreateField ("__depth", typeof (int));
@@ -44,7 +45,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       ImplementConstructor();
       ImplementBaseCallsForOverriddenMethodsOnTarget();
       ImplementBaseCallsForRequirements();
-      ImplementGetObjectData();
     }
 
     public Type TypeBuilder
@@ -67,7 +67,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       get { return _surroundingType; }
     }
 
-    public MethodInfo GetProxyMethodForOverriddenMethod(MethodDefinition method)
+    public MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method)
     {
       return _overriddenMethodToImplementationMap[method];
     }
@@ -78,9 +78,9 @@ namespace Mixins.CodeGeneration.DynamicProxy
       ArgumentReference arg2 = new ArgumentReference (typeof (int));
       ConstructorEmitter ctor = _emitter.InnerEmitter.CreateConstructor (arg1, arg2);
       ctor.CodeBuilder.InvokeBaseConstructor();
-      ctor.CodeBuilder.AddStatement (new AssignStatement (_thisField, arg1.ToExpression ()));
-      ctor.CodeBuilder.AddStatement (new AssignStatement (_depthField, arg2.ToExpression ()));
-      ctor.CodeBuilder.AddStatement (new ReturnStatement ());
+      ctor.CodeBuilder.AddStatement (new AssignStatement (_thisField, arg1.ToExpression()));
+      ctor.CodeBuilder.AddStatement (new AssignStatement (_depthField, arg2.ToExpression()));
+      ctor.CodeBuilder.AddStatement (new ReturnStatement());
     }
 
     private void ImplementBaseCallsForOverriddenMethodsOnTarget ()
@@ -142,28 +142,6 @@ namespace Mixins.CodeGeneration.DynamicProxy
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
       methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
-    }
-
-    private void ImplementGetObjectData ()
-    {
-      MethodEmitter newMethod = _emitter.CreateMethodOverrideOrInterfaceImplementation (_getObjectDataMethod).InnerEmitter;
-      newMethod.CodeBuilder.AddStatement (
-          new ExpressionStatement (
-              new MethodInvocationExpression (
-                  null,
-                  typeof (BaseCallProxySerializationHelper).GetMethod ("GetObjectDataForBaseCallProxy"),
-                  new ReferenceExpression (newMethod.Arguments[0]),
-                  new ReferenceExpression (newMethod.Arguments[1]),
-                  new ReferenceExpression (SelfReference.Self),
-                  new ReferenceExpression (_depthField),
-                  new ReferenceExpression (_thisField))));
-
-      newMethod.CodeBuilder.AddStatement (new ReturnStatement ());
-    }
-
-    public void Finish()
-    {
-      _emitter.InnerEmitter.BuildType();
     }
   }
 }
