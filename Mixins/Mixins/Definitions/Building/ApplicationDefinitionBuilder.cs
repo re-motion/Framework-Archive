@@ -7,7 +7,6 @@ namespace Mixins.Definitions.Building
   public class ApplicationDefinitionBuilder
   {
     private ApplicationDefinition _newApplication = new ApplicationDefinition ();
-    private BaseClassDefinitionBuilder analyzer = new BaseClassDefinitionBuilder ();
 
     public void Apply (ApplicationContext context)
     {
@@ -15,7 +14,7 @@ namespace Mixins.Definitions.Building
 
       foreach (ClassContext classContext in context.ClassContexts)
       {
-        BaseClassDefinition classDefinition = analyzer.Apply (classContext);
+        BaseClassDefinition classDefinition = classContext.Analyze();
         _newApplication.BaseClasses.Add (classDefinition);
       }
     }

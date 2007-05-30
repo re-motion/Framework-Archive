@@ -45,7 +45,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public MixinSerializationHelper (SerializationInfo info, StreamingContext context)
     {
       ClassContext targetClassContext = (ClassContext) info.GetValue ("__configuration.BaseClass.ConfigurationContext", typeof (ClassContext));
-      BaseClassDefinition targetClassDefinition = new BaseClassDefinitionBuilder ().Apply (targetClassContext);
+      BaseClassDefinition targetClassDefinition = targetClassContext.Analyze();
 
       int mixinIndex = info.GetInt32 ("__configuration.MixinIndex");
       _mixinDefinition = targetClassDefinition.Mixins[mixinIndex];

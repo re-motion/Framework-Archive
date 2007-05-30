@@ -147,6 +147,7 @@
     <Compile Include="OverrideAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
+    <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
     <Compile Include="Validation\DefaultLog\ConsoleDumper.cs" />
     <Compile Include="Validation\DefaultLog\DefaultValidationExceptionItem.cs" />
     <Compile Include="Validation\DefaultLog\DefaultValidationResultItem.cs" />

@@ -14,7 +14,7 @@ namespace Mixins.Definitions.Building
     {
     }
 
-    public BaseClassDefinition Apply (ClassContext classContext)
+    public BaseClassDefinition Build (ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
       if (classContext.Type.ContainsGenericParameters)
