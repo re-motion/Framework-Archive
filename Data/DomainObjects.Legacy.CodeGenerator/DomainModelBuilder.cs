@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.IO;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -11,7 +10,11 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
   {
     private static readonly string s_fileExtention = ".cs";
 
-    public static void Build (
+    public DomainModelBuilder ()
+    {
+    }
+
+    public void Build (
         MappingConfiguration mappingConfiguration,
         string outputFolder,
         string domainObjectBaseClass,
@@ -19,13 +22,16 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
         bool serializableAttribute,
         bool multiLingualResourcesAttribute)
     {
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
       ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
-
+    
       foreach (XmlBasedClassDefinition classDefinition in mappingConfiguration.ClassDefinitions)
       {
-        DomainObjectBuilder.Build (
-            mappingConfiguration, GetFileName (outputFolder, new TypeName (classDefinition.ClassTypeName)),
-            classDefinition, domainObjectBaseClass, serializableAttribute, multiLingualResourcesAttribute);
+        using (TextWriter writer = new StreamWriter (GetFileName (outputFolder, new TypeName (classDefinition.ClassTypeName))))
+        {
+          DomainObjectBuilder builder = CreateDomainObjectBuilder(mappingConfiguration, writer);
+          builder.Build (classDefinition, domainObjectBaseClass, serializableAttribute, multiLingualResourcesAttribute);
+        }
 
         foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
         {
@@ -38,13 +44,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
             continue;
 
           TypeName requiredItemTypeName = new TypeName (
-              ((XmlBasedClassDefinition)classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
+              ((XmlBasedClassDefinition) classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
 
-          DomainObjectCollectionBuilder.Build (
-              GetFileName (outputFolder, propertyTypeName),
-              propertyTypeName,
-              requiredItemTypeName.Name,
-              domainObjectCollectionBaseClass, serializableAttribute);
+          using (TextWriter writer = new StreamWriter (GetFileName (outputFolder, propertyTypeName)))
+          {
+            DomainObjectCollectionBuilder builder = new DomainObjectCollectionBuilder (writer);
+            builder.Build (propertyTypeName, requiredItemTypeName.Name, domainObjectCollectionBaseClass, serializableAttribute);
+          }
         }
 
         foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
@@ -60,13 +66,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
       }
     }
 
-    private static string GetFileName (string outputFolder, TypeName typeName)
+    protected virtual DomainObjectBuilder CreateDomainObjectBuilder (MappingConfiguration mappingConfiguration, TextWriter writer)
     {
-      return Path.Combine (outputFolder, typeName.Name + s_fileExtention);
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull ("writer", writer);
+      
+      return new DomainObjectBuilder (mappingConfiguration, writer);
     }
 
-    private DomainModelBuilder ()
+    private string GetFileName (string outputFolder, TypeName typeName)
     {
+      return Path.Combine (outputFolder, typeName.Name + s_fileExtention);
     }
   }
 }

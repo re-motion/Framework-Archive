@@ -9,20 +9,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationT
   [TestFixture]
   public class DomainObjectCollectionBuilderTest : MappingBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public DomainObjectCollectionBuilderTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void BuildOrderCollection ()
     {
@@ -30,11 +16,16 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationT
       {
         TypeName orderCollectionTypeName = new TypeName ("Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderCollection", "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
 
-        DomainObjectCollectionBuilder.Build (stringWriter, orderCollectionTypeName, "Order", DomainObjectCollectionBuilder.DefaultBaseClass, false);
+        DomainObjectCollectionBuilder builder = new DomainObjectCollectionBuilder (stringWriter);
+        builder.Build (orderCollectionTypeName, "Order", DomainObjectCollectionBuilder.DefaultBaseClass, false);
 
-        Assert.AreEqual (File.ReadAllText (@"OrderCollection.cs"), stringWriter.ToString ());
+        Assert.AreEqual (GetFile (@"OrderCollection.cs"), stringWriter.ToString ());
       }
     }
 
+    private string GetFile (string filename)
+    {
+      return ResourceManager.GetResourceString ("IntegrationTests.TestDomain." + filename);
+    }
   }
 }

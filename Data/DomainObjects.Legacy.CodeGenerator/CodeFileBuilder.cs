@@ -114,11 +114,18 @@ public class CodeFileBuilder: FileBuilder
 
   private readonly string s_baseConstructorCall = "\r\n      : base (%parameterlist%)";
 
-  private static readonly string s_propertyHeader = 
-      "    %accessibility%%propertytype% %propertyname%\r\n"
+  private static readonly string s_propertyHeader =
+      "    %accessibility%%modifier%%propertytype% %propertyname%\r\n"
       + "    {\r\n";
   private static readonly string s_propertyFooter =
       "    }\r\n"
+      + "\r\n";
+
+  private static readonly string s_inlinePropertyHeader =
+      "    %accessibility%%modifier%%propertytype% %propertyname% { ";
+
+  private static readonly string s_inlinePropertyFooter =
+      "}\r\n"
       + "\r\n";
 
   #endregion
@@ -147,7 +154,7 @@ public class CodeFileBuilder: FileBuilder
     {
       TypeInfo typeInfo = TypeInfo.GetInstance (propertyDefinition.MappingTypeName, propertyDefinition.IsNullable);
 
-      string cSharpTypeString = (string) s_TypeToCSharpType[typeInfo.Type];
+      string cSharpTypeString = GetCSharpTypeName(typeInfo);
       if (cSharpTypeString != null)
         return cSharpTypeString;
       else
@@ -158,6 +165,11 @@ public class CodeFileBuilder: FileBuilder
       return typeName.DeclaringTypeName.Name + "." + typeName.Name;
 
     return typeName.Name;
+  }
+
+  protected virtual string GetCSharpTypeName (TypeInfo typeInfo)
+  {
+    return (string) s_TypeToCSharpType[typeInfo.Type];
   }
 
   protected override void FinishFile ()
@@ -260,14 +272,13 @@ public class CodeFileBuilder: FileBuilder
     ArgumentUtility.CheckNotNull ("accessibility", accessibility);
     ArgumentUtility.CheckNotNull ("returnType", returnType);
     ArgumentUtility.CheckNotNull ("methodName", methodName);
-    ArgumentUtility.CheckNotNull ("parameterlist", parameterlist);
 
     string constructor = s_methodHeader;
     constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
     constructor = ReplaceTag (constructor, s_modifierTag, modifier);
     constructor = ReplaceTag (constructor, s_returntypeTag, returnType);
     constructor = ReplaceTag (constructor, s_methodnameTag, methodName);
-    constructor = ReplaceTag (constructor, s_parameterlistTag, parameterlist);
+    constructor = ReplaceTag (constructor, s_parameterlistTag, StringUtility.NullToEmpty (parameterlist));
 
     Write (constructor);
   }
@@ -309,22 +320,23 @@ public class CodeFileBuilder: FileBuilder
 
   protected void BeginProperty (string propertyName, string propertyType)
   {
-    BeginProperty (s_accessibilityPublic, propertyName, propertyType);
+    BeginProperty (s_accessibilityPublic, null, propertyName, propertyType, false);
   }
 
-  protected void BeginProperty (string accessibility, string propertyName, string propertyType)
+  protected void BeginProperty (string accessibility, string modifier, string propertyName, string propertyType, bool inline)
   {
-    string property = s_propertyHeader;
+    string property = inline ? s_inlinePropertyHeader : s_propertyHeader;
     property = ReplaceTag (property, s_accessibilityTag, accessibility);
+    property = ReplaceTag (property, s_modifierTag, StringUtility.NullToEmpty (modifier));
     property = ReplaceTag (property, s_propertynameTag, propertyName);
     property = ReplaceTag (property, s_propertytypeTag, propertyType);
 
     Write (property);
   }
 
-  protected void EndProperty ()
+  protected void EndProperty (bool inline)
   {
-    Write (s_propertyFooter);
+    Write (inline ? s_inlinePropertyFooter : s_propertyFooter);
   }
 }
 }

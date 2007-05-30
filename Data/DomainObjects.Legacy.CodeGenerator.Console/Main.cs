@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using Rubicon.Configuration;
 using Rubicon.Data.DomainObjects.Configuration;
+using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.MigrationToReflectionBasedMapping;
 using Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Sql;
 using Rubicon.Data.DomainObjects.Legacy.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
@@ -53,7 +54,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.Console
 
         if ((arguments.Mode & OperationMode.DomainModel) != 0)
         {
-          DomainModelBuilder.Build (
+          DomainModelBuilder domainModelBuilder;
+          if ((arguments.Mode & OperationMode.Migration) != 0)
+            domainModelBuilder = new MigrationDomainModelBuilder();
+          else
+            domainModelBuilder = new DomainModelBuilder ();
+
+          domainModelBuilder.Build (
               mappingConfiguration,
               arguments.ClassOutput,
               arguments.DomainObjectBaseClass,

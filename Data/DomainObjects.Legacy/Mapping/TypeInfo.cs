@@ -79,16 +79,6 @@ public class TypeInfo
     return new Tuple<string, bool> (mappingType, isNullable); 
   }
 
-  private static Tuple<Type, bool> GetTypeKey (TypeInfo typeInfo)
-  {
-    return GetTypeKey (typeInfo.Type, typeInfo.IsNullable);
-  }
-
-  private static Tuple<Type, bool> GetTypeKey (Type type, bool isNullable)
-  {
-    return new Tuple<Type, bool> (type, isNullable);
-  }
-
   // member fields
 
   private Type _type;

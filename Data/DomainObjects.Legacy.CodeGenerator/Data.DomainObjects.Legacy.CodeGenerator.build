@@ -16,6 +16,7 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
+        <include name="MigrationToReflectionBasedMapping/**/*.cs"/>
         <include name="Properties/**/*.cs" />
         <include name="Sql/**/*.cs"/>
         <exclude name="Properties/AssemblyInfoTemplate.cs" />

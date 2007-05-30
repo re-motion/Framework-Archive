@@ -48,22 +48,34 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Sql\SqlServer\TestData\SetupDB_SecondStorageProvider.sql">
     </EmbeddedResource>
+    <Compile Include="MappingForMigrationBaseTest.cs" />
     <Compile Include="DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectCollectionBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\EnumBuilderTest.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\Ceo.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\ClassWithAllDataTypes.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\Company.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\Customer.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\Official.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\Order.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderCollection.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderItem.cs" />
-    <TestDomainFiles Include="IntegrationTests\TestDomain\OrderPriority.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\Ceo.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\ClassWithAllDataTypes.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\Company.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\Customer.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\Official.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\Order.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\OrderCollection.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\OrderItem.cs" />
+    <EmbeddedResource Include="IntegrationTests\TestDomain\OrderPriority.cs" />
     <Compile Include="MappingBaseTest.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\Ceo.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\OrderPriority.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\ClassWithAllDataTypes.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\Company.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\Customer.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\Official.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\Order.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\OrderCollection.cs" />
+    <EmbeddedResource Include="MigrationToReflectionBasedMapping\TestDomain\OrderItem.cs" />
+    <Compile Include="MigrationToReflectionBasedMapping\MigrationDomainObjectBuilderTest.cs" />
     <Compile Include="NonRdbmsStorageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceManager.cs" />
     <Compile Include="Sql\SqlFileBuilderMock.cs" />
     <Compile Include="Sql\SqlServer\ConstraintBuilderTest.cs" />
     <Compile Include="Sql\SqlFileBuilderBaseTest.cs" />
@@ -87,12 +99,19 @@
       <Project>{E6A8B6CE-2E19-4C01-9D41-63899FE52020}</Project>
       <Name>Data.DomainObjects.Legacy</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Data.DomainObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MappingForMigrationTests.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -102,9 +121,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  -->
   <Target Name="AfterBuild">
-    <Delete Files="@(TestDomainFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Copy SourceFiles="@(TestDomainFiles->'%(Fullpath)')" DestinationFiles="@(TestDomainFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
+  -->
 </Project>

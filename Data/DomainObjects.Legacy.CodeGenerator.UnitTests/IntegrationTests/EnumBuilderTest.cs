@@ -9,20 +9,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationT
   [TestFixture]
   public class EnumBuilderTest : MappingBaseTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    public EnumBuilderTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void BuildOrderPriority ()
     {
@@ -32,9 +18,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationT
             "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority", "Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests");
 
         EnumBuilder.Build (stringWriter, typeName, false);
-        Assert.AreEqual (File.ReadAllText (@"OrderPriority.cs"), stringWriter.ToString ());
+        Assert.AreEqual (GetFile (@"OrderPriority.cs"), stringWriter.ToString ());
       }
     }
 
+    private string GetFile (string filename)
+    {
+      return ResourceManager.GetResourceString ("IntegrationTests.TestDomain." + filename);
+    }
   }
 }

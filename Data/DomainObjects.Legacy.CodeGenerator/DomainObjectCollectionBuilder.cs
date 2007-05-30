@@ -33,40 +33,23 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
 
     #endregion
 
-    public static void Build (string filename, TypeName typeName, string requiredItemTypeName, string baseClass, bool serializableAttribute)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
-
-      using (TextWriter writer = new StreamWriter (filename))
-      {
-        Build (writer, typeName, requiredItemTypeName, baseClass, serializableAttribute);
-      }
-    }
-
-    public static void Build (TextWriter writer, TypeName typeName, string requiredItemTypeName, string baseClass, bool serializableAttribute)
-    {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("typeName", typeName);
-      ArgumentUtility.CheckNotNull ("requiredTypename", requiredItemTypeName);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-
-      DomainObjectCollectionBuilder builder = new DomainObjectCollectionBuilder (writer);
-      builder.Build (typeName, requiredItemTypeName, baseClass, serializableAttribute);
-    }
-
     // member fields
 
     // construction and disposing
 
-    private DomainObjectCollectionBuilder (TextWriter writer)
+    public DomainObjectCollectionBuilder (TextWriter writer)
       : base (writer)
     {
     }
 
     // methods and properties
 
-    private void Build (TypeName typeName, string requiredItemTypeName, string baseClass, bool serializableAttribute)
+    public void Build (TypeName typeName, string requiredItemTypeName, string baseClass, bool serializableAttribute)
     {
+      ArgumentUtility.CheckNotNull ("typeName", typeName);
+      ArgumentUtility.CheckNotNull ("requiredTypename", requiredItemTypeName);
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+
       BeginNamespace (typeName.Namespace);
 
       if (serializableAttribute)

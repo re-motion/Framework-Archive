@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Rubicon.Data.DomainObjects.Legacy.Mapping;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
 {
@@ -18,38 +18,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
     // static members and constants
 
     public const string DefaultBaseClass = "BindableDomainObject";
-
-    public static void Build (
-        MappingConfiguration mappingConfiguration,
-        string filename, 
-        XmlBasedClassDefinition classDefinition, 
-        string baseClass, 
-        bool serializableAttribute, 
-        bool multiLingualResourcesAttribute)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
-
-      using (TextWriter writer = new StreamWriter (filename))
-      {
-        Build (mappingConfiguration, writer, classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
-      }
-    }
-
-    public static void Build (
-        MappingConfiguration mappingConfiguration,
-        TextWriter writer, 
-        XmlBasedClassDefinition classDefinition, 
-        string baseClass, 
-        bool serializableAttribute, 
-        bool multiLingualResourcesAttribute)
-    {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-
-      DomainObjectBuilder builder = new DomainObjectBuilder (mappingConfiguration, writer);
-      builder.Build (classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
-    }
 
     #region templates
 
@@ -69,19 +37,22 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
         + "    }\r\n"
         + "\r\n";
 
-    private static readonly string s_valuePropertyGetStatement = 
+    private static readonly string s_valuePropertyGetStatement =
         "      get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }\r\n";
-    private static readonly string s_valuePropertySetStatement = 
+
+    private static readonly string s_valuePropertySetStatement =
         "      set { DataContainer[\"%propertyname%\"] = value; }\r\n";
 
-    private static readonly string s_relationPropertyCardinalityOneGetStatement = 
+    private static readonly string s_relationPropertyCardinalityOneGetStatement =
         "      get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }\r\n";
-    private static readonly string s_relationPropertyCardinalityOneSetStatement = 
+
+    private static readonly string s_relationPropertyCardinalityOneSetStatement =
         "      set { SetRelatedObject (\"%propertyname%\", value); }\r\n";
 
-    private static readonly string s_relationPropertyCardinalityManyGetStatement = 
+    private static readonly string s_relationPropertyCardinalityManyGetStatement =
         "      get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }\r\n";
-    private static readonly string s_relationPropertyCardinalityManySetStatement = 
+
+    private static readonly string s_relationPropertyCardinalityManySetStatement =
         "      set { } // marks property %propertyname% as modifiable\r\n";
 
     #endregion
@@ -91,10 +62,12 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
     private MappingConfiguration _mappingConfiguration;
 
     // construction and disposing
-    
-    public DomainObjectBuilder (MappingConfiguration mappingConfiguration, TextWriter writer) : base (writer)
+
+    public DomainObjectBuilder (MappingConfiguration mappingConfiguration, TextWriter writer)
+        : base (writer)
     {
       ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+
 
       _mappingConfiguration = mappingConfiguration;
     }
@@ -106,32 +79,28 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
       get { return _mappingConfiguration; }
     }
 
-    private void Build (XmlBasedClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
+    public void Build (XmlBasedClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
     {
       TypeName typeName = new TypeName (classDefinition.ClassTypeName);
 
       BeginNamespace (typeName.Namespace);
 
-      if (serializableAttribute)
-        WriteSerializableAttribute ();
-
-      if (multiLingualResourcesAttribute)
-        WriteMultiLingualResourcesAttribute (typeName);
+      WriteAttributes (classDefinition, typeName, multiLingualResourcesAttribute, serializableAttribute);
 
       if (classDefinition.BaseClass == null)
       {
-        BeginClass (typeName.Name, baseClass, classDefinition.GetEntityName() == null);
+        BeginClass (typeName.Name, baseClass, IsClassAbstract(classDefinition));
       }
       else
       {
         TypeName baseTypeName = new TypeName (classDefinition.BaseClass.ClassTypeName);
         //TODO ES: decide if typeName must be fully qualified
-        BeginClass (typeName.Name, baseTypeName.Name, classDefinition.GetEntityName () == null);
+        BeginClass (typeName.Name, baseTypeName.Name, IsClassAbstract (classDefinition));
       }
 
       // types
       WriteComment ("types");
-      WriteLine ();
+      WriteLine();
 
       //Write nested types (enums)
       foreach (TypeName nestedEnumTypeName in GetNestedPropertyTypeNames (typeName))
@@ -139,53 +108,60 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
 
       // static members and constants
       WriteComment ("static members and constants");
-      WriteLine ();
+      WriteLine();
 
-      WriteGetObject (typeName.Name, s_getObjectParameters, s_getObjectParametersForContent);
-      WriteGetObject (typeName.Name, s_getObjectParametersWithTransaction, s_getObjectParametersWithTransactionForContent);
+      WriteStaticMembers (classDefinition, typeName);
 
       // member fields
       WriteComment ("member fields");
-      WriteLine ();
+      WriteLine();
 
       // construction and disposing
       WriteComment ("construction and disposing");
-      WriteLine ();
+      WriteLine();
 
-      WriteConstructor (typeName.Name, null, null);
-      WriteConstructor (typeName.Name, "ClientTransaction clientTransaction", "clientTransaction");
-      WriteInfrastructureConstructor (typeName.Name);
+      WriteConstructors (classDefinition, typeName);
 
       // methods and properties
       WriteComment ("methods and properties");
-      WriteLine ();
+      WriteLine();
 
       foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
       {
         if (propertyDefinition.MappingTypeName == TypeInfo.ObjectIDMappingTypeName)
           continue;
 
-        //TODO ES: do not qualify with the name of the declaring type if it is declared in this type
-        WriteValueProperty (propertyDefinition.PropertyName, GetCSharpTypeName (propertyDefinition));
+        WriteValueProperty (propertyDefinition);
       }
 
-      foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
-      {
-        if (endPointDefinition.Cardinality == CardinalityType.One)
-        {
-          TypeName propertyTypeName = new TypeName (
-              ((XmlBasedClassDefinition) classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
-          WriteProperty (endPointDefinition.PropertyName, GetTypeName (typeName, propertyTypeName), s_relationPropertyCardinalityOneGetStatement, s_relationPropertyCardinalityOneSetStatement);
-        }
-        else
-        {
-          WriteProperty (endPointDefinition.PropertyName, GetTypeName (typeName, new TypeName (endPointDefinition.PropertyTypeName)), s_relationPropertyCardinalityManyGetStatement, s_relationPropertyCardinalityManySetStatement);
-        }
-      }
+      foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions())
+        WriteRelationProperty (classDefinition, typeName, endPointDefinition);
 
-      EndClass ();
-      EndNamespace ();
-      FinishFile ();
+      EndClass();
+      EndNamespace();
+      FinishFile();
+    }
+
+    protected virtual void WriteAttributes (
+        XmlBasedClassDefinition classDefinition, TypeName typeName, bool multiLingualResourcesAttribute, bool serializableAttribute)
+    {
+      if (serializableAttribute)
+        WriteSerializableAttribute();
+
+      if (multiLingualResourcesAttribute)
+        WriteMultiLingualResourcesAttribute (typeName);
+    }
+
+    protected virtual bool IsClassAbstract (XmlBasedClassDefinition classDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      return classDefinition.GetEntityName () == null;
+    }
+
+    protected virtual void WriteStaticMembers (XmlBasedClassDefinition classDefinition, TypeName typeName)
+    {
+      WriteGetObject (typeName.Name, s_getObjectParameters, s_getObjectParametersForContent);
+      WriteGetObject (typeName.Name, s_getObjectParametersWithTransaction, s_getObjectParametersWithTransactionForContent);
     }
 
     private void WriteGetObject (string className, string parameterList, string parametersListForGetObjectInvocation)
@@ -200,10 +176,17 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
       EndMethod ();
     }
 
+    protected virtual void WriteConstructors (XmlBasedClassDefinition classDefinition, TypeName typeName)
+    {
+      WriteConstructor (typeName.Name, null, null);
+      WriteConstructor (typeName.Name, "ClientTransaction clientTransaction", "clientTransaction");
+      WriteInfrastructureConstructor (typeName.Name);
+    }
+
     private void WriteConstructor (string className, string parameterList, string parameterListForBaseConstructorCall)
     {
       BeginConstructor (className, parameterList, parameterListForBaseConstructorCall);
-      EndConstructor ();
+      EndConstructor();
     }
 
     private void WriteInfrastructureConstructor (string className)
@@ -215,14 +198,41 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
       WriteComment ("Do not remove the constructor or place any code here.");
       WriteIndentation (1);
       WriteComment ("For any code that should run when a DomainObject is loaded, OnLoaded () should be overridden.");
-      EndConstructor ();
+      EndConstructor();
     }
 
-    private void WriteValueProperty (string propertyName, string propertyTypeName)
+    protected virtual void WriteValueProperty (XmlBasedPropertyDefinition propertyDefinition)
     {
-      WriteProperty (propertyName, propertyTypeName, s_valuePropertyGetStatement, s_valuePropertySetStatement);
+      //TODO ES: do not qualify with the name of the declaring type if it is declared in this type
+      WriteProperty (
+          propertyDefinition.PropertyName,
+          GetCSharpTypeName (propertyDefinition),
+          s_valuePropertyGetStatement,
+          s_valuePropertySetStatement);
     }
-    
+
+    protected virtual void WriteRelationProperty (XmlBasedClassDefinition classDefinition, TypeName typeName, IRelationEndPointDefinition endPointDefinition)
+    {
+      if (endPointDefinition.Cardinality == CardinalityType.One)
+      {
+        TypeName propertyTypeName = new TypeName (
+            ((XmlBasedClassDefinition) classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName)).ClassTypeName);
+        WriteProperty (
+            endPointDefinition.PropertyName,
+            GetTypeName (typeName, propertyTypeName),
+            s_relationPropertyCardinalityOneGetStatement,
+            s_relationPropertyCardinalityOneSetStatement);
+      }
+      else
+      {
+        WriteProperty (
+            endPointDefinition.PropertyName,
+            GetTypeName (typeName, new TypeName (endPointDefinition.PropertyTypeName)),
+            s_relationPropertyCardinalityManyGetStatement,
+            s_relationPropertyCardinalityManySetStatement);
+      }
+    }
+
     private void WriteProperty (string propertyName, string propertyTypeName, string getTemplate, string setTemplate)
     {
       BeginProperty (propertyName, propertyTypeName);
@@ -242,7 +252,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
         Write (setStatement);
       }
 
-      EndProperty ();
+      EndProperty(false);
     }
 
     protected void WriteNestedEnum (TypeName enumTypeName, bool enumDescriptionResourceAttribute)
@@ -255,7 +265,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
       Write (ReplaceTag (s_nestedEnum, s_enumTag, enumTypeName.Name));
     }
 
-    private string GetTypeName (TypeName typeNameOfClassWritten, TypeName typeName)
+    protected string GetTypeName (TypeName typeNameOfClassWritten, TypeName typeName)
     {
       if (typeNameOfClassWritten.Namespace == typeName.Namespace || typeNameOfClassWritten.Namespace.StartsWith (typeName.Namespace))
         return typeName.Name;
@@ -265,7 +275,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
 
     public List<TypeName> GetAllDistinctPropertyTypeNames ()
     {
-      List<TypeName> propertyTypeNames = new List<TypeName> ();
+      List<TypeName> propertyTypeNames = new List<TypeName>();
       foreach (ClassDefinition classDefinition in _mappingConfiguration.ClassDefinitions)
       {
         foreach (XmlBasedPropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
@@ -286,7 +296,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
     {
       foreach (TypeName typeNameInList in typeNames)
       {
-        if (typeNameInList.CompareTo(typeName) == 0)
+        if (typeNameInList.CompareTo (typeName) == 0)
           return true;
       }
       return false;
@@ -294,9 +304,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator
 
     public List<TypeName> GetNestedPropertyTypeNames (TypeName typeName)
     {
-      List<TypeName> nestedPropertyTypeNames = new List<TypeName> ();
+      List<TypeName> nestedPropertyTypeNames = new List<TypeName>();
 
-      foreach (TypeName propertyTypeName in GetAllDistinctPropertyTypeNames ())
+      foreach (TypeName propertyTypeName in GetAllDistinctPropertyTypeNames())
       {
         if (propertyTypeName.IsNested && propertyTypeName.DeclaringTypeName.CompareTo (typeName) == 0)
           nestedPropertyTypeNames.Add (propertyTypeName);

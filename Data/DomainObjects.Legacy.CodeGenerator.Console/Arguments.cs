@@ -17,7 +17,10 @@ public enum OperationMode
 
   [CommandLineMode ("classes", Description = "Generate domain object code.")]
   DomainModel = 2,
-  
+
+  [CommandLineMode ("classesForAttributeMapping", Description = "Generate domain object code for the attribute based mapping.")]
+  Migration = 6,
+
   [CommandLineMode ("full", Description = "Generate domain object code and database scripts.")]
   Full = Sql | DomainModel
 }
@@ -69,7 +72,7 @@ public class Arguments
 
   public void CheckArguments()
   {
-    if ((Mode & OperationMode.DomainModel) != 0)
+    if ((Mode & OperationMode.DomainModel) != 0 )
     {
       if (DomainObjectBaseClass.Length == 0)
         throw new CommandLineArgumentApplicationException ("Domain object base class must not be empty.");
