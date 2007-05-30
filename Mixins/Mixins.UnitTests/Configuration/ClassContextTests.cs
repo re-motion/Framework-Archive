@@ -153,6 +153,27 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    [Ignore ("TODO: Implement ClassContext caching")]
+    public void ClassContextUsesCacheWhenGeneratingDefinition ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      BaseClassDefinition cd = cc.Analyze ();
+      Assert.AreSame (cc, cd.ConfigurationContext);
+      Assert.AreSame (cd, cc.Analyze ());
+      Assert.IsTrue (cc.IsFrozen);
+
+      ClassContext cc2 = new ClassContext (typeof (BaseType1));
+      Assert.AreEqual (cc, cc2);
+      BaseClassDefinition cd2 = cc2.Analyze();
+      Assert.AreSame (cd, cd2);
+      Assert.AreEqual (cc, cd2.ConfigurationContext);
+      Assert.AreEqual (cc2, cd2.ConfigurationContext);
+      Assert.AreSame (cc, cd2.ConfigurationContext);
+      Assert.AreNotSame (cc2, cd2.ConfigurationContext);
+    }
+
+
+    [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
     public void ThrowsIfChangingContextWhenFrozenAdd()
     {

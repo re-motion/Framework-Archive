@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ApplicationContextTests.cs" />
     <Compile Include="Configuration\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\BaseClassDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ClassDefinitionTests.cs" />

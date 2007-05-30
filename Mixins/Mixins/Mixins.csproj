@@ -50,6 +50,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
+    <Compile Include="Context\InitialApplicationContextCreator.cs" />
     <Compile Include="Definitions\Building\MemberChain.cs" />
     <Compile Include="Definitions\IDefinitionItemCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionItemCollectionWrapper.cs" />
