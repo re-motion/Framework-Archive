@@ -15,7 +15,6 @@
         <include name="**/*.cs"/>
         <exclude name="IntegrationTests/TestDomain/*.cs" />
         <exclude name="MigrationToReflectionBasedMapping/TestDomain/*.cs" />
-        <exclude name="bin/**/*.cs" />
         <exclude name="Properties/AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
