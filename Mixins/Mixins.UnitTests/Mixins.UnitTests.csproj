@@ -56,6 +56,7 @@
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MemberChainTests.cs" />
     <Compile Include="Configuration\MemberDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\MixinConfigurationTests.cs" />
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Mixins\MixinSerializationTests.cs" />

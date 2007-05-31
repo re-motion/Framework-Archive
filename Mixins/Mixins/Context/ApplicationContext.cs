@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Mixins.CodeGeneration.SingletonUtilities;
+using Mixins.Utilities.Singleton;
 using Rubicon.Utilities;
 
 namespace Mixins.Context

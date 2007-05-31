@@ -5,7 +5,7 @@ using System.Text;
 using Rubicon;
 using Rubicon.Utilities;
 
-namespace Mixins.CodeGeneration.SingletonUtilities
+namespace Mixins.Utilities.Singleton
 {
   public class CallContextSingleton<T>
   {

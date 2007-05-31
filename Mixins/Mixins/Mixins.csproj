@@ -49,7 +49,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
-    <Compile Include="Context\InitialApplicationContextCreator.cs" />
+    <Compile Include="MixinConfiguration.cs" />
     <Compile Include="Definitions\Building\MemberChain.cs" />
     <Compile Include="Definitions\IDefinitionItemCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionItemCollectionWrapper.cs" />
@@ -60,9 +60,9 @@
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />
     <Compile Include="ObjectFactory.cs" />
-    <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingleton.cs" />
-    <Compile Include="CodeGeneration\SingletonUtilities\CallContextSingletonBase.cs" />
-    <Compile Include="CodeGeneration\SingletonUtilities\DefaultInstanceCreator.cs" />
+    <Compile Include="Utilities\Singleton\CallContextSingleton.cs" />
+    <Compile Include="Utilities\Singleton\CallContextSingletonBase.cs" />
+    <Compile Include="Utilities\Singleton\DefaultInstanceCreator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\CustomEventEmitter.cs" />
@@ -92,7 +92,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\SerializationHelper.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="TypeFactory.cs" />
-    <Compile Include="CodeGeneration\SingletonUtilities\IInstanceCreator.cs" />
+    <Compile Include="Utilities\Singleton\IInstanceCreator.cs" />
     <Compile Include="Definitions\ApplicationDefinition.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />
     <Compile Include="Definitions\BaseClassDefinition.cs" />

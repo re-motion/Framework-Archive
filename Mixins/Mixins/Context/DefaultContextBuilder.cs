@@ -64,5 +64,10 @@ namespace Mixins.Context
         targetContext.GetOrAddClassContext (targetType).AddMixin (applyMixinAttribute.MixinType);
       }
     }
+
+    public static ApplicationContext BuildDefaultContext ()
+    {
+      return new ApplicationContext();
+    }
   }
 }

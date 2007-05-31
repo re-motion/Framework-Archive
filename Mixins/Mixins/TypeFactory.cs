@@ -1,6 +1,6 @@
 using System;
 using Mixins.CodeGeneration;
-using Mixins.CodeGeneration.SingletonUtilities;
+using Mixins.Utilities.Singleton;
 using Mixins.Definitions;
 using Mixins.Validation.DefaultLog;
 using Rubicon.Utilities;

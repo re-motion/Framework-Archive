@@ -1,4 +1,4 @@
-namespace Mixins.CodeGeneration.SingletonUtilities
+namespace Mixins.Utilities.Singleton
 {
   public class DefaultInstanceCreator<T> : IInstanceCreator<T> where T : new()
   {

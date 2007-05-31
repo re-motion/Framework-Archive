@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.CodeGeneration.SingletonUtilities
+namespace Mixins.Utilities.Singleton
 {
   public class CallContextSingletonBase<TSelf, TCreator> where TCreator : IInstanceCreator<TSelf>, new()
   {

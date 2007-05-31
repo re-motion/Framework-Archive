@@ -1,5 +1,5 @@
 using System;
-using Mixins.CodeGeneration.SingletonUtilities;
+using Mixins.Utilities.Singleton;
 using Mixins.Definitions;
 using Rubicon.Collections;
 using Rubicon.Utilities;
