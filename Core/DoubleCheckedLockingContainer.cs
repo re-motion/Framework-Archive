@@ -10,7 +10,7 @@ namespace Rubicon
   public class DoubleCheckedLockingContainer<T>
       where T : class
   {
-    private T _value = null;
+    private volatile T _value = null;
     private readonly Func<T> _defaultFactory;
     private readonly object _sync = new object();
 
