@@ -139,7 +139,7 @@
     <Compile Include="Utilities\SignatureChecker.cs" />
     <Compile Include="Context\ApplicationContext.cs" />
     <Compile Include="Context\ClassContext.cs" />
-    <Compile Include="Context\DefaultContextBuilder.cs" />
+    <Compile Include="Context\ApplicationContextBuilder.cs" />
     <Compile Include="IMixinTarget.cs" />
     <Compile Include="Mixin.cs" />
     <Compile Include="ExtendsAttribute.cs" />

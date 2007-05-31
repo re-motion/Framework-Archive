@@ -21,14 +21,14 @@ namespace Mixins.UnitTests.Configuration
     {
       ApplicationContext ac = new ApplicationContext ();
       Assert.AreEqual (0, ac.ClassContextCount);
-      Assert.IsFalse (ac.HasClassContext (typeof (BaseType1)));
+      Assert.IsFalse (ac.ContainsClassContext (typeof (BaseType1)));
       Assert.IsNull (ac.GetClassContext (typeof (BaseType1)));
       Assert.IsEmpty (new List<ClassContext> (ac.ClassContexts));
 
       ClassContext newContext1 = new ClassContext (typeof (BaseType1));
       ac.AddClassContext (newContext1);
       Assert.AreEqual (1, ac.ClassContextCount);
-      Assert.IsTrue (ac.HasClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac.ContainsClassContext (typeof (BaseType1)));
       Assert.IsNotNull (ac.GetClassContext (typeof (BaseType1)));
       Assert.AreSame (newContext1, ac.GetClassContext (typeof (BaseType1)));
       Assert.Contains (newContext1, new List<ClassContext> (ac.ClassContexts));
@@ -36,7 +36,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (newContext1, ac.GetOrAddClassContext(typeof (BaseType1)));
 
       Assert.IsTrue (ac.RemoveClassContext (typeof (BaseType1)));
-      Assert.IsFalse (ac.HasClassContext (typeof (BaseType1)));
+      Assert.IsFalse (ac.ContainsClassContext (typeof (BaseType1)));
       Assert.IsFalse (ac.RemoveClassContext (typeof (BaseType1)));
 
       ClassContext newContext2 = ac.GetOrAddClassContext (typeof (BaseType2));
@@ -50,9 +50,9 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (newContext3, ac.GetClassContext (typeof (BaseType2)));
 
       ClassContext newContext4 = new ClassContext (typeof (BaseType3));
-      Assert.IsFalse (ac.HasClassContext (newContext4.Type));
+      Assert.IsFalse (ac.ContainsClassContext (newContext4.Type));
       ac.AddOrReplaceClassContext (newContext4);
-      Assert.IsTrue (ac.HasClassContext (newContext4.Type));
+      Assert.IsTrue (ac.ContainsClassContext (newContext4.Type));
     }
 
     [Test]
@@ -75,9 +75,9 @@ namespace Mixins.UnitTests.Configuration
 
       ApplicationContext ac2 = new ApplicationContext (ac);
       Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType2)));
-      Assert.IsFalse (ac2.HasClassContext (typeof (BaseType3)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
+      Assert.IsFalse (ac2.ContainsClassContext (typeof (BaseType3)));
 
       Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
       Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
@@ -85,9 +85,9 @@ namespace Mixins.UnitTests.Configuration
 
       ac2.AddClassContext (new ClassContext (typeof (BaseType3)));
       Assert.AreEqual (3, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType1)));
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType2)));
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType3)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType2)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType3)));
 
       Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType1)));
       Assert.IsNotNull (ac2.GetClassContext (typeof (BaseType2)));
@@ -111,14 +111,14 @@ namespace Mixins.UnitTests.Configuration
       
       ApplicationContext ac2 = new ApplicationContext (ac);
       Assert.AreEqual (2, ac2.ClassContextCount);
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.AreSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
 
       ClassContext newContext = new ClassContext (typeof (BaseType1));
       ac2.AddOrReplaceClassContext (newContext);
       Assert.AreEqual (2, ac2.ClassContextCount);
 
-      Assert.IsTrue (ac2.HasClassContext (typeof (BaseType1)));
+      Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.AreNotSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
     }
   }

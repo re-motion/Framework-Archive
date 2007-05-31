@@ -2,6 +2,8 @@ using System;
 using NUnit.Framework;
 using Mixins.Context;
 using System.Threading;
+using Mixins.UnitTests.SampleTypes;
+using System.Reflection;
 
 namespace Mixins.UnitTests.Configurationw
 {
@@ -104,6 +106,42 @@ namespace Mixins.UnitTests.Configurationw
         Assert.IsTrue (MixinConfiguration.HasActiveContext);
         Assert.AreNotSame (context2, MixinConfiguration.ActiveContext);
         Assert.AreSame (context, MixinConfiguration.ActiveContext);
+      }
+      Assert.IsFalse (MixinConfiguration.HasActiveContext);
+    }
+
+    [Test]
+    public void MixinConfigurationOverloads()
+    {
+      Assert.IsFalse (MixinConfiguration.HasActiveContext);
+      using (new MixinConfiguration (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2)))
+      {
+        Assert.IsTrue (MixinConfiguration.HasActiveContext);
+        Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
+        Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin2)));
+        Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT2Mixin1)));
+        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+
+        using (new MixinConfiguration (new ClassContext(typeof (BaseType3), typeof (BT1Mixin1)), new ClassContext (typeof (object))))
+        {
+          Assert.IsTrue (MixinConfiguration.HasActiveContext);
+          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType3)));
+          Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT1Mixin1)));
+          Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT3Mixin1)));
+          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+
+          using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+          {
+            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
+            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+            Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType3)));
+            Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT1Mixin1)));
+            Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3)).ContainsMixin (typeof (BT3Mixin1)));
+          }
+        }
       }
       Assert.IsFalse (MixinConfiguration.HasActiveContext);
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Mixins.Utilities.Singleton;
 using Mixins.Context;
 
@@ -8,7 +9,7 @@ namespace Mixins
   {
     private static CallContextSingleton<ApplicationContext> _activeContext =
         new CallContextSingleton<ApplicationContext> ("Mixins.MixinConfiguration._activeContext",
-        delegate { return DefaultContextBuilder.BuildDefaultContext(); });
+        delegate { return ApplicationContextBuilder.BuildDefault(); });
 
     public static bool HasActiveContext
     {
@@ -20,9 +21,14 @@ namespace Mixins
       get { return _activeContext.Current; }
     }
 
-    public static void SetActiveContext(ApplicationContext context)
+    public static void SetActiveContext (ApplicationContext context)
     {
       _activeContext.SetCurrent (context);
+    }
+
+    private static ApplicationContext PeekActiveContext
+    {
+      get { return MixinConfiguration.HasActiveContext ? MixinConfiguration.ActiveContext : null; }
     }
 
     private ApplicationContext _previousContext = null;
@@ -30,10 +36,23 @@ namespace Mixins
 
     public MixinConfiguration (ApplicationContext temporaryContext)
     {
-      if (MixinConfiguration.HasActiveContext)
-        _previousContext = MixinConfiguration.ActiveContext;
-
+      _previousContext = MixinConfiguration.PeekActiveContext;
       MixinConfiguration.SetActiveContext (temporaryContext);
+    }
+
+    public MixinConfiguration (Type baseType, params Type[] mixinTypes)
+        : this (new ClassContext (baseType, mixinTypes))
+    {
+    }
+
+    public MixinConfiguration (params ClassContext[] classContexts)
+        : this (ApplicationContextBuilder.BuildFromClasses (MixinConfiguration.PeekActiveContext, classContexts))
+    {
+    }
+
+    public MixinConfiguration (params Assembly[] assemblies)
+        : this (ApplicationContextBuilder.BuildFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies))
+    {
     }
 
     public void Dispose ()

@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Reflection;
+using Rubicon.Utilities;
+
+namespace Mixins.Context
+{
+  public static class ApplicationContextBuilder
+  {
+    public static ApplicationContext BuildFromAssemblies (ApplicationContext parentContext, IEnumerable<Assembly> assemblies)
+    {
+      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+
+      // AnalyzeAssemblyIntoContext will not overwrite any existing class contexts, but instead augment them with any new definitions.
+      // This is exactly what we want for the assemblies, since all of these are of equal priority. However, we want to replace those contexts
+      // inherited from the parent context.
+
+      // Therefore, first analyze the assemblies into a temporary context without replacements:
+      ApplicationContext tempContext = new ApplicationContext();
+      foreach (Assembly assembly in assemblies)
+        AnalyzeAssemblyIntoContext (assembly, tempContext);
+
+      // Then, add them to the resulting context, replacing the respective inherited class contexts:
+      ApplicationContext fullContext = new ApplicationContext (parentContext);
+      foreach (ClassContext classContext in tempContext.ClassContexts)
+        fullContext.AddOrReplaceClassContext (classContext);
+      return fullContext;
+    }
+
+    public static ApplicationContext BuildFromAssemblies (ApplicationContext parentContext, params Assembly[] assemblies)
+    {
+      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+
+      return BuildFromAssemblies (parentContext, (IEnumerable<Assembly>) assemblies);
+    }
+
+    public static ApplicationContext BuildFromAssemblies (params Assembly[] assemblies)
+    {
+      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+
+      return BuildFromAssemblies (null, (IEnumerable<Assembly>) assemblies);
+    }
+
+    public static void AnalyzeAssemblyIntoContext (Assembly assembly, ApplicationContext targetContext)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
+
+      foreach (Type t in assembly.GetTypes())
+      {
+        if (t.IsDefined (typeof (ExtendsAttribute), false))
+          AnalyzeMixin (t, targetContext);
+        if (t.IsDefined (typeof (UsesAttribute), true))
+          AnalyzeMixinApplications (t, targetContext);
+      }
+    }
+
+    private static void AnalyzeMixin (Type mixinType, ApplicationContext targetContext)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
+
+      foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes (typeof (ExtendsAttribute), false))
+      {
+        targetContext.GetOrAddClassContext (mixinAttribute.TargetType).AddMixin (mixinType);
+      }
+    }
+
+    private static void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
+    {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
+
+      foreach (UsesAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
+      {
+        targetContext.GetOrAddClassContext (targetType).AddMixin (applyMixinAttribute.MixinType);
+      }
+    }
+
+    public static ApplicationContext BuildDefault ()
+    {
+      return new ApplicationContext();
+    }
+
+    public static ApplicationContext BuildFromClasses (ApplicationContext parentContext, params ClassContext[] classContexts)
+    {
+      ArgumentUtility.CheckNotNull ("classContexts", classContexts);
+
+      ApplicationContext context = new ApplicationContext (parentContext);
+      foreach (ClassContext classContext in classContexts)
+        context.AddOrReplaceClassContext (classContext);
+      return context;
+    }
+  }
+}

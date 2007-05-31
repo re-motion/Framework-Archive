@@ -45,7 +45,7 @@ namespace Mixins.UnitTests.Configuration
 
     private ApplicationDefinition GetApplicationDefinition()
     {
-      ApplicationContext assemblyContext = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      ApplicationContext assemblyContext = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
       return DefinitionBuilder.CreateApplicationDefinition (assemblyContext);
     }
 

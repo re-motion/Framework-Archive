@@ -17,7 +17,7 @@ namespace Mixins.UnitTests.Configuration
     public void NewContextHasNoDefinitions ()
     {
       ApplicationContext context = new ApplicationContext ();
-      Assert.IsFalse (context.HasClassContext (typeof (BaseType1)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType1)));
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
       Assert.AreEqual (0, classContexts.Count);
     }
@@ -25,20 +25,20 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void BuildFromTestAssembly ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
       CheckContext(context);
     }
 
     [Test]
     public void BuildFromTestAssemblies ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssemblies (AppDomain.CurrentDomain.GetAssemblies ());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
       CheckContext (context);
     }
 
     private static void CheckContext(ApplicationContext context)
     {
-      Assert.IsTrue (context.HasClassContext (typeof (BaseType1)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
       
       List<ClassContext> classContexts = new List<ClassContext> (context.ClassContexts);
       Assert.IsTrue (classContexts.Count > 0);
@@ -53,15 +53,15 @@ namespace Mixins.UnitTests.Configuration
     [Test][ExpectedException (typeof (InvalidOperationException))]
     public void ThrowsOnDuplicateContexts ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
       context.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
     public void MultipleMixinTypeOccurrencesOnSameTargetTypeAreIgnored ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
-      DefaultContextBuilder.AnalyzeAssemblyIntoContext (Assembly.GetExecutingAssembly (), context);
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContextBuilder.AnalyzeAssemblyIntoContext (Assembly.GetExecutingAssembly (), context);
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
       Assert.AreEqual (2, classContext.MixinCount);
@@ -74,7 +74,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinsOnInterface ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
       context.GetOrAddClassContext (typeof (IBaseType2)).AddMixin (typeof (BT2Mixin1));
 
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
@@ -86,7 +86,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void AttributeOnTargetClass ()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly(Assembly.GetExecutingAssembly());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType3));
       Assert.IsNotNull (classContext);
@@ -277,6 +277,44 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsFalse (cc.Mixins is ICollection<Type>);
       Assert.IsFalse (cc.Mixins is ICollection);
       Assert.IsFalse (cc.Mixins is IList);
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement GetConcreteType")]
+    public void ClassContextGeneratesAndCachesConcreteTypes()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      Type t = cc.GetConcreteType();
+      Assert.IsNotNull (t);
+      Assert.IsTrue (typeof (IMixinTarget).IsAssignableFrom (t));
+      Assert.IsTrue (typeof (BaseType1).IsAssignableFrom (t));
+      Type t2 = cc.GetConcreteType ();
+      Assert.AreSame (t, t2);
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement GetConcreteType")]
+    // [Ignore ("TODO: Implement ClassContext caching")]
+    public void ClassContextUsesCacheWhenGeneratingConcreteType ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      Type t = cc.GetConcreteType ();
+      
+      ClassContext cc2 = new ClassContext (typeof (BaseType1));
+      Assert.AreEqual (cc, cc2);
+      Type t2 = cc.GetConcreteType ();
+
+      Assert.AreSame (t, t2);
+    }
+
+    [Test]
+    public void ClassContextWithMixinParameters()
+    {
+      ClassContext context = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
+      Assert.AreEqual (2, context.MixinCount);
+      Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.IsFalse (context.ContainsMixin (typeof (BT2Mixin1)));
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void IMixinTarget()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
       ApplicationDefinition applicationDefinition = DefinitionBuilder.CreateApplicationDefinition (context);
 
       using (new CurrentTypeFactoryScope (applicationDefinition))
@@ -54,7 +54,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetInitializationMethod ()
     {
-      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ()))))
+      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
       {
         MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetInitializationMethod (m1.Type));
@@ -85,7 +85,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetTargetProperty ()
     {
-      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ()))))
+      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
       {
         MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetTargetProperty (m1.Type));
@@ -121,7 +121,7 @@ namespace Mixins.UnitTests.Mixins
     {
       using (
           new CurrentTypeFactoryScope (
-              DefinitionBuilder.CreateApplicationDefinition (DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ()))))
+              DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
       {
         MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetBaseProperty (m1.Type));
@@ -153,7 +153,7 @@ namespace Mixins.UnitTests.Mixins
     {
       using (
           new CurrentTypeFactoryScope (
-              DefinitionBuilder.CreateApplicationDefinition (DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly ()))))
+              DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
       {
         MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetConfigurationProperty (m1.Type));

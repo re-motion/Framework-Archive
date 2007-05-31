@@ -32,7 +32,7 @@ namespace Mixins
     }
 
     public CurrentTypeFactoryScope (Assembly assemblyToBeScanned)
-        : this (DefaultContextBuilder.BuildContextFromAssembly(assemblyToBeScanned))
+        : this (ApplicationContextBuilder.BuildFromAssemblies (assemblyToBeScanned))
     {
     }
 

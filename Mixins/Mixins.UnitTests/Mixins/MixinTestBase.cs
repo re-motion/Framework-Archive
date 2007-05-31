@@ -23,7 +23,7 @@ namespace Mixins.UnitTests.Mixins
 
     private ApplicationDefinition CreateConfiguration()
     {
-      ApplicationContext context = DefaultContextBuilder.BuildContextFromAssembly (Assembly.GetExecutingAssembly());
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly());
       return DefinitionBuilder.CreateApplicationDefinition (context);
     }
 

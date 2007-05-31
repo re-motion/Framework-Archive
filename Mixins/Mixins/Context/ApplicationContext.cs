@@ -13,20 +13,24 @@ namespace Mixins.Context
     private Dictionary<Type, ClassContext> _classContexts;
 
     /// <summary>
-    /// Creates a new application context that does not inherit anything from another context.
+    /// Initializes a new empty application context that does not inherit anything from another context.
     /// </summary>
     public ApplicationContext ()
+        : this (null)
     {
-      _classContexts = new Dictionary<Type, ClassContext> ();
     }
 
     /// <summary>
-    /// Creates a new application context that inherits from another context.
+    /// Initializes a new application context that inherits from another context.
     /// </summary>
-    /// <param name="parentContext">The parent context. The new context will inherit all class contexts from its parent context.</param>
+    /// <param name="parentContext">The parent context. The new context will inherit all class contexts from its parent context. Can be
+    /// <see langword="null"/>.</param>
     public ApplicationContext (ApplicationContext parentContext)
     {
-      _classContexts = new Dictionary<Type, ClassContext> (parentContext._classContexts);
+      if (parentContext != null)
+        _classContexts = new Dictionary<Type, ClassContext> (parentContext._classContexts);
+      else
+        _classContexts = new Dictionary<Type, ClassContext>();
     }
 
     /// <summary>
@@ -57,7 +61,7 @@ namespace Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
-      if (HasClassContext (classContext.Type))
+      if (ContainsClassContext (classContext.Type))
       {
         string message = string.Format ("There is already a class context for type {0}.", classContext.Type.FullName);
         throw new InvalidOperationException (message);
@@ -74,7 +78,7 @@ namespace Mixins.Context
     public ClassContext GetClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return HasClassContext (type) ? _classContexts[type] : null;
+      return ContainsClassContext (type) ? _classContexts[type] : null;
     }
 
     /// <summary>
@@ -83,7 +87,7 @@ namespace Mixins.Context
     /// <param name="type">The <see cref="Type"/> to check for.</param>
     /// <returns>True if the <see cref="ApplicationContext"/> holds a <see cref="ClassContext"/> for the given <see cref="Type"/>; false otherwise.
     /// </returns>
-    public bool HasClassContext (Type type)
+    public bool ContainsClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       return _classContexts.ContainsKey (type);
@@ -97,7 +101,7 @@ namespace Mixins.Context
     public ClassContext GetOrAddClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      if (!HasClassContext (type))
+      if (!ContainsClassContext (type))
         AddClassContext (new ClassContext (type));
       return GetClassContext (type);
     }

@@ -31,6 +31,14 @@ namespace Mixins.Context
       _mixinWrapperForOutside = new UncastableEnumerableWrapper<Type> (_mixins);
     }
 
+    public ClassContext (Type type, params Type[] mixinTypes)
+        : this (type)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
+      foreach (Type mixinType in mixinTypes)
+        AddMixin (mixinType);
+    }
+
     private ClassContext (SerializationInfo info, StreamingContext context)
     {
       _type = ReflectionObjectSerializer.DeserializeType ("_type", info);
@@ -66,13 +74,22 @@ namespace Mixins.Context
     {
       get
       {
-        lock (_lockObject) { return _mixins.Count; }
+        lock (_lockObject)
+        {
+          return _mixins.Count;
+        }
       }
     }
 
     public bool IsFrozen
     {
-      get { lock (_lockObject) { return _analyzedDefinition != null; } }
+      get
+      {
+        lock (_lockObject)
+        {
+          return _analyzedDefinition != null;
+        }
+      }
     }
 
     public bool ContainsMixin (Type mixinType)
@@ -91,9 +108,7 @@ namespace Mixins.Context
       {
         EnsureNotFrozen();
         if (!ContainsMixin (mixinType))
-        {
           _mixins.Add (mixinType);
-        }
       }
     }
 
@@ -123,6 +138,11 @@ namespace Mixins.Context
       }
     }
 
+    public Type GetConcreteType ()
+    {
+      return null;
+    }
+
     public override bool Equals (object obj)
     {
       lock (_lockObject)
@@ -132,8 +152,10 @@ namespace Mixins.Context
           return false;
 
         for (int i = 0; i < _mixins.Count; ++i)
+        {
           if (!_mixins[i].Equals (other._mixins[i]))
             return false;
+        }
 
         return true;
       }
