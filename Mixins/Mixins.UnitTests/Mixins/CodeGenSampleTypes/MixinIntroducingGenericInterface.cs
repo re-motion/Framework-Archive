@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+#pragma warning disable 0693
+
 namespace Mixins.UnitTests.Mixins.CodeGenSampleTypes
 {
   public interface IGeneric<T>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Mixins.Definitions;
 
 namespace Mixins.Validation
@@ -15,5 +14,7 @@ namespace Mixins.Validation
     void Fail (IValidationRule rule);
 
     void UnexpectedException<TDefinition> (IValidationRule<TDefinition> rule, Exception ex) where TDefinition : IVisitableDefinition;
+
+    IEnumerable<ValidationResult> GetResults ();
   }
 }

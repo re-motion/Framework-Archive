@@ -6,11 +6,9 @@ using Mixins.Definitions.Building;
 using Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Mixins.UnitTests.Mixins;
 using Mixins.UnitTests.SampleTypes;
-using Mixins.Validation.DefaultLog;
+using Mixins.Validation;
 using NUnit.Framework;
 using Mixins.Definitions;
-using Mixins.Validation;
-using Rubicon.Development.UnitTesting;
 
 namespace Mixins.UnitTests.Configuration
 {
@@ -28,31 +26,27 @@ namespace Mixins.UnitTests.Configuration
       new MixinSerializationTests().RespectsISerializable();
     }
 
-    public static bool HasFailure (string ruleName, DefaultValidationLog log)
+    public static bool HasFailure (string ruleName, IValidationLog log)
     {
-      foreach (DefaultValidationResult result in log.Results)
+      foreach (ValidationResult result in log.GetResults())
       {
-        foreach (DefaultValidationResultItem item in result.Failures)
+        foreach (ValidationResultItem item in result.Failures)
         {
           if (item.Rule.RuleName == ruleName)
-          {
             return true;
-          }
         }
       }
       return false;
     }
 
-    public static bool HasWarning (string ruleName, DefaultValidationLog log)
+    public static bool HasWarning (string ruleName, IValidationLog log)
     {
-      foreach (DefaultValidationResult result in log.Results)
+      foreach (ValidationResult result in log.GetResults())
       {
-        foreach (DefaultValidationResultItem item in result.Warnings)
+        foreach (ValidationResultItem item in result.Warnings)
         {
           if (item.Rule.RuleName == ruleName)
-          {
             return true;
-          }
         }
       }
       return false;
@@ -64,7 +58,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = GetApplicationDefinitionForAssembly ();
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.IsTrue (log.Results.Count > 1);
+      Assert.IsTrue (log.ResultCount > 1);
     }
 
     [Test]
@@ -73,7 +67,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = GetApplicationDefinitionForAssembly();
 
       DefaultValidationLog log = Validator.Validate (application);
-      ConsoleDumper.DumpLog (log);
+      ConsoleDumper.DumpValidationResults (log.GetResults());
     }
 
     [Test]
@@ -82,8 +76,11 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = GetApplicationDefinitionForAssembly ();
 
       DefaultValidationLog log = Validator.Validate (application);
-      Assert.AreSame (application, log.Results[0].Definition);
-      Assert.AreEqual ("<application>", log.Results[0].Definition.FullName);
+      IEnumerator<ValidationResult> results = log.GetResults().GetEnumerator();
+      Assert.IsTrue (results.MoveNext());
+      ValidationResult firstResult = results.Current;
+      Assert.AreSame (application, firstResult.Definition);
+      Assert.AreEqual ("<application>", firstResult.Definition.FullName);
     }
 
     [Test]
@@ -91,12 +88,9 @@ namespace Mixins.UnitTests.Configuration
     {
       ApplicationDefinition application = GetApplicationDefinitionForAssembly ();
       DefaultValidationLog log = Validator.Validate (application);
-      foreach (DefaultValidationResult result in log.Results)
-      {
-        Assert.AreEqual (0, result.Exceptions.Count);
-        Assert.AreEqual (0, result.Failures.Count);
-        Assert.AreEqual (0, result.Warnings.Count);
-      }
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
     }
 
     [Test]
@@ -106,7 +100,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
       
       Dictionary<IVisitableDefinition, IVisitableDefinition> visitedDefinitions = new Dictionary<IVisitableDefinition, IVisitableDefinition> ();
-      foreach (DefaultValidationResult result in log.Results)
+      foreach (ValidationResult result in log.GetResults())
       {
         Assert.IsNotNull (result.Definition);
         Assert.IsFalse(visitedDefinitions.ContainsKey(result.Definition));
@@ -208,7 +202,7 @@ namespace Mixins.UnitTests.Configuration
     {
       ApplicationDefinition application = GetApplicationDefinitionForAssembly ();
       DefaultValidationLog log = Validator.Validate (application);
-      Assert.IsTrue (log.Results[0].TotalRulesExecuted > 0);
+      Assert.IsTrue (log.GetNumberOfRulesExecuted() > 0);
     }
 
     [Test]
@@ -216,8 +210,9 @@ namespace Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bc = DefBuilder.Build (typeof (DateTime)).BaseClasses[typeof (DateTime)];
       DefaultValidationLog log = Validator.Validate (bc, new ThrowingRuleSet ());
-      Assert.IsTrue (log.Results[0].Exceptions.Count > 0);
-      Assert.IsTrue (log.Results[0].Exceptions[0].Exception is InvalidOperationException);
+      Assert.IsTrue (log.GetNumberOfUnexpectedExceptions() > 0);
+      List<ValidationResult> results = new List<ValidationResult> (log.GetResults());
+      Assert.IsTrue (results[0].Exceptions[0].Exception is InvalidOperationException);
     }
 
     [Test]
@@ -226,7 +221,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = new ApplicationDefinition ();
       DefaultValidationLog log = Validator.Validate (application);
       Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultApplicationRules.ApplicationShouldContainAtLeastOneBaseClass", log));
-      Assert.AreEqual (0, log.GetNumberOfFailureResults());
+      Assert.AreEqual (0, log.GetNumberOfFailures());
     }
 
     [Test]
@@ -235,7 +230,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition bc = DefBuilder.Build (typeof (DateTime)).BaseClasses[typeof (DateTime)];
       DefaultValidationLog log = Validator.Validate (bc);
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log));
-      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+      Assert.AreEqual (0, log.GetNumberOfWarnings());
     }
 
     [Test]
@@ -345,13 +340,13 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType5), typeof (BT5Mixin3));
       DefaultValidationLog log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5Mixin3)].ThisDependencies[typeof(IBT5Mixin3)]);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+      Assert.AreEqual (0, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfWarnings());
 
       log = Validator.Validate (application.BaseClasses[typeof (BaseType5)].Mixins[typeof (BT5Mixin3)].BaseDependencies[typeof (IBT5Mixin3)]);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+      Assert.AreEqual (0, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfWarnings());
     }
 
     [Test]
@@ -373,8 +368,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+      Assert.AreEqual (0, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfWarnings());
     }
 
     [Test]
@@ -393,8 +388,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Base));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults ());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults ());
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
     }
 
     [Test]
@@ -413,7 +408,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
-      Assert.AreEqual (2, log.GetNumberOfFailureResults());
+      Assert.AreEqual (2, log.GetNumberOfFailures());
     }
 
     [Test]
@@ -423,7 +418,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
-      Assert.AreEqual (2, log.GetNumberOfFailureResults());
+      Assert.AreEqual (2, log.GetNumberOfFailures());
     }
 
     [Test]
@@ -432,8 +427,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseTypeWithAllowMultiple), typeof (MixinAddingAllowMultipleToClassAndMember));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults());
+      Assert.AreEqual (0, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfWarnings());
     }
 
     [Test]
@@ -442,8 +437,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (BaseType1), typeof (PublicNester.PublicNested));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults ());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults ());
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
     }
 
     [Test]
@@ -506,8 +501,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingClassMethod));
       DefaultValidationLog log = Validator.Validate (application);
 
-      Assert.AreEqual (0, log.GetNumberOfFailureResults ());
-      Assert.AreEqual (0, log.GetNumberOfWarningResults ());
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
     }
 
     [Test]
@@ -526,6 +521,18 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (application);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMixinMustHaveThisProperty", log));
+    }
+
+    [Test]
+    public void ValidationException()
+    {
+      ApplicationDefinition application = DefBuilder.Build (typeof (ClassOverridingMixinMethod), typeof(AbstractMixinWithoutBase));
+      DefaultValidationLog log = Validator.Validate (application);
+
+      ValidationException exception = new ValidationException (log);
+      Assert.IsTrue (exception.Message.IndexOf ("AbstractMethod: There were 1 errors") > -1);
+
+      Assert.AreSame (log, exception.ValidationLog);
     }
   }
 }

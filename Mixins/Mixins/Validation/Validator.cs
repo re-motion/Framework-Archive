@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using Mixins.Definitions;
-using Mixins.Validation.DefaultLog;
+using Mixins.Validation;
 using Mixins.Validation.Rules;
 using Rubicon.Utilities;
 
@@ -27,22 +27,20 @@ namespace Mixins.Validation
 
       ValidatingVisitor visitor = new ValidatingVisitor (log);
       InstallDefaultRules (visitor);
-      
+
       foreach (IRuleSet ruleSet in customRuleSets)
-      {
         ruleSet.Install (visitor);
-      }
 
       startingPoint.Accept (visitor);
     }
 
     private static void InstallDefaultRules (ValidatingVisitor visitor)
     {
-      foreach (Type t in Assembly.GetExecutingAssembly ().GetTypes ())
+      foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
       {
-        if (!t.IsAbstract && typeof(IRuleSet).IsAssignableFrom(t) && t.Namespace == typeof (IRuleSet).Namespace)
+        if (!t.IsAbstract && typeof (IRuleSet).IsAssignableFrom (t) && t.Namespace == typeof (IRuleSet).Namespace)
         {
-          IRuleSet ruleSet = (IRuleSet)Activator.CreateInstance (t);
+          IRuleSet ruleSet = (IRuleSet) Activator.CreateInstance (t);
           ruleSet.Install (visitor);
         }
       }

@@ -4,6 +4,7 @@ using System.Text;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
+using ConsoleDumper=Mixins.Validation.ConsoleDumper;
 
 namespace Mixins.UnitTests.Configuration
 {
@@ -37,9 +38,6 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII2)));
       Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII3)));
       Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII4)));
-
-
-      Validation.DefaultLog.ConsoleDumper.DumpLog (Validation.Validator.Validate (configuration));
     }
 
     [Test]

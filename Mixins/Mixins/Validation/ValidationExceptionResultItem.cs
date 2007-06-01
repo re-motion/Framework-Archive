@@ -1,14 +1,14 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation.DefaultLog
+namespace Mixins.Validation
 {
-  public struct DefaultValidationExceptionItem : IDefaultValidationResultItem
+  public struct ValidationExceptionResultItem : IDefaultValidationResultItem
   {
     private IValidationRule _rule;
     private Exception _exception;
 
-    public DefaultValidationExceptionItem (IValidationRule rule, Exception exception)
+    public ValidationExceptionResultItem (IValidationRule rule, Exception exception)
     {
       ArgumentUtility.CheckNotNull ("rule", rule);
       ArgumentUtility.CheckNotNull ("exception", exception);

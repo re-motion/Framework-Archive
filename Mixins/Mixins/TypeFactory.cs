@@ -2,9 +2,8 @@ using System;
 using Mixins.CodeGeneration;
 using Mixins.Utilities.Singleton;
 using Mixins.Definitions;
-using Mixins.Validation.DefaultLog;
-using Rubicon.Utilities;
 using Mixins.Validation;
+using Rubicon.Utilities;
 
 namespace Mixins
 {
@@ -55,20 +54,11 @@ namespace Mixins
     private bool ValidateConfiguration()
     {
       DefaultValidationLog log = Validator.Validate (Configuration);
-      if (log.GetNumberOfFailureResults() != 0)
+      if (log.GetNumberOfFailures() != 0 || log.GetNumberOfWarnings() != 0)
       {
-        ConsoleDumper.DumpLog (log);
-        return false;
+        ConsoleDumper.DumpValidationResults (log.GetResults());
       }
-      else if (log.GetNumberOfWarningResults() != 0)
-      {
-        ConsoleDumper.DumpLog (log);
-        return true;
-      }
-      else
-      {
-        return true;
-      }
+      return log.GetNumberOfFailures() == 0;
     }
 
     // Instances of the type returned by this method must be initialized with <see cref="InitializeMixedInstance"/>

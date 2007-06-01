@@ -9,7 +9,6 @@ namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public class PropertyReference : Reference
   {
-    private Reference _owner;
     private PropertyInfo _property;
 
     public PropertyReference (PropertyInfo property)

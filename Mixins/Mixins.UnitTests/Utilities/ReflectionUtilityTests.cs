@@ -64,10 +64,10 @@ namespace Mixins.UnitTests.Utilities
       public void Foo (int i) { }
       public virtual void Bar (int i) { }
 
-      public new int FooP { get { return 0; } set { } }
+      public int FooP { get { return 0; } set { } }
       public virtual int BarP { get { return 0; } set { } }
 
-      public new event Func<int> FooE;
+      public event Func<int> FooE;
       public virtual event Func<int> BarE;
     }
 

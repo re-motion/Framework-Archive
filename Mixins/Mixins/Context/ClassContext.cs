@@ -133,13 +133,17 @@ namespace Mixins.Context
       lock (_lockObject)
       {
         if (_analyzedDefinition == null)
+        {
           _analyzedDefinition = s_definitionBuilder.Build (this);
+          // TODO: Add validation
+        }
         return _analyzedDefinition;
       }
     }
 
     public Type GetConcreteType ()
     {
+      // TODO: Implement with caching
       return null;
     }
 

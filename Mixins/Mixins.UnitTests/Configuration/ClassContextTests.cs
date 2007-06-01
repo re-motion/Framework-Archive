@@ -144,6 +144,15 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    [Ignore ("TODO")]
+    // [ExpectedException(typeof (ValidationException))]
+    public void ClassContextValidatesDefinition ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (AbstractMixin));
+      cc.Analyze ();
+    }
+
+    [Test]
     public void ClassContextFrozenAfterDefinitionGeneration()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
