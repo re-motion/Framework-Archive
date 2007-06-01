@@ -1,7 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -116,53 +115,6 @@ public class DataContainer
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  public bool IsNull (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
-
-    object value = this[propertyName];
-
-    if (value == null)
-      return true;
-
-    INaNullable naNullable = value as INaNullable;
-    if (naNullable != null)
-      return naNullable.IsNull;
-
-    return false;
-  }
-
-  /// <summary>
-  /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/> or empty.
-  /// </summary>
-  /// <remarks>If a <see cref="System.String"/> or a <see cref="System.Guid"/> are equal to empty this method returns <see langword="true"/>.</remarks>
-  /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/> or empty; otherwise, <see langword="false"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  public bool IsNullOrEmpty (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckDiscarded ();
-
-    if (IsNull (propertyName))
-      return true;
-
-    object value = this[propertyName];
-    
-    if (value.GetType () == typeof (string))
-      return (((string) value) == string.Empty);
-    
-    if (value.GetType () == typeof (Guid))
-      return (((Guid) value) == Guid.Empty);
-
-    if (value.GetType () == typeof (byte[]))
-      return (((byte[]) value).Length == 0);
-
-    return false;
-  }
 
   /// <summary>
   /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/>.

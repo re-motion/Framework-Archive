@@ -153,6 +153,48 @@
   * Man muss nun das Config-File für die Applikation angeben, für die die Domäne bzw. die Datenbank-Scripte erstellt werden sollen (Parameter: config).
   * Neuer Parameter classesForAttributeMapping: Generiert das Domainmodel nach den Richtlinien des neuen, attribut-basierten Mappings.
 
+- DataContainer: Methoden IsNull(...) und IsNullOrEmpty(...) entfernt.
+  Sollten diese Methoden in einem Projekt dennoch benötigt werden, bietet sich an, sie im Layer-Supertype zu implementieren.
+  public bool IsNull (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    object value = this[propertyName];
+
+    if (value == null)
+      return true;
+
+    INaNullable naNullable = value as INaNullable;
+    if (naNullable != null)
+      return naNullable.IsNull;
+
+    return false;
+  }
+
+  public bool IsNullOrEmpty (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    if (IsNull (propertyName))
+      return true;
+
+    object value = this[propertyName];
+    
+    if (value.GetType () == typeof (string))
+      return (((string) value) == string.Empty);
+    
+    if (value.GetType () == typeof (Guid))
+      return (((Guid) value) == Guid.Empty);
+
+    if (value.GetType () == typeof (byte[]))
+      return (((byte[]) value).Length == 0);
+
+    return false;
+  }
+
+
 1.7.37.0
 ========
 

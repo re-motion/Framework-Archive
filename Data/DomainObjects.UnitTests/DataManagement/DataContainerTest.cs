@@ -205,42 +205,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void IsNull ()
-    {
-      DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
-
-      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
-
-      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"));
-      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"));
-      Assert.IsFalse (dataContainer.IsNull ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
-    }
-
-    [Test]
-    public void IsNullOrEmpty ()
-    {
-      DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
-
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32WithNullValueProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"));
-      Assert.IsFalse (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
-
-      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"] = Guid.Empty;
-      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"] = string.Empty;
-      dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"] = new byte[0];
-
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"));
-      Assert.IsTrue (dataContainer.IsNullOrEmpty ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
-    }
-
-    [Test]
     public void GetBytes ()
     {
       DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
