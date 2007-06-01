@@ -136,73 +136,44 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void ClassContextCanGenerateDefinition()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      BaseClassDefinition cd = cc.Analyze();
-      Assert.AreSame (cc, cd.ConfigurationContext);
-      Assert.AreSame (cd, cc.Analyze());
-    }
-
-    [Test]
-    public void ClassContextFrozenAfterDefinitionGeneration()
+    public void ClassContextFrozen()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       Assert.IsFalse (cc.IsFrozen);
-      ClassDefinition cd = cc.Analyze();
+      cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
     }
-
-    [Test]
-    [Ignore ("TODO: Implement ClassContext caching")]
-    public void ClassContextUsesCacheWhenGeneratingDefinition ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      BaseClassDefinition cd = cc.Analyze ();
-      Assert.AreSame (cc, cd.ConfigurationContext);
-      Assert.AreSame (cd, cc.Analyze ());
-      Assert.IsTrue (cc.IsFrozen);
-
-      ClassContext cc2 = new ClassContext (typeof (BaseType1));
-      Assert.AreEqual (cc, cc2);
-      BaseClassDefinition cd2 = cc2.Analyze();
-      Assert.AreSame (cd, cd2);
-      Assert.AreEqual (cc, cd2.ConfigurationContext);
-      Assert.AreEqual (cc2, cd2.ConfigurationContext);
-      Assert.AreSame (cc, cd2.ConfigurationContext);
-      Assert.AreNotSame (cc2, cd2.ConfigurationContext);
-    }
-
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsIfChangingContextWhenFrozenAdd()
+    public void ThrowsOnAddWhenFrozen()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
-      ClassDefinition cd = cc.Analyze ();
+      cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
       cc.AddMixin (typeof (BT1Mixin1));
     }
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsIfChangingContextWhenFrozenRemove ()
+    public void ThrowsOnRemoveWhenFrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
-      ClassDefinition cd = cc.Analyze ();
+      cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
       cc.RemoveMixin (typeof (BT1Mixin1));
     }
 
     [Test]
-    public void NonchangingMethodsCanBeExecutedWhenFrozen()
+    public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       int hc = cc.GetHashCode();
 
-      ClassDefinition cd = cc.Analyze ();
+      cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
-      Assert.IsNotNull (cc.Analyze());
+      cc.Freeze();
+      Assert.IsTrue (cc.IsFrozen);
       Assert.IsFalse (cc.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsFalse (cc.Equals (null));
       Assert.IsTrue (cc.Equals (cc));
@@ -218,22 +189,21 @@ namespace Mixins.UnitTests.Configuration
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.AddMixin (typeof (BT1Mixin1));
       cc.AddMixin (typeof (BT1Mixin2));
-      BaseClassDefinition cd = cc.Analyze();
-      Assert.IsNotNull (cd);
+      cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
 
       ClassContext cc2 = cc.Clone();
       Assert.IsNotNull (cc2);
+      Assert.AreNotSame (cc, cc2);
       Assert.IsFalse (cc2.IsFrozen);
-      BaseClassDefinition cd2 = cc2.Analyze();
-      Assert.IsNotNull (cd2);
-      Assert.AreNotSame (cd, cd2);
+
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin2)));
       Assert.AreEqual (cc, cc2);
       Assert.AreEqual (cc.GetHashCode(), cc2.GetHashCode());
       Assert.AreEqual (2, cc.MixinCount);
       Assert.IsNotNull (cc2.Mixins);
+
       List<Type> mixinTypes = new List<Type> (cc2.Mixins);
       Assert.AreEqual (2, mixinTypes.Count);
       Assert.AreEqual (typeof (BT1Mixin1), mixinTypes[0]);
@@ -247,8 +217,7 @@ namespace Mixins.UnitTests.Configuration
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.AddMixin (typeof (BT1Mixin1));
       cc.AddMixin (typeof (BT1Mixin2));
-
-      cc.Analyze();
+      Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
 
       ClassContext cc2 = cc.Clone();
 
@@ -266,6 +235,8 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsFalse (cc2.ContainsMixin (typeof (BT1Mixin2)));
       Assert.IsFalse (cc2.ContainsMixin (typeof (BT2Mixin1)));
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT3Mixin1)));
+
+      Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
     }
 
     [Test]

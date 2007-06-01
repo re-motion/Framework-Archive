@@ -52,6 +52,7 @@
     <Compile Include="Configuration\ApplicationContextTests.cs" />
     <Compile Include="Configuration\AttributeDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\BaseClassDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\BaseClassDefinitionCacheTests.cs" />
     <Compile Include="Configuration\ClassDefinitionTests.cs" />
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />

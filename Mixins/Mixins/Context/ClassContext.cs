@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
 using Mixins.Utilities;
 using Mixins.Utilities.Serialization;
 using Mixins.Validation;
-using Rubicon.Collections;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
 
@@ -15,14 +11,12 @@ namespace Mixins.Context
   [Serializable]
   public sealed class ClassContext : ISerializable, ICloneable
   {
-    private static BaseClassDefinitionBuilder s_definitionBuilder = new BaseClassDefinitionBuilder();
-
     private readonly Type _type;
     private readonly List<Type> _mixins;
     private readonly UncastableEnumerableWrapper<Type> _mixinWrapperForOutside;
     private readonly object _lockObject = new object();
 
-    private BaseClassDefinition _analyzedDefinition = null;
+    private bool _isFrozen = false;
 
     public ClassContext (Type type)
     {
@@ -88,7 +82,7 @@ namespace Mixins.Context
       {
         lock (_lockObject)
         {
-          return _analyzedDefinition != null;
+          return _isFrozen;
         }
       }
     }
@@ -122,6 +116,14 @@ namespace Mixins.Context
         return _mixins.Remove (mixinType);
       }
     }
+    
+    public void Freeze()
+    {
+      lock (_lockObject)
+      {
+        _isFrozen = true;
+      }
+    }
 
     private void EnsureNotFrozen ()
     {
@@ -129,21 +131,9 @@ namespace Mixins.Context
         throw new InvalidOperationException (string.Format ("The class context for {0} is frozen.", Type.FullName));
     }
 
-    public BaseClassDefinition Analyze ()
-    {
-      lock (_lockObject)
-      {
-        if (_analyzedDefinition == null)
-        {
-          _analyzedDefinition = s_definitionBuilder.Build (this);
-        }
-        return _analyzedDefinition;
-      }
-    }
-
     public Type GetConcreteType ()
     {
-      BaseClassDefinition definition = Analyze();
+      Mixins.Definitions.BaseClassDefinition definition = Definitions.BaseClassDefinitionCache.Current.GetBaseClassDefinition (this);
       DefaultValidationLog log = Validator.Validate (definition);
       if (log.GetNumberOfFailures () > 0 || log.GetNumberOfUnexpectedExceptions () > 0)
         throw new ValidationException (log);

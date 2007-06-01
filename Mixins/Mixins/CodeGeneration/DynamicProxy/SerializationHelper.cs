@@ -44,7 +44,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     public SerializationHelper (SerializationInfo info, StreamingContext context)
     {
       ClassContext configurationContext = (ClassContext) info.GetValue ("__configuration.ConfigurationContext", typeof (ClassContext));
-      _baseClassDefinition = configurationContext.Analyze();
+      _baseClassDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (configurationContext);
 
       Type concreteType = ConcreteTypeBuilder.Current.GetConcreteType (_baseClassDefinition);
 

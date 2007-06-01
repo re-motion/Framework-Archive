@@ -14,7 +14,7 @@ namespace Mixins.Definitions.Building
 
       foreach (ClassContext classContext in context.ClassContexts)
       {
-        BaseClassDefinition classDefinition = classContext.Analyze();
+        BaseClassDefinition classDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (classContext);
         _newApplication.BaseClasses.Add (classDefinition);
       }
     }
