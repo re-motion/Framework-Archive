@@ -5,6 +5,7 @@ using Mixins.Definitions;
 using Mixins.Definitions.Building;
 using Mixins.Utilities;
 using Mixins.Utilities.Serialization;
+using Mixins.Validation;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
@@ -135,7 +136,6 @@ namespace Mixins.Context
         if (_analyzedDefinition == null)
         {
           _analyzedDefinition = s_definitionBuilder.Build (this);
-          // TODO: Add validation
         }
         return _analyzedDefinition;
       }
@@ -143,6 +143,11 @@ namespace Mixins.Context
 
     public Type GetConcreteType ()
     {
+      BaseClassDefinition definition = Analyze();
+      DefaultValidationLog log = Validator.Validate (definition);
+      if (log.GetNumberOfFailures () > 0 || log.GetNumberOfUnexpectedExceptions () > 0)
+        throw new ValidationException (log);
+
       // TODO: Implement with caching
       return null;
     }

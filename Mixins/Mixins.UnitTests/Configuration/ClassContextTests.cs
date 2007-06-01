@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Mixins.Validation;
 using NUnit.Framework;
 using Mixins.Context;
 using Mixins.UnitTests.SampleTypes;
@@ -141,15 +142,6 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition cd = cc.Analyze();
       Assert.AreSame (cc, cd.ConfigurationContext);
       Assert.AreSame (cd, cc.Analyze());
-    }
-
-    [Test]
-    [Ignore ("TODO")]
-    // [ExpectedException(typeof (ValidationException))]
-    public void ClassContextValidatesDefinition ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (AbstractMixin));
-      cc.Analyze ();
     }
 
     [Test]
@@ -302,8 +294,7 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Implement GetConcreteType")]
-    // [Ignore ("TODO: Implement ClassContext caching")]
+    [Ignore ("TODO: Implement GetConcreteType, TODO: Implement ClassContext caching")]
     public void ClassContextUsesCacheWhenGeneratingConcreteType ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
@@ -314,6 +305,14 @@ namespace Mixins.UnitTests.Configuration
       Type t2 = cc.GetConcreteType ();
 
       Assert.AreSame (t, t2);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ValidationException), ExpectedMessage = "AbstractMethod: There were 1 errors", MatchType = MessageMatch.Contains)]
+    public void ClassContextValidatesDefinitionBeforeBuildingType ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (AbstractMixin));
+      cc.GetConcreteType();
     }
 
     [Test]
