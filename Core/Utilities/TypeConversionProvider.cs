@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Rubicon.NullableValueTypes;
@@ -27,7 +27,7 @@ namespace Rubicon.Utilities
   ///       <see cref="Type"/>.
   ///     </item>
   ///     <item>
-  ///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionProvider</b> try to use the 
+  ///       For types without a <see cref="TypeConverter"/>, the <see cref="TypeConversionProvider"/> try to use the 
   ///       <see cref="BidirectionalStringConverter"/>. See the documentation of the string converter for details on the
   ///       supported types.
   ///     </item>
@@ -35,12 +35,12 @@ namespace Rubicon.Utilities
   /// </remarks>
   public class TypeConversionProvider
   {
-    private static Hashtable s_typeConverters = new Hashtable();
+    private static Dictionary<Type, TypeConverter> s_typeConverters = new Dictionary<Type, TypeConverter>();
     private static TypeConversionProvider s_current;
 
     /// <summary> Creates a new instace of the <see cref="TypeConversionProvider"/> type. </summary>
     /// <returns> An instance of the <see cref="TypeConversionProvider"/> type. </returns>
-    public static TypeConversionProvider Create()
+    public static TypeConversionProvider Create ()
     {
       return new TypeConversionProvider();
     }
@@ -74,10 +74,10 @@ namespace Rubicon.Utilities
       }
     }
 
-    private Hashtable _additionalTypeConverters = new Hashtable();
+    private Dictionary<Type, TypeConverter> _additionalTypeConverters = new Dictionary<Type, TypeConverter>();
     private BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
-    protected TypeConversionProvider()
+    protected TypeConversionProvider ()
     {
     }
 
@@ -104,13 +104,17 @@ namespace Rubicon.Utilities
       ArgumentUtility.CheckNotNull ("sourceType", sourceType);
       ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-      TypeConverter sourceTypeConverter = GetTypeConverter (sourceType);
-      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
-        return sourceTypeConverter;
+      TypeConverter additionalTypeConverter = GetAdditionalTypeConverter (sourceType, destinationType);
+      if (additionalTypeConverter != null)
+        return additionalTypeConverter;
 
-      TypeConverter destinationTypeConverter = GetTypeConverter (destinationType);
-      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
-        return destinationTypeConverter;
+      TypeConverter basicTypeConverter = GetBasicTypeConverter (sourceType, destinationType);
+      if (basicTypeConverter != null)
+        return basicTypeConverter;
+
+      TypeConverter stringConverter = GetStringConverter (sourceType, destinationType);
+      if (stringConverter != null)
+        return stringConverter;
 
       return null;
     }
@@ -235,15 +239,60 @@ namespace Rubicon.Utilities
         return value;
       }
 
-      TypeConverter sourceTypeConverter = GetTypeConverter (sourceType);
-      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
-        return sourceTypeConverter.ConvertTo (context, culture, value, destinationType);
+      TypeConverter typeConverter = GetTypeConverter (sourceType, destinationType);
+      if (typeConverter != null)
+      {
+        if (typeConverter.CanConvertTo (destinationType))
+          return typeConverter.ConvertTo (context, culture, value, destinationType);
 
-      TypeConverter destinationTypeConverter = GetTypeConverter (destinationType);
-      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
-        return destinationTypeConverter.ConvertFrom (context, culture, value);
+        if (typeConverter.CanConvertFrom (sourceType))
+          return typeConverter.ConvertFrom (context, culture, value);
+      }
 
       throw new NotSupportedException (string.Format ("Cannot convert value '{0}' to type '{1}'.", value, destinationType));
+    }
+
+    protected TypeConverter GetAdditionalTypeConverter (Type sourceType, Type destinationType)
+    {
+      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+      TypeConverter sourceTypeConverter = GetAdditionalTypeConverter (sourceType);
+      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
+        return sourceTypeConverter;
+
+      TypeConverter destinationTypeConverter = GetAdditionalTypeConverter (destinationType);
+      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
+        return destinationTypeConverter;
+
+      return null;
+    }
+
+    protected TypeConverter GetAdditionalTypeConverter (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      TypeConverter typeConverter;
+      if (_additionalTypeConverters.TryGetValue (type, out typeConverter))
+        return typeConverter;
+
+      return null;
+    }
+
+    protected TypeConverter GetBasicTypeConverter (Type sourceType, Type destinationType)
+    {
+      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+      TypeConverter sourceTypeConverter = GetBasicTypeConverter (sourceType);
+      if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
+        return sourceTypeConverter;
+
+      TypeConverter destinationTypeConverter = GetBasicTypeConverter (destinationType);
+      if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
+        return destinationTypeConverter;
+
+      return null;
     }
 
     protected TypeConverter GetBasicTypeConverter (Type type)
@@ -261,15 +310,28 @@ namespace Rubicon.Utilities
       return converter;
     }
 
+    protected TypeConverter GetStringConverter (Type sourceType, Type destinationType)
+    {
+      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      
+      if (sourceType == typeof (string) && _stringConverter.CanConvertTo (destinationType))
+        return _stringConverter;
+
+      if (destinationType == typeof (string) && _stringConverter.CanConvertFrom (sourceType))
+        return _stringConverter;
+
+      return null;
+    }
+
     protected TypeConverter GetTypeConverterByAttribute (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      TypeConverterAttribute[] typeConverters =
-          (TypeConverterAttribute[]) type.GetCustomAttributes (typeof (TypeConverterAttribute), true);
-      if (typeConverters.Length == 1)
+      TypeConverterAttribute typeConverter = AttributeUtility.GetCustomAttribute<TypeConverterAttribute> (type, true);
+      if (typeConverter != null)
       {
-        Type typeConverterType = Type.GetType (typeConverters[0].ConverterTypeName, true, false);
+        Type typeConverterType = Type.GetType (typeConverter.ConverterTypeName, true, false);
         return (TypeConverter) Activator.CreateInstance (typeConverterType);
       }
       return null;
@@ -279,7 +341,7 @@ namespace Rubicon.Utilities
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      lock (s_typeConverters.SyncRoot)
+      lock (s_typeConverters)
       {
         s_typeConverters[type] = converter;
       }
@@ -288,19 +350,18 @@ namespace Rubicon.Utilities
     protected TypeConverter GetTypeConverterFromCache (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      return (TypeConverter) s_typeConverters[type];
+     
+      TypeConverter typeConverter;
+      if (s_typeConverters.TryGetValue (type, out typeConverter))
+        return typeConverter;
+
+      return null;
     }
 
     protected bool HasTypeInCache (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       return s_typeConverters.ContainsKey (type);
-    }
-
-    protected TypeConverter GetAdditionalTypeConverter (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return (TypeConverter) _additionalTypeConverters[type];
     }
 
     private bool AreUnderlyingTypesEqual (Type destinationType, Type sourceType)

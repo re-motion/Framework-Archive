@@ -37,7 +37,7 @@ public class StubTypeConversionProvider: TypeConversionProvider
 
   public static void ClearCache()
   {
-    Hashtable cache = (Hashtable) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionProvider), "s_typeConverters");
+    IDictionary cache = (IDictionary) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionProvider), "s_typeConverters");
     cache.Clear();
   }
 }

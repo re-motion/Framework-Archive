@@ -448,7 +448,7 @@ public class TypeConversionProviderTest
   }
 
   [Test]
-  [ExpectedException (typeof (ParseException), ExpectedMessage = " is not a valid value for Int32Enum.")]
+  [ExpectedException (typeof (FormatException), ExpectedMessage = " is not a valid value for Int32Enum.")]
   public void ConvertFromStringToInt32EnumWithEmpty ()
   {
     _provider.Convert (_string, _int32Enum, string.Empty);
@@ -552,7 +552,7 @@ public class TypeConversionProviderTest
   {
     TypeConverter converter = _provider.GetTypeConverter (_string, _naInt32);
     Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
+    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
   }
 
   [Test]
@@ -568,7 +568,7 @@ public class TypeConversionProviderTest
   {
     TypeConverter converter = _provider.GetTypeConverter (_string, _naDouble);
     Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
+    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
   }
 
   [Test]
