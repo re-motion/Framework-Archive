@@ -103,7 +103,7 @@ namespace Rubicon.Collections
     }
 
     /// <summary>
-    /// Removes all items from the set.</see>.
+    /// Removes all items from the set.
     /// </summary>
     public void Clear ()
     {
@@ -113,7 +113,7 @@ namespace Rubicon.Collections
     /// <summary>
     /// Determines whether the set contains a specific value.
     /// </summary>
-    /// <param name="item">The object to locate in the set</see>.</param>
+    /// <param name="item">The object to locate in the set.</param>
     /// <returns>
     /// True if item is found in the set; otherwise, false.
     /// </returns>
