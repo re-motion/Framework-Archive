@@ -112,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void PerformDeleteWithOtherClientTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
       _map.PerformDelete (order1.DataContainer);
     }

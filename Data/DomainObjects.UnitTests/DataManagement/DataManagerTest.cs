@@ -307,7 +307,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void DeleteWithOtherClientTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
       _dataManager.Delete (order1);
     }

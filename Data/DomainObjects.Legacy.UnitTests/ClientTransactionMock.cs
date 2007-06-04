@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
       return base.LoadRelatedObject (relationEndPointID);
     }
 
-    public override DomainObject GetObject (ObjectID id)
+    public new DomainObject GetObject (ObjectID id)
     {
       return base.GetObject (id);
     }

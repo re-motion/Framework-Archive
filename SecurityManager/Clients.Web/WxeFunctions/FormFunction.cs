@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
       get
       {
         if (CurrentObjectID != null)
-          return (BaseSecurityManagerObject) ClientTransaction.Current.GetObject (CurrentObjectID);
+          return BaseSecurityManagerObject.GetObject (CurrentObjectID, ClientTransaction.Current);
 
         return null;
       }

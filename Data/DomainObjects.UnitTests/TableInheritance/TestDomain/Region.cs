@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<Region> ().With();
     }
 
+    public new static Region GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Region> (id);
+    }
+
     protected Region()
     {
     }

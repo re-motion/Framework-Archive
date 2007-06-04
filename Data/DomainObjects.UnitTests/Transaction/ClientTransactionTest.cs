@@ -479,7 +479,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
       Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
     }
@@ -488,11 +488,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
       order.Delete ();
 
-      order = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1, true);
+      order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction, true);
       Assert.AreEqual (StateType.Deleted, order.State);
       Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
     }
@@ -503,10 +503,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      Order order1 = (Order) clientTransaction1.GetObject (DomainObjectIDs.Order1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction1);
       order1.OrderNumber = 50;
 
-      Order order2 = (Order) clientTransaction2.GetObject (DomainObjectIDs.Order2);
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2, clientTransaction2);
       order2.OrderNumber = 60;
 
       clientTransaction1.Commit ();
@@ -514,8 +514,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       ClientTransaction clientTransaction3 = new ClientTransaction ();
 
-      Order changedOrder1 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order1);
-      Order changedOrder2 = (Order) clientTransaction3.GetObject (DomainObjectIDs.Order2);
+      Order changedOrder1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction3);
+      Order changedOrder2 = Order.GetObject (DomainObjectIDs.Order2, clientTransaction3);
 
       Assert.IsFalse (ReferenceEquals (order1, changedOrder1));
       Assert.IsFalse (ReferenceEquals (order2, changedOrder2));

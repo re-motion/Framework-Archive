@@ -113,9 +113,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
 
       ClientTransaction otherClientTransaction = new ClientTransaction ();
-      client1 = (Client) otherClientTransaction.GetObject (clientID1);
-      client2 = (Client) otherClientTransaction.GetObject (clientID2);
-      location = (Location) otherClientTransaction.GetObject (locationID);
+      client1 = Client.GetObject (clientID1, otherClientTransaction);
+      client2 = Client.GetObject (clientID2, otherClientTransaction);
+      location = Location.GetObject (locationID, otherClientTransaction);
 
       Assert.IsNotNull (client1);
       Assert.IsNotNull (client2);
@@ -184,8 +184,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
 
       ClientTransaction otherClientTransaction = new ClientTransaction ();
-      newClient1 = (Client) otherClientTransaction.GetObject (newClientID1);
-      newClient2 = (Client) otherClientTransaction.GetObject (newClientID2);
+      newClient1 = Client.GetObject (newClientID1, otherClientTransaction);
+      newClient2 = Client.GetObject (newClientID2, otherClientTransaction);
 
       Assert.IsNotNull (newClient1);
       Assert.IsNotNull (newClient2);

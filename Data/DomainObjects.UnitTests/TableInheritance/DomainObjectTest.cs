@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void OneToManyRelationToConcreteSingle ()
     {
-      Region region = (Region) ClientTransaction.Current.GetObject (DomainObjectIDs.Region);
+      Region region = Region.GetObject (DomainObjectIDs.Region);
       Assert.AreEqual (1, region.Customers.Count);
       Assert.AreEqual (DomainObjectIDs.Customer, region.Customers[0].ID);
     }
@@ -150,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       try
       {
-        ClientTransaction.Current.GetObject (DomainObjectIDs.Customer);
+        Customer.GetObject (DomainObjectIDs.Customer);
         Assert.Fail ("ObjectNotFoundException was expected.");
       }
       catch (ObjectNotFoundException)

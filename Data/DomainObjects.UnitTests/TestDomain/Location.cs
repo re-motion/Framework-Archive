@@ -18,6 +18,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<Location> (id);
     }
 
+    public new static Location GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return Location.GetObject (id);
+      }
+    }
+
     protected Location()
     {
     }

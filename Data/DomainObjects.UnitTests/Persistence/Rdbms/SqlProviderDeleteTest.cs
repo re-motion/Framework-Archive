@@ -78,10 +78,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      OrderTicket changedOrderTicket = (OrderTicket) clientTransaction1.GetObject (DomainObjectIDs.OrderTicket1);
+      OrderTicket changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1, clientTransaction1);
       changedOrderTicket.FileName = @"C:\NewFile.jpg";
 
-      OrderTicket deletedOrderTicket = (OrderTicket) clientTransaction2.GetObject (DomainObjectIDs.OrderTicket1);
+      OrderTicket deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1, clientTransaction2);
       deletedOrderTicket.Delete ();
 
       _provider.Connect ();

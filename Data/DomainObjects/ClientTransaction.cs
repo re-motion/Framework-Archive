@@ -202,7 +202,7 @@ public class ClientTransaction : ITransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
-  public virtual DomainObject GetObject (ObjectID id)
+  protected internal virtual DomainObject GetObject (ObjectID id)
   {
     return GetObject (id, false);
   }
@@ -220,7 +220,7 @@ public class ClientTransaction : ITransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
-  public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
+  protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 

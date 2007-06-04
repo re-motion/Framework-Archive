@@ -120,7 +120,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderTicket orderTicket2 = (OrderTicket) clientTransaction.GetObject (DomainObjectIDs.OrderTicket2);
+      OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2, clientTransaction);
 
       _map.SetRelatedObject (new RelationEndPointID (order1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), orderTicket2);
     }
@@ -135,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
 
       order1.OrderItems.Add (orderItem3);
     }
@@ -150,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
 
       order1.OrderItems.Insert (0, orderItem3);
     }
@@ -165,7 +165,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem1 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem1);
+      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1, clientTransaction);
 
       order1.OrderItems.Remove (orderItem1);
     }
@@ -176,7 +176,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
 
       int index = order1.OrderItems.IndexOf (DomainObjectIDs.OrderItem1);
 
@@ -204,7 +204,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void PerformDeletionWithOtherClientTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
       _map.PerformDelete (order1);
     }
