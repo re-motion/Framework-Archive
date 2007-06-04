@@ -72,5 +72,10 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
     {
       return new SecurityContext (typeof (SecurableObject));
     }
+
+    public new void Delete ()
+    {
+      base.Delete();
+    }
   }
 }

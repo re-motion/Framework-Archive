@@ -757,7 +757,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       Assert.AreEqual (1, existingCustomer.Orders[0].OrderItems.Count);
 
       existingCustomer.Orders[0].OrderTicket.Delete ();
-      existingCustomer.Orders[0].OrderItems[0].Delete ();
+      ((OrderItem)existingCustomer.Orders[0].OrderItems[0]).Delete ();
       existingCustomer.Orders[0].Delete ();
 
       ClientTransaction.Current.Commit ();

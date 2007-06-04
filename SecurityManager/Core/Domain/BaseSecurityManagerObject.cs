@@ -17,5 +17,10 @@ namespace Rubicon.SecurityManager.Domain
     protected BaseSecurityManagerObject ()
     {
     }
+
+    public new void Delete ()
+    {
+      base.Delete();
+    }
   }
 }

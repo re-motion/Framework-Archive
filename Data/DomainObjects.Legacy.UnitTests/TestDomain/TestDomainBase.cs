@@ -73,5 +73,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
       base.SetRelatedObject (propertyName, newRelatedObject);
     }
+
+    public new void Delete ()
+    {
+      base.Delete ();
+    }
   }
 }

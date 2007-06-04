@@ -30,5 +30,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     [DBBidirectionalRelation ("HistoryEntries")]
     [Mandatory]
     public abstract DomainBase Owner { get; set; }
+
+    public new void Delete ()
+    {
+      base.Delete();
+    }
   }
 }

@@ -54,5 +54,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
       get { return (DomainBase) GetRelatedObject ("Owner"); }
       set { SetRelatedObject ("Owner", value); }
     }
+
+    public new void Delete ()
+    {
+      base.Delete ();
+    }
   }
 }

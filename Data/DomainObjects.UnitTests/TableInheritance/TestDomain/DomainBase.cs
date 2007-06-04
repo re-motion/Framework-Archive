@@ -31,5 +31,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     [DBBidirectionalRelation ("Owner", SortExpression = "HistoryDate desc")]
     public abstract ObjectList<HistoryEntry> HistoryEntries { get; }
+
+    public new void Delete ()
+    {
+      base.Delete ();
+    }
   }
 }

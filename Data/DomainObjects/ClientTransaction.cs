@@ -364,7 +364,7 @@ public class ClientTransaction : ITransaction
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <paramref name="domainObject"/> belongs to a different <see cref="ClientTransaction"/>. 
   /// </exception>
-  public virtual void Delete (DomainObject domainObject)
+  protected internal virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
