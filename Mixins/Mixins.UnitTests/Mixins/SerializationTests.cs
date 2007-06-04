@@ -117,7 +117,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (mixinTarget.Mixins[0].GetType(), mixinTargetA.Mixins[0].GetType());
 
       Assert.IsNotNull (mixinTargetA.FirstBaseCallProxy);
-      Assert.AreNotEqual (mixinTarget.FirstBaseCallProxy.GetType (), mixinTargetA.FirstBaseCallProxy.GetType ());
+      Assert.AreNotEqual (mixinTarget.FirstBaseCallProxy, mixinTargetA.FirstBaseCallProxy);
       Assert.AreEqual (mixinTargetA.GetType ().GetNestedType ("BaseCallProxy"), mixinTargetA.FirstBaseCallProxy.GetType ());
       Assert.AreEqual (0, mixinTargetA.FirstBaseCallProxy.GetType ().GetField ("__depth").GetValue (mixinTargetA.FirstBaseCallProxy));
       Assert.AreSame (mixinTargetA, mixinTargetA.FirstBaseCallProxy.GetType ().GetField ("__this").GetValue(mixinTargetA.FirstBaseCallProxy));
@@ -133,7 +133,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (15, c.I);
       
       ClassImplementingISerializable c2 = Serializer.SerializeAndDeserialize (c);
-      Assert.AreNotEqual (c.GetType(), c2.GetType ());
+      Assert.AreNotEqual (c, c2);
       Assert.AreEqual (28, c2.I);
     }
 
@@ -182,7 +182,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual ("35", c.S);
 
       ClassWithoutDefaultCtor c2 = Serializer.SerializeAndDeserialize (c);
-      Assert.AreNotEqual (c.GetType (), c2.GetType ());
+      Assert.AreNotEqual (c, c2);
       Assert.AreEqual ("35", c2.S);
     }
   }

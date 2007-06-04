@@ -74,7 +74,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\BaseTypeWithAllowMultiple.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\BaseWithGetterOnly.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ClassAndMixinWithFinalOverride.cs" />
-    <Compile Include="Mixins\CacheTests.cs" />
+    <Compile Include="Mixins\ConcreteTypeBuilderTests.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\MixinIntroducingGenericInterface.cs" />
     <Compile Include="Mixins\CodeGenSampleTypes\VeryGenericMixin.cs" />
     <Compile Include="Mixins\MixinBaseClassTests.cs" />

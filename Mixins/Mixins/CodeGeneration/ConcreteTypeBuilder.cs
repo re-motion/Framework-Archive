@@ -9,7 +9,9 @@ namespace Mixins.CodeGeneration
   public class ConcreteTypeBuilder : CallContextSingletonBase<ConcreteTypeBuilder, DefaultInstanceCreator<ConcreteTypeBuilder>>
   {
     private IModuleManager _scope;
-    private InterlockedCache<BaseClassDefinition, Type> _typeCache = new InterlockedCache<BaseClassDefinition, Type>();
+    // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache would actually cause
+    // errors
+    private InterlockedCache<ClassDefinition, Type> _typeCache = new InterlockedCache<ClassDefinition, Type>();
 
     public IModuleManager Scope
     {
@@ -28,14 +30,13 @@ namespace Mixins.CodeGeneration
       }
     }
 
-    // TODO: Add type caching to this class
     public Type GetConcreteType (BaseClassDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      return _typeCache.GetOrCreateValue (configuration, delegate (BaseClassDefinition classConfiguration)
+      return _typeCache.GetOrCreateValue (configuration, delegate (ClassDefinition classConfiguration)
       {
-        ITypeGenerator generator = Scope.CreateTypeGenerator (classConfiguration);
+        ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration);
         Type finishedType = generator.GetBuiltType ();
         return finishedType;
       });
@@ -46,9 +47,12 @@ namespace Mixins.CodeGeneration
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);
 
-      IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator (configuration);
-      Type finishedType = generator.GetBuiltType ();
-      return finishedType;
+      return _typeCache.GetOrCreateValue (configuration, delegate (ClassDefinition classConfiguration)
+      {
+        IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator ((MixinDefinition) classConfiguration);
+        Type finishedType = generator.GetBuiltType ();
+        return finishedType;
+      });
     }
   }
 }
