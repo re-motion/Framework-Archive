@@ -31,7 +31,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static new StatePropertyDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (StatePropertyDefinition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<StatePropertyDefinition> (id);
+      }
     }
 
     // member fields

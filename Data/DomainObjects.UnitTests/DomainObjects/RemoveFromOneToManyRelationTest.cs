@@ -20,8 +20,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      _subordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
+      _supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      _subordinate = Employee.GetObject (DomainObjectIDs.Employee4);
 
       _supervisorEventReceiver = new DomainObjectEventReceiver (_supervisor);
       _subordinateEventReceiver = new DomainObjectEventReceiver (_subordinate);

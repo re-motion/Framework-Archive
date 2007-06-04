@@ -29,12 +29,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
         
         /// <summary>
-        /// _TenantListControl control.
+        /// TenantListControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl _TenantListControl;
+        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.TenantListControl TenantListControl;
     }
 }

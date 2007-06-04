@@ -19,6 +19,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<OrderItem> ().With (order);
     }
 
+    public new static OrderItem GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<OrderItem> (id);
+    }
+
     protected OrderItem()
     {
     }

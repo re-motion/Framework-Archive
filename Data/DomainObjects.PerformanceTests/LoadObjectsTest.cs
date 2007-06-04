@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       for (int i = 0; i < numberOfTests; i++)
       {
         ClientTransaction.SetCurrent (null);
-        Client client = DomainObject.GetObject<Client> (_clientID);
+        Client client = Client.GetObject (_clientID);
 
         stopwatch.Start ();
 
@@ -75,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       for (int i = 0; i < numberOfTests; i++)
       {
         ClientTransaction.SetCurrent (null);
-        Client client = DomainObject.GetObject<Client> (_clientID);
+        Client client = Client.GetObject (_clientID);
 
         stopwatch.Start ();
 

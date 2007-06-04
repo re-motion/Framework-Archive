@@ -7,14 +7,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class Person: DomainBase
   {
-    public new static Person GetObject (ObjectID id)
-    {
-      return (Person) DomainObject.GetObject (id);
-    }
-
     public static Person NewObject ()
     {
       return NewObject<Person> ().With ();
+    }
+
+    public new static Person GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Person> (id);
     }
 
     protected Person()

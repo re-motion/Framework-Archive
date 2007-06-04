@@ -11,7 +11,7 @@ public class Order : TestDomainBase
 
   public static new Order GetObject (ObjectID id)
   {
-    return (Order) DomainObject.GetObject (id);
+    return DomainObject.GetObject<Order> (id);
   }
 
   // member fields

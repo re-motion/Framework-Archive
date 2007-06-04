@@ -57,9 +57,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void DeleteRelatedDataContainers ()
     {
-      Employee supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
-      Employee subordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer1);
+      Employee supervisor = Employee.GetObject (DomainObjectIDs.Employee2);
+      Employee subordinate = Employee.GetObject (DomainObjectIDs.Employee3);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
 
       supervisor.Delete ();
       subordinate.Delete ();
@@ -96,13 +96,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      ClassWithAllDataTypes changedObject = 
-          (ClassWithAllDataTypes) TestDomainBase.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction1);
+      ClassWithAllDataTypes changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction1);
 
       changedObject.StringProperty = "New text";
 
-      ClassWithAllDataTypes deletedObject =
-          (ClassWithAllDataTypes) TestDomainBase.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction2);
+      ClassWithAllDataTypes deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction2);
 
       deletedObject.Delete ();
 
@@ -122,7 +120,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     private DataContainer GetDeletedOrderTicketContainer ()
     {
-      OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
       orderTicket.Delete ();
       return orderTicket.DataContainer;
     }

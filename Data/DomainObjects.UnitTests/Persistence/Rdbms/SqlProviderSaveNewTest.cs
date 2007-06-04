@@ -135,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ClassDefinition employeeClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Employee)];
       Employee newSupervisor = Employee.NewObject ();
-      Employee existingSubordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      Employee existingSubordinate = Employee.GetObject (DomainObjectIDs.Employee1);
 
       newSupervisor.Name = "Supervisor";
       existingSubordinate.Supervisor = newSupervisor;
@@ -158,7 +158,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       Order order = Order.NewObject ();
       order.DeliveryDate = new DateTime (2005, 12, 24);
-      order.Customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
       order.Official = Official.GetObject (DomainObjectIDs.Official1);
 
       ObjectID newObjectID = order.ID;

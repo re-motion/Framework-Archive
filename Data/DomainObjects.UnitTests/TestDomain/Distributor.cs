@@ -11,6 +11,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Distributor> ().With();
     }
 
+    public new static Distributor GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Distributor> (id);
+    }
+
     protected Distributor ()
     {
     }

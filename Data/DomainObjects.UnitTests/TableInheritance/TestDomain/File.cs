@@ -7,14 +7,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class File: FileSystemItem
   {
-    public new static File GetObject (ObjectID id)
-    {
-      return (File) DomainObject.GetObject (id);
-    }
-
     public static File NewObject()
     {
       return NewObject<File>().With();
+    }
+
+    public new static File GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<File> (id);
     }
 
     protected File ()

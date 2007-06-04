@@ -7,14 +7,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class DerivedClassWithEntityWithHierarchy: AbstractBaseClassWithHierarchy
   {
-    public new static DerivedClassWithEntityWithHierarchy GetObject (ObjectID id)
-    {
-      return (DerivedClassWithEntityWithHierarchy) DomainObject.GetObject (id);
-    }
-
     public static DerivedClassWithEntityWithHierarchy NewObject ()
     {
       return NewObject<DerivedClassWithEntityWithHierarchy> ().With ();
+    }
+
+    public new static DerivedClassWithEntityWithHierarchy GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<DerivedClassWithEntityWithHierarchy> (id);
     }
 
     protected DerivedClassWithEntityWithHierarchy ()

@@ -8,14 +8,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class HistoryEntry: DomainObject
   {
-    public new static HistoryEntry GetObject (ObjectID id)
-    {
-      return (HistoryEntry) DomainObject.GetObject (id);
-    }
-
     public static HistoryEntry NewObject()
     {
       return NewObject<HistoryEntry>().With();
+    }
+
+    public new static HistoryEntry GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<HistoryEntry> (id);
     }
 
     protected HistoryEntry()

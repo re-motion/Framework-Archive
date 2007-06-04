@@ -11,6 +11,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Partner>().With();
     }
 
+    public new static Partner GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Partner> (id);
+    }
+
     protected Partner ()
     {
     }

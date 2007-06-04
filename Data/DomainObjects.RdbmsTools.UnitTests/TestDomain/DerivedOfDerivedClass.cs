@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
   [Instantiable]
   public abstract class DerivedOfDerivedClass : DerivedClass
   {
-    public static DerivedOfDerivedClass NewObject()
+    public new static DerivedOfDerivedClass NewObject()
     {
       return NewObject<DerivedOfDerivedClass>().With();
     }

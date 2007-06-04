@@ -40,7 +40,6 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
 
     private StringBuilder _createTableStringBuilder;
     private StringBuilder _dropTableStringBuilder;
-    private Dictionary<string, string> _sqlTypeMapping;
 
     // construction and disposing
 

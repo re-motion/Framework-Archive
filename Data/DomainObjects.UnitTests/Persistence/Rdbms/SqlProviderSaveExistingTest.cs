@@ -604,8 +604,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
-        orderTicket.Order = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+        OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        orderTicket.Order = Order.GetObject (DomainObjectIDs.Order2);
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (orderTicket.DataContainer);
@@ -621,7 +621,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Order order = DomainObject.GetObject<Order> (DomainObjectIDs.OrderWithoutOrderItem);
+        Order order = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
         order.Official = (Official) ClientTransactionMock.GetObject (DomainObjectIDs.Official2);
 
         DataContainerCollection collection = new DataContainerCollection ();
@@ -642,8 +642,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Ceo ceo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
-        ceo.Company = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner1);
+        Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+        ceo.Company = Partner.GetObject (DomainObjectIDs.Partner1);
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (ceo.DataContainer);
@@ -663,8 +663,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Ceo ceo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
-        ceo.Company = DomainObject.GetObject<Supplier> (DomainObjectIDs.Supplier1);
+        Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
+        ceo.Company = Supplier.GetObject (DomainObjectIDs.Supplier1);
 
         DataContainerCollection collection = new DataContainerCollection ();
         collection.Add (ceo.DataContainer);
@@ -684,7 +684,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer1);
+        Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
         computer.Employee = null;
 
         DataContainerCollection collection = new DataContainerCollection ();
@@ -706,7 +706,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        Ceo ceo = DomainObject.GetObject<Ceo> (DomainObjectIDs.Ceo1);
+        Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
         ceo.Company = null;
 
         DataContainerCollection collection = new DataContainerCollection ();

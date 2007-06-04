@@ -8,14 +8,14 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
   [Instantiable]
   public abstract class Official : DomainObject
   {
-    public new static Official GetObject (ObjectID id)
-    {
-      return (Official) DomainObject.GetObject (id);
-    }
-
     public static Official NewObject()
     {
       return NewObject<Official>().With();
+    }
+
+    public new static Official GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Official> (id);
     }
 
     protected Official()

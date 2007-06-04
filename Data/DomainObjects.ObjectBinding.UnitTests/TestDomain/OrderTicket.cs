@@ -11,7 +11,7 @@ public class OrderTicket : TestDomainBase
 
   public static new OrderTicket GetObject (ObjectID id)
   {
-    return (OrderTicket) DomainObject.GetObject (id);
+    return DomainObject.GetObject<OrderTicket> (id);
   }
 
   // member fields

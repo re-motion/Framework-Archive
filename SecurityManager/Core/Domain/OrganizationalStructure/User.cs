@@ -43,7 +43,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (User) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<User> (id);
+      }
     }
 
     public static User FindByUserName (string userName, ClientTransaction clientTransaction)

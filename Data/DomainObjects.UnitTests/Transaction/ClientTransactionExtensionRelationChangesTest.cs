@@ -30,9 +30,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       base.SetUp ();
 
-      _order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _orderTicket1 = _order1.OrderTicket;
-      _location1 = DomainObject.GetObject<Location> (DomainObjectIDs.Location1);
+      _location1 = Location.GetObject (DomainObjectIDs.Location1);
       _client1 = _location1.Client;
 
       _mockRepository = new MockRepository ();
@@ -123,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void OneToOneRelationFromVirtualEndPointWithBothOldRelatedObjects ()
     {
-      OrderTicket orderTicket3 = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket3);
+      OrderTicket orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
       Order oldOrderOfOrderTicket3 = orderTicket3.Order;
 
       DomainObjectMockEventReceiver orderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket3);
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void OneToOneRelationFromEndPointWithBothOldRelatedObjects ()
     {
-      OrderTicket orderTicket3 = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket3);
+      OrderTicket orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
       Order oldOrderOfOrderTicket3 = orderTicket3.Order;
 
       DomainObjectMockEventReceiver orderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket3);
@@ -389,7 +389,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void AddToOneToManyRelationWithOldRelatedObject ()
     {
       DomainObjectCollection preloadedOrderItemsOfOrder1 = _order1.OrderItems;
-      OrderItem newOrderItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem3);
+      OrderItem newOrderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       Order oldOrderOfNewOrderItem = newOrderItem.Order;
       DomainObjectCollection preloadedOrderItems2 = oldOrderOfNewOrderItem.OrderItems;
 
@@ -502,7 +502,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderItem oldOrderItem = (OrderItem) _order1.OrderItems[0];
 
       DomainObjectCollection preloadedOrderItemsOfOrder1 = _order1.OrderItems;
-      OrderItem newOrderItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem3);
+      OrderItem newOrderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       Order oldOrderOfNewOrderItem = newOrderItem.Order;
       DomainObjectCollection preloadedOrderItems2 = oldOrderOfNewOrderItem.OrderItems;
 

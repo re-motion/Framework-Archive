@@ -8,14 +8,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class Order: DomainObject
   {
-    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Order) DomainObject.GetObject (id, clientTransaction);
-    }
-
     public static Order NewObject()
     {
       return NewObject<Order>().With();
+    }
+
+    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<Order> (id);
+      }
     }
 
     protected Order()

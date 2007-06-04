@@ -10,8 +10,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OldRelatedObjectOfNewRelatedObjectIsNull ()
     {
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
-      Computer newComputerWithoutEmployee = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
+      Computer newComputerWithoutEmployee = Computer.GetObject (DomainObjectIDs.Computer4);
 
       employee.Computer = newComputerWithoutEmployee;
 
@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void NewRelatedObjectIsNull ()
     {
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
       employee.Computer = null;
 
       // expectation: no exception
@@ -30,8 +30,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OldRelatedObjectIsNull ()
     {
-      Employee employeeWithoutComputer = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      Computer computerWithoutEmployee = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Employee employeeWithoutComputer = Employee.GetObject (DomainObjectIDs.Employee1);
+      Computer computerWithoutEmployee = Computer.GetObject (DomainObjectIDs.Computer4);
       employeeWithoutComputer.Computer = computerWithoutEmployee;
 
       // expectation: no exception
@@ -40,8 +40,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectAndOldRelatedObjectIsNull ()
     {
-      Computer computerWithoutEmployee = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      Computer computerWithoutEmployee = Computer.GetObject (DomainObjectIDs.Computer4);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
       computerWithoutEmployee.Employee = employee;
 
       Assert.AreEqual (employee.ID, computerWithoutEmployee.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
@@ -53,8 +53,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectOverVirtualEndPointAndOldRelatedObjectIsNull ()
     {
-      Employee employeeWithoutComputer = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Employee employeeWithoutComputer = Employee.GetObject (DomainObjectIDs.Employee1);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       employeeWithoutComputer.Computer = computer;
 
       Assert.AreEqual (employeeWithoutComputer.ID, computer.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetNewRelatedObjectNull ()
     {
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
       Computer computer = employee.Computer;
       computer.Employee = null;
 
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetNewRelatedObjectNullOverVirtualEndPoint ()
     {
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee3);
       Computer computer = employee.Computer;
       employee.Computer = null;
 

@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       base.SetUp ();
 
-      _order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _newCustomer = Customer.NewObject ();
     }
 

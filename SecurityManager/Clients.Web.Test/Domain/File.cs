@@ -22,10 +22,13 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
         return DomainObject.NewObject<File> ().With ();
       }
     }
-    
+
     public static new File GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (File) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<File> (id);
+      }
     }
 
     protected File ()

@@ -20,9 +20,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _customer1 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
-      _customer2 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
-      _customer3NotInCollection = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer3);
+      _customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+      _customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
+      _customer3NotInCollection = Customer.GetObject (DomainObjectIDs.Customer3);
 
       _collection = CreateCustomerCollection ();
     }
@@ -49,9 +49,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DerivedType ()
     {
-      Company company = DomainObject.GetObject<Company> (DomainObjectIDs.Company1);
-      Partner partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner1);
-      Distributor distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor2);
+      Company company = Company.GetObject (DomainObjectIDs.Company1);
+      Partner partner = Partner.GetObject (DomainObjectIDs.Partner1);
+      Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor2);
 
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection (typeof (Company));
       domainObjectCollection.Add (company);
@@ -75,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "or derived from 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'.\r\nParameter name: domainObject")]
     public void InvalidDerivedType ()
     {
-      Distributor distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor2);
+      Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor2);
 
       DomainObjectCollection customerCollection = new DomainObjectCollection (typeof (Customer));
       customerCollection.Add (distributor);
@@ -84,9 +84,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CopyConstructorWithDerivedType ()
     {
-      Company company = DomainObject.GetObject<Company> (DomainObjectIDs.Company1);
-      Partner partner = DomainObject.GetObject<Partner> (DomainObjectIDs.Partner1);
-      Distributor distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor2);
+      Company company = Company.GetObject (DomainObjectIDs.Company1);
+      Partner partner = Partner.GetObject (DomainObjectIDs.Partner1);
+      Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor2);
 
       DomainObjectCollection domainObjectCollection1 = new DomainObjectCollection (typeof (Company));
       domainObjectCollection1.Add (company);
@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ContainsObjectIDTrue ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       DomainObjectCollection customers = new DomainObjectCollection ();
 
       customers.Add (customer);
@@ -136,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ContainsDomainObjectTrue ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       DomainObjectCollection customers = new DomainObjectCollection ();
 
       customers.Add (customer);
@@ -147,12 +147,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ContainsDomainObjectFalse ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       DomainObjectCollection customers = new DomainObjectCollection ();
 
       customers.Add (customer);
 
-      Customer copy = DomainObject.GetObject<Customer> (customer.ID, new ClientTransaction ());
+      Customer copy = Customer.GetObject (customer.ID, new ClientTransaction ());
 
       Assert.IsFalse (customers.ContainsObject (copy));
     }
@@ -189,7 +189,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void RemoveOverNumericIndex ()
     {
       DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       collection.Add (customer);
 
       Assert.AreEqual (1, collection.Count);
@@ -204,7 +204,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void RemoveObjectNotInCollection ()
     {
       DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       collection.Remove (customer);
 
@@ -351,7 +351,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
       DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
 
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
 
       Assert.IsFalse (DomainObjectCollection.Compare (collection1, collection2));
     }
@@ -362,8 +362,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
       DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
 
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
 
       Assert.IsFalse (DomainObjectCollection.Compare (collection1, collection2));
     }
@@ -372,12 +372,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CompareFalseWithDifferentOrder ()
     {
       DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
 
       DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
 
       Assert.IsFalse (DomainObjectCollection.Compare (collection1, collection2));
     }
@@ -417,12 +417,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CompareWithIgnoreFalse ()
     {
       DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
 
       DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
 
       Assert.IsFalse (DomainObjectCollection.Compare (collection1, collection2, false));
     }
@@ -431,12 +431,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CompareWithIgnoreTrue ()
     {
       DomainObjectCollection collection1 = new DomainObjectCollection (typeof (Customer));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
-      collection1.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer1));
+      collection1.Add (Customer.GetObject (DomainObjectIDs.Customer2));
 
       DomainObjectCollection collection2 = new DomainObjectCollection (typeof (Customer));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2));
-      collection2.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer2));
+      collection2.Add (Customer.GetObject (DomainObjectIDs.Customer1));
 
       Assert.IsTrue (DomainObjectCollection.Compare (collection1, collection2, true));
     }
@@ -446,7 +446,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
       DomainObjectCollectionEventReceiver eventReceiver = new DomainObjectCollectionEventReceiver (collection);
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       collection.Remove (customer);
 
@@ -511,7 +511,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (InvalidOperationException))]
     public void ChangeCollectionDuringEnumeration ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       foreach (OrderItem item in order.OrderItems)
         order.OrderItems.Remove (item);
@@ -521,7 +521,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (NotSupportedException))]
     public void RemoveFromReadOnlyCollection ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection readOnlyCollection = new DomainObjectCollection (order.OrderItems, true);
 
       readOnlyCollection.Remove (DomainObjectIDs.OrderItem1);
@@ -531,17 +531,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [ExpectedException (typeof (NotSupportedException))]
     public void AddToReadOnlyCollection ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection readOnlyCollection = new DomainObjectCollection (order.OrderItems, true);
 
-      readOnlyCollection.Add (DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem3));
+      readOnlyCollection.Add (OrderItem.GetObject (DomainObjectIDs.OrderItem3));
     }
 
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
     public void ClearReadOnlyCollection ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection readOnlyCollection = new DomainObjectCollection (order.OrderItems, true);
 
       readOnlyCollection.Clear ();
@@ -550,7 +550,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CopyToArray ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem[] items = new OrderItem[order.OrderItems.Count];
 
       order.OrderItems.CopyTo (items, 0);
@@ -593,10 +593,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void CopyToArrayWithIndex ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem[] items = new OrderItem[order.OrderItems.Count + 1];
 
-      OrderItem otherItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem3);
+      OrderItem otherItem = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
       items[0] = otherItem;
 
       order.OrderItems.CopyTo (items, 1);
@@ -958,7 +958,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void Combine ()
     {
       DomainObjectCollection secondCollection = new DomainObjectCollection (_collection, false);
-      secondCollection.Add (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer3));
+      secondCollection.Add (Customer.GetObject (DomainObjectIDs.Customer3));
 
       _collection.Combine (secondCollection);
 
@@ -974,7 +974,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CombineWithItemOfInvalidType ()
     {
       DomainObjectCollection secondCollection = new DomainObjectCollection ();
-      secondCollection.Add (DomainObject.GetObject<Order> (DomainObjectIDs.Order1));
+      secondCollection.Add (Order.GetObject (DomainObjectIDs.Order1));
 
       _collection.Combine (secondCollection);
     }
@@ -983,7 +983,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void CloneOrderCollection ()
     {
       OrderCollection orders = new OrderCollection ();
-      orders.Add (DomainObject.GetObject<Order> (DomainObjectIDs.Order1));
+      orders.Add (Order.GetObject (DomainObjectIDs.Order1));
 
       DomainObjectCollection clonedOrders = orders.Clone (true);
 

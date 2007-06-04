@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       base.SetUp ();
 
-      _order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _mockRepository = new MockRepository ();
       _extension = _mockRepository.CreateMock<IClientTransactionExtension> ();
 
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      Order order = Order.GetObject (DomainObjectIDs.Order2);
 
       _mockRepository.VerifyAll ();
     }
@@ -111,7 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectDelete ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       DomainObjectMockEventReceiver computerEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (computer);
       _mockRepository.BackToRecord (_extension);
 
@@ -217,7 +217,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectDeleteTwice ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
@@ -405,7 +405,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void LoadRelatedDataContainerForEndPoint ()
     {
-      OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
 
       _mockRepository.BackToRecord (_extension);
 
@@ -678,7 +678,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitWithChangedPropertyValue ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "newSerialNumber";
       _mockRepository.BackToRecord (_extension);
 
@@ -700,8 +700,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitWithChangedRelationValue ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
-      Employee employee = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
       computer.Employee = employee;
       _mockRepository.BackToRecord (_extension);
 
@@ -724,7 +724,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitWithChangedRelationValueWithClassIDColumn ()
     {
       Customer oldCustomer = _order1.Customer;
-      Customer newCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
+      Customer newCustomer = Customer.GetObject (DomainObjectIDs.Customer2);
       _order1.Customer = newCustomer;
       _mockRepository.BackToRecord (_extension);
 
@@ -748,7 +748,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       SetDatabaseModifyable ();
 
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "newSerialNumber";
       _mockRepository.BackToRecord (_extension);
 
@@ -809,7 +809,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void Rollback ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "newSerialNumber";
       _mockRepository.BackToRecord (_extension);
 

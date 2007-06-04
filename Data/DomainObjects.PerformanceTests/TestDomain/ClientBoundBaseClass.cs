@@ -13,12 +13,15 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     public static new ClientBoundBaseClass GetObject (ObjectID id)
     {
-      return (ClientBoundBaseClass) DomainObject.GetObject (id);
+      return DomainObject.GetObject<ClientBoundBaseClass> (id);
     }
 
     public static new ClientBoundBaseClass GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (ClientBoundBaseClass) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<ClientBoundBaseClass> (id);
+      }
     }
 
     // member fields

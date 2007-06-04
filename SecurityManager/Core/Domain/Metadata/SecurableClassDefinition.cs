@@ -28,7 +28,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<SecurableClassDefinition> (id);
+      }
     }
 
     public static SecurableClassDefinition FindByName (string name, ClientTransaction clientTransaction)

@@ -8,14 +8,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [TableInheritanceTestDomain]
   public abstract class Client : DomainObject
   {
-    public new static Client GetObject (ObjectID id)
-    {
-      return (Client) DomainObject.GetObject (id);
-    }
-
     public static Client NewObject ()
     {
       return NewObject<Client> ().With();
+    }
+
+    public new static Client GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Client> (id);
     }
 
     protected Client ()

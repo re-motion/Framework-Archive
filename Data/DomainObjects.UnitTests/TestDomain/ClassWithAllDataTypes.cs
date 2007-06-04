@@ -14,14 +14,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       Value2 = 2
     }
 
-    public new static ClassWithAllDataTypes GetObject (ObjectID id)
-    {
-      return (ClassWithAllDataTypes) DomainObject.GetObject (id);
-    }
-
     public static ClassWithAllDataTypes NewObject ()
     {
       return NewObject<ClassWithAllDataTypes> ().With();
+    }
+
+    public new static ClassWithAllDataTypes GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<ClassWithAllDataTypes> (id);
+    }
+
+    public new static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<ClassWithAllDataTypes> (id);
+      }
     }
 
     private bool _onLoadedHasBeenCalled;

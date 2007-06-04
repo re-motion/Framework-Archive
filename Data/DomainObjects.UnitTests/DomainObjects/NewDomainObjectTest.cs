@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetObject ()
     {
       Order order = Order.NewObject ();
-      Order sameOrder = DomainObject.GetObject<Order> (order.ID);
+      Order sameOrder = Order.GetObject (order.ID);
 
       Assert.AreSame (order, sameOrder);
     }
@@ -218,11 +218,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      ceo = DomainObject.GetObject<Ceo> (ceoID);
-      customer = DomainObject.GetObject<Customer> (customerID);
-      order = DomainObject.GetObject<Order> (orderID);
-      orderTicket = DomainObject.GetObject<OrderTicket> (orderTicketID);
-      orderItem = DomainObject.GetObject<OrderItem> (orderItemID);
+      ceo = Ceo.GetObject (ceoID);
+      customer = Customer.GetObject (customerID);
+      order = Order.GetObject (orderID);
+      orderTicket = OrderTicket.GetObject (orderTicketID);
+      orderItem = OrderItem.GetObject (orderItemID);
       Official official = Official.GetObject (DomainObjectIDs.Official1);
 
       Assert.IsNotNull (ceo);
@@ -277,8 +277,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      supervisor = DomainObject.GetObject<Employee> (supervisorID);
-      subordinate = DomainObject.GetObject<Employee> (subordinateID);
+      supervisor = Employee.GetObject (supervisorID);
+      subordinate = Employee.GetObject (subordinateID);
 
       Assert.IsNotNull (supervisor);
       Assert.IsNotNull (subordinate);
@@ -301,7 +301,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SaveExistingObjectWithRelatedNew ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       Employee newEmployee = Employee.NewObject ();
       ObjectID newEmployeeID = newEmployee.ID;
 
@@ -311,8 +311,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
 
-      computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
-      newEmployee = DomainObject.GetObject<Employee> (newEmployeeID);
+      computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      newEmployee = Employee.GetObject (newEmployeeID);
 
       Assert.IsNotNull (newEmployee);
       Assert.AreEqual ("Arthur Dent", newEmployee.Name);

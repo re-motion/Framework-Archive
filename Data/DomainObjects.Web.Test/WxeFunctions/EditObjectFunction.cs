@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 
     private void Step1()
     {
-      ObjectWithAllDataTypes = DomainObject.GetObject<ClassWithAllDataTypes> (DomainObjectIDs.ObjectWithAllDataTypes1);
+      ObjectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
     }
 
     private WxePageStep Step2 = new WxePageStep ("EditObject.aspx");

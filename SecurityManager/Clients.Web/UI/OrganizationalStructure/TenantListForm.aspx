@@ -6,5 +6,5 @@
   <securityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
-  <securityManager:TenantListControl ID="_TenantListControl" runat="server" />
+  <securityManager:TenantListControl ID="TenantListControl" runat="server" />
 </asp:Content>

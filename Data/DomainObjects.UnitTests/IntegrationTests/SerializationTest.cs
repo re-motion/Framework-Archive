@@ -446,13 +446,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void BidirectionalRelationsIncludingHierarchyOfObjects ()
     {
-      Employee employee1 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      Employee employee2 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
-      Employee employee3 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
-      Employee employee4 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee4);
-      Employee employee5 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee5);
-      Employee employee6 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee6);
-      Employee employee7 = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee7);
+      Employee employee1 = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee employee2 = Employee.GetObject (DomainObjectIDs.Employee2);
+      Employee employee3 = Employee.GetObject (DomainObjectIDs.Employee3);
+      Employee employee4 = Employee.GetObject (DomainObjectIDs.Employee4);
+      Employee employee5 = Employee.GetObject (DomainObjectIDs.Employee5);
+      Employee employee6 = Employee.GetObject (DomainObjectIDs.Employee6);
+      Employee employee7 = Employee.GetObject (DomainObjectIDs.Employee7);
 
       DomainObjectCollection employee1Subordinates = employee1.Subordinates;
       Employee employee1Supervisor = employee1.Supervisor;
@@ -536,11 +536,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void UnidirectionalRelation ()
     {
-      Location location1 = DomainObject.GetObject<Location> (DomainObjectIDs.Location1);
+      Location location1 = Location.GetObject (DomainObjectIDs.Location1);
       Client location1Client = location1.Client;
-      Location location2 = DomainObject.GetObject<Location> (DomainObjectIDs.Location2);
+      Location location2 = Location.GetObject (DomainObjectIDs.Location2);
       Client location2Client = location2.Client;
-      Location location3 = DomainObject.GetObject<Location> (DomainObjectIDs.Location3);
+      Location location3 = Location.GetObject (DomainObjectIDs.Location3);
       Client location3Client = location3.Client;
 
       Location[] locations = new Location[] { location1, location2, location3 };

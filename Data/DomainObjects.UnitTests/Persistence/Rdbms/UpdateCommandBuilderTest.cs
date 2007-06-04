@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Provider must be connected first.\r\nParameter name: provider")]
     public void ConstructorChecksForConnectedProvider ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       new UpdateCommandBuilder (Provider, order.DataContainer);
     }
 
@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
        "State of provided DataContainer must not be 'Unchanged'.\r\nParameter name: dataContainer")]
     public void InitializeWithDataContainerOfInvalidState ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       Provider.Connect ();
       new UpdateCommandBuilder (Provider, order.DataContainer);

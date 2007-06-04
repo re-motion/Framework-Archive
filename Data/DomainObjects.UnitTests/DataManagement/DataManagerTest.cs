@@ -214,8 +214,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void CommitOneToManyRelationChange ()
     {
-      Customer customer1 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
-      Order order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1);
       customer1.Orders.Clear ();
 
       _dataManager.Commit ();
@@ -293,7 +293,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetChangedDataContainersForCommitWithDeletedObject ()
     {
-      OrderItem orderItem1 = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem1);
+      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       orderItem1.Delete ();
 
       _dataManager.GetChangedDataContainersForCommit ();

@@ -13,6 +13,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Employee> ().With();
     }
 
+    public new static Employee GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Employee> (id);
+    }
+
+    public new static Employee GetObject (ObjectID id, bool includeDeleted)
+    {
+      return DomainObject.GetObject<Employee> (id, includeDeleted);
+    }
+
     protected Employee ()
     {
     }

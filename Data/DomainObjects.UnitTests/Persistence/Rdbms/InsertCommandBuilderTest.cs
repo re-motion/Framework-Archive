@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         "State of provided DataContainer must be 'New', but is 'Unchanged'.\r\nParameter name: dataContainer")]
     public void InitializeWithDataContainerOfInvalidState ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       Provider.Connect ();
       new InsertCommandBuilder (Provider, order.DataContainer);

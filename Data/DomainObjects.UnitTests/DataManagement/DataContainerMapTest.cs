@@ -123,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       order.OrderNumber = 10;
       order.DeliveryDate = new DateTime (2006, 1, 1);
       order.Official = Official.GetObject (DomainObjectIDs.Official1);
-      order.Customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       return order.DataContainer;
     }

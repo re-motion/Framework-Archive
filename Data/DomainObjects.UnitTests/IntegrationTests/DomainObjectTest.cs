@@ -664,7 +664,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void SetValuesAndAccessOriginalValuesTest()
     {
-      OrderItem orderItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem1);
+      OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
 
       DataContainer dataContainer = orderItem.DataContainer;
 
@@ -789,7 +789,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyEventsOfExistingObjectPropertyChangeTest()
     {
-      Order order2 = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2);
 
       InitializeEventReceivers (order2);
       CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
@@ -802,7 +802,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void PropertyEventsOfExistingObjectRelationChangeTest()
     {
-      Order order2 = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2);
 
       InitializeEventReceivers (order2);
       CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
@@ -818,7 +818,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Customer newCustomer = Customer.NewObject();
       newCustomer.Ceo = Ceo.NewObject();
 
-      Customer existingCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer3);
+      Customer existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
       Assert.AreEqual (1, existingCustomer.Orders.Count);
       Assert.IsNotNull (existingCustomer.Orders[0].OrderTicket);
       Assert.AreEqual (1, existingCustomer.Orders[0].OrderItems.Count);
@@ -830,8 +830,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       ClientTransaction.Current.Commit();
       ClientTransaction.SetCurrent (null);
 
-      newCustomer = DomainObject.GetObject<Customer> (newCustomer.ID);
-      existingCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer3);
+      newCustomer = Customer.GetObject (newCustomer.ID);
+      existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
 
       Assert.AreEqual (0, newCustomer.Orders.Count);
       Assert.AreEqual (0, existingCustomer.Orders.Count);

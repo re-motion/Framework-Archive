@@ -9,21 +9,6 @@ public class TestDomainBase : BindableDomainObject
 
   // static members and constants
 
-  public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)
-  {
-    return (TestDomainBase) DomainObject.GetObject (id, clientTransaction);
-  }
-
-  public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
-  {
-    return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
-  }
-
-  public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-  {
-    return (TestDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-  }
-
   // member fields
 
   // construction and disposing

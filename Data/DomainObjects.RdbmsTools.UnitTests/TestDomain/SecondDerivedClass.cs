@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
   [Instantiable]
   public abstract class SecondDerivedClass : ConcreteClass
   {
-    public static SecondDerivedClass NewObject()
+    public new static SecondDerivedClass NewObject()
     {
       return NewObject<SecondDerivedClass>().With();
     }

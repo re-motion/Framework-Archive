@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _orderItem = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem1);
+      _orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       _order = _orderItem.Order;
 
       _eventReceiver = CreateEventReceiver ();

@@ -45,7 +45,7 @@ public class UndefinedEnumTestFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    ExistingObjectWithUndefinedEnum = DomainObject.GetObject<ClassWithUndefinedEnum> (DomainObjectIDs.ObjectWithUndefinedEnum);
+    ExistingObjectWithUndefinedEnum = ClassWithUndefinedEnum.GetObject (DomainObjectIDs.ObjectWithUndefinedEnum);
     NewObjectWithUndefinedEnum = ClassWithUndefinedEnum.NewObject ();
     SearchObjectWithUndefinedEnum = new SearchObjectWithUndefinedEnum ();
   }

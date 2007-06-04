@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
         TenantList.SetSortingOrder (new BocListSortingOrderEntry ((BocColumnDefinition) TenantList.FixedColumns[0], SortingDirection.Ascending));
       TenantList.LoadUnboundValue (Tenant.FindAll (CurrentFunction.CurrentTransaction), IsPostBack);
 
-      if (SecurityConfiguration.Current.SecurityService != null)
+      if (SecurityConfiguration.Current.SecurityProvider != null)
       {
         SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
         Type tenantType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetTenantType ();

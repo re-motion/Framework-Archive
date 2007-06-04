@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Location> ().With();
     }
 
+    public new static Location GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Location> (id);
+    }
+
     protected Location()
     {
     }

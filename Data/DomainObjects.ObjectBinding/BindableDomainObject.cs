@@ -30,10 +30,10 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <exception cref="System.InvalidCastException">
   ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
-  // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
+  //TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id)
   {
-    return (BindableDomainObject) DomainObject.GetObject (id);
+    return DomainObject.GetObject<BindableDomainObject> (id);
   }
 
   /// <summary>
@@ -54,7 +54,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
   {
-    return (BindableDomainObject) DomainObject.GetObject (id, includeDeleted);
+    return DomainObject.GetObject<BindableDomainObject> (id, includeDeleted);
   }
 
   /// <summary>
@@ -75,7 +75,12 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
-    return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    
+    using (new CurrentTransactionScope (clientTransaction))
+    {
+      return DomainObject.GetObject<BindableDomainObject> (id);
+    }
   }
 
   /// <summary>
@@ -97,10 +102,12 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   // TODO: [Obsolete("Use DomainObject.GetObject<> instead.")]
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    return (BindableDomainObject) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+    using (new CurrentTransactionScope (clientTransaction))
+    {
+      return DomainObject.GetObject<BindableDomainObject> (id, includeDeleted);
+    }
   }
 
   // member fields

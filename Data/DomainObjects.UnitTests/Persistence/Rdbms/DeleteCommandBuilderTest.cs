@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateWithForeignKeyColumn ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.Delete ();
       DataContainer deletedOrderContainer = order.DataContainer;
       

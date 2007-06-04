@@ -3,9 +3,6 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
-using System.Reflection;
-using Rubicon.Logging;
-using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects
@@ -89,7 +86,7 @@ public class DomainObject
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-  public static T GetObject<T> (ObjectID id) where T : DomainObject
+  protected static T GetObject<T> (ObjectID id) where T : DomainObject
   {
     return GetObject<T> (id, false);
   }
@@ -111,51 +108,9 @@ public class DomainObject
   /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
   public static T GetObject<T> (ObjectID id, bool includeDeleted) where T : DomainObject
   {
-    return GetObject<T> (id, ClientTransaction.Current, includeDeleted);
-  }
-
-  /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-  /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
-  /// <typeparam name="T">The expected type of the concrete <see cref="DomainObject"/></typeparam>
-  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-  public static T GetObject<T> (ObjectID id, ClientTransaction clientTransaction) where T : DomainObject
-  {
-    return GetObject<T> (id, clientTransaction, false);
-  }
-
-  /// <summary>
-  /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
-  /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <see cref="DomainObject"/>.</param>
-  /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
-  /// <typeparam name="T">The expected type of the concrete <see cref="DomainObject"/></typeparam>
-  /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  /// <exception cref="InvalidCastException">The loaded <see cref="DomainObject"/> is not of the expected type <typeparamref name="T"/>.</exception>
-  public static T GetObject<T> (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted) where T : DomainObject
-  {
     ArgumentUtility.CheckNotNull ("id", id);
-    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    return (T) clientTransaction.GetObject (id, includeDeleted);
+    return (T) ClientTransaction.Current.GetObject (id, includeDeleted);
   }
 
   #endregion
@@ -174,7 +129,7 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.")]
   protected static DomainObject GetObject (ObjectID id)
   {
     return GetObject<DomainObject> (id);
@@ -193,7 +148,7 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.")]
   protected static DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     return GetObject<DomainObject> (id, includeDeleted);
@@ -212,10 +167,14 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.")]
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
-    return GetObject<DomainObject> (id, clientTransaction);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    using (new CurrentTransactionScope (clientTransaction))
+    {
+      return GetObject<DomainObject> (id);
+    }
   }
 
   /// <summary>
@@ -232,10 +191,14 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  // TODO: [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.")]
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
-    return GetObject<DomainObject> (id, clientTransaction, includeDeleted);
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+    using (new CurrentTransactionScope (clientTransaction))
+    {
+      return GetObject<DomainObject> (id, includeDeleted);
+    }
   }
 
   #endregion

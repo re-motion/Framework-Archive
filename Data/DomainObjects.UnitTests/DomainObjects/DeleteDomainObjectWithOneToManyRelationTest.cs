@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
+      _supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
       _subordinate1 = (Employee) _supervisor.Subordinates[0];
       _subordinate2 = (Employee) _supervisor.Subordinates[1];
 
@@ -134,7 +134,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _supervisor.Delete ();
 
-      _supervisor.Subordinates.Add (DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3));
+      _supervisor.Subordinates.Add (Employee.GetObject (DomainObjectIDs.Employee3));
     }
 
     [Test]

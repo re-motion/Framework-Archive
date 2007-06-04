@@ -11,8 +11,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectwithNewNullObject ()
     {
-      Client oldClient = DomainObject.GetObject<Client> (DomainObjectIDs.Client1);
-      Location location = DomainObject.GetObject<Location> (DomainObjectIDs.Location1);
+      Client oldClient = Client.GetObject (DomainObjectIDs.Client1);
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
       Assert.AreSame (oldClient, location.Client);
 
       location.Client = null;
@@ -26,8 +26,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectWithOldNullObject ()
     {
-      Client client = DomainObject.GetObject<Client> (DomainObjectIDs.Client4);
-      Client newClient = DomainObject.GetObject<Client> (DomainObjectIDs.Client1);
+      Client client = Client.GetObject (DomainObjectIDs.Client4);
+      Client newClient = Client.GetObject (DomainObjectIDs.Client1);
 
       client.ParentClient = newClient;
 
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectWithOldAndNewNullObject ()
     {
-      Client client = DomainObject.GetObject<Client> (DomainObjectIDs.Client4);
+      Client client = Client.GetObject (DomainObjectIDs.Client4);
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (client);
 
       client.ParentClient = null;

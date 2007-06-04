@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Client> ().With();
     }
 
+    public new static Client GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Client> (id);
+    }
+
     protected Client ()
     {
     }

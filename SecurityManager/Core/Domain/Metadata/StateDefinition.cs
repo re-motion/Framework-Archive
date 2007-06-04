@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       }
     }
 
-        public static StateDefinition NewObject (ClientTransaction clientTransaction, string name, int value)
+    public static StateDefinition NewObject (ClientTransaction clientTransaction, string name, int value)
     {
       using (new CurrentTransactionScope (clientTransaction))
       {
@@ -31,7 +31,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static new StateDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (StateDefinition) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<StateDefinition> (id);
+      }
     }
 
     // member fields

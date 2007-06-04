@@ -26,7 +26,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public new static AccessControlList GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (AccessControlList) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<AccessControlList> (id);
+      }
     }
 
     // member fields

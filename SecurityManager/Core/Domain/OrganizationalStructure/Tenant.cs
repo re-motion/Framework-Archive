@@ -47,7 +47,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static new Tenant GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      return (Tenant) DomainObject.GetObject (id, clientTransaction);
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.GetObject<Tenant> (id);
+      }
     }
 
     public static DomainObjectCollection FindAll (ClientTransaction clientTransaction)

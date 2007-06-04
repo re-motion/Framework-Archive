@@ -19,8 +19,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _supervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      _subordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
+      _supervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      _subordinate = Employee.GetObject (DomainObjectIDs.Employee2);
 
       _supervisorEventReceiver = new DomainObjectEventReceiver (_supervisor);
       _subordinateEventReceiver = new DomainObjectEventReceiver (_subordinate);
@@ -298,8 +298,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void AddSubordinateWithOldSupervisor ()
     {
-      Employee subordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
-      Employee oldSupervisorOfSubordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
+      Employee subordinate = Employee.GetObject (DomainObjectIDs.Employee3);
+      Employee oldSupervisorOfSubordinate = Employee.GetObject (DomainObjectIDs.Employee2);
 
       DomainObjectEventReceiver subordinateEventReceiver = new DomainObjectEventReceiver (subordinate);
       subordinateEventReceiver.Cancel = false;

@@ -167,7 +167,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void LoadOfSimpleObjectWorks ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Assert.IsTrue (WasCreatedByFactory (order));
     }
 
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Assert.AreEqual (1, order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 01, 01), order.DeliveryDate);
       Assert.AreEqual (1, order.OrderNumber);
@@ -197,7 +197,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetPropertyValueWorks ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       
       order.OrderNumber = 15;
       Assert.AreEqual (15, order.OrderNumber);
@@ -344,10 +344,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetSetRelatedObjectAndOriginal ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Customer customer = order.Customer;
       Assert.IsNotNull (customer);
-      Assert.AreSame (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1), customer);
+      Assert.AreSame (Customer.GetObject (DomainObjectIDs.Customer1), customer);
 
       Customer newCustomer = Customer.NewObject ();
       Assert.IsNotNull (newCustomer);
@@ -360,7 +360,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetSetRelatedObjectAndOriginal_WithNullAndAutomaticProperty ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       Assert.IsNotEmpty (order.OrderItems);
       OrderItemWithNewPropertyAccess orderItem = order.OrderItems[0];
 
@@ -373,7 +373,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObjects()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       DomainObjectCollection orderItems = order.OrderItems;
       Assert.IsNotNull (orderItems);
       Assert.AreEqual (2, orderItems.Count);
@@ -390,7 +390,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetRelatedObjects_WithAutomaticProperties ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.IsNotNull (order.OrderItems);
       Assert.AreEqual (2, order.OrderItems.Count);
 
@@ -452,7 +452,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DefaultRelatedObject ()
     {
-      OrderWithNewPropertyAccess order = DomainObject.GetObject<OrderWithNewPropertyAccess> (DomainObjectIDs.OrderWithNewPropertyAccess1);
+      OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
       OrderItemWithNewPropertyAccess item = order.OrderItems[0];
       Assert.AreSame (order, item.Order);
 

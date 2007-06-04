@@ -23,10 +23,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      _order = Order.GetObject (DomainObjectIDs.Order1);
       _oldOrderTicket = _order.OrderTicket;
-      _newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
-      _oldOrderOfNewOrderTicket = DomainObject.GetObject<Order> (DomainObjectIDs.OrderWithoutOrderItem);
+      _newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      _oldOrderOfNewOrderTicket = Order.GetObject (DomainObjectIDs.OrderWithoutOrderItem);
 
       _orderEventReceiver = new DomainObjectEventReceiver (_order);
       _oldOrderTicketEventReceiver = new DomainObjectEventReceiver (_oldOrderTicket);
@@ -362,8 +362,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ChangeRelationWithInheritance ()
     {
-      Person person = DomainObject.GetObject<Person> (DomainObjectIDs.Person1);
-      Distributor distributor = DomainObject.GetObject<Distributor> (DomainObjectIDs.Distributor1);
+      Person person = Person.GetObject (DomainObjectIDs.Person1);
+      Distributor distributor = Distributor.GetObject (DomainObjectIDs.Distributor1);
 
       person.AssociatedPartnerCompany = distributor;
 
@@ -412,7 +412,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetOriginalRelatedObjectWithLazyLoad ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      Order order = Order.GetObject (DomainObjectIDs.Order2);
 
       Assert.AreEqual (DomainObjectIDs.OrderTicket3, order.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket").ID);
     }
@@ -420,14 +420,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetNullOriginalRelatedObject ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       Assert.IsNull (computer.GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"));
     }
 
     [Test]
     public void OldObjectAndNewObjectAreSameRelationInherited ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer4);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer4);
 
       Ceo ceo = customer.Ceo;
 
@@ -453,8 +453,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       try
       {
-        OrderTicket orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
-        orderTicket.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1));
+        OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        orderTicket.SetRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", Customer.GetObject (DomainObjectIDs.Customer1));
 
         Assert.Fail ("DataManagementException was expected");
       }

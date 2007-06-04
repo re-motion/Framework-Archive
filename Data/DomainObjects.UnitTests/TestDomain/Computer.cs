@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Computer> ().With();
     }
 
+    public new static Computer GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Computer> (id);
+    }
+
     protected Computer ()
     {
     }

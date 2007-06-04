@@ -12,14 +12,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class Customer: Person
   {
-    public new static Customer GetObject (ObjectID id)
-    {
-      return (Customer) DomainObject.GetObject (id);
-    }
-
     public new static Customer NewObject ()
     {
       return NewObject<Customer> ().With ();
+    }
+
+    public new static Customer GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Customer> (id);
     }
 
     protected Customer()

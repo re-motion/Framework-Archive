@@ -21,6 +21,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return orderTicket;
     }
 
+    public new static OrderTicket GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<OrderTicket> (id);
+    }
+
+    public new static OrderTicket GetObject (ObjectID id, bool includeDeleted)
+    {
+      return DomainObject.GetObject<OrderTicket> (id, includeDeleted);
+    }
+
     protected OrderTicket ()
     {
     }

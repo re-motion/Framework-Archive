@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void OneToManyRelationToAbstractClass ()
     {
-      Client client = DomainObject.GetObject<Client> (DomainObjectIDs.Client);
+      Client client = Client.GetObject (DomainObjectIDs.Client);
 
       DomainObjectCollection assignedObjects = client.AssignedObjects;
 
@@ -34,14 +34,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         + "but the actual ClassID is 'TI_Person'.")]
     public void SameIDInDifferentConcreteTables ()
     {
-      Person person = DomainObject.GetObject<Person> (new ObjectID (typeof (Person), new Guid ("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")));
+      Person person = Person.GetObject (new ObjectID (typeof (Person), new Guid ("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")));
       DomainObjectCollection historyEntries = person.HistoryEntries;
     }
 
     [Test]
     public void RelationsFromConcreteSingle ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer);
       Assert.AreEqual ("UnitTests", customer.CreatedBy);
       Assert.AreEqual ("Zaphod", customer.FirstName);
       Assert.AreEqual (CustomerType.Premium, customer.CustomerType);
@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void RelationsFromConcrete ()
     {
-      Person person = DomainObject.GetObject<Person> (DomainObjectIDs.Person);
+      Person person = Person.GetObject (DomainObjectIDs.Person);
       Assert.AreEqual (DomainObjectIDs.Client, person.Client.ID);
       Assert.AreEqual (1, person.HistoryEntries.Count);
     }
@@ -85,7 +85,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void ManyToOneRelationToConcreteSingle ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order, new ClientTransaction ());
+      Order order = Order.GetObject (DomainObjectIDs.Order, new ClientTransaction ());
       Assert.AreEqual (DomainObjectIDs.Customer, order.Customer.ID);
     }
 
@@ -102,13 +102,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Region expectedNewRegion = Region.NewObject ();
       expectedNewRegion.Name = "Wachau";
 
-      Customer expectedCustomer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer);
+      Customer expectedCustomer = Customer.GetObject (DomainObjectIDs.Customer);
       expectedCustomer.LastName = "NewLastName";
       expectedCustomer.Region = expectedNewRegion;
 
       CommitAndReInitializeCurrentClientTransaction ();
 
-      Customer actualCustomer = DomainObject.GetObject<Customer> (expectedCustomer.ID);
+      Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
       Assert.AreEqual ("NewLastName", actualCustomer.LastName);
       Assert.AreEqual (expectedNewRegion.ID, actualCustomer.Region.ID);
     }
@@ -132,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       CommitAndReInitializeCurrentClientTransaction ();
 
-      Customer actualCustomer = DomainObject.GetObject<Customer> (expectedCustomer.ID);
+      Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
       Assert.IsNotNull (actualCustomer);
       Assert.AreEqual (expectedAddress.ID, actualCustomer.Address.ID); 
     }
@@ -140,7 +140,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [Test]
     public void DeleteConcreteSingle ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer);
       
       foreach (HistoryEntry historyEntry in customer.HistoryEntries.Clone ())
         historyEntry.Delete ();

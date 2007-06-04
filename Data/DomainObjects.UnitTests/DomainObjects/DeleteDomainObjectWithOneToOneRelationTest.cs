@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _orderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
+      _orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
       _order = _orderTicket.Order;
 
       _eventReceiver = CreateEventReceiver ();
@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DeleteComputerWithoutEmployeeEvents ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
 
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
           new DomainObject[] { computer }, new DomainObjectCollection[0]);

@@ -7,14 +7,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
   [Instantiable]
   public abstract class Folder: FileSystemItem
   {
-    public new static Folder GetObject (ObjectID id)
-    {
-      return (Folder) DomainObject.GetObject (id);
-    }
-
     public static Folder NewObject()
     {
       return NewObject<Folder>().With();
+    }
+
+    public new static Folder GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Folder> (id);
     }
 
     protected Folder()

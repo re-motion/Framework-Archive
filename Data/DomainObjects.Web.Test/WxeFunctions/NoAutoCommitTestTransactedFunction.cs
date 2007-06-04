@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 
     private void Step1()
     {
-      ClassWithAllDataTypes objectWithAllDataTypes = DomainObject.GetObject<ClassWithAllDataTypes> (ObjectWithAllDataTypes);
+      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (ObjectWithAllDataTypes);
 
       objectWithAllDataTypes.Int32Property = 10;
     }

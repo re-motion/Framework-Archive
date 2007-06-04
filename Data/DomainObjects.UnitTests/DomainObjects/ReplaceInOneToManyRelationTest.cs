@@ -17,10 +17,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.SetUp ();
 
-      _customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
-      _oldCustomerOfNewOrder = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer3);
-      _oldOrder = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
-      _newOrder = DomainObject.GetObject<Order> (DomainObjectIDs.Order2);
+      _customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      _oldCustomerOfNewOrder = Customer.GetObject (DomainObjectIDs.Customer3);
+      _oldOrder = Order.GetObject (DomainObjectIDs.Order1);
+      _newOrder = Order.GetObject (DomainObjectIDs.Order2);
     }
 
     [Test]
@@ -429,7 +429,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ChangeEventsWithOldRelatedObjectNotLoaded ()
     {
-      Order newOrder = DomainObject.GetObject<Order> (DomainObjectIDs.Order3);
+      Order newOrder = Order.GetObject (DomainObjectIDs.Order3);
 
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
           new DomainObject[] { _oldOrder, newOrder, _customer },
@@ -441,7 +441,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreSame (_customer, newOrder.Customer);
       Assert.IsTrue (_customer.Orders.ContainsObject (newOrder));
 
-      Customer oldCustomerOfNewOrder = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer4);
+      Customer oldCustomerOfNewOrder = Customer.GetObject (DomainObjectIDs.Customer4);
 
       Assert.IsFalse (oldCustomerOfNewOrder.Orders.ContainsObject (newOrder));
 

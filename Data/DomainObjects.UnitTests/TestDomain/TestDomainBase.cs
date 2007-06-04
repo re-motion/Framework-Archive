@@ -5,19 +5,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Serializable]
   public abstract class TestDomainBase : DomainObject
   {
-    public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static TestDomainBase GetObject (ObjectID id)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, clientTransaction);
+      return DomainObject.GetObject<TestDomainBase> (id);
     }
 
-    public static new TestDomainBase GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
+    public new static TestDomainBase GetObject (ObjectID id, bool includeDeleted)
     {
-      return (TestDomainBase) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
-    public static new TestDomainBase GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (TestDomainBase) DomainObject.GetObject (id, includeDeleted);
+      return DomainObject.GetObject<TestDomainBase> (id, includeDeleted);
     }
 
     protected TestDomainBase()

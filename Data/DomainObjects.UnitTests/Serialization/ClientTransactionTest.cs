@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectTest ()
     {
-      DomainObject domainObject = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      DomainObject domainObject = Customer.GetObject (DomainObjectIDs.Customer1);
 
       DomainObject deserializedDomainObject = (DomainObject) SerializeAndDeserialize (domainObject);
 
@@ -80,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DomainObjectCollectionTest ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
       DomainObjectCollection collection = new DomainObjectCollection (typeof (Customer));
       collection.Add (customer);
@@ -104,7 +104,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ObjectEndPointTest ()
     {
-      ObjectEndPoint endPoint = new ObjectEndPoint (DomainObject.GetObject<Company> (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
+      ObjectEndPoint endPoint = new ObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
 
       ObjectEndPoint deserializedEndPoint = (ObjectEndPoint) SerializeAndDeserialize (endPoint);
 
@@ -115,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void CollectionEndPointTest ()
     {
       DomainObjectCollection oppositeDomainObjects = new DomainObjectCollection ();
-      CollectionEndPoint endPoint = new CollectionEndPoint (DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", oppositeDomainObjects);
+      CollectionEndPoint endPoint = new CollectionEndPoint (Customer.GetObject (DomainObjectIDs.Customer1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", oppositeDomainObjects);
 
       CollectionEndPoint deserializedEndPoint = (CollectionEndPoint) SerializeAndDeserialize (endPoint);
 
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     public void RelationEndPointCollectionTest ()
     {
       RelationEndPointCollection collection = new RelationEndPointCollection ();
-      ObjectEndPoint endPoint = new ObjectEndPoint (DomainObject.GetObject<Company> (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
+      ObjectEndPoint endPoint = new ObjectEndPoint (Company.GetObject (DomainObjectIDs.Company1), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector", DomainObjectIDs.IndustrialSector1);
       collection.Add (endPoint);
 
       RelationEndPointCollection deserializedCollection = (RelationEndPointCollection) SerializeAndDeserialize (collection);

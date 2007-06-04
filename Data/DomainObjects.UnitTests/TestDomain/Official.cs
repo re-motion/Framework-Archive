@@ -8,14 +8,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
   [Instantiable]
   public abstract class Official : StorageProviderStubDomainBase
   {
-    public static new Official GetObject (ObjectID id)
-    {
-      return (Official) DomainObject.GetObject (id);
-    }
-
     public static Official NewObject ()
     {
       return NewObject<Official> ().With();
+    }
+
+    public static new Official GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Official> (id);
     }
 
     protected Official()

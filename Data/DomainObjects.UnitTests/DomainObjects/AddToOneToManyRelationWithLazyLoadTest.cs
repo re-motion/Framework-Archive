@@ -24,8 +24,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Insert ()
     {
-      Employee newSupervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee1);
-      Employee subordinate = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee3);
+      Employee newSupervisor = Employee.GetObject (DomainObjectIDs.Employee1);
+      Employee subordinate = Employee.GetObject (DomainObjectIDs.Employee3);
 
       int countBeforeInsert = newSupervisor.Subordinates.Count;
 
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (0, newSupervisor.Subordinates.IndexOf (subordinate));
       Assert.AreSame (newSupervisor, subordinate.Supervisor);
 
-      Employee oldSupervisor = DomainObject.GetObject<Employee> (DomainObjectIDs.Employee2);
+      Employee oldSupervisor = Employee.GetObject (DomainObjectIDs.Employee2);
       Assert.IsFalse (oldSupervisor.Subordinates.ContainsObject (subordinate));
     }
   }

@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackPropertyChange ()
     {
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
       customer.Name = "Arthur Dent";
 
       Assert.AreEqual (StateType.Changed, customer.State);
@@ -25,9 +25,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackOneToOneRelationChange ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderTicket oldOrderTicket = order.OrderTicket;
-      OrderTicket newOrderTicket = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
+      OrderTicket newOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
       Order oldOrderOfNewOrderTicket = newOrderTicket.Order;
 
       order.OrderTicket = newOrderTicket;
@@ -44,8 +44,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackOneToManyRelationChange ()
     {
-      Customer customer1 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
-      Customer customer2 = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer2);
+      Customer customer1 = Customer.GetObject (DomainObjectIDs.Customer1);
+      Customer customer2 = Customer.GetObject (DomainObjectIDs.Customer2);
 
       Order order = customer1.Orders[DomainObjectIDs.Order1];
 
@@ -64,12 +64,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackDeletion ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.Delete ();
 
       ClientTransactionMock.Rollback ();
 
-      Computer computerAfterRollback = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computerAfterRollback = Computer.GetObject (DomainObjectIDs.Computer4);
       Assert.AreSame (computer, computerAfterRollback);
       Assert.AreEqual (StateType.Unchanged, computer.State);
     }
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackDeletionAndPropertyChange ()
     {
-      Computer computer = DomainObject.GetObject<Computer> (DomainObjectIDs.Computer4);
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "1111111111111";
 
       Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].OriginalValue);
@@ -94,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackDeletionWithRelationChange ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       OrderTicket oldOrderTicket = order.OrderTicket;
       DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
@@ -135,10 +135,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order newOrder = Order.NewObject ();
       ObjectID newOrderID = newOrder.ID;
 
-      Order order1 = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
-      OrderTicket orderTicket1 = DomainObject.GetObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
-      Customer customer = DomainObject.GetObject<Customer> (DomainObjectIDs.Customer1);
-      OrderItem orderItem1 = DomainObject.GetObject<OrderItem> (DomainObjectIDs.OrderItem1);
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+      OrderTicket orderTicket1 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
 
       newOrder.OrderTicket = orderTicket1;
       customer.Orders.Add (newOrder);
@@ -155,7 +155,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetOneToManyRelationForNewObjectAfterRollback ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderItem orderItem = OrderItem.NewObject (order);
       ObjectID orderItemID = orderItem.ID;
 
@@ -175,7 +175,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DomainObjectCollectionIsSameAfterRollback ()
     {
-      Order order = DomainObject.GetObject<Order> (DomainObjectIDs.Order1);
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
       DomainObjectCollection orderItems = order.OrderItems;
       OrderItem orderItem = OrderItem.NewObject (order);
 

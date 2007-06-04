@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Ceo> ().With();
     }
 
+    public new static Ceo GetObject (ObjectID id)
+    {
+      return DomainObject.GetObject<Ceo> (id);
+    }
+
     protected Ceo ()
     {
     }

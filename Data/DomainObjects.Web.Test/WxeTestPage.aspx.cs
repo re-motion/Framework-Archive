@@ -183,8 +183,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
-      ClassWithAllDataTypes objectWithAllDataTypes =
-          DomainObject.GetObject<ClassWithAllDataTypes> (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
+      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
 
       objectWithAllDataTypes.Int32Property = value;
 
@@ -193,8 +192,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private int GetInt32Property (ClientTransaction clientTransaction)
     {
-      ClassWithAllDataTypes objectWithAllDataTypes =
-          DomainObject.GetObject<ClassWithAllDataTypes> (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
+      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
 
       return objectWithAllDataTypes.Int32Property;
     }

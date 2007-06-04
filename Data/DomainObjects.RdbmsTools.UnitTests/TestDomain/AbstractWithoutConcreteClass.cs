@@ -4,7 +4,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.TestDomain
 {
   public abstract class AbstractWithoutConcreteClass : Company
   {
-    public static AbstractWithoutConcreteClass NewObject()
+    public new static AbstractWithoutConcreteClass NewObject()
     {
       return NewObject<AbstractWithoutConcreteClass>().With();
     }
