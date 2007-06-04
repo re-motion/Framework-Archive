@@ -225,6 +225,9 @@
     return false;
   }
 
+- ClientTransaction.Delete (...), DomainObject.Delete(), ClientTransaction.GetObject (...) von public zu protected geändert.
+  Sie sollten nur selektiv auf Projektbasis (oder granularer) freigegeben werden.
+  Für einen einfachen Fix in Projekten bietet sich der Layer-Super-Type an, um diese Methoden für DomainObject zu implementiern.
 
 1.7.37.0
 ========
