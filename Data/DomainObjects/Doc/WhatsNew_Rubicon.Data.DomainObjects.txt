@@ -50,13 +50,14 @@
 
 - Neue Factory-Methoden für DomainObjects: Generell diese benutzen, DomainObjects nicht mehr via "new" anlegen. (Alter Mechanismus funktioniert für
   Legacy-Objekte weiterhin.)
-  DomainObject.GetObject<T> (ObjectID) - "Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource."
-  DomainObject.NewObject<T> () - "Returns an invocation object creating a new instance of a concrete domain object for the current <see cref="DomainObjects.ClientTransaction"/>."
+  DomainObject.GetObject<T> (ObjectID): Lädt bestehende DomainObjects
+  DomainObject.NewObject<T> (): Erzeugt ein neues DomainObject
   
-  GetObject<T> kann direkt benutzt werden, um Domain-Objekte zu laden. NewObject<T> ist hingegen protected - in jeder konkreten DomainObject-Subklasse
-  sollte es daher eine statische Factory-Methode geben, die an NewObject<T> delegiert. NewObject<T> liefert nicht direkt das konstruierte Objekt,
-  sondern einen Invocation-Wrapper, der dazu dient, typsicher den richtigen Konstruktor auszuwählen. Das Objekt wird erst durch einen Aufruf der With-
-  Methode des Wrappers wirklich erzeugt.
+  Beide Methoden sind protected. In jeder konkreten DomainObject-Subklasse sollte es daher statische Factory-Methoden geben, die an NewObject<T> 
+  bzw. GetObject<T> delegieren. 
+  
+  NewObject<T> liefert nicht direkt das konstruierte Objekt, sondern einen Invocation-Wrapper, der dazu dient, typsicher den richtigen Konstruktor 
+  auszuwählen. Das Objekt wird erst durch einen Aufruf der With-Methode des Wrappers wirklich erzeugt.
   
   Beispiel:
   
@@ -109,15 +110,45 @@
     set { DataContainer["Namespace.Type.IntProperty"] = value; }
   }
   
-  Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein (funktioniert auch für Beziehungsproperties):
+  public MyDomainObject ObjectProperty
+  {
+    get { return (MyDomainObject) GetRelatedObject ("Namespace.Type.ObjectProperty"); }
+    set { SetRelatedObject ("Namespace.Type.ObjectProperty", value); }
+  }
+ 
+  public DomainObjectCollection CollectionProperty
+  {
+    get { return GetRelatedObjects ("Namespace.Type.CollectionProperty"); }
+  }
+ 
+  
+  Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein:
   public virtual int IntProperty
   {
     get { return CurrentProperty<int>().GetValue(); }
     set { CurrentProperty<int>.SetValue (value); }
   }
   
+  public MyDomainObject ObjectProperty
+  {
+    get { return CurrentProperty<MyDomainObject>.GetValue(); }
+    set { CurrentProperty<MyDomainObject>.SetValue() (value); }
+  }
+ 
+  public ObjectList<MyDomainObject> CollectionProperty
+  {
+    get { return CurrentProperty<ObjectList<MyDomainObject>>.GetValue(); }
+  }
+
   Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit InstantiableAttribute gekennzeichnet werden:
   public abstract int IntProperty { get; set; }
+  public abstract MyDomainObject ObjectProperty { get; set; }
+  public abstract ObjectList<MyDomainObject> CollectionProperty { get; set; }
+  
+  Statt CurrentProperty<T>() kann auch Property<T> (string propertyName) verwendet werden. In disem Fall muss der Propertyname
+  explizit übergeben werden (Format: Namespace.Class.Property). 
+  
+  Die bisherigen Get- und Set-Methoden werden bis zur Version 2.0 auf obsolete gesetzt.
 
 - Search & Replace für neue Property Accessors
   Find what: public {.*}\n:b*\{:b*\n:b*get.*\n:b*set.*\n:b*\}*\n
