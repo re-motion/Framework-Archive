@@ -5,8 +5,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
   [Serializable]
   [DBTable ("TableWithoutColumns")]
-  [RpaTest]
   [Instantiable]
+  [DBStorageGroup]
   public abstract class ClassWithoutProperties: BindableDomainObject
   {
     public static ClassWithoutProperties NewObject()

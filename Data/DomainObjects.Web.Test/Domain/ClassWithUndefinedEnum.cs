@@ -6,7 +6,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
   [Serializable]
   [DBTable ("TableWithUndefinedEnum")]
   [Instantiable]
-  [RpaTest]
+  [DBStorageGroup]
   public abstract class ClassWithUndefinedEnum: BindableDomainObject
   {
     public static ClassWithUndefinedEnum NewObject ()

@@ -8,7 +8,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
   [Serializable]
   [DBTable ("TableForRelationTest")]
   [Instantiable]
-  [RpaTest]
+  [DBStorageGroup]
   public abstract class ClassForRelationTest: BindableDomainObject
   {
     public static ClassForRelationTest NewObject()

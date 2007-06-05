@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
   [Serializable]
   [DBTable ("TableWithAllDataTypes")]
   [Instantiable]
-  [RpaTest]
+  [DBStorageGroup]
   public abstract class ClassWithAllDataTypes : BindableDomainObject
   {
     // types
