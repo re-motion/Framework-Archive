@@ -181,7 +181,7 @@
   Commandline-Utility um Datenbank-Scripte für das Mapping zu erzeugen.
   
 - DOGen.exe
-  * Man muss nun das Config-File für die Applikation angeben, für die die Domäne bzw. die Datenbank-Scripte erstellt werden sollen (Parameter: config).
+  * Man muss nun das Config-File für die Applikation angeben, für das die Domäne bzw. die Datenbank-Scripte erstellt werden sollen (Parameter: config).
   * Neuer Parameter classesForAttributeMapping: Generiert das Domainmodel nach den Richtlinien des neuen, attribut-basierten Mappings.
 
 - DataContainer: Methoden IsNull(...) und IsNullOrEmpty(...) entfernt.
