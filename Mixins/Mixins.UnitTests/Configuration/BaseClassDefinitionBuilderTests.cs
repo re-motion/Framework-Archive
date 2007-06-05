@@ -14,20 +14,23 @@ namespace Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "contains generic parameters", MatchType = MessageMatch.Contains)]
     public void ThrowsOnGenericBaseClass()
     {
-      ApplicationContext appContext = new ApplicationContext();
-      appContext.AddClassContext (new ClassContext (typeof (BT3Mixin3<,>)));
-      DefinitionBuilder.CreateApplicationDefinition (appContext);
+      using (new MixinConfiguration (typeof (BT3Mixin3<,>)))
+      {
+        BaseClassDefinitionBuilder builder = new BaseClassDefinitionBuilder();
+        builder.Build (new ClassContext (typeof (BT3Mixin3<,>)));
+      }
     }
 
     [Test]
     public void BaseClassKnowsItsContext()
     {
-      ApplicationContext appContext = new ApplicationContext ();
       ClassContext classContext = new ClassContext (typeof (BaseType1));
-      appContext.AddClassContext (classContext);
-      BaseClassDefinition def = DefinitionBuilder.CreateApplicationDefinition (appContext).BaseClasses[typeof(BaseType1)];
-      Assert.IsNotNull (def.ConfigurationContext);
-      Assert.AreSame (classContext, def.ConfigurationContext);
+      using (new MixinConfiguration (classContext))
+      {
+        BaseClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        Assert.IsNotNull (def.ConfigurationContext);
+        Assert.AreSame (classContext, def.ConfigurationContext);
+      }
     }
   }
 }

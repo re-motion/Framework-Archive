@@ -19,8 +19,8 @@ namespace Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (BaseWithOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),typeof (BaseWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithOverrideAttributes)];
       Assert.IsNotNull (mix1);
 
@@ -41,8 +41,8 @@ namespace Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedWithoutOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+          typeof (DerivedWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);
 
@@ -60,12 +60,8 @@ namespace Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Mixin .* overrides method .* twice", MatchType = MessageMatch.Regex)]
     public void DerivedWithNewAdditionalOverrides ()
     {
-      MethodInfo method = typeof (TargetForOverridesAndShadowing).GetMethod ("Method");
-      PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
-      EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
-
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithAdditionalOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+          typeof (DerivedNewWithAdditionalOverrideAttributes));
     }
 
     [Test]
@@ -75,8 +71,8 @@ namespace Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (BaseWithoutOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+          typeof (BaseWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (BaseWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);
 
@@ -92,8 +88,8 @@ namespace Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+          typeof (DerivedNewWithOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithOverrideAttributes)];
       Assert.IsNotNull (mix1);
 
@@ -112,8 +108,8 @@ namespace Mixins.UnitTests.Configuration
       PropertyInfo property = typeof (TargetForOverridesAndShadowing).GetProperty ("Property");
       EventInfo eve = typeof (TargetForOverridesAndShadowing).GetEvent ("Event");
 
-      BaseClassDefinition def1 = DefBuilder.Build (typeof (TargetForOverridesAndShadowing), typeof (DerivedNewWithoutOverrideAttributes))
-          .BaseClasses[typeof (TargetForOverridesAndShadowing)];
+      BaseClassDefinition def1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (TargetForOverridesAndShadowing),
+          typeof (DerivedNewWithoutOverrideAttributes));
       MixinDefinition mix1 = def1.Mixins[typeof (DerivedNewWithoutOverrideAttributes)];
       Assert.IsNotNull (mix1);
 

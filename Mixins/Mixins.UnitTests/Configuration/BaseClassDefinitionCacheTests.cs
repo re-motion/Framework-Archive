@@ -3,6 +3,7 @@ using Mixins.Context;
 using Mixins.Definitions;
 using Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
+using Mixins.Validation;
 
 namespace Mixins.UnitTests.Configuration
 {
@@ -70,6 +71,14 @@ namespace Mixins.UnitTests.Configuration
       ClassDefinition cd2 = BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc2);
       Assert.AreSame (cd, cd2);
       Assert.IsTrue (cc2.IsFrozen);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ValidationException), ExpectedMessage = "could not be validated", MatchType = MessageMatch.Contains)]
+    public void CacheValidatesWhenGeneratingDefinition()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (BT3Mixin2));
+      BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc);
     }
   }
 }

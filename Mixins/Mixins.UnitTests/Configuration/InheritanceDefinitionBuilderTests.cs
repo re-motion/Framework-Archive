@@ -14,8 +14,8 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InheritedIntroducedInterfaces ()
     {
-      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinIntroducingInheritedInterface));
-      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      BaseClassDefinition bt1 =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinIntroducingInheritedInterface));
       Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII1)));
       Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII2)));
       Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII3)));
@@ -25,9 +25,9 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InheritedFaceDependencies ()
     {
-      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
+      BaseClassDefinition bt1 =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
           typeof (MixinIntroducingInheritedInterface));
-      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
       Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII1)));
       Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII2)));
       Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII3)));
@@ -43,9 +43,11 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InheritedBaseDependencies ()
     {
-      ApplicationDefinition configuration = DefBuilder.Build (typeof (BaseType1), typeof (MixinBaseDependingOnInheritedInterface),
-          typeof (MixinIntroducingInheritedInterface));
-      BaseClassDefinition bt1 = configuration.BaseClasses[typeof (BaseType1)];
+      BaseClassDefinition bt1 =
+          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+              typeof (BaseType1),
+              typeof (MixinBaseDependingOnInheritedInterface),
+              typeof (MixinIntroducingInheritedInterface));
       Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII1)));
       Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII2)));
       Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII3)));

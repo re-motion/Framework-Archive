@@ -1,15 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Mixins.CodeGeneration;
-using Mixins.Definitions;
 using Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using NUnit.Framework;
 using Mixins.UnitTests.SampleTypes;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
-using Mixins.Validation;
 
 namespace Mixins.UnitTests.Mixins
 {
@@ -19,20 +12,20 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeIsAssignableButDifferent ()
     {
-      Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
+      Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
       Assert.IsTrue (typeof (BaseType1).IsAssignableFrom (t));
       Assert.AreNotEqual (typeof (BaseType1), t);
 
-      t = TypeFactory.Current.GetConcreteType (typeof (BaseType2));
+      t = TypeFactory.GetConcreteType (typeof (BaseType2));
       Assert.IsTrue (typeof (BaseType2).IsAssignableFrom (t));
 
-      t = TypeFactory.Current.GetConcreteType (typeof (BaseType3));
+      t = TypeFactory.GetConcreteType (typeof (BaseType3));
       Assert.IsTrue (typeof (BaseType3).IsAssignableFrom (t));
 
-      t = TypeFactory.Current.GetConcreteType (typeof (BaseType4));
+      t = TypeFactory.GetConcreteType (typeof (BaseType4));
       Assert.IsTrue (typeof (BaseType4).IsAssignableFrom (t));
 
-      t = TypeFactory.Current.GetConcreteType (typeof (BaseType5));
+      t = TypeFactory.GetConcreteType (typeof (BaseType5));
       Assert.IsTrue (typeof (BaseType5).IsAssignableFrom (t));
 
       Assert.IsNotNull (ObjectFactory.Create<BaseType1> ());
@@ -111,7 +104,7 @@ namespace Mixins.UnitTests.Mixins
       public event EventHandler Event
       {
         [Replicatable(1)]
-        add {}
+        add { }
         [Replicatable (2)]
         remove { }
       }
@@ -121,14 +114,14 @@ namespace Mixins.UnitTests.Mixins
     [ExpectedException(typeof (MissingMethodException), ExpectedMessage = "constructor with signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated1 ()
     {
-      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ();
+      ObjectFactory.Create<ClassWithCtors> ().With ();
     }
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "constructor with signature", MatchType = MessageMatch.Contains)]
     public void ConstructorsAreReplicated2 ()
     {
-      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With (2.0);
+      ObjectFactory.Create<ClassWithCtors> ().With (2.0);
     }
 
     [Test]
@@ -149,7 +142,7 @@ namespace Mixins.UnitTests.Mixins
     public void MixinsAreInitializedWithTarget ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With ();
-      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> ((object) bt3);
+      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
     }
@@ -158,7 +151,7 @@ namespace Mixins.UnitTests.Mixins
     public void MixinsAreInitializedWithBase ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> ((object) bt3);
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
       Assert.IsNotNull (mixin.Base);
@@ -169,7 +162,7 @@ namespace Mixins.UnitTests.Mixins
     public void MixinsAreInitializedWithConfiguration ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> ((object) bt3);
+      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
       Assert.IsNotNull (mixin);
       Assert.AreSame (bt3, mixin.This);
       Assert.IsNotNull (mixin.Base);
@@ -181,7 +174,7 @@ namespace Mixins.UnitTests.Mixins
     public void GenericMixinsAreSpecialized ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();
-      object mixin = Mixin.Get (typeof (BT3Mixin3<,>), (object) bt3);
+      object mixin = Mixin.Get (typeof (BT3Mixin3<,>), bt3);
       Assert.IsNotNull (mixin);
       
       PropertyInfo thisProperty = mixin.GetType().BaseType.GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -254,8 +247,8 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsNotNull (complete);
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType33) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
-      Assert.AreEqual ("BaseType3.IfcMethod2", ((IBaseType35) complete).IfcMethod2 ());
-      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> ((object) complete).InvokeThisMethods());
+      Assert.AreEqual ("BaseType3.IfcMethod2", complete.IfcMethod2 ());
+      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> (complete).InvokeThisMethods());
     }
 
     [Test]

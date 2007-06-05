@@ -32,9 +32,8 @@ namespace Mixins.UnitTests.Mixins
     public void IMixinTarget()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
-      ApplicationDefinition applicationDefinition = DefinitionBuilder.CreateApplicationDefinition (context);
 
-      using (new CurrentTypeFactoryScope (applicationDefinition))
+      using (new MixinConfiguration (context))
       {
         BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
         IMixinTarget mixinTarget = bt1 as IMixinTarget;
@@ -43,7 +42,7 @@ namespace Mixins.UnitTests.Mixins
         BaseClassDefinition configuration = mixinTarget.Configuration;
         Assert.IsNotNull (configuration);
 
-        Assert.AreSame (applicationDefinition.BaseClasses[typeof (BaseType1)], configuration);
+        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType1)), configuration);
 
         object[] mixins = mixinTarget.Mixins;
         Assert.IsNotNull (mixins);
@@ -54,23 +53,23 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetInitializationMethod ()
     {
-      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
-        MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
+        MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetInitializationMethod (m1.Type));
 
-        MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
+        MixinDefinition m2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m2.Type));
         Assert.AreEqual (typeof (Mixin<IBaseType31, IBaseType31>).GetMethod ("Initialize",
             BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly), MixinReflector.GetInitializationMethod (m2.Type));
 
-        MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
+        MixinDefinition m3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m3.Type));
         Assert.AreEqual (
             typeof (Mixin<IBaseType32>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetInitializationMethod (m3.Type));
 
-        MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
+        MixinDefinition m4 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
         Assert.IsNotNull (MixinReflector.GetInitializationMethod (m4.Type));
         Assert.AreNotEqual (typeof (Mixin<,>).GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly),
             MixinReflector.GetInitializationMethod (m4.Type));
@@ -85,24 +84,24 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetTargetProperty ()
     {
-      using (new CurrentTypeFactoryScope (DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
-        MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
+        MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetTargetProperty (m1.Type));
 
-        MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
+        MixinDefinition m2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
         Assert.IsNotNull (MixinReflector.GetTargetProperty (m2.Type));
         Assert.AreEqual (
             typeof (Mixin<IBaseType31, IBaseType31>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetTargetProperty (m2.Type));
 
-        MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
+        MixinDefinition m3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
         Assert.IsNotNull (MixinReflector.GetTargetProperty (m3.Type));
         Assert.AreEqual (
             typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetTargetProperty (m3.Type));
 
-        MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
+        MixinDefinition m4 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
         Assert.IsNotNull (MixinReflector.GetTargetProperty (m4.Type));
         Assert.AreNotEqual (
             typeof (Mixin<,>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -119,23 +118,21 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetBaseProperty ()
     {
-      using (
-          new CurrentTypeFactoryScope (
-              DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
-        MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
+        MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetBaseProperty (m1.Type));
 
-        MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
+        MixinDefinition m2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
         Assert.IsNotNull (MixinReflector.GetBaseProperty (m2.Type));
         Assert.AreEqual (
             typeof (Mixin<IBaseType31, IBaseType31>).GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetBaseProperty (m2.Type));
 
-        MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
+        MixinDefinition m3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
         Assert.IsNull (MixinReflector.GetBaseProperty (m3.Type));
 
-        MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
+        MixinDefinition m4 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType(typeof (BT3Mixin3<,>));
         Assert.IsNotNull (MixinReflector.GetBaseProperty (m4.Type));
         Assert.AreNotEqual (
             typeof (Mixin<,>).GetProperty ("Base", BindingFlags.NonPublic | BindingFlags.Instance),
@@ -152,22 +149,21 @@ namespace Mixins.UnitTests.Mixins
     public void GetConfigurationProperty ()
     {
       using (
-          new CurrentTypeFactoryScope (
-              DefinitionBuilder.CreateApplicationDefinition (ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ()))))
+          new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
-        MixinDefinition m1 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)].Mixins[typeof (BT1Mixin1)];
+        MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetConfigurationProperty (m1.Type));
 
-        MixinDefinition m2 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin1)];
+        MixinDefinition m2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
         Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m2.Type));
         Assert.AreEqual (
             typeof (Mixin<IBaseType31, IBaseType31>).GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),
             MixinReflector.GetConfigurationProperty (m2.Type));
 
-        MixinDefinition m3 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].Mixins[typeof (BT3Mixin2)];
+        MixinDefinition m3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
         Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m3.Type));
 
-        MixinDefinition m4 = TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType3)].GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
+        MixinDefinition m4 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType (typeof (BT3Mixin3<,>));
         Assert.IsNotNull (MixinReflector.GetConfigurationProperty (m4.Type));
         Assert.AreNotEqual (
             typeof (Mixin<,>).GetProperty ("Configuration", BindingFlags.NonPublic | BindingFlags.Instance),

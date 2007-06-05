@@ -29,7 +29,11 @@ namespace Mixins.Validation
         {
           sb.Append (Environment.NewLine).Append (item.Definition.FullName).Append (": There were ");
           sb.Append (item.Failures.Count).Append (" errors, ").Append (item.Warnings.Count).Append (" warnings, and ")
-              .Append (item.Exceptions.Count).Append (" unexpected exceptions.");
+              .Append (item.Exceptions.Count).Append (" unexpected exceptions. ");
+          if (item.Exceptions.Count > 0)
+            sb.Append ("First exception: ").Append (item.Exceptions[0].Message);
+          else if (item.Failures.Count > 0)
+            sb.Append ("First error: ").Append (item.Failures[0].Message);
         }
       }
       sb.Append (Environment.NewLine).Append ("See the list returned by Log.GetResults() for a detailed list of issues.");

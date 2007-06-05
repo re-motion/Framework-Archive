@@ -55,7 +55,6 @@
     <Compile Include="Definitions\IDefinitionItemCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionItemCollectionWrapper.cs" />
     <Compile Include="UsesAttribute.cs" />
-    <Compile Include="CurrentTypeFactoryScope.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
@@ -94,10 +93,8 @@
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="TypeFactory.cs" />
     <Compile Include="Utilities\Singleton\IInstanceCreator.cs" />
-    <Compile Include="Definitions\ApplicationDefinition.cs" />
     <Compile Include="Definitions\AttributeDefinition.cs" />
     <Compile Include="Definitions\BaseClassDefinition.cs" />
-    <Compile Include="Definitions\Building\ApplicationDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
@@ -111,7 +108,6 @@
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
     <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\ClassDefinition.cs" />
-    <Compile Include="Definitions\Building\DefinitionBuilder.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
     <Compile Include="Definitions\EventIntroductionDefinition.cs" />
     <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
@@ -169,7 +165,6 @@
     <Compile Include="Validation\Rules\DefaultDependencyRulesBase.cs" />
     <Compile Include="Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultMethodRules.cs" />
-    <Compile Include="Validation\Rules\DefaultApplicationRules.cs" />
     <Compile Include="Validation\Rules\DefaultBaseClassRules.cs" />
     <Compile Include="Validation\Rules\DefaultMixinRules.cs" />
     <Compile Include="Validation\Rules\DefaultRequiredBaseCallTypeRules.cs" />

@@ -31,16 +31,11 @@ namespace Mixins.UnitTests.Configuration
       }
     }
 
-    private static ApplicationDefinition GetApplicationDefinition ()
-    {
-      return DefBuilder.Build();
-    }
-
     [Test]
     public void Attributes ()
     {
-      ApplicationDefinition application = DefBuilder.Build (typeof (ClassWithLotsaAttributes), typeof (ClassWithLotsaAttributes));
-      BaseClassDefinition baseClass = application.BaseClasses[typeof (ClassWithLotsaAttributes)];
+      BaseClassDefinition baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithLotsaAttributes),
+          typeof (ClassWithLotsaAttributes));
       MixinDefinition mixin = baseClass.Mixins[typeof (ClassWithLotsaAttributes)];
 
       CheckAttributes (baseClass);
@@ -94,7 +89,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void SerializableAttributeIsIgnored ()
     {
-      BaseClassDefinition bt1 = GetApplicationDefinition ().BaseClasses[typeof (BaseType1)];
+      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
       Assert.IsFalse (bt1.CustomAttributes.HasItem (typeof (SerializableAttribute)));
     }
   }

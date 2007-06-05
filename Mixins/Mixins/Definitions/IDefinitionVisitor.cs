@@ -6,7 +6,6 @@ namespace Mixins.Definitions
 {
   public interface IDefinitionVisitor
   {
-    void Visit (ApplicationDefinition application);
     void Visit (BaseClassDefinition baseClass);
     void Visit (MixinDefinition mixin);
     void Visit (InterfaceIntroductionDefinition interfaceIntroduction);

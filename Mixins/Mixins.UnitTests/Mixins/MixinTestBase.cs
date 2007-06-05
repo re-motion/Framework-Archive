@@ -14,22 +14,21 @@ namespace Mixins.UnitTests.Mixins
   {
     public const string PEVerifyPath = @"C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\PEVerify.exe";
 
+    private MixinConfiguration currentConfiguration = null;
+
     [SetUp]
     public virtual void SetUp()
     {
-      ConcreteTypeBuilder.SetCurrent(null);
-      TypeFactory.SetCurrent (new TypeFactory (CreateConfiguration()));
-    }
-
-    private ApplicationDefinition CreateConfiguration()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly());
-      return DefinitionBuilder.CreateApplicationDefinition (context);
+      ConcreteTypeBuilder.SetCurrent (null);
+      currentConfiguration = new MixinConfiguration (Assembly.GetExecutingAssembly ());
     }
 
     [TearDown]
     public virtual void TearDown()
     {
+      if (currentConfiguration != null)
+        currentConfiguration.Dispose();
+
       string path;
       try
       {
@@ -41,7 +40,6 @@ namespace Mixins.UnitTests.Mixins
         return;
       }
 
-      TypeFactory.SetCurrent (null);
       ConcreteTypeBuilder.SetCurrent (null);
 
       if (path != null || !File.Exists(path))
@@ -56,13 +54,13 @@ namespace Mixins.UnitTests.Mixins
 
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      using (new CurrentTypeFactoryScope (DefBuilder.Build (targetType, mixinTypes)))
-        return TypeFactory.Current.GetConcreteType (targetType);
+      using (new MixinConfiguration (targetType, mixinTypes))
+        return TypeFactory.GetConcreteType (targetType);
     }
 
     public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      using (new CurrentTypeFactoryScope (DefBuilder.Build (typeof (T), mixinTypes)))
+      using (new MixinConfiguration (typeof (T), mixinTypes))
         return ObjectFactory.Create<T>();
     }
 

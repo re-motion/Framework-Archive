@@ -20,7 +20,7 @@ namespace Samples.UnitTests
     [Test]
     public void ImplementsEquatable()
     {
-      using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
         C c = new C();
         Assert.IsFalse (c is IEquatable<C>);
@@ -33,7 +33,7 @@ namespace Samples.UnitTests
     [Test]
     public void EqualsRespectsMembers ()
     {
-      using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
         C c = ObjectFactory.Create<C> ().With ();
         C c2 = ObjectFactory.Create<C> ().With ();
@@ -56,7 +56,7 @@ namespace Samples.UnitTests
     [Test]
     public void GetHashCodeRespectsMembers ()
     {
-      using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
         C c = ObjectFactory.Create<C> ().With ();
         C c2 = ObjectFactory.Create<C> ().With ();

@@ -10,7 +10,6 @@ namespace Mixins.Validation
   {
     private IValidationLog _validationLog;
 
-    private List<IValidationRule<ApplicationDefinition>> _applicationRules = new List<IValidationRule<ApplicationDefinition>> ();
     private List<IValidationRule<BaseClassDefinition>> _baseClassRules = new List<IValidationRule<BaseClassDefinition>> ();
     private List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
     private List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
@@ -31,11 +30,6 @@ namespace Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("validationLog", validationLog);
       _validationLog = validationLog;
-    }
-
-    public IList<IValidationRule<ApplicationDefinition>> ApplicationRules
-    {
-      get { return _applicationRules; }
     }
 
     public IList<IValidationRule<BaseClassDefinition>> BaseClassRules
@@ -113,11 +107,6 @@ namespace Mixins.Validation
       get { return _attributeRules; }
     }
 
-    public void Visit (ApplicationDefinition application)
-    {
-      ArgumentUtility.CheckNotNull ("application", application);
-      CheckRules (_applicationRules, application);
-    }
 
     public void Visit (BaseClassDefinition baseClass)
     {

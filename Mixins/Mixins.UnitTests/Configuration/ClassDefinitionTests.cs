@@ -28,7 +28,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InterfaceMapAdjustedCorrectly ()
     {
-      BaseClassDefinition def = DefBuilder.Build (typeof (Derived)).BaseClasses[typeof (Derived)];
+      BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (Derived));
       Assert.IsFalse (def.Methods.HasItem (typeof (Derived).GetMethod ("Foo")));
       Assert.IsTrue (def.Methods.HasItem (typeof (Base).GetMethod ("Foo")));
 

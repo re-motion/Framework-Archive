@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Mixins.Definitions;
 using Mixins.Validation;
@@ -16,6 +17,17 @@ namespace Mixins.Validation
 
       DefaultValidationLog log = new DefaultValidationLog ();
       Validate (startingPoint, log, customRuleSets);
+      return log;
+    }
+
+    public static DefaultValidationLog Validate (IEnumerable<IVisitableDefinition> startingPoints, params IRuleSet[] customRuleSets)
+    {
+      ArgumentUtility.CheckNotNull ("startingPoints", startingPoints);
+      ArgumentUtility.CheckNotNull ("customRuleSets", customRuleSets);
+
+      DefaultValidationLog log = new DefaultValidationLog ();
+      foreach (IVisitableDefinition startingPoint in startingPoints)
+        Validate (startingPoint, log, customRuleSets);
       return log;
     }
 

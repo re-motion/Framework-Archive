@@ -3,6 +3,7 @@ using Mixins.Definitions.Building;
 using Mixins.Utilities.Singleton;
 using Rubicon.Collections;
 using Mixins.Context;
+using Mixins.Validation;
 
 namespace Mixins.Definitions
 {
@@ -43,12 +44,20 @@ namespace Mixins.Definitions
       if (definition == null)
       {
         definition = s_definitionBuilder.Build (context);
+        Validate (definition);
         lock (_syncObject)
         {
           definition = _cache.GetOrCreateValue (context, delegate { return definition; });
         }
       }
       return definition;
+    }
+
+    private void Validate (BaseClassDefinition definition)
+    {
+      DefaultValidationLog log = Validator.Validate (definition);
+      if (log.GetNumberOfFailures () > 0 || log.GetNumberOfUnexpectedExceptions () > 0)
+        throw new ValidationException (log);
     }
   }
 }

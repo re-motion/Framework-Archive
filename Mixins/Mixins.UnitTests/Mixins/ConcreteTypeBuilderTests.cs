@@ -15,17 +15,17 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void TypesAreCached()
     {
-      Type t1 = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
-      Type t2 = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
+      Type t1 = TypeFactory.GetConcreteType (typeof (BaseType1));
+      Type t2 = TypeFactory.GetConcreteType (typeof (BaseType1));
       Assert.AreSame (t1, t2);
     }
 
     [Test]
     public void CacheIsBoundToConcreteTypeBuilder ()
     {
-      Type t1 = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
+      Type t1 = TypeFactory.GetConcreteType (typeof (BaseType1));
       ConcreteTypeBuilder.SetCurrent (null);
-      Type t2 = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
+      Type t2 = TypeFactory.GetConcreteType (typeof (BaseType1));
       Assert.AreNotSame (t1, t2);
     }
 

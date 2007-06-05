@@ -11,7 +11,7 @@ namespace Mixins
   {
     public static InvokeWithWrapper<T> Create<T> ()
     {
-      Type concreteType = TypeFactory.Current.GetConcreteType (typeof (T));
+      Type concreteType = TypeFactory.GetConcreteType (typeof (T));
       GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
           concreteType,
           delegate (Type[] argumentTypes, Type delegateType)
@@ -54,7 +54,7 @@ namespace Mixins
 
     public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)
     {
-      Type concreteType = TypeFactory.Current.GetConcreteType (typeof (T));
+      Type concreteType = TypeFactory.GetConcreteType (typeof (T));
       GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
           concreteType,
           delegate (Type[] argumentTypes, Type delegateType)

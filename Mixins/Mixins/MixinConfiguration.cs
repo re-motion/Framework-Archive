@@ -34,10 +34,10 @@ namespace Mixins
     private ApplicationContext _previousContext = null;
     private bool _disposed;
 
-    public MixinConfiguration (ApplicationContext temporaryContext)
+    public MixinConfiguration (ApplicationContext newActiveContext)
     {
       _previousContext = MixinConfiguration.PeekActiveContext;
-      MixinConfiguration.SetActiveContext (temporaryContext);
+      MixinConfiguration.SetActiveContext (newActiveContext);
     }
 
     public MixinConfiguration (Type baseType, params Type[] mixinTypes)

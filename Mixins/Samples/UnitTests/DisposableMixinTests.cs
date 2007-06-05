@@ -38,7 +38,7 @@ namespace Samples.UnitTests
     [Test]
     public void DisposeCallsAllCleanupMethods()
     {
-      using (new CurrentTypeFactoryScope(Assembly.GetExecutingAssembly()))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
       {
         DisposableMixinTests.C c = ObjectFactory.Create<C>().With();
         Data data = c.Data;
@@ -60,7 +60,7 @@ namespace Samples.UnitTests
     [Test]
     public void GCCallsAllUnmanagedCleanup ()
     {
-      using (new CurrentTypeFactoryScope (Assembly.GetExecutingAssembly ()))
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
       {
         DisposableMixinTests.C c = ObjectFactory.Create<C> ().With ();
         Data data = c.Data;

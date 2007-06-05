@@ -46,7 +46,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeHasConfigurationField ()
     {
-      Type t = TypeFactory.Current.GetConcreteType (typeof (BaseType1));
+      Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
       Assert.IsNotNull (t.GetField ("__configuration"));
       Assert.IsTrue (t.GetField ("__configuration").IsStatic);
     }
@@ -57,7 +57,7 @@ namespace Mixins.UnitTests.Mixins
       BaseType1 bt1 = ObjectFactory.Create<BaseType1> ().With ();
 
       Assert.IsNotNull (bt1.GetType ().GetField ("__configuration"));
-      Assert.AreSame (TypeFactory.Current.Configuration.BaseClasses[typeof (BaseType1)], bt1.GetType ().GetField ("__configuration").GetValue (bt1));
+      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType1)), bt1.GetType ().GetField ("__configuration").GetValue (bt1));
     }
 
     [Test]
