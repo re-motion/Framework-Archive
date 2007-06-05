@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="ClassIDAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\MappingReflectorBase.cs" />
+    <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\PropertyFinder.cs" />
     <Compile Include="CurrentTransactionScope.cs" />
     <Compile Include="DBStorageGroupAttribute.cs" />
     <Compile Include="Design\DomainObjectsDesignModeHelper.cs" />

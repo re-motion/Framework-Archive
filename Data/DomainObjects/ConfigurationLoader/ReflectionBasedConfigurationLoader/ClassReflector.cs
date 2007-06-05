@@ -8,7 +8,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  //TODO: More property logic to property reflector
   //TODO: Fix: Inheritance Root: Base Class Reflection stops with StorageGroupAttribute but super classes would still be part of mapping since they would get reflected upon them selve
   //TODO: Fix: Inheritance Root: Detect reapplication of StorageGroupAttribute
   /// <summary>
@@ -53,8 +52,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      if (classDefinitions.Contains (Type))
-        return (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (Type);
+      if (classDefinitions.Contains (_type))
+        return (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (_type);
 
       ReflectionBasedClassDefinition classDefiniton = CreateClassDefinition (classDefinitions);
       classDefinitions.Add (classDefiniton);
@@ -85,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           GetID(),
           GetStorageSpecificIdentifier(),
           GetStorageProviderID(),
-          Type,
+          _type,
           IsAbstract(),
           GetBaseClassDefinition (classDefinitions));
 
@@ -125,22 +124,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
     }
 
-    private bool IsRelationEndPoint (PropertyInfo propertyInfo)
-    {
-      return typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType);
-    }
-
     private string GetID ()
     {
-      ClassIDAttribute attribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute> (Type, false);
+      ClassIDAttribute attribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute> (_type, false);
       if (attribute != null)
         return attribute.ClassID;
-      return Type.Name;
+      return _type.Name;
     }
 
     public virtual string GetStorageSpecificIdentifier ()
     {
-      IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (Type, false);
+      IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (_type, false);
       if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
         return attribute.Identifier;
       return GetID();
@@ -150,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     //TODO: Test for DefaultStorageProvider
     private string GetStorageProviderID ()
     {
-      StorageGroupAttribute storageGroupAttribute = AttributeUtility.GetCustomAttribute<StorageGroupAttribute> (Type, true);
+      StorageGroupAttribute storageGroupAttribute = AttributeUtility.GetCustomAttribute<StorageGroupAttribute> (_type, true);
       if (storageGroupAttribute == null)
         return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinition.Name;
 
@@ -163,8 +157,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool IsAbstract ()
     {
-      if (Type.IsAbstract)
-        return !Attribute.IsDefined (Type, typeof (InstantiableAttribute), false);
+      if (_type.IsAbstract)
+        return !Attribute.IsDefined (_type, typeof (InstantiableAttribute), false);
 
       return false;
     }
@@ -174,105 +168,27 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (IsInheritenceRoot())
         return null;
 
-      ClassReflector classReflector = CreateClassReflector (Type.BaseType, GetType());
+      ClassReflector classReflector = CreateClassReflector (_type.BaseType, GetType ());
       return classReflector.GetClassDefinition (classDefinitions);
-    }
-
-    private bool IsInheritenceRoot ()
-    {
-      if (Type.BaseType == typeof (DomainObject))
-        return true;
-
-      return Attribute.IsDefined (Type, typeof (StorageGroupAttribute), false);
     }
 
     private PropertyInfo[] GetPropertyInfos ()
     {
-      List<PropertyInfo> propertyInfos = new List<PropertyInfo>();
-      propertyInfos.AddRange (GetPropertyInfosSorted (Type));
-
-      if (IsInheritenceRoot())
-      {
-        for (Type type = Type.BaseType; type != typeof (DomainObject); type = type.BaseType)
-          propertyInfos.AddRange (GetPropertyInfosSorted (type));
-      }
-
-      return propertyInfos.ToArray();
+      PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot());
+      return propertyFinder.FindPropertyInfos();
     }
 
-    private IList<PropertyInfo> GetPropertyInfosSorted (Type type)
+    private bool IsInheritenceRoot ()
     {
-      PropertyInfo[] propertyInfos = Array.ConvertAll<MemberInfo, PropertyInfo> (
-          GetPropertyInfos (type),
-          delegate (MemberInfo input) { return (PropertyInfo) input; });
-
-      //Array.Sort (
-      //    propertyInfos,
-      //    delegate (PropertyInfo left, PropertyInfo right) { return string.Compare (ReflectionUtility.GetPropertyName (left), ReflectionUtility.GetPropertyName (right), StringComparison.Ordinal); });
-
-      return propertyInfos;
-    }
-
-    private MemberInfo[] GetPropertyInfos (Type type)
-    {
-      return type.FindMembers (
-          MemberTypes.Property,
-          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
-          FindPropertiesFilter,
-          null);
-    }
-
-    private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
-    {
-      PropertyInfo propertyInfo = (PropertyInfo) member;
-
-      if (!IsOriginalDeclaringType (propertyInfo))
-      {
-        CheckForMappingAttributes (propertyInfo);
-        return false;
-      }
-
-      if (!IsManagedProperty (propertyInfo))
-        return false;
-
-      if (IsVirtualRelationEndPoint (propertyInfo))
-        return false;
-
-      return true;
-    }
-
-    private bool IsManagedProperty (PropertyInfo propertyInfo)
-    {
-      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, false);
-      if (storageClassAttribute == null)
+      if (_type.BaseType == typeof (DomainObject))
         return true;
 
-      return storageClassAttribute.StorageClass != StorageClass.None;
+      return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);
     }
 
-    private void CheckForMappingAttributes (PropertyInfo propertyInfo)
+    private bool IsRelationEndPoint (PropertyInfo propertyInfo)
     {
-      IMappingAttribute[] mappingAttributes = AttributeUtility.GetCustomAttributes<IMappingAttribute> (propertyInfo, false);
-      if (mappingAttributes.Length > 0)
-      {
-        throw new MappingException (
-            string.Format (
-                "The '{0}' is a mapping attribute and may only be applied at the property's base definiton.\r\n  Type: {1}, property: {2}",
-                mappingAttributes[0].GetType().FullName,
-                propertyInfo.DeclaringType.FullName,
-                propertyInfo.Name));
-      }
-    }
-
-    private static bool IsOriginalDeclaringType (PropertyInfo propertyInfo)
-    {
-      return ReflectionUtility.GetOriginalDeclaringType (propertyInfo) == propertyInfo.DeclaringType;
-    }
-
-    private bool IsVirtualRelationEndPoint (PropertyInfo propertyInfo)
-    {
-      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo);
-      return relationEndPointReflector.IsVirtualEndRelationEndpoint();
+      return typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType);
     }
   }
 }

@@ -148,22 +148,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       Assert.AreEqual ("ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable", actual.MyEntityName);
     }
 
-    [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The 'Rubicon.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definiton.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
-        + "property: Int32")]
-    public void GetClassDefinition_ForDerivedClassHavingAnOverriddenPropertyWithMappingAttribute()
-    {
-      Type derivedClass = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
-          true,
-          false);
-      ClassReflector classReflector = new ClassReflector (derivedClass);
-
-      classReflector.GetClassDefinition(_classDefinitions);
-    }
-
     private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (

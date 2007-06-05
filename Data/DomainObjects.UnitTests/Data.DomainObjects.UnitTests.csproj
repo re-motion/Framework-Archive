@@ -112,6 +112,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidUnidirectionalRelation.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
+    <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
