@@ -1,11 +1,13 @@
 using System;
-using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  //TODO: Doc
-  public class RdbmsClassReflector: ClassReflector
+  /// <summary>
+  /// The <see cref="RdbmsClassReflector"/> is used introduce <b>RDBMS</b> specific information into the building the 
+  /// <see cref="ReflectionBasedClassDefinition"/> and the <see cref="RelationDefinition"/> objects.
+  /// </summary>
+  public class RdbmsClassReflector : ClassReflector
   {
     public RdbmsClassReflector (Type type)
         : base (type)
