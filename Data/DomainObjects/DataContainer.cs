@@ -108,15 +108,6 @@ public class DataContainer
   // methods and properties
 
   /// <summary>
-  /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/>.
-  /// </summary>
-  /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-
-  /// <summary>
   /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>

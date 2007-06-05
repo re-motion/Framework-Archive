@@ -187,6 +187,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     /// <summary>
     /// Converts the value from internal representation (business layer) to external representation (representation layer).
     /// </summary>
+    /// <param name="bindableObject">The <see cref="IBusinessObject"/> from which the <paramref name="internalValue"/> has been read.</param>
     /// <param name="internalValue">The internal value.</param>
     /// <returns>The external value. If the data type of the property has a field named "MinValue" and <paramref name="internalValue"/> is equal to it, then the return value is null.</returns>
     /// <note type="inheritinfo">
