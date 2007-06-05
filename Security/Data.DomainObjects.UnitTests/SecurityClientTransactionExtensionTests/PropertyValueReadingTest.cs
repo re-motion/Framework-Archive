@@ -8,7 +8,7 @@ using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class PropertyValueReadingTest : BaseTest
+  public class PropertyValueReadingTest
   {
     private SecurityClientTransactionExtensionTestHelper _testHelper;
     private IClientTransactionExtension _extension;
@@ -38,7 +38,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, true);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["StringProperty"], ValueAccess.Current);
+      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }
@@ -54,7 +54,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, false);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["StringProperty"], ValueAccess.Current);
+      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
       using (new SecurityFreeSection ())
       {
-        _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["StringProperty"], ValueAccess.Current);
+        _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
       }
 
       _testHelper.VerifyAll ();
@@ -81,7 +81,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["StringProperty"], ValueAccess.Current);
+      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.NonSecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }
@@ -101,7 +101,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectObjectSecurityStrategyHasAccess (securableObject, TestAccessTypes.First, hasAccess);
       _testHelper.ReplayAll ();
 
-      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["StringProperty"], ValueAccess.Current);
+      _extension.PropertyValueReading (dataContainer, dataContainer.PropertyValues["Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain.SecurableObject.StringProperty"], ValueAccess.Current);
 
       _testHelper.VerifyAll ();
     }

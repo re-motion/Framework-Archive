@@ -47,6 +47,11 @@ namespace Rubicon.Security.UnitTests.SampleDomain
       return _securityStrategy;
     }
 
+    public Type GetSecurableType ()
+    {
+      return GetType ();
+    }
+
     [DemandMethodPermission (GeneralAccessTypes.Edit, GeneralAccessTypes.Create)]
     public void Show ()
     {

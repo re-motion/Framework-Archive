@@ -22,6 +22,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       return _objectSecurityStrategy;
     }
 
+    public Type GetSecurableType ()
+    {
+      return GetPublicDomainObjectType ();
+    }
+
     public SecurityContext CreateSecurityContext ()
     {
       return new SecurityContext (

@@ -8,7 +8,7 @@ using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class FilterQueryResultTest : BaseTest
+  public class FilterQueryResultTest
   {
     private SecurityClientTransactionExtensionTestHelper _testHelper;
     private IClientTransactionExtension _extension;

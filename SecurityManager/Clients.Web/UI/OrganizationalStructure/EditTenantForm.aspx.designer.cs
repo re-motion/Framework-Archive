@@ -29,13 +29,13 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure {
         protected global::Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
         
         /// <summary>
-        /// _EditTenantControl control.
+        /// EditTenantControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl _EditTenantControl;
+        protected global::Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure.EditTenantControl EditTenantControl;
         
         /// <summary>
         /// SaveButton control.

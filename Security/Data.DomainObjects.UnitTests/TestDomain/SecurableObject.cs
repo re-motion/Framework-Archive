@@ -3,24 +3,28 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class SecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
+  [Instantiable]
+  [DBTable]
+  public abstract class SecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
   {
+    public static SecurableObject NewObject (ClientTransaction clientTransaction, IObjectSecurityStrategy securityStrategy)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<SecurableObject>().With (securityStrategy);
+      }
+    }
+
     private IObjectSecurityStrategy _securityStrategy;
 
-    public SecurableObject (ClientTransaction clientTransaction, IObjectSecurityStrategy securityStrategy)
-      : base (clientTransaction)
+    protected SecurableObject (IObjectSecurityStrategy securityStrategy)
     {
       _securityStrategy = securityStrategy;
     }
 
-    protected SecurableObject (DataContainer dataContainer)
-      : base (dataContainer)
-    {
-    }
-
     protected override void OnLoaded ()
     {
-      base.OnLoaded ();
+      base.OnLoaded();
       _securityStrategy = new ObjectSecurityStrategy (this);
     }
 
@@ -29,48 +33,35 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
       return _securityStrategy;
     }
 
+    Type ISecurableObject.GetSecurableType ()
+    {
+      return GetPublicDomainObjectType();
+    }
+
     public DataContainer GetDataContainer ()
     {
       return DataContainer;
     }
 
-    public string StringProperty
-    {
-      get { return (string) DataContainer["StringProperty"]; }
-      set { DataContainer["StringProperty"] = value; }
-    }
+    public abstract string StringProperty { get; set; }
 
-    public string OtherStringProperty
-    {
-      get { return (string) DataContainer["OtherStringProperty"]; }
-      set { DataContainer["OtherStringProperty"] = value; }
-    }
+    public abstract string OtherStringProperty { get; set; }
 
-    public SecurableObject Parent
-    {
-      get { return (SecurableObject) GetRelatedObject ("Parent"); }
-      set { SetRelatedObject ("Parent", value); }
-    }
+    [DBBidirectionalRelation ("Children")]
+    public abstract SecurableObject Parent { get; set; }
 
-    public DomainObjectCollection Children
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Children"); }
-    }
+    [DBBidirectionalRelation ("Parent")]
+    public abstract ObjectList<SecurableObject> Children { get; }
 
-    public SecurableObject OtherParent
-    {
-      get { return (SecurableObject) GetRelatedObject ("OtherParent"); }
-      set { SetRelatedObject ("OtherParent", value); }
-    }
+    [DBBidirectionalRelation ("OtherChildren")]
+    public abstract SecurableObject OtherParent { get; set; }
 
-    public DomainObjectCollection OtherChildren
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("OtherChildren"); }
-    }
+    [DBBidirectionalRelation ("OtherParent")]
+    public abstract ObjectList<SecurableObject> OtherChildren { get; }
 
     SecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      return new SecurityContext (typeof (SecurableObject));
+      return new SecurityContext (GetPublicDomainObjectType());
     }
 
     public new void Delete ()

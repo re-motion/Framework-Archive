@@ -3,10 +3,19 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 {
-  public class NonSecurableObject : DomainObject
+  [Instantiable]
+  [DBTable]
+  public abstract class NonSecurableObject : DomainObject
   {
-    public NonSecurableObject (ClientTransaction clientTransaction)
-      : base (clientTransaction)
+    public static NonSecurableObject NewObject (ClientTransaction clientTransaction)
+    {
+      using (new CurrentTransactionScope (clientTransaction))
+      {
+        return DomainObject.NewObject<NonSecurableObject>().With();
+      }
+    }
+
+    protected NonSecurableObject ()
     {
     }
 
@@ -15,21 +24,12 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
       return DataContainer;
     }
 
-    public string StringProperty
-    {
-      get { return (string) DataContainer["StringProperty"]; }
-      set { DataContainer["StringProperty"] = value; }
-    }
+    public abstract string StringProperty { get; set; }
 
-    public NonSecurableObject Parent
-    {
-      get { return (NonSecurableObject) GetRelatedObject ("Parent"); }
-      set { SetRelatedObject ("Parent", value); }
-    }
+    [DBBidirectionalRelation ("Children")]
+    public abstract NonSecurableObject Parent { get; set; }
 
-    public DomainObjectCollection Children
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Children"); }
-    }
+    [DBBidirectionalRelation ("Parent")]
+    public abstract ObjectList<NonSecurableObject> Children { get; }
   }
 }

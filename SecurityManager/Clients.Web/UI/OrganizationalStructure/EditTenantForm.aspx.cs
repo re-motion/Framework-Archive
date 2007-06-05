@@ -22,12 +22,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure
     // methods and properties
     protected override IFocusableControl InitialFocusControl
     {
-      get { return _EditTenantControl.InitialFocusControl; }
+      get { return EditTenantControl.InitialFocusControl; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      RegisterDataEditUserControl (_EditTenantControl);
+      RegisterDataEditUserControl (EditTenantControl);
 
       base.OnLoad (e);
     }

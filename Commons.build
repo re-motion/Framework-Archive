@@ -555,8 +555,6 @@
   <target name="Security.Data.DomainObjects.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
     <call target="Security" cascade="false"/>
     <call target="Security.Data.DomainObjects" cascade="false"/>
@@ -571,7 +569,6 @@
   <target name="SecurityManager.Core.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
-    <call target="Data.DomainObjects.Legacy" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
     <call target="Security" cascade="false"/>

@@ -7,7 +7,7 @@ using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class RelationChangingTest : BaseTest
+  public class RelationChangingTest
   {
     private SecurityClientTransactionExtensionTestHelper _testHelper;
     private IClientTransactionExtension _extension;

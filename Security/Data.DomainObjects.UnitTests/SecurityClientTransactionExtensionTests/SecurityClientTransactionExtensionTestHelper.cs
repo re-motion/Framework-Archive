@@ -54,12 +54,12 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
 
     public SecurableObject CreateSecurableObject ()
     {
-      return new SecurableObject (_transaction, CreateObjectSecurityStrategy ());
+      return SecurableObject.NewObject (_transaction, CreateObjectSecurityStrategy ());
     }
 
     public NonSecurableObject CreateNonSecurableObject ()
     {
-      return new NonSecurableObject (_transaction);
+      return NonSecurableObject.NewObject (_transaction);
     }
 
     public IObjectSecurityStrategy CreateObjectSecurityStrategy ()

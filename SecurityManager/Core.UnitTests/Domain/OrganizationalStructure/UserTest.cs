@@ -148,6 +148,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void GetSecurableType ()
+    {
+      ISecurableObject user = CreateUser ();
+
+      Assert.AreSame (typeof (User), user.GetSecurableType ());
+    }
+
+    [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
       User user = CreateUser ();

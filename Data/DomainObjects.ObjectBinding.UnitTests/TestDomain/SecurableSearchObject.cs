@@ -29,5 +29,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     {
       return _securityStrategy;
     }
+
+    public Type GetSecurableType ()
+    {
+      return GetType ();
+    }
   }
 }

@@ -7,7 +7,7 @@ using Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class NewObjectCreatingTest : BaseTest
+  public class NewObjectCreatingTest
   {
     private SecurityClientTransactionExtensionTestHelper _testHelper;
     private IClientTransactionExtension _extension;
@@ -82,7 +82,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.AddExtension (_extension);
       HasStatelessAccessDelegate hasAccess = delegate (Type type, ISecurityProvider securityProvider, IPrincipal user, AccessType[] requiredAccessTypes)
       {
-        new SecurableObject (_testHelper.Transaction, objectSecurityStrategy);
+        SecurableObject.NewObject (_testHelper.Transaction, objectSecurityStrategy);
         return true;
       };
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, hasAccess);
@@ -101,7 +101,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactio
       _testHelper.ExpectFunctionalSecurityStrategyHasAccess (typeof (SecurableObject), GeneralAccessTypes.Create, true);
       _testHelper.ReplayAll ();
 
-      new SecurableObject (_testHelper.Transaction, objectSecurityStrategy);
+      SecurableObject.NewObject (_testHelper.Transaction, objectSecurityStrategy);
 
       _testHelper.VerifyAll ();
     }

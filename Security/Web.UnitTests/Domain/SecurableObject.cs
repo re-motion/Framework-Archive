@@ -37,5 +37,10 @@ namespace Rubicon.Security.Web.UnitTests.Domain
     {
       return _securityStrategy;
     }
+
+    public Type GetSecurableType ()
+    {
+      return GetType ();
+    }
   }
 }

@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects;
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.SecurityClientTransactionExtensionTests
 {
   [TestFixture]
-  public class InterfaceTest : BaseTest
+  public class InterfaceTest
   {
 
     [Test]

@@ -9,5 +9,9 @@ namespace Rubicon.Security
     /// <remarks>Primarily used by a <see cref="T:Rubicon.Security.SecurityClient"/> to dispatch security checks.</remarks>
     /// <returns>Returns the <see cref="IObjectSecurityStrategy"/>.</returns>
     IObjectSecurityStrategy GetSecurityStrategy ();
+
+    /// <summary>Gets the <see cref="Type"/> representing the <see cref="ISecurableObject"/> in the security infrastructure.</summary>
+    /// <returns>Return a <see cref="Type"/> object.</returns>
+    Type GetSecurableType ();
   }
 }

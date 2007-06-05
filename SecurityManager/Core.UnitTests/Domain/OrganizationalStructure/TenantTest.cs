@@ -145,6 +145,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void GetSecurableType ()
+    {
+      ISecurableObject tenant = _testHelper.CreateTenant ("Tenant", "UID: Tenant");
+
+      Assert.AreSame (typeof (Tenant), tenant.GetSecurableType ());
+    }
+
+    [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
       Tenant tenant = _testHelper.CreateTenant ("Tenant", "UID: Tenant");

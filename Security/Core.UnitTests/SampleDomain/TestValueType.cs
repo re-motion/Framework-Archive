@@ -9,5 +9,10 @@ namespace Rubicon.Security.UnitTests.SampleDomain
     {
       throw new Exception ("The method or operation is not implemented.");
     }
+
+    public Type GetSecurableType ()
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
   }
 }

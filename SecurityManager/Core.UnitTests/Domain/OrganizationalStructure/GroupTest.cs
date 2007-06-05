@@ -89,6 +89,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void GetSecurableType ()
+    {
+      ISecurableObject group = CreateGroup ();
+
+      Assert.AreSame (typeof (Group), group.GetSecurableType ());
+    }
+
+    [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
       Group group = CreateGroup ();

@@ -13,6 +13,9 @@
 - Neues Interface Rubicon.Design.IDesignModeHelper: Facade für Design-Mode Eigenschaften.
 - TypeConversionServices zu TypeConversionProvider umbenannt.
 - AdvancedEnumConverter: Verarbeitet nun auch nullable Enums
+- ISecurableObject: Neue Methode GetSecurableType. Wird verwendet um den für die Security-Infrastruktur relevanten Typ eines Objektes zu erhalten.
+  Im Fall von normalen Objekten liefert diese Methode das Ergbebnis von GetType() zurück, bei generierten Klassen (Mix-Ins, etc) muss hier der 
+  Bassityp aus dem Domain-Layer zurück geliefert werden.
 
 1.7.41
 ======

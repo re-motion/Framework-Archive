@@ -73,5 +73,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
       return _securityStrategy;
     }
+
+    Type ISecurableObject.GetSecurableType ()
+    {
+      return GetPublicDomainObjectType();
+    }
   }
 }

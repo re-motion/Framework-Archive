@@ -7,7 +7,7 @@
   <securityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
-  <securityManager:EditTenantControl id="_EditTenantControl" runat="server" />
+  <securityManager:EditTenantControl id="EditTenantControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActualBottomControlsPlaceHolder" runat="server" ContentPlaceHolderID="BottomControlsPlaceHolder">
   <table cellpadding="0" cellspacing="0">

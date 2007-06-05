@@ -97,6 +97,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
+    public void GetSecurableType ()
+    {
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
+      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+
+      Assert.AreSame (typeof (Position), position.GetSecurableType());
+    }
+
+    [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();

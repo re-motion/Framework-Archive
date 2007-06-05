@@ -127,7 +127,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType(), methodName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetSecurableType(), methodName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
 
@@ -148,7 +148,7 @@ namespace Rubicon.Security
       if (!HasMethodAccess (securableObject, methodName, user))
       {
         throw CreatePermissionDeniedException (
-            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetType().FullName);
+            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetSecurableType ().FullName);
       }
     }
 
@@ -164,7 +164,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType(), propertyName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetSecurableType (), propertyName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyReadPermissions evaluated and returned null.");
 
@@ -188,10 +188,9 @@ namespace Rubicon.Security
       if (!HasPropertyReadAccess (securableObject, propertyName, user))
       {
         throw CreatePermissionDeniedException (
-            "Access to get-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType().FullName);
+            "Access to get-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetSecurableType ().FullName);
       }
     }
-
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName)
     {
@@ -204,7 +203,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType(), propertyName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetSecurableType (), propertyName);
       if (requiredAccessTypeEnums == null)
         throw new InvalidOperationException ("IPermissionProvider.GetRequiredPropertyWritePermissions evaluated and returned null.");
 
@@ -228,7 +227,7 @@ namespace Rubicon.Security
       if (!HasPropertyWriteAccess (securableObject, propertyName, user))
       {
         throw CreatePermissionDeniedException (
-            "Access to set-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetType().FullName);
+            "Access to set-accessor of property '{0}' on type '{1}' has been denied.", propertyName, securableObject.GetSecurableType ().FullName);
       }
     }
 
@@ -347,6 +346,7 @@ namespace Rubicon.Security
     {
       return new PermissionDeniedException (string.Format (message, args));
     }
+
 
     bool INullObject.IsNull
     {
