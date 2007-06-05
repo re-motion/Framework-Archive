@@ -86,7 +86,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public virtual DateTime ChangedAt
     {
-      get { return CurrentProperty<DateTime>().GetValue(); }
+      get { return CurrentProperty.GetValue<DateTime> (); }
       private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlList.ChangedAt", value); }
     }
 

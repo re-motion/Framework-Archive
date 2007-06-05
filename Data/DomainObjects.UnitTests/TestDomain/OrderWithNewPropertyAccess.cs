@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
         int number = OrderNumber;
         OrderNumber = number;
 
-        return CurrentProperty<DateTime>().GetValue();
+        return CurrentProperty.GetValue<DateTime>();
       }
       set
       {
@@ -41,14 +41,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
         int number = OrderNumber;
         OrderNumber = number;
 
-        CurrentProperty<DateTime>().SetValue(value);
+        CurrentProperty.SetValue (value);
       }
     }
 
     public virtual Customer Customer
     {
-      get { return CurrentProperty<Customer> ().GetValue (); }
-      set { CurrentProperty<Customer> ().SetValue (value); }
+      get { return CurrentProperty.GetValue<Customer>(); }
+      set { CurrentProperty.SetValue (value); }
     }
 
     [StorageClassNone]
@@ -60,27 +60,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Order")]
     public virtual ObjectList<OrderItemWithNewPropertyAccess> OrderItems
     {
-      get { return CurrentProperty<ObjectList<OrderItemWithNewPropertyAccess>>().GetValue(); }
+      get { return CurrentProperty.GetValue<ObjectList<OrderItemWithNewPropertyAccess>>(); }
     }
 
     [StorageClassNone]
     public virtual int NotInMapping
     {
-      get { return CurrentProperty<int> ().GetValue (); }
-      set { CurrentProperty<int> ().SetValue (value); }
+      get { return CurrentProperty.GetValue<int> (); }
+      set { CurrentProperty.SetValue (value); }
     }
 
     [StorageClassNone]
     public virtual OrderWithNewPropertyAccess NotInMappingRelated
     {
-      get { return CurrentProperty<OrderWithNewPropertyAccess> ().GetValue (); }
-      set { CurrentProperty<OrderWithNewPropertyAccess> ().SetValue (value); }
+      get { return CurrentProperty.GetValue<OrderWithNewPropertyAccess> (); }
+      set { CurrentProperty.SetValue (value); }
     }
 
     [StorageClassNone]
     public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
     {
-      get { return CurrentProperty<ObjectList<OrderItem>> ().GetValue (); }
+      get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
     }
   }
 }

@@ -56,8 +56,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public virtual DateTime ChangedAt
     {
-      get { return CurrentProperty<DateTime>().GetValue(); }
-      private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.ChangedAt", value); }
+      get { return CurrentProperty.GetValue<DateTime>(); }
+      private set { Properties["Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.ChangedAt"].SetValue (value); }
     }
 
     public void Touch ()
@@ -120,7 +120,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     [IsReadOnly]
     public virtual ObjectList<Permission> Permissions
     {
-      get { return new ObjectList<Permission> (CurrentProperty<ObjectList<Permission>>().GetValue(), true); }
+      get { return new ObjectList<Permission> (CurrentProperty.GetValue<ObjectList<Permission>> (), true); }
     }
 
     private ObjectList<Permission> GetPermissions ()

@@ -37,7 +37,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     public abstract Employee Supervisor { get; set; }
 
     [DBBidirectionalRelation ("Employee")]
-    public abstract Computer Computer { get; set; }
+    public Computer Computer
+    {
+      get { return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].GetValue<Computer>(); }
+      set { Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue (value); }
+    }
 
     public void DeleteWithSubordinates ()
     {

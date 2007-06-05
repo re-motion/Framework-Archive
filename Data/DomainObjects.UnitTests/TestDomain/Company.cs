@@ -38,8 +38,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("Companies")]
     public virtual IndustrialSector IndustrialSector
     {
-      get { return CurrentProperty<IndustrialSector>().GetValue(); }
-      set { CurrentProperty<IndustrialSector> ().SetValue (value); }
+      get { return CurrentProperty.GetValue<IndustrialSector> (); }
+      set { CurrentProperty.SetValue<IndustrialSector> (value); }
     }
 
     [DBBidirectionalRelation ("Company")]

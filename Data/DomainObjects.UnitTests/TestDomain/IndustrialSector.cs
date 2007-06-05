@@ -27,11 +27,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       get
       {
-        return CurrentProperty<string>().GetValue();
+        return CurrentProperty.GetValue<string> ();
       }
       set
       {
-        CurrentProperty<string>().SetValue (value);
+        CurrentProperty.SetValue (value);
       }
     }
 
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       get
       {
-        return CurrentProperty<ObjectList<Company>>().GetValue();
+        return CurrentProperty.GetValue<ObjectList<Company>> ();
       }
     }
   }

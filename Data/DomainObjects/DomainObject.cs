@@ -518,48 +518,29 @@ public class DomainObject
   /// <summary>
   /// Provides simple, encapsulated access to the current property.
   /// </summary>
-  /// <typeparam name="T">The expected property type.</typeparam>
-  /// <returns>A <see cref="PropertyAccessor{T}"/> object encapsulating the current property.</returns>
+  /// <value>A <see cref="PropertyAccessor"/> object encapsulating the current property.</value>
   /// <remarks>
   /// The structure returned by this method allows simple access to the property's value and mapping definition objects regardless of
-  /// whether it is a simple value property, a related object property, or a related object collection property. Depending on the property kind,
-  /// the <see cref="PropertyAccessor{T}"/>'s <see cref="PropertyAccessor{T}.GetValue"/> and <see cref="PropertyAccessor{T}.SetValue"/>
-  /// methods are passed on to <see cref="GetPropertyValue{T}"/>/<see cref="SetPropertyValue"/>,
-  /// <see cref="GetRelatedObject"/>/<see cref="SetRelatedObject"/>, or <see cref="GetRelatedObjects"/>.
+  /// whether it is a simple value property, a related object property, or a related object collection property.
   /// </remarks>
   /// <exception cref="InvalidOperationException">The current property hasn't been initialized or there is no current property. Perhaps the domain 
-  /// object was created by the <c>new</c> operator instead of the factory or the property is not virtual.</exception>
-  /// <exception cref="ArgumentException">The type <typeparamref name="T"/> does not match the property's type ot the current property was
-  /// initialized with an invalid name. The latter will only occur if the current property
-  /// has been explicitly initialized with <see cref="PreparePropertyAccess"/>; it should not occur if the initialization was performed automatically.
-  /// </exception>
-  protected internal PropertyAccessor<T> CurrentProperty<T> ()
+  /// object was created with the <c>new</c> operator instead of using the <see cref="NewObject{T}"/> method, or the property is not virtual.</exception>
+  protected internal PropertyAccessor CurrentProperty
   {
-    string propertyName = GetAndCheckCurrentPropertyName();
-    return Property<T> (propertyName);
+    get
+    {
+      string propertyName = GetAndCheckCurrentPropertyName();
+      return Properties[propertyName];
+    }
   }
 
   /// <summary>
-  /// Provides simple, encapsulated access to a given property.
+  /// Provides simple, encapsulated access to the properties of this <see cref="DomainObject"/>.
   /// </summary>
-  /// <typeparam name="T">The expected property type.</typeparam>
-  /// <param name="propertyName">The property's identifier.</param>
-  /// <returns>A <see cref="PropertyAccessor{T}"/> object encapsulating the given property.</returns>
-  /// <remarks>
-  /// The structure returned by this method allows simple access to the property's value and mapping definition objects regardless of
-  /// whether it is a simple value property, a related object property, or a related object collection property. Depending on the property kind,
-  /// the <see cref="PropertyAccessor{T}"/>'s <see cref="PropertyAccessor{T}.GetValue"/> and <see cref="PropertyAccessor{T}.SetValue"/>
-  /// methods are passed on to <see cref="GetPropertyValue{T}"/>/<see cref="SetPropertyValue"/>,
-  /// <see cref="GetRelatedObject"/>/<see cref="SetRelatedObject"/>, or <see cref="GetRelatedObjects"/>.
-  /// </remarks>
-  /// <exception cref="ArgumentNullException">The <paramref name="propertyName"/> parameter is <see langword="null"/>.</exception>
-  /// <exception cref="ArgumentException">The type <typeparamref name="T"/> does not match the property's type or <paramref name="propertyName"/>
-  /// is not a valid property identifier in the context of this domain object.
-  /// </exception>
-  protected internal PropertyAccessor<T> Property<T> (string propertyName)
+  /// <returns>A <see cref="PropertyIndexer"/> object which can be used to select a specific property of this <see cref="DomainObject"/>.</returns>
+  protected internal PropertyIndexer Properties
   {
-    ArgumentUtility.CheckNotNull ("propertyName", propertyName);
-    return new PropertyAccessor<T> (this, propertyName);
+    get { return new PropertyIndexer (this); }
   }
   #endregion
 
@@ -874,7 +855,7 @@ public class DomainObject
     OnPropertyChanged (args);
   }
 
-  protected void CheckIfObjectIsDiscarded ()
+  protected internal void CheckIfObjectIsDiscarded ()
   {
     if (IsDiscarded)
       throw new ObjectDiscardedException (_dataContainer.GetID ());

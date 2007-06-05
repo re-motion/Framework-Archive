@@ -105,6 +105,7 @@
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />
+    <Compile Include="Infrastructure\PropertyIndexer.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
     <Compile Include="InstantiableAttribute.cs" />
@@ -136,7 +137,7 @@
     <Compile Include="DBTableAttribute.cs" />
     <Compile Include="Persistence\Configuration\StorageGroupElement.cs" />
     <Compile Include="Persistence\Configuration\TypeProvider.cs" />
-    <Compile Include="PropertyAccessor.cs" />
+    <Compile Include="Infrastructure\PropertyAccessor.cs" />
     <Compile Include="StorageClassNoneAttribute.cs" />
     <Compile Include="StorageClassTransactionAttribute.cs" />
     <Compile Include="StorageGroupAttribute.cs" />

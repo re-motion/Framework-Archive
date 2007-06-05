@@ -112,7 +112,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public virtual DateTime ChangedAt 
     {
-      get { return CurrentProperty<DateTime>().GetValue(); }
+      get { return CurrentProperty.GetValue<DateTime> (); }
       private set { SetPropertyValue ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.ChangedAt", value); }
     }
 

@@ -125,19 +125,19 @@
   Neu 1 - Property-Identifier wird automatisch zugeordnet, Property muss virtuell sein:
   public virtual int IntProperty
   {
-    get { return CurrentProperty<int>().GetValue(); }
-    set { CurrentProperty<int>.SetValue (value); }
+    get { return CurrentProperty.GetValue<int>(); }
+    set { CurrentProperty.SetValue (value); }
   }
   
   public MyDomainObject ObjectProperty
   {
-    get { return CurrentProperty<MyDomainObject>.GetValue(); }
-    set { CurrentProperty<MyDomainObject>.SetValue() (value); }
+    get { return CurrentProperty.GetValue<MyDomainObject>(); }
+    set { CurrentProperty.SetValue() (value); }
   }
  
   public ObjectList<MyDomainObject> CollectionProperty
   {
-    get { return CurrentProperty<ObjectList<MyDomainObject>>.GetValue(); }
+    get { return CurrentProperty.GetValue<ObjectList<MyDomainObject>>(); }
   }
 
   Neu 2 - Property wird automatisch implementiert, Klasse wird dadurch abstrakt, muss mit InstantiableAttribute gekennzeichnet werden:
@@ -145,7 +145,7 @@
   public abstract MyDomainObject ObjectProperty { get; set; }
   public abstract ObjectList<MyDomainObject> CollectionProperty { get; set; }
   
-  Statt CurrentProperty<T>() kann auch Property<T> (string propertyName) verwendet werden. In disem Fall muss der Propertyname
+  Statt CurrentProperty kann auch Property[string propertyName] verwendet werden. In disem Fall muss der Propertyname
   explizit übergeben werden (Format: Namespace.Class.Property). 
   
   Die bisherigen Get- und Set-Methoden werden bis zur Version 2.0 auf obsolete gesetzt.

@@ -59,14 +59,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception
       Assertion.DebugAssert (id != null);
       Assertion.DebugAssert (invocation != null);
 
-      PropertyAccessor<object> propertyAccessor = new PropertyAccessor<object> (target, id, false);
       if (ReflectionUtility.IsPropertyGetter (invocation.Method))
-        invocation.ReturnValue = propertyAccessor.GetValue ();
+        invocation.ReturnValue = target.CurrentProperty.GetValueWithoutTypeCheck();
       else
       {
         Assertion.DebugAssert (ReflectionUtility.IsPropertySetter (invocation.Method));
-        Assertion.DebugAssert (propertyAccessor.Kind != PropertyKind.RelatedObjectCollection);
-        propertyAccessor.SetValue (invocation.Arguments[0]);
+        Assertion.DebugAssert (target.CurrentProperty.Kind != PropertyKind.RelatedObjectCollection);
+        target.CurrentProperty.SetValueWithoutTypeCheck (invocation.Arguments[0]);
       }
     }
   }
