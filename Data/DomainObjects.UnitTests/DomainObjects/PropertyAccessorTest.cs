@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using Rubicon.Collections;
@@ -13,6 +14,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class PropertyAccessorTest : ClientTransactionBaseTest
   {
+    private static PropertyAccessor CreateAccessor (DomainObject domainObject, string propertyIdentifier)
+    {
+      ConstructorInfo ctor =
+          typeof (PropertyAccessor).GetConstructor (
+              BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] {typeof (DomainObject), typeof (string)}, null);
+      try
+      {
+        return
+            (PropertyAccessor)
+            ctor.Invoke (BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] {domainObject, propertyIdentifier}, null);
+      }
+      catch (TargetInvocationException ex)
+      {
+        throw ex.InnerException;
+      }
+    }
+
     [Test]
     public void ManualPropertyAccessor ()
     {
@@ -151,30 +169,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       IndustrialSector sector = IndustrialSector.NewObject();
       Assert.AreEqual (PropertyKind.PropertyValue,
-          new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").Kind, "Property value type");
+          CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").Kind, "Property value type");
 
       Assert.AreEqual (PropertyKind.RelatedObjectCollection,
-          new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").Kind,
+          CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").Kind,
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
       Company company = Company.NewObject ();
       Assert.AreEqual (PropertyKind.RelatedObject,
-          new PropertyAccessor (company, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector").Kind,
+          CreateAccessor (company, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector").Kind,
           "Related object type - bidirectional relation 1:n, n side");
 
       Employee employee = Employee.NewObject ();
       Assert.AreEqual (PropertyKind.RelatedObject,
-          new PropertyAccessor (employee, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer").Kind,
+          CreateAccessor (employee, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer").Kind,
           "Related object type - bidirectional relation 1:1, referenced side");
 
       Computer computer = Computer.NewObject ();
       Assert.AreEqual (PropertyKind.RelatedObject,
-          new PropertyAccessor (computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee").Kind,
+          CreateAccessor (computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee").Kind,
           "Related object type - bidirectional relation 1:1, foreign key side");
 
       Client client = Client.NewObject ();
       Assert.AreEqual (PropertyKind.RelatedObject,
-          new PropertyAccessor (client, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient").Kind,
+          CreateAccessor (client, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient").Kind,
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 
@@ -216,27 +234,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyTypeInstance ()
     {
       Assert.AreEqual (typeof (string),
-          new PropertyAccessor (IndustrialSector.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").PropertyType,
+          CreateAccessor (IndustrialSector.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").PropertyType,
           "Property value type");
 
       Assert.AreEqual (typeof (ObjectList<Company>),
-          new PropertyAccessor (IndustrialSector.NewObject (), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").PropertyType,
+          CreateAccessor (IndustrialSector.NewObject (), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").PropertyType,
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
       Assert.AreEqual (typeof (IndustrialSector),
-          new PropertyAccessor (Company.NewObject (), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector").PropertyType,
+          CreateAccessor (Company.NewObject (), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector").PropertyType,
           "Related object type - bidirectional relation 1:n, n side");
 
       Assert.AreEqual (typeof (Computer),
-          new PropertyAccessor (Employee.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer").PropertyType,
+          CreateAccessor (Employee.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer").PropertyType,
           "Related object type - bidirectional relation 1:1, referenced side");
 
       Assert.AreEqual (typeof (Employee),
-          new PropertyAccessor (Computer.NewObject (),  "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee").PropertyType,
+          CreateAccessor (Computer.NewObject (),  "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee").PropertyType,
           "Related object type - bidirectional relation 1:1, foreign key side");
 
       Assert.AreEqual (typeof (Client),
-          new PropertyAccessor (Client.NewObject (),  "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient").PropertyType,
+          CreateAccessor (Client.NewObject (),  "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient").PropertyType,
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 
@@ -246,7 +264,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyAccessorGetThrowsIfWrongType ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").GetValue<int>();
+      CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").GetValue<int>();
     }
 
     [Test]
@@ -255,7 +273,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyAccessorSetThrowsIfWrongType ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").SetValue (5);
+      CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name").SetValue (5);
     }
 
     [Test]
@@ -263,7 +281,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyAccessorThrowsIfWrongIdentifier ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.FooBarFredBaz");
+      CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.FooBarFredBaz");
     }
 
     [Test]
@@ -272,7 +290,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void PropertyAccessorThrowsIfSettingObjectList ()
     {
       IndustrialSector sector = IndustrialSector.NewObject ();
-      new PropertyAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").SetValue (new ObjectList<Company> ());
+      CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies").SetValue (new ObjectList<Company> ());
     }
 
     [Test]
@@ -287,7 +305,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyMetadata()
     {
-      PropertyAccessor accessor = new PropertyAccessor (IndustrialSector.NewObject(),
+      PropertyAccessor accessor = CreateAccessor (IndustrialSector.NewObject(),
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies");
       
       Assert.AreSame (MappingConfiguration.Current.ClassDefinitions[typeof (IndustrialSector)], accessor.ClassDefinition);
@@ -298,7 +316,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
           .GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
           accessor.RelationEndPointDefinition);
 
-      accessor = new PropertyAccessor (IndustrialSector.NewObject(),
+      accessor = CreateAccessor (IndustrialSector.NewObject(),
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name");
 
       Assert.IsNotNull (accessor.PropertyDefinition);
@@ -308,7 +326,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (accessor.RelationEndPointDefinition);
 
-      accessor = new PropertyAccessor (Computer.NewObject (),
+      accessor = CreateAccessor (Computer.NewObject (),
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee");
 
       Assert.IsNotNull (accessor.PropertyDefinition);
@@ -320,6 +338,73 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreSame (MappingConfiguration.Current.ClassDefinitions[typeof (Computer)]
           .GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
           accessor.RelationEndPointDefinition);
+    }
+
+    [Test]
+    public void HasChangedAndOriginalValueSimple()
+    {
+      IndustrialSector sector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector1);
+      PropertyAccessor property = CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name");
+      Assert.IsFalse (property.HasChanged);
+      string originalValue = property.GetValue<string>();
+      Assert.IsNotNull (originalValue);
+      Assert.AreEqual (originalValue, property.GetOriginalValue<string> ());
+
+      property.SetValue ("Foo");
+      Assert.IsTrue (property.HasChanged);
+      Assert.AreEqual ("Foo", property.GetValue<string>());
+      Assert.AreNotEqual (property.GetValue<string>(), property.GetOriginalValue<string> ());
+      Assert.AreEqual (originalValue, property.GetOriginalValue<string> ());
+    }
+
+    [Test]
+    public void HasChangedAndOriginalValueRelated()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      PropertyAccessor property = CreateAccessor (computer, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee");
+      Assert.IsFalse (property.HasChanged);
+      Employee originalValue = property.GetOriginalValue<Employee>();
+
+      property.GetValue<Employee> ().Name = "FooBarBazFred";
+      Assert.IsFalse (property.HasChanged);
+
+      Employee newValue = Employee.NewObject ();
+      property.SetValue (newValue);
+      Assert.IsTrue (property.HasChanged);
+      Assert.AreEqual (newValue, property.GetValue<Employee> ());
+      Assert.AreNotEqual (property.GetValue<Employee> (), property.GetOriginalValue<Employee> ());
+      Assert.AreEqual (originalValue, property.GetOriginalValue<Employee> ());
+
+    }
+
+    [Test]
+    public void HasChangedAndOriginalValueRelatedCollection()
+    {
+      IndustrialSector sector = IndustrialSector.GetObject (DomainObjectIDs.IndustrialSector1);
+      PropertyAccessor property = CreateAccessor (sector, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies");
+
+      Assert.IsFalse (property.HasChanged);
+      ObjectList<Company> originalValue = property.GetValue<ObjectList<Company>> ();
+      int originalCount = originalValue.Count;
+      Assert.IsNotNull (originalValue);
+      Assert.AreEqual (originalValue, property.GetOriginalValue<ObjectList<Company>> ());
+
+      property.GetValue<ObjectList<Company>> ().Add (Company.NewObject ());
+      Assert.AreNotEqual (originalCount, property.GetValue<ObjectList<Company>> ().Count);
+      Assert.IsTrue (property.HasChanged);
+
+      Assert.AreSame (originalValue, property.GetValue<ObjectList<Company>> ()); // !!
+      Assert.AreNotSame (property.GetValue<ObjectList<Company>> (), property.GetOriginalValue<ObjectList<Company>> ());
+      Assert.AreEqual (originalCount, property.GetOriginalValue<ObjectList<Company>>().Count);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidTypeException), ExpectedMessage =  "Actual type .* of property .* does not match expected type 'System.Int32'",
+        MatchType = MessageMatch.Regex)]
+    public void GetOriginalValueThrowsWithWrongType()
+    {
+      CreateAccessor (IndustrialSector.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")
+          .GetOriginalValue<int>();
     }
   }
 }

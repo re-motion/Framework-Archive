@@ -150,7 +150,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     /// <param name="propertyIdentifier">The identifier of the property to be encapsulated.</param>
     /// <exception cref="ArgumentNullException">One of the parameters passed to the constructor is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
-    public PropertyAccessor (DomainObject domainObject, string propertyIdentifier)
+    internal PropertyAccessor (DomainObject domainObject, string propertyIdentifier)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
       ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
@@ -220,6 +220,45 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _relationEndPointDefinition; }
     }
 
+    private PropertyValue PropertyValue
+    {
+      get { return _domainObject.DataContainer.PropertyValues[PropertyIdentifier]; }
+    }
+
+    private RelationEndPointID RelationEndPointID
+    {
+      get { return new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition); }
+    }
+
+    private RelationEndPoint RelationEndPoint
+    {
+      get
+      {
+        return _domainObject.ClientTransaction.DataManager.RelationEndPointMap[RelationEndPointID];
+      }
+    }
+
+    /// <summary>
+    /// Indicates whether the property's value has been changed in its current transaction.
+    /// </summary>
+    /// <value>True if the property's value has changed; false otherwise.</value>
+    public bool HasChanged
+    {
+      get
+      {
+        switch (Kind)
+        {
+          case PropertyKind.PropertyValue:
+            return PropertyValue.HasChanged;
+          case PropertyKind.RelatedObject:
+            return RelationEndPoint != null && RelationEndPoint.HasChanged;
+          default:
+            Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
+            return RelationEndPoint != null && RelationEndPoint.HasChanged;
+        }
+      }
+    }
+
     /// <summary>
     /// Gets the property's value.
     /// </summary>
@@ -270,35 +309,69 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     internal object GetValueWithoutTypeCheck()
     {
+      _domainObject.CheckIfObjectIsDiscarded ();
       switch (Kind)
       {
         case PropertyKind.PropertyValue:
           return _domainObject.DataContainer.GetValue (PropertyIdentifier);
         case PropertyKind.RelatedObject:
-          _domainObject.CheckIfObjectIsDiscarded();
           return _domainObject.ClientTransaction.GetRelatedObject (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
         default:
           Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-          _domainObject.CheckIfObjectIsDiscarded ();
           return _domainObject.ClientTransaction.GetRelatedObjects (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
       }
     }
 
     internal void SetValueWithoutTypeCheck (object value)
     {
+      _domainObject.CheckIfObjectIsDiscarded ();
       switch (Kind)
       {
         case PropertyKind.PropertyValue:
           _domainObject.DataContainer.SetValue (PropertyIdentifier, value);
           break;
         case PropertyKind.RelatedObject:
-          _domainObject.CheckIfObjectIsDiscarded ();
-          _domainObject.ClientTransaction.SetRelatedObject (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition),
-              (DomainObject) value);
+          _domainObject.ClientTransaction.SetRelatedObject (
+              new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition), (DomainObject) value);
           break;
         default:
           Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
           throw new InvalidOperationException ("Related object collections cannot be set.");
+      }
+    }
+
+    /// <summary>
+    /// Gets the property's value from that moment when the property's domain object was enlisted in its current <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <typeparam name="T">
+    /// The property value type. This must be the same as the type returned by <see cref="PropertyType"/>: For simple value properties,
+    /// this is the simple property type. For related objects, this is the related object's type. For related object collections,
+    /// this is <see cref="ObjectList{T}"/>, where "T" is the related objects' type. The type parameter can usually be inferred and needn't be
+    /// specified in such cases.
+    /// </typeparam>
+    /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="InvalidTypeException">
+    /// The type requested via <typeparamref name="T"/> is not the same as the property's type indicated by <see cref="PropertyType"/>.
+    /// </exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public T GetOriginalValue<T> ()
+    {
+      if (!PropertyType.Equals (typeof (T)))
+        throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
+
+      _domainObject.CheckIfObjectIsDiscarded();
+      switch (Kind)
+      {
+        case PropertyKind.PropertyValue:
+          return (T) PropertyValue.OriginalValue;
+        case PropertyKind.RelatedObject:
+          return (T) (object) _domainObject.ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (_domainObject.ID,
+              RelationEndPointDefinition));
+        default:
+          Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
+          _domainObject.CheckIfObjectIsDiscarded();
+          return (T) (object) _domainObject.ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (_domainObject.ID,
+              RelationEndPointDefinition));
       }
     }
   }

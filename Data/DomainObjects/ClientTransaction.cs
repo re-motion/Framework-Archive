@@ -636,7 +636,7 @@ public class ClientTransaction : ITransaction
   /// <summary>
   /// Gets the <see cref="DataManager"/> of the <b>ClientTransaction</b>.
   /// </summary>
-  protected DataManager DataManager
+  protected internal DataManager DataManager
   {
     get { return _dataManager; }
   }
