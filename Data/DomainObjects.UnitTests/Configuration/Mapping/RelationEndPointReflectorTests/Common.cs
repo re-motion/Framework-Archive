@@ -30,8 +30,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
-        + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
         + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
@@ -43,8 +43,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
         + "property: PropertyWithStringAttribute")]
     public void GetMetadata_WithStringAttributeAppliedToInvalidProperty()
     {
@@ -56,8 +56,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryPropertyAttribute may be only applied to properties of type System.Byte[].\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryPropertyAttribute may be only applied to properties of type System.Byte[].\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
         + "property: PropertyWithBinaryAttribute")]
     public void GetMetadata_WithBinaryAttributeAppliedToInvalidProperty()
     {
@@ -70,16 +70,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     [Ignore("Not sure if this test is required, since a relation with 2 virtual end points is already covered by the RelationDefinition ctor.")]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation, "
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
         + "property: NoContainsKeyLeftSide")]
     public void GetMetadata_WithNeitherSideContainingTheKey ()
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation", true, false);
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide", true, false);
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithInvalidBidirectionalRelation",
-          "ClassWithInvalidBidirectionalRelation",
+          "ClassWithInvalidBidirectionalRelationLeftSide",
+          "ClassWithInvalidBidirectionalRelationLeftSide",
           "TestDomain", type, false);
       _classDefinitions.Add (classDefinition);
       PropertyInfo propertyInfo = type.GetProperty ("NoContainsKeyLeftSide");

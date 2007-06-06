@@ -113,6 +113,8 @@
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationRightSide.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\OtherClassWithInvalidBidirectionalRelationLeftSide.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
@@ -149,7 +151,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Simple\ClassWithPropertyTypeInOtherAssembly.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\AssemblyInfo.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Simple\AssemblyInfo.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelation.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationLeftSide.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Empty\AssemblyInfo.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />

@@ -90,9 +90,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.StringProperty, property: Int32Property")]
+    [ExpectedException (typeof (MappingException), ExpectedMessage = 
+        "The Rubicon.Data.DomainObjects.StringPropertyAttribute may be only applied to properties of type System.String.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.StringProperty, "
+        + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<StringProperty> ("Int32Property");

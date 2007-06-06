@@ -44,8 +44,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
     [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
-        + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.RelationProperty, "
+        + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.RelationProperty, "
         + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {

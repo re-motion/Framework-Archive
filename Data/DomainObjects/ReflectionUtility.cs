@@ -226,5 +226,53 @@ namespace Rubicon.Data.DomainObjects
 
       return baseDeclaringType;
     }
+
+    /// <summary>
+    /// Evaluates whether the <paramref name="type"/> is an <see cref="ObjectList{T}"/> or derived from <see cref="ObjectList{T}"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to check. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="type"/> is an <see cref="ObjectList{T}"/> or derived from <see cref="ObjectList{T}"/>.
+    /// </returns>
+    public static bool IsObjectList (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      for (Type currentType = type; currentType.BaseType != null; currentType = currentType.BaseType)
+      {
+        if (currentType.IsGenericType && typeof (ObjectList<>).IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
+          return true;
+      }
+
+      return false;
+    }
+
+    /// <summary>
+    /// Returns the type parameter of the <see cref="ObjectList{T}"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> for which to return the type parameter. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// A <see cref="Type"/> if the <paramref name="type"/> is a closed <see cref="ObjectList{T}"/> or <see langword="null"/> if the generic 
+    /// <see cref="ObjectList{T}"/> is open.
+    /// </returns>
+    /// <exception cref="ArgumentTypeException">
+    /// Thrown if the type is not an <see cref="ObjectList{T}"/> or derived from <see cref="ObjectList{T}"/>.
+    /// </exception>
+    public static Type GetObjectListTypeParameter (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      for (Type currentType = type; currentType.BaseType != null; currentType = currentType.BaseType)
+      {
+        if (currentType.IsGenericType && typeof (ObjectList<>).IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
+        {
+          if (currentType.ContainsGenericParameters)
+            return null;
+          return currentType.GetGenericArguments ()[0];
+        }
+      }
+
+      throw new ArgumentTypeException ("type", typeof (ObjectList<>), type);
+    }
   }
 }

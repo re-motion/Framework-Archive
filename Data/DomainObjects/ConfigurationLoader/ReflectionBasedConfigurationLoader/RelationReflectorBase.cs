@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Rubicon.Utilities;
 
@@ -19,6 +20,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           bidirectionalRelationAttribute.OppositeProperty,
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
+      ValidateOppositePropertyInfo (bidirectionalRelationAttribute, oppositePropertyInfo);
+      return oppositePropertyInfo;
+    }
+
+    private void ValidateOppositePropertyInfo (BidirectionalRelationAttribute bidirectionalRelationAttribute, PropertyInfo oppositePropertyInfo)
+    {
       if (oppositePropertyInfo == null)
       {
         throw CreateMappingException (
@@ -29,7 +36,21 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
             PropertyInfo.PropertyType);
       }
 
-      return oppositePropertyInfo;
+      Type oppositePropertyType;
+      if (ReflectionUtility.IsObjectList (oppositePropertyInfo.PropertyType))
+        oppositePropertyType = ReflectionUtility.GetObjectListTypeParameter (oppositePropertyInfo.PropertyType);
+      else
+        oppositePropertyType = oppositePropertyInfo.PropertyType;
+
+      if (PropertyInfo.DeclaringType != oppositePropertyType)
+      {
+        throw CreateMappingException (
+            null,
+            PropertyInfo,
+            "The declaring type does not match the type of the opposite relation propery '{0}' declared on type '{1}'.",
+            bidirectionalRelationAttribute.OppositeProperty,
+            oppositePropertyInfo.DeclaringType);
+      }
     }
   }
 }

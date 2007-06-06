@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool IsCollectionProperyOnOppositeSide (BidirectionalRelationAttribute bidirectionalRelationAttribute)
     {
-      return IsCollectionPropery (GetOppositePropertyInfo (bidirectionalRelationAttribute));
+      return ReflectionUtility.IsObjectList (GetOppositePropertyInfo (bidirectionalRelationAttribute).PropertyType);
     }
 
     protected override string GetSortExpression ()

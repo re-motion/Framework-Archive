@@ -144,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       StringBuilder messageBuilder = new StringBuilder();
       messageBuilder.AppendFormat (message, args);
       messageBuilder.AppendLine();
-      messageBuilder.AppendFormat ("  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name);
+      messageBuilder.AppendFormat ("Declaring type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name);
 
       return new MappingException (messageBuilder.ToString(), innerException);
     }

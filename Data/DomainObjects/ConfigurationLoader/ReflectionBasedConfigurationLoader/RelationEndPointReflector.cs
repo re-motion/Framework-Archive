@@ -42,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public virtual bool IsVirtualEndRelationEndpoint()
     {
-      return IsCollectionPropery (PropertyInfo);
+      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType);
     }
 
     private RelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -63,14 +63,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private CardinalityType GetCardinality()
     {
-      return IsCollectionPropery (PropertyInfo) ? CardinalityType.Many : CardinalityType.One;
-    }
-
-    protected bool IsCollectionPropery (PropertyInfo propertyInfo)
-    {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      return typeof (DomainObjectCollection).IsAssignableFrom (propertyInfo.PropertyType);
+      return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) ? CardinalityType.Many : CardinalityType.One;
     }
 
     protected virtual string GetSortExpression ()

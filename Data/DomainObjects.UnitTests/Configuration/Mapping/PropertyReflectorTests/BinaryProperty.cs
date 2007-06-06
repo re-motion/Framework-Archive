@@ -91,8 +91,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyRef
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryPropertyAttribute may be only applied to properties of type System.Byte[].\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
+        ExpectedMessage = "The Rubicon.Data.DomainObjects.BinaryPropertyAttribute may be only applied to properties of type System.Byte[].\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.PropertyReflectorTests.BinaryProperty, property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<BinaryProperty> ("Int32Property");

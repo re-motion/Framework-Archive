@@ -10,14 +10,14 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
   [TestFixture]
-  public class RelationReflectorTest: StandardMappingTest
+  public class RelationReflectorTest : StandardMappingTest
   {
     private ReflectionBasedClassDefinition _classWithManySideRelationPropertiesClassDefinition;
     private ReflectionBasedClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
     private ReflectionBasedClassDefinition _classWithBothEndPointsOnSameClassClassDefinition;
     private ClassDefinitionCollection _classDefinitions;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       _classWithManySideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void GetMetadata_UnidirectionalOneToOne()
+    public void GetMetadata_UnidirectionalOneToOne ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToOne");
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
@@ -60,14 +60,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (_classWithManySideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
 
       Assert.IsInstanceOfType (typeof (AnonymousRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
-      AnonymousRelationEndPointDefinition oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      AnonymousRelationEndPointDefinition oppositeEndPointDefinition =
+          (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
       Assert.That (_classWithOneSideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Not.Contains (actualRelationDefinition));
     }
 
     [Test]
-    public void GetMetadata_UnidirectionalOneToMany()
+    public void GetMetadata_UnidirectionalOneToMany ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("UnidirectionalOneToMany");
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
@@ -89,14 +90,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (_classWithManySideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
 
       Assert.IsInstanceOfType (typeof (AnonymousRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
-      AnonymousRelationEndPointDefinition oppositeEndPointDefinition = (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      AnonymousRelationEndPointDefinition oppositeEndPointDefinition =
+          (AnonymousRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
       Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
       Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
       Assert.That (_classWithOneSideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Not.Contains (actualRelationDefinition));
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToOne()
+    public void GetMetadata_BidirectionalOneToOne ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToOne");
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
@@ -130,7 +132,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToMany()
+    public void GetMetadata_BidirectionalOneToMany ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("BidirectionalOneToMany");
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
@@ -164,7 +166,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToMany_WithBothEndPointsOnSameClass()
+    public void GetMetadata_BidirectionalOneToMany_WithBothEndPointsOnSameClass ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithBothEndPointsOnSameClass).GetProperty ("Parent");
       PropertyReflector propertyReflector = new PropertyReflector (_classWithBothEndPointsOnSameClassClassDefinition, propertyInfo);
@@ -199,10 +201,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "The property type of an uni-directional relation property must be assignable to Rubicon.Data.DomainObjects.DomainObject.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation, "
+        "The property type of an uni-directional relation property must be assignable to Rubicon.Data.DomainObjects.DomainObject.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation, "
         + "property: LeftSide")]
-    public void GetMetadata_UnidirectionalOneToMany_WithCollectionProperty()
+    public void GetMetadata_UnidirectionalOneToMany_WithCollectionProperty ()
     {
       Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
           "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation", true, false);
@@ -224,25 +226,81 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "Opposite relation property 'Invalid' could not be found on type "
-        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation'.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation, "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide'.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
         + "property: InvalidOppositePropertyNameLeftSide")]
-    public void GetMetadata_WithInvalidOppositePropertyName()
+    public void GetMetadata_WithInvalidOppositePropertyName ()
     {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation", true, false);
-      ReflectionBasedClassDefinition classDefinition = 
-          new ReflectionBasedClassDefinition ("ClassWithInvalidBidirectionalRelation", "Table", "TestDomain", type, false);
+      ReflectionBasedClassDefinition classDefinition = CreateClassWithInvalidBidirectionalRelationLeftSideClassDefinition();
 
-      PropertyInfo propertyInfo = type.GetProperty ("InvalidOppositePropertyNameLeftSide");
+      PropertyInfo propertyInfo = classDefinition.ClassType.GetProperty ("InvalidOppositePropertyNameLeftSide");
       PropertyReflector propertyReflector = new PropertyReflector (classDefinition, propertyInfo);
       classDefinition.MyPropertyDefinitions.Add (propertyReflector.GetMetadata());
-      
+
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();
       classDefinitionCollection.Add (classDefinition);
+      classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
 
       RelationReflector relationReflector = new RelationReflector (propertyInfo);
       relationReflector.GetMetadata (classDefinitionCollection);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "The declaring type does not match the type of the opposite relation propery 'InvalidOppositePropertyTypeRightSide' declared on type "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide'.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: InvalidOppositePropertyTypeLeftSide")]
+    public void GetMetadata_WithInvalidOppositePropertyType ()
+    {
+      ReflectionBasedClassDefinition classDefinition = CreateClassWithInvalidBidirectionalRelationLeftSideClassDefinition ();
+
+      PropertyInfo propertyInfo = classDefinition.ClassType.GetProperty ("InvalidOppositePropertyTypeLeftSide");
+      PropertyReflector propertyReflector = new PropertyReflector (classDefinition, propertyInfo);
+      classDefinition.MyPropertyDefinitions.Add (propertyReflector.GetMetadata());
+
+      ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();
+      classDefinitionCollection.Add (classDefinition);
+      classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
+
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      relationReflector.GetMetadata (classDefinitionCollection);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "The declaring type does not match the type of the opposite relation propery 'InvalidOppositeCollectionPropertyTypeRightSide' declared on type "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide'.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: InvalidOppositeCollectionPropertyTypeLeftSide")]
+    public void GetMetadata_WithInvalidOppositePropertyTypeForCollectionProperty ()
+    {
+      ReflectionBasedClassDefinition classDefinition = CreateClassWithInvalidBidirectionalRelationLeftSideClassDefinition ();
+
+      PropertyInfo propertyInfo = classDefinition.ClassType.GetProperty ("InvalidOppositeCollectionPropertyTypeLeftSide");
+      PropertyReflector propertyReflector = new PropertyReflector (classDefinition, propertyInfo);
+      classDefinition.MyPropertyDefinitions.Add (propertyReflector.GetMetadata ());
+
+      ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection ();
+      classDefinitionCollection.Add (classDefinition);
+      classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
+
+      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      relationReflector.GetMetadata (classDefinitionCollection);
+    }
+
+    private ReflectionBasedClassDefinition CreateClassWithInvalidBidirectionalRelationLeftSideClassDefinition ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide", true, false);
+      return new ReflectionBasedClassDefinition ("ClassWithInvalidBidirectionalRelationLeftSide", "Table", "TestDomain", type, false);
+    }
+
+    private ReflectionBasedClassDefinition CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide", true, false);
+      return new ReflectionBasedClassDefinition ("ClassWithInvalidBidirectionalRelationRightSide", "Table", "TestDomain", type, false);
     }
   }
 }

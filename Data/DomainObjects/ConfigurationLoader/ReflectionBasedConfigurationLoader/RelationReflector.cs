@@ -5,7 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  //TODO: Validation: Invalid Opposite Property (Name, Type)
   /// <summary>Used to create the <see cref="RelationDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationReflector: RelationReflectorBase
   {
