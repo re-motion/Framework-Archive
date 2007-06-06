@@ -45,13 +45,31 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
 
       Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects (classDefinition, propertyIdentifier);
+      return GetPropertyKind (propertyObjects.B);
+    }
 
-      if (propertyObjects.B == null)
+    private static PropertyKind GetPropertyKind (IRelationEndPointDefinition relationEndPointDefinition)
+    {
+      if (relationEndPointDefinition == null)
         return PropertyKind.PropertyValue;
-      else if (propertyObjects.B.Cardinality == CardinalityType.One)
+      else if (relationEndPointDefinition.Cardinality == CardinalityType.One)
         return PropertyKind.RelatedObject;
       else
         return PropertyKind.RelatedObjectCollection;
+    }
+
+    private static IPropertyAccessorStrategy GetStrategy (PropertyKind kind)
+    {
+      switch (kind)
+      {
+        case PropertyKind.PropertyValue:
+          return ValuePropertyAccessorStrategy.Instance;
+        case PropertyKind.RelatedObject:
+          return RelatedObjectPropertyAccessorStrategy.Instance;
+        default:
+          Assertion.Assert (kind == PropertyKind.RelatedObjectCollection);
+          return RelatedObjectCollectionPropertyAccessorStrategy.Instance;
+      }
     }
 
     /// <summary>
@@ -70,23 +88,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyIdentifier", propertyIdentifier);
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> definitionObjects = GetPropertyDefinitionObjects (classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition, IRelationEndPointDefinition> definitionObjects =
+        PropertyAccessor.GetPropertyDefinitionObjects (classDefinition, propertyIdentifier);
 
-      switch (GetPropertyKind (classDefinition, propertyIdentifier))
-      {
-        case PropertyKind.PropertyValue:
-          return definitionObjects.A.PropertyType;
-        default:
-          return GetRelatedObjectType (definitionObjects.B);
-      }
-    }
-
-    private static Type GetRelatedObjectType (IRelationEndPointDefinition endPointDefinition)
-    {
-      if (endPointDefinition.PropertyType.Equals (typeof (ObjectID)))
-        return endPointDefinition.RelationDefinition.GetOppositeClassDefinition (endPointDefinition).ClassType;
-      else
-        return endPointDefinition.PropertyType;
+      return GetStrategy (GetPropertyKind (definitionObjects.B)).GetPropertyType (definitionObjects.A, definitionObjects.B);
     }
 
     /// <summary>
@@ -117,9 +122,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new ArgumentException (message, "propertyIdentifier");
       }
       else
-      {
         return new Tuple<PropertyDefinition, IRelationEndPointDefinition> (propertyDefinition, relationEndPointDefinition);
-      }
     }
 
     /// <summary>
@@ -143,6 +146,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     private ClassDefinition _classDefinition;
     private Type _propertyType;
 
+    private IPropertyAccessorStrategy _strategy;
+
     /// <summary>
     /// Initializes the <see cref="PropertyAccessor"/> object.
     /// </summary>
@@ -157,17 +162,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       _domainObject = domainObject;
       _propertyIdentifier = propertyIdentifier;
-      _kind = PropertyKind.PropertyValue;
       _classDefinition = _domainObject.DataContainer.ClassDefinition;
-      
+      _kind = PropertyAccessor.GetPropertyKind (_classDefinition, _propertyIdentifier);
+
+      _strategy = PropertyAccessor.GetStrategy (_kind);
+
       Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects =
           PropertyAccessor.GetPropertyDefinitionObjects (_classDefinition, propertyIdentifier);
 
       _propertyDefinition = propertyObjects.A;
       _relationEndPointDefinition = propertyObjects.B;
 
-      _kind = PropertyAccessor.GetPropertyKind (_classDefinition, _propertyIdentifier);
-      _propertyType = PropertyAccessor.GetPropertyType (_classDefinition, _propertyIdentifier);
+      _propertyType = _strategy.GetPropertyType (_propertyDefinition, _relationEndPointDefinition);
     }
 
     /// <summary>
@@ -220,42 +226,26 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _relationEndPointDefinition; }
     }
 
-    private PropertyValue PropertyValue
+    /// <summary>
+    /// Gets the domain object of this property.
+    /// </summary>
+    /// <value>The domain object this <see cref="PropertyAccessor"/> is associated with.</value>
+    public DomainObject DomainObject
     {
-      get { return _domainObject.DataContainer.PropertyValues[PropertyIdentifier]; }
-    }
-
-    private RelationEndPointID RelationEndPointID
-    {
-      get { return new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition); }
-    }
-
-    private RelationEndPoint RelationEndPoint
-    {
-      get
-      {
-        return _domainObject.ClientTransaction.DataManager.RelationEndPointMap[RelationEndPointID];
-      }
+      get { return _domainObject; }
     }
 
     /// <summary>
     /// Indicates whether the property's value has been changed in its current transaction.
     /// </summary>
     /// <value>True if the property's value has changed; false otherwise.</value>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
     public bool HasChanged
     {
       get
       {
-        switch (Kind)
-        {
-          case PropertyKind.PropertyValue:
-            return PropertyValue.HasChanged;
-          case PropertyKind.RelatedObject:
-            return RelationEndPoint != null && RelationEndPoint.HasChanged;
-          default:
-            Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-            return RelationEndPoint != null && RelationEndPoint.HasChanged;
-        }
+        DomainObject.CheckIfObjectIsDiscarded();
+        return _strategy.HasChanged (this);
       }
     }
 
@@ -278,7 +268,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
 
       object value = GetValueWithoutTypeCheck();
-      Assertion.DebugAssert (!(value == null && PropertyType.IsValueType), "Property '{0}' is a value type but the DataContainer returned null.",
+      Assertion.DebugAssert (
+          !(value == null && PropertyType.IsValueType),
+          "Property '{0}' is a value type but the DataContainer returned null.",
           PropertyIdentifier);
       Assertion.DebugAssert (value == null || value is T);
       return (T) value;
@@ -307,37 +299,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       SetValueWithoutTypeCheck (value);
     }
 
-    internal object GetValueWithoutTypeCheck()
+    internal object GetValueWithoutTypeCheck ()
     {
-      _domainObject.CheckIfObjectIsDiscarded ();
-      switch (Kind)
-      {
-        case PropertyKind.PropertyValue:
-          return _domainObject.DataContainer.GetValue (PropertyIdentifier);
-        case PropertyKind.RelatedObject:
-          return _domainObject.ClientTransaction.GetRelatedObject (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
-        default:
-          Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-          return _domainObject.ClientTransaction.GetRelatedObjects (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
-      }
+      _domainObject.CheckIfObjectIsDiscarded();
+      return _strategy.GetValueWithoutTypeCheck (this);
     }
 
     internal void SetValueWithoutTypeCheck (object value)
     {
-      _domainObject.CheckIfObjectIsDiscarded ();
-      switch (Kind)
-      {
-        case PropertyKind.PropertyValue:
-          _domainObject.DataContainer.SetValue (PropertyIdentifier, value);
-          break;
-        case PropertyKind.RelatedObject:
-          _domainObject.ClientTransaction.SetRelatedObject (
-              new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition), (DomainObject) value);
-          break;
-        default:
-          Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-          throw new InvalidOperationException ("Related object collections cannot be set.");
-      }
+      _domainObject.CheckIfObjectIsDiscarded();
+      _strategy.SetValueWithoutTypeCheck (this, value);
     }
 
     /// <summary>
@@ -364,18 +335,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     internal object GetOriginalValueWithoutTypeCheck ()
     {
-      _domainObject.CheckIfObjectIsDiscarded ();
-      switch (Kind)
-      {
-        case PropertyKind.PropertyValue:
-          return PropertyValue.OriginalValue;
-        case PropertyKind.RelatedObject:
-          return _domainObject.ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
-        default:
-          Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-          _domainObject.CheckIfObjectIsDiscarded ();
-          return _domainObject.ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
-      }
+      _domainObject.CheckIfObjectIsDiscarded();
+      return _strategy.GetOriginalValueWithoutTypeCheck (this);
     }
   }
 }

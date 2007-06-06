@@ -305,8 +305,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyMetadata()
     {
-      PropertyAccessor accessor = CreateAccessor (IndustrialSector.NewObject(),
+      IndustrialSector sector = IndustrialSector.NewObject();
+      PropertyAccessor accessor = CreateAccessor (sector,
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies");
+
+      Assert.AreSame (sector, accessor.DomainObject);
       
       Assert.AreSame (MappingConfiguration.Current.ClassDefinitions[typeof (IndustrialSector)], accessor.ClassDefinition);
       Assert.AreSame ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies", accessor.PropertyIdentifier);

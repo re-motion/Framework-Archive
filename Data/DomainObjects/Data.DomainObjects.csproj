@@ -104,9 +104,13 @@
     <Compile Include="Design\DomainObjectsDesignModeHelper.cs" />
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
+    <Compile Include="Infrastructure\RelatedObjectCollectionPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />
+    <Compile Include="Infrastructure\IPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\PropertyIndexer.cs" />
+    <Compile Include="Infrastructure\RelatedObjectPropertyAccessorStrategy.cs" />
+    <Compile Include="Infrastructure\ValuePropertyAccessorStrategy.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
     <Compile Include="InstantiableAttribute.cs" />
