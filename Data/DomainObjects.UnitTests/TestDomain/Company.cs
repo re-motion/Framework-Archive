@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     internal int NamePropertyOfInvalidType
     {
-      set { SetPropertyValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name", value); }
+      set { Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].SetValue (value); }
     }
 
     [StringProperty (IsNullable = false, MaximumLength = 100)]

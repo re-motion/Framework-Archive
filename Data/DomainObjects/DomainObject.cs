@@ -203,8 +203,8 @@ public class DomainObject
 
   #endregion
 
-  // TODO: Change to use mapping instead of attribute later.
-  public static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
+  // True if the domain object type requires to be instantiated via the DomainObjectFactory; false if it is safe to just invoke its constructor.
+  private static bool ShouldUseFactoryForInstantiation (Type domainObjectType)
   {
     if (FactoryInstantiationScope.WithinScope)
       return true;
@@ -213,6 +213,7 @@ public class DomainObject
     return classDefinition is ReflectionBasedClassDefinition;
   }
 
+  // Returns a strategy object for creating instances of the given domain object type.
   private static IDomainObjectCreator GetCreator (Type domainObjectType)
   {
     if (ShouldUseFactoryForInstantiation (domainObjectType))
@@ -459,22 +460,34 @@ public class DomainObject
     ClientTransaction.Delete (this);
   }
 
-  #region New-style property access implementation
+  #region Property access
 
   /// <summary>
   /// Prepares access to the <see cref="PropertyValue"/> of the given name.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> to be accessed.</param>
-  /// <remarks>This method prepares the given property for access via <see cref="GetPropertyValue"/> and <see cref="SetPropertyValue"/>.
+  /// <remarks>This method prepares the given property for access via <see cref="CurrentProperty"/>.
   /// It is automatically invoked for virtual properties in domain objects created with the <see cref="DomainObjectFactory"/> and thus doesn't
   /// have to be called manually for these objects. If you choose to invoke <see cref="PreparePropertyAccess"/> and
   /// <see cref="PropertyAccessFinished"/> yourself, be sure to finish the property access with exactly one call to 
   /// <see cref="PropertyAccessFinished"/> from a finally-block.</remarks>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+  /// <exception cref="ArgumentException">The <paramref name="propertyName"/> parameter does not denote a valid property.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected internal virtual void PreparePropertyAccess (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckIfObjectIsDiscarded();
+    if (!PropertyAccessor.IsValidProperty (DataContainer.ClassDefinition, propertyName))
+    {
+      string message = string.Format (
+          "The property identifier '{0}' is not a valid property of domain object type {1}.",
+          propertyName,
+          DataContainer.ClassDefinition.ClassType.FullName);
+      throw new ArgumentException (message, "propertyName");
+    }
+
     CurrentPropertyManager.PreparePropertyAccess (propertyName);
   }
 
@@ -503,18 +516,12 @@ public class DomainObject
   {
     string propertyName = CurrentPropertyManager.CurrentPropertyName;
     if (propertyName == null)
-    {
-      throw new InvalidOperationException ("There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?");
-    }
+      throw new InvalidOperationException (
+          "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?");
     else
-    {
       return propertyName;
-    }
   }
 
-  #endregion
-
-  #region PropertyAccessors
   /// <summary>
   /// Provides simple, encapsulated access to the current property.
   /// </summary>
@@ -542,49 +549,6 @@ public class DomainObject
   {
     get { return new PropertyIndexer (this); }
   }
-  #endregion
-
-  #region Get/SetPropertyValue
-  /// <summary>
-  /// Gets the value of the given <see cref="PropertyValue"/>.
-  /// </summary>
-  /// <typeparam name="T">The expected type of the property value.</typeparam>
-  /// <param name="propertyName">The name of the property to get.</param>
-  /// <returns>The value of the given property.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-  /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
-  /// <exception cref="InvalidTypeException">The current property's value does not match the requested type.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected internal virtual T GetPropertyValue<T> (string propertyName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    object value = DataContainer.GetValue(propertyName);
-
-    Assertion.DebugAssert (
-        !(value == null && typeof (T).IsValueType), "Property '{0}' is a value type but the DataContainer returned null.", propertyName);
-
-    if (value == null || value is T)
-      return (T) value;
-
-    throw new InvalidTypeException (propertyName, typeof (T), value.GetType ());    
-  }
-
-  /// <summary>
-  /// Sets the value of the given <see cref="PropertyValue"/>.
-  /// </summary>
-  /// <param name="propertyName">The name of the property whose value is to be set.</param>
-  /// <param name="value">The value the property is to be set to.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
-  /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the data container.</exception>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="InvalidTypeException">The property's type does not match the given value's type.</exception>
-  protected internal virtual void SetPropertyValue (string propertyName, object value)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    DataContainer.SetValue(propertyName, value);
-  }
 
   #endregion
 
@@ -599,12 +563,11 @@ public class DomainObject
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
+  [Obsolete ("This method is obsolete, use 'Properties' instead.")]
   protected internal virtual DomainObject GetRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded ();
-
-    return ClientTransaction.GetRelatedObject (new RelationEndPointID (ID, propertyName));
+    return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck();
   }
 
   /// <summary>
@@ -621,12 +584,11 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-one or many-to-one relation.</exception>
+  [Obsolete ("This method is obsolete, use 'Properties' instead.")]
   protected internal virtual DomainObject GetOriginalRelatedObject (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded ();
-
-    return ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (ID, propertyName));
+    return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck();
   }
 
   /// <summary>
@@ -639,12 +601,11 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><paramref name="propertyName"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
+  [Obsolete ("This method is obsolete, use 'Properties' instead.")]
   protected internal virtual DomainObjectCollection GetRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded ();
-
-    return ClientTransaction.GetRelatedObjects (new RelationEndPointID (ID, propertyName));
+    return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck();
   }
 
   /// <summary>
@@ -656,12 +617,11 @@ public class DomainObject
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="propertyName"/> does not refer to an one-to-many relation.</exception>
+  [Obsolete ("This method is obsolete, use 'Properties' instead.")]
   protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded ();
-
-    return ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (ID, propertyName));
+    return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
   }
 
   /// <summary>
@@ -672,12 +632,11 @@ public class DomainObject
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  [Obsolete ("This method is obsolete, use 'Properties' instead.")]
   protected internal void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    CheckIfObjectIsDiscarded ();
-
-    ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
+    Properties[propertyName].SetValueWithoutTypeCheck (newRelatedObject);
   }
 
   #endregion
@@ -793,9 +752,9 @@ public class DomainObject
   }
 
   internal void BeginRelationChange (
-    string propertyName,
-    DomainObject oldRelatedObject,
-    DomainObject newRelatedObject)
+      string propertyName,
+      DomainObject oldRelatedObject,
+      DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
@@ -805,7 +764,7 @@ public class DomainObject
 
   internal void EndObjectLoading ()
   {
-    OnLoaded ();
+    OnLoaded();
   }
 
   internal void EndRelationChange (string propertyName)
@@ -858,7 +817,7 @@ public class DomainObject
   protected internal void CheckIfObjectIsDiscarded ()
   {
     if (IsDiscarded)
-      throw new ObjectDiscardedException (_dataContainer.GetID ());
+      throw new ObjectDiscardedException (_dataContainer.GetID());
   }
 }
 }

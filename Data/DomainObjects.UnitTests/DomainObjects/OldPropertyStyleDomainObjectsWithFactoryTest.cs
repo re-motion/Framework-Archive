@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -55,18 +56,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ShouldUseFactoryForInstantiation ()
     {
-      Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (OrderItemWithNewPropertyAccess)));
+      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (OrderItemWithNewPropertyAccess)));
 
       using (new FactoryInstantiationScope ())
       {
-        Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+        Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
         using (new FactoryInstantiationScope ())
         {
-          Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+          Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
         }
-        Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+        Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
       }
-      Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+    }
+
+    private bool ShouldUseFactoryForInstantiation (Type type)
+    {
+      return (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject), "ShouldUseFactoryForInstantiation", type);
     }
 
     [Test]

@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Mapping.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -176,6 +177,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.NewObject ();
       Assert.IsTrue (WasCreatedByFactory (order));
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+      Assert.IsNotNull (classWithAllDataTypes);
+      Assert.IsTrue (WasCreatedByFactory (classWithAllDataTypes));
     }
 
     [Test]
@@ -481,6 +486,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       IPropertyInterface domainObject = ClassWithExplicitInterfaceProperty.NewObject();
       domainObject.Property = 5;
       Assert.AreEqual (5, domainObject.Property);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "no current property", MatchType = MessageMatch.Contains)]
+    public void CurrentPropertyThrowsWhenNotInitializes()
+    {
+      Order order = Order.NewObject();
+      PropertyAccessor accessor = order.CurrentProperty;
+      Assert.Fail ("Expected exception");
+    }
+
+    [Test]
+    public void PreparePropertyAccessCorrectlySetsCurrentProperty()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.PreparePropertyAccess ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber");
+      int orderNumber;
+      try
+      {
+        orderNumber = order.CurrentProperty.GetValue<int>();
+      }
+      finally
+      {
+        order.PropertyAccessFinished();
+      }
+      Assert.AreEqual (order.OrderNumber, orderNumber);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "is not a valid property", MatchType = MessageMatch.Contains)]
+    public void PreparePropertyAccessThrowsOnInvalidPropertyName ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      order.PreparePropertyAccess ("Bla");
     }
   }
 }

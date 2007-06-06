@@ -43,13 +43,18 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     [Test]
     public void ShouldUseFactoryForInstantiation ()
     {
-      Assert.IsFalse (DomainObject.ShouldUseFactoryForInstantiation(typeof (ClassWithAllDataTypes)));
+      Assert.IsFalse (ShouldUseFactoryForInstantiation(typeof (ClassWithAllDataTypes)));
 
       using (new FactoryInstantiationScope ())
       {
-        Assert.IsTrue (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+        Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
       }
-      Assert.IsFalse (DomainObject.ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+      Assert.IsFalse (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+    }
+
+    private bool ShouldUseFactoryForInstantiation (Type type)
+    {
+      return (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject), "ShouldUseFactoryForInstantiation", type);
     }
 
     [Test]

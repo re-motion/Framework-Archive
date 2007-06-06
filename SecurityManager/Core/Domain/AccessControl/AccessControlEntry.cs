@@ -125,7 +125,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private ObjectList<Permission> GetPermissions ()
     {
-      return (ObjectList<Permission>) GetRelatedObjects ("Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.Permissions");
+      return Properties["Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry.Permissions"].GetValue<ObjectList<Permission>>();
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()

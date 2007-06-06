@@ -68,11 +68,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       return false;
     }
 
-    public bool ShouldUseFactoryForInstantiation
-    {
-      get { return DomainObject.ShouldUseFactoryForInstantiation (ClassType); }
-    }
-
     public string[] GetAllConcreteEntityNames()
     {
       if (GetEntityName() != null)

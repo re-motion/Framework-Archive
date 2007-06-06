@@ -359,19 +359,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       if (!PropertyType.Equals (typeof (T)))
         throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
 
-      _domainObject.CheckIfObjectIsDiscarded();
+      return (T) GetOriginalValueWithoutTypeCheck();
+    }
+
+    internal object GetOriginalValueWithoutTypeCheck ()
+    {
+      _domainObject.CheckIfObjectIsDiscarded ();
       switch (Kind)
       {
         case PropertyKind.PropertyValue:
-          return (T) PropertyValue.OriginalValue;
+          return PropertyValue.OriginalValue;
         case PropertyKind.RelatedObject:
-          return (T) (object) _domainObject.ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (_domainObject.ID,
-              RelationEndPointDefinition));
+          return _domainObject.ClientTransaction.GetOriginalRelatedObject (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
         default:
           Assertion.Assert (Kind == PropertyKind.RelatedObjectCollection);
-          _domainObject.CheckIfObjectIsDiscarded();
-          return (T) (object) _domainObject.ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (_domainObject.ID,
-              RelationEndPointDefinition));
+          _domainObject.CheckIfObjectIsDiscarded ();
+          return _domainObject.ClientTransaction.GetOriginalRelatedObjects (new RelationEndPointID (_domainObject.ID, RelationEndPointDefinition));
       }
     }
   }

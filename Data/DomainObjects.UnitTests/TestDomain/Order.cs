@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -66,5 +67,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [Mandatory]
     [DBBidirectionalRelation ("Order")]
     public abstract ObjectList<OrderItem> OrderItems { get; }
+
+    public new void PreparePropertyAccess (string propertyName)
+    {
+      base.PreparePropertyAccess (propertyName);
+    }
+
+    public new void PropertyAccessFinished()
+    {
+      base.PropertyAccessFinished();
+    }
+
+    [StorageClassNone]
+    public new PropertyAccessor CurrentProperty
+    {
+      get { return base.CurrentProperty; }
+    }
   }
 }
