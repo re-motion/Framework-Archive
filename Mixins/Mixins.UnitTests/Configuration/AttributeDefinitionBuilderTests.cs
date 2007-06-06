@@ -11,7 +11,7 @@ namespace Mixins.UnitTests.Configuration
   public class AttributeDefinitionBuilderTests
   {
     [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-    private class TagAttribute : Attribute
+    public class TagAttribute : Attribute
     {
       public int Named;
 
@@ -91,6 +91,21 @@ namespace Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
       Assert.IsFalse (bt1.CustomAttributes.HasItem (typeof (SerializableAttribute)));
+    }
+
+    class InternalStuffAttribute : Attribute { }
+
+    [InternalStuff]
+    class ClassWithInternalAttribute { }
+
+    [Test]
+    public void InternalAttributesAreIgnored()
+    {
+      using (new MixinConfiguration (typeof (ClassWithInternalAttribute)))
+      {
+        Assert.IsFalse (
+            TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.HasItem (typeof (InternalStuffAttribute)));
+      }
     }
   }
 }

@@ -18,19 +18,7 @@ namespace Mixins.Validation.Rules
 
     private void MixinMustBePublic (DelegateValidationRule<MixinDefinition>.Args args)
     {
-      SingleMust (IsPublicRecursive (args.Definition.Type), args.Log, args.Self);
-    }
-
-    private bool IsPublicRecursive (Type type)
-    {
-      if (!type.IsNested)
-      {
-        return type.IsPublic;
-      }
-      else
-      {
-        return type.IsNestedPublic && IsPublicRecursive (type.DeclaringType);
-      }
+      SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
     }
   }
 }

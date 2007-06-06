@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Mixins.Utilities;
 using Rubicon.Utilities;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("Count = {_items.Count}")]
   public class MultiDefinitionItemCollection<TKey, TValue> : DefinitionItemCollectionBase<TKey, TValue>
       where TValue : IVisitableDefinition
   {

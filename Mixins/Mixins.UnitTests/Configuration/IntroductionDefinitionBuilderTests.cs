@@ -106,5 +106,21 @@ namespace Mixins.UnitTests.Configuration
             .InterfaceIntroductions[typeof (IDisposable)]);
       }
     }
+
+    [Test]
+    public void IntroducesGetMethod()
+    {
+      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinImplementingFullPropertiesWithPartialIntroduction)))
+      {
+        InterfaceIntroductionDefinition introduction = TypeFactory.GetActiveConfiguration (typeof (BaseType1))
+            .IntroducedInterfaces[typeof (InterfaceWithPartialProperties)];
+        PropertyIntroductionDefinition prop1 = introduction.IntroducedProperties[typeof (InterfaceWithPartialProperties).GetProperty ("Prop1")];
+        PropertyIntroductionDefinition prop2 = introduction.IntroducedProperties[typeof (InterfaceWithPartialProperties).GetProperty ("Prop2")];
+        Assert.IsTrue (prop1.IntroducesGetMethod);
+        Assert.IsFalse (prop1.IntroducesSetMethod);
+        Assert.IsTrue (prop2.IntroducesSetMethod);
+        Assert.IsFalse (prop2.IntroducesGetMethod);
+      }
+    }
   }
 }

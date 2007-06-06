@@ -201,13 +201,13 @@ namespace Mixins.CodeGeneration.DynamicProxy
     {
       CustomPropertyEmitter propertyEmitter = Emitter.CreatePropertyOverrideOrInterfaceImplementation (property.InterfaceMember);
 
-      if (property.ImplementingMember.GetMethod != null)
+      if (property.IntroducesGetMethod)
         propertyEmitter.GetMethod = ImplementIntroducedMethod (
             implementerExpression,
             property.ImplementingMember.GetMethod,
             property.InterfaceMember.GetGetMethod()).InnerEmitter;
 
-      if (property.ImplementingMember.SetMethod != null)
+      if (property.IntroducesSetMethod)
         propertyEmitter.SetMethod = ImplementIntroducedMethod (
             implementerExpression,
             property.ImplementingMember.SetMethod,

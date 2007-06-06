@@ -37,11 +37,11 @@ namespace Mixins
         return ConcreteTypeBuilder.Current.GetConcreteType (configuration);
     }
 
-    public static BaseClassDefinition GetActiveConfiguration (Type potentialTargetType)
+    public static BaseClassDefinition GetActiveConfiguration (Type targetType)
     {
-      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (potentialTargetType);
+      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (targetType);
       if (context == null)
-        context = new ClassContext (potentialTargetType);
+        context = new ClassContext (targetType);
       return BaseClassDefinitionCache.Current.GetBaseClassDefinition (context);
     }
   }

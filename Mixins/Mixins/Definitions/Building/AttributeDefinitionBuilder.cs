@@ -19,7 +19,8 @@ namespace Mixins.Definitions.Building
     {
       foreach (CustomAttributeData attributeData in attributes)
       {
-        if (!typeof (SerializableAttribute).Equals(attributeData.Constructor.DeclaringType))
+        Type attributeType = attributeData.Constructor.DeclaringType;
+        if (attributeType.IsVisible && !typeof (SerializableAttribute).Equals (attributeType))
           _attributableDefinition.CustomAttributes.Add (new AttributeDefinition (_attributableDefinition, attributeData));
       }
     }

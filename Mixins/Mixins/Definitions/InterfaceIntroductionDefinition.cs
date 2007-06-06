@@ -1,10 +1,12 @@
 using System;
 using Rubicon.Utilities;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("{_type.FullName} introduced via {_implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
     public readonly DefinitionItemCollection<MethodInfo, MethodIntroductionDefinition> IntroducedMethods =

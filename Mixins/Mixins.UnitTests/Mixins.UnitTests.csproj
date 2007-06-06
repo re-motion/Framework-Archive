@@ -63,6 +63,7 @@
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UnvalidatedDefinitionBuilder.cs" />
+    <Compile Include="SampleTypes\MixinImplementingFullPropertiesWithPartialIntroduction.cs" />
     <Compile Include="Mixins\MixinSerializationTests.cs" />
     <Compile Include="SampleTypes\MixinWithSystemObjectBase.cs" />
     <Compile Include="Utilities\GenericTypeInstantiatorTests.cs" />

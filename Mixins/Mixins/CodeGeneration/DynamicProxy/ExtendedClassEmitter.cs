@@ -39,6 +39,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     public CustomMethodEmitter CreateMethodOverrideOrInterfaceImplementation (MethodInfo baseOrInterfaceMethod)
     {
+      ArgumentUtility.CheckNotNull ("baseOrInterfaceMethod", baseOrInterfaceMethod);
       Assertion.Assert (baseOrInterfaceMethod.IsVirtual);
 
       MethodAttributes methodDefinitionAttributes = MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.NewSlot
@@ -59,6 +60,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
     // does not create the property's methods
     public CustomPropertyEmitter CreatePropertyOverrideOrInterfaceImplementation (PropertyInfo baseOrInterfaceProperty)
     {
+      ArgumentUtility.CheckNotNull ("baseOrInterfaceProperty", baseOrInterfaceProperty);
+
       string propertyName = string.Format ("{0}.{1}", baseOrInterfaceProperty.DeclaringType.FullName, baseOrInterfaceProperty.Name);
       Type[] indexParameterTypes =
           Array.ConvertAll<ParameterInfo, Type> (baseOrInterfaceProperty.GetIndexParameters(), delegate (ParameterInfo p) { return p.ParameterType; });
@@ -72,6 +75,8 @@ namespace Mixins.CodeGeneration.DynamicProxy
     // does not create the event's methods
     public CustomEventEmitter CreateEventOverrideOrInterfaceImplementation (EventInfo baseOrInterfaceEvent)
     {
+      ArgumentUtility.CheckNotNull ("baseOrInterfaceEvent", baseOrInterfaceEvent);
+
       string eventName = string.Format ("{0}.{1}", baseOrInterfaceEvent.DeclaringType.FullName, baseOrInterfaceEvent.Name);
       CustomEventEmitter newEvent = new CustomEventEmitter (InnerEmitter, eventName, EventAttributes.None, baseOrInterfaceEvent.EventHandlerType);
       return newEvent;
@@ -79,6 +84,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     public LocalReference AddMakeReferenceOfExpressionStatements (CustomMethodEmitter methodDefinition, Type referenceType, Expression expression)
     {
+      ArgumentUtility.CheckNotNull ("expression", expression);
       LocalReference reference = methodDefinition.InnerEmitter.CodeBuilder.DeclareLocal (referenceType);
       methodDefinition.InnerEmitter.CodeBuilder.AddStatement (new AssignStatement (reference, expression));
       return reference;
@@ -103,6 +109,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
     private void ReplicateBaseTypeConstructor (ConstructorInfo constructor)
     {
+      ArgumentUtility.CheckNotNull ("constructor", constructor);
       ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters ());
       ConstructorEmitter newConstructor = InnerEmitter.CreateConstructor (arguments);
 
