@@ -1,3 +1,6 @@
+1.7.43.0
+========
+
 1.7.42.0
 ========
 
@@ -228,6 +231,9 @@
 - ClientTransaction.Delete (...), DomainObject.Delete(), ClientTransaction.GetObject (...) von public zu protected geändert.
   Sie sollten nur selektiv auf Projektbasis (oder granularer) freigegeben werden.
   Für einen einfachen Fix in Projekten bietet sich der Layer-Super-Type an, um diese Methoden für DomainObject zu implementiern.
+
+- ContainsMappingAttribute markiert Assemblies die Typen des Domain-Layers enthalten. Es muss angegeben werden, damit diese Assemblies beim 
+  Aufbau des Mappings berücksichtigt werden.
 
 1.7.37.0
 ========

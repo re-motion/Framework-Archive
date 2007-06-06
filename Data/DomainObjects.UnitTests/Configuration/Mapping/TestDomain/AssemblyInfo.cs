@@ -1,4 +1,4 @@
 using System;
 using Rubicon.Data.DomainObjects;
 
-[assembly: MappingAssembly]
+[assembly: ContainsMapping]

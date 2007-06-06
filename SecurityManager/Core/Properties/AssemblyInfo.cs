@@ -60,4 +60,4 @@ using Rubicon.Data.DomainObjects;
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
 
-[assembly: MappingAssembly]
+[assembly: ContainsMapping]

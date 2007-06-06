@@ -64,6 +64,6 @@ using Rubicon.Data.DomainObjects;
 [assembly: AssemblyDelaySign (false)]
 [assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
-#pragma warning enable 1699
+#pragma warning restore 1699
 
-[assembly: MappingAssembly]
+[assembly: ContainsMapping]
