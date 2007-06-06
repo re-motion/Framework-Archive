@@ -5,6 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Development;
 using Rubicon.Data.DomainObjects.Mapping.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
@@ -13,7 +14,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class NewPropertyStyleDomainObjectsWithFactoryTest : ClientTransactionBaseTest
+  public class InterceptedPropertyTest : ClientTransactionBaseTest
   {
     [DBTable]
     [Instantiable]
@@ -184,6 +185,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void ConstructedObjectIsDerived ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+      Assert.IsTrue (classWithAllDataTypes is ClassWithAllDataTypes);
+      Assert.IsFalse (classWithAllDataTypes.GetType ().Equals (typeof (ClassWithAllDataTypes)));
+    }
+
+    private bool ShouldUseFactoryForInstantiation (Type type)
+    {
+      return (bool) PrivateInvoke.InvokeNonPublicStaticMethod (typeof (DomainObject), "ShouldUseFactoryForInstantiation", type);
+    }
+
+    [Test]
+    public void ShouldUseFactoryForInstantiation ()
+    {
+      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (OrderItem)));
+
+      using (new FactoryInstantiationScope ())
+      {
+        Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+      }
+      Assert.IsTrue (ShouldUseFactoryForInstantiation (typeof (ClassWithAllDataTypes)));
+    }
+
+    [Test]
     public void GetPropertyValueWorks ()
     {
       OrderWithNewPropertyAccess order = OrderWithNewPropertyAccess.GetObject (DomainObjectIDs.OrderWithNewPropertyAccess1);
@@ -223,7 +249,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
+        + "DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClass as its member Foo is abstract (and not an "
         + "automatic property).\r\nParameter name: type")]
     public void AbstractWithMethodCannotBeInstantiated ()
     {
@@ -235,9 +261,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type "
-        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps, "
+        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps, "
         + "property Foo is abstract but not defined in the mapping (assumed property id: "
-        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableAbstractClassWithProps.Foo)."
+        + "Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableAbstractClassWithProps.Foo)."
         + "\r\nParameter name: type")]
     public void AbstractWithNonAutoPropertiesCannotBeInstantiated ()
     {
@@ -249,9 +275,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException(typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests."
-        + "DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
+        + "DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter, automatic "
         + "properties for related object collections cannot have setters: property 'RelatedObjects', property id 'Rubicon.Data.DomainObjects."
-        + "UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
+        + "UnitTests.DomainObjects.InterceptedPropertyTest+NonInstantiableClassWithAutomaticRelatedCollectionSetter."
         + "RelatedObjects'.\r\nParameter name: type")]
     public void AbstractWithAutoCollectionSetterCannotBeInstantiated ()
     {
@@ -260,7 +286,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Cannot instantiate type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
+        + "InterceptedPropertyTest+NonInstantiableSealedClass as it is sealed.\r\nParameter name: baseType")]
     public void SealedCannotBeInstantiated ()
     {
       using (new FactoryInstantiationScope ())
@@ -306,7 +332,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = 
-        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not "
+        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+ClassWithWrongConstructor does not "
         + "support the requested constructor with signature ().")]
     public void OldConstructorMismatch1()
     {
@@ -315,7 +341,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not support the requested constructor with signature "
+        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
         + "().")]
     public void NewConstructorMismatch1 ()
     {
@@ -327,7 +353,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
-        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not "
+        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+ClassWithWrongConstructor does not "
         + "support the requested constructor with signature (Rubicon.Data.DomainObjects.ClientTransaction).")]
     public void OldConstructorMismatch2 ()
     {
@@ -336,7 +362,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "NewPropertyStyleDomainObjectsWithFactoryTest+ClassWithWrongConstructor does not support the requested constructor with signature "
+        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
         + "(Rubicon.Data.DomainObjects.ClientTransaction).")]
     public void NewConstructorMismatch2 ()
     {

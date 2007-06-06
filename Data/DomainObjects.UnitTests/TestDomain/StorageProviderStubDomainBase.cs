@@ -1,5 +1,7 @@
 using System;
 
+#pragma warning disable 0618
+
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
   [Serializable]
@@ -41,3 +43,4 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
   }
 }
+#pragma warning restore 0618

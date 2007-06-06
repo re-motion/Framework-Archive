@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public virtual Customer OriginalCustomer
     {
-      get { return (Customer) GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"); }
+      get { return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderWithNewPropertyAccess.Customer"].GetOriginalValue<Customer>(); }
     }
 
     [DBBidirectionalRelation ("Order")]

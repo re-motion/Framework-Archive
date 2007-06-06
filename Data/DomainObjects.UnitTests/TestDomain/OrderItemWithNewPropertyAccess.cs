@@ -36,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public virtual OrderWithNewPropertyAccess OriginalOrder
     {
-      get { return (OrderWithNewPropertyAccess) GetOriginalRelatedObject ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order"); }
+      get { return Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItemWithNewPropertyAccess.Order"].GetOriginalValue <OrderWithNewPropertyAccess>(); }
     }
   }
 }
