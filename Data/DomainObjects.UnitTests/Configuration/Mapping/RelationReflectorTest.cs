@@ -200,12 +200,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "The property type of an uni-directional relation property must be assignable to Rubicon.Data.DomainObjects.DomainObject.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidUnidirectionalRelation, "
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation, "
         + "property: LeftSide")]
     public void GetMetadata_UnidirectionalOneToMany_WithCollectionProperty()
     {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidUnidirectionalRelation", true, false);
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation", true, false);
       ReflectionBasedClassDefinition classDefinition =
           new ReflectionBasedClassDefinition ("ClassWithInvalidUnidirectionalRelation", "Table", "TestDomain", type, false);
 
@@ -224,13 +224,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
         "Opposite relation property 'Invalid' could not be found on type "
-        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation'.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation, "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation'.\r\n  "
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation, "
         + "property: InvalidOppositePropertyNameLeftSide")]
     public void GetMetadata_WithInvalidOppositePropertyName()
     {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation", true, false);
       ReflectionBasedClassDefinition classDefinition = 
           new ReflectionBasedClassDefinition ("ClassWithInvalidBidirectionalRelation", "Table", "TestDomain", type, false);
 

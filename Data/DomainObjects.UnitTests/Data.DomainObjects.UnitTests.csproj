@@ -109,7 +109,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidUnidirectionalRelation.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
@@ -140,19 +140,17 @@
     <Compile Include="Configuration\Mapping\MappingLoaderConfigurationTest.cs" />
     <Compile Include="Configuration\Mapping\MappingReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\NullablePropertyAttributeTest.cs" />
-    <TestDomain Include="Configuration\Mapping\ReferencedTestDomain\ClassWithPropertyTypeInOtherAssembly.cs" />
-    <TestDomain Include="Configuration\Mapping\ReferencedTestDomain\AssemblyInfo.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\Common.cs" />
     <Compile Include="Configuration\Mapping\RelationReflectorTest.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\OneSideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\ManySideRelationProperty.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\BaseClass.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\DerivedClassHavingAnOverriddenPropertyWithMappingAttribute.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomain\ClassWithPropertyTypeInOtherAssembly.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\AssemblyInfo.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomain\AssemblyInfo.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomainWithErrors\ClassWithInvalidBidirectionalRelation.cs" />
-    <TestDomain Include="Configuration\Mapping\TestDomainEmpty\AssemblyInfo.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\BaseClass.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\DerivedClassHavingAnOverriddenPropertyWithMappingAttribute.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Simple\ClassWithPropertyTypeInOtherAssembly.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\AssemblyInfo.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Simple\AssemblyInfo.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelation.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Empty\AssemblyInfo.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup2Attribute.cs" />
     <Compile Include="Configuration\StorageProviders\PersistenceConfigurationTest.cs" />
     <Compile Include="Configuration\StorageProviders\StubStorageGroup1Attribute.cs" />

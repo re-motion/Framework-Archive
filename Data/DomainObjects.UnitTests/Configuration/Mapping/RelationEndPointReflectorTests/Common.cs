@@ -71,12 +71,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Ignore("Not sure if this test is required, since a relation with 2 virtual end points is already covered by the RelationDefinition ctor.")]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation, "
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation, "
         + "property: NoContainsKeyLeftSide")]
     public void GetMetadata_WithNeitherSideContainingTheKey ()
     {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainWithErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomainWithErrors.ClassWithInvalidBidirectionalRelation", true, false);
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelation", true, false);
       ClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithInvalidBidirectionalRelation",
           "ClassWithInvalidBidirectionalRelation",

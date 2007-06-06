@@ -20,27 +20,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [Ignore ("Not implemented: All assemblies must be available during start-up.")]
-    public void LazyLoadReferencedAssembly()
-    {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomain.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.ClassWithPropertyTypeInOtherAssembly", true, false);
-      PropertyInfo propertyInfo = type.GetProperty ("Property");
-
-      bool isAssemblyLoadedBeforePropertyTypeAccess = Array.Exists (
-          AppDomain.CurrentDomain.GetAssemblies(),
-          delegate (Assembly assembly) { return assembly.GetName().Name == "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ReferencedTestDomain"; });
-      Assert.IsFalse (isAssemblyLoadedBeforePropertyTypeAccess, "Assembly is already loaded.");
-
-      Dev.Null = propertyInfo.PropertyType;
-
-      bool isAssemblyLoadedAfterPropertyTypeAccess = Array.Exists (
-          AppDomain.CurrentDomain.GetAssemblies(),
-          delegate (Assembly assembly) { return assembly.GetName().Name == "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ReferencedTestDomain"; });
-      Assert.IsTrue (isAssemblyLoadedAfterPropertyTypeAccess, "Assembly was not loaded by accessing PropertyInfo.PropertyType.");
-    }
-
-    [Test]
     public void GetClassDefinitions ()
     {
       MappingReflector mappingReflector = new MappingReflector (GetType().Assembly);
