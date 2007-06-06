@@ -320,14 +320,9 @@ namespace Rubicon.Utilities
     private static string FormatMessage (string argumentName, Type expectedType, Type actualType)
     {
       if (expectedType == null)
-      {
         return string.Format ("Argument {0} has unexpected type {1}", argumentName, actualType);
-      }
       else
-      {
-        return string.Format ("Argument {0} has type {2} when type {1} was expected.",
-            argumentName, expectedType, actualType);
-      }
+        return string.Format ("Argument {0} has type {2} when type {1} was expected.", argumentName, expectedType, actualType);
     }
   }
 
