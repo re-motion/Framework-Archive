@@ -16,25 +16,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     private ReflectionBasedClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
     private ReflectionBasedClassDefinition _classWithBothEndPointsOnSameClassClassDefinition;
     private ClassDefinitionCollection _classDefinitions;
+    private RelationDefinitionCollection _relationDefinitions;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _classWithManySideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithManySideRelationProperties",
-          "ClassWithManySideRelationProperties",
-          "TestDomain",
-          typeof (ClassWithManySideRelationProperties),
-          false);
-      _classWithOneSideRelationPropertiesClassDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithOneSideRelationProperties", "ClassWithOneSideRelationProperties", "TestDomain", typeof (ClassWithOneSideRelationProperties), false);
-      _classWithBothEndPointsOnSameClassClassDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithBothEndPointsOnSameClass", "ClassWithBothEndPointsOnSameClass", "TestDomain", typeof (ClassWithBothEndPointsOnSameClass), false);
+      _classWithManySideRelationPropertiesClassDefinition = CreateReflectionBasedClassDefinition(typeof (ClassWithManySideRelationProperties));
+      _classWithOneSideRelationPropertiesClassDefinition = CreateReflectionBasedClassDefinition (typeof (ClassWithOneSideRelationProperties));
+      _classWithBothEndPointsOnSameClassClassDefinition = CreateReflectionBasedClassDefinition (typeof (ClassWithBothEndPointsOnSameClass));
 
       _classDefinitions = new ClassDefinitionCollection();
       _classDefinitions.Add (_classWithManySideRelationPropertiesClassDefinition);
       _classDefinitions.Add (_classWithOneSideRelationPropertiesClassDefinition);
       _classDefinitions.Add (_classWithBothEndPointsOnSameClassClassDefinition);
+
+      _relationDefinitions = new RelationDefinitionCollection();
     }
 
     [Test]
@@ -44,9 +40,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
 
-      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToOne",
@@ -74,9 +70,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
 
-      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.UnidirectionalOneToMany",
@@ -104,9 +100,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
 
-      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
+
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
+          actualRelationDefinition.ID);
+
+      Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[0]);
+      RelationEndPointDefinition endPointDefinition = (RelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[0];
+      Assert.AreEqual (propertyDefinition, endPointDefinition.PropertyDefinition);
+      Assert.AreSame (_classWithManySideRelationPropertiesClassDefinition, endPointDefinition.ClassDefinition);
+      Assert.AreSame (actualRelationDefinition, endPointDefinition.RelationDefinition);
+      Assert.That (_classWithManySideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
+
+      Assert.IsInstanceOfType (typeof (VirtualRelationEndPointDefinition), actualRelationDefinition.EndPointDefinitions[1]);
+      VirtualRelationEndPointDefinition oppositeEndPointDefinition =
+          (VirtualRelationEndPointDefinition) actualRelationDefinition.EndPointDefinitions[1];
+      Assert.AreSame (_classWithOneSideRelationPropertiesClassDefinition, oppositeEndPointDefinition.ClassDefinition);
+      Assert.AreEqual (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToOne",
+          oppositeEndPointDefinition.PropertyName);
+      Assert.AreSame (typeof (ClassWithManySideRelationProperties), oppositeEndPointDefinition.PropertyType);
+      Assert.AreSame (actualRelationDefinition, oppositeEndPointDefinition.RelationDefinition);
+      Assert.That (_classWithOneSideRelationPropertiesClassDefinition.MyRelationDefinitions, List.Contains (actualRelationDefinition));
+    }
+
+    [Test]
+    [Ignore("TODO: continue work here")]
+    public void GetMetadata_BidirectionalOneToOne_VirtualEndPoint ()
+    {
+      PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("BidirectionalOneToOne");
+      PropertyReflector propertyReflector = new PropertyReflector (_classWithOneSideRelationPropertiesClassDefinition, propertyInfo);
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classWithOneSideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
+
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
+      Assert.IsNotNull (actualRelationDefinition);
+
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
@@ -138,9 +171,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyReflector propertyReflector = new PropertyReflector (_classWithManySideRelationPropertiesClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithManySideRelationPropertiesClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
 
-      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToMany",
@@ -172,9 +205,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       PropertyReflector propertyReflector = new PropertyReflector (_classWithBothEndPointsOnSameClassClassDefinition, propertyInfo);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
       _classWithBothEndPointsOnSameClassClassDefinition.MyPropertyDefinitions.Add (propertyDefinition);
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, _classDefinitions);
 
-      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_classDefinitions);
+      RelationDefinition actualRelationDefinition = relationReflector.GetMetadata (_relationDefinitions);
 
       Assert.AreEqual (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithBothEndPointsOnSameClass.Parent",
@@ -219,8 +252,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       ClassDefinitionCollection classDefinitionCollection = new ClassDefinitionCollection();
       classDefinitionCollection.Add (classDefinition);
 
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
-      relationReflector.GetMetadata (classDefinitionCollection);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitionCollection);
+      relationReflector.GetMetadata (_relationDefinitions);
     }
 
     [Test]
@@ -241,8 +274,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classDefinitionCollection.Add (classDefinition);
       classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
 
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
-      relationReflector.GetMetadata (classDefinitionCollection);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitionCollection);
+      relationReflector.GetMetadata (_relationDefinitions);
     }
 
     [Test]
@@ -263,8 +296,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classDefinitionCollection.Add (classDefinition);
       classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
 
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
-      relationReflector.GetMetadata (classDefinitionCollection);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitionCollection);
+      relationReflector.GetMetadata (_relationDefinitions);
     }
 
     [Test]
@@ -285,8 +318,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       classDefinitionCollection.Add (classDefinition);
       classDefinitionCollection.Add (CreateClassWithInvalidBidirectionalRelationRightSideClassDefinition ());
 
-      RelationReflector relationReflector = new RelationReflector (propertyInfo);
-      relationReflector.GetMetadata (classDefinitionCollection);
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitionCollection);
+      relationReflector.GetMetadata (_relationDefinitions);
+    }
+
+    private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
+    {
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);
     }
 
     private ReflectionBasedClassDefinition CreateClassWithInvalidBidirectionalRelationLeftSideClassDefinition ()

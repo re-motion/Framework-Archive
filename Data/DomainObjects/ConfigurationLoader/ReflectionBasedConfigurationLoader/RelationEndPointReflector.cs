@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
 
-      Validate();
+      ValidatePropertyInfo();
       ClassDefinition classDefinition;
       try
       {

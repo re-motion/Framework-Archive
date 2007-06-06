@@ -61,18 +61,16 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefiniton;
     }
 
-    public List<RelationDefinition> GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
+    public List<RelationDefinition> GetRelationDefinitions (ClassDefinitionCollection classDefinitions, RelationDefinitionCollection relationDefinitions)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
 
       List<RelationDefinition> relations = new List<RelationDefinition>();
-      foreach (PropertyInfo propertyInfo in GetPropertyInfos())
+      foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos ())
       {
-        if (IsRelationEndPoint (propertyInfo))
-        {
-          RelationReflector relationReflector = new RelationReflector (propertyInfo);
-          relations.Add (relationReflector.GetMetadata (classDefinitions));
-        }
+        RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitions);
+        relations.Add (relationReflector.GetMetadata (relationDefinitions));
       }
 
       return relations;
@@ -176,6 +174,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot());
       return propertyFinder.FindPropertyInfos();
+    }
+
+    private PropertyInfo[] GetRelationPropertyInfos ()
+    {
+      PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot ());
+      return Array.FindAll (propertyFinder.FindPropertyInfos (), delegate (PropertyInfo propertyInfo) { return IsRelationEndPoint (propertyInfo); });
     }
 
     private bool IsInheritenceRoot ()

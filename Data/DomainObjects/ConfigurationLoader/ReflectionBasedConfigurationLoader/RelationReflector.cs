@@ -6,48 +6,63 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="RelationDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
-  public class RelationReflector: RelationReflectorBase
+  public class RelationReflector : RelationReflectorBase
   {
-    public RelationReflector (PropertyInfo propertyInfo)
+    private ClassDefinitionCollection _classDefinitions;
+
+    public RelationReflector (PropertyInfo propertyInfo, ClassDefinitionCollection classDefinitions)
         : base (propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      _classDefinitions = classDefinitions;
     }
 
-    public RelationDefinition GetMetadata (ClassDefinitionCollection classDefinitions)
+    public RelationDefinition GetMetadata (RelationDefinitionCollection relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
 
+      //if (relationDefinitions.Contains (GetRelationID()))
+      //  return (RelationDefinition) relationDefinitions[GetRelationID()];
+
+      RelationDefinition relationDefinition = CreateRelationDefinition ();
+      relationDefinitions.Add (relationDefinition);
+
+      return relationDefinition;
+    }
+
+    private RelationDefinition CreateRelationDefinition ()
+    {
       RelationDefinition relationDefinition = new RelationDefinition (
           GetRelationID(),
-          CreateEndPointDefinition (classDefinitions, PropertyInfo),
-          GetOppositeEndPointDefinition (classDefinitions));
+          CreateEndPointDefinition (PropertyInfo),
+          GetOppositeEndPointDefinition ());
 
       AddRelationDefinitionToClassDefinitions (relationDefinition);
 
       return relationDefinition;
     }
 
-    private string GetRelationID()
+    private string GetRelationID ()
     {
       return ReflectionUtility.GetPropertyName (PropertyInfo);
     }
 
-    private IRelationEndPointDefinition GetOppositeEndPointDefinition (ClassDefinitionCollection classDefinitions)
+    private IRelationEndPointDefinition GetOppositeEndPointDefinition ()
     {
       BidirectionalRelationAttribute attribute = AttributeUtility.GetCustomAttribute<BidirectionalRelationAttribute> (PropertyInfo, true);
       if (attribute == null)
-        return CreateOppositeAnonymousRelationEndPointDefinition (classDefinitions);
+        return CreateOppositeAnonymousRelationEndPointDefinition ();
 
-      return CreateEndPointDefinition (classDefinitions, GetOppositePropertyInfo (attribute));
+      return CreateEndPointDefinition (GetOppositePropertyInfo (attribute));
     }
 
-    private IRelationEndPointDefinition CreateEndPointDefinition (ClassDefinitionCollection classDefinitions, PropertyInfo propertyInfo)
+    private IRelationEndPointDefinition CreateEndPointDefinition (PropertyInfo propertyInfo)
     {
       RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo);
-      return relationEndPointReflector.GetMetadata (classDefinitions);
+      return relationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
-    private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (ClassDefinitionCollection classDefinitions)
+    private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition ()
     {
       if (!typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType))
       {
@@ -57,7 +72,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       try
       {
-        return new AnonymousRelationEndPointDefinition (classDefinitions.GetMandatory (PropertyInfo.PropertyType));
+        return new AnonymousRelationEndPointDefinition (_classDefinitions.GetMandatory (PropertyInfo.PropertyType));
       }
       catch (MappingException e)
       {

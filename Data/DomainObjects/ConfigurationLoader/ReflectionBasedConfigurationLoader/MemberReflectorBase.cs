@@ -49,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       get { return _propertyInfo; }
     }
 
-    protected virtual void Validate()
+    protected virtual void ValidatePropertyInfo()
     {
       CheckStorageClass();
       CheckSupportedPropertyAttributes();

@@ -26,10 +26,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection();
       foreach (ClassReflector classReflector in CreateClassReflectors())
-      {
-        foreach (RelationDefinition relationDefinition in classReflector.GetRelationDefinitions (classDefinitions))
-          relationDefinitions.Add (relationDefinition);
-      }
+        classReflector.GetRelationDefinitions (classDefinitions, relationDefinitions);
 
       return relationDefinitions;
     }

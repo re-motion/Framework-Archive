@@ -21,9 +21,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       _classDefinition = classDefinition;
     }
 
-    public PropertyDefinition GetMetadata()
+    public ReflectionBasedPropertyDefinition GetMetadata ()
     {
-      Validate();
+      ValidatePropertyInfo();
       CheckValidPropertyType();
 
       return new ReflectionBasedPropertyDefinition (

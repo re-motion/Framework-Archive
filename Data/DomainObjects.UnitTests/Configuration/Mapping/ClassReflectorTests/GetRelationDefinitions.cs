@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
@@ -11,6 +12,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
   public class GetRelationDefintions: TestBase
   {
     private RelationDefinitionChecker _relationDefinitionChecker;
+    private RelationDefinitionCollection _relationDefinitions;
     private ClassDefinitionCollection _classDefinitions;
     private ClassDefinition _classWithManySideRelationPropertiesClassDefinition;
     private ClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
@@ -20,6 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       base.SetUp();
 
       _relationDefinitionChecker = new RelationDefinitionChecker();
+      _relationDefinitions = new RelationDefinitionCollection();
       _classWithManySideRelationPropertiesClassDefinition = CreateClassWithManySideRelationPropertiesClassDefinition();
       _classWithOneSideRelationPropertiesClassDefinition = CreateClassWithOneSideRelationPropertiesClassDefinition();
       _classDefinitions = new ClassDefinitionCollection();
@@ -30,15 +33,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     [Test]
     public void GetRelationDefinitions_ForManySide()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
-
-      List<RelationDefinition> actualList = classReflector.GetRelationDefinitions (_classDefinitions);
-      Assert.IsNotNull (actualList);
-
-      RelationDefinitionCollection actualDefinitions = new RelationDefinitionCollection();
-      foreach (RelationDefinition definition in actualList)
-        actualDefinitions.Add (definition);
-
       RelationDefinitionCollection expectedDefinitions = new RelationDefinitionCollection();
       expectedDefinitions.Add (CreateNoAttributeRelationDefinition());
       expectedDefinitions.Add (CreateNotNullableRelationDefinition());
@@ -47,7 +41,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       expectedDefinitions.Add (CreateBidirectionalOneToOneRelationDefinition());
       expectedDefinitions.Add (CreateBidirectionalOneToManyRelationDefinition());
 
-      _relationDefinitionChecker.Check (expectedDefinitions, actualDefinitions);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
+
+      List<RelationDefinition> actualList = classReflector.GetRelationDefinitions (_classDefinitions, _relationDefinitions);
+      
+      _relationDefinitionChecker.Check (expectedDefinitions, _relationDefinitions);
+      Assert.That (actualList, Is.EqualTo (_relationDefinitions));
     }
 
     [Test]
@@ -55,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithOneSideRelationProperties));
 
-      List<RelationDefinition> actual = classReflector.GetRelationDefinitions (_classDefinitions);
+      List<RelationDefinition> actual = classReflector.GetRelationDefinitions (_classDefinitions, _relationDefinitions);
 
       Assert.IsNotNull (actual);
       Assert.AreEqual (0, actual.Count);
@@ -69,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
       try
       {
-        classReflector.GetRelationDefinitions (new ClassDefinitionCollection());
+        classReflector.GetRelationDefinitions (new ClassDefinitionCollection(), _relationDefinitions);
       }
       catch (MappingException e)
       {
@@ -91,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
       try
       {
-        classReflector.GetRelationDefinitions (classDefinitions);
+        classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
       }
       catch (MappingException e)
       {
@@ -113,7 +112,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
       try
       {
-        classReflector.GetRelationDefinitions (classDefinitions);
+        classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
       }
       catch (MappingException e)
       {
