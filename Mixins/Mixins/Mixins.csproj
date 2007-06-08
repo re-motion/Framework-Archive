@@ -49,6 +49,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
+    <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="ContainsMixinInfoAttribute.cs" />
     <Compile Include="Definitions\BaseClassDefinitionCache.cs" />
     <Compile Include="MixinConfiguration.cs" />

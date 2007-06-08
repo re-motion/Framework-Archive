@@ -85,7 +85,7 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void AttributeOnTargetClass ()
+    public void MixinAttributeOnTargetClass ()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
 
@@ -96,30 +96,52 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void MixinAttributeOnMixinClass ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
+      Assert.IsNotNull (classContext);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+    }
+
+    [Test]
     public void ClassContextHasValueEquality ()
     {
       ClassContext cc1 = new ClassContext (typeof (BaseType1));
       cc1.AddMixin (typeof (BT1Mixin1));
+      cc1.AddCompleteInterface (typeof (IBT5MixinC1));
 
       ClassContext cc2 = new ClassContext (typeof (BaseType1));
       cc2.AddMixin (typeof (BT1Mixin1));
+      cc2.AddCompleteInterface (typeof (IBT5MixinC1));
 
       Assert.AreEqual (cc1, cc2);
       Assert.AreEqual (cc1.GetHashCode(), cc2.GetHashCode());
 
       ClassContext cc3 = new ClassContext (typeof (BaseType2));
       cc3.AddMixin (typeof (BT1Mixin1));
+      cc3.AddCompleteInterface (typeof (IBT5MixinC1));
 
       Assert.AreNotEqual (cc1, cc3);
 
       ClassContext cc4 = new ClassContext (typeof (BaseType2));
       cc4.AddMixin (typeof (BT1Mixin1));
+      cc4.AddCompleteInterface (typeof (IBT5MixinC1));
 
       Assert.AreEqual (cc4, cc3);
       Assert.AreEqual (cc4.GetHashCode (), cc3.GetHashCode ());
 
       ClassContext cc5 = new ClassContext (typeof (BaseType2));
-      cc3.AddMixin (typeof (BT1Mixin2));
+      cc5.AddMixin (typeof (BT1Mixin2));
+      cc5.AddCompleteInterface (typeof (IBT5MixinC1));
+
+      Assert.AreNotEqual (cc4, cc5);
+
+      ClassContext cc6 = new ClassContext (typeof (BaseType2));
+      cc5.AddMixin (typeof (BT1Mixin1));
+      cc5.AddCompleteInterface (typeof (IBT5MixinC2));
 
       Assert.AreNotEqual (cc4, cc5);
     }
@@ -129,6 +151,7 @@ namespace Mixins.UnitTests.Configuration
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.AddMixin (typeof (BT1Mixin1));
+      cc.AddCompleteInterface (typeof (IBT5MixinC1));
 
       ClassContext cc2 = Serializer.SerializeAndDeserialize (cc);
       Assert.AreNotSame (cc2, cc);
@@ -146,7 +169,7 @@ namespace Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnAddWhenFrozen()
+    public void ThrowsOnAddWMixinhenFrozen()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.Freeze();
@@ -156,13 +179,34 @@ namespace Mixins.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
-    public void ThrowsOnRemoveWhenFrozen ()
+    public void ThrowsOnRemoveWMixinWhenFrozen ()
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
       cc.RemoveMixin (typeof (BT1Mixin1));
     }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
+    public void ThrowsOnAddCompleteInterfaceWhenFrozen ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      cc.Freeze ();
+      Assert.IsTrue (cc.IsFrozen);
+      cc.AddCompleteInterface (typeof (IBT5MixinC1));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "is frozen", MatchType = MessageMatch.Contains)]
+    public void ThrowsOnRemoveCompleteInterfaceWhenFrozen ()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      cc.Freeze ();
+      Assert.IsTrue (cc.IsFrozen);
+      cc.RemoveCompleteInterface (typeof (IBT5MixinC1));
+    }
+
 
     [Test]
     public void NonchangingMethodsAndFreezeCanBeExecutedWhenFrozen()
@@ -189,6 +233,8 @@ namespace Mixins.UnitTests.Configuration
       ClassContext cc = new ClassContext (typeof (BaseType1));
       cc.AddMixin (typeof (BT1Mixin1));
       cc.AddMixin (typeof (BT1Mixin2));
+      cc.AddCompleteInterface (typeof (IBT5MixinC1));
+      cc.AddCompleteInterface (typeof (IBT5MixinC2));
       cc.Freeze();
       Assert.IsTrue (cc.IsFrozen);
 
@@ -199,8 +245,12 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT1Mixin2)));
+      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC2)));
+
       Assert.AreEqual (cc, cc2);
       Assert.AreEqual (cc.GetHashCode(), cc2.GetHashCode());
+
       Assert.AreEqual (2, cc.MixinCount);
       Assert.IsNotNull (cc2.Mixins);
 
@@ -208,6 +258,15 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreEqual (2, mixinTypes.Count);
       Assert.AreEqual (typeof (BT1Mixin1), mixinTypes[0]);
       Assert.AreEqual (typeof (BT1Mixin2), mixinTypes[1]);
+
+      Assert.AreEqual (2, cc.CompleteInterfaceCount);
+      Assert.IsNotNull (cc2.CompleteInterfaces);
+
+      List<Type> interfaceTypes = new List<Type> (cc2.CompleteInterfaces);
+      Assert.AreEqual (2, interfaceTypes.Count);
+      Assert.AreEqual (typeof (IBT5MixinC1), interfaceTypes[0]);
+      Assert.AreEqual (typeof (IBT5MixinC2), interfaceTypes[1]);
+
       Assert.AreEqual (typeof (BaseType1), cc.Type);
     }
 
@@ -218,6 +277,8 @@ namespace Mixins.UnitTests.Configuration
       cc.AddMixin (typeof (BT1Mixin1));
       cc.AddMixin (typeof (BT1Mixin2));
       Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
+      cc.AddCompleteInterface (typeof (IBT5MixinC1));
+      Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
 
       ClassContext cc2 = cc.Clone();
 
@@ -237,6 +298,17 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (cc2.ContainsMixin (typeof (BT3Mixin1)));
 
       Assert.IsFalse (cc.ContainsMixin (typeof (BT3Mixin1)));
+
+      cc2.RemoveCompleteInterface (typeof (IBT5MixinC2));
+      cc2.RemoveCompleteInterface (typeof (IBT5MixinC1));
+      cc2.AddCompleteInterface (typeof (IBT5MixinC1));
+      cc2.AddCompleteInterface (typeof (IBT5MixinC2));
+
+      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsTrue (cc2.ContainsCompleteInterface (typeof (IBT5MixinC2)));
+
+      Assert.IsTrue (cc.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
     }
 
     [Test]
@@ -252,41 +324,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Implement GetConcreteType")]
-    public void ClassContextGeneratesAndCachesConcreteTypes()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Type t = cc.GetConcreteType();
-      Assert.IsNotNull (t);
-      Assert.IsTrue (typeof (IMixinTarget).IsAssignableFrom (t));
-      Assert.IsTrue (typeof (BaseType1).IsAssignableFrom (t));
-      Type t2 = cc.GetConcreteType ();
-      Assert.AreSame (t, t2);
-    }
-
-    [Test]
-    [Ignore ("TODO: Implement GetConcreteType, TODO: Implement ClassContext caching")]
-    public void ClassContextUsesCacheWhenGeneratingConcreteType ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1));
-      Type t = cc.GetConcreteType ();
-      
-      ClassContext cc2 = new ClassContext (typeof (BaseType1));
-      Assert.AreEqual (cc, cc2);
-      Type t2 = cc.GetConcreteType ();
-
-      Assert.AreSame (t, t2);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ValidationException), ExpectedMessage = "AbstractMethod: There were 1 errors", MatchType = MessageMatch.Contains)]
-    public void ClassContextValidatesDefinitionBeforeBuildingType ()
-    {
-      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (AbstractMixin));
-      cc.GetConcreteType();
-    }
-
-    [Test]
     public void ClassContextWithMixinParameters()
     {
       ClassContext context = new ClassContext (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin2));
@@ -294,6 +331,61 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (context.ContainsMixin (typeof (BT1Mixin2)));
       Assert.IsFalse (context.ContainsMixin (typeof (BT2Mixin1)));
+    }
+
+    [Test]
+    public void CompleteInterfaces()
+    {
+      ClassContext context = new ClassContext (typeof (BaseType5));
+      Assert.AreEqual (0, context.CompleteInterfaceCount);
+      context.AddCompleteInterface (typeof (IBT5MixinC1));
+      Assert.AreEqual (1, context.CompleteInterfaceCount);
+      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
+      Assert.IsTrue (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsTrue (context.RemoveCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.IsFalse (context.ContainsCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.AreEqual (0, context.CompleteInterfaceCount);
+      Assert.IsFalse (context.RemoveCompleteInterface (typeof (IBT5MixinC1)));
+      Assert.AreEqual (0, context.CompleteInterfaceCount);
+    }
+
+    [Test]
+    public void DuplicateCompleteInterfacesAreIgnored ()
+    {
+      ClassContext context = new ClassContext (typeof (BaseType5));
+      Assert.AreEqual (0, context.CompleteInterfaceCount);
+      context.AddCompleteInterface (typeof (IBT5MixinC1));
+      Assert.AreEqual (1, context.CompleteInterfaceCount);
+      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
+      context.AddCompleteInterface (typeof (IBT5MixinC1));
+      Assert.AreEqual (1, context.CompleteInterfaceCount);
+      Assert.Contains (typeof (IBT5MixinC1), new List<Type> (context.CompleteInterfaces));
+    }
+
+    [Test]
+    public void CannotCastCompleteInterfacesToICollection()
+    {
+      ClassContext cc = new ClassContext (typeof (BaseType1));
+      Assert.IsTrue (cc.CompleteInterfaces is IEnumerable<Type>);
+      Assert.IsFalse (cc.CompleteInterfaces is List<Type>);
+      Assert.IsFalse (cc.CompleteInterfaces is IList<Type>);
+      Assert.IsFalse (cc.CompleteInterfaces is ICollection<Type>);
+      Assert.IsFalse (cc.CompleteInterfaces is ICollection);
+      Assert.IsFalse (cc.CompleteInterfaces is IList);
+    }
+
+    [Test]
+    [Ignore ("TODO: Implement analysis for CompleteInterfaceAttribute")]
+    public void CompleteInterfaceConfiguredViaAttribute ()
+    {
+      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType6));
+      Assert.IsNotNull (classContext);
+
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin1)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin2)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin3)));
     }
   }
 }
