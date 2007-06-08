@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Rubicon.Data.DomainObjects;
 
 //
 // General Information about an assembly is controlled through the following 
@@ -61,3 +62,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyKeyFile(@"@keyfile@")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
+
+[assembly: ContainsMapping]
