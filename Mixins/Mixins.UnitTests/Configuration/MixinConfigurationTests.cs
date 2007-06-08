@@ -40,11 +40,14 @@ namespace Mixins.UnitTests.Configurationw
       Assert.IsTrue (MixinConfiguration.HasActiveContext);
     }
 
-    [Test]
+    [Test (Description = "Ensures that the current assembly is scanned for the initial configuration.")]
     public void DefaultContext()
     {
       ApplicationContext context = MixinConfiguration.ActiveContext;
-      Assert.AreEqual (0, context.ClassContextCount);
+      Assert.AreNotEqual (0, context.ClassContextCount);
+      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (context.ContainsClassContext (typeof (BaseType3)));
+      Assert.IsFalse (context.ContainsClassContext (typeof (BaseType4)));
     }
 
     [Test]
@@ -144,6 +147,16 @@ namespace Mixins.UnitTests.Configurationw
         }
       }
       Assert.IsFalse (MixinConfiguration.HasActiveContext);
+    }
+
+    [Test]
+    public void CreateEmptyConfiguration()
+    {
+      Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+      using (MixinConfiguration.CreateEmptyConfiguration ())
+      {
+        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+      }
     }
   }
 }

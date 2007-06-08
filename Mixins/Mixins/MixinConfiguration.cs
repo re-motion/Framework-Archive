@@ -31,6 +31,11 @@ namespace Mixins
       get { return MixinConfiguration.HasActiveContext ? MixinConfiguration.ActiveContext : null; }
     }
 
+    public static MixinConfiguration CreateEmptyConfiguration ()
+    {
+      return new MixinConfiguration (new ApplicationContext (null));
+    }
+
     private ApplicationContext _previousContext = null;
     private bool _disposed;
 

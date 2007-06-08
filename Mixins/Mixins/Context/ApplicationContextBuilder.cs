@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using Mixins;
 using Rubicon.Utilities;
+using Rubicon.Reflection;
 
 namespace Mixins.Context
 {
@@ -78,9 +80,33 @@ namespace Mixins.Context
       }
     }
 
+    /// <summary>
+    /// Builds the default application context by analyzing all currently loaded assemblies and their (directly or indirectly) referenced assemblies
+    /// for mixin configuration information if they are marked with the <see cref="ContainsMixinInfoAttribute"/>.
+    /// </summary>
+    /// <returns>An application context holding the default mixin configuration information for this application.</returns>
+    /// <remarks>This method performs the following steps (see also <see cref="AssemblyFinder"/>):
+    /// <list type="number">
+    /// <item>Retrieve all assemblies loaded into the current <see cref="AppDomain"/>.</item>
+    /// <item>Analyze each of them marked with the <see cref="ContainsMixinInfoAttribute"/> for mixin configuration information.</item>
+    /// <item>Load the referenced assemblies of those assemblies marked with the attribute.</item>
+    /// <item>If the loaded assemblies haven't already been analyzed, treat them according to steps 2-4.</item>
+    /// </list>
+    /// </remarks>
+    /// <seealso cref="AssemblyFinder"/>
     public static ApplicationContext BuildDefault ()
     {
-      return new ApplicationContext();
+      Assembly[] rootAssemblies =
+          Array.FindAll (
+              AppDomain.CurrentDomain.GetAssemblies(), delegate (Assembly a) { return a.IsDefined (typeof (ContainsMixinInfoAttribute), false); });
+
+      Assembly[] assembliesToBeScanned = rootAssemblies;
+      if (rootAssemblies.Length > 0)
+      {
+        AssemblyFinder finder = new AssemblyFinder (typeof (ContainsMixinInfoAttribute), rootAssemblies);
+        assembliesToBeScanned = finder.FindAssemblies();
+      }
+      return BuildFromAssemblies (assembliesToBeScanned);
     }
 
     public static ApplicationContext BuildFromClasses (ApplicationContext parentContext, params ClassContext[] classContexts)

@@ -38,45 +38,39 @@ namespace Samples.UnitTests
     [Test]
     public void DisposeCallsAllCleanupMethods()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
-      {
-        DisposableMixinTests.C c = ObjectFactory.Create<C>().With();
-        Data data = c.Data;
+      DisposableMixinTests.C c = ObjectFactory.Create<C>().With();
+      Data data = c.Data;
 
+      Assert.IsFalse (data.ManagedCalled);
+      Assert.IsFalse (data.UnmanagedCalled);
+      
+      using ((IDisposable)c)
+      {
         Assert.IsFalse (data.ManagedCalled);
         Assert.IsFalse (data.UnmanagedCalled);
-        
-        using ((IDisposable)c)
-        {
-          Assert.IsFalse (data.ManagedCalled);
-          Assert.IsFalse (data.UnmanagedCalled);
-        }
-        Assert.IsTrue (data.ManagedCalled);
-        Assert.IsTrue (data.UnmanagedCalled);
-        GC.KeepAlive (c);
       }
+      Assert.IsTrue (data.ManagedCalled);
+      Assert.IsTrue (data.UnmanagedCalled);
+      GC.KeepAlive (c);
     }
 
     [Test]
     public void GCCallsAllUnmanagedCleanup ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
-      {
-        DisposableMixinTests.C c = ObjectFactory.Create<C> ().With ();
-        Data data = c.Data;
+      DisposableMixinTests.C c = ObjectFactory.Create<C> ().With ();
+      Data data = c.Data;
 
-        Assert.IsFalse (data.ManagedCalled);
-        Assert.IsFalse (data.UnmanagedCalled);
+      Assert.IsFalse (data.ManagedCalled);
+      Assert.IsFalse (data.UnmanagedCalled);
 
-        GC.KeepAlive (c);
-        c = null;
+      GC.KeepAlive (c);
+      c = null;
 
-        GC.Collect (2, GCCollectionMode.Forced);
-        GC.WaitForPendingFinalizers();
+      GC.Collect (2, GCCollectionMode.Forced);
+      GC.WaitForPendingFinalizers();
 
-        Assert.IsFalse (data.ManagedCalled);
-        Assert.IsTrue (data.UnmanagedCalled);
-      }
+      Assert.IsFalse (data.ManagedCalled);
+      Assert.IsTrue (data.UnmanagedCalled);
     }
   }
 }

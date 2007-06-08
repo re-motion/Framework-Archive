@@ -15,34 +15,40 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetActiveConfiguration()
     {
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
-      Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-      Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-      Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
-
-      using (new MixinConfiguration (typeof (BaseType1)))
+      using (MixinConfiguration.CreateEmptyConfiguration())
       {
-        Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
-        Assert.AreSame (BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
-          TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+        Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
         Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
-        Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+        Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
 
-        using (new MixinConfiguration (typeof (BaseType2)))
+        using (new MixinConfiguration (typeof (BaseType1)))
         {
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
-          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
-
-          Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
-          Assert.AreSame (BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
-            TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+          Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+          Assert.AreSame (
+              BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
+              TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
           Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
-          Assert.AreSame (BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType2))),
-            TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+          Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+          Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+
+          using (new MixinConfiguration (typeof (BaseType2)))
+          {
+            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
+            Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
+
+            Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+            Assert.AreSame (
+                BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType1))),
+                TypeFactory.GetActiveConfiguration (typeof (BaseType1)));
+            Assert.IsNotNull (TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+            Assert.AreSame (
+                BaseClassDefinitionCache.Current.GetBaseClassDefinition (new ClassContext (typeof (BaseType2))),
+                TypeFactory.GetActiveConfiguration (typeof (BaseType2)));
+          }
         }
       }
     }

@@ -74,7 +74,7 @@ namespace Mixins.UnitTests.Configuration
     {
       ApplicationContext ac = ApplicationContextBuilder.BuildDefault();
       Assert.IsNotNull (ac);
-      Assert.AreEqual (0, ac.ClassContextCount);
+      Assert.AreNotEqual (0, ac.ClassContextCount);
     }
   }
 }
