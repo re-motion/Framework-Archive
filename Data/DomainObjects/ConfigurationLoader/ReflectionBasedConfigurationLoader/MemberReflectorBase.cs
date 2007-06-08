@@ -123,11 +123,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return ReflectionUtility.GetPropertyName (PropertyInfo);
     }
 
-    protected bool IsRelationProperty()
-    {
-      return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType));
-    }
-
     protected bool IsNullableFromAttribute ()
     {
       INullablePropertyAttribute attribute = AttributeUtility.GetCustomAttribute<INullablePropertyAttribute> (PropertyInfo, true);

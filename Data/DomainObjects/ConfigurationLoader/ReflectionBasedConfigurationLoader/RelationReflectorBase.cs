@@ -7,24 +7,40 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Base class for reflecting on the relations of a class.</summary>
   public abstract class RelationReflectorBase: MemberReflectorBase
   {
-    protected RelationReflectorBase (PropertyInfo propertyInfo)
+    private readonly BidirectionalRelationAttribute _bidirectionalRelationAttribute;
+
+    protected RelationReflectorBase (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
         : base(propertyInfo)
     {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
+          "bidirectionalRelationAttributeType", bidirectionalRelationAttributeType, typeof (BidirectionalRelationAttribute));
+
+      _bidirectionalRelationAttribute = 
+          (BidirectionalRelationAttribute) AttributeUtility.GetCustomAttribute(PropertyInfo, bidirectionalRelationAttributeType, true);
     }
 
-    protected PropertyInfo GetOppositePropertyInfo (BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    public BidirectionalRelationAttribute BidirectionalRelationAttribute
     {
-      ArgumentUtility.CheckNotNull ("bidirectionalRelationAttribute", bidirectionalRelationAttribute);
+      get { return _bidirectionalRelationAttribute; }
+    }
 
-      PropertyInfo oppositePropertyInfo = PropertyInfo.PropertyType.GetProperty (
-          bidirectionalRelationAttribute.OppositeProperty,
+    protected bool IsBidirectionalRelation
+    {
+      get { return _bidirectionalRelationAttribute != null; }
+    }
+
+    protected PropertyInfo GetOppositePropertyInfo ()
+    {
+      Type domainObjectType = GetDomainObjectTypeFromRelationProperty (PropertyInfo);
+      PropertyInfo oppositePropertyInfo = domainObjectType.GetProperty (
+          BidirectionalRelationAttribute.OppositeProperty,
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-      ValidateOppositePropertyInfo (bidirectionalRelationAttribute, oppositePropertyInfo);
+      ValidateOppositePropertyInfo (oppositePropertyInfo);
       return oppositePropertyInfo;
     }
 
-    private void ValidateOppositePropertyInfo (BidirectionalRelationAttribute bidirectionalRelationAttribute, PropertyInfo oppositePropertyInfo)
+    private void ValidateOppositePropertyInfo (PropertyInfo oppositePropertyInfo)
     {
       if (oppositePropertyInfo == null)
       {
@@ -32,25 +48,40 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
             null,
             PropertyInfo,
             "Opposite relation property '{0}' could not be found on type '{1}'.",
-            bidirectionalRelationAttribute.OppositeProperty,
-            PropertyInfo.PropertyType);
+            BidirectionalRelationAttribute.OppositeProperty,
+            GetDomainObjectTypeFromRelationProperty (PropertyInfo));
       }
 
-      Type oppositePropertyType;
-      if (ReflectionUtility.IsObjectList (oppositePropertyInfo.PropertyType))
-        oppositePropertyType = ReflectionUtility.GetObjectListTypeParameter (oppositePropertyInfo.PropertyType);
-      else
-        oppositePropertyType = oppositePropertyInfo.PropertyType;
-
-      if (PropertyInfo.DeclaringType != oppositePropertyType)
+      if (PropertyInfo.DeclaringType != GetDomainObjectTypeFromRelationProperty (oppositePropertyInfo))
       {
         throw CreateMappingException (
             null,
             PropertyInfo,
             "The declaring type does not match the type of the opposite relation propery '{0}' declared on type '{1}'.",
-            bidirectionalRelationAttribute.OppositeProperty,
+            BidirectionalRelationAttribute.OppositeProperty,
             oppositePropertyInfo.DeclaringType);
       }
+
+      BidirectionalRelationAttribute oppositeBidirectionalRelationAttribute = (BidirectionalRelationAttribute) AttributeUtility.GetCustomAttribute (
+          oppositePropertyInfo, _bidirectionalRelationAttribute.GetType (), true);
+      if (oppositeBidirectionalRelationAttribute == null)
+      {
+        throw CreateMappingException (
+          null,
+          PropertyInfo,
+          "Opposite relation property '{0}' declared on type '{1}' does not define a matching '{2}'.",
+          BidirectionalRelationAttribute.OppositeProperty,
+          oppositePropertyInfo.DeclaringType,
+          _bidirectionalRelationAttribute.GetType());
+      }
+    }
+
+    private Type GetDomainObjectTypeFromRelationProperty (PropertyInfo propertyInfo)
+    {
+      if (ReflectionUtility.IsObjectList (propertyInfo.PropertyType))
+        return ReflectionUtility.GetObjectListTypeParameter (propertyInfo.PropertyType);
+      else
+        return propertyInfo.PropertyType;
     }
   }
 }

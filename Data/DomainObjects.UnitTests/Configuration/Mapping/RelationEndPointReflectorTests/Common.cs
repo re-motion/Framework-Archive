@@ -28,6 +28,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     }
 
     [Test]
+    public void IsVirtualEndRelationEndpoint_WithoutAttribute ()
+    {
+      PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("NoAttribute");
+      RelationEndPointReflector relationEndPointReflector = new RelationEndPointReflector (propertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_WithCollectionPropertyAndWithoutAttribute ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+        "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation", true, false);
+
+      PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
+      RelationEndPointReflector relationEndPointReflector = new RelationEndPointReflector (propertyInfo);
+
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+    }
+
+    [Test]
     [ExpectedException (typeof (MappingException),
         ExpectedMessage = "The Rubicon.Data.DomainObjects.MandatoryAttribute may be only applied to properties assignable to types "
         + "Rubicon.Data.DomainObjects.DomainObject or Rubicon.Data.DomainObjects.DomainObjectCollection.\r\n"

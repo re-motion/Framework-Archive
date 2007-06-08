@@ -4,6 +4,7 @@ using System.Reflection;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -14,24 +15,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// The <see cref="ClassReflector"/> is used to build a <see cref="ReflectionBasedClassDefinition"/> and the <see cref="RelationDefinition"/> 
   /// objects for a type.
   /// </summary>
+  /// <remarks>Derived classes must have a cosntructor with a matching the <see cref="ClassReflector"/>'s constructor signature. </remarks>
   public class ClassReflector
   {
     public static ClassReflector CreateClassReflector (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      return CreateClassReflector (type, typeof (RdbmsClassReflector));
-    }
-
-    //TODO: Replace Hack with factory implementation
-    private static ClassReflector CreateClassReflector (Type type, Type classReflectorType)
-    {
-      if (classReflectorType == typeof (RdbmsClassReflector))
-        return new RdbmsClassReflector (type);
-      else if (classReflectorType == typeof (ClassReflector))
-        return new ClassReflector (type);
-
-      throw new ArgumentException (string.Format ("ClassReflector of Type '{0}' is not supported.", classReflectorType));
+      return new RdbmsClassReflector (type);
     }
 
     private Type _type;
@@ -69,8 +58,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       List<RelationDefinition> relations = new List<RelationDefinition>();
       foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos ())
       {
-        RelationReflector relationReflector = new RelationReflector (propertyInfo, classDefinitions);
-        relations.Add (relationReflector.GetMetadata (relationDefinitions));
+        RelationReflector relationReflector = RelationReflector.CreateRelationReflector (propertyInfo, classDefinitions);
+        RelationDefinition relationDefinition = relationReflector.GetMetadata (relationDefinitions);
+        if (relationDefinition != null)
+          relations.Add (relationDefinition);
       }
 
       return relations;
@@ -130,7 +121,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return _type.Name;
     }
 
-    public virtual string GetStorageSpecificIdentifier ()
+    protected virtual string GetStorageSpecificIdentifier ()
     {
       IStorageSpecificIdentifierAttribute attribute = AttributeUtility.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (_type, false);
       if (attribute != null && !string.IsNullOrEmpty (attribute.Identifier))
@@ -166,7 +157,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (IsInheritenceRoot())
         return null;
 
-      ClassReflector classReflector = CreateClassReflector (_type.BaseType, GetType ());
+      ClassReflector classReflector = (ClassReflector) TypesafeActivator.CreateInstance (GetType ()).With (_type.BaseType);
       return classReflector.GetClassDefinition (classDefinitions);
     }
 
@@ -178,8 +169,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private PropertyInfo[] GetRelationPropertyInfos ()
     {
-      PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot ());
-      return Array.FindAll (propertyFinder.FindPropertyInfos (), delegate (PropertyInfo propertyInfo) { return IsRelationEndPoint (propertyInfo); });
+      RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot ());
+      return relationPropertyFinder.FindPropertyInfos ();
     }
 
     private bool IsInheritenceRoot ()
@@ -188,11 +179,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return true;
 
       return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);
-    }
-
-    private bool IsRelationEndPoint (PropertyInfo propertyInfo)
-    {
-      return typeof (DomainObject).IsAssignableFrom (propertyInfo.PropertyType);
     }
   }
 }

@@ -1,5 +1,4 @@
 using System;
-using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample
 {
@@ -12,10 +11,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    [BidirectionalRelation ("NoAttribute")]
+    [DBBidirectionalRelation ("NoAttribute")]
     public abstract ObjectList<ClassWithManySideRelationProperties> NoAttribute { get; set; }
 
-    [BidirectionalRelation ("NotNullable")]
+    [DBBidirectionalRelation ("NotNullable")]
     [Mandatory]
     public abstract ObjectList<ClassWithManySideRelationProperties> NotNullable { get; set; }
 

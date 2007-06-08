@@ -33,8 +33,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
 
     public abstract ClassWithOneSideRelationProperties UnidirectionalOneToOne { get; set; }
 
-    public abstract ObjectList<ClassWithOneSideRelationProperties> UnidirectionalOneToMany { get; }
-
     private string PrivateString
     {
       get

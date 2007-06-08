@@ -15,7 +15,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     }
 
     public RelationEndPointReflector (PropertyInfo propertyInfo)
-        : base (propertyInfo)
+        : this (propertyInfo, typeof (BidirectionalRelationAttribute))
+    {
+    }
+
+    protected RelationEndPointReflector (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
+        : base (propertyInfo, bidirectionalRelationAttributeType)
     {
     }
 
@@ -42,6 +47,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public virtual bool IsVirtualEndRelationEndpoint()
     {
+      if (!IsBidirectionalRelation)
+        return false;
       return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType);
     }
 

@@ -70,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return PropertyInfo.Name;
     }
 
-    protected bool? IsNullable()
+    private bool? IsNullable()
     {
       if (PropertyInfo.PropertyType.IsValueType)
         return null;
@@ -87,6 +87,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (attribute != null)
         return attribute.MaximumLength;
       return null;
+    }
+
+    private bool IsRelationProperty ()
+    {
+      return (typeof (DomainObject).IsAssignableFrom (PropertyInfo.PropertyType));
     }
   }
 }

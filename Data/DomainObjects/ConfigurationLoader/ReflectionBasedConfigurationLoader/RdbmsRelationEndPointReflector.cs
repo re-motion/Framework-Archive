@@ -1,24 +1,33 @@
 using System;
 using System.Reflection;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   //TODO: Validate SortExpression on wrong side of BidirectionalRelation
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/> for types persisted in an <b>RDBMS</b>.</summary>
-  public class RdbmsRelationEndPointReflector: RelationEndPointReflector
+  public class RdbmsRelationEndPointReflector : RelationEndPointReflector
   {
-    private readonly DBBidirectionalRelationAttribute _bidirectionalRelationAttribute;
-
     public RdbmsRelationEndPointReflector (PropertyInfo propertyInfo)
-        : base (propertyInfo)
+        : this (propertyInfo, typeof (DBBidirectionalRelationAttribute))
     {
-      _bidirectionalRelationAttribute = AttributeUtility.GetCustomAttribute<DBBidirectionalRelationAttribute> (PropertyInfo, true);
     }
 
-    public override bool IsVirtualEndRelationEndpoint()
+    protected RdbmsRelationEndPointReflector (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
+        : base (
+            propertyInfo,
+            ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
+                "bidirectionalRelationAttributeType", bidirectionalRelationAttributeType, typeof (DBBidirectionalRelationAttribute)))
+    {
+    }
+
+    public DBBidirectionalRelationAttribute DBBidirectionalRelationAttribute
+    {
+      get { return (DBBidirectionalRelationAttribute) BidirectionalRelationAttribute; }
+    }
+
+    public override bool IsVirtualEndRelationEndpoint ()
     {
       if (base.IsVirtualEndRelationEndpoint())
         return true;
@@ -26,28 +35,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return !ContainsKey();
     }
 
-    private bool ContainsKey()
+    private bool ContainsKey ()
     {
-      if (_bidirectionalRelationAttribute == null)
+      if (!IsBidirectionalRelation)
         return true;
 
-      if (_bidirectionalRelationAttribute.ContainsForeignKey)
-          return true;
+      if (DBBidirectionalRelationAttribute.ContainsForeignKey)
+        return true;
 
-      return IsCollectionProperyOnOppositeSide (_bidirectionalRelationAttribute);
+      return IsCollectionProperyOnOppositeSide();
     }
 
-    private bool IsCollectionProperyOnOppositeSide (BidirectionalRelationAttribute bidirectionalRelationAttribute)
+    private bool IsCollectionProperyOnOppositeSide ()
     {
-      return ReflectionUtility.IsObjectList (GetOppositePropertyInfo (bidirectionalRelationAttribute).PropertyType);
+      return ReflectionUtility.IsObjectList (GetOppositePropertyInfo().PropertyType);
     }
 
     protected override string GetSortExpression ()
     {
-      if (_bidirectionalRelationAttribute == null)
+      if (!IsBidirectionalRelation)
         return null;
 
-      return _bidirectionalRelationAttribute.SortExpression;
+      return DBBidirectionalRelationAttribute.SortExpression;
     }
   }
 }
