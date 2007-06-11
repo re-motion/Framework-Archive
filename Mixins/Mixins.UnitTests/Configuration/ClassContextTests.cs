@@ -375,7 +375,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: Implement analysis for CompleteInterfaceAttribute")]
     public void CompleteInterfaceConfiguredViaAttribute ()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
@@ -383,9 +382,9 @@ namespace Mixins.UnitTests.Configuration
       ClassContext classContext = context.GetClassContext (typeof (BaseType6));
       Assert.IsNotNull (classContext);
 
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin1)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin2)));
-      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (IBT6Mixin3)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin1)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin2)));
+      Assert.IsTrue (classContext.ContainsCompleteInterface (typeof (ICBT6Mixin3)));
     }
   }
 }

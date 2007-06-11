@@ -55,29 +55,27 @@ namespace Mixins.Context
           AnalyzeMixin (t, targetContext);
         if (t.IsDefined (typeof (UsesAttribute), true))
           AnalyzeMixinApplications (t, targetContext);
+        if (t.IsDefined (typeof (CompleteInterfaceAttribute), false))
+          AnalyzeCompleteInterface (t, targetContext);
       }
     }
 
     private static void AnalyzeMixin (Type mixinType, ApplicationContext targetContext)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
-
       foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes (typeof (ExtendsAttribute), false))
-      {
         targetContext.GetOrAddClassContext (mixinAttribute.TargetType).AddMixin (mixinType);
-      }
     }
 
     private static void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
-
       foreach (UsesAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
-      {
         targetContext.GetOrAddClassContext (targetType).AddMixin (applyMixinAttribute.MixinType);
-      }
+    }
+
+    private static void AnalyzeCompleteInterface (Type completeInterfaceType, ApplicationContext targetContext)
+    {
+      foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
+        targetContext.GetOrAddClassContext (ifaceAttribute.TargetType).AddCompleteInterface (completeInterfaceType);
     }
 
     /// <summary>

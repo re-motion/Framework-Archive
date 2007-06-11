@@ -126,7 +126,6 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Make caching of configurations by context work correctly")]
     public void GeneratedTypeCorrectlySerializesThisBaseAndConfiguration()
     {
       ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
@@ -144,8 +143,6 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (targetInstanceA, MixinReflector.GetTargetProperty (mixinA.GetType ()).GetValue (mixinA, null));
       Assert.AreEqual (MixinReflector.GetBaseCallProxyType (targetInstanceA),
           MixinReflector.GetBaseProperty (mixinA.GetType ()).GetValue (mixinA, null).GetType ());
-      Assert.AreEqual (((IMixinTarget) targetInstanceA).Configuration.Mixins[typeof (AbstractMixin)],
-          MixinReflector.GetConfigurationProperty (mixinA.GetType ()).GetValue (mixinA, null));
     }
 
     [Serializable]
