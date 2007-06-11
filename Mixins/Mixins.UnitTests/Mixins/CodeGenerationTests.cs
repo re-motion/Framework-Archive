@@ -135,8 +135,17 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void ConstructorsAreReplicated4 ()
     {
-      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors> ().With ("a");
+      ClassWithCtors c = ObjectFactory.Create<ClassWithCtors>().With ("a");
       Assert.AreEqual ("a", c.O);
+    }
+
+    [Test]
+    public void ConstructorsAreReplicated5 ()
+    {
+      NullMixin nullMixin = new NullMixin();
+      ClassWithCtors c = ObjectFactory.CreateWithMixinInstances <ClassWithCtors> (nullMixin).With ("a");
+      Assert.AreEqual ("a", c.O);
+      Assert.AreSame (nullMixin, Mixin.Get<NullMixin> (c));
     }
 
     [Test]
