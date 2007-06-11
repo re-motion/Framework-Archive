@@ -25,5 +25,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.
   
     [DBBidirectionalRelation ("Invalid")]
     public abstract ClassWithInvalidBidirectionalRelationLeftSide InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyRightSide { get; set; }
+
+    [DBBidirectionalRelation ("CollectionPropertyContainsKeyLeftSide")]
+    public abstract ClassWithInvalidBidirectionalRelationLeftSide CollectionPropertyContainsKeyRightSide { get; set; }
+
+    [DBBidirectionalRelation ("NonCollectionPropertyHavingASortExpressionLeftSide")]
+    public abstract ObjectList<ClassWithInvalidBidirectionalRelationLeftSide> NonCollectionPropertyHavingASortExpressionRightSide { get; set; }
   }
 }

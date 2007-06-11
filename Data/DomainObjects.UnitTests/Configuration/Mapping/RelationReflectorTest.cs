@@ -278,13 +278,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       relationReflector.GetMetadata (_relationDefinitions);
     }
 
-    [Test][Ignore("TODO: continue implementation.")]
+    [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        //"Opposite relation property 'Invalid' could not be found on type "
-        //+ "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide'.\r\n"
-        //+ 
-      "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
-        + "property: InvalidOppositePropertyNameLeftSide")]
+        "Opposite relation property 'InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyRightSide' declared on type declared on type "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationRightSide' "
+        + "defines a 'Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute' whose opposite property does not match.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyLeftSide")]
     public void GetMetadata_WithInvalidPropertyNameInBidirectionalRelationAttributeOnOppositeProperty ()
     {
       Type type = GetClassWithInvalidBidirectionalRelationLeftSide ();

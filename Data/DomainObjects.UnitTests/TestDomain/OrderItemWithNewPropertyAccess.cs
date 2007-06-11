@@ -29,7 +29,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer["Product"] = value; }
     }
 
-    [AutomaticProperty]
     [DBBidirectionalRelation ("OrderItems")]
     public abstract OrderWithNewPropertyAccess Order { get; set; }
 

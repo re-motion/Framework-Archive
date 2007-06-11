@@ -3,6 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
@@ -109,6 +110,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
       Assert.IsTrue (relationEndPointReflector.IsVirtualEndRelationEndpoint());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Only relation end points with a property type of 'Rubicon.Data.DomainObjects.DomainObject' can contain the foreign key.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: CollectionPropertyContainsKeyLeftSide")]
+    public void GetMetadata_WithCollectionPropertyContainingTheKey ()
+    {
+      Type type = GetClassWithInvalidBidirectionalRelationLeftSide ();
+      PropertyInfo propertyInfo = type.GetProperty ("CollectionPropertyContainsKeyLeftSide");
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+
+      relationEndPointReflector.GetMetadata (_classDefinitions);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Only relation end points with a property type of 'Rubicon.Data.DomainObjects.ObjectList`1[T]' can have a sort expression.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: NonCollectionPropertyHavingASortExpressionLeftSide")]
+    public void GetMetadata_WithNonCollectionPropertyHavingASortExpression ()
+    {
+      Type type = GetClassWithInvalidBidirectionalRelationLeftSide();
+      PropertyInfo propertyInfo = type.GetProperty ("NonCollectionPropertyHavingASortExpressionLeftSide");
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+
+      relationEndPointReflector.GetMetadata (_classDefinitions);
+    }
+
+    private Type GetClassWithInvalidBidirectionalRelationLeftSide ()
+    {
+      return TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide", true, false);
     }
   }
 }

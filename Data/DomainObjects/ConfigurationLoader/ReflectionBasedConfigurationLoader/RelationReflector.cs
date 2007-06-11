@@ -58,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void ValidateVirtualEndPointPropertyInfo ()
     {
-      PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo(); 
+      GetOppositePropertyInfo(); 
     }
 
     protected override void ValidatePropertyInfo ()

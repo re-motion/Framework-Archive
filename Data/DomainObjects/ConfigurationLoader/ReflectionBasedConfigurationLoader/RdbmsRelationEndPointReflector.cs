@@ -5,7 +5,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  //TODO: Validate SortExpression on wrong side of BidirectionalRelation
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/> for types persisted in an <b>RDBMS</b>.</summary>
   public class RdbmsRelationEndPointReflector : RelationEndPointReflector
   {
@@ -35,6 +34,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return !ContainsKey();
     }
 
+    protected override void ValidatePropertyInfo ()
+    {
+      base.ValidatePropertyInfo ();
+
+      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) && ContainsKey())
+      {
+        throw CreateMappingException (
+            null,
+            PropertyInfo,
+            "Only relation end points with a property type of '{0}' can contain the foreign key.",
+            typeof (DomainObject));
+      }
+
+      if (!ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) && !string.IsNullOrEmpty (GetSortExpression()))
+      {
+        throw CreateMappingException (
+            null,
+            PropertyInfo,
+            "Only relation end points with a property type of '{0}' can have a sort expression.",
+            typeof (ObjectList<>));
+      }
+    }
     private bool ContainsKey ()
     {
       if (!IsBidirectionalRelation)
@@ -43,11 +64,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (DBBidirectionalRelationAttribute.ContainsForeignKey)
         return true;
 
-      return IsCollectionProperyOnOppositeSide();
-    }
-
-    private bool IsCollectionProperyOnOppositeSide ()
-    {
       return ReflectionUtility.IsObjectList (GetOppositePropertyInfo().PropertyType);
     }
 

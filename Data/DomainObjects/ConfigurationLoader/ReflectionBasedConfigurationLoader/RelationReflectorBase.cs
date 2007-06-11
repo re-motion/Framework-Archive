@@ -74,6 +74,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           oppositePropertyInfo.DeclaringType,
           _bidirectionalRelationAttribute.GetType());
       }
+
+      if (!PropertyInfo.Name.Equals (oppositeBidirectionalRelationAttribute.OppositeProperty, StringComparison.Ordinal))
+      {
+         throw CreateMappingException (
+          null,
+          PropertyInfo,
+          "Opposite relation property '{0}' declared on type declared on type '{1}' defines a '{2}' whose opposite property does not match.",
+          BidirectionalRelationAttribute.OppositeProperty,
+          oppositePropertyInfo.DeclaringType,
+          _bidirectionalRelationAttribute.GetType());
+     }
     }
 
     private Type GetDomainObjectTypeFromRelationProperty (PropertyInfo propertyInfo)

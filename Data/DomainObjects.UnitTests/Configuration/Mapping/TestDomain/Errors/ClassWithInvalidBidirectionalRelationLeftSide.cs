@@ -24,10 +24,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.
     public abstract ClassWithInvalidBidirectionalRelationRightSide MissingBidirectionalRelationAttributeLeftSide { get; set; }
 
     [DBBidirectionalRelation ("MissingBidirectionalRelationAttributeForCollectionPropertyRightSide")]
-    public abstract ObjectList<ClassWithInvalidBidirectionalRelationRightSide> MissingBidirectionalRelationAttributeForCollectionPropertyLeftSide { get; set; }
+    public abstract ObjectList<ClassWithInvalidBidirectionalRelationRightSide> MissingBidirectionalRelationAttributeForCollectionPropertyLeftSide { get; }
 
     [DBBidirectionalRelation ("InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyRightSide")]
     public abstract ClassWithInvalidBidirectionalRelationRightSide InvalidPropertyNameInBidirectionalRelationAttributeOnOppositePropertyLeftSide { get; set; }
-  
+
+    [DBBidirectionalRelation ("CollectionPropertyContainsKeyRightSide", ContainsForeignKey = true)]
+    public abstract ObjectList<ClassWithInvalidBidirectionalRelationRightSide> CollectionPropertyContainsKeyLeftSide { get; }
+
+    [DBBidirectionalRelation ("NonCollectionPropertyHavingASortExpressionRightSide", SortExpression = "Sort Expression")]
+    public abstract ClassWithInvalidBidirectionalRelationRightSide NonCollectionPropertyHavingASortExpressionLeftSide { get; }
   }
 }

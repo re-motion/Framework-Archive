@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         where TAttribute: Attribute
     {
       return new AttributeConstraint (
-          string.Format ("The {0} may be only applied to properties of type {1}.", typeof (TAttribute).FullName, typeof (TProperty).FullName),
+          string.Format ("The '{0}' may be only applied to properties of type '{1}'.", typeof (TAttribute).FullName, typeof (TProperty).FullName),
           typeof (TProperty));
     }
 
@@ -77,12 +77,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       return new AttributeConstraint (
           string.Format (
-              "The {0} may be only applied to properties assignable to types {1} or {2}.",
-              typeof (TAttribute).FullName,
-              typeof (DomainObject).FullName,
-              typeof (DomainObjectCollection).FullName),
+              "The '{0}' may be only applied to properties assignable to types '{1}' or '{2}'.",
+              typeof (TAttribute),
+              typeof (DomainObject),
+              typeof (ObjectList<>)),
           typeof (DomainObject),
-          typeof (DomainObjectCollection));
+          typeof (ObjectList<>));
     }
 
     protected Dictionary<Type, AttributeConstraint> AttributeConstraints
@@ -112,10 +112,17 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         AttributeConstraint constraint;
         if (AttributeConstraints.TryGetValue (attribute.GetType(), out constraint))
         {
-          if (!Array.Exists (constraint.PropertyTypes, delegate (Type type) { return type.IsAssignableFrom (PropertyInfo.PropertyType); }))
+          if (!Array.Exists (constraint.PropertyTypes, IsPropertyTypeSupported))
             throw CreateMappingException (null, PropertyInfo, constraint.Message);
         }
       }
+    }
+
+    private bool IsPropertyTypeSupported (Type type)
+    {
+      if (type == typeof (ObjectList<>))
+        return ReflectionUtility.IsObjectList (PropertyInfo.PropertyType);
+      return type.IsAssignableFrom (PropertyInfo.PropertyType);
     }
 
     protected virtual string GetPropertyName ()

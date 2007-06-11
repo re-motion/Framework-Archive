@@ -116,7 +116,6 @@
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
     <Compile Include="InstantiableAttribute.cs" />
-    <Compile Include="AutomaticPropertyAttribute.cs" />
     <Compile Include="ConfigurationLoader\IMappingLoader.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\IMappingAttribute.cs" />
     <Compile Include="ConfigurationLoader\ReflectionBasedConfigurationLoader\RdbmsClassReflector.cs" />

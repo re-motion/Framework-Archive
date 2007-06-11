@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
-  //TODO: Validate Property Type Assignable to DomainObject or DomainObjectCollection
   public class RelationEndPointReflector: RelationReflectorBase
   {
     public static RelationEndPointReflector CreateRelationEndPointReflector (PropertyInfo propertyInfo)
