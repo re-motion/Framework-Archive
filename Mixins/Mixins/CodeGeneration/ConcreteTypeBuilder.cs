@@ -42,7 +42,6 @@ namespace Mixins.CodeGeneration
       });
     }
 
-    // TODO: Add type caching to this class
     public Type GetConcreteMixinType (MixinDefinition configuration)
     {
       ArgumentUtility.CheckNotNull ("configuration", configuration);

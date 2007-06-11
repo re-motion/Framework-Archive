@@ -138,7 +138,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
 
         try
         {
-          initializationMethod.Invoke (mixinInstance, argumentValues); // TODO: perhaps cache this
+          initializationMethod.Invoke (mixinInstance, argumentValues);
         }
         catch (TargetInvocationException ex)
         {
