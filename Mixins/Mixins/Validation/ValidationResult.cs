@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Text;
 using Mixins.Definitions;
 using Rubicon.Utilities;
+using Rubicon.Text;
 
 namespace Mixins.Validation
 {
@@ -22,6 +24,18 @@ namespace Mixins.Validation
       Warnings = new List<ValidationResultItem> ();
       Failures = new List<ValidationResultItem> ();
       Exceptions = new List<ValidationExceptionResultItem> ();
+    }
+
+    public string GetParentDefinitionString()
+    {
+      SeparatedStringBuilder sb = new SeparatedStringBuilder(" -> ");
+      IVisitableDefinition parent = Definition.Parent;
+      while (parent != null)
+      {
+        sb.Append (parent.FullName);
+        parent = parent.Parent;
+      }
+      return sb.ToString();
     }
 
     public int TotalRulesExecuted

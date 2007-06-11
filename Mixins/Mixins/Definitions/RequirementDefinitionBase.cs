@@ -59,9 +59,7 @@ namespace Mixins.Definitions
     {
       Set<MixinDefinition> mixins = new Set<MixinDefinition>();
       foreach (TDependency dependency in RequiringDependencies)
-      {
         mixins.Add (dependency.Depender);
-      }
       return mixins;
     }
   }

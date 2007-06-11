@@ -43,6 +43,19 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FaceInterfacesAddedViaContext ()
+    {
+      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      {
+        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType6));
+
+        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
+      }
+    }
+
+    [Test]
     public void BaseInterfaces ()
     {
       using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))

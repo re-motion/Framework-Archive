@@ -15,7 +15,7 @@ namespace Mixins.Validation.Rules
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMethodMustNotBeFinal));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractMethodMustBeOverridden));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (NoCircularOverrides));
-      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverriddenMixinMustHaveThisProperty));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase));
     }
 
     private void OverriddenMethodMustBeVirtual (DelegateValidationRule<MethodDefinition>.Args args)
@@ -42,10 +42,10 @@ namespace Mixins.Validation.Rules
       SingleMust (method != originalMethod, args.Log, args.Self);
     }
 
-    private void OverriddenMixinMustHaveThisProperty (DelegateValidationRule<MethodDefinition>.Args args)
+    private void OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase (DelegateValidationRule<MethodDefinition>.Args args)
     {
-      SingleMust (args.Definition.Base == null || !(args.Definition.Base.DeclaringClass is MixinDefinition)
-          || MixinReflector.GetTargetProperty (args.Definition.Base.DeclaringClass.Type) != null, args.Log, args.Self);
+      SingleMust (!(args.Definition.DeclaringClass is MixinDefinition) || args.Definition.Overrides.Count == 0
+          || MixinReflector.GetMixinBaseType (args.Definition.DeclaringClass.Type) != null, args.Log, args.Self);
     }
   }
 }

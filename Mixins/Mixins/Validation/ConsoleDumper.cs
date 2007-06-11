@@ -24,7 +24,7 @@ namespace Mixins.Validation
         {
           Console.ForegroundColor = ConsoleColor.Gray;
           Console.WriteLine ("{0} '{1}', {2} rules executed", result.Definition.GetType().Name, result.Definition.FullName, result.TotalRulesExecuted);
-          DumpHierarchy (result.Definition);
+          DumpHierarchy (result);
         }
         DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
         // DumpResultList ("successes", result.Successes, ConsoleColor.Green, ConsoleColor.Black);
@@ -34,18 +34,11 @@ namespace Mixins.Validation
       }
     }
 
-    private static void DumpHierarchy (IVisitableDefinition definition)
+    private static void DumpHierarchy (ValidationResult result)
     {
-      IVisitableDefinition parent = definition.Parent;
-      while (parent != null)
-      {
-        Console.Write (" -> {0}", parent.FullName);
-        parent = parent.Parent;
-      }
-      if (definition.Parent != null)
-      {
-        Console.WriteLine();
-      }
+      string hierarchyString = result.GetParentDefinitionString();
+      if (hierarchyString.Length > 0)
+        Console.WriteLine (hierarchyString);
     }
 
     private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor backColor) where T : IDefaultValidationResultItem

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Mixins.Definitions;
 using Mixins.Utilities.Singleton;
 using Rubicon.Utilities;
+using Mixins.Validation;
 
 namespace Mixins.Context
 {
@@ -127,6 +129,21 @@ namespace Mixins.Context
 
       RemoveClassContext (newContext.Type);
       AddClassContext (newContext);
+    }
+
+    /// <summary>
+    /// Validates the whole application context.
+    /// </summary>
+    /// <returns>An <see cref="IValidationLog"/>, which contains information about whether the configuration reresented by this context is valid.</returns>
+    /// <remarks>This method retrieves definition items for all the <see cref="ClassContexts"/> known by this application context and uses the
+    /// <see cref="Validator"/> class to validate them. The validation results can be inspected, passed to a <see cref="ValidationException"/>, or
+    /// be dumped using the <see cref="ConsoleDumper"/>.</remarks>
+    public IValidationLog Validate()
+    {
+      List<IVisitableDefinition> definitions = new List<IVisitableDefinition>();
+      foreach (ClassContext classContext in MixinConfiguration.ActiveContext.ClassContexts)
+        definitions.Add (TypeFactory.GetActiveConfiguration (classContext.Type));
+      return Validator.Validate (definitions);
     }
   }
 }

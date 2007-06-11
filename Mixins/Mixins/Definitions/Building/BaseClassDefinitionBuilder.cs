@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Mixins.Context;
 using System.Reflection;
-using Rubicon;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
@@ -32,14 +31,43 @@ namespace Mixins.Definitions.Building
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (classDefinition);
       attributesBuilder.Apply (CustomAttributeData.GetCustomAttributes (classDefinition.Type));
 
-      ApplyMixins(classDefinition, classContext);
+      ApplyExplicitFaceInterfaces(classDefinition, classContext);
+
+      ApplyMixins (classDefinition, classContext);
       ApplyBaseCallMethodRequirements (classDefinition);
 
-      AnalyzeOverrides (classDefinition);
+      ApplyOverrides (classDefinition);
       return classDefinition;
     }
 
-    private void AnalyzeOverrides (BaseClassDefinition definition)
+    private static void ApplyExplicitFaceInterfaces (BaseClassDefinition classDefinition, ClassContext classContext)
+    {
+      foreach (Type faceInterface in classContext.CompleteInterfaces)
+        classDefinition.RequiredFaceTypes.Add (new RequiredFaceTypeDefinition (classDefinition, faceInterface));
+    }
+
+    private static void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("classContext", classContext);
+
+      MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
+      IEnumerator<Type> enumerator = classContext.Mixins.GetEnumerator();
+      for (int i = 0; enumerator.MoveNext(); ++i)
+      {
+        MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
+        mixin.MixinIndex = i;
+      }
+    }
+
+    private void ApplyBaseCallMethodRequirements (BaseClassDefinition classDefinition)
+    {
+      RequiredBaseCallMethodDefinitionBuilder builder = new RequiredBaseCallMethodDefinitionBuilder (classDefinition);
+      foreach (RequiredBaseCallTypeDefinition requirement in classDefinition.RequiredBaseCallTypes)
+        builder.Apply (requirement);
+    }
+
+    private void ApplyOverrides (BaseClassDefinition definition)
     {
       OverridesAnalyzer<MethodDefinition> methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (definition.GetAllMixinMethods);
       foreach (Tuple<MethodDefinition, MethodDefinition> methodOverride in methodAnalyzer.Analyze (definition.Methods))
@@ -65,25 +93,5 @@ namespace Mixins.Definitions.Building
       return method.IsPublic || method.IsFamily;
     }
 
-    private static void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
-
-      MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
-      IEnumerator<Type> enumerator = classContext.Mixins.GetEnumerator();
-      for (int i = 0; enumerator.MoveNext(); ++i)
-      {
-        MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
-        mixin.MixinIndex = i;
-      }
-    }
-
-    private void ApplyBaseCallMethodRequirements (BaseClassDefinition classDefinition)
-    {
-      RequiredBaseCallMethodDefinitionBuilder builder = new RequiredBaseCallMethodDefinitionBuilder (classDefinition);
-      foreach (RequiredBaseCallTypeDefinition requirement in classDefinition.RequiredBaseCallTypes)
-        builder.Apply (requirement);
-    }
   }
 }

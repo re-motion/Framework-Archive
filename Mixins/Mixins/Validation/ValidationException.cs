@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Mixins.Definitions;
 using Rubicon.Text;
 
 namespace Mixins.Validation
@@ -27,7 +28,11 @@ namespace Mixins.Validation
       {
         if (item.TotalRulesExecuted != item.Successes.Count)
         {
-          sb.Append (Environment.NewLine).Append (item.Definition.FullName).Append (": There were ");
+          sb.Append (Environment.NewLine).Append (item.Definition.FullName);
+          string parentString = item.GetParentDefinitionString();
+          if (parentString.Length > 0)
+            sb.Append (" (").Append (parentString).Append (")");
+          sb.Append (": There were ");
           sb.Append (item.Failures.Count).Append (" errors, ").Append (item.Warnings.Count).Append (" warnings, and ")
               .Append (item.Exceptions.Count).Append (" unexpected exceptions. ");
           if (item.Exceptions.Count > 0)
@@ -36,7 +41,7 @@ namespace Mixins.Validation
             sb.Append ("First error: ").Append (item.Failures[0].Message);
         }
       }
-      sb.Append (Environment.NewLine).Append ("See the list returned by Log.GetResults() for a detailed list of issues.");
+      sb.Append (Environment.NewLine).Append ("See Log.GetResults() for a full list of issues.");
       return sb.ToString();
     }
   }

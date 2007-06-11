@@ -101,10 +101,7 @@ namespace Mixins.UnitTests.Configuration
     {
       using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
       {
-        List<IVisitableDefinition> definitions = new List<IVisitableDefinition>();
-        foreach (ClassContext classContext in MixinConfiguration.ActiveContext.ClassContexts)
-          definitions.Add (TypeFactory.GetActiveConfiguration (classContext.Type));
-        DefaultValidationLog log = Validator.Validate (definitions);
+        IValidationLog log = MixinConfiguration.ActiveContext.Validate();
 
         Dictionary<IVisitableDefinition, IVisitableDefinition> visitedDefinitions = new Dictionary<IVisitableDefinition, IVisitableDefinition>();
         foreach (ValidationResult result in log.GetResults())
@@ -520,7 +517,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (AbstractMixinWithoutBase));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMixinMustHaveThisProperty", log));
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log));
     }
 
     [Test]
@@ -530,7 +527,11 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (definition);
 
       ValidationException exception = new ValidationException (log);
-      Assert.IsTrue (exception.Message.IndexOf ("AbstractMethod: There were 1 errors") > -1);
+      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Mixins.UnitTests.Configuration."
+          + "ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Mixins.UnitTests.Configuration.ValidationSampleTypes."
+          + "AbstractMixinWithoutBase -> Mixins.UnitTests.SampleTypes.ClassOverridingMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+          + "exceptions. First error: OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase" + Environment.NewLine + "See Log.GetResults() "
+          + "for a full list of issues.", exception.Message);
 
       Assert.AreSame (log, exception.ValidationLog);
     }

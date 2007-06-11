@@ -241,7 +241,7 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void CompleteFaceInterface()
+    public void CompleteFaceInterfacesAddedByMixins()
     {
       ICBaseType3BT3Mixin4 complete = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).With () as ICBaseType3BT3Mixin4;
 
@@ -250,6 +250,18 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
       Assert.AreEqual ("BaseType3.IfcMethod2", complete.IfcMethod2 ());
       Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> (complete).InvokeThisMethods());
+    }
+
+    [Test]
+    public void CompleteFaceInterfacesAddedExplicitly ()
+    {
+      object complete = ObjectFactory.Create<BaseType6>().With();
+
+      Assert.IsNotNull (complete);
+      Assert.IsTrue (complete is BaseType6);
+      Assert.IsTrue (complete is ICBT6Mixin1);
+      Assert.IsTrue (complete is ICBT6Mixin2);
+      Assert.IsTrue (complete is ICBT6Mixin3);
     }
 
     [Test]
