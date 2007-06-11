@@ -25,6 +25,7 @@ namespace Mixins
   /// The <see cref="ObjectFactory"/> class uses the mixin configuration defined by <see cref="MixinConfiguration.ActiveContext"/>. Use the 
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
+  /// </remarks>
   public class ObjectFactory
   {
     /// <summary>

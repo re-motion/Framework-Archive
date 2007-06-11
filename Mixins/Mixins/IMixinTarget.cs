@@ -11,7 +11,7 @@ namespace Mixins
     /// <summary>
     /// Gets the mixin target's configuration data.
     /// </summary>
-    /// <value>A <see cref="BaseClassDefinition"/> object holding the configuration data used to create the mixin target.
+    /// <value>A <see cref="BaseClassDefinition"/> object holding the configuration data used to create the mixin target.</value>
     BaseClassDefinition Configuration { get; }
 
     /// <summary>

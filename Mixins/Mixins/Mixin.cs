@@ -80,7 +80,7 @@ namespace Mixins
   /// <list type="bullet">
   /// <item>
   /// <para>
-  /// The type parameter bound to <see cref="TThis"/> must have at most one type constraint. The mixin engine will try to assign the target type of the
+  /// The type parameter bound to <typeparamref name="TThis"/> must have at most one type constraint. The mixin engine will try to assign the target type of the
   /// mixin to this parameter when analyzing the configuration, if allowed by the constraints. A mixin writer can use this for introducing interfaces
   /// as follows:
   /// </para>
@@ -101,7 +101,7 @@ namespace Mixins
   /// </para>
   /// </item>
   /// <item>
-  /// The type parameter bound to <see cref="TBase"/> must have at most one type constraint. The mixin engine will assign a type compatible with this
+  /// The type parameter bound to <typeparamref name="TBase"/> must have at most one type constraint. The mixin engine will assign a type compatible with this
   /// constraint (or <see cref="System.Object"/> if no constraint exists) to the parameter when analyzing the configuration, and the mixin implementer
   /// should not depend on this type parameter when introducing interfaces. If the constraint (if any) is not satisfied by the interfaces introduced
   /// via the mixins applied to the target type, the mixin configuration is invalid.
@@ -167,7 +167,7 @@ namespace Mixins
   /// <list type="bullet">
   /// <item>
   /// <para>
-  /// The type parameter bound to <see cref="TThis"/> must have at most one type constraint. The mixin engine will try to assign the target type of the
+  /// The type parameter bound to <typeparamref name="TThis"/> must have at most one type constraint. The mixin engine will try to assign the target type of the
   /// mixin to this parameter when analyzing the configuration, if allowed by the constraints. A mixin writer can use this for introducing interfaces
   /// as follows:
   /// </para>
