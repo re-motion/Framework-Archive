@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Mixins.Definitions;
 using Mixins.Validation;
 
@@ -12,6 +11,7 @@ namespace Mixins.Validation.Rules
     {
       visitor.InterfaceIntroductionRules.Add (new DelegateValidationRule<InterfaceIntroductionDefinition> (InterfaceWillShadowBaseClassInterface));
       visitor.InterfaceIntroductionRules.Add (new DelegateValidationRule<InterfaceIntroductionDefinition> (IMixinTargetCannotBeIntroduced));
+      visitor.InterfaceIntroductionRules.Add (new DelegateValidationRule<InterfaceIntroductionDefinition> (IntroducedInterfaceMustBePublic));
     }
 
     private void InterfaceWillShadowBaseClassInterface (DelegateValidationRule<InterfaceIntroductionDefinition>.Args args)
@@ -23,6 +23,11 @@ namespace Mixins.Validation.Rules
     private void IMixinTargetCannotBeIntroduced (DelegateValidationRule<InterfaceIntroductionDefinition>.Args args)
     {
       SingleMust (!typeof (IMixinTarget).Equals (args.Definition.Type), args.Log, args.Self);
+    }
+
+    private void IntroducedInterfaceMustBePublic (DelegateValidationRule<InterfaceIntroductionDefinition>.Args args)
+    {
+      SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
     }
   }
 }

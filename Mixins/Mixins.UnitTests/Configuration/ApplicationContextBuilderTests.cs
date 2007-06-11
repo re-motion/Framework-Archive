@@ -76,5 +76,17 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsNotNull (ac);
       Assert.AreNotEqual (0, ac.ClassContextCount);
     }
+
+    [Extends (typeof (BaseType1))]
+    [IgnoreForMixinConfiguration]
+    public class Foo
+    {
+    }
+
+    [Test]
+    public void IgnoreForMixinConfiguration()
+    {
+      Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.HasItem (typeof (Foo)));
+    }
   }
 }

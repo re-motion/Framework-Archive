@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Mixins.Utilities;
 using Rubicon.Collections;
 
 namespace Mixins.Definitions.Building
@@ -16,6 +15,18 @@ namespace Mixins.Definitions.Building
 
     public void Apply (Type implementedInterface)
     {
+      if (_mixin.BaseClass.IntroducedInterfaces.HasItem (implementedInterface))
+      {
+        MixinDefinition otherIntroducer = _mixin.BaseClass.IntroducedInterfaces[implementedInterface].Implementer;
+        string message = string.Format (
+            "Two mixins introduce the same interface {0} to base class {1}: {2} and {3}.",
+            implementedInterface.FullName,
+            _mixin.BaseClass.FullName,
+            otherIntroducer.FullName,
+            _mixin.FullName);
+        throw new ConfigurationException (message);
+      }
+
       InterfaceIntroductionDefinition introducedInterface = new InterfaceIntroductionDefinition (implementedInterface, _mixin);
       _mixin.InterfaceIntroductions.Add (introducedInterface);
       _mixin.BaseClass.IntroducedInterfaces.Add (introducedInterface);

@@ -265,6 +265,75 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void CompleteFaceInterfaceAsTypeArgument ()
+    {
+      ICBT6Mixin1 complete = ObjectFactory.Create<ICBT6Mixin1> ().With ();
+
+      Assert.IsNotNull (complete);
+      Assert.IsTrue (complete is BaseType6);
+      Assert.IsTrue (complete is ICBT6Mixin1);
+      Assert.IsTrue (complete is ICBT6Mixin2);
+      Assert.IsTrue (complete is ICBT6Mixin3);
+    }
+
+    [Test]
+    public void CompleteFaceInterfaceAsTypeArgumentWithMixins ()
+    {
+      ICBT6Mixin1 complete = ObjectFactory.CreateWithMixinInstances<ICBT6Mixin1> (new BT6Mixin1()).With ();
+
+      Assert.IsNotNull (complete);
+      Assert.IsTrue (complete is BaseType6);
+      Assert.IsTrue (complete is ICBT6Mixin1);
+      Assert.IsTrue (complete is ICBT6Mixin2);
+      Assert.IsTrue (complete is ICBT6Mixin3);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*not have the CompleteInterfaceAttribute",
+        MatchType = MessageMatch.Regex)]
+    public void InterfaceAsTypeArgumentWithoutCompleteness ()
+    {
+      ObjectFactory.Create<IBaseType2> ().With ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*not have the CompleteInterfaceAttribute",
+        MatchType = MessageMatch.Regex)]
+    public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
+    {
+      ObjectFactory.CreateWithMixinInstances<IBaseType2> ().With ();
+    }
+
+    class Foo1
+    { }
+
+    class Foo2
+    { }
+
+    [CompleteInterface (typeof (Foo1))]
+    [CompleteInterface (typeof (Foo2))]
+    [IgnoreForMixinConfiguration]
+    interface IMultiFace
+    {
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*has multiple CompleteInterfaceAttributes",
+        MatchType = MessageMatch.Regex)]
+    public void InterfaceAsTypeArgumentWithMultiCompleteness ()
+    {
+      ObjectFactory.Create<IMultiFace> ().With ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*has multiple CompleteInterfaceAttributes",
+        MatchType = MessageMatch.Regex)]
+    public void InterfaceAsTypeArgumentWithMultiCompletenessWithMixins ()
+    {
+      ObjectFactory.CreateWithMixinInstances<IMultiFace> ().With ();
+    }
+
+    [Test]
     public void OverrideWithCompleteBaseInterface ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin7Base), typeof (BT3Mixin4)).With();

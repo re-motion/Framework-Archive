@@ -196,5 +196,15 @@ namespace Mixins.UnitTests.Configuration
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin5));
     }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Ambiguous override", MatchType = MessageMatch.Contains)]
+    public void ThrowsOnTargetClassOverridingMultipleMixinMethods()
+    {
+      using (new MixinConfiguration (typeof (ClassOverridingMixinMethod), typeof (AbstractMixin), typeof(AbstractMixin2)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMethod));
+      }
+    }
   }
 }

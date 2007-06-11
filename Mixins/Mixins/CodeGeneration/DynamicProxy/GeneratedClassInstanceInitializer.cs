@@ -10,56 +10,45 @@ namespace Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {
-    public static void InitializeInstanceFields (object instance)
+    public static void InitializeInstanceFields (IMixinTarget instance)
     {
       InitializeInstanceFieldsWithMixins (instance, null);
     }
 
-    public static void InitializeInstanceFieldsWithMixins (object instance, object[] mixinInstances)
+    public static void InitializeInstanceFieldsWithMixins (IMixinTarget mixinTarget, object[] mixinInstances)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      IMixinTarget mixinTarget = instance as IMixinTarget;
-      if (mixinTarget == null)
-      {
-        throw new ArgumentException ("Object is not a mixin target.", "instance");
-      }
-
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       BaseClassDefinition configuration = mixinTarget.Configuration;
 
-      InitializeFirstProxy (instance);
+      InitializeFirstProxy (mixinTarget);
 
       object[] extensions = PrepareExtensionsWithGivenMixinInstances (configuration, mixinInstances);
-      FillUpExtensionsWithNewMixinInstances (extensions, configuration, instance);
+      FillUpExtensionsWithNewMixinInstances (extensions, configuration, mixinTarget);
 
-      SetExtensionsField (instance, extensions);
+      SetExtensionsField (mixinTarget, extensions);
     }
 
-    private static void InitializeFirstProxy (object instance)
+    private static void InitializeFirstProxy (IMixinTarget mixinTarget)
     {
-      Type type = instance.GetType ();
+      Type type = mixinTarget.GetType ();
       Type baseCallProxyType = type.GetNestedType ("BaseCallProxy");
-      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, instance, 0);
-      type.GetField ("__first").SetValue (instance, firstBaseCallProxy);
+      object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, mixinTarget, 0);
+      type.GetField ("__first").SetValue (mixinTarget, firstBaseCallProxy);
     }
 
-    private static void SetExtensionsField (object instance, object[] extensions)
+    private static void SetExtensionsField (IMixinTarget mixinTarget, object[] extensions)
     {
-      Type type = instance.GetType ();
-      type.GetField ("__extensions").SetValue (instance, extensions);
+      Type type = mixinTarget.GetType ();
+      type.GetField ("__extensions").SetValue (mixinTarget, extensions);
     }
 
-    public static void InitializeInstanceFields (object instance, object[] extensions)
+    public static void InitializeInstanceFields (IMixinTarget mixinTarget, object[] extensions)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
       ArgumentUtility.CheckNotNull ("extensions", extensions);
 
-      if (!(instance is IMixinTarget))
-      {
-        throw new ArgumentException ("Object is not a mixin target.", "instance");
-      }
-
-      SetExtensionsField(instance, extensions);
-      InitializeFirstProxy (instance);
+      SetExtensionsField (mixinTarget, extensions);
+      InitializeFirstProxy (mixinTarget);
     }
 
     private static object[] PrepareExtensionsWithGivenMixinInstances (BaseClassDefinition configuration, object[] mixinInstances)
@@ -84,7 +73,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
     }
 
     private static void FillUpExtensionsWithNewMixinInstances (
-        object[] extensions, BaseClassDefinition configuration, object targetInstance)
+        object[] extensions, BaseClassDefinition configuration, IMixinTarget targetInstance)
     {
       foreach (MixinDefinition mixinDefinition in configuration.Mixins)
       {
@@ -93,12 +82,12 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    private static object InstantiateBaseCallProxy (Type baseCallProxyType, object targetInstance, int depth)
+    private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
     {
       return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth});
     }
 
-    private static object InstantiateMixin (MixinDefinition mixinDefinition, object mixinTargetInstance)
+    private static object InstantiateMixin (MixinDefinition mixinDefinition, IMixinTarget mixinTargetInstance)
     {
       Type mixinType = mixinDefinition.Type;
       Assertion.Assert (!mixinType.ContainsGenericParameters);
@@ -112,7 +101,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return mixinInstance;
     }
 
-    public static void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, object mixinTargetInstance)
+    public static void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance)
     {
       ArgumentUtility.CheckNotNull ("mixinDefinition", mixinDefinition);
       ArgumentUtility.CheckNotNull ("mixinInstance", mixinInstance);
@@ -123,7 +112,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       InvokeMixinInitializationMethod (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance);
     }
 
-    private static void InvokeMixinInitializationMethod (MixinDefinition mixinDefinition, object mixinInstance, object mixinTargetInstance,
+    private static void InvokeMixinInitializationMethod (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance,
         object baseCallProxyInstance)
     {
       MethodInfo initializationMethod = MixinReflector.GetInitializationMethod (mixinInstance.GetType ());
@@ -147,7 +136,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    private static object GetMixinInitializationArgument (ParameterInfo parameter, object mixinTargetInstance, object baseCallProxyInstance,
+    private static object GetMixinInitializationArgument (ParameterInfo parameter, IMixinTarget mixinTargetInstance, object baseCallProxyInstance,
         MixinDefinition mixinDefinition)
     {
       if (parameter.IsDefined (typeof (ThisAttribute), false))

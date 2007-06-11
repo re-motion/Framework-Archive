@@ -12,9 +12,9 @@ namespace Mixins.CodeGeneration
 
     string SaveAssembly ();
 
-    void InitializeInstance (object instance);
-    void InitializeInstance (object instance, object[] extensions);
-    void InitializeInstanceWithMixins (object instance, object[] mixinInstances);
-    void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, object targetInstance);
+    void InitializeInstance (IMixinTarget instance);
+    void InitializeInstance (IMixinTarget instance, object[] extensions);
+    void InitializeInstanceWithMixins (IMixinTarget instance, object[] mixinInstances);
+    void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget targetInstance);
   }
 }

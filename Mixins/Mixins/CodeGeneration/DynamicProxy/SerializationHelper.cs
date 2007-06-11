@@ -36,7 +36,7 @@ namespace Mixins.CodeGeneration.DynamicProxy
       info.AddValue ("__baseMemberValues", baseMemberValues);
     }
 
-    private object _deserializedObject;
+    private IMixinTarget _deserializedObject;
     private object[] _extensions;
     private object[] _baseMemberValues;
     private BaseClassDefinition _baseClassDefinition;
@@ -57,11 +57,11 @@ namespace Mixins.CodeGeneration.DynamicProxy
       // However, _baseMemberValues being null means that the object itself manages its member deserialization via ISerializable. In such a case, we
       // need to use the deserialization constructor to instantiate the object.
       if (_baseMemberValues != null)
-        _deserializedObject = FormatterServices.GetSafeUninitializedObject (concreteType);
+        _deserializedObject = (IMixinTarget) FormatterServices.GetSafeUninitializedObject (concreteType);
       else
       {
         Assertion.Assert (typeof (ISerializable).IsAssignableFrom (concreteType));
-        _deserializedObject = Activator.CreateInstance (concreteType, new object[] {info, context});
+        _deserializedObject = (IMixinTarget) Activator.CreateInstance (concreteType, new object[] {info, context});
       }
     }
 

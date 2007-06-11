@@ -38,22 +38,22 @@ namespace Mixins.CodeGeneration.DynamicProxy
       return Path.Combine (Environment.CurrentDirectory, ModuleScope.FILE_NAME);
     }
 
-    public void InitializeInstance (object instance)
+    public void InitializeInstance (IMixinTarget instance)
     {
       GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
     }
 
-    public void InitializeInstance (object instance, object[] extensions)
+    public void InitializeInstance (IMixinTarget instance, object[] extensions)
     {
       GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions);
     }
 
-    public void InitializeInstanceWithMixins (object instance, object[] mixinInstances)
+    public void InitializeInstanceWithMixins (IMixinTarget instance, object[] mixinInstances)
     {
       GeneratedClassInstanceInitializer.InitializeInstanceFieldsWithMixins (instance, mixinInstances);
     }
 
-    public void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, object targetInstance)
+    public void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget targetInstance)
     {
       GeneratedClassInstanceInitializer.InitializeMixinInstance (mixinDefinition, mixinInstance, targetInstance);
     }

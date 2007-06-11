@@ -25,40 +25,6 @@ namespace Mixins.UnitTests.Utilities
       public new void Foo () { }
     }
 
-    [Test]
-    public void FindGenericTypeDefinitionInClosedHierarchy()
-    {
-      Assert.AreEqual (typeof (GenericBase<int>), ReflectionUtility.FindGenericTypeDefinitionInClosedHierarchy (typeof (GenericBase<>),
-        typeof (GenericBase<int>)));
-      Assert.AreEqual (typeof (GenericBase<int>), ReflectionUtility.FindGenericTypeDefinitionInClosedHierarchy (typeof (GenericBase<>),
-        typeof (GenericSub<int>)));
-      Assert.AreEqual (typeof (GenericBase<int>), ReflectionUtility.FindGenericTypeDefinitionInClosedHierarchy (typeof (GenericBase<>),
-        typeof (NonGenericSub)));
-
-      Assert.AreEqual (typeof (GenericSub<int>), ReflectionUtility.FindGenericTypeDefinitionInClosedHierarchy (typeof (GenericSub<>),
-        typeof (NonGenericSub)));
-    }
-
-    [Test]
-    public void MapMethodInfoOfGenericTypeDefinitionToClosedHierarchy ()
-    {
-      Assert.AreEqual (typeof (GenericBase<int>).GetMethod ("Foo"),
-          ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName(typeof (GenericBase<>).GetMethod ("Foo"),
-          typeof (GenericBase<int>)));
-      Assert.AreEqual (typeof (GenericBase<int>).GetMethod ("Foo"),
-          ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName (typeof (GenericBase<>).GetMethod ("Foo"),
-          typeof (GenericSub<int>)));
-      Assert.AreEqual (typeof (GenericBase<int>).GetMethod ("Foo"),
-          ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName (typeof (GenericBase<>).GetMethod ("Foo"),
-          typeof (NonGenericSub)));
-
-      Assert.AreEqual (typeof (GenericSub<int>).GetMethod ("Foo"),
-          ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName (typeof (GenericSub<>).GetMethod ("Foo"),
-          typeof (GenericSub<int>)));
-      Assert.IsNull (ReflectionUtility.MapMethodInfoOfGenericTypeDefinitionToClosedHierarchyByName (typeof (GenericSub<>).GetMethod ("Foo"),
-          typeof (GenericBase<int>)));
-    }
-
     class Base
     {
       public void Foo (int i) { }
@@ -128,7 +94,9 @@ namespace Mixins.UnitTests.Utilities
       Assert.AreEqual (typeof (object), methodSignature.B[1]);
     }
 
-    class C<T1, T2, [ThisAttribute]T3> : Mixin<T2>
+    public class BlaAttribute : Attribute { }
+
+    class C<T1, T2, [Bla]T3> : Mixin<T2>
         where T2 : class
     {
     }
@@ -136,10 +104,14 @@ namespace Mixins.UnitTests.Utilities
     [Test]
     public void GetGenericArgumentsBoundToAttribute()
     {
-      List<Type> arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), typeof (ThisAttribute)));
-      Assert.AreEqual (2, arguments.Count);
-      Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T2"; }));
+      List<Type> arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), typeof (BlaAttribute)));
+      Assert.AreEqual (1, arguments.Count);
       Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T3"; }));
+
+      Type thisAttribute = typeof (Mixin).Assembly.GetType ("Mixins.ThisAttribute");
+      arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), thisAttribute));
+      Assert.AreEqual (1, arguments.Count);
+      Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T2"; }));
     }
   }
 }

@@ -85,6 +85,11 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
       Type t = TypeFactory.GetConcreteType (typeof (object));
       Assert.IsTrue (typeof (IMixinTarget).IsAssignableFrom (t));
+
+      // Check caching for definitions generated for types without mixin configuration
+      BaseClassDefinition d1 = TypeFactory.GetActiveConfiguration (typeof (object));
+      BaseClassDefinition d2 = TypeFactory.GetActiveConfiguration (typeof (object));
+      Assert.AreSame (d1, d2);
     }
   }
 }

@@ -292,6 +292,15 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfIntroducedInterfaceNotVisible ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (MixinIntroducingInternalInterface));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log));
+    }
+
+    [Test]
     public void FailsIfRequiredFaceClassNotAvailable ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassThisDependency));
@@ -307,6 +316,15 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (definition.RequiredFaceTypes[typeof (IBaseType32)]);
 
       Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
+    }
+
+    [Test]
+    public void FailsIfRequiredFaceTypeNotVisible ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithInvisibleThisDependency));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.RequiredFaceTypeMustBePublic", log));
     }
 
     [Test]

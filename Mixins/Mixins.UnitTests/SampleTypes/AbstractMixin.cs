@@ -17,6 +17,12 @@ namespace Mixins.UnitTests.SampleTypes
       return "AbstractMixin.ImplementedMethod-" + AbstractMethod(25);
     }
 
-    protected abstract string AbstractMethod(int i);
+    protected abstract string AbstractMethod (int i);
+  }
+
+  [Serializable]
+  public abstract class AbstractMixin2 : Mixin<object, object>
+  {
+    protected abstract string AbstractMethod (int i);
   }
 }

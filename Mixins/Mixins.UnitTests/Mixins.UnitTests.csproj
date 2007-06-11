@@ -63,6 +63,8 @@
     <Compile Include="Configuration\OverrideAttributeHierarchyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UnvalidatedDefinitionBuilder.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinIntroducingInternalInterface.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithInvisibleThisDependency.cs" />
     <Compile Include="SampleTypes\BaseType6.cs" />
     <Compile Include="SampleTypes\BT6Mixin1.cs" />
     <Compile Include="SampleTypes\BT6Mixin2.cs" />

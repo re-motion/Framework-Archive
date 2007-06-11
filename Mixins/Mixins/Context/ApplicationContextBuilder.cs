@@ -51,12 +51,15 @@ namespace Mixins.Context
 
       foreach (Type t in assembly.GetTypes())
       {
-        if (t.IsDefined (typeof (ExtendsAttribute), false))
-          AnalyzeMixin (t, targetContext);
-        if (t.IsDefined (typeof (UsesAttribute), true))
-          AnalyzeMixinApplications (t, targetContext);
-        if (t.IsDefined (typeof (CompleteInterfaceAttribute), false))
-          AnalyzeCompleteInterface (t, targetContext);
+        if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
+        {
+          if (t.IsDefined (typeof (ExtendsAttribute), false))
+            AnalyzeMixin (t, targetContext);
+          if (t.IsDefined (typeof (UsesAttribute), true))
+            AnalyzeMixinApplications (t, targetContext);
+          if (t.IsDefined (typeof (CompleteInterfaceAttribute), false))
+            AnalyzeCompleteInterface (t, targetContext);
+        }
       }
     }
 

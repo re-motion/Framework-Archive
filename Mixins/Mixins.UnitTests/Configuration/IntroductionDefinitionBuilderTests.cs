@@ -122,5 +122,19 @@ namespace Mixins.UnitTests.Configuration
         Assert.IsFalse (prop2.IntroducesGetMethod);
       }
     }
+
+    class BT1Mixin1A : BT1Mixin1
+    { }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two mixins introduce the same interface .* to base class .*",
+        MatchType = MessageMatch.Regex)]
+    public void ThrowsOnDoublyIntroducedInterface ()
+    {
+      using (new MixinConfiguration (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin1A)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      }
+    }
   }
 }
