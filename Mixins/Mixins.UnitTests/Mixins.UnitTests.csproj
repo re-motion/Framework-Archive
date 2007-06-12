@@ -55,6 +55,7 @@
     <Compile Include="Configuration\BaseClassDefinitionCacheTests.cs" />
     <Compile Include="Configuration\ClassDefinitionTests.cs" />
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
+    <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\MemberChainTests.cs" />

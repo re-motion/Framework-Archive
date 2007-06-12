@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace Mixins.Utilities
 {
+  // TODO: Remove when Rubicon.Collections.MultiDictionary is available
   [Serializable]
   internal class MultiDictionary<TKey, TValue>
   {
