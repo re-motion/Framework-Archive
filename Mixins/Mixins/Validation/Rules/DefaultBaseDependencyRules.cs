@@ -18,7 +18,8 @@ namespace Mixins.Validation.Rules
 
     protected override void NoCircularDependencies (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      NoCircularDependenciesImpl (args);
+      // NoCircularDependenciesImpl (args);
+      // Now throws a ConfigurationException if violated
     }
 
     protected override void DependencyMustBeSatisfied (DelegateValidationRule<BaseDependencyDefinition>.Args args)

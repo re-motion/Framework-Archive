@@ -432,5 +432,11 @@ namespace Mixins.UnitTests.Mixins
         Assert.That (allMethodNames, List.Not.Contains ("Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
       }
     }
+
+    [Test]
+    [Ignore ("TODO: Test with BaseType7 grand and simple")]
+    public void TestMultipleOverrides()
+    {
+    }
   }
 }

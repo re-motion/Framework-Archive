@@ -17,7 +17,7 @@ namespace Mixins.Definitions.Building
     }
 
     protected abstract TRequirement GetRequirement (Type type, BaseClassDefinition baseClass);
-    protected abstract TRequirement CreateRequirement (Type type, BaseClassDefinition baseClass);
+    protected abstract TRequirement CreateRequirement (Type type, MixinDefinition mixin);
     protected abstract void AddRequirement (TRequirement requirement, BaseClassDefinition baseClass);
     protected abstract TDependency CreateDependency (TRequirement requirement, MixinDefinition mixin, TDependency aggregator);
     protected abstract void AddDependency (MixinDefinition mixin, TDependency dependency);
@@ -43,7 +43,7 @@ namespace Mixins.Definitions.Building
       TRequirement requirement = GetRequirement (type, _mixin.BaseClass);
       if (requirement == null)
       {
-        requirement = CreateRequirement (type, _mixin.BaseClass);
+        requirement = CreateRequirement (type, _mixin);
         AddRequirement(requirement, _mixin.BaseClass);
       }
       TDependency dependency = CreateDependency (requirement, _mixin, aggregator);
@@ -56,7 +56,7 @@ namespace Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("dependency", dependency);
 
-      if (dependency.RequiredType.IsEmptyInterface)
+      if (dependency.RequiredType.IsAggregatorInterface)
       {
         foreach (Type type in dependency.RequiredType.Type.GetInterfaces ())
         {

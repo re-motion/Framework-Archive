@@ -34,6 +34,7 @@ namespace Mixins.UnitTests.Configuration
         Assert.AreEqual (4, requirers.Count);
 
         Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
+        Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsAggregatorInterface);
 
         baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
         Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
@@ -209,8 +210,8 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Base call dependencies must be interfaces",
-        MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Base call dependencies must be interfaces.*MixinWithClassBase",
+        MatchType = MessageMatch.Regex)]
     public void ThrowsIfRequiredBaseIsNotInterface ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassBase));
@@ -248,6 +249,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (d1, d1.AggregatedDependencies[typeof (IBT3Mixin4)].Aggregator);
 
       Assert.IsTrue (bt3.RequiredFaceTypes[typeof (ICBaseType3)].IsEmptyInterface);
+      Assert.IsTrue (bt3.RequiredFaceTypes[typeof (ICBaseType3)].IsAggregatorInterface);
 
       Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
       Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3)));
@@ -283,11 +285,32 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (d2, d2.AggregatedDependencies[typeof (IBT3Mixin4)].Aggregator);
 
       Assert.IsTrue (bt3.RequiredBaseCallTypes[typeof (ICBaseType3)].IsEmptyInterface);
+      Assert.IsTrue (bt3.RequiredBaseCallTypes[typeof (ICBaseType3)].IsAggregatorInterface);
 
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3)));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType31)));
       Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBT3Mixin4)));
+    }
+
+    public interface IMixinWithEmptyInterface {}
+    public class MixinWithEmptyInterface : IMixinWithEmptyInterface { }
+    public class MixinRequiringEmptyInterface : Mixin<object, IMixinWithEmptyInterface> { }
+
+    [Test]
+    public void EmptyInterface()
+    {
+      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)))
+      {
+        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        MixinDefinition m1 = bt1.Mixins[typeof (MixinWithEmptyInterface)];
+        MixinDefinition m2 = bt1.Mixins[typeof (MixinRequiringEmptyInterface)];
+        BaseDependencyDefinition dependency = m2.BaseDependencies[0];
+        RequiredBaseCallTypeDefinition requirement = dependency.RequiredType;
+        Assert.IsTrue (requirement.IsEmptyInterface);
+        Assert.IsFalse (requirement.IsAggregatorInterface);
+        Assert.AreSame (m1, dependency.GetImplementer());
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mixins.Utilities;
 using Mixins.Utilities.DependencySort;
 using Rubicon.Text;
 
@@ -24,12 +25,10 @@ namespace Mixins.Definitions.Building.DependencySorting
 
     public MixinDefinition ResolveEqualRoots (IEnumerable<MixinDefinition> equalRoots)
     {
-      SeparatedStringBuilder sb = new SeparatedStringBuilder (", ");
-      foreach  (MixinDefinition mixin in equalRoots)
-      {
-        sb.Append (mixin.FullName);
-      }
-      string message = string.Format ("The following mixins are applied to the same base class, but their order cannot be determined: {0}.", sb);
+      string message = string.Format ("The following mixins are applied to the same base class and require a clear base call ordering, but do not "
+          + "provide enough dependency information: {0}.{1}Please add base call dependencies to the mixin definitions or adjust the mixin configuration "
+          + "accordingly.", CollectionStringBuilder.BuildCollectionString (equalRoots, ", ", delegate (MixinDefinition m) { return m.FullName; }),
+          Environment.NewLine);
       throw new ConfigurationException (message);
     }
   }

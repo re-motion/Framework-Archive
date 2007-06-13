@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Mixins.Utilities;
 using Rubicon.Text;
 
 namespace Mixins.Definitions.Building
@@ -23,7 +24,7 @@ namespace Mixins.Definitions.Building
 
     private void Apply(RequiredBaseCallTypeDefinition declaringRequirement, Type requiredType)
     {
-      if (!declaringRequirement.IsEmptyInterface)
+      if (!declaringRequirement.IsAggregatorInterface)
       {
         if (_classDefinition.ImplementedInterfaces.Contains (requiredType)/* || requiredType.Equals (typeof (object))*/)
         {
@@ -35,13 +36,10 @@ namespace Mixins.Definitions.Building
         }
         else
         {
-          SeparatedStringBuilder dependenciesString = new SeparatedStringBuilder (",");
-          foreach (MixinDefinition mixin in declaringRequirement.FindRequiringMixins())
-          {
-            dependenciesString.Append (mixin.FullName);
-          }
+          string dependenciesString = CollectionStringBuilder.BuildCollectionString (declaringRequirement.FindRequiringMixins(),
+              ", ", delegate (MixinDefinition m) { return m.FullName; });
           string message = string.Format ("The base call dependency {0} (mixins {1}) applied to class {2} is not fulfilled - the type is neither "
-              + "introduced nor implemented.", declaringRequirement.FullName, dependenciesString, _classDefinition.FullName);
+              + "introduced nor implemented as an interface.", declaringRequirement.FullName, dependenciesString, _classDefinition.FullName);
           throw new ConfigurationException (message);
         }
       }

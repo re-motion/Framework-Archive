@@ -33,21 +33,36 @@ namespace Mixins.Utilities.DependencySort
       {
         foreach (T second in _objects)
         {
-          switch (_analyzer.AnalyzeDirectDependency (first, second))
+          if (first.Equals (second))
           {
-            case DependencyKind.FirstOnSecond:
-              rootCandidates.Remove (second);
-              break;
-            case DependencyKind.SecondOnFirst:
-              rootCandidates.Remove (first);
-              goto nextOuter;
+            if (_analyzer.AnalyzeDirectDependency (first, second) != DependencyKind.None)
+            {
+              string message = string.Format ("Item '{0}' depends on itself.", first);
+              throw new CircularDependenciesException<T> (message, new T[] { first });
+            }
+          }
+          else
+          {
+            switch (_analyzer.AnalyzeDirectDependency (first, second))
+            {
+              case DependencyKind.FirstOnSecond:
+                rootCandidates.Remove (second);
+                break;
+              case DependencyKind.SecondOnFirst:
+                rootCandidates.Remove (first);
+                goto nextOuter;
+            }
           }
         }
       nextOuter:
         ;
       }
       if (rootCandidates.Count == 0)
-        throw new DependencySortException ("The object graph contains circular dependencies, no root object can be found.");
+      {
+        string message = string.Format ("The object graph contains circular dependencies involving items {{{0}}}, no root object can be found.",
+            CollectionStringBuilder.BuildCollectionString (_objects, ", ", delegate (T t) { return t.ToString (); })); 
+        throw new CircularDependenciesException<T> (message, _objects);
+      }
       else if (rootCandidates.Count == 1)
       {
         IEnumerator<T> enumerator = rootCandidates.GetEnumerator ();

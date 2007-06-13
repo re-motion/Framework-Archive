@@ -67,8 +67,9 @@
     <Compile Include="CodeGeneration\DynamicProxy\MixinTypeGenerator.cs" />
     <Compile Include="CodeGeneration\IMixinTypeGenerator.cs" />
     <Compile Include="ObjectFactory.cs" />
+    <Compile Include="Utilities\CollectionStringBuilder.cs" />
     <Compile Include="Utilities\DependencySort\DependencyKind.cs" />
-    <Compile Include="Utilities\DependencySort\DependencySortException.cs" />
+    <Compile Include="Utilities\DependencySort\CircularDependenciesException.cs" />
     <Compile Include="Utilities\DependencySort\DependentObjectSorter.cs" />
     <Compile Include="Utilities\DependencySort\DependentObjectSorterAlgorithm.cs" />
     <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />

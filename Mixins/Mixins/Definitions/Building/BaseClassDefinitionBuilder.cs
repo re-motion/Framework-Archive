@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mixins.Context;
 using System.Reflection;
 using Mixins.Definitions.Building.DependencySorting;
+using Mixins.Utilities;
 using Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 using Rubicon.Utilities;
@@ -12,6 +13,7 @@ namespace Mixins.Definitions.Building
   public class BaseClassDefinitionBuilder
   {
     private DependentObjectSorter<MixinDefinition> _sorter = new DependentObjectSorter<MixinDefinition> (new MixinDependencyAnalyzer());
+    private DependentMixinGrouper _grouper = new DependentMixinGrouper();
 
     public BaseClassDefinitionBuilder ()
     {
@@ -60,15 +62,50 @@ namespace Mixins.Definitions.Building
       for (int i = 0; enumerator.MoveNext (); ++i)
         mixinDefinitionBuilder.Apply (enumerator.Current, i);
 
-      IEnumerable<MixinDefinition> sortedMixins = new List<MixinDefinition> (classDefinition.Mixins); // _sorter.SortDependencies (classDefinition.Mixins);
-
+      // It's important to have a list before clearing the mixins. If we were working with lazy enumerator streams here, we would clear the input for
+      // the sorting algorithm before actually executing it...
+      List<MixinDefinition> sortedMixins = SortMixins (classDefinition.Mixins);
       classDefinition.Mixins.Clear();
+
       IEnumerator<MixinDefinition> mixinEnumerator = sortedMixins.GetEnumerator();
       for (int i = 0; mixinEnumerator.MoveNext(); ++i)
       {
         mixinEnumerator.Current.MixinIndex = i;
         classDefinition.Mixins.Add (mixinEnumerator.Current);
       }
+    }
+
+    private List<MixinDefinition> SortMixins (IEnumerable<MixinDefinition> unsortedMixins)
+    {
+      List<List<MixinDefinition>> sortedMixinGroups = new List<List<MixinDefinition>>();
+      
+      // partition mixins into independent groups
+      foreach (Set<MixinDefinition> mixinGroup in _grouper.GroupMixins (unsortedMixins))
+      {
+        try
+        {
+          IEnumerable<MixinDefinition> sortedGroup = _sorter.SortDependencies (mixinGroup);
+          sortedMixinGroups.Add (new List<MixinDefinition> (sortedGroup));
+        }
+        catch (CircularDependenciesException<MixinDefinition> ex)
+        {
+          string message = string.Format ("The following group of mixins contains circular dependencies: {0}.",
+              CollectionStringBuilder.BuildCollectionString (ex.Circulars, ", ", delegate (MixinDefinition m) { return m.FullName; }));
+          throw new ConfigurationException (message, ex);
+        }
+      }
+
+      // order groups alphabetically
+      sortedMixinGroups.Sort (delegate (List<MixinDefinition> one, List<MixinDefinition> two) { return one[0].FullName.CompareTo (two[0].FullName); });
+      
+      // flatten ordered groups of sorted mixins
+      List<MixinDefinition> result = new List<MixinDefinition>();
+      foreach (List<MixinDefinition> mixinGroup in sortedMixinGroups)
+      {
+        foreach (MixinDefinition mixin in mixinGroup)
+          result.Add (mixin);
+      }
+      return result;
     }
 
     private void ApplyBaseCallMethodRequirements (BaseClassDefinition classDefinition)

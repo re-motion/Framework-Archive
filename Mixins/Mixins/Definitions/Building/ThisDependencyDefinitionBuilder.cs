@@ -18,12 +18,12 @@ namespace Mixins.Definitions.Building
       return baseClass.RequiredFaceTypes[type];
     }
 
-    protected override RequiredFaceTypeDefinition CreateRequirement (Type type, BaseClassDefinition baseClass)
+    protected override RequiredFaceTypeDefinition CreateRequirement (Type type, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
 
-      return new RequiredFaceTypeDefinition (baseClass, type);
+      return new RequiredFaceTypeDefinition (mixin.BaseClass, type);
     }
 
     protected override void AddRequirement (RequiredFaceTypeDefinition requirement, BaseClassDefinition baseClass)

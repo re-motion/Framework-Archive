@@ -151,5 +151,32 @@ namespace Mixins.UnitTests.Utilities
       IEnumerable<string> sortedObjects = AnalyzeDependencies (dependentObjects, analyzer);
       AssertListsEqualInOrder (new string[] { "a", "b", "d", "c", "f", "e", "g", "h" }, sortedObjects);
     }
+
+    [Test]
+    [ExpectedException (typeof (CircularDependenciesException<string>),
+        ExpectedMessage = "The object graph contains circular dependencies involving items {e, d, c}, no root object can be found.")]
+    public void ThrowsOnCirculars1 ()
+    {
+      string[] dependentObjects = new string[] { "h", "g", "f", "e", "d", "c", "b", "a" };
+      SimpleDependencyAnalyzer<string> analyzer = new SimpleDependencyAnalyzer<string> ();
+      analyzer.AddDependency ("a", "c");
+      analyzer.AddDependency ("c", "d");
+      analyzer.AddDependency ("d", "e");
+      analyzer.AddDependency ("e", "c");
+
+      new List<string> (AnalyzeDependencies (dependentObjects, analyzer));
+    }
+
+    [Test]
+    [ExpectedException (typeof (CircularDependenciesException<string>), ExpectedMessage = "Item 'a' depends on itself.")]
+    public void ThrowsOnCirculars2 ()
+    {
+      string[] dependentObjects = new string[] { "h", "g", "f", "e", "d", "c", "b", "a" };
+      SimpleDependencyAnalyzer<string> analyzer = new SimpleDependencyAnalyzer<string> ();
+      analyzer.AddDependency ("a", "a");
+      analyzer.AddDependency ("a", "b");
+
+      new List<string> (AnalyzeDependencies (dependentObjects, analyzer));
+    }
   }
 }

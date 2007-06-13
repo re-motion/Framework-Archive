@@ -2,7 +2,7 @@ using System;
 
 namespace Mixins.UnitTests.SampleTypes
 {
-  [Extends (typeof (BaseType7))]
+  // no attributes
   public class BT7Mixin8 : Mixin<object, IBaseType7>
   {
     [Override]

@@ -18,20 +18,21 @@ namespace Mixins.Definitions.Building
       return baseClass.RequiredBaseCallTypes[type];
     }
 
-    protected override RequiredBaseCallTypeDefinition CreateRequirement (Type type, BaseClassDefinition baseClass)
+    protected override RequiredBaseCallTypeDefinition CreateRequirement (Type type, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+      ArgumentUtility.CheckNotNull ("mixin", mixin);
+
+      Assertion.Assert (type != typeof (object), "This method will not be called for typeof (object).");
 
       if (!type.IsInterface)
       {
-        string message = string.Format ("Base call dependencies must be interfaces (or System.Object), but base class {0} has a dependency on " +
-            "a class: {1}.", baseClass.FullName, type.FullName);
+        string message = string.Format ("Base call dependencies must be interfaces (or System.Object), but mixin {0} (on class {1} has a dependency "
+            + "on a class: {2}.", mixin.FullName, mixin.BaseClass.FullName, type.FullName);
         throw new ConfigurationException (message);
       }
 
-
-      return new RequiredBaseCallTypeDefinition (baseClass, type);
+      return new RequiredBaseCallTypeDefinition (mixin.BaseClass, type);
     }
 
     protected override void AddRequirement (RequiredBaseCallTypeDefinition requirement, BaseClassDefinition baseClass)

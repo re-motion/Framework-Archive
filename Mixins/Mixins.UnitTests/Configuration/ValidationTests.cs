@@ -348,34 +348,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void SucceedsIfSelfDependency ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin3));
-      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5Mixin3)].ThisDependencies[typeof (IBT5Mixin3)]);
-
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
-
-      log = Validator.Validate (definition.Mixins[typeof (BT5Mixin3)].BaseDependencies[typeof (IBT5Mixin3)]);
-
-      Assert.AreEqual (0, log.GetNumberOfFailures());
-      Assert.AreEqual (0, log.GetNumberOfWarnings());
-    }
-
-    [Test]
-    public void FailsIfCircularDependency ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5MixinC1), typeof (BT5MixinC2));
-      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5MixinC2)].ThisDependencies[typeof (IBT5MixinC1)]);
-
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.NoCircularDependencies", log));
-
-      log = Validator.Validate (definition.Mixins[typeof (BT5MixinC2)].BaseDependencies[typeof (IBT5MixinC1)]);
-
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseDependencyRules.NoCircularDependencies", log));
-    }
-
-    [Test]
     public void SucceedsIfAggregateThisDependencyIsFullyImplemented ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));

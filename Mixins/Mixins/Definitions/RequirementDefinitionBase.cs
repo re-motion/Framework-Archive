@@ -53,6 +53,11 @@ namespace Mixins.Definitions
       get { return Type.IsInterface && Type.GetMethods().Length == 0; }
     }
 
+    public bool IsAggregatorInterface
+    {
+      get { return IsEmptyInterface && Type.GetInterfaces().Length != 0; }
+    }
+
     public abstract void Accept (IDefinitionVisitor visitor);
 
     public IEnumerable<MixinDefinition> FindRequiringMixins()
