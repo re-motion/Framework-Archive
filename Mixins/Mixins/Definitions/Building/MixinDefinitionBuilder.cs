@@ -25,7 +25,7 @@ namespace Mixins.Definitions.Building
       get { return _baseClass; }
     }
 
-    public MixinDefinition Apply (Type mixinType)
+    public void Apply (Type mixinType, int index)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
 
@@ -47,8 +47,6 @@ namespace Mixins.Definitions.Building
       AnalyzeOverrides (mixin);
 
       AnalyzeDependencies(mixin);
-
-      return mixin;
     }
 
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)

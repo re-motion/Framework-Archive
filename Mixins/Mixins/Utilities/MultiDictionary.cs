@@ -37,6 +37,12 @@ namespace Mixins.Utilities
       ++_count;
     }
 
+    public void Clear ()
+    {
+      _innerDictionary.Clear();
+      _count = 0;
+    }
+
     private List<TValue> GetOrCreateValueList (TKey key)
     {
       if (!_innerDictionary.ContainsKey (key))

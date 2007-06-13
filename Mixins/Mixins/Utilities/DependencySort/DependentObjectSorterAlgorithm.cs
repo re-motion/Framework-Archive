@@ -43,7 +43,7 @@ namespace Mixins.Utilities.DependencySort
               goto nextOuter;
           }
         }
-        nextOuter:
+      nextOuter:
         ;
       }
       if (rootCandidates.Count == 0)

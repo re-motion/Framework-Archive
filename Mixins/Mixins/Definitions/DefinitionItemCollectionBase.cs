@@ -62,6 +62,14 @@ namespace Mixins.Definitions
 
     protected abstract void CustomizedAdd (TKey key, TValue value);
 
+    public void Clear ()
+    {
+      _orderedItems.Clear ();
+      CustomizedClear ();
+    }
+
+    protected abstract void CustomizedClear ();
+
     public TValue this[int index]
     {
       get { return _orderedItems[index]; }

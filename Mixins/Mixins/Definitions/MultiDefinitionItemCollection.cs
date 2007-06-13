@@ -32,6 +32,11 @@ namespace Mixins.Definitions
       _items.Add (key, value);
     }
 
+    protected override void CustomizedClear ()
+    {
+      _items.Clear();
+    }
+
     public IEnumerable<TValue> this[TKey key]
     {
       get

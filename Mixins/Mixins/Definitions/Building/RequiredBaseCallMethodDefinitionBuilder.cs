@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Rubicon.Text;
 
 namespace Mixins.Definitions.Building
 {
@@ -34,8 +35,13 @@ namespace Mixins.Definitions.Building
         }
         else
         {
-          string message = string.Format ("The base call dependency {0} in base class {1} is not fulfilled - the type is neither introduced "
-              + "nor implemented.", declaringRequirement.FullName, _classDefinition.FullName);
+          SeparatedStringBuilder dependenciesString = new SeparatedStringBuilder (",");
+          foreach (MixinDefinition mixin in declaringRequirement.FindRequiringMixins())
+          {
+            dependenciesString.Append (mixin.FullName);
+          }
+          string message = string.Format ("The base call dependency {0} (mixins {1}) applied to class {2} is not fulfilled - the type is neither "
+              + "introduced nor implemented.", declaringRequirement.FullName, dependenciesString, _classDefinition.FullName);
           throw new ConfigurationException (message);
         }
       }

@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Mixins.Definitions
 {
   [Serializable]
+  [DebuggerDisplay ("Count = {Count}")]
   public class CovariantDefinitionItemCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionItemCollection<TKey, TValueBase>
       where TValue : class, TValueBase
       where TValueBase : IVisitableDefinition

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Mixins.UnitTests.SampleTypes;
 using Mixins.Utilities;
 using NUnit.Framework;

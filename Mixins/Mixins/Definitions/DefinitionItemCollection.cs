@@ -39,6 +39,11 @@ namespace Mixins.Definitions
       _items.Add (key, value);
     }
 
+    protected override void CustomizedClear ()
+    {
+      _items.Clear();
+    }
+
     public TValue this[TKey key]
     {
       get { return HasItem (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue); }

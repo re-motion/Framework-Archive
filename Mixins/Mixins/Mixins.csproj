@@ -54,6 +54,8 @@
     <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="ContainsMixinInfoAttribute.cs" />
     <Compile Include="Definitions\BaseClassDefinitionCache.cs" />
+    <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
+    <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />
     <Compile Include="IgnoreForMixinConfigurationAttribute.cs" />
     <Compile Include="MixinConfiguration.cs" />
     <Compile Include="Definitions\Building\MemberChain.cs" />

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Mixins.Context;
 using System.Reflection;
+using Mixins.Definitions.Building.DependencySorting;
+using Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
@@ -9,6 +11,8 @@ namespace Mixins.Definitions.Building
 {
   public class BaseClassDefinitionBuilder
   {
+    private DependentObjectSorter<MixinDefinition> _sorter = new DependentObjectSorter<MixinDefinition> (new MixinDependencyAnalyzer());
+
     public BaseClassDefinitionBuilder ()
     {
     }
@@ -40,23 +44,30 @@ namespace Mixins.Definitions.Building
       return classDefinition;
     }
 
-    private static void ApplyExplicitFaceInterfaces (BaseClassDefinition classDefinition, ClassContext classContext)
+    private void ApplyExplicitFaceInterfaces (BaseClassDefinition classDefinition, ClassContext classContext)
     {
       foreach (Type faceInterface in classContext.CompleteInterfaces)
         classDefinition.RequiredFaceTypes.Add (new RequiredFaceTypeDefinition (classDefinition, faceInterface));
     }
 
-    private static void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
+    private void ApplyMixins (BaseClassDefinition classDefinition, ClassContext classContext)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
       IEnumerator<Type> enumerator = classContext.Mixins.GetEnumerator();
-      for (int i = 0; enumerator.MoveNext(); ++i)
+      for (int i = 0; enumerator.MoveNext (); ++i)
+        mixinDefinitionBuilder.Apply (enumerator.Current, i);
+
+      IEnumerable<MixinDefinition> sortedMixins = new List<MixinDefinition> (classDefinition.Mixins); // _sorter.SortDependencies (classDefinition.Mixins);
+
+      classDefinition.Mixins.Clear();
+      IEnumerator<MixinDefinition> mixinEnumerator = sortedMixins.GetEnumerator();
+      for (int i = 0; mixinEnumerator.MoveNext(); ++i)
       {
-        MixinDefinition mixin = mixinDefinitionBuilder.Apply (enumerator.Current);
-        mixin.MixinIndex = i;
+        mixinEnumerator.Current.MixinIndex = i;
+        classDefinition.Mixins.Add (mixinEnumerator.Current);
       }
     }
 
@@ -92,6 +103,5 @@ namespace Mixins.Definitions.Building
     {
       return method.IsPublic || method.IsFamily;
     }
-
   }
 }
