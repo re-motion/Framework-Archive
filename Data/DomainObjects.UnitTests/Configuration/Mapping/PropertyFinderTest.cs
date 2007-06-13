@@ -3,8 +3,6 @@ using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -20,9 +18,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (propertyFinder.Type, Is.SameAs (typeof (ClassWithMixedProperties)));
       Assert.That (propertyFinder.IncludeBaseProperties, Is.True);
     }
-    
+
     [Test]
-    public void FindPropertyInfos_ForInheritanceRoot ()
+    public void FindPropertyInfos_ForClassWithMixedProperties ()
     {
       PropertyFinder propertyFinder = new PropertyFinder (typeof (ClassWithMixedProperties), true);
 
@@ -37,43 +35,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    public void FindPropertyInfos_ForDerivedClass ()
-    {
-      PropertyFinder propertyFinder = new PropertyFinder (typeof (ClassWithMixedProperties), false);
-
-      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
-
-      Assert.That (propertyInfo.Length, Is.EqualTo (4));
-      Assert.That (propertyInfo[0], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "Int32")));
-      Assert.That (propertyInfo[1], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "String")));
-      Assert.That (propertyInfo[2], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")));
-      Assert.That (propertyInfo[3], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "PrivateString")));
-    }
-
-    [Test]
     public void FindPropertyInfos_ForClassWithOneSideRelationProperties ()
     {
       PropertyFinder propertyFinder = new PropertyFinder (typeof (ClassWithOneSideRelationProperties), true);
 
-      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos ();
+      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
 
       Assert.That (propertyInfo.Length, Is.EqualTo (0));
-   }
-
-    [Test]
-    [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "The 'Rubicon.Data.DomainObjects.StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definiton.\r\n  "
-        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
-        + "property: Int32")]
-    public void FindPropertyInfos_ForDerivedClassHavingAnOverriddenPropertyWithMappingAttribute ()
-    {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute",
-          true,
-          false);
-      PropertyFinder propertyFinder = new PropertyFinder (type, false);
-      
-      propertyFinder.FindPropertyInfos();
     }
 
     private PropertyInfo GetProperty (Type type, string propertyName)

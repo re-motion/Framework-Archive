@@ -112,6 +112,8 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
+    <Compile Include="Configuration\Mapping\PropertyFinderBaseTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationPropertyFinderTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationRightSide.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\OtherClassWithInvalidBidirectionalRelationLeftSide.cs" />
