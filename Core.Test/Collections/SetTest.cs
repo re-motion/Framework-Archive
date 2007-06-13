@@ -303,10 +303,27 @@ namespace Rubicon.Core.UnitTests.Collections
 
     [Test]
     [ExpectedException (typeof (NotSupportedException))]
-    public void ICollectionSyncRoot ()
+    public void ICollectionSyncRootThrows ()
     {
       Set<int> set = new Set<int> (1, 2, 3, 4, 5, 6, 7, 8);
       object root = ((ICollection) set).SyncRoot;
+    }
+
+    [Test]
+    public void GetAny()
+    {
+      Set<int> set = new Set<int> (1, 2, 3, 4, 5, 6, 7, 8);
+      Assert.IsTrue (set.Contains (set.GetAny()));
+      set = new Set<int> (1);
+      Assert.AreEqual (1, set.GetAny ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void GetAnyThrowsWhenEmpty()
+    {
+      Set<int> set = new Set<int> ();
+      set.GetAny();
     }
   }
 }

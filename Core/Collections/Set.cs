@@ -255,5 +255,19 @@ namespace Rubicon.Collections
     {
       return _items.Keys.GetEnumerator ();
     }
+
+    /// <summary>
+    /// Returns an arbitrary element contained in the set without removing it.
+    /// </summary>
+    /// <returns>An arbitrary element contained in the set.</returns>
+    /// <exception cref="InvalidOperationException">The set is empty.</exception>
+    public T GetAny ()
+    {
+      if (Count == 0)
+        throw new InvalidOperationException ("The set is empty.");
+      IEnumerator<T> enumerator = GetEnumerator();
+      enumerator.MoveNext();
+      return enumerator.Current;
+    }
   }
 }
