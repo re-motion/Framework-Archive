@@ -25,7 +25,7 @@ namespace Rubicon.Collections
   /// </remarks>
   [DebuggerDisplay ("Set - Count = {Count}")]
   [Serializable]
-  public class Set<T> : IEnumerable<T>, ICollection<T>
+  public class Set<T> : IEnumerable<T>, ICollection<T>, ICollection
   {
     private Dictionary<T, T> _items;
 
@@ -49,6 +49,18 @@ namespace Rubicon.Collections
     {
       ArgumentUtility.CheckNotNull ("initialItems", initialItems);
       AddRange (initialItems);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Set&lt;T&gt;"/> class, adding a range of initial items.
+    /// </summary>
+    /// <param name="initialItems">The initial items to be held by the set. If this contains duplicates, they will be filtered out while being
+    /// added to the set.</param>
+    /// <exception cref="ArgumentNullException">The <paramref name="initialItems"/> parameter is <see langword="null"/> or contains a
+    /// <see langword="null"/> reference.</exception>
+    public Set (params T[] initialItems)
+        : this ((IEnumerable<T>) initialItems)
+    {
     }
 
     /// <summary>
@@ -147,6 +159,25 @@ namespace Rubicon.Collections
       _items.Keys.CopyTo (array, arrayIndex);
     }
 
+    ///<summary>
+    ///Copies the elements of the <see cref="Set{T}"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/see> index.
+    ///</summary>
+    ///
+    ///<param name="array">The one-dimensional <see cref="T:System.Array"></see> that is the destination of the elements copied.
+    ///The <see cref="T:System.Array"></see> must have zero-based indexing. </param>
+    ///<param name="index">The zero-based index in array at which copying begins. </param>
+    ///<exception cref="T:System.ArgumentNullException">array is null. </exception>
+    ///<exception cref="T:System.ArgumentOutOfRangeException">index is less than zero. </exception>
+    ///<exception cref="T:System.ArgumentException">array is multidimensional. -or- index is equal to or greater than the length of array. -or-
+    /// The number of elements in the <see cref="Set{T}"/> is greater than the available space from index to the end of the destination array. </exception>
+    ///<exception cref="T:System.InvalidCastException">The type of the <see cref="Set{T}"/> elements cannot be cast automatically to the type of the
+    /// destination array. </exception><filterpriority>2</filterpriority>
+    void ICollection.CopyTo (Array array, int index)
+    {
+      ArgumentUtility.CheckNotNull ("array", array);
+      ((ICollection) _items.Keys).CopyTo (array, index);
+    }
+
     /// <summary>
     /// Returns an array holding the items currently stored in the set.
     /// </summary>
@@ -180,6 +211,26 @@ namespace Rubicon.Collections
     public int Count
     {
       get { return _items.Count; }
+    }
+
+    ///<summary>
+    ///This method is not supported and always throws an exception.
+    ///</summary>
+    ///<exception cref="NotSupportedException">The <see cref="Set{T}"/> collection type does not support SyncRoots.</exception>
+    object ICollection.SyncRoot
+    {
+      get { throw new NotSupportedException ("The Set collection type does not support SyncRoots."); }
+    }
+
+    ///<summary>
+    ///Gets a value indicating whether access to the collection is synchronized (thread safe). This always returns false.
+    ///</summary>
+    ///<returns>
+    ///Always false.
+    ///</returns>
+    bool ICollection.IsSynchronized
+    {
+      get { return false; }
     }
 
     bool ICollection<T>.IsReadOnly

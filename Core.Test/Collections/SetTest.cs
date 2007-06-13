@@ -275,5 +275,38 @@ namespace Rubicon.Core.UnitTests.Collections
       foreach (int i in s2)
         Assert.IsTrue (s1.Contains (i));
     }
+
+    [Test]
+    public void ICollectionCopyTo()
+    {
+      Set<int> set = new Set<int> (1, 2, 3, 4, 5, 6, 7, 8);
+      object[] targetArray = new object[10];
+      ((ICollection) set).CopyTo (targetArray, 1);
+      Assert.AreEqual (null, targetArray[0]);
+      Assert.AreEqual (1, targetArray[1]);
+      Assert.AreEqual (2, targetArray[2]);
+      Assert.AreEqual (3, targetArray[3]);
+      Assert.AreEqual (4, targetArray[4]);
+      Assert.AreEqual (5, targetArray[5]);
+      Assert.AreEqual (6, targetArray[6]);
+      Assert.AreEqual (7, targetArray[7]);
+      Assert.AreEqual (8, targetArray[8]);
+      Assert.AreEqual (null, targetArray[9]);
+    }
+
+    [Test]
+    public void ICollectionIsSynchronized()
+    {
+      Set<int> set = new Set<int> (1, 2, 3, 4, 5, 6, 7, 8);
+      Assert.IsFalse (((ICollection) set).IsSynchronized);
+    }
+
+    [Test]
+    [ExpectedException (typeof (NotSupportedException))]
+    public void ICollectionSyncRoot ()
+    {
+      Set<int> set = new Set<int> (1, 2, 3, 4, 5, 6, 7, 8);
+      object root = ((ICollection) set).SyncRoot;
+    }
   }
 }
