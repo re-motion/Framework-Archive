@@ -53,6 +53,7 @@
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="ContainsMixinInfoAttribute.cs" />
+    <Compile Include="Context\MixinContext.cs" />
     <Compile Include="Definitions\BaseClassDefinitionCache.cs" />
     <Compile Include="Definitions\Building\DependencySorting\MixinDependencyAnalyzer.cs" />
     <Compile Include="Definitions\Building\DependencySorting\DependentMixinGrouper.cs" />

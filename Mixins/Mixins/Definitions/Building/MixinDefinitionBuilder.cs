@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Mixins;
+using Mixins.Context;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
@@ -25,11 +26,12 @@ namespace Mixins.Definitions.Building
       get { return _baseClass; }
     }
 
-    public void Apply (Type mixinType, int index)
+    public void Apply (MixinContext mixinContext, int index)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull ("mixinContext", mixinContext);
+      ArgumentUtility.CheckNotNull ("index", index);
 
-      mixinType = BaseClass.MixinTypeInstantiator.GetConcreteMixinType (mixinType);
+      Type mixinType = BaseClass.MixinTypeInstantiator.GetConcreteMixinType (mixinContext.MixinType);
       MixinDefinition mixin = new MixinDefinition (mixinType, BaseClass);
       BaseClass.Mixins.Add (mixin);
 

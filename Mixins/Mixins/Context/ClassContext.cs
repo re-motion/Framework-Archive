@@ -13,8 +13,8 @@ namespace Mixins.Context
   public sealed class ClassContext : ISerializable, ICloneable
   {
     private readonly Type _type;
-    private readonly List<Type> _mixins;
-    private readonly UncastableEnumerableWrapper<Type> _mixinWrapperForOutside;
+    private readonly Dictionary<Type, MixinContext> _mixins;
+    private readonly UncastableEnumerableWrapper<MixinContext> _mixinWrapperForOutside;
     private readonly List<Type> _completeInterfaces;
     private readonly UncastableEnumerableWrapper<Type> _completeInterfaceWrapperForOutside;
     private readonly object _lockObject = new object ();
@@ -25,8 +25,8 @@ namespace Mixins.Context
     {
       ArgumentUtility.CheckNotNull ("type", type);
       _type = type;
-      _mixins = new List<Type>();
-      _mixinWrapperForOutside = new UncastableEnumerableWrapper<Type> (_mixins);
+      _mixins = new Dictionary<Type, MixinContext>();
+      _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
       _completeInterfaces = new List<Type>();
       _completeInterfaceWrapperForOutside = new UncastableEnumerableWrapper<Type> (_completeInterfaces);
     }
@@ -44,10 +44,10 @@ namespace Mixins.Context
       _type = ReflectionObjectSerializer.DeserializeType ("_type", info);
 
       int mixinCount = info.GetInt32 ("_mixins.Count");
-      _mixins = new List<Type> (mixinCount);
+      _mixins = new Dictionary<Type, MixinContext> (mixinCount);
       for (int i = 0; i < mixinCount; ++i)
-        AddMixin (ReflectionObjectSerializer.DeserializeType ("_mixins[" + i + "]", info));
-      _mixinWrapperForOutside = new UncastableEnumerableWrapper<Type> (_mixins);
+        AddMixinContext (MixinContext.DeserializeFromFlatStructure (this, _lockObject, "_mixins[" + i + "]", info));
+      _mixinWrapperForOutside = new UncastableEnumerableWrapper<MixinContext> (_mixins.Values);
 
       int completeInterfaceCount = info.GetInt32 ("_completeInterfaces.Count");
       _completeInterfaces = new List<Type> (completeInterfaceCount);
@@ -62,8 +62,10 @@ namespace Mixins.Context
       {
         ReflectionObjectSerializer.SerializeType (_type, "_type", info);
         info.AddValue ("_mixins.Count", _mixins.Count);
-        for (int i = 0; i < _mixins.Count; ++i)
-          ReflectionObjectSerializer.SerializeType (_mixins[i], "_mixins[" + i + "]", info);
+        IEnumerator<MixinContext> mixinEnumerator = _mixins.Values.GetEnumerator ();
+        for (int i = 0; mixinEnumerator.MoveNext(); ++i)
+          mixinEnumerator.Current.SerializeIntoFlatStructure ("_mixins[" + i + "]", info);
+
         info.AddValue ("_completeInterfaces.Count", _completeInterfaces.Count);
         for (int i = 0; i < _completeInterfaces.Count; ++i)
           ReflectionObjectSerializer.SerializeType (_completeInterfaces[i], "_completeInterfaces[" + i + "]", info);
@@ -75,7 +77,7 @@ namespace Mixins.Context
       get { return _type; }
     }
 
-    public IEnumerable<Type> Mixins
+    public IEnumerable<MixinContext> Mixins
     {
       get { return _mixinWrapperForOutside; }
     }
@@ -123,7 +125,7 @@ namespace Mixins.Context
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       lock (_lockObject)
       {
-        return _mixins.Contains (mixinType);
+        return _mixins.ContainsKey (mixinType);
       }
     }
 
@@ -134,7 +136,33 @@ namespace Mixins.Context
       {
         EnsureNotFrozen();
         if (!ContainsMixin (mixinType))
-          _mixins.Add (mixinType);
+        {
+          MixinContext context = new MixinContext (this, mixinType, _lockObject);
+          AddMixinContext (context);
+        }
+      }
+    }
+
+    private void AddMixinContext (MixinContext context)
+    {
+      ArgumentUtility.CheckNotNull ("context", context);
+      lock (_lockObject)
+      {
+        if (ContainsMixin (context.MixinType))
+          throw new InvalidOperationException ("The class context already contains a mixin context for type " + context.MixinType.FullName + ".");
+        else
+          _mixins.Add (context.MixinType, context);
+      }
+    }
+
+    public MixinContext GetOrAddMixinContext (Type mixinType)
+    {
+      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      lock (_lockObject)
+      {
+        if (!ContainsMixin (mixinType))
+          AddMixin (mixinType);
+        return _mixins[mixinType];
       }
     }
 
@@ -187,7 +215,7 @@ namespace Mixins.Context
       }
     }
 
-    private void EnsureNotFrozen ()
+    internal void EnsureNotFrozen ()
     {
       if (IsFrozen)
         throw new InvalidOperationException (string.Format ("The class context for {0} is frozen.", Type.FullName));
@@ -202,12 +230,12 @@ namespace Mixins.Context
       lock (_lockObject)
       lock (other._lockObject)
       {
-         if (!other.Type.Equals (Type) || other._mixins.Count != _mixins.Count || other._completeInterfaces.Count != _completeInterfaces.Count)
+        if (!other.Type.Equals (Type) || other._mixins.Count != _mixins.Count || other._completeInterfaces.Count != _completeInterfaces.Count)
           return false;
 
-        for (int i = 0; i < _mixins.Count; ++i)
+        foreach (MixinContext mixinContext in _mixins.Values)
         {
-          if (!_mixins[i].Equals (other._mixins[i]))
+          if (!other._mixins.ContainsKey (mixinContext.MixinType) || !other._mixins[mixinContext.MixinType].Equals (mixinContext))
             return false;
         }
 
@@ -225,18 +253,21 @@ namespace Mixins.Context
     {
       lock (_lockObject)
       {
-        return Type.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (_mixins) ^ EqualityUtility.GetRotatedHashCode (_completeInterfaces);
+        return Type.GetHashCode() ^ EqualityUtility.GetRotatedHashCode (_mixins.Values) ^ EqualityUtility.GetRotatedHashCode (_completeInterfaces);
       }
     }
 
     public ClassContext Clone ()
     {
-      ClassContext newInstance = new ClassContext (Type);
-      foreach (Type mixin in Mixins)
-        newInstance.AddMixin (mixin);
-      foreach (Type completeInterface in CompleteInterfaces)
-        newInstance.AddCompleteInterface (completeInterface);
-      return newInstance;
+      lock (_lockObject)
+      {
+        ClassContext newInstance = new ClassContext (Type);
+        foreach (MixinContext mixinContext in Mixins)
+          newInstance.AddMixinContext (mixinContext.Clone(newInstance, newInstance._lockObject));
+        foreach (Type completeInterface in CompleteInterfaces)
+          newInstance.AddCompleteInterface (completeInterface);
+        return newInstance;
+      }
     }
 
     object ICloneable.Clone ()
@@ -247,11 +278,11 @@ namespace Mixins.Context
     public override string ToString ()
     {
       StringBuilder sb = new StringBuilder (Type.FullName);
-      foreach (Type mixinType in Mixins)
-        sb.Append (" + ").Append (mixinType.FullName);
+      foreach (MixinContext mixinContext in Mixins)
+        sb.Append (" + ").Append (mixinContext.MixinType.FullName);
       foreach (Type completeInterfaceType in CompleteInterfaces)
         sb.Append (" => ").Append (completeInterfaceType.FullName);
       return sb.ToString();
     }
-  }
+ }
 }

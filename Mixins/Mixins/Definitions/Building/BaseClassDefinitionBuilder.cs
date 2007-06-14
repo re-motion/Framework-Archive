@@ -58,7 +58,7 @@ namespace Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
       MixinDefinitionBuilder mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
-      IEnumerator<Type> enumerator = classContext.Mixins.GetEnumerator();
+      IEnumerator<MixinContext> enumerator = classContext.Mixins.GetEnumerator();
       for (int i = 0; enumerator.MoveNext (); ++i)
         mixinDefinitionBuilder.Apply (enumerator.Current, i);
 
