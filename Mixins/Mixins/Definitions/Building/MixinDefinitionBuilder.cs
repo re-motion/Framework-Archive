@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Mixins;
 using Mixins.Context;
@@ -48,7 +49,7 @@ namespace Mixins.Definitions.Building
       AnalyzeInterfaceIntroductions (mixin);
       AnalyzeOverrides (mixin);
 
-      AnalyzeDependencies(mixin);
+      AnalyzeDependencies(mixin, mixinContext.ExplicitDependencies);
     }
 
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)
@@ -89,13 +90,14 @@ namespace Mixins.Definitions.Building
       baseMember.AddOverride (overrider);
     }
 
-    private void AnalyzeDependencies (MixinDefinition mixin)
+    private void AnalyzeDependencies (MixinDefinition mixin, IEnumerable<Type> additionalDependencies)
     {
       ThisDependencyDefinitionBuilder thisDependencyBuilder = new ThisDependencyDefinitionBuilder (mixin);
       thisDependencyBuilder.Apply (_faceRequirementsAnalyzer.Analyze (mixin));
 
       BaseDependencyDefinitionBuilder baseDependencyBuilder = new BaseDependencyDefinitionBuilder (mixin);
       baseDependencyBuilder.Apply (_baseRequirementsAnalyzer.Analyze (mixin));
+      baseDependencyBuilder.Apply (additionalDependencies);
     }
   }
 }

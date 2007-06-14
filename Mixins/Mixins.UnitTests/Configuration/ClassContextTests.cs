@@ -105,7 +105,7 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsNotNull (classContext);
 
       Assert.IsTrue (classContext.ContainsMixin (typeof (BT3Mixin5)));
-      Assert.IsTrue (classContext.GetOrAddMixinContext (typeof (BT3Mixin5)).ContainsExplicitDependency (typeof (IBaseType31)));
+      Assert.IsTrue (classContext.GetOrAddMixinContext (typeof (BT3Mixin5)).ContainsExplicitDependency (typeof (IBaseType32)));
     }
 
     [Test]

@@ -140,5 +140,31 @@ namespace Mixins.UnitTests.Configuration
           typeof (MixinIntroducingGenericInterfaceWithTargetAsThisType<>));
       Assert.IsTrue (def.IntroducedInterfaces.HasItem (typeof (IEquatable<BaseType1>)));
     }
+
+    [Test]
+    public void ExplicitBaseCallDependenciesCorrectlyCopied ()
+    {
+      BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType32)));
+      Assert.IsTrue (bt3.Mixins[typeof (BT3Mixin5)].BaseDependencies.HasItem (typeof (IBaseType32)));
+    }
+
+    public class MixinWithDependency : Mixin<object, IMixinTargetWithExplicitDependencies>
+    {
+    }
+
+    public interface IMixinTargetWithExplicitDependencies {}
+
+    [Uses (typeof (MixinWithDependency), AdditionalDependencies = new Type[] {typeof (IMixinTargetWithExplicitDependencies)})]
+    public class MixinTargetWithExplicitDependencies : IMixinTargetWithExplicitDependencies
+    { }
+
+    [Test]
+    public void DuplicateExplicitDependenciesDontMatter ()
+    {
+      BaseClassDefinition mt = TypeFactory.GetActiveConfiguration (typeof (MixinTargetWithExplicitDependencies));
+      Assert.IsTrue (mt.RequiredBaseCallTypes.HasItem (typeof (IMixinTargetWithExplicitDependencies)));
+      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.HasItem (typeof (IMixinTargetWithExplicitDependencies)));
+    }
   }
 }

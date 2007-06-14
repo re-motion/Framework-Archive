@@ -89,6 +89,7 @@
     <Compile Include="Utilities\GenericTypeInstantiatorTests.cs" />
     <Compile Include="Utilities\MixinTypeInstantiatorTests.cs" />
     <Compile Include="Utilities\NameAndSignatureEqualityComparerTests.cs" />
+    <Compile Include="Utilities\ReflectionEmitUtilityTests.cs" />
     <Compile Include="Utilities\Serialization\GenericType.cs" />
     <Compile Include="Utilities\Serialization\SafeReflectionSerializationTests.cs" />
     <Compile Include="Utilities\SignatureEqualityComparerTests.cs" />

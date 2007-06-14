@@ -47,7 +47,8 @@ namespace Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("mixin", mixin);
       ArgumentUtility.CheckNotNull ("dependency", dependency);
 
-      mixin.ThisDependencies.Add (dependency);
+      if (!mixin.ThisDependencies.HasItem (dependency.RequiredType.Type))
+        mixin.ThisDependencies.Add (dependency);
     }
   }
 }
