@@ -1,3 +1,8 @@
+1.7.43
+======
+- Neue Klasse Rubicon.Reflection.InheritanceHierarchyFilter 
+  GetLeafTypes(): Liefert von einer Liste von übergegenen Klassen all jene Klassen zurück, von denen keine weitere Klasse mehr ableitet.
+
 1.7.42
 ======
 - InterlockedCache umbenannt auf LazyInterlockedCache, bis auf weiteres auf [Obsolete] gesetzt da Stabilität und Performance-Vorteil fraglich sind.
