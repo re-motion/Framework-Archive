@@ -434,9 +434,22 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [Ignore ("TODO: Test with BaseType7 grand and simple")]
-    public void TestMultipleOverrides()
+    public void TestMultipleOverridesSmall()
     {
+      BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With();
+      Assert.AreEqual ("BT7Mixin0.One-BT7Mixin2.One-BT7Mixin3.One-BT7Mixin1.One-BaseType7.One-BT7Mixin3.One-BT7Mixin1.One-BaseType7.One-BaseType7.Two-BT7Mixin2.Two",
+          bt7.One ());
+      Assert.AreEqual ("BT7Mixin2.Two", bt7.Two ());
+      Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three ());
+      Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four", bt7.Four ());
+      Assert.AreEqual ("BT7Mixin9.Five-BaseType7.Five", bt7.Five ());
+    }
+
+    [Test]
+    [Ignore ("Implement test case")]
+    public void TestMultipleOverridesGrand()
+    {
+      Assert.Fail ();
     }
   }
 }

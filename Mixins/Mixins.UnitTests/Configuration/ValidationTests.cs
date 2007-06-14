@@ -228,6 +228,15 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfAbstractBaseClass ()
+    {
+      BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (AbstractMixin));
+      DefaultValidationLog log = Validator.Validate (bc);
+      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAbstract", log));
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+    }
+
+    [Test]
     public void FailsIfOverriddenMethodNotVirtual ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));

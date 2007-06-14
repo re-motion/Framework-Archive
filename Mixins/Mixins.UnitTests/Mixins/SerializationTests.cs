@@ -137,7 +137,7 @@ namespace Mixins.UnitTests.Mixins
       Assert.AreEqual (28, c2.I);
     }
 
-    public abstract class NotSerializableClass
+    public class NotSerializableClass
     {
     }
 

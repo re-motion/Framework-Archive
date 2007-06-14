@@ -11,7 +11,7 @@ namespace Mixins.UnitTests.SampleTypes
     string Five ();
   }
 
-  public abstract class BaseType7 : IBaseType7
+  public class BaseType7 : IBaseType7
   {
     public virtual string One()
     {
@@ -23,9 +23,15 @@ namespace Mixins.UnitTests.SampleTypes
       return "BaseType7.Two";
     }
 
-    public abstract string Three ();
+    public virtual string Three ()
+    {
+      return "BaseType7.Three";
+    }
 
-    public abstract string Four ();
+    public virtual string Four ()
+    {
+      return "BaseType7.Four";
+    }
 
     public virtual string Five ()
     {
