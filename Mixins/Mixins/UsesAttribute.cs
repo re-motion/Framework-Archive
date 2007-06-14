@@ -10,10 +10,11 @@ namespace Mixins
   /// This attribute is inherited (i.e. if a base class depends on a mixin, its subclasses also depend on the same mixin) and can be applied
   /// multiple times if a class depends on multiple mixins.
   /// </remarks>
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)] // UsesMixinAttribute is inherited
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)] // UsesMixinAttribute is inherited
   public class UsesAttribute : Attribute
   {
     private Type _mixinType;
+    private Type[] _additionalDependencies = Type.EmptyTypes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UsesAttribute"/> class.
@@ -32,6 +33,22 @@ namespace Mixins
     public Type MixinType
     {
       get { return _mixinType; }
+    }
+
+    /// <summary>
+    /// Gets or sets additional explicit base call dependencies for the applied mixin type. This can be used to establish an ordering when
+    /// combining unrelated mixins on a class which override the same methods.
+    /// </summary>
+    /// <value>The additional dependencies of the mixin. The validity of the dependency types is not checked until the configuration is built.</value>
+    /// <exception cref="ArgumentNullException">The <paramref name="value"/> argument is <see langword="null"/>.</exception>
+    public Type[] AdditionalDependencies
+    {
+      get { return _additionalDependencies; }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _additionalDependencies = value;
+      }
     }
   }
 }

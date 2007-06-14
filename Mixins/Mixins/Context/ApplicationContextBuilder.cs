@@ -71,8 +71,12 @@ namespace Mixins.Context
 
     private static void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
     {
-      foreach (UsesAttribute applyMixinAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
-        targetContext.GetOrAddClassContext (targetType).AddMixin (applyMixinAttribute.MixinType);
+      foreach (UsesAttribute usesAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
+      {
+        MixinContext mixinContext = targetContext.GetOrAddClassContext (targetType).GetOrAddMixinContext (usesAttribute.MixinType);
+        foreach (Type additionalDependency in usesAttribute.AdditionalDependencies)
+          mixinContext.AddExplicitDependency (additionalDependency);
+      }
     }
 
     private static void AnalyzeCompleteInterface (Type completeInterfaceType, ApplicationContext targetContext)

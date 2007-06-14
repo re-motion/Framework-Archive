@@ -29,7 +29,7 @@ namespace Mixins.UnitTests.SampleTypes
     string IfcMethod2 ();
   }
 
-  [Uses(typeof(BT3Mixin5))]
+  [Uses (typeof (BT3Mixin5), AdditionalDependencies = new Type[] { typeof (IBaseType31) })]
   [Serializable]
   public class BaseType3 : IBaseType31, IBaseType32, IBaseType34, IBaseType35
   {
