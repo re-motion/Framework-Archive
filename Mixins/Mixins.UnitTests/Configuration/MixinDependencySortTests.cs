@@ -34,7 +34,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: API for excplicitly adding dependencies to mixin configuration")]
     public void MixinDefinitionsAreSortedCorrectlyGrand ()
     {
       using (new MixinConfiguration (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3),
@@ -59,26 +58,28 @@ namespace Mixins.UnitTests.Configuration
       MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
       MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
       MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
+      MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
+      MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
 
       BaseClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
       Assert.AreEqual (11, bt7.Mixins.Count);
       // group 1
-      Assert.AreEqual (5, bt7.Mixins[typeof (BT7Mixin0)].MixinIndex); // u
-      Assert.AreEqual (6, bt7.Mixins[typeof (BT7Mixin7)].MixinIndex); // u
-      Assert.AreEqual (1, bt7.Mixins[typeof (BT7Mixin4)].MixinIndex); // u
-      Assert.AreEqual (2, bt7.Mixins[typeof (BT7Mixin6)].MixinIndex); // u
+      Assert.AreEqual (0, bt7.Mixins[typeof (BT7Mixin0)].MixinIndex); // u
+      Assert.AreEqual (1, bt7.Mixins[typeof (BT7Mixin7)].MixinIndex); // u
+      Assert.AreEqual (2, bt7.Mixins[typeof (BT7Mixin4)].MixinIndex); // u
+      Assert.AreEqual (3, bt7.Mixins[typeof (BT7Mixin6)].MixinIndex); // u
 
       Assert.AreEqual (4, bt7.Mixins[typeof (BT7Mixin2)].MixinIndex);
-      Assert.AreEqual (3, bt7.Mixins[typeof (BT7Mixin3)].MixinIndex);
-      Assert.AreEqual (0, bt7.Mixins[typeof (BT7Mixin1)].MixinIndex);
+      Assert.AreEqual (5, bt7.Mixins[typeof (BT7Mixin3)].MixinIndex);
+      Assert.AreEqual (6, bt7.Mixins[typeof (BT7Mixin1)].MixinIndex);
 
       // group 2
-      Assert.AreEqual (10, bt7.Mixins[typeof (BT7Mixin10)].MixinIndex);
-      Assert.AreEqual (9, bt7.Mixins[typeof (BT7Mixin9)].MixinIndex); // u
-      Assert.AreEqual (8, bt7.Mixins[typeof (BT7Mixin8)].MixinIndex); // u
+      Assert.AreEqual (7, bt7.Mixins[typeof (BT7Mixin10)].MixinIndex);
+      Assert.AreEqual (8, bt7.Mixins[typeof (BT7Mixin9)].MixinIndex); // u
+      Assert.AreEqual (9, bt7.Mixins[typeof (BT7Mixin8)].MixinIndex); // u
 
       // group 3
-      Assert.AreEqual (7, bt7.Mixins[typeof (BT7Mixin5)].MixinIndex);
+      Assert.AreEqual (10, bt7.Mixins[typeof (BT7Mixin5)].MixinIndex);
     }
 
     [Test]
@@ -135,7 +136,6 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO: API for excplicitly adding dependencies to mixin configuration")]
     public void DependencyAnalyzer ()
     {
       using (new MixinConfiguration (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3),
@@ -144,6 +144,8 @@ namespace Mixins.UnitTests.Configuration
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
 
         BaseClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
         MixinDependencyAnalyzer analyzer = new MixinDependencyAnalyzer();
@@ -181,7 +183,6 @@ namespace Mixins.UnitTests.Configuration
     }
     
     [Test]
-    [Ignore ("TODO: API for excplicitly adding dependencies to mixin configuration")]
     public void MixinGroupBuilder ()
     {
       using (new MixinConfiguration (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3),
@@ -190,6 +191,8 @@ namespace Mixins.UnitTests.Configuration
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (typeof (IBT7Mixin7));
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (typeof (IBT7Mixin4));
         MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (typeof (IBT7Mixin6));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (typeof (IBT7Mixin2));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (typeof (IBT7Mixin8));
 
         BaseClassDefinition bt7 = TypeFactory.GetActiveConfiguration (typeof (BaseType7));
         DependentMixinGrouper grouper = new DependentMixinGrouper();

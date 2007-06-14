@@ -2,8 +2,10 @@ using System;
 
 namespace Mixins.UnitTests.SampleTypes
 {
+  public interface IBT7Mixin8 { }
+
   // no attributes
-  public class BT7Mixin8 : Mixin<object, IBaseType7>
+  public class BT7Mixin8 : Mixin<object, IBaseType7>, IBT7Mixin8
   {
     [Override]
     public string Five()
