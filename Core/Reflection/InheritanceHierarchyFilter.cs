@@ -22,7 +22,11 @@ namespace Rubicon.Reflection
     {
       Set<Type> baseTypes = new Set<Type>();
       foreach (Type type in _types)
+      {
         baseTypes.Add (type.BaseType);
+        if (type.BaseType.IsGenericType)
+          baseTypes.Add (type.BaseType.GetGenericTypeDefinition());
+      }
 
       return Array.FindAll (_types, delegate (Type type) { return !baseTypes.Contains (type); });
     }

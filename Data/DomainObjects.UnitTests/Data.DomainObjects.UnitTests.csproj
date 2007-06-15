@@ -121,6 +121,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\BaseClassWithStorageGroupAttribute.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived1ClassWithStorageGroupAttribute.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithLegacyLoadConstructor.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\GenericClass.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
@@ -697,6 +698,8 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithBothEndPointsOnSameClass.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithoutStorageGroupWithMixedProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\BaseClassWithoutStorageSpecificIdentifierAttribute.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClosedGenericClass.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />

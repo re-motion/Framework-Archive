@@ -99,11 +99,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefinition;
     }
 
-    //TODO: Write test for abstract DomainObject with infrasturcture constructor
-    //TODO: Write test for fail
-    //TODO: Write test that fails for Generic DomainObject
     private void ValidateType ()
     {
+      if (_type.IsGenericType)
+        throw CreateMappingException (null, _type.GetGenericTypeDefinition(), "Generic domain objects are not supported.");
+      
       if (!IsAbstract())
       {
         BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;

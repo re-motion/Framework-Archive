@@ -45,6 +45,18 @@ namespace Rubicon.Core.UnitTests.Reflection
     {
     }
 
+    private class Base3Class<T>
+    {
+    }
+
+    private class Leaf31Class : Base3Class<int>
+    {
+    }
+
+    private class Leaf32Class<T> : Base3Class<T>
+    {
+    }
+
     [Test]
     public void name ()
     {
@@ -53,7 +65,13 @@ namespace Rubicon.Core.UnitTests.Reflection
 
       Assert.That (
           typeFilter.GetLeafTypes(),
-          Is.EqualTo (new Type[] {typeof (Leaf111Class), typeof (Leaf112Class), typeof (Leaf211Class), typeof (Leaf221Class)}));
+          Is.EqualTo (
+              new Type[]
+                  {
+                      typeof (Leaf111Class), typeof (Leaf112Class),
+                      typeof (Leaf211Class), typeof (Leaf221Class),
+                      typeof (Leaf31Class), typeof (Leaf32Class<>)
+                  }));
     }
   }
 }

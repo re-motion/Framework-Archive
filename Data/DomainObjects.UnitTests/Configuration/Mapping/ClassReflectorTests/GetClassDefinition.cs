@@ -177,6 +177,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       classReflector.GetClassDefinition (_classDefinitions);
     }
 
+    [Test]
+    public void GetClassDefinition_ForClosedGenericClass ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClosedGenericClass));
+
+      Assert.IsNotNull (classReflector.GetClassDefinition (_classDefinitions));
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Generic domain objects are not supported.\r\n"
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.GenericClass`1")]
+    public void GetClassDefinition_ForOpenGenericClass ()
+    {
+      Type type = GetTypeFromDomainWithErrors ("GenericClass`1");
+      Type closedGenericType = type.MakeGenericType (typeof (int));
+
+      ClassReflector classReflector = new ClassReflector (closedGenericType);
+
+      classReflector.GetClassDefinition (_classDefinitions);
+    }
+
     private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
