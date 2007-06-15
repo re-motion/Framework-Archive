@@ -136,12 +136,22 @@ namespace Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    // Required base call method implemented by extension -> delegate to respective extension
+    // Required base call method implemented by extension -> either as an overridde or not
+    // If an overridde, delegate to next in chain, else simply delegate to the extension implementing it field
     private void ImplementBaseCallForRequirementOnMixin (RequiredBaseCallMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
-      BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
-      methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
+      if (requiredMethod.ImplementingMethod.Base == null) // this is not an override
+      {
+        BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+        methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
+      }
+      else // this is an override
+      {
+        Assertion.Assert (!_baseClassConfiguration.Methods.HasItem (requiredMethod.InterfaceMethod));
+        BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+        methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod.Base);
+      }
     }
   }
 }

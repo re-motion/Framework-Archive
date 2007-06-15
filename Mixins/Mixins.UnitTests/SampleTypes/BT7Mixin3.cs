@@ -13,7 +13,7 @@ namespace Mixins.UnitTests.SampleTypes
     [Override]
     public virtual string One ()
     {
-      return "BT7Mixin3.One-" + Base.One();
+      return "BT7Mixin3.One-" + Base.BT7Mixin1Specific() + "-" + Base.One();
     }
   }
 }

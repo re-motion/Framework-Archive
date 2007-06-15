@@ -38,7 +38,7 @@ namespace Mixins.UnitTests.SampleTypes
     [Override]
     public virtual string Four ()
     {
-      return "BT7Mixin2.Four-" + Base.Four();
+      return "BT7Mixin2.Four-" + Base.Four() + "-" + Base.NotOverridden();
     }
   }
 }

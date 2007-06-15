@@ -9,6 +9,7 @@ namespace Mixins.UnitTests.SampleTypes
     string Three ();
     string Four ();
     string Five ();
+    string NotOverridden ();
   }
 
   public class BaseType7 : IBaseType7
@@ -30,12 +31,17 @@ namespace Mixins.UnitTests.SampleTypes
 
     public virtual string Four ()
     {
-      return "BaseType7.Four";
+      return "BaseType7.Four-" + Five();
     }
 
     public virtual string Five ()
     {
       return "BaseType7.Five";
+    }
+
+    public string NotOverridden ()
+    {
+      return "BaseType7.NotOverridden";
     }
   }
 }

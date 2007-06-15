@@ -437,19 +437,58 @@ namespace Mixins.UnitTests.Mixins
     public void TestMultipleOverridesSmall()
     {
       BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With();
-      Assert.AreEqual ("BT7Mixin0.One-BT7Mixin2.One-BT7Mixin3.One-BT7Mixin1.One-BaseType7.One-BT7Mixin3.One-BT7Mixin1.One-BaseType7.One-BaseType7.Two-BT7Mixin2.Two",
+      Assert.AreEqual ("BT7Mixin0.One-BT7Mixin2.One"
+          + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One-BaseType7.One"
+          + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One-BaseType7.One"
+          + "-BaseType7.Two-BT7Mixin2.Two",
           bt7.One ());
       Assert.AreEqual ("BT7Mixin2.Two", bt7.Two ());
       Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three ());
-      Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four", bt7.Four ());
+      Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());
       Assert.AreEqual ("BT7Mixin9.Five-BaseType7.Five", bt7.Five ());
     }
 
     [Test]
-    [Ignore ("Implement test case")]
     public void TestMultipleOverridesGrand()
     {
-      Assert.Fail ();
+      using (new MixinConfiguration (typeof (BaseType7), typeof (BT7Mixin0), typeof (BT7Mixin1), typeof (BT7Mixin2), typeof (BT7Mixin3),
+          typeof (BT7Mixin4), typeof (BT7Mixin5), typeof (BT7Mixin6), typeof (BT7Mixin7), typeof (BT7Mixin8), typeof (BT7Mixin9), typeof (BT7Mixin10)))
+      {
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin0)).AddExplicitDependency (
+            typeof (IBT7Mixin7));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin7)).AddExplicitDependency (
+            typeof (IBT7Mixin4));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin4)).AddExplicitDependency (
+            typeof (IBT7Mixin6));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin6)).AddExplicitDependency (
+            typeof (IBT7Mixin2));
+        MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType7)).GetOrAddMixinContext (typeof (BT7Mixin9)).AddExplicitDependency (
+            typeof (IBT7Mixin8));
+
+        BaseType7 bt7 = ObjectFactory.Create<BaseType7>().With();
+        Assert.AreEqual ("BT7Mixin0.One-BT7Mixin4.One-BT7Mixin6.One-BT7Mixin2.One"
+            + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One-BaseType7.One"
+            + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One-BaseType7.One"
+            + "-BaseType7.Two"
+            + "-BT7Mixin2.Two",
+            bt7.One());
+        Assert.AreEqual ("BT7Mixin2.Two", bt7.Two());
+        Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three());
+        Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());
+        Assert.AreEqual ("BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five", bt7.Five ());
+      }
     }
   }
 }
