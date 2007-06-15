@@ -79,9 +79,7 @@ namespace Mixins.UnitTests.Configuration
 
     [Extends (typeof (BaseType1))]
     [IgnoreForMixinConfiguration]
-    public class Foo
-    {
-    }
+    public class Foo { }
 
     [Test]
     public void IgnoreForMixinConfiguration()
@@ -90,25 +88,24 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Uses (typeof (NullMixin), AdditionalDependencies = new Type[] {typeof (object)})]
-    public class BaseWithUses
-    {
-    }
+    [IgnoreForMixinConfiguration]
+    public class BaseWithUses { }
 
-    public class DerivedWithoutUses : BaseWithUses
-    {
-    }
+    public class DerivedWithoutUses : BaseWithUses { }
     
 
     [Test]
     public void UsesAttributeIsInherited ()
     {
-      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseWithUses)).ContainsMixin (typeof (NullMixin)));
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedWithoutUses), MixinConfiguration.ActiveContext);
+
       Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).ContainsMixin (typeof (NullMixin)));
       Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
       Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
     }
 
     [Uses (typeof (NullMixin))]
+    [IgnoreForMixinConfiguration]
     public class DerivedWithUses : BaseWithUses
     {
     }
@@ -116,7 +113,8 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InheritedUsesDuplicateIsIgnored ()
     {
-      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseWithUses)).ContainsMixin (typeof (NullMixin)));
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedWithUses), MixinConfiguration.ActiveContext);
+
       Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).ContainsMixin (typeof (NullMixin)));
       Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
       Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).MixinCount);
@@ -134,7 +132,79 @@ namespace Mixins.UnitTests.Configuration
         + "configured for target type Mixins.UnitTests.Configuration.ApplicationContextBuilderTests+DerivedWithDuplicateUses.")]
     public void ThrowsOnUsesDuplicateOnSameClass ()
     {
-      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedWithDuplicateUses), new ApplicationContext ());
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedWithDuplicateUses), MixinConfiguration.ActiveContext);
+    }
+
+    public class ExtendsTargetBase { }
+
+    [Extends (typeof (ExtendsTargetBase))]
+    [Extends (typeof (ExtendsTargetDerivedWithExtends))]
+    [IgnoreForMixinConfiguration]
+    public class ExtendingMixin { }
+
+    public class ExtendsTargetDerivedWithoutExtends : ExtendsTargetBase { }
+
+    [Test]
+    [Ignore ("TODO: Implement Extends inheritance")]
+    public void ExtendsAttributeAppliesToInheritanceChain ()
+    {
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (ExtendingMixin), MixinConfiguration.ActiveContext);
+
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).ContainsMixin (typeof (ExtendingMixin)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).MixinCount);
+    }
+
+    public class ExtendsTargetDerivedWithExtends : ExtendsTargetBase { }
+
+    [Test]
+    [Ignore ("TODO: Implement Extends inheritance")]
+    public void InheritedDuplicateExtensionIsIgnored ()
+    {
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (ExtendingMixin), MixinConfiguration.ActiveContext);
+
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).ContainsMixin (typeof (ExtendingMixin)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).MixinCount);
+    }
+
+    [Extends (typeof (ExtendsTargetDerivedWithDerivedExtends))]
+    [IgnoreForMixinConfiguration]
+    public class DerivedExtendingMixin : ExtendingMixin { }
+
+    [Extends (typeof (ExtendsTargetDerivedWithDerivedExtends))]
+    [IgnoreForMixinConfiguration]
+    public class DerivedExtendingMixin2 : DerivedExtendingMixin { }
+
+    public class ExtendsTargetDerivedWithDerivedExtends : ExtendsTargetBase { }
+
+    [Test]
+    [Ignore ("TODO: Implement Extends inheritance")]
+    public void SubclassExtensionOverridesBaseExtends ()
+    {
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (ExtendingMixin), MixinConfiguration.ActiveContext);
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedExtendingMixin), MixinConfiguration.ActiveContext);
+
+      Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (ExtendingMixin)));
+      Assert.IsTrue(MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (DerivedExtendingMixin)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).MixinCount);
+
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedExtendingMixin2), MixinConfiguration.ActiveContext);
+      Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (ExtendingMixin)));
+      Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (DerivedExtendingMixin)));
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (DerivedExtendingMixin2)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).MixinCount);
+    }
+
+    [Extends (typeof (ExtendsTargetBase))]
+    [Extends (typeof (ExtendsTargetBase))]
+    [IgnoreForMixinConfiguration]
+    public class DoubleExtendingMixin { }
+
+    [Test]
+    [Ignore ("TODO: Implement Extends inheritance")]
+    public void ThrowsOnDuplicateExtendsForSameClass ()
+    {
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DoubleExtendingMixin), MixinConfiguration.ActiveContext);
+      Assert.Fail ("Exception expected");
     }
   }
 }
