@@ -97,6 +97,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefinition;
     }
 
+    //TODO: Add constructor checks
     private void ValidateType ()
     {
       if (_type.IsGenericType)
