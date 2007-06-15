@@ -122,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         Type baseType = _type.BaseType;
         while (!AttributeUtility.IsDefined<StorageGroupAttribute> (baseType, false))
-          baseType = _type.BaseType;
+          baseType = baseType.BaseType;
 
         throw CreateMappingException (
             null,
