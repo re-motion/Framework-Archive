@@ -10,8 +10,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
-  //TODO: Fix: Inheritance Root: Base Class Reflection stops with StorageGroupAttribute but super classes would still be part of mapping since they would get reflected upon them selve
-  //TODO: Fix: Inheritance Root: Detect reapplication of StorageGroupAttribute
   /// <summary>
   /// The <see cref="ClassReflector"/> is used to build a <see cref="ReflectionBasedClassDefinition"/> and the <see cref="RelationDefinition"/> 
   /// objects for a type.
