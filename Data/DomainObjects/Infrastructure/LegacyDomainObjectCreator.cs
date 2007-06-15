@@ -27,6 +27,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     public IInvokeWith<T> GetTypesafeConstructorInvoker<T> ()
+       where T : DomainObject
     {
       return new InvokeWith<T>(ConstructorWrapper.GetConstructor<T> (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
     }

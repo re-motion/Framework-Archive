@@ -29,6 +29,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     public IInvokeWith<T> GetTypesafeConstructorInvoker<T> ()
+       where T : DomainObject
     {
       IDomainObjectFactory factory = DomainObjectsConfiguration.Current.MappingLoader.DomainObjectFactory;
       Type concreteType = factory.GetConcreteDomainObjectType(typeof (T));

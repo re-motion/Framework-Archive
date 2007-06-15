@@ -26,10 +26,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void GetObject ()
+    public void Creation_NonGenericWithDefaultConstructor ()
+    {
+      Order order = (Order) DomainObject.NewObject (typeof (Order));
+
+      Assert.IsNotNull (order.ID);
+      Assert.AreEqual (StateType.New, order.State);
+      Assert.AreSame (order, order.DataContainer.DomainObject);
+    }
+
+    [Test]
+    public void GetObject_Generic ()
     {
       Order order = Order.NewObject ();
       Order sameOrder = Order.GetObject (order.ID);
+
+      Assert.AreSame (order, sameOrder);
+    }
+
+    [Test]
+    public void GetObject_NonGeneric ()
+    {
+      Order order = (Order) DomainObject.NewObject (typeof (Order));
+      Order sameOrder = (Order) DomainObject.GetObject (order.ID);
 
       Assert.AreSame (order, sameOrder);
     }
