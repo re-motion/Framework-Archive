@@ -9,9 +9,9 @@ namespace Mixins
   /// </summary>
   /// <remarks>
   /// When the default mixin configuration is created, all assemblies currently loaded into the application domain are scanned for mixin
-  /// configuration information if (and only if) they have this attribute applied to them. See also <see cref="ApplicationContextBuilder.BuildDefault"/>.
+  /// configuration information if (and only if) they have this attribute applied to them. See also <see cref="ApplicationContextBuilder.BuildDefaultContext"/>.
   /// </remarks>
-  /// <seealso cref="ApplicationContextBuilder.BuildDefault"/>
+  /// <seealso cref="ApplicationContextBuilder.BuildDefaultContext"/>
   [AttributeUsage (AttributeTargets.Assembly)]
   public class ContainsMixinInfoAttribute : Attribute
   {

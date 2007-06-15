@@ -24,7 +24,7 @@ namespace Mixins
   /// <para>
   /// The default mixin configuration - the configuration in effect if not specifically replaced by another configuration - is obtained by analyzing
   /// the assemblies referenced in the current AppDomain for attributes such as <see cref="UsesAttribute"/>, <see cref="ExtendsAttribute"/>, and
-  /// <see cref="CompleteInterfaceAttribute"/>. For more information about the default configuration, see <see cref="ApplicationContextBuilder.BuildDefault"/>.
+  /// <see cref="CompleteInterfaceAttribute"/>. For more information about the default configuration, see <see cref="ApplicationContextBuilder.BuildDefaultContext"/>.
   /// </para>
   /// <example>
   /// The following shows an exemplary application of the <see cref="MixinConfiguration"/> class.
@@ -59,7 +59,7 @@ namespace Mixins
   {
     private static CallContextSingleton<ApplicationContext> _activeContext =
         new CallContextSingleton<ApplicationContext> ("Mixins.MixinConfiguration._activeContext",
-        delegate { return ApplicationContextBuilder.BuildDefault(); });
+        delegate { return ApplicationContextBuilder.BuildDefaultContext(); });
 
     /// <summary>
     /// Gets a value indicating whether this instance has an active mixin configuration context.
@@ -69,7 +69,7 @@ namespace Mixins
     /// </value>
     /// <remarks>
     /// The <see cref="ActiveContext"/> property will always return a non-<see langword="null"/> application context, no matter whether one was
-    /// set for the current thread or not. If none was set, a default context is built using <see cref="ApplicationContextBuilder.BuildDefault"/>.
+    /// set for the current thread or not. If none was set, a default context is built using <see cref="ApplicationContextBuilder.BuildDefaultContext"/>.
     /// In order to check whether a configuration context has been set (or a default one has been built), use this property.
     /// </remarks>
     public static bool HasActiveContext
@@ -83,7 +83,7 @@ namespace Mixins
     /// <value>The active mixin configuration context for the current thread (<see cref="CallContext"/>).</value>
     /// <remarks>
     /// The <see cref="ActiveContext"/> property will always return a non-<see langword="null"/> application context, no matter whether one was
-    /// set for the current thread or not. If none was set, a default context is built using <see cref="ApplicationContextBuilder.BuildDefault"/>.
+    /// set for the current thread or not. If none was set, a default context is built using <see cref="ApplicationContextBuilder.BuildDefaultContext"/>.
     /// In order to check whether a configuration context has been set (or a default one has been built), use the <see cref="HasActiveContext"/> property.
     /// </remarks>
     public static ApplicationContext ActiveContext
@@ -159,7 +159,7 @@ namespace Mixins
     /// <param name="classContexts">The class contexts to be included in the mixin configuration.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="classContexts"/> parameter is <see langword="null"/>.</exception>
     public MixinConfiguration (params ClassContext[] classContexts)
-        : this (ApplicationContextBuilder.BuildFromClasses (MixinConfiguration.PeekActiveContext, classContexts))
+        : this (ApplicationContextBuilder.BuildContextFromClasses (MixinConfiguration.PeekActiveContext, classContexts))
     {
     }
 
@@ -172,7 +172,7 @@ namespace Mixins
     /// <param name="assemblies">The assemblies to be analyzed into the mixin configuration.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public MixinConfiguration (params Assembly[] assemblies)
-        : this (ApplicationContextBuilder.BuildFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies))
+        : this (ApplicationContextBuilder.BuildContextFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies))
     {
     }
 

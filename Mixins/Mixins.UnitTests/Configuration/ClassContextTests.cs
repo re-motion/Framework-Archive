@@ -26,14 +26,14 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void BuildFromTestAssembly ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       CheckContext(context);
     }
 
     [Test]
     public void BuildFromTestAssemblies ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (null, AppDomain.CurrentDomain.GetAssemblies ());
       CheckContext (context);
     }
 
@@ -66,15 +66,14 @@ namespace Mixins.UnitTests.Configuration
     [Test][ExpectedException (typeof (InvalidOperationException))]
     public void ThrowsOnDuplicateContexts ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       context.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
     public void MultipleMixinTypeOccurrencesOnSameTargetTypeAreIgnored ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
-      ApplicationContextBuilder.AnalyzeAssemblyIntoContext (Assembly.GetExecutingAssembly (), context);
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly (), Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
       Assert.AreEqual (2, classContext.MixinCount);
@@ -87,7 +86,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinsOnInterface ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       context.GetOrAddClassContext (typeof (IBaseType2)).AddMixin (typeof (BT2Mixin1));
 
       ClassContext classContext = context.GetClassContext (typeof (IBaseType2));
@@ -99,7 +98,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinAttributeOnTargetClass ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType3));
       Assert.IsNotNull (classContext);
@@ -111,7 +110,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinAttributeOnMixinClass ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
       Assert.IsNotNull (classContext);
@@ -122,7 +121,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void ExplicitMixinDependencies ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       ClassContext classContext = context.GetClassContext (typeof (BaseType7));
       MixinContext mixinContext = classContext.GetOrAddMixinContext (typeof (BT7Mixin1));
 
@@ -233,7 +232,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void CompleteInterfaceConfiguredViaAttribute ()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType6));
       Assert.IsNotNull (classContext);

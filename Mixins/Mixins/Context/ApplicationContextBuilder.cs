@@ -10,9 +10,9 @@ using Mixins.Definitions.Building;
 
 namespace Mixins.Context
 {
-  public static class ApplicationContextBuilder
+  public class ApplicationContextBuilder
   {
-    public static ApplicationContext BuildFromAssemblies (ApplicationContext parentContext, IEnumerable<Assembly> assemblies)
+    public static ApplicationContext BuildContextFromAssemblies (ApplicationContext parentContext, IEnumerable<Assembly> assemblies)
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
@@ -21,9 +21,11 @@ namespace Mixins.Context
       // inherited from the parent context.
 
       // Therefore, first analyze the assemblies into a temporary context without replacements:
-      ApplicationContext tempContext = new ApplicationContext();
+      ApplicationContextBuilder tempContextBuilder = new ApplicationContextBuilder (null);
       foreach (Assembly assembly in assemblies)
-        AnalyzeAssemblyIntoContext (assembly, tempContext);
+        tempContextBuilder.AddAssembly (assembly);
+
+      ApplicationContext tempContext = tempContextBuilder.Analyze ();
 
       // Then, add them to the resulting context, replacing the respective inherited class contexts:
       ApplicationContext fullContext = new ApplicationContext (parentContext);
@@ -32,95 +34,18 @@ namespace Mixins.Context
       return fullContext;
     }
 
-    public static ApplicationContext BuildFromAssemblies (ApplicationContext parentContext, params Assembly[] assemblies)
+    public static ApplicationContext BuildContextFromAssemblies (ApplicationContext parentContext, params Assembly[] assemblies)
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
-      return BuildFromAssemblies (parentContext, (IEnumerable<Assembly>) assemblies);
+      return BuildContextFromAssemblies (parentContext, (IEnumerable<Assembly>) assemblies);
     }
 
-    public static ApplicationContext BuildFromAssemblies (params Assembly[] assemblies)
+    public static ApplicationContext BuildContextFromAssemblies (params Assembly[] assemblies)
     {
       ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
-      return BuildFromAssemblies (null, (IEnumerable<Assembly>) assemblies);
-    }
-
-    public static void AnalyzeAssemblyIntoContext (Assembly assembly, ApplicationContext targetContext)
-    {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
-
-      foreach (Type t in assembly.GetTypes())
-      {
-        if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
-          AnalyzeTypeIntoContext (t, targetContext);
-      }
-    }
-
-    public static void AnalyzeTypeIntoContext (Type type, ApplicationContext targetContext)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
-
-      if (type.IsDefined (typeof (ExtendsAttribute), false))
-        AnalyzeMixin (type, targetContext);
-      if (type.IsDefined (typeof (UsesAttribute), true))
-        AnalyzeMixinApplications (type, targetContext);
-      if (type.IsDefined (typeof (CompleteInterfaceAttribute), false))
-        AnalyzeCompleteInterface (type, targetContext);
-    }
-
-    private static void AnalyzeMixin (Type mixinType, ApplicationContext targetContext)
-    {
-      foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes (typeof (ExtendsAttribute), false))
-        targetContext.GetOrAddClassContext (mixinAttribute.TargetType).AddMixin (mixinType);
-    }
-
-    private static void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
-    {
-      ClassContext classContext = targetContext.GetOrAddClassContext (targetType);
-      Type currentType = targetType;
-      while (currentType != null)
-      {
-        UsesAttribute[] attributes = (UsesAttribute[]) currentType.GetCustomAttributes (typeof (UsesAttribute), false);
-        EnsureNoUsesDuplicates (attributes, targetType);
-        foreach (UsesAttribute usesAttribute in attributes)
-          ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies);
-        currentType = currentType.BaseType;
-      }
-    }
-
-    private static void EnsureNoUsesDuplicates (UsesAttribute[] usesAttributes, Type targetType)
-    {
-      Set<Type> mixinTypes = new Set<Type> ();
-      foreach (UsesAttribute usesAttribute in usesAttributes)
-      {
-        if (mixinTypes.Contains (usesAttribute.MixinType))
-        {
-          string message = string.Format ("Two instances of mixin {0} are configured for target type {1}.",
-              usesAttribute.MixinType.FullName, targetType.FullName);
-          throw new ConfigurationException (message);
-        }
-        else
-          mixinTypes.Add (usesAttribute.MixinType);
-      }
-    }
-
-    private static void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies)
-    {
-      if (!classContext.ContainsMixin (mixinType))
-      {
-        MixinContext mixinContext = classContext.GetOrAddMixinContext (mixinType);
-        foreach (Type additionalDependency in explicitDependencies)
-          mixinContext.AddExplicitDependency (additionalDependency);
-      }
-    }
-
-    private static void AnalyzeCompleteInterface (Type completeInterfaceType, ApplicationContext targetContext)
-    {
-      foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
-        targetContext.GetOrAddClassContext (ifaceAttribute.TargetType).AddCompleteInterface (completeInterfaceType);
+      return BuildContextFromAssemblies (null, (IEnumerable<Assembly>) assemblies);
     }
 
     /// <summary>
@@ -137,22 +62,22 @@ namespace Mixins.Context
     /// </list>
     /// </remarks>
     /// <seealso cref="AssemblyFinder"/>
-    public static ApplicationContext BuildDefault ()
+    public static ApplicationContext BuildDefaultContext ()
     {
       Assembly[] rootAssemblies =
           Array.FindAll (
-              AppDomain.CurrentDomain.GetAssemblies(), delegate (Assembly a) { return a.IsDefined (typeof (ContainsMixinInfoAttribute), false); });
+              AppDomain.CurrentDomain.GetAssemblies (), delegate (Assembly a) { return a.IsDefined (typeof (ContainsMixinInfoAttribute), false); });
 
       Assembly[] assembliesToBeScanned = rootAssemblies;
       if (rootAssemblies.Length > 0)
       {
         AssemblyFinder finder = new AssemblyFinder (typeof (ContainsMixinInfoAttribute), rootAssemblies);
-        assembliesToBeScanned = finder.FindAssemblies();
+        assembliesToBeScanned = finder.FindAssemblies ();
       }
-      return BuildFromAssemblies (assembliesToBeScanned);
+      return BuildContextFromAssemblies (assembliesToBeScanned);
     }
 
-    public static ApplicationContext BuildFromClasses (ApplicationContext parentContext, params ClassContext[] classContexts)
+    public static ApplicationContext BuildContextFromClasses (ApplicationContext parentContext, params ClassContext[] classContexts)
     {
       ArgumentUtility.CheckNotNull ("classContexts", classContexts);
 
@@ -160,6 +85,110 @@ namespace Mixins.Context
       foreach (ClassContext classContext in classContexts)
         context.AddOrReplaceClassContext (classContext);
       return context;
+    }
+    
+    private readonly ApplicationContext _parentContext;
+
+    private List<Type> _extenders = new List<Type> ();
+    private List<Type> _users = new List<Type> ();
+    private List<Type> _potentialTargets = new List<Type> ();
+    private List<Type> _completeInterfaces = new List<Type> ();
+
+    public ApplicationContextBuilder (ApplicationContext parentContext)
+    {
+      _parentContext = parentContext;
+    }
+
+    public ApplicationContextBuilder AddAssembly (Assembly assembly)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+
+      foreach (Type t in assembly.GetTypes())
+      {
+        if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
+          AddType (t);
+      }
+      return this;
+    }
+
+    public ApplicationContextBuilder AddType (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      if (type.IsDefined (typeof (ExtendsAttribute), false))
+        _extenders.Add (type);
+      if (type.IsDefined (typeof (UsesAttribute), true))
+        _users.Add (type);
+      if (type.IsDefined (typeof (CompleteInterfaceAttribute), false))
+        _completeInterfaces.Add (type);
+
+      _potentialTargets.Add (type);
+
+      return this;
+    }
+
+    public ApplicationContext Analyze ()
+    {
+      ApplicationContext result = new ApplicationContext (_parentContext);
+      foreach (Type extender in _extenders)
+        AnalyzeMixin (extender, result);
+      foreach (Type user in _users)
+        AnalyzeMixinApplications (user, result);
+      foreach (Type completeInterface in _completeInterfaces)
+        AnalyzeCompleteInterface (completeInterface, result);
+      return result;
+    }
+
+    private void AnalyzeMixin (Type mixinType, ApplicationContext targetContext)
+    {
+      foreach (ExtendsAttribute mixinAttribute in mixinType.GetCustomAttributes (typeof (ExtendsAttribute), false))
+        targetContext.GetOrAddClassContext (mixinAttribute.TargetType).AddMixin (mixinType);
+    }
+
+    private void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
+    {
+      ClassContext classContext = targetContext.GetOrAddClassContext (targetType);
+      Type currentType = targetType;
+      while (currentType != null)
+      {
+        UsesAttribute[] attributes = (UsesAttribute[]) currentType.GetCustomAttributes (typeof (UsesAttribute), false);
+        EnsureNoUsesDuplicates (attributes, targetType);
+        foreach (UsesAttribute usesAttribute in attributes)
+          ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies);
+        currentType = currentType.BaseType;
+      }
+    }
+
+    private void EnsureNoUsesDuplicates (UsesAttribute[] usesAttributes, Type targetType)
+    {
+      Set<Type> mixinTypes = new Set<Type> ();
+      foreach (UsesAttribute usesAttribute in usesAttributes)
+      {
+        if (mixinTypes.Contains (usesAttribute.MixinType))
+        {
+          string message = string.Format ("Two instances of mixin {0} are configured for target type {1}.",
+              usesAttribute.MixinType.FullName, targetType.FullName);
+          throw new ConfigurationException (message);
+        }
+        else
+          mixinTypes.Add (usesAttribute.MixinType);
+      }
+    }
+
+    private void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies)
+    {
+      if (!classContext.ContainsMixin (mixinType))
+      {
+        MixinContext mixinContext = classContext.GetOrAddMixinContext (mixinType);
+        foreach (Type additionalDependency in explicitDependencies)
+          mixinContext.AddExplicitDependency (additionalDependency);
+      }
+    }
+
+    private void AnalyzeCompleteInterface (Type completeInterfaceType, ApplicationContext targetContext)
+    {
+      foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
+        targetContext.GetOrAddClassContext (ifaceAttribute.TargetType).AddCompleteInterface (completeInterfaceType);
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void IMixinTarget()
     {
-      ApplicationContext context = ApplicationContextBuilder.BuildFromAssemblies (Assembly.GetExecutingAssembly ());
+      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
       using (new MixinConfiguration (context))
       {
