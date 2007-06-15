@@ -699,9 +699,11 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithoutStorageGroupWithMixedProperties.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\BaseClassWithoutStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClosedGenericClass.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithInterface.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\IInterfaceWithProperties.cs" />
     <Compile Include="TestDomain\StorageProviderStubAttribute.cs" />
     <Compile Include="TestDomain\StorageProviderStubDomainBase.cs" />
     <Compile Include="TestDomain\OrderItemWithNewPropertyAccess.cs" />

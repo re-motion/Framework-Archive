@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
@@ -13,13 +14,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   {
     private readonly Type _type;
     private readonly bool _includeBaseProperties;
+    private readonly Set<MethodInfo> _explicitInterfaceImplementations;
 
     protected PropertyFinderBase (Type type, bool includeBaseProperties)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof (DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
 
       _type = type;
       _includeBaseProperties = includeBaseProperties;
+      _explicitInterfaceImplementations = GetExplicitInterfaceImplementations (type);
     }
 
     public Type Type
@@ -38,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       if (_includeBaseProperties && _type.BaseType != typeof (DomainObject))
       {
-        PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType ()).With (_type.BaseType, true);
+        PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType, true);
         propertyInfos.AddRange (propertyFinder.FindPropertyInfos());
       }
 
@@ -57,23 +60,19 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return false;
       }
 
-      if (!IsManagedProperty (propertyInfo))
+      if (IsUnmanagedProperty (propertyInfo))
+        return false;
+
+      if (IsUnmanagedExplictInterfaceImplementation (propertyInfo))
         return false;
 
       return true;
     }
 
-    protected bool IsManagedProperty (PropertyInfo propertyInfo)
-    {
-      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, false);
-      if (storageClassAttribute == null)
-        return true;
-
-      return storageClassAttribute.StorageClass != StorageClass.None;
-    }
-
     protected void CheckForMappingAttributes (PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
       IMappingAttribute[] mappingAttributes = AttributeUtility.GetCustomAttributes<IMappingAttribute> (propertyInfo, false);
       if (mappingAttributes.Length > 0)
       {
@@ -88,7 +87,37 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     protected bool IsOriginalDeclaringType (PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
       return ReflectionUtility.GetOriginalDeclaringType (propertyInfo) == propertyInfo.DeclaringType;
+    }
+
+    protected bool IsUnmanagedProperty (PropertyInfo propertyInfo)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
+      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, false);
+      if (storageClassAttribute == null)
+        return false;
+
+      return storageClassAttribute.StorageClass == StorageClass.None;
+    }
+
+    protected bool IsUnmanagedExplictInterfaceImplementation (PropertyInfo propertyInfo)
+    {
+      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
+      bool isExplicitInterfaceImplementation = Array.Exists (
+          propertyInfo.GetAccessors (true),
+          delegate (MethodInfo accessor) { return _explicitInterfaceImplementations.Contains (accessor); });
+      if (!isExplicitInterfaceImplementation)
+        return false;
+
+      StorageClassAttribute storageClassAttribute = AttributeUtility.GetCustomAttribute<StorageClassAttribute> (propertyInfo, false);
+      if (storageClassAttribute == null)
+        return true;
+
+      return storageClassAttribute.StorageClass == StorageClass.None;
     }
 
     private IList<PropertyInfo> FindPropertyInfosInternal ()
@@ -109,6 +138,22 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
     {
       return FindPropertiesFilter ((PropertyInfo) member);
+    }
+
+    private Set<MethodInfo> GetExplicitInterfaceImplementations (Type type)
+    {
+      Set<MethodInfo> explicitInterfaceImplementationSet = new Set<MethodInfo>();
+
+      foreach (Type interfaceType in type.GetInterfaces())
+      {
+        InterfaceMapping interfaceMapping = type.GetInterfaceMap (interfaceType);
+        MethodInfo[] explicitInterfaceImplementations = Array.FindAll (
+            interfaceMapping.TargetMethods,
+            delegate (MethodInfo targetMethod) { return targetMethod.IsSpecialName && !targetMethod.IsPublic; });
+        explicitInterfaceImplementationSet.AddRange (explicitInterfaceImplementations);
+      }
+
+      return explicitInterfaceImplementationSet;
     }
   }
 }

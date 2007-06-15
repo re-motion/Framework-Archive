@@ -194,7 +194,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// Gets a <see cref="DomainObjectClass"/> representing the <see cref="BindableDomainObject"/>.
   /// </summary>
   // TODO Doc: exceptions
-  [StorageClassNone]
   IBusinessObjectClass IBusinessObject.BusinessObjectClass
   {
     get { return new DomainObjectClass (this.GetPublicDomainObjectType()); }
@@ -208,7 +207,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> has an invalid type for the property.</exception>
   // TODO Doc: returns null if it is equal to the MinValue of the type
-  [StorageClassNone]
   object IBusinessObject.this[IBusinessObjectProperty property]
   {
     get { return ((IBusinessObject) this).GetProperty (property); }
@@ -225,7 +223,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
-  [StorageClassNone]
   object IBusinessObject.this[string property]
   {
     get { return ((IBusinessObject) this).GetProperty (property); }
@@ -338,7 +335,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   ///   Gets the value of <see cref="DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
   ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
   /// </summary>
-  [StorageClassNone]
   string IBusinessObjectWithIdentity.DisplayNameSafe
   {
     get
@@ -355,7 +351,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
   /// </summary>
-  [StorageClassNone]
   string IBusinessObjectWithIdentity.UniqueIdentifier
   {
     get { return ID.ToString (); }

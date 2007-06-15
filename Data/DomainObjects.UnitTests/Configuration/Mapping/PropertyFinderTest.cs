@@ -24,14 +24,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       PropertyFinder propertyFinder = new PropertyFinder (typeof (ClassWithMixedProperties), true);
 
-      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
-
-      Assert.That (propertyInfo.Length, Is.EqualTo (5));
-      Assert.That (propertyInfo[0], Is.SameAs (GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "Boolean")));
-      Assert.That (propertyInfo[1], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "Int32")));
-      Assert.That (propertyInfo[2], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "String")));
-      Assert.That (propertyInfo[3], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")));
-      Assert.That (propertyInfo[4], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "PrivateString")));
+      Assert.That (
+          propertyFinder.FindPropertyInfos(),
+          Is.EqualTo (
+              new PropertyInfo[]
+                  {
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "Boolean"),
+                      GetProperty (typeof (ClassWithMixedProperties), "Int32"),
+                      GetProperty (typeof (ClassWithMixedProperties), "String"),
+                      GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithMixedProperties), "PrivateString")
+                  }));
     }
 
     [Test]
@@ -41,12 +44,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
 
-      Assert.That (propertyInfo.Length, Is.EqualTo (0));
+      Assert.That (propertyInfo, Is.Empty);
     }
 
     private PropertyInfo GetProperty (Type type, string propertyName)
     {
-      return type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      PropertyInfo propertyInfo =
+          type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.That (propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
+
+      return propertyInfo;
     }
   }
 }

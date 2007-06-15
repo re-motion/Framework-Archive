@@ -24,10 +24,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithMixedProperties), true);
 
-      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
-
-      Assert.That (propertyInfo.Length, Is.EqualTo (1));
-      Assert.That (propertyInfo[0], Is.SameAs (GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")));
+      Assert.That (
+          propertyFinder.FindPropertyInfos(),
+          Is.EqualTo (new PropertyInfo[] {GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")}));
     }
 
     [Test]
@@ -35,18 +34,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithOneSideRelationProperties), true);
 
-      PropertyInfo[] propertyInfo = propertyFinder.FindPropertyInfos();
-
-      Assert.That (propertyInfo.Length, Is.EqualTo (4));
-      Assert.That (propertyInfo[0], Is.SameAs (GetProperty (typeof (ClassWithOneSideRelationProperties), "NoAttribute")));
-      Assert.That (propertyInfo[1], Is.SameAs (GetProperty (typeof (ClassWithOneSideRelationProperties), "NotNullable")));
-      Assert.That (propertyInfo[2], Is.SameAs (GetProperty (typeof (ClassWithOneSideRelationProperties), "BidirectionalOneToOne")));
-      Assert.That (propertyInfo[3], Is.SameAs (GetProperty (typeof (ClassWithOneSideRelationProperties), "BidirectionalOneToMany")));
+      Assert.That (
+          propertyFinder.FindPropertyInfos(),
+          Is.EqualTo (
+              new PropertyInfo[]
+                  {
+                      GetProperty (typeof (ClassWithOneSideRelationProperties), "NoAttribute"),
+                      GetProperty (typeof (ClassWithOneSideRelationProperties), "NotNullable"),
+                      GetProperty (typeof (ClassWithOneSideRelationProperties), "BidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithOneSideRelationProperties), "BidirectionalOneToMany")
+                  }));
     }
 
     private PropertyInfo GetProperty (Type type, string propertyName)
     {
-      return type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      PropertyInfo propertyInfo =
+          type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+      Assert.That (propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
+
+      return propertyInfo;
     }
   }
 }

@@ -48,19 +48,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
-    [StorageClassNone]
     bool IDomainObjectSecurityContextFactory.IsDiscarded
     {
       get { return IsDiscarded; }
     }
 
-    [StorageClassNone]
     bool IDomainObjectSecurityContextFactory.IsNew
     {
       get { return State == StateType.New; }
     }
 
-    [StorageClassNone]
     bool IDomainObjectSecurityContextFactory.IsDeleted
     {
       get { return State == StateType.Deleted; }

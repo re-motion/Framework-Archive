@@ -1,6 +1,9 @@
 1.7.43.0
 ========
 
+- Explizite Interface-Implementierungen werden nun nicht mehr per default Teil des Mappings. 
+  Sie können mit StorageClassAttribute (StorageClass.Transaction) explizt in das Mapping aufgenommen werden.
+
 1.7.42.0
 ========
 
