@@ -4,7 +4,7 @@ namespace Mixins.UnitTests.SampleTypes
 {
   public interface IBaseType7
   {
-    string One ();
+    string One<T> (T t);
     string Two ();
     string Three ();
     string Four ();
@@ -14,9 +14,9 @@ namespace Mixins.UnitTests.SampleTypes
 
   public class BaseType7 : IBaseType7
   {
-    public virtual string One()
+    public virtual string One<T> (T t)
     {
-      return "BaseType7.One";
+      return "BaseType7.One(" + t + ")";
     }
 
     public virtual string Two ()

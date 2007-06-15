@@ -126,12 +126,14 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ImplementBaseCallForRequirementOnTarget (RequiredBaseCallMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
-      if (requiredMethod.ImplementingMethod.Overrides.Count == 0)
-        methodImplementation.ImplementMethodByDelegation (_thisField, requiredMethod.ImplementingMethod.MethodInfo);
-      else
+      BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+      if (requiredMethod.ImplementingMethod.Overrides.Count == 0) // this is not an overridden method, call method directly on _this
+        methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
+      else // this is an override, go to next in chain
       {
+        // a base call for this might already have been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
+        // slightly easier and better for performance
         Assertion.Assert (!_baseClassConfiguration.Methods.HasItem (requiredMethod.InterfaceMethod));
-        BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod);
       }
     }
@@ -141,15 +143,14 @@ namespace Mixins.CodeGeneration.DynamicProxy
     private void ImplementBaseCallForRequirementOnMixin (RequiredBaseCallMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
-      if (requiredMethod.ImplementingMethod.Base == null) // this is not an override
-      {
-        BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+      BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+      if (requiredMethod.ImplementingMethod.Base == null) // this is not an override, call method directly on extension
         methodGenerator.AddBaseCallToTarget (requiredMethod.ImplementingMethod);
-      }
-      else // this is an override
+      else // this is an override, go to next in chain
       {
-        Assertion.Assert (!_baseClassConfiguration.Methods.HasItem (requiredMethod.InterfaceMethod));
-        BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
+        // a base call for this has already been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
+        // slightly easier and better for performance
+        Assertion.Assert (_overriddenMethodToImplementationMap.ContainsKey (requiredMethod.ImplementingMethod.Base));
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod.Base);
       }
     }

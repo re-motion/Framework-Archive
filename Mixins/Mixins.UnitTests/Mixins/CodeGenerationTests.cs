@@ -437,17 +437,30 @@ namespace Mixins.UnitTests.Mixins
     public void TestMultipleOverridesSmall()
     {
       BaseType7 bt7 = ObjectFactory.Create<BaseType7> ().With();
-      Assert.AreEqual ("BT7Mixin0.One-BT7Mixin2.One"
-          + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+      Assert.AreEqual ("BT7Mixin0.One(5)-BT7Mixin2.One(5)"
+          + "-BT7Mixin3.One(5)-BT7Mixin1.BT7Mixin1Specific"
               + "-BaseType7.Three"
               + "-BT7Mixin2.Three"
-            + "-BaseType7.Three-BT7Mixin1.One-BaseType7.One"
-          + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+            + "-BaseType7.Three-BT7Mixin1.One(5)-BaseType7.One(5)"
+          + "-BT7Mixin3.One(5)-BT7Mixin1.BT7Mixin1Specific"
               + "-BaseType7.Three"
               + "-BT7Mixin2.Three"
-            + "-BaseType7.Three-BT7Mixin1.One-BaseType7.One"
+            + "-BaseType7.Three-BT7Mixin1.One(5)-BaseType7.One(5)"
           + "-BaseType7.Two-BT7Mixin2.Two",
-          bt7.One ());
+          bt7.One (5));
+
+      Assert.AreEqual ("BT7Mixin0.One(foo)-BT7Mixin2.One(foo)"
+          + "-BT7Mixin3.One(foo)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(foo)-BaseType7.One(foo)"
+          + "-BT7Mixin3.One(foo)-BT7Mixin1.BT7Mixin1Specific"
+              + "-BaseType7.Three"
+              + "-BT7Mixin2.Three"
+            + "-BaseType7.Three-BT7Mixin1.One(foo)-BaseType7.One(foo)"
+          + "-BaseType7.Two-BT7Mixin2.Two",
+          bt7.One ("foo"));
+
       Assert.AreEqual ("BT7Mixin2.Two", bt7.Two ());
       Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three ());
       Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());
@@ -472,18 +485,32 @@ namespace Mixins.UnitTests.Mixins
             typeof (IBT7Mixin8));
 
         BaseType7 bt7 = ObjectFactory.Create<BaseType7>().With();
-        Assert.AreEqual ("BT7Mixin0.One-BT7Mixin4.One-BT7Mixin6.One-BT7Mixin2.One"
-            + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+        Assert.AreEqual ("BT7Mixin0.One(7)-BT7Mixin4.One(7)-BT7Mixin6.One(7)-BT7Mixin2.One(7)"
+            + "-BT7Mixin3.One(7)-BT7Mixin1.BT7Mixin1Specific"
                 + "-BaseType7.Three"
                 + "-BT7Mixin2.Three-BaseType7.Three"
-              + "-BT7Mixin1.One-BaseType7.One"
-            + "-BT7Mixin3.One-BT7Mixin1.BT7Mixin1Specific"
+              + "-BT7Mixin1.One(7)-BaseType7.One(7)"
+            + "-BT7Mixin3.One(7)-BT7Mixin1.BT7Mixin1Specific"
                 + "-BaseType7.Three"
                 + "-BT7Mixin2.Three-BaseType7.Three"
-              + "-BT7Mixin1.One-BaseType7.One"
+              + "-BT7Mixin1.One(7)-BaseType7.One(7)"
             + "-BaseType7.Two"
             + "-BT7Mixin2.Two",
-            bt7.One());
+            bt7.One(7));
+
+        Assert.AreEqual ("BT7Mixin0.One(bar)-BT7Mixin4.One(bar)-BT7Mixin6.One(bar)-BT7Mixin2.One(bar)"
+            + "-BT7Mixin3.One(bar)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(bar)-BaseType7.One(bar)"
+            + "-BT7Mixin3.One(bar)-BT7Mixin1.BT7Mixin1Specific"
+                + "-BaseType7.Three"
+                + "-BT7Mixin2.Three-BaseType7.Three"
+              + "-BT7Mixin1.One(bar)-BaseType7.One(bar)"
+            + "-BaseType7.Two"
+            + "-BT7Mixin2.Two",
+            bt7.One ("bar"));
+
         Assert.AreEqual ("BT7Mixin2.Two", bt7.Two());
         Assert.AreEqual ("BT7Mixin2.Three-BaseType7.Three", bt7.Three());
         Assert.AreEqual ("BT7Mixin2.Four-BaseType7.Four-BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five-BaseType7.NotOverridden", bt7.Four ());

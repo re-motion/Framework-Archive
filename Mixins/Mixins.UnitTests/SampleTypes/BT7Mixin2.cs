@@ -8,7 +8,7 @@ namespace Mixins.UnitTests.SampleTypes
 
   public interface IBT7Mixin2
   {
-    string One ();
+    string One<T> (T t);
     string Two ();
     string Three ();
     string Four ();
@@ -18,9 +18,9 @@ namespace Mixins.UnitTests.SampleTypes
   public class BT7Mixin2 : Mixin<BaseType7, IBT7Mixin2Reqs>, IBT7Mixin2
   {
     [Override]
-    public virtual string One ()
+    public virtual string One<T> (T t)
     {
-      return "BT7Mixin2.One-" + ((IBaseType7) Base).One () + "-" + ((IBT7Mixin3) Base).One () + "-" + Base.Two() + "-" + This.Two();
+      return "BT7Mixin2.One(" + t + ")-" + ((IBaseType7) Base).One (t) + "-" + ((IBT7Mixin3) Base).One (t) + "-" + Base.Two() + "-" + This.Two();
     }
 
     [Override]

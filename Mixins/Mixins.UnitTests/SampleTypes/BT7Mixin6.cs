@@ -8,9 +8,9 @@ namespace Mixins.UnitTests.SampleTypes
   public class BT7Mixin6 : Mixin<object, IBaseType7>, IBT7Mixin6
   {
     [Override]
-    public virtual string One ()
+    public virtual string One<T> (T t)
     {
-      return "BT7Mixin6.One-" + Base.One();
+      return "BT7Mixin6.One(" + t + ")-" + Base.One(t);
     }
   }
 }
