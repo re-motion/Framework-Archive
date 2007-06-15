@@ -168,8 +168,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define column name 'NameColumn',"
-        + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same column name.")]
+        ExpectedMessage = "Property 'OrganizationalUnitName' of class 'OrganizationalUnit' must not define storage specific name 'NameColumn',"
+       + " because class 'Person' in same inheritance hierarchy already defines property 'PersonName' with the same storage specific name.")]
     public void ValidateWithSameColumnNameInDifferentInheritanceBranches ()
     {
       XmlBasedClassDefinition domainBaseClass = new XmlBasedClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));

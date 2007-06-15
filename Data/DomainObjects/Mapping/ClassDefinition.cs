@@ -439,6 +439,31 @@ namespace Rubicon.Data.DomainObjects.Mapping
           }
         }
       }
+
+      foreach (PropertyDefinition myPropertyDefinition in MyPropertyDefinitions)
+      {
+        List<PropertyDefinition> basePropertyDefinitions;
+        if (allPropertyDefinitionsInInheritanceHierarchy.TryGetValue (myPropertyDefinition.StorageSpecificName, out basePropertyDefinitions)
+            && basePropertyDefinitions != null && basePropertyDefinitions.Count > 0)
+        {
+          PropertyDefinition basePropertyDefinition = basePropertyDefinitions[0];
+
+          throw CreateMappingException (
+              "Property '{0}' of class '{1}' must not define storage specific name '{2}',"
+              + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same storage specific name.",
+              myPropertyDefinition.PropertyName,
+              ID,
+              myPropertyDefinition.StorageSpecificName,
+              basePropertyDefinition.ClassDefinition.ID,
+              basePropertyDefinition.PropertyName);
+        }
+
+        allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName] =
+            new List<PropertyDefinition> (new PropertyDefinition[] { myPropertyDefinition });
+      }
+
+      foreach (ClassDefinition derivedClassDefinition in DerivedClasses)
+        derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
     }
 
     internal static void SetClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)

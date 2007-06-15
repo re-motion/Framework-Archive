@@ -299,8 +299,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'OtherName' of class 'Customer' must not define column name 'NameColumn',"
-            + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
+       ExpectedMessage = "Property 'OtherName' of class 'Customer' must not define storage specific name 'NameColumn',"
+           + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void MappingWithDerivationAndDuplicateColumnName()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnName.xml", true);
@@ -310,8 +310,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'OtherName' of class 'Customer' must not define column name 'NameColumn',"
-            + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
+       ExpectedMessage = "Property 'OtherName' of class 'Customer' must not define storage specific name 'NameColumn',"
+           + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void MappingWithDerivationAndDuplicateColumnNameWithoutResolvedTypes()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnName.xml", false);
@@ -321,8 +321,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        ExpectedMessage = "Property 'SupplierName' of class 'Supplier' must not define column name 'Name',"
-            + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
+       ExpectedMessage = "Property 'SupplierName' of class 'Supplier' must not define storage specific name 'Name',"
+           + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass()
     {
       MappingLoader loader = new MappingLoader (@"DataDomainObjectsLegacy_MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml", true);

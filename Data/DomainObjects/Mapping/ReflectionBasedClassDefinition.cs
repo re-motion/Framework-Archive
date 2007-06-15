@@ -56,49 +56,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
       get { return true; }
     }
 
-    public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
-    {
-      ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
-
-      base.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
-
-      foreach (PropertyDefinition myPropertyDefinition in MyPropertyDefinitions)
-      {
-        List<PropertyDefinition> basePropertyDefinitions;
-        if (!allPropertyDefinitionsInInheritanceHierarchy.TryGetValue (myPropertyDefinition.StorageSpecificName, out basePropertyDefinitions))
-        {
-          basePropertyDefinitions = new List<PropertyDefinition>();
-          allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.StorageSpecificName, basePropertyDefinitions);
-        }
-
-        foreach (PropertyDefinition basePropertyDefinition in basePropertyDefinitions)
-        {
-          bool isEntityDefined = GetEntityName() != null;
-          bool isEntityDefinedForBaseProperty = basePropertyDefinition.ClassDefinition.GetEntityName() != null;
-          bool isBasePropertyPersistedInSameEntity = basePropertyDefinition.ClassDefinition.GetEntityName() == GetEntityName();
-
-          if (!isEntityDefined && !isEntityDefinedForBaseProperty
-              || isBasePropertyPersistedInSameEntity
-              || isEntityDefined && !isEntityDefinedForBaseProperty && !isBasePropertyPersistedInSameEntity)
-          {
-            throw CreateMappingException (
-                "Property '{0}' of class '{1}' must not define storage specific name '{2}', because class '{3}', "
-                + "persisted in the same entity, already defines property '{4}' with the same storage specific name.",
-                myPropertyDefinition.PropertyName,
-                ID,
-                myPropertyDefinition.StorageSpecificName,
-                basePropertyDefinition.ClassDefinition.ID,
-                basePropertyDefinition.PropertyName);
-          }
-        }
-
-        basePropertyDefinitions.Add (myPropertyDefinition);
-      }
-
-      foreach (ClassDefinition derivedClassDefinition in DerivedClasses)
-        derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
-    }
-
     private MappingException CreateMappingException (string message, params object[] args)
     {
       return new MappingException (string.Format (message, args));

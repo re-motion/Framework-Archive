@@ -115,6 +115,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Property 'OtherName' of class 'OrganizationalUnit' must not define storage specific name 'NameColumn', because class 'Person' "
+        + "in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void ValidateMappingWithDerivationInDifferentEntitiesAndMatchingColumnNames ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, TableInheritanceTestDomainProviderID, typeof (DomainBase), true);
@@ -122,15 +125,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ReflectionBasedClassDefinition organizationalUnit = new ReflectionBasedClassDefinition ("OrganizationalUnit", "TableInheritance_OrganizationalUnit", TableInheritanceTestDomainProviderID, typeof (OrganizationalUnit), false, domainBaseClass);
 
       personClass.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (personClass, "Name", "NameColumn", typeof (string), 100));
-      organizationalUnit.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (organizationalUnit, "Name", "NameColumn", typeof (string), 100));
+      organizationalUnit.MyPropertyDefinitions.Add (new ReflectionBasedPropertyDefinition (organizationalUnit, "OtherName", "NameColumn", typeof (string), 100));
 
       domainBaseClass.ValidateInheritanceHierarchy (new Dictionary<string, List<PropertyDefinition>> ());
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'OtherName' of class 'OrganizationalUnit' must not define storage specific name 'NameColumn', because class 'Person', "
-        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+        "Property 'OtherName' of class 'OrganizationalUnit' must not define storage specific name 'NameColumn', because class 'Person' "
+        + "in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void ValidateMappingWithParallelDerivationInSameEntitiesAndMatchingColumnNames ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", "TableInheritance_DomainBase", TableInheritanceTestDomainProviderID, typeof (DomainBase), true);
@@ -145,8 +148,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase', "
-        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+       "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase' "
+       + "in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void ValidateMappingWithDerivationInSameEntityAndDuplicateColumnName ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, TableInheritanceTestDomainProviderID, typeof (DomainBase), true);
@@ -160,8 +163,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'OtherName' of class 'Customer' must not define storage specific name 'NameColumn', because class 'DomainBase', "
-        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+       "Property 'OtherName' of class 'Customer' must not define storage specific name 'NameColumn', because class 'DomainBase' "
+       + "in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void ValidateMappingWithDerivationInSameEntityAndDuplicateColumnNameInBaseOfBaseClass ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, TableInheritanceTestDomainProviderID, typeof (DomainBase), true);
@@ -176,8 +179,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase', "
-        + "persisted in the same entity, already defines property 'Name' with the same storage specific name.")]
+       "Property 'OtherName' of class 'Person' must not define storage specific name 'NameColumn', because class 'DomainBase' "
+       + "in same inheritance hierarchy already defines property 'Name' with the same storage specific name.")]
     public void ValidateMappingWithDerivationInUndefinedEntityAndDuplicateColumnName ()
     {
       ReflectionBasedClassDefinition domainBaseClass = new ReflectionBasedClassDefinition ("DomainBase", null, TableInheritanceTestDomainProviderID, typeof (DomainBase), true);

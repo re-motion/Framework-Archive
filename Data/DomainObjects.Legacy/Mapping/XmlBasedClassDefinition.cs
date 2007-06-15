@@ -100,38 +100,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.Mapping
       get { return (_classType != null); }
     }
 
-    public override void ValidateInheritanceHierarchy (Dictionary<string, List<PropertyDefinition>> allPropertyDefinitionsInInheritanceHierarchy)
-    {
-      ArgumentUtility.CheckNotNull ("allPropertyDefinitionsInInheritanceHierarchy", allPropertyDefinitionsInInheritanceHierarchy);
-
-      base.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
-
-      foreach (PropertyDefinition myPropertyDefinition in MyPropertyDefinitions)
-      {
-        List<PropertyDefinition> basePropertyDefinitions;
-        if (allPropertyDefinitionsInInheritanceHierarchy.TryGetValue (myPropertyDefinition.StorageSpecificName, out basePropertyDefinitions) 
-            && basePropertyDefinitions != null && basePropertyDefinitions.Count > 0)
-        {
-          PropertyDefinition basePropertyDefinition = basePropertyDefinitions[0];
-
-          throw CreateMappingException (
-              "Property '{0}' of class '{1}' must not define column name '{2}',"
-              + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
-              myPropertyDefinition.PropertyName,
-              ID,
-              myPropertyDefinition.StorageSpecificName,
-              basePropertyDefinition.ClassDefinition.ID,
-              basePropertyDefinition.PropertyName);
-        }
-
-        allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.StorageSpecificName] = 
-            new List<PropertyDefinition> (new PropertyDefinition[] { myPropertyDefinition });
-      }
-
-      foreach (XmlBasedClassDefinition derivedClassDefinition in DerivedClasses)
-        derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
-    }
-
     private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
     {
       return new InvalidOperationException (string.Format (message, args));
