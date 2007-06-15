@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -150,15 +151,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-       "The domain object type cannot redefine the 'Rubicon.Data.DomainObjects.StorageGroupAttribute' already defined on base type "
+        "The domain object type cannot redefine the 'Rubicon.Data.DomainObjects.StorageGroupAttribute' already defined on base type "
         + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClassWithStorageGroupAttribute'.\r\n"
         + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute")]
     public void GetClassDefinition_ForDerivedClassWithRedefinedStorageGroupAttribute ()
     {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute",
-          true,
-          false);
+      Type type = GetTypeFromDomainWithErrors ("Derived2ClassWithStorageGroupAttribute");
+
+      ClassReflector classReflector = new ClassReflector (type);
+
+      classReflector.GetClassDefinition (_classDefinitions);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer "
+        + "argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n"
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithLegacyLoadConstructor")]
+    public void GetClassDefinition_ForClassWithLegacyLoadConstructor ()
+    {
+      Type type = GetTypeFromDomainWithErrors ("ClassWithLegacyLoadConstructor");
 
       ClassReflector classReflector = new ClassReflector (type);
 
@@ -229,6 +241,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition());
 
       return classDefinition;
+    }
+
+    private static Type GetTypeFromDomainWithErrors (string typename)
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors." + typename,
+          true,
+          false);
+
+      Assert.That (type, Is.Not.Null, "Type '{0}' could not be found in domain with errors.", typename);
+
+      return type;
     }
   }
 }

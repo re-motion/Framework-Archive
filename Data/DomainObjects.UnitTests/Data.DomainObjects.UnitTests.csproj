@@ -120,6 +120,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived2ClassWithStorageGroupAttribute.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\BaseClassWithStorageGroupAttribute.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived1ClassWithStorageGroupAttribute.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithLegacyLoadConstructor.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
