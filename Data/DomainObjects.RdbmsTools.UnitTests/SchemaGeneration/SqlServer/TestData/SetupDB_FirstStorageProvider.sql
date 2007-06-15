@@ -17,11 +17,11 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithA
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithRelationsView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithRelationsView]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcreteClassView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[ConcreteClassView]
-
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[CustomerView]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcreteClassView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ConcreteClassView]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedClassView]
@@ -53,7 +53,7 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Address', 'Ceo', 'TableWithAllDataTypes', 'ClassWithRelations', 'ConcreteClass', 'Customer', 'DevelopmentPartner', 'Employee', 'Order', 'OrderItem')
+    WHERE fk.xtype = 'F' AND t.name IN ('Address', 'Ceo', 'TableWithAllDataTypes', 'ClassWithRelations', 'Customer', 'ConcreteClass', 'DevelopmentPartner', 'Employee', 'Order', 'OrderItem')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
@@ -71,11 +71,11 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithRelations' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithRelations]
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcreteClass' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[ConcreteClass]
-
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Customer]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcreteClass' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[ConcreteClass]
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'DevelopmentPartner' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[DevelopmentPartner]
@@ -185,6 +185,25 @@ CREATE TABLE [dbo].[ClassWithRelations]
   CONSTRAINT [PK_ClassWithRelations] PRIMARY KEY CLUSTERED ([ID])
 )
 
+CREATE TABLE [dbo].[Customer]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- Company columns
+  [Name] nvarchar (100) NOT NULL,
+  [PhoneNumber] nvarchar (100) NULL,
+  [AddressID] uniqueidentifier NULL,
+
+  -- Customer columns
+  [CustomerType] int NOT NULL,
+  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
+  [PrimaryOfficialID] varchar (255) NULL,
+
+  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])
+)
+
 CREATE TABLE [dbo].[ConcreteClass]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -206,25 +225,6 @@ CREATE TABLE [dbo].[ConcreteClass]
   [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_ConcreteClass] PRIMARY KEY CLUSTERED ([ID])
-)
-
-CREATE TABLE [dbo].[Customer]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-
-  -- Company columns
-  [Name] nvarchar (100) NOT NULL,
-  [PhoneNumber] nvarchar (100) NULL,
-  [AddressID] uniqueidentifier NULL,
-
-  -- Customer columns
-  [CustomerType] int NOT NULL,
-  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
-  [PrimaryOfficialID] varchar (255) NULL,
-
-  CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([ID])
 )
 
 CREATE TABLE [dbo].[DevelopmentPartner]
@@ -296,12 +296,12 @@ GO
 ALTER TABLE [dbo].[ClassWithRelations] ADD
   CONSTRAINT [FK_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])
 
+ALTER TABLE [dbo].[Customer] ADD
+  CONSTRAINT [FK_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
+
 ALTER TABLE [dbo].[ConcreteClass] ADD
   CONSTRAINT [FK_ClassWithRelationsInDerivedOfDerivedClassID] FOREIGN KEY ([ClassWithRelationsInDerivedOfDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID]),
   CONSTRAINT [FK_ClassWithRelationsInSecondDerivedClassID] FOREIGN KEY ([ClassWithRelationsInSecondDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID])
-
-ALTER TABLE [dbo].[Customer] ADD
-  CONSTRAINT [FK_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
 
 ALTER TABLE [dbo].[DevelopmentPartner] ADD
   CONSTRAINT [FK_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
@@ -360,19 +360,19 @@ CREATE VIEW [dbo].[ClassWithRelationsView] ([ID], [ClassID], [Timestamp], [Deriv
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID]
-    FROM [dbo].[ConcreteClass]
-    WHERE [ClassID] IN ('ConcreteClass', 'DerivedClass', 'DerivedOfDerivedClass', 'SecondDerivedClass')
-  WITH CHECK OPTION
-GO
-
 CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID]
     FROM [dbo].[Customer]
     WHERE [ClassID] IN ('Customer')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[ConcreteClassView] ([ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [PropertyInConcreteClass], [PropertyInDerivedClass], [PropertyInDerivedOfDerivedClass], [ClassWithRelationsInDerivedOfDerivedClassID], [PropertyInSecondDerivedClass], [ClassWithRelationsInSecondDerivedClassID]
+    FROM [dbo].[ConcreteClass]
+    WHERE [ClassID] IN ('ConcreteClass', 'DerivedClass', 'DerivedOfDerivedClass', 'SecondDerivedClass')
   WITH CHECK OPTION
 GO
 

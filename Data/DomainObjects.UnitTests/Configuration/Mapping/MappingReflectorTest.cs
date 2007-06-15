@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -29,6 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsNotNull (actualClassDefinitions);
       ClassDefinitionChecker classDefinitionChecker = new ClassDefinitionChecker();
       classDefinitionChecker.Check (TestMappingConfiguration.Current.ClassDefinitions, actualClassDefinitions, false, true);
+      Assert.IsFalse (actualClassDefinitions.Contains (typeof (TestDomainBase)));
     }
 
     [Test]

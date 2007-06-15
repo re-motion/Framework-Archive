@@ -8,12 +8,12 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
-  public class GetClassDefinition: TestBase
+  public class GetClassDefinition : TestBase
   {
     private ClassDefinitionChecker _classDefinitionChecker;
     private ClassDefinitionCollection _classDefinitions;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
 
@@ -22,10 +22,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForBaseClass()
+    public void GetClassDefinition_ForBaseClass ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperties));
-      ReflectionBasedClassDefinition expected = CreateClassWithMixedPropertiesClassDefinition ();
+      ReflectionBasedClassDefinition expected = CreateClassWithMixedPropertiesClassDefinition();
 
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
@@ -36,10 +36,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForDerivedClass()
+    public void GetClassDefinition_ForDerivedClass ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
-      ReflectionBasedClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition ();
+      ReflectionBasedClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition();
 
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
@@ -52,10 +52,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForDerivedClassWithBaseClassAlreadyInClassDefinitionCollection()
+    public void GetClassDefinition_ForDerivedClassWithBaseClassAlreadyInClassDefinitionCollection ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
-      ReflectionBasedClassDefinition expectedBaseClass = CreateClassWithMixedPropertiesClassDefinition ();
+      ReflectionBasedClassDefinition expectedBaseClass = CreateClassWithMixedPropertiesClassDefinition();
       _classDefinitions.Add (expectedBaseClass);
 
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
@@ -67,10 +67,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForDerivedClassWithDerivedClassAlreadyInClassDefinitionCollection()
+    public void GetClassDefinition_ForDerivedClassWithDerivedClassAlreadyInClassDefinitionCollection ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithMixedProperties));
-      ReflectionBasedClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition ();
+      ReflectionBasedClassDefinition expected = CreateDerivedClassWithMixedPropertiesClassDefinition();
       ReflectionBasedClassDefinition expectedBaseClass = expected.BaseClass;
       _classDefinitions.Add (expectedBaseClass);
       _classDefinitions.Add (expected);
@@ -85,10 +85,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetClassDefinition_ForClassWithOneSideRelationProperties()
+    public void GetClassDefinition_ForClassWithOneSideRelationProperties ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithOneSideRelationProperties));
-      ReflectionBasedClassDefinition expected = CreateClassWithOneSideRelationPropertiesClassDefinition ();
+      ReflectionBasedClassDefinition expected = CreateClassWithOneSideRelationPropertiesClassDefinition();
 
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
       Assert.IsNotNull (actual);
-      Assert.AreEqual ("ClassIDForClassHavingClassIDAttribute",actual.ID);
+      Assert.AreEqual ("ClassIDForClassHavingClassIDAttribute", actual.ID);
       Assert.AreEqual ("ClassIDForClassHavingClassIDAttribute", actual.MyEntityName);
     }
 
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     public void GetClassDefinition_ForDerivedClassWithStorageSpecificIdentifierAttribute ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (DerivedClassWithStorageSpecificIdentifierAttribute));
-      ReflectionBasedClassDefinition expected = CreateDerivedClassWithStorageSpecificIdentifierAttributeClassDefinition ();
+      ReflectionBasedClassDefinition expected = CreateDerivedClassWithStorageSpecificIdentifierAttributeClassDefinition();
 
       ReflectionBasedClassDefinition actual = classReflector.GetClassDefinition (_classDefinitions);
 
@@ -146,6 +146,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       Assert.IsNotNull (actual);
       Assert.AreEqual ("ClassIDForClassHavingClassIDAttributeAndStorageSpecificIdentifierAttribute", actual.ID);
       Assert.AreEqual ("ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable", actual.MyEntityName);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+       "The domain object type cannot redefine the 'Rubicon.Data.DomainObjects.StorageGroupAttribute' already defined on base type "
+        + "'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClassWithStorageGroupAttribute'.\r\n"
+        + "Type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute")]
+    public void GetClassDefinition_ForDerivedClassWithRedefinedStorageGroupAttribute ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.Derived2ClassWithStorageGroupAttribute",
+          true,
+          false);
+
+      ClassReflector classReflector = new ClassReflector (type);
+
+      classReflector.GetClassDefinition (_classDefinitions);
     }
 
     private ReflectionBasedClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
@@ -170,7 +187,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithMixedProperties),
           false,
-          CreateClassWithMixedPropertiesClassDefinition ());
+          CreateClassWithMixedPropertiesClassDefinition());
 
       CreatePropertyDefinitionsForDerivedClassWithMixedProperties (classDefinition);
 
@@ -209,7 +226,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           c_testDomainProviderID,
           typeof (DerivedClassWithStorageSpecificIdentifierAttribute),
           false,
-          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition ());
+          CreateBaseClassWithoutStorageSpecificIdentifierAttributeDefinition());
 
       return classDefinition;
     }

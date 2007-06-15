@@ -55,7 +55,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
             "Only relation end points with a property type of '{0}' can have a sort expression.",
             typeof (ObjectList<>));
       }
-    }
+    }
+
     private bool ContainsKey ()
     {
       if (!IsBidirectionalRelation)

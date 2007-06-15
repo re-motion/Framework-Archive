@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
   //TODO: Run the generated SQL File against a database in the UnitTests and integrate this into the build
   //      Derive ClassWithAllDataTypes from an abstract class to ensure that all data types are selected in a UNION
   [TestFixture]
-  public class SqlFileBuilderTest : StandardMappingTest
+  public class FileBuilderTest : StandardMappingTest
   {
     private RdbmsProviderDefinition _firstStorageProviderDefinition;
     private RdbmsProviderDefinition _secondStorageProviderDefinition;
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
     private string GetEmbeddedStringResource (string name)
     {
       Assembly assembly = GetType().Assembly;
-      StreamReader reader = new StreamReader (assembly.GetManifestResourceStream (typeof (SqlFileBuilderTest), name));
+      StreamReader reader = new StreamReader (assembly.GetManifestResourceStream (typeof (FileBuilderTest), name));
       return reader.ReadToEnd();
     }
 

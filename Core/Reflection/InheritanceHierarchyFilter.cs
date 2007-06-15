@@ -14,7 +14,7 @@ namespace Rubicon.Reflection
 
     public InheritanceHierarchyFilter (Type[] types)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("types", types);
+      ArgumentUtility.CheckNotNullOrItemsNull ("types", types);
       _types = types;
     }
 

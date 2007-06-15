@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetIsAbstract_FromAbstractType()
     {
       ReflectionBasedClassDefinition actual = new ReflectionBasedClassDefinition (
-          "Order", "OrderTable", "StorageProvider", typeof (AbstractClassNotInMapping), true);
+          "Order", "OrderTable", "StorageProvider", typeof (AbstractClass), true);
 
       Assert.IsTrue (actual.IsAbstract);
     }
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void GetIsAbstract_FromArgumentFalse()
     {
       ReflectionBasedClassDefinition actual = 
-          new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (AbstractClassNotInMapping), false);
+          new ReflectionBasedClassDefinition ("ClassID", "Table", "StorageProvider", typeof (AbstractClass), false);
 
       Assert.IsFalse (actual.IsAbstract);
     }

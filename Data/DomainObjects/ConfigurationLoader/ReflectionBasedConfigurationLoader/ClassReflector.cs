@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using Rubicon.Data.DomainObjects.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
@@ -50,13 +51,14 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classDefiniton;
     }
 
-    public List<RelationDefinition> GetRelationDefinitions (ClassDefinitionCollection classDefinitions, RelationDefinitionCollection relationDefinitions)
+    public List<RelationDefinition> GetRelationDefinitions (
+        ClassDefinitionCollection classDefinitions, RelationDefinitionCollection relationDefinitions)
     {
       ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
       ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
 
       List<RelationDefinition> relations = new List<RelationDefinition>();
-      foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos ())
+      foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos())
       {
         RelationReflector relationReflector = RelationReflector.CreateRelationReflector (propertyInfo, classDefinitions);
         RelationDefinition relationDefinition = relationReflector.GetMetadata (relationDefinitions);
@@ -67,8 +69,23 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return relations;
     }
 
+    protected MappingException CreateMappingException (Exception innerException, Type type, string message, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+
+      StringBuilder messageBuilder = new StringBuilder();
+      messageBuilder.AppendFormat (message, args);
+      messageBuilder.AppendLine();
+      messageBuilder.AppendFormat ("Type: {0}", type.FullName);
+
+      return new MappingException (messageBuilder.ToString(), innerException);
+    }
+
     private ReflectionBasedClassDefinition CreateClassDefinition (ClassDefinitionCollection classDefinitions)
     {
+      ValidateType();
+
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           GetID(),
           GetStorageSpecificIdentifier(),
@@ -79,28 +96,40 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
       CreatePropertyDefinitions (classDefinition, GetPropertyInfos());
 
-      ValidateClassDefinition (classDefinition);
-
       return classDefinition;
     }
 
     //TODO: Write test for abstract DomainObject with infrasturcture constructor
     //TODO: Write test for fail
     //TODO: Write test that fails for Generic DomainObject
-    private void ValidateClassDefinition (ReflectionBasedClassDefinition classDefinition)
+    private void ValidateType ()
     {
-      if (!classDefinition.IsAbstract)
+      if (!IsAbstract())
       {
         BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
-        ConstructorInfo legacyLoadConstructor = classDefinition.ClassType.GetConstructor (flags, null, new Type[] {typeof (DataContainer)}, null);
+        ConstructorInfo legacyLoadConstructor = _type.GetConstructor (flags, null, new Type[] {typeof (DataContainer)}, null);
         if (legacyLoadConstructor != null)
         {
-          throw new MappingException (
-              string.Format (
-                  "Domain object type {0} has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer"
-                  + " argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.",
-                  classDefinition.ClassType));
+          throw CreateMappingException (
+              null,
+              _type,
+              "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer "
+              + "argument). The reflection-based mapping does not use this constructor any longer and requires it to be removed.");
         }
+      }
+
+      if (IsInheritenceRoot() && Attribute.IsDefined (_type.BaseType, typeof (StorageGroupAttribute), true))
+      {
+        Type baseType = _type.BaseType;
+        while (!AttributeUtility.IsDefined<StorageGroupAttribute> (baseType, false))
+          baseType = _type.BaseType;
+
+        throw CreateMappingException (
+            null,
+            _type,
+            "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
+            typeof (StorageGroupAttribute),
+            baseType);
       }
     }
 
@@ -152,12 +181,20 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return false;
     }
 
+    private bool IsInheritenceRoot ()
+    {
+      if (_type.BaseType == typeof (DomainObject))
+        return true;
+
+      return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);
+    }
+
     private ReflectionBasedClassDefinition GetBaseClassDefinition (ClassDefinitionCollection classDefinitions)
     {
       if (IsInheritenceRoot())
         return null;
 
-      ClassReflector classReflector = (ClassReflector) TypesafeActivator.CreateInstance (GetType ()).With (_type.BaseType);
+      ClassReflector classReflector = (ClassReflector) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType);
       return classReflector.GetClassDefinition (classDefinitions);
     }
 
@@ -169,16 +206,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private PropertyInfo[] GetRelationPropertyInfos ()
     {
-      RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot ());
-      return relationPropertyFinder.FindPropertyInfos ();
-    }
-
-    private bool IsInheritenceRoot ()
-    {
-      if (_type.BaseType == typeof (DomainObject))
-        return true;
-
-      return Attribute.IsDefined (_type, typeof (StorageGroupAttribute), false);
+      RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot());
+      return relationPropertyFinder.FindPropertyInfos();
     }
   }
 }

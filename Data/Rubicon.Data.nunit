@@ -2,9 +2,9 @@
   <Settings activeconfig="Default" />
   <Config name="Default" binpathtype="Auto">
     <assembly path="DomainObjects.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.UnitTests.dll" />
+    <assembly path="DomainObjects.RdbmsTools.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.dll" />
     <assembly path="DomainObjects.Legacy.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.Legacy.UnitTests.dll" />
     <assembly path="DomainObjects.ObjectBinding.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.dll" />
     <assembly path="DomainObjects.Legacy.CodeGenerator.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests.dll" />
-    <assembly path="DomainObjects.RdbmsTools.UnitTests\bin\Debug\Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.dll" />
   </Config>
 </NUnitProject>

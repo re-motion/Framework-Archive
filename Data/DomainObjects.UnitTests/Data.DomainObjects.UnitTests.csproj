@@ -117,6 +117,9 @@
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationRightSide.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\OtherClassWithInvalidBidirectionalRelationLeftSide.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived2ClassWithStorageGroupAttribute.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\BaseClassWithStorageGroupAttribute.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived1ClassWithStorageGroupAttribute.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
@@ -642,7 +645,7 @@
     <Compile Include="TableInheritance\ValueConverterTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestDomain\AbstractClassNotInMapping.cs" />
+    <Compile Include="TestDomain\AbstractClass.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
     </Compile>

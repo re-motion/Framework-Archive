@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Reflection;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -25,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     public RelationDefinitionCollection GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
     {
       RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection();
-      foreach (ClassReflector classReflector in CreateClassReflectors())
+      foreach (ClassReflector classReflector in CreateClassReflectorsForRelations ())
         classReflector.GetRelationDefinitions (classDefinitions, relationDefinitions);
 
       return relationDefinitions;
@@ -34,9 +35,19 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     private List<ClassReflector> CreateClassReflectors()
     {
       List<ClassReflector> classReflectors = new List<ClassReflector>();
-      foreach (Type domainObjectClass in GetDomainObjectTypesSorted ())
+      InheritanceHierarchyFilter inheritanceHierarchyFilter = new InheritanceHierarchyFilter (GetDomainObjectTypesSorted());
+      foreach (Type domainObjectClass in inheritanceHierarchyFilter.GetLeafTypes())
         classReflectors.Add (ClassReflector.CreateClassReflector (domainObjectClass));
       
+      return classReflectors;
+    }
+
+    private List<ClassReflector> CreateClassReflectorsForRelations ()
+    {
+      List<ClassReflector> classReflectors = new List<ClassReflector> ();
+      foreach (Type domainObjectClass in GetDomainObjectTypesSorted ())
+        classReflectors.Add (ClassReflector.CreateClassReflector (domainObjectClass));
+
       return classReflectors;
     }
 
