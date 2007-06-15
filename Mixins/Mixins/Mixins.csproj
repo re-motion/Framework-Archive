@@ -112,7 +112,7 @@
     <Compile Include="Definitions\Building\BaseClassDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\AttributeDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\MemberDefinitionBuilder.cs" />
-    <Compile Include="Definitions\Building\ConfigurationException.cs" />
+    <Compile Include="ConfigurationException.cs" />
     <Compile Include="Definitions\Building\BaseDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\DependencyDefinitionBuilderBase.cs" />
     <Compile Include="Definitions\Building\InterfaceIntroductionBuilder.cs" />

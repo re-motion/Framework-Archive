@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.Definitions.Building
+namespace Mixins
 {
   public class ConfigurationException : Exception
   {
     public ConfigurationException (string message)
-      : base (message)
+        : base (message)
     {
     }
 
     public ConfigurationException (string message, Exception innerException)
-      : base (message, innerException)
+        : base (message, innerException)
     {
     }
   }

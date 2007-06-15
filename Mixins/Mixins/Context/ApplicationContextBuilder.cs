@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using Mixins;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 using Rubicon.Reflection;
+using Mixins.Definitions.Building;
 
 namespace Mixins.Context
 {
@@ -52,15 +54,21 @@ namespace Mixins.Context
       foreach (Type t in assembly.GetTypes())
       {
         if (!t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false))
-        {
-          if (t.IsDefined (typeof (ExtendsAttribute), false))
-            AnalyzeMixin (t, targetContext);
-          if (t.IsDefined (typeof (UsesAttribute), true))
-            AnalyzeMixinApplications (t, targetContext);
-          if (t.IsDefined (typeof (CompleteInterfaceAttribute), false))
-            AnalyzeCompleteInterface (t, targetContext);
-        }
+          AnalyzeTypeIntoContext (t, targetContext);
       }
+    }
+
+    public static void AnalyzeTypeIntoContext (Type type, ApplicationContext targetContext)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("targetContext", targetContext);
+
+      if (type.IsDefined (typeof (ExtendsAttribute), false))
+        AnalyzeMixin (type, targetContext);
+      if (type.IsDefined (typeof (UsesAttribute), true))
+        AnalyzeMixinApplications (type, targetContext);
+      if (type.IsDefined (typeof (CompleteInterfaceAttribute), false))
+        AnalyzeCompleteInterface (type, targetContext);
     }
 
     private static void AnalyzeMixin (Type mixinType, ApplicationContext targetContext)
@@ -71,10 +79,40 @@ namespace Mixins.Context
 
     private static void AnalyzeMixinApplications (Type targetType, ApplicationContext targetContext)
     {
-      foreach (UsesAttribute usesAttribute in targetType.GetCustomAttributes (typeof (UsesAttribute), true))
+      ClassContext classContext = targetContext.GetOrAddClassContext (targetType);
+      Type currentType = targetType;
+      while (currentType != null)
       {
-        MixinContext mixinContext = targetContext.GetOrAddClassContext (targetType).GetOrAddMixinContext (usesAttribute.MixinType);
-        foreach (Type additionalDependency in usesAttribute.AdditionalDependencies)
+        UsesAttribute[] attributes = (UsesAttribute[]) currentType.GetCustomAttributes (typeof (UsesAttribute), false);
+        EnsureNoUsesDuplicates (attributes, targetType);
+        foreach (UsesAttribute usesAttribute in attributes)
+          ApplyMixinToClassContext (classContext, usesAttribute.MixinType, usesAttribute.AdditionalDependencies);
+        currentType = currentType.BaseType;
+      }
+    }
+
+    private static void EnsureNoUsesDuplicates (UsesAttribute[] usesAttributes, Type targetType)
+    {
+      Set<Type> mixinTypes = new Set<Type> ();
+      foreach (UsesAttribute usesAttribute in usesAttributes)
+      {
+        if (mixinTypes.Contains (usesAttribute.MixinType))
+        {
+          string message = string.Format ("Two instances of mixin {0} are configured for target type {1}.",
+              usesAttribute.MixinType.FullName, targetType.FullName);
+          throw new ConfigurationException (message);
+        }
+        else
+          mixinTypes.Add (usesAttribute.MixinType);
+      }
+    }
+
+    private static void ApplyMixinToClassContext (ClassContext classContext, Type mixinType, IEnumerable<Type> explicitDependencies)
+    {
+      if (!classContext.ContainsMixin (mixinType))
+      {
+        MixinContext mixinContext = classContext.GetOrAddMixinContext (mixinType);
+        foreach (Type additionalDependency in explicitDependencies)
           mixinContext.AddExplicitDependency (additionalDependency);
       }
     }

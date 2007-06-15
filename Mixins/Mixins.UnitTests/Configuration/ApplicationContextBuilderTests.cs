@@ -88,5 +88,53 @@ namespace Mixins.UnitTests.Configuration
     {
       Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.HasItem (typeof (Foo)));
     }
+
+    [Uses (typeof (NullMixin), AdditionalDependencies = new Type[] {typeof (object)})]
+    public class BaseWithUses
+    {
+    }
+
+    public class DerivedWithoutUses : BaseWithUses
+    {
+    }
+    
+
+    [Test]
+    public void UsesAttributeIsInherited ()
+    {
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseWithUses)).ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithoutUses)).MixinCount);
+    }
+
+    [Uses (typeof (NullMixin))]
+    public class DerivedWithUses : BaseWithUses
+    {
+    }
+
+    [Test]
+    public void InheritedUsesDuplicateIsIgnored ()
+    {
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseWithUses)).ContainsMixin (typeof (NullMixin)));
+      Assert.IsTrue (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).ContainsMixin (typeof (NullMixin)));
+      Assert.IsFalse (MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).GetOrAddMixinContext (typeof (NullMixin)).ContainsExplicitDependency (typeof (object)));
+      Assert.AreEqual (1, MixinConfiguration.ActiveContext.GetClassContext (typeof (DerivedWithUses)).MixinCount);
+    }
+
+    [Uses (typeof (NullMixin))]
+    [Uses (typeof (NullMixin))]
+    [IgnoreForMixinConfiguration]
+    public class DerivedWithDuplicateUses : BaseWithUses
+    {
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.SampleTypes.NullMixin are "
+        + "configured for target type Mixins.UnitTests.Configuration.ApplicationContextBuilderTests+DerivedWithDuplicateUses.")]
+    public void ThrowsOnUsesDuplicateOnSameClass ()
+    {
+      ApplicationContextBuilder.AnalyzeTypeIntoContext (typeof (DerivedWithDuplicateUses), new ApplicationContext ());
+    }
   }
 }
