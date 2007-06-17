@@ -1,9 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using System.Collections;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
 {
@@ -23,21 +23,27 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
 
     public ConstraintBuilderBase ()
     {
-      _createConstraintStringBuilder = new StringBuilder ();
-      _constraintNamesUsed = new Hashtable ();
-      _entityNamesForDropConstraintScript = new List<string> ();
+      _createConstraintStringBuilder = new StringBuilder();
+      _constraintNamesUsed = new Hashtable();
+      _entityNamesForDropConstraintScript = new List<string>();
     }
 
     // methods and properties
 
     public abstract void AddToDropConstraintScript (List<string> entityNamesForDropConstraintScript, StringBuilder dropConstraintStringBuilder);
     public abstract void AddToCreateConstraintScript (ClassDefinition classDefinition, StringBuilder createConstraintStringBuilder);
-    public abstract string GetConstraint (IRelationEndPointDefinition relationEndPoint, PropertyDefinition propertyDefinition, ClassDefinition oppositeClassDefinition);    
-    protected abstract string ConstraintSeparator { get;}
+
+    public abstract string GetConstraint (
+        ClassDefinition classDefinition,
+        IRelationEndPointDefinition relationEndPoint,
+        PropertyDefinition propertyDefinition,
+        ClassDefinition oppositeClassDefinition);
+
+    protected abstract string ConstraintSeparator { get; }
 
     public string GetAddConstraintScript ()
     {
-      return _createConstraintStringBuilder.ToString ();
+      return _createConstraintStringBuilder.ToString();
     }
 
     public string GetDropConstraintScript ()
@@ -45,9 +51,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
       if (_entityNamesForDropConstraintScript.Count == 0)
         return string.Empty;
 
-      StringBuilder dropConstraintStringBuilder = new StringBuilder ();
+      StringBuilder dropConstraintStringBuilder = new StringBuilder();
       AddToDropConstraintScript (_entityNamesForDropConstraintScript, dropConstraintStringBuilder);
-      return dropConstraintStringBuilder.ToString ();
+      return dropConstraintStringBuilder.ToString();
     }
 
     public void AddConstraints (ClassDefinitionCollection classes)
@@ -85,9 +91,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-      List<IRelationEndPointDefinition> allRelationEndPointDefinitions = new List<IRelationEndPointDefinition> ();
+      List<IRelationEndPointDefinition> allRelationEndPointDefinitions = new List<IRelationEndPointDefinition>();
       if (classDefinition.BaseClass != null)
-        allRelationEndPointDefinitions.AddRange (classDefinition.BaseClass.GetRelationEndPointDefinitions ());
+        allRelationEndPointDefinitions.AddRange (classDefinition.BaseClass.GetRelationEndPointDefinitions());
 
       FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (classDefinition, allRelationEndPointDefinitions);
 
@@ -98,10 +104,10 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
     {
       ArgumentUtility.CheckNotNull ("tableRootClassDefinition", tableRootClassDefinition);
 
-      List<string> constraints = new List<string> ();
+      List<string> constraints = new List<string>();
       foreach (IRelationEndPointDefinition relationEndPoint in GetAllRelationEndPoints (tableRootClassDefinition))
       {
-        string constraint = GetConstraint (relationEndPoint);
+        string constraint = GetConstraint (tableRootClassDefinition, relationEndPoint);
         if (constraint != null)
           constraints.Add (constraint);
       }
@@ -109,7 +115,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
       return constraints;
     }
 
-    private string GetConstraint (IRelationEndPointDefinition relationEndPoint)
+    private string GetConstraint (ClassDefinition tableRootClassDefinition, IRelationEndPointDefinition relationEndPoint)
     {
       if (relationEndPoint.IsNull)
         return null;
@@ -121,10 +127,11 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
 
       PropertyDefinition propertyDefinition = relationEndPoint.ClassDefinition.GetMandatoryPropertyDefinition (relationEndPoint.PropertyName);
 
-      return GetConstraint (relationEndPoint, propertyDefinition, oppositeClassDefinition);
+      return GetConstraint (tableRootClassDefinition, relationEndPoint, propertyDefinition, oppositeClassDefinition);
     }
 
-    private void FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (ClassDefinition classDefinition, List<IRelationEndPointDefinition> allRelationEndPointDefinitions)
+    private void FillAllRelationEndPointDefinitionsWithParticularAndDerivedClass (
+        ClassDefinition classDefinition, List<IRelationEndPointDefinition> allRelationEndPointDefinitions)
     {
       foreach (RelationDefinition relationDefinition in classDefinition.MyRelationDefinitions)
       {
@@ -147,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration
       if (oppositeClassDefinition.StorageProviderID != relationEndPoint.ClassDefinition.StorageProviderID)
         return false;
 
-      if (oppositeClassDefinition.GetEntityName () == null)
+      if (oppositeClassDefinition.GetEntityName() == null)
         return false;
 
       return true;

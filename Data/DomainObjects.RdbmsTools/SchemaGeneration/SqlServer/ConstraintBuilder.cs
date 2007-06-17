@@ -3,35 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
-using System.Collections;
 
 namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 {
   public class ConstraintBuilder : ConstraintBuilderBase
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    private Hashtable _constraintNamesUsed;
-
-    // construction and disposing
-
     public ConstraintBuilder ()
     {
-      _constraintNamesUsed = new Hashtable ();
     }
-
-    // methods and properties
 
     public override void AddToDropConstraintScript (List<string> entityNamesForDropConstraintScript, StringBuilder dropConstraintStringBuilder)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("entityNamesForDropConstraintScript", entityNamesForDropConstraintScript);
       ArgumentUtility.CheckNotNull ("dropConstraintStringBuilder", dropConstraintStringBuilder);
 
-      dropConstraintStringBuilder.AppendFormat ("DECLARE @statement nvarchar (4000)\r\n"
+      dropConstraintStringBuilder.AppendFormat (
+          "DECLARE @statement nvarchar (4000)\r\n"
           + "SET @statement = ''\r\n"
           + "SELECT @statement = @statement + 'ALTER TABLE [{0}].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \r\n"
           + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \r\n"
@@ -39,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
           + "    ORDER BY t.name, fk.name\r\n"
           + "exec sp_executesql @statement\r\n",
           FileBuilder.DefaultSchema,
-          string.Join ("', '", entityNamesForDropConstraintScript.ToArray ()));
+          string.Join ("', '", entityNamesForDropConstraintScript.ToArray()));
     }
 
     public override void AddToCreateConstraintScript (ClassDefinition classDefinition, StringBuilder createConstraintStringBuilder)
@@ -50,7 +37,8 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
       string constraints = ConcatenateConstraints (GetConstraints (classDefinition));
       if (constraints.Length != 0)
       {
-        createConstraintStringBuilder.AppendFormat ("ALTER TABLE [{0}].[{1}] ADD\r\n{2}\r\n",
+        createConstraintStringBuilder.AppendFormat (
+            "ALTER TABLE [{0}].[{1}] ADD\r\n{2}\r\n",
             FileBuilder.DefaultSchema,
             classDefinition.MyEntityName,
             constraints);
@@ -59,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
 
     private string ConcatenateConstraints (List<string> constraints)
     {
-      StringBuilder constraintBuilder = new StringBuilder ();
+      StringBuilder constraintBuilder = new StringBuilder();
       foreach (string constraint in constraints)
       {
         if (constraintBuilder.Length != 0)
@@ -68,19 +56,26 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.SchemaGeneration.SqlServer
         constraintBuilder.Append (constraint);
       }
 
-      return constraintBuilder.ToString ();
+      return constraintBuilder.ToString();
     }
 
-    public override string GetConstraint (IRelationEndPointDefinition relationEndPoint, PropertyDefinition propertyDefinition, ClassDefinition oppositeClassDefinition)
+    public override string GetConstraint (
+        ClassDefinition classDefinition, 
+        IRelationEndPointDefinition relationEndPoint, 
+        PropertyDefinition propertyDefinition, 
+        ClassDefinition oppositeClassDefinition)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
       ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull ("oppositeClassDefinition", oppositeClassDefinition);
 
-      return string.Format ("  CONSTRAINT [FK_{0}] FOREIGN KEY ([{0}]) REFERENCES [{1}].[{2}] ([ID])",
+      return string.Format (
+          "  CONSTRAINT [FK_{0}] FOREIGN KEY ([{1}]) REFERENCES [{2}].[{3}] ([ID])",
+          classDefinition.GetEntityName () + "_" + propertyDefinition.StorageSpecificName,
           propertyDefinition.StorageSpecificName,
           FileBuilder.DefaultSchema,
-          oppositeClassDefinition.GetEntityName ());
+          oppositeClassDefinition.GetEntityName());
     }
 
     protected override string ConstraintSeparator

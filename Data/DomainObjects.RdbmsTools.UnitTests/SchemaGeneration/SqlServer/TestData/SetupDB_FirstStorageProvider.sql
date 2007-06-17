@@ -294,26 +294,26 @@ GO
 
 -- Create constraints for tables that were created above
 ALTER TABLE [dbo].[ClassWithRelations] ADD
-  CONSTRAINT [FK_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])
+  CONSTRAINT [FK_ClassWithRelations_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])
 
 ALTER TABLE [dbo].[Customer] ADD
-  CONSTRAINT [FK_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
+  CONSTRAINT [FK_Customer_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
 
 ALTER TABLE [dbo].[ConcreteClass] ADD
-  CONSTRAINT [FK_ClassWithRelationsInDerivedOfDerivedClassID] FOREIGN KEY ([ClassWithRelationsInDerivedOfDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID]),
-  CONSTRAINT [FK_ClassWithRelationsInSecondDerivedClassID] FOREIGN KEY ([ClassWithRelationsInSecondDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID])
+  CONSTRAINT [FK_ConcreteClass_ClassWithRelationsInDerivedOfDerivedClassID] FOREIGN KEY ([ClassWithRelationsInDerivedOfDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID]),
+  CONSTRAINT [FK_ConcreteClass_ClassWithRelationsInSecondDerivedClassID] FOREIGN KEY ([ClassWithRelationsInSecondDerivedClassID]) REFERENCES [dbo].[ClassWithRelations] ([ID])
 
 ALTER TABLE [dbo].[DevelopmentPartner] ADD
-  CONSTRAINT [FK_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
+  CONSTRAINT [FK_DevelopmentPartner_AddressID] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Address] ([ID])
 
 ALTER TABLE [dbo].[Employee] ADD
-  CONSTRAINT [FK_SupervisorID] FOREIGN KEY ([SupervisorID]) REFERENCES [dbo].[Employee] ([ID])
+  CONSTRAINT [FK_Employee_SupervisorID] FOREIGN KEY ([SupervisorID]) REFERENCES [dbo].[Employee] ([ID])
 
 ALTER TABLE [dbo].[Order] ADD
-  CONSTRAINT [FK_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])
+  CONSTRAINT [FK_Order_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])
 
 ALTER TABLE [dbo].[OrderItem] ADD
-  CONSTRAINT [FK_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])
+  CONSTRAINT [FK_OrderItem_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])
 GO
 
 -- Create a view for every class

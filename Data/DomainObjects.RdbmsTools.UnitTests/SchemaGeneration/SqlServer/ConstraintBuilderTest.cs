@@ -25,7 +25,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
-          + "  CONSTRAINT [FK_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n";
+          + "  CONSTRAINT [FK_OrderItem_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[Order] ADD\r\n"
-          + "  CONSTRAINT [FK_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
+          + "  CONSTRAINT [FK_Order_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -50,9 +50,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
-          + "  CONSTRAINT [FK_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
+          + "  CONSTRAINT [FK_OrderItem_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
           + "ALTER TABLE [dbo].[Order] ADD\r\n"
-          + "  CONSTRAINT [FK_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
+          + "  CONSTRAINT [FK_Order_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -93,8 +93,8 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[FirstEntity] ADD\r\n"
-          + "  CONSTRAINT [FK_SecondClassID] FOREIGN KEY ([SecondClassID]) REFERENCES [dbo].[SecondEntity] ([ID]),\r\n"
-          + "  CONSTRAINT [FK_ThirdClassID] FOREIGN KEY ([ThirdClassID]) REFERENCES [dbo].[ThirdEntity] ([ID])\r\n";
+          + "  CONSTRAINT [FK_FirstEntity_SecondClassID] FOREIGN KEY ([SecondClassID]) REFERENCES [dbo].[SecondEntity] ([ID]),\r\n"
+          + "  CONSTRAINT [FK_FirstEntity_ThirdClassID] FOREIGN KEY ([ThirdClassID]) REFERENCES [dbo].[ThirdEntity] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -133,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[BaseClassEntity] ADD\r\n"
-          + "  CONSTRAINT [FK_OtherClassID] FOREIGN KEY ([OtherClassID]) REFERENCES [dbo].[OtherClassEntity] ([ID])\r\n";
+          + "  CONSTRAINT [FK_BaseClassEntity_OtherClassID] FOREIGN KEY ([OtherClassID]) REFERENCES [dbo].[OtherClassEntity] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -145,7 +145,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[ClassWithRelations] ADD\r\n"
-          + "  CONSTRAINT [FK_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\r\n";
+          + "  CONSTRAINT [FK_ClassWithRelations_DerivedClassID] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
@@ -196,9 +196,9 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools.UnitTests.SchemaGeneration.SqlSe
 
       string expectedScript =
           "ALTER TABLE [dbo].[OrderItem] ADD\r\n"
-          + "  CONSTRAINT [FK_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
+          + "  CONSTRAINT [FK_OrderItem_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\r\n\r\n"
           + "ALTER TABLE [dbo].[Order] ADD\r\n"
-          + "  CONSTRAINT [FK_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
+          + "  CONSTRAINT [FK_Order_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\r\n";
 
       Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript());
     }
