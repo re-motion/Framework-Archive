@@ -1,4 +1,5 @@
 using System;
+using Mixins.Context;
 using Rubicon.Utilities;
 
 namespace Mixins
@@ -7,10 +8,22 @@ namespace Mixins
   /// Indicates that a class employs a mixin to implement some part of its functionality or public interface.
   /// </summary>
   /// <remarks>
-  /// This attribute is inherited (i.e. if a base class depends on a mixin, its subclasses also depend on the same mixin) and can be applied
-  /// multiple times if a class depends on multiple mixins.
+  /// <para>
+  /// This attribute is effective for the declarative mixin configuration built via <see cref="ApplicationContextBuilder.BuildDefaultContext"/>,
+  /// which is in effect by default when an application is started.
+  /// </para>
+  /// <para> 
+  /// Although the attribute itself is not inherited, its semantics in mixin configuration are: If a base class is configured to be mixed with a
+  /// mixin type M by means of the <see cref="UsesAttribute"/>, this configuration setting is inherited by each of its (direct and indirect) subclasses.
+  /// The subclasses will therefore also be mixed with the same mixin type M unless a second mixin M2 derived from M is applied to the subclass, thus
+  /// overriding the inherited configuration. If M is configured for both base class and subclass, the base class configuration is ignored.
+  /// </para>
+  /// <para>
+  /// This attribute can be applied to the same target class multiple times if a class depends on multiple mixins, but it should not be used to
+  /// apply the same mixin multiple times to the same target class.
+  /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = true)] // UsesMixinAttribute is inherited
+  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class UsesAttribute : Attribute
   {
     private Type _mixinType;
