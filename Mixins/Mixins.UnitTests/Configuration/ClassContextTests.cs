@@ -61,17 +61,29 @@ namespace Mixins.UnitTests.Configuration
       Assert.IsNotNull (mixinContext);
       Assert.IsTrue (classContext.ContainsMixin (typeof (BT7Mixin1)));
       Assert.AreSame (mixinContext, classContext.GetOrAddMixinContext (typeof (BT7Mixin1)));
+
+      MixinContext mixinContext2 = classContext.AddMixin (typeof (BT7Mixin2));
+      Assert.AreSame (mixinContext2, classContext.GetOrAddMixinContext (typeof (BT7Mixin2)));
     }
 
     [Test][ExpectedException (typeof (InvalidOperationException))]
-    public void ThrowsOnDuplicateContexts ()
+    public void ThrowsOnDuplicateClassContexts ()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
       context.AddClassContext (new ClassContext (typeof (BaseType1)));
     }
 
     [Test]
-    public void MultipleMixinTypeOccurrencesOnSameTargetTypeAreIgnored ()
+    [ExpectedException (typeof (InvalidOperationException))]
+    public void ThrowsOnDuplicateMixinContexts ()
+    {
+      ClassContext context = new ClassContext (typeof (string));
+      context.AddMixin (typeof (object));
+      context.AddMixin (typeof (object));
+    }
+
+    [Test]
+    public void DoubleAssembliesAreIgnored ()
     {
       ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly (), Assembly.GetExecutingAssembly ());
 
@@ -80,7 +92,20 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (classContext.ContainsMixin(typeof (BT1Mixin1)));
       Assert.IsTrue (classContext.ContainsMixin(typeof (BT1Mixin2)));
-     
+    }
+
+    [Test]
+    public void DoubleTypesAreIgnored ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder(null).AddType (typeof (BaseType1)).AddType (typeof (BaseType1))
+          .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).Analyze();
+
+      ClassContext classContext = context.GetClassContext (typeof (BaseType1));
+      Assert.AreEqual (2, classContext.MixinCount);
+
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (classContext.ContainsMixin (typeof (BT1Mixin2)));
+
     }
 
     [Test]
@@ -504,6 +529,19 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (cc.ContainsCompleteInterface (typeof (IBT5MixinC1)));
       Assert.IsFalse (cc.ContainsCompleteInterface (typeof (IBT5MixinC2)));
+    }
+
+    [Test]
+    public void CloneAndAddMixinContextTo ()
+    {
+      ClassContext one = new ClassContext (typeof (BaseType1));
+      one.AddMixin (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+
+      ClassContext two = new ClassContext(typeof (BaseType2));
+      Assert.IsFalse (two.ContainsMixin (typeof (BT1Mixin1)));
+      one.GetOrAddMixinContext (typeof (BT1Mixin1)).CloneAndAddTo (two);
+      Assert.IsTrue (two.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (two.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
     }
   }
 }

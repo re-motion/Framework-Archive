@@ -83,8 +83,9 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"The following mixins are applied to the same base class and require a "
-       + @"clear base call ordering, but do not provide enough dependency information: ((.*BT7Mixin0)|(.*BT7Mixin4)|(.*BT7Mixin6)|(.*BT7Mixin7)){4}\.",
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = @"The following mixins are applied to the same base class .*BaseType7 and "
+       + "require a clear base call ordering, but do not provide enough dependency information: "
+       + @"((.*BT7Mixin0)|(.*BT7Mixin4)|(.*BT7Mixin6)|(.*BT7Mixin7)){4}\.",
       MatchType = MessageMatch.Regex)]
     public void ThrowsIfConnectedMixinsCannotBeSorted()
     {

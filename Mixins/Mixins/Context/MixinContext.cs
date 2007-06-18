@@ -102,6 +102,15 @@ namespace Mixins.Context
       }
     }
 
+    public MixinContext CloneAndAddTo (ClassContext targetForClone)
+    {
+      ArgumentUtility.CheckNotNull ("targetForClone", targetForClone);
+      MixinContext clone = targetForClone.AddMixin (MixinType);
+      foreach (Type dependency in ExplicitDependencies)
+        clone.AddExplicitDependency (dependency);
+      return clone;
+    }
+
     public int ExplicitDependencyCount
     {
       get {

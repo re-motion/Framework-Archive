@@ -12,8 +12,10 @@ namespace Mixins.UnitTests.SampleTypes
   {
   }
 
+  public interface IBT3Mixin6 { }
+
   [Extends(typeof(BaseType3))]
-  public class BT3Mixin6<TThis, TBase> : Mixin<TThis, TBase>
+  public class BT3Mixin6<TThis, TBase> : Mixin<TThis, TBase>, IBT3Mixin6
       where TThis : class, IBT3Mixin6ThisDependencies
       where TBase : class, IBT3Mixin6BaseDependencies
   {

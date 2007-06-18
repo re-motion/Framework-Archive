@@ -55,7 +55,9 @@
     <Compile Include="Configuration\BaseClassDefinitionCacheTests.cs" />
     <Compile Include="Configuration\ClassDefinitionTests.cs" />
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\ExtendsAnalysisTests.cs" />
     <Compile Include="Configuration\MixinDependencySortTests.cs" />
+    <Compile Include="Configuration\UsesAnalysisTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />
     <Compile Include="SampleTypes\BT7Mixin1.cs" />
     <Compile Include="SampleTypes\BT7Mixin3.cs" />

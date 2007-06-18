@@ -41,7 +41,12 @@ namespace Mixins.Definitions
 
     public string FullName
     {
-      get { return Type.FullName; }
+      get {
+        if (Type.IsGenericType)
+          return Type.GetGenericTypeDefinition ().FullName;
+        else
+          return Type.FullName;
+      }
     }
 
     public InterfaceMapping GetAdjustedInterfaceMap(Type interfaceType)

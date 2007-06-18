@@ -129,7 +129,7 @@ namespace Mixins.Context
       }
     }
 
-    public void AddMixin (Type mixinType)
+    public MixinContext AddMixin (Type mixinType)
     {
       ArgumentUtility.CheckNotNull ("mixinType", mixinType);
       lock (_lockObject)
@@ -139,7 +139,10 @@ namespace Mixins.Context
         {
           MixinContext context = new MixinContext (this, mixinType, _lockObject);
           AddMixinContext (context);
+          return context;
         }
+        else
+          throw new InvalidOperationException ("Mixin " + mixinType.FullName + " already added to class " + Type.FullName + ".");
       }
     }
 

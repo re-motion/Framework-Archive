@@ -50,12 +50,12 @@ namespace Mixins.UnitTests.Mixins.CodeGenSampleTypes
     }
   }
 
-  [Uses(typeof (AbstractDerivedUltraGenericMixin<,>))]
-  [Uses (typeof(BT3Mixin4))]
+  [Uses (typeof (AbstractDerivedUltraGenericMixin<,>), AdditionalDependencies = new Type[] { typeof (IBT3Mixin6) })]
+  [Uses (typeof (BT3Mixin4))]
   public class ClassOverridingUltraGenericStuff : BaseType3
   {
     [Override]
-    public string AbstractGenericMethod<T>()
+    public string AbstractGenericMethod<T> ()
     {
       return typeof (T).Name;
     }

@@ -152,5 +152,46 @@ namespace Mixins.Utilities
           yield return genericArgument;
       }
     }
+
+    private static Type GetUnspecializedType (Type type)
+    {
+      if (type.IsGenericType)
+        return type.GetGenericTypeDefinition ();
+      else
+        return type;
+    }
+
+    // Checks whether two types are equal, ignoring any generic instantiations of either parameter
+    public static bool IsSameTypeIgnoreGenerics (Type potentialDerivedType, Type potentialBaseType)
+    {
+      ArgumentUtility.CheckNotNull ("potentialDerivedType", potentialDerivedType);
+      ArgumentUtility.CheckNotNull ("potentialBaseType", potentialBaseType);
+      return GetUnspecializedType (potentialDerivedType).Equals (GetUnspecializedType (potentialBaseType));
+    }
+
+    // Checks for a subtyping relationship, ignoring any generic instantiations of either parameter
+    public static bool IsSubclassIgnoreGenerics (Type potentialDerivedType, Type potentialBaseType)
+    {
+      ArgumentUtility.CheckNotNull ("potentialDerivedType", potentialDerivedType);
+      ArgumentUtility.CheckNotNull ("potentialBaseType", potentialBaseType);
+
+      Type currentBase = potentialDerivedType.BaseType;
+      while (currentBase != null)
+      {
+        if (IsSameTypeIgnoreGenerics (currentBase, potentialBaseType))
+          return true;
+        currentBase = currentBase.BaseType;
+      }
+      return false;
+    }
+
+    // Combines IsSameIgnoreGenerics and ISSubclassIgnoreGenerics
+    public static bool IsSameOrSubclassIgnoreGenerics (Type potentialDerivedType, Type potentialBaseType)
+    {
+      ArgumentUtility.CheckNotNull ("potentialDerivedType", potentialDerivedType);
+      ArgumentUtility.CheckNotNull ("potentialBaseType", potentialBaseType);
+
+      return IsSameTypeIgnoreGenerics (potentialDerivedType, potentialBaseType) || IsSubclassIgnoreGenerics (potentialDerivedType, potentialBaseType);
+    }
   }
 }
