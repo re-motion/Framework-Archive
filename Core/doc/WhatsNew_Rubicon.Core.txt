@@ -2,6 +2,7 @@
 ======
 - Neue Klasse Rubicon.Reflection.InheritanceHierarchyFilter 
   GetLeafTypes(): Liefert von einer Liste von übergegenen Klassen all jene Klassen zurück, von denen keine weitere Klasse mehr ableitet.
+- Bugfix: TypeConversionProvider hat String-Array zu String Konversion nicht korrekt durchgeführt. Aufgetreten mit 1.7.42.
 
 1.7.42
 ======

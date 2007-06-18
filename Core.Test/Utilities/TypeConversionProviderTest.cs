@@ -21,6 +21,7 @@ public class TypeConversionProviderTest
   private Type _nullableInt32 = typeof (int?);
   private Type _naInt32 = typeof (NaInt32);
   private Type _string = typeof (string);
+  private Type _stringArray = typeof (string[]);
   private Type _naDouble = typeof (NaDouble);
   private Type _object = typeof (object);
   private Type _guid = typeof (Guid);
@@ -145,6 +146,18 @@ public class TypeConversionProviderTest
   public void CanConvertFromStringToGuid()
   {
     Assert.IsTrue (_provider.CanConvert (_string, _guid));
+  }
+
+  [Test]
+  public void CanConvertFromStringArrayToString ()
+  {
+    Assert.IsTrue (_provider.CanConvert (_stringArray, _string));
+  }
+
+  [Test]
+  public void CanConvertFromStringToStringArray ()
+  {
+    Assert.IsTrue (_provider.CanConvert (_string, _stringArray));
   }
 
 
@@ -518,6 +531,20 @@ public class TypeConversionProviderTest
   }
 
   [Test]
+  public void ConvertFromStringArrayToString ()
+  {
+    string[] value = new string[] { "Hello", "World", "!" };
+    Assert.AreEqual ("Hello,World,!", _provider.Convert (_stringArray, _string, value));
+  }
+
+  [Test]
+  public void ConvertFromStringToStringArray ()
+  {
+    string value = "Hello,World,!";
+    Assert.AreEqual (new string[] { "Hello", "World", "!"}, _provider.Convert (_string, _stringArray, value));
+  }
+
+  [Test]
   public void ConvertFromStringToStringWithNull()
   {
     Assert.AreEqual (string.Empty, _provider.Convert (_string, _string, null));
@@ -526,64 +553,89 @@ public class TypeConversionProviderTest
   [Test]
   public void GetTypeConverterFromInt32ToNaInt32 ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_int32, _naInt32);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_int32, _naInt32);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.DestinationTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaInt32Converter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromNaInt32ToInt32 ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_naInt32, _int32);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_naInt32, _int32);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.SourceTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaInt32Converter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromNaInt32ToString ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_naInt32, _string);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_naInt32, _string);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.SourceTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaInt32Converter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromStringToNaInt32 ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_string, _naInt32);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_string, _naInt32);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.DestinationTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaInt32Converter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromNaDoubleToString ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_naDouble, _string);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_naDouble, _string);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.SourceTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaDoubleConverter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromStringToNaDouble ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_string, _naDouble);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_string, _naDouble);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.DestinationTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (NaDoubleConverter), converterResult.TypeConverter.GetType ());
   }
 
   [Test]
   public void GetTypeConverterFromObjectToString ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_object, _string);
-    Assert.IsNull (converter, "TypeConverter is not null.");
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_object, _string);
+    Assert.AreEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is not empty.");
   }
 
   [Test]
   public void GetTypeConverterFromStringToObject ()
   {
-    TypeConverter converter = _provider.GetTypeConverter (_string, _object);
-    Assert.IsNull (converter, "TypeConverter is not null.");
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_string, _object);
+    Assert.AreEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is not empty.");
   }
+
+  [Test]
+  public void GetTypeConverterFromStringArrayToString ()
+  {
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_stringArray, _string);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.DestinationTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (BidirectionalStringConverter), converterResult.TypeConverter.GetType ());
+  }
+
+  [Test]
+  public void GetTypeConverterFromStringToArray ()
+  {
+    TypeConverterResult converterResult = _provider.GetTypeConverter (_string, _stringArray);
+    Assert.AreNotEqual (TypeConverterResult.Empty, converterResult, "TypeConverterResult is empty.");
+    Assert.AreEqual (TypeConverterType.SourceTypeConverter, converterResult.TypeConverterType);
+    Assert.AreEqual (typeof (BidirectionalStringConverter), converterResult.TypeConverter.GetType ());
+  }
+
 
   [Test]
   public void GetTypeConverterForNaByte ()
