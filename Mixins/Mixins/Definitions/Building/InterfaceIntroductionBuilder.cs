@@ -1,11 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using Mixins.Utilities;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 
 namespace Mixins.Definitions.Building
 {
   public class InterfaceIntroductionBuilder
   {
+    private static PropertySignatureEqualityComparer s_propertyComparer = new PropertySignatureEqualityComparer ();
+    private static EventSignatureEqualityComparer s_eventComparer = new EventSignatureEqualityComparer ();
+    private static MethodSignatureEqualityComparer s_methodComparer = new MethodSignatureEqualityComparer ();
+
     private readonly MixinDefinition _mixin;
 
     public InterfaceIntroductionBuilder (MixinDefinition mixin)
@@ -43,13 +50,44 @@ namespace Mixins.Definitions.Building
       AnalyzeMethods(introducedInterface, specialMethods);
     }
 
+    private TDefinition FindImplementer<TDefinition, TMemberInfo> (TMemberInfo interfaceMember, IEnumerable<TDefinition> candidates,
+    IEqualityComparer<TMemberInfo> comparer)
+      where TDefinition : MemberDefinition
+      where TMemberInfo : MemberInfo
+    {
+      List<TDefinition> strongCandidates = new List<TDefinition> ();
+      List<TDefinition> weakCandidates = new List<TDefinition> ();
+
+      foreach (TDefinition candidate in candidates)
+        if (interfaceMember.Name == candidate.Name && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
+          strongCandidates.Add (candidate);
+        else if (candidate.Name.EndsWith (interfaceMember.Name) && comparer.Equals (interfaceMember, (TMemberInfo) candidate.MemberInfo))
+          weakCandidates.Add (candidate);
+
+      Assertion.Assert (strongCandidates.Count == 0 || strongCandidates.Count == 1, "If this throws, we have an oversight in the candidate algorithm.");
+
+      if (strongCandidates.Count == 1)
+        return strongCandidates[0];
+      else if (weakCandidates.Count == 0)
+        return null;
+      else if (weakCandidates.Count == 1)
+        return weakCandidates[0]; // probably an explicit interface implementation
+      else // weakCandidates.Count > 1
+      {
+        string message = string.Format (
+            "There are more than one implementer candidates for member {0}.{1}: {2}. The mixin engine cannot detect the right one.",
+            interfaceMember.DeclaringType.FullName,
+            interfaceMember.Name,
+            CollectionStringBuilder.BuildCollectionString (weakCandidates, ", ", delegate (TDefinition d) { return d.FullName; }));
+        throw new NotSupportedException (message);
+      }
+    }
+
     private void AnalyzeProperties(InterfaceIntroductionDefinition introducedInterface, Set<MethodInfo> specialMethods)
     {
       foreach (PropertyInfo interfaceProperty in introducedInterface.Type.GetProperties ())
       {
-        PropertyInfo correspondingMixinProperty = _mixin.Type.GetProperty (interfaceProperty.Name);
-        CheckMemberImplementationFound (correspondingMixinProperty, interfaceProperty);
-        PropertyDefinition implementer = _mixin.Properties[correspondingMixinProperty];
+        PropertyDefinition implementer = FindImplementer (interfaceProperty, _mixin.Properties, s_propertyComparer);
         CheckMemberImplementationFound (implementer, interfaceProperty);
         introducedInterface.IntroducedProperties.Add (new PropertyIntroductionDefinition (introducedInterface, interfaceProperty, implementer));
 
@@ -67,9 +105,7 @@ namespace Mixins.Definitions.Building
     {
       foreach (EventInfo interfaceEvent in introducedInterface.Type.GetEvents ())
       {
-        EventInfo correspondingMixinEvent = _mixin.Type.GetEvent (interfaceEvent.Name);
-        CheckMemberImplementationFound (correspondingMixinEvent, interfaceEvent);
-        EventDefinition implementer = _mixin.Events[correspondingMixinEvent];
+        EventDefinition implementer = FindImplementer (interfaceEvent, _mixin.Events, s_eventComparer);
         CheckMemberImplementationFound (implementer, interfaceEvent);
         introducedInterface.IntroducedEvents.Add (new EventIntroductionDefinition (introducedInterface, interfaceEvent, implementer));
 

@@ -13,6 +13,7 @@ namespace Mixins.Context
   public class ApplicationContext
   {
     private Dictionary<Type, ClassContext> _classContexts;
+    private Dictionary<Type, ClassContext> _registeredInterfaces = new Dictionary<Type,ClassContext> ();
 
     /// <summary>
     /// Initializes a new empty application context that does not inherit anything from another context.
@@ -29,10 +30,9 @@ namespace Mixins.Context
     /// <see langword="null"/>.</param>
     public ApplicationContext (ApplicationContext parentContext)
     {
+      _classContexts = new Dictionary<Type, ClassContext>();
       if (parentContext != null)
-        _classContexts = new Dictionary<Type, ClassContext> (parentContext._classContexts);
-      else
-        _classContexts = new Dictionary<Type, ClassContext>();
+        parentContext.CopyTo (this);
     }
 
     /// <summary>
@@ -116,6 +116,18 @@ namespace Mixins.Context
     public bool RemoveClassContext (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
+      ClassContext context = GetClassContext (type);
+      if (context != null)
+      {
+        List<Type> interfacesToRemove = new List<Type>();
+        foreach (Type registeredInterface in _registeredInterfaces.Keys)
+        {
+          if (object.ReferenceEquals (ResolveInterface (registeredInterface), context))
+            interfacesToRemove.Add (registeredInterface);
+        }
+        foreach (Type interfaceToRemove in interfacesToRemove)
+          _registeredInterfaces.Remove (interfaceToRemove);
+      }
       return _classContexts.Remove (type);
     }
 
@@ -144,6 +156,93 @@ namespace Mixins.Context
       foreach (ClassContext classContext in MixinConfiguration.ActiveContext.ClassContexts)
         definitions.Add (TypeFactory.GetActiveConfiguration (classContext.Type));
       return Validator.Validate (definitions);
+    }
+
+    /// <summary>
+    /// Registers an interface to be associated with the given <see cref="ClassContext"/>. Later calls to <see cref="ResolveInterface"/>
+    /// with the given interface type will result in the registeres context being returned.
+    /// </summary>
+    /// <param name="interfaceType">Type of the interface to be registered.</param>
+    /// <param name="associatedClassContext">The class context to be associated with the interface type.</param>
+    /// <exception cref="InvalidOperationException">The interface has already been registered.</exception>
+    /// <exception cref="ArgumentNullException">One of the parameters is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="interfaceType"/> argument is not an interface or
+    /// <paramref name="associatedClassContext"/> has not been added to this application context.</exception>
+    public void RegisterInterface (Type interfaceType, ClassContext associatedClassContext)
+    {
+      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull ("associatedClassContext", associatedClassContext);
+
+      if (!interfaceType.IsInterface)
+        throw new ArgumentException ("The argument is not an interface.", "interfaceType");
+
+      if (!_classContexts.ContainsKey (associatedClassContext.Type)
+          || !object.ReferenceEquals (_classContexts[associatedClassContext.Type], associatedClassContext))
+        throw new ArgumentException ("The class context hasn't been added to this application context.", "associatedClassContext");
+
+      if (_registeredInterfaces.ContainsKey (interfaceType))
+      {
+        string message = string.Format ("The interface {0} has already been associated with a class context.", interfaceType.FullName);
+        throw new InvalidOperationException (message);
+      }
+
+      _registeredInterfaces.Add (interfaceType, associatedClassContext);
+    }
+
+    public void RegisterInterface (Type interfaceType, Type associatedClassType)
+    {
+      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull ("associatedClassType", associatedClassType);
+
+      if (!ContainsClassContext (associatedClassType))
+      {
+        string message = string.Format ("There is no class context for the given type {0}.", associatedClassType.FullName);
+        throw new ArgumentException (message, "associatedClassType");
+      }
+      else
+        RegisterInterface (interfaceType, GetClassContext (associatedClassType));
+    }
+
+
+    /// <summary>
+    /// Resolves the given interface into a class context.
+    /// </summary>
+    /// <param name="interfaceType">The interface type to be resolved.</param>
+    /// <returns>The <see cref="ClassContext"/> previously registered for the given type, or <see langword="null"/> if the no context was registered.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="interfaceType"/> argument is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="interfaceType"/> argument is not an interface.</exception>
+    public ClassContext ResolveInterface (Type interfaceType)
+    {
+      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+
+      if (!interfaceType.IsInterface)
+        throw new ArgumentException ("The argument is not an interface.", "interfaceType");
+
+      if (_registeredInterfaces.ContainsKey (interfaceType))
+        return _registeredInterfaces[interfaceType];
+      else
+        return null;
+    }
+
+    /// <summary>
+    /// Copies all configuration data of this application context to a destination context, replacing class contexts and registered interfaces
+    /// for types that are configured in both contexts.
+    /// </summary>
+    /// <param name="destination">The destination to copy all configuration data to..</param>
+    public void CopyTo (ApplicationContext destination)
+    {
+      ArgumentUtility.CheckNotNull ("destination", destination);
+
+      foreach (ClassContext classContext in ClassContexts)
+        destination.AddOrReplaceClassContext (classContext.Clone());
+
+      foreach (KeyValuePair<Type, ClassContext> interfaceRegistration in _registeredInterfaces)
+      {
+        if (destination._registeredInterfaces.ContainsKey (interfaceRegistration.Key))
+          destination._registeredInterfaces.Remove (interfaceRegistration.Key);
+        destination.RegisterInterface (interfaceRegistration.Key, interfaceRegistration.Value.Type);
+      }
     }
   }
 }

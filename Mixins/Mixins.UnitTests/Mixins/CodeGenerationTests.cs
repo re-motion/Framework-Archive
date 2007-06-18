@@ -273,6 +273,8 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsTrue (complete is ICBT6Mixin3);
     }
 
+
+
     [Test]
     public void CompleteFaceInterfaceAsTypeArgument ()
     {
@@ -283,6 +285,24 @@ namespace Mixins.UnitTests.Mixins
       Assert.IsTrue (complete is ICBT6Mixin1);
       Assert.IsTrue (complete is ICBT6Mixin2);
       Assert.IsTrue (complete is ICBT6Mixin3);
+    }
+
+    public interface IEmptyInterface { }
+
+    [Test]
+    public void CompleteFaceInterfaceAddedImperativelyAsTypeArgument ()
+    {
+      using (MixinConfiguration.CreateEmptyConfiguration ())
+      {
+        MixinConfiguration.ActiveContext.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
+        MixinConfiguration.ActiveContext.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
+
+        IEmptyInterface complete = ObjectFactory.Create<IEmptyInterface> ().With ();
+
+        Assert.IsNotNull (complete);
+        Assert.IsTrue (complete is BaseType6);
+        Assert.IsTrue (complete is IEmptyInterface);
+      }
     }
 
     [Test]
@@ -298,15 +318,15 @@ namespace Mixins.UnitTests.Mixins
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*not have the CompleteInterfaceAttribute",
-        MatchType = MessageMatch.Regex)]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
+        MatchType = MessageMatch.Contains)]
     public void InterfaceAsTypeArgumentWithoutCompleteness ()
     {
       ObjectFactory.Create<IBaseType2> ().With ();
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*not have the CompleteInterfaceAttribute",
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
         MatchType = MessageMatch.Regex)]
     public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
     {
@@ -324,22 +344,6 @@ namespace Mixins.UnitTests.Mixins
     [IgnoreForMixinConfiguration]
     interface IMultiFace
     {
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*has multiple CompleteInterfaceAttributes",
-        MatchType = MessageMatch.Regex)]
-    public void InterfaceAsTypeArgumentWithMultiCompleteness ()
-    {
-      ObjectFactory.Create<IMultiFace> ().With ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The given base type is invalid.*has multiple CompleteInterfaceAttributes",
-        MatchType = MessageMatch.Regex)]
-    public void InterfaceAsTypeArgumentWithMultiCompletenessWithMixins ()
-    {
-      ObjectFactory.CreateWithMixinInstances<IMultiFace> ().With ();
     }
 
     [Test]

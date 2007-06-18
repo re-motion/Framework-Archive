@@ -87,10 +87,11 @@ namespace Mixins
     /// </remarks>
     public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)
     {
+      Type typeToBeCreated = GetTypeToBeCreated (typeof (T));
       Type concreteType;
       try
       {
-        concreteType = GetConcreteType (typeof (T));
+        concreteType = TypeFactory.GetConcreteType (typeToBeCreated);
       }
       catch (ArgumentException ex)
       {
@@ -108,7 +109,7 @@ namespace Mixins
             ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
             if (ctor == null)
             {
-              string message = string.Format ("Type {0} does not contain constructor with signature {1}.", typeof (T).FullName,
+              string message = string.Format ("Type {0} does not contain a constructor with signature ({1}).", typeToBeCreated.FullName,
                   SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
               throw new MissingMethodException (message);
             }
@@ -117,28 +118,23 @@ namespace Mixins
       return new InvokeWithWrapper<T> (new InvokeWithBoundFirst<T, object[]> (constructionDelegateCreator, mixinInstances));
     }
 
-    private static Type GetConcreteType (Type baseType)
+    private static Type GetTypeToBeCreated (Type baseType)
     {
+      Type targetType;
       if (baseType.IsInterface)
       {
-        CompleteInterfaceAttribute[] completeInterfaceAttributes =
-            (CompleteInterfaceAttribute[]) baseType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false);
-        if (completeInterfaceAttributes.Length == 0)
+        ClassContext registeredContext = MixinConfiguration.ActiveContext.ResolveInterface (baseType);
+        if (registeredContext == null)
         {
-          string message = string.Format ("The interface {0} does not have the CompleteInterfaceAttribute attached, no instances of the "
-              + "type can be created.", baseType.FullName);
+          string message = string.Format ("The interface {0} has not been registered in the current configuration, no instances of the "
+                                          + "type can be created.", baseType.FullName);
           throw new ArgumentException (message);
         }
-        else if (completeInterfaceAttributes.Length > 1)
-        {
-          string message = string.Format ("The interface {0} has multiple CompleteInterfaceAttributes attached, it is ambiguous which type "
-              + "should be instantiated.", baseType.FullName);
-          throw new ArgumentException (message);
-        }
-        else
-          baseType = completeInterfaceAttributes[0].TargetType;
+        targetType = registeredContext.Type;
       }
-      return TypeFactory.GetConcreteType (baseType);
+      else
+        targetType = baseType;
+      return targetType;
     }
 
     private static Delegate CreateConstructionDelegateWithMixinInstances (ConstructorInfo ctor, Type delegateType)

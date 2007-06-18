@@ -112,7 +112,7 @@ namespace Mixins.UnitTests.Configuration
       ApplicationContext ac2 = new ApplicationContext (ac);
       Assert.AreEqual (2, ac2.ClassContextCount);
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
-      Assert.AreSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
+      Assert.AreEqual (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
 
       ClassContext newContext = new ClassContext (typeof (BaseType1));
       ac2.AddOrReplaceClassContext (newContext);
@@ -120,6 +120,146 @@ namespace Mixins.UnitTests.Configuration
 
       Assert.IsTrue (ac2.ContainsClassContext (typeof (BaseType1)));
       Assert.AreNotSame (ac.GetClassContext (typeof (BaseType1)), ac2.GetClassContext (typeof (BaseType1)));
+    }
+
+    [Test]
+    public void RegisterAndResolveCompleteInterface ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.AddClassContext (cc);
+      cc.AddCompleteInterface (typeof (IBaseType2));
+      Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
+      ac.RegisterInterface (typeof (IBaseType2), cc);
+      Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
+
+      ac.GetOrAddClassContext (typeof (BaseType3));
+      ac.RegisterInterface (typeof (IBaseType31), typeof (BaseType3));
+      Assert.AreSame (ac.GetClassContext (typeof (BaseType3)), ac.ResolveInterface (typeof (IBaseType31)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
+    public void RegisterCompleteInterfaceThrowsOnNonInterface ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.AddClassContext (cc);
+      ac.RegisterInterface (typeof (BaseType2), cc);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
+        MatchType = MessageMatch.Contains)]
+    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext1 ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.RegisterInterface (typeof (IBaseType2), cc);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The class context hasn't been added to this application context.",
+        MatchType = MessageMatch.Contains)]
+    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext2 ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.AddClassContext (cc);
+      ac.RegisterInterface (typeof (IBaseType2), new ClassContext (typeof (BaseType2)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "There is no class context for the given type",
+        MatchType = MessageMatch.Contains)]
+    public void RegisterCompleteInterfaceThrowsOnInvalidClassContext3 ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ac.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
+    }
+
+    [Test]
+    public void RemoveClassContextCausesInterfaceRegistrationToBeRemoved ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.AddClassContext (cc);
+      ac.RegisterInterface (typeof (IBaseType2), cc);
+      Assert.IsNotNull (ac.ResolveInterface (typeof (IBaseType2)));
+      Assert.AreSame (cc, ac.ResolveInterface (typeof (IBaseType2)));
+      ac.RemoveClassContext (typeof (BaseType2));
+      Assert.IsNull (ac.ResolveInterface (typeof (IBaseType2)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "already been associated with a class context",
+        MatchType = MessageMatch.Contains)]
+    public void RegisterCompleteInterfaceThrowsOnDuplicateInterface ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ClassContext cc = new ClassContext (typeof (BaseType2));
+      ac.AddClassContext (cc);
+      ac.RegisterInterface (typeof (IBaseType2), cc);
+      ac.RegisterInterface (typeof (IBaseType2), cc);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The argument is not an interface.", MatchType = MessageMatch.Contains)]
+    public void ResolveCompleteInterfaceThrowsOnNonInterface ()
+    {
+      ApplicationContext ac = new ApplicationContext ();
+      ac.ResolveInterface (typeof (BaseType2));
+    }
+
+    [Test]
+    public void CopyTo ()
+    {
+      ApplicationContext parent = new ApplicationContext();
+      parent.GetOrAddClassContext (typeof (BaseType2)).GetOrAddMixinContext (typeof (BT2Mixin1)).AddExplicitDependency (typeof (IBaseType33));
+      parent.RegisterInterface (typeof (IBaseType2), typeof (BaseType2));
+
+      ApplicationContext source = new ApplicationContext (parent);
+      source.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType34));
+      source.GetOrAddClassContext (typeof (BaseType1)).AddCompleteInterface (typeof (IBaseType33));
+
+      Assert.IsTrue (source.ContainsClassContext (typeof (BaseType2)));
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
+      Assert.IsTrue (source.GetClassContext (typeof (BaseType2)).GetOrAddMixinContext (typeof (BT2Mixin1)).ContainsExplicitDependency (typeof (IBaseType33)));
+
+      Assert.AreSame (source.GetClassContext (typeof (BaseType2)), source.ResolveInterface (typeof (IBaseType2)));
+
+      Assert.IsTrue (source.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (source.GetOrAddClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (source.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType34)));
+
+      ApplicationContext destination = new ApplicationContext ();
+      destination.AddClassContext (new ClassContext (typeof (BaseType2)));
+      destination.AddClassContext (new ClassContext (typeof (BaseType4)));
+      destination.RegisterInterface (typeof (IBaseType2), typeof (BaseType4));
+
+      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
+      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType4)));
+      Assert.IsFalse (destination.ContainsClassContext (typeof (BaseType1)));
+
+      Assert.AreSame (destination.GetClassContext (typeof (BaseType4)), destination.ResolveInterface (typeof (IBaseType2)));
+      
+      source.CopyTo (destination);
+
+      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType4)));
+
+      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType2)));
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).GetOrAddMixinContext (typeof (BT2Mixin1)).ContainsExplicitDependency (typeof (IBaseType33)));
+
+      Assert.AreSame (destination.GetClassContext (typeof (BaseType2)), destination.ResolveInterface (typeof (IBaseType2)));
+
+      Assert.IsTrue (destination.ContainsClassContext (typeof (BaseType1)));
+      Assert.IsTrue (destination.GetOrAddClassContext (typeof (BaseType1)).ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (destination.GetOrAddClassContext (typeof (BaseType1)).GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType34)));
+
+      source.GetClassContext (typeof (BaseType2)).RemoveMixin (typeof (BT2Mixin1));
+      Assert.IsFalse (source.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
+      Assert.IsTrue (destination.GetClassContext (typeof (BaseType2)).ContainsMixin (typeof (BT2Mixin1)));
     }
   }
 }

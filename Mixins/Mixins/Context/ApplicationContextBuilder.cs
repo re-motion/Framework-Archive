@@ -30,8 +30,7 @@ namespace Mixins.Context
 
       // Then, add them to the resulting context, replacing the respective inherited class contexts:
       ApplicationContext fullContext = new ApplicationContext (parentContext);
-      foreach (ClassContext classContext in tempContext.ClassContexts)
-        fullContext.AddOrReplaceClassContext (classContext);
+      tempContext.CopyTo (fullContext);
       return fullContext;
     }
 
@@ -162,7 +161,11 @@ namespace Mixins.Context
       private void AnalyzeCompleteInterface (Type completeInterfaceType)
       {
         foreach (CompleteInterfaceAttribute ifaceAttribute in completeInterfaceType.GetCustomAttributes (typeof (CompleteInterfaceAttribute), false))
-          _builtContext.GetOrAddClassContext (ifaceAttribute.TargetType).AddCompleteInterface (completeInterfaceType);
+        {
+          ClassContext classContext = _builtContext.GetOrAddClassContext (ifaceAttribute.TargetType);
+          classContext.AddCompleteInterface (completeInterfaceType);
+          _builtContext.RegisterInterface (completeInterfaceType, classContext);
+        }
       }
 
       private void AnalyzeInheritedMixins (Type targetType)

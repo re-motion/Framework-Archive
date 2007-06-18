@@ -41,6 +41,8 @@ namespace Mixins.UnitTests.Configuration
       ApplicationContext ac3 = ApplicationContextBuilder.BuildContextFromAssemblies (ac, AppDomain.CurrentDomain.GetAssemblies ());
       Assert.IsTrue (ac3.ContainsClassContext (typeof (BaseType1)));
       Assert.IsTrue (ac3.ContainsClassContext (typeof (object)));
+      Assert.IsTrue (ac3.GetClassContext (typeof (BaseType6)).ContainsCompleteInterface (typeof (ICBT6Mixin1)));
+      Assert.AreSame (ac3.GetClassContext (typeof (BaseType6)), ac3.ResolveInterface (typeof (ICBT6Mixin1)));
 
       ApplicationContext ac4 = ApplicationContextBuilder.BuildContextFromAssemblies (ac, (IEnumerable<Assembly>) AppDomain.CurrentDomain.GetAssemblies ());
       Assert.IsTrue (ac4.ContainsClassContext (typeof (BaseType1)));

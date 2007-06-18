@@ -45,6 +45,119 @@ namespace Mixins.UnitTests.Configuration
       }
     }
 
+    public interface IIntroducedBase
+    {
+      void Foo ();
+      string FooP { get; set; }
+      event EventHandler FooE;
+    }
+
+    public class BaseIntroducer : IIntroducedBase
+    {
+      public void Foo ()
+      {
+        throw new NotImplementedException();
+      }
+
+      public string FooP
+      {
+        get { throw new NotImplementedException(); }
+        set { throw new NotImplementedException(); }
+      }
+
+      public event EventHandler FooE;
+    }
+
+    public interface IIntroducedDerived : IIntroducedBase { }
+    public class DerivedIntroducer : BaseIntroducer, IIntroducedDerived { }
+
+    [Test]
+    public void IntroducedInterfaceOverInheritance ()
+    {
+      using (new MixinConfiguration (typeof (BaseType1), typeof (DerivedIntroducer)))
+      {
+        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedBase)));
+
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedMethods.Count);
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedProperties.Count);
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedEvents.Count);
+
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods.Count);
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties.Count);
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents.Count);
+
+        Assert.AreEqual (typeof (IIntroducedBase).GetMethod ("Foo"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods[0].InterfaceMember);
+        Assert.AreEqual (typeof (IIntroducedBase).GetProperty ("FooP"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties[0].InterfaceMember);
+        Assert.AreEqual (typeof (IIntroducedBase).GetEvent ("FooE"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents[0].InterfaceMember);
+
+        Assert.AreEqual (bt1.Mixins[typeof (DerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods[0].ImplementingMember.DeclaringClass);
+        Assert.AreEqual (bt1.Mixins[typeof (DerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties[0].ImplementingMember.DeclaringClass);
+        Assert.AreEqual (bt1.Mixins[typeof (DerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents[0].ImplementingMember.DeclaringClass);
+      }
+    }
+
+    public class ExplicitBaseIntroducer : IIntroducedBase
+    {
+      void IIntroducedBase.Foo ()
+      {
+        throw new NotImplementedException ();
+      }
+
+      string IIntroducedBase.FooP
+      {
+        get { throw new NotImplementedException (); }
+        set { throw new NotImplementedException (); }
+      }
+
+      event EventHandler IIntroducedBase.FooE {
+        add { throw new NotImplementedException (); }
+        remove { throw new NotImplementedException (); }
+      }
+    }
+
+    public class ExplicitDerivedIntroducer : ExplicitBaseIntroducer, IIntroducedDerived { }
+
+    [Test]
+    public void ExplicitlyIntroducedInterfaceOverInheritance ()
+    {
+      using (new MixinConfiguration (typeof (BaseType1), typeof (ExplicitDerivedIntroducer)))
+      {
+        BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedBase)));
+
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedMethods.Count);
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedProperties.Count);
+        Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedEvents.Count);
+
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods.Count);
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties.Count);
+        Assert.AreEqual (1, bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents.Count);
+
+        Assert.AreEqual (typeof (IIntroducedBase).GetMethod ("Foo"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods[0].InterfaceMember);
+        Assert.AreEqual (typeof (IIntroducedBase).GetProperty ("FooP"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties[0].InterfaceMember);
+        Assert.AreEqual (typeof (IIntroducedBase).GetEvent ("FooE"),
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents[0].InterfaceMember);
+
+        Assert.AreEqual (bt1.Mixins[typeof (ExplicitDerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedMethods[0].ImplementingMember.DeclaringClass);
+        Assert.AreEqual (bt1.Mixins[typeof (ExplicitDerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedProperties[0].ImplementingMember.DeclaringClass);
+        Assert.AreEqual (bt1.Mixins[typeof (ExplicitDerivedIntroducer)],
+            bt1.IntroducedInterfaces[typeof (IIntroducedBase)].IntroducedEvents[0].ImplementingMember.DeclaringClass);
+      }
+    }
+
     [Test]
     public void IntroducedMembers ()
     {
