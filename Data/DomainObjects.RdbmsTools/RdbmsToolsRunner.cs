@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools
       if (persistenceConfiguration.StorageProviderDefinition == null)
       {
         ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
-        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition ("Default", typeof (SqlProvider), "Initial Catalog=DatebaseName;");
+        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition ("Default", typeof (SqlProvider), "Initial Catalog=DatabaseName;");
         storageProviderDefinitionCollection.Add (providerDefinition);
 
         persistenceConfiguration = new PersistenceConfiguration (storageProviderDefinitionCollection, providerDefinition);
