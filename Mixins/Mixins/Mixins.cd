@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="Mixins.Mixin">
+    <Position X="3.25" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Mixin.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixins.Mixin&lt;TThis, TBase&gt;">
+    <Position X="3.25" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Mixin.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAAQAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_base" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Mixins.Mixin&lt;TThis&gt;">
+    <Position X="3.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Mixin.cs</FileName>
+      <HashCode>AAAAAAAAAAAIAQAAAAAAAAAAACAAAAAAiAEAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Configuration" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="_configuration" Hidden="true" />
+      <Field Name="_this" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Mixins.UsesAttribute">
+    <Position X="0.5" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>UsesAttribute.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAEAAAABBAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_additionalDependencies" Hidden="true" />
+      <Field Name="_mixinType" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Mixins.ExtendsAttribute">
+    <Position X="0.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>ExtendsAttribute.cs</FileName>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_targetType" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Mixins.OverrideAttribute" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>OverrideAttribute.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixins.CompleteInterfaceAttribute">
+    <Position X="0.5" Y="5.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>CompleteInterfaceAttribute.cs</FileName>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Members>
+      <Field Name="_targetType" Hidden="true" />
+    </Members>
+  </Class>
+  <Class Name="Mixins.ContainsMixinInfoAttribute" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>ContainsMixinInfoAttribute.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixins.Definitions.MixinDefinition" Collapsed="true">
+    <Position X="7" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Definitions\MixinDefinition.cs</FileName>
+      <HashCode>AIAACgAAIAAAAAgACAAAQAAAAgAAAAAAAgAAAAAAAAw=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Mixins.TypeFactory">
+    <Position X="7" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>TypeFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAABAAAAAAAQAAAAAAACAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixins.ObjectFactory">
+    <Position X="7" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>ObjectFactory.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAgAAAAAAAAEAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mixins.MixinConfiguration">
+    <Position X="10.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>MixinConfiguration.cs</FileName>
+      <HashCode>AAAAAAAAACAEAAEAASABAAAAAAAAAACBAAABAACEAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveContext" />
+    </ShowAsAssociation>
+    <Members>
+      <Field Name="_activeContext" Hidden="true" />
+      <Field Name="_disposed" Hidden="true" />
+      <Field Name="_previousContext" Hidden="true" />
+    </Members>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Mixins.Context.ApplicationContext" Collapsed="true">
+    <Position X="10.5" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <FileName>Context\ApplicationContext.cs</FileName>
+      <HashCode>AAAEACAAAACUAAIIAAIQAAAAAAEIAAAAYAAAAAAAIAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

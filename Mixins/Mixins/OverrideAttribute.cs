@@ -3,7 +3,7 @@ using System;
 namespace Mixins
 {
   /// <summary>
-  /// When applied to a mixin method, indicates that it overrides a virtual or abstract method of the mixin's target class.
+  /// When applied to a mixin method, indicates that it overrides a virtual method of the mixin's target class.
   /// When applied to a target class method, indicates that it overrides a virtual or abstract method of one of the mixins combined with the class.
   /// </summary>
   /// <remarks>

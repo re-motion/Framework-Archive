@@ -14,7 +14,7 @@ namespace Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "contains generic parameters", MatchType = MessageMatch.Contains)]
     public void ThrowsOnGenericBaseClass()
     {
-      using (new MixinConfiguration (typeof (BT3Mixin3<,>)))
+      using (MixinConfiguration.ScopedExtend(typeof (BT3Mixin3<,>)))
       {
         BaseClassDefinitionBuilder builder = new BaseClassDefinitionBuilder();
         builder.Build (new ClassContext (typeof (BT3Mixin3<,>)));
@@ -25,7 +25,7 @@ namespace Mixins.UnitTests.Configuration
     public void BaseClassKnowsItsContext()
     {
       ClassContext classContext = new ClassContext (typeof (BaseType1));
-      using (new MixinConfiguration (classContext))
+      using (MixinConfiguration.ScopedExtend(classContext))
       {
         BaseClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsNotNull (def.ConfigurationContext);

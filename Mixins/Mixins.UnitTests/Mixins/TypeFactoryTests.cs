@@ -15,7 +15,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetActiveConfiguration()
     {
-      using (MixinConfiguration.CreateEmptyConfiguration())
+      using (MixinConfiguration.ScopedEmpty())
       {
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
@@ -24,7 +24,7 @@ namespace Mixins.UnitTests.Mixins
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
         Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
 
-        using (new MixinConfiguration (typeof (BaseType1)))
+        using (MixinConfiguration.ScopedExtend(typeof (BaseType1)))
         {
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
@@ -35,7 +35,7 @@ namespace Mixins.UnitTests.Mixins
           Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
           Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
 
-          using (new MixinConfiguration (typeof (BaseType2)))
+          using (MixinConfiguration.ScopedExtend(typeof (BaseType2)))
           {
             Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType1)));
             Assert.IsTrue (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (BaseType2)));
@@ -56,7 +56,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void PartialInstantiation()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BT1Mixin1 m1 = new BT1Mixin1();
         BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (m1).With();
@@ -72,7 +72,7 @@ namespace Mixins.UnitTests.Mixins
     [ExpectedException (typeof (ArgumentException))]
     public void ThrowsOnWrongInstantiation ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BT2Mixin1 m1 = new BT2Mixin1();
         ObjectFactory.CreateWithMixinInstances<BaseType3> (m1).With();

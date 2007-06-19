@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Mixins
 {
   /// <summary>
-  /// Indicates that a class employs a mixin to implement some part of its functionality or public interface.
+  /// Indicates that a class integrates a mixin to implement some part of its functionality or public interface.
   /// </summary>
   /// <remarks>
   /// <para>

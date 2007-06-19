@@ -1,25 +1,31 @@
 using System;
+using Mixins.Context;
 
 namespace Mixins
 {
   /// <summary>
-  /// Indicates that an interface acts as a complete interface for a class accessed and instantiated via <see cref="TypeFactory"/> and
-  /// <see cref="ObjectFactory"/>.
+  /// Indicates that an interface acts as a complete interface for a class instantiated via <see cref="ObjectFactory"/>.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// A complete interface is an interface which is added to a mixin target type in order to provide an API incorporating both the members originally
-  /// on the target class and those members introduced by the mixin. For example, if a target class provides the methods A and B and a mixin adds the
-  /// methods C and D, users of the class can only ever use either A and B or C and D without casting. By implementing a complete interface that
-  /// provides methods A, B, C, and D, users of the class can employ the full API in a simple way.
+  /// A complete interface combines the API of a target type with that of its mixins. For example, if a target class provides the methods A and B
+	/// and a mixin adds the methods C and D, users of the class could normally only use either A and B or C and D at the same time (without casting).
+	/// By implementing a complete interface that provides methods A, B, C, and D, users of the class can employ the full API in a simple way.
   /// </para>
   /// <para>
-  /// All methods specified by the complete interface must either be implemented on the target type or introduced via a mixin.
+  /// All methods specified by a complete interface must either be implemented on the target type or introduced via a mixin.
   /// </para>
   /// <para>
-  /// This interface can be applied multiple times if an interface is to be a complete interface for multiple target types, and it is not inherited
-  /// (i.e. an interface inheriting from a complete interface does not automatically constitute a complete interface for the same type).
+  /// This interface can be applied multiple times if an interface is to be a complete interface for multiple target types. The attribute is not
+	/// inherited, i.e. an interface inheriting from a complete interface does not automatically constitute a complete interface as well.
   /// </para>
+	/// <para>
+	/// When the default mixin configuration is built (see <see cref="ApplicationContextBuilder.BuildDefaultContext"/>), all complete interfaces
+	/// are automatically registered with <see cref="MixinConfiguration.ActiveContext"/> (see
+	/// <see cref="ApplicationContext.RegisterInterface(Type,Type)"/>). This means that in the default mixin configuration,
+	/// <see cref="ObjectFactory.Create{T}"/> and <see cref="ObjectFactory.CreateWithMixinInstances{T}"/> will be able to create instances from these
+	/// interfaces.
+	/// </para>
   /// </remarks>
   /// <example>
   /// <code>

@@ -101,7 +101,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void InternalAttributesAreIgnored()
     {
-      using (new MixinConfiguration (typeof (ClassWithInternalAttribute)))
+      using (MixinConfiguration.ScopedExtend(typeof (ClassWithInternalAttribute)))
       {
         Assert.IsFalse (
             TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.HasItem (typeof (InternalStuffAttribute)));

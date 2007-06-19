@@ -48,7 +48,7 @@ namespace Mixins.UnitTests.Configuration
 
     private IEnumerable<IVisitableDefinition> BuildAllBaseDefinitions ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         ApplicationContext applicationContext = MixinConfiguration.ActiveContext;
         BaseClassDefinitionBuilder builder = new BaseClassDefinitionBuilder ();
@@ -99,7 +99,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void AllIsVisitedOnce ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         IValidationLog log = MixinConfiguration.ActiveContext.Validate();
 

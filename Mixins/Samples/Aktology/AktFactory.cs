@@ -62,7 +62,7 @@ namespace Samples.Aktology
 
     private static TInterface Create<TInterface, TBaseType, TMixin> ()
     {
-      using (MixinConfiguration.CreateEmptyConfiguration())
+      using (MixinConfiguration.ScopedEmpty())
       {
         ClassContext specificContext = new ClassContext(typeof (TBaseType), typeof (TMixin));
         specificContext.AddCompleteInterface (typeof (TInterface));

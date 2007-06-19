@@ -15,7 +15,7 @@ namespace Samples.UnitTests.PhotoStuff
     [Test]
     public void StoredMembers()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         Photo photo = ObjectFactory.Create<Photo>().With();
         Assert.IsNotNull (photo.Document);
@@ -33,7 +33,7 @@ namespace Samples.UnitTests.PhotoStuff
     [Test]
     public void InitializeWithConcreteDocument()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         Document doc = new Document();
         doc.CreatedAt = new DateTime (2006, 01, 01);

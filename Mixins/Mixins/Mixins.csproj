@@ -192,6 +192,7 @@
   <ItemGroup>
     <None Include="Definitions\Definitions.cd" />
     <None Include="Context\Context.cd" />
+    <None Include="Mixins.cd" />
     <None Include="Validation\Validation.cd" />
   </ItemGroup>
   <ItemGroup>

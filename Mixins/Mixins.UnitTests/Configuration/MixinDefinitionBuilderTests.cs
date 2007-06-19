@@ -17,7 +17,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void CorrectlyCopiesContext()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsNull (baseClass.Parent);
@@ -49,7 +49,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinIndicesCorrespondToPositionInArray()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
         for (int i = 0; i < bt3.Mixins.Count; ++i)
@@ -60,7 +60,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void OverriddenMixinMethod()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMethod));
         MixinDefinition mixin = overrider.Mixins[typeof (AbstractMixin)];

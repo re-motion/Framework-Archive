@@ -30,7 +30,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void IntroducedInterface ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
@@ -74,7 +74,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void IntroducedInterfaceOverInheritance ()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (DerivedIntroducer)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (DerivedIntroducer)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
@@ -128,7 +128,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void ExplicitlyIntroducedInterfaceOverInheritance ()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (ExplicitDerivedIntroducer)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (ExplicitDerivedIntroducer)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
@@ -161,7 +161,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void IntroducedMembers ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
@@ -194,7 +194,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MixinCanImplementMethodsExplicitly ()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinWithExplicitImplementation)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinWithExplicitImplementation)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IExplicit)));
@@ -211,7 +211,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void ISerializableIsNotIntroduced ()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinImplementingISerializable)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinImplementingISerializable)))
       {
         Assert.IsNull (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (MixinImplementingISerializable)]
             .InterfaceIntroductions[typeof (ISerializable)]);
@@ -223,7 +223,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void IntroducesGetMethod()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinImplementingFullPropertiesWithPartialIntroduction)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinImplementingFullPropertiesWithPartialIntroduction)))
       {
         InterfaceIntroductionDefinition introduction = TypeFactory.GetActiveConfiguration (typeof (BaseType1))
             .IntroducedInterfaces[typeof (InterfaceWithPartialProperties)];
@@ -244,7 +244,7 @@ namespace Mixins.UnitTests.Configuration
         MatchType = MessageMatch.Regex)]
     public void ThrowsOnDoublyIntroducedInterface ()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin1A)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (BT1Mixin1), typeof (BT1Mixin1A)))
       {
         TypeFactory.GetActiveConfiguration (typeof (BaseType1));
       }

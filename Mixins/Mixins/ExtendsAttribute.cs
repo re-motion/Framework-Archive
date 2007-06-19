@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 namespace Mixins
 {
   /// <summary>
-  /// Indicates that a class extends a specific class, extending some part of its functionality or public interface as a mixin.
+  /// Indicates that a mixin extends a specific class, providing some part of its functionality or public interface.
   /// </summary>
   /// <remarks>
   /// <para>

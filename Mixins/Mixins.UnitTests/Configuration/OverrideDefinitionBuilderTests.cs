@@ -15,7 +15,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void MethodOverrides ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
@@ -51,7 +51,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void PropertyOverrides ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
@@ -87,7 +87,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void EventOverrides ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
@@ -201,7 +201,7 @@ namespace Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Ambiguous override", MatchType = MessageMatch.Contains)]
     public void ThrowsOnTargetClassOverridingMultipleMixinMethods()
     {
-      using (new MixinConfiguration (typeof (ClassOverridingMixinMethod), typeof (AbstractMixin), typeof(AbstractMixin2)))
+      using (MixinConfiguration.ScopedExtend(typeof (ClassOverridingMixinMethod), typeof (AbstractMixin), typeof(AbstractMixin2)))
       {
         TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMethod));
       }

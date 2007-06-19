@@ -12,7 +12,7 @@ using Rubicon.Text;
 namespace Mixins
 {
   /// <summary>
-  /// Provides support for instantiating the combinations of types with their mixins.
+  /// Provides support for instantiating type which are combined with mixins.
   /// </summary>
   /// <remarks>
   /// <para>
@@ -26,7 +26,7 @@ namespace Mixins
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
   /// </remarks>
-  public class ObjectFactory
+  public static class ObjectFactory
   {
     /// <summary>
     /// Prepares a creator for a mixed instance of the given base type <typeparamref name="T"/>.
@@ -48,7 +48,7 @@ namespace Mixins
     /// </para>
     /// <para>
     /// The <see cref="Create{T}"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
-    /// interface with exactly one <see cref="CompleteInterfaceAttribute"/> applied. For more information, see <see cref="CompleteInterfaceAttribute"/>.
+    /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
     public static InvokeWithWrapper<T> Create<T> ()
@@ -71,18 +71,18 @@ namespace Mixins
     /// to instantiate.
     /// </exception>
     /// <remarks>
-    /// <para>
+		/// <para>
+		/// Usually, the mixin types configured in the <see cref="ClassContext"/> of a target class are simply instantiated when the mixed
+		/// instance is initialized. Use this method instead of <see cref="Create"/> to supply pre-instantiated mixins instead.
+		/// </para>
+		/// <para>
     /// This method internally uses <see cref="TypeFactory.GetConcreteType"/>. Note that this means that mixed types are created even for instances
     /// which do not have an active mixin configuration. Thus, all objects created via this method can be treated in the same way,
     /// however it might be inefficient to create arbitrary non-mixed objects using this method.
     /// </para>
     /// <para>
-    /// Usually, the mixin types configured in the <see cref="ClassContext"/> of a target class are simply instantiated when the mixed
-    /// instance is initialized. Use this method instead of <see cref="Create"/> to supply pre-instantiated mixins instead.
-    /// </para>
-    /// <para>
-    /// The <see cref="CreateWithMixinInstances{T}"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
-    /// interface with exactly one <see cref="CompleteInterfaceAttribute"/> applied. For more information, see <see cref="CompleteInterfaceAttribute"/>.
+		/// The <see cref="CreateWithMixinInstances{T}"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
+		/// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
     public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)

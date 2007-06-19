@@ -88,20 +88,6 @@ namespace Mixins.Context
       }
     }
 
-    internal MixinContext Clone (ClassContext classContext, object lockObject)
-    {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
-
-      lock (_lockObject)
-      {
-        MixinContext clone = new MixinContext (classContext, MixinType, lockObject);
-        foreach (Type explicitDependency in ExplicitDependencies)
-          clone.AddExplicitDependency (explicitDependency);
-        return clone;
-      }
-    }
-
     public MixinContext CloneAndAddTo (ClassContext targetForClone)
     {
       ArgumentUtility.CheckNotNull ("targetForClone", targetForClone);

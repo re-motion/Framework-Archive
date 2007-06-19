@@ -61,7 +61,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces1 ()
     {
-      using (new MixinConfiguration (typeof (BaseType3), typeof (MixinWithThisAsBase)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (MixinWithThisAsBase)))
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
@@ -74,7 +74,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeImplementsRequiredBaseCallInterfaces2 ()
     {
-      using (new MixinConfiguration (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
@@ -104,7 +104,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeImplementsOverriddenMembers ()
     {
-      using (new MixinConfiguration (typeof (BaseType3), typeof (BT3Mixin7Base), typeof(BT3Mixin4)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof(BT3Mixin4)))
       {
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
@@ -116,7 +116,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void OverriddenMemberCalls ()
     {
-      using (new MixinConfiguration (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
       {
         BaseType3 bt3 = ObjectFactory.Create<BaseType3> ().With ();
         Assert.AreEqual ("BT3Mixin7Base.IfcMethod-BT3Mixin4.Foo-BaseType3.IfcMethod-BaseType3.IfcMethod2", bt3.IfcMethod ());

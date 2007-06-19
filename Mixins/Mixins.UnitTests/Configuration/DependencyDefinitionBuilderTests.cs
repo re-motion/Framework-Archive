@@ -15,7 +15,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void FaceInterfaces ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
@@ -46,7 +46,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void FaceInterfacesAddedViaContext ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType6));
 
@@ -59,7 +59,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void BaseInterfaces ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
@@ -78,7 +78,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void BaseMethods ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
@@ -105,7 +105,7 @@ namespace Mixins.UnitTests.Configuration
         Assert.AreEqual (baseClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member2.ImplementingMethod);
       }
 
-      using (new MixinConfiguration (typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof (BT3Mixin4)))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
@@ -130,7 +130,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void Dependencies ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         MixinDefinition bt3Mixin1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
 
@@ -299,7 +299,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void EmptyInterface()
     {
-      using (new MixinConfiguration (typeof (BaseType1), typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)))
+      using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinWithEmptyInterface), typeof (MixinRequiringEmptyInterface)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithEmptyInterface)];

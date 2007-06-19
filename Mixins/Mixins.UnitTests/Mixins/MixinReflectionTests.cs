@@ -33,7 +33,7 @@ namespace Mixins.UnitTests.Mixins
     {
       ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
 
-      using (new MixinConfiguration (context))
+      using (MixinConfiguration.ScopedReplace(context))
       {
         BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
         IMixinTarget mixinTarget = bt1 as IMixinTarget;
@@ -53,7 +53,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetInitializationMethod ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetInitializationMethod (m1.Type));
@@ -84,7 +84,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetTargetProperty ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetTargetProperty (m1.Type));
@@ -118,7 +118,7 @@ namespace Mixins.UnitTests.Mixins
     [Test]
     public void GetBaseProperty ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetBaseProperty (m1.Type));
@@ -149,7 +149,7 @@ namespace Mixins.UnitTests.Mixins
     public void GetConfigurationProperty ()
     {
       using (
-          new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+          MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
         MixinDefinition m1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins[typeof (BT1Mixin1)];
         Assert.IsNull (MixinReflector.GetConfigurationProperty (m1.Type));

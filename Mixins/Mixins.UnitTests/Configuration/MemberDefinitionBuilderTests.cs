@@ -15,7 +15,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void Methods ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
@@ -62,7 +62,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void Properties ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
@@ -128,7 +128,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void Events ()
     {
-      using (new MixinConfiguration (Assembly.GetExecutingAssembly ()))
+      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 

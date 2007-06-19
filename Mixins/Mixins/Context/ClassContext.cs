@@ -265,10 +265,13 @@ namespace Mixins.Context
       lock (_lockObject)
       {
         ClassContext newInstance = new ClassContext (Type);
-        foreach (MixinContext mixinContext in Mixins)
-          newInstance.AddMixinContext (mixinContext.Clone(newInstance, newInstance._lockObject));
+
+				foreach (MixinContext mixinContext in Mixins)
+					mixinContext.CloneAndAddTo (newInstance);
+
         foreach (Type completeInterface in CompleteInterfaces)
           newInstance.AddCompleteInterface (completeInterface);
+
         return newInstance;
       }
     }

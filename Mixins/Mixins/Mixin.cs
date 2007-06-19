@@ -7,7 +7,7 @@ using Mixins.Definitions;
 namespace Mixins
 {
   /// <summary>
-  /// Provides reflective access to the mixins mixed into a target class.
+  /// Provides reflective access to the mixins integrated with a target class.
   /// </summary>
   public static class Mixin
   {

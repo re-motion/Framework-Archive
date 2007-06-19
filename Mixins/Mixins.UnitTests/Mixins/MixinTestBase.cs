@@ -14,13 +14,13 @@ namespace Mixins.UnitTests.Mixins
   {
     public const string PEVerifyPath = @"C:\Program Files\Microsoft Visual Studio 8\SDK\v2.0\Bin\PEVerify.exe";
 
-    private MixinConfiguration currentConfiguration = null;
+    private IDisposable currentConfiguration = null;
 
     [SetUp]
     public virtual void SetUp()
     {
       ConcreteTypeBuilder.SetCurrent (null);
-      currentConfiguration = new MixinConfiguration (Assembly.GetExecutingAssembly ());
+      currentConfiguration = MixinConfiguration.ScopedExtend (Assembly.GetExecutingAssembly ());
     }
 
     [TearDown]
@@ -54,13 +54,13 @@ namespace Mixins.UnitTests.Mixins
 
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      using (new MixinConfiguration (targetType, mixinTypes))
+      using (MixinConfiguration.ScopedExtend(targetType, mixinTypes))
         return TypeFactory.GetConcreteType (targetType);
     }
 
     public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      using (new MixinConfiguration (typeof (T), mixinTypes))
+      using (MixinConfiguration.ScopedExtend(typeof (T), mixinTypes))
         return ObjectFactory.Create<T>();
     }
 

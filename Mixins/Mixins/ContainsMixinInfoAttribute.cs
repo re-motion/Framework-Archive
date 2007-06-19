@@ -4,7 +4,7 @@ using Mixins.Context;
 namespace Mixins
 {
   /// <summary>
-  /// Indicates that an assembly contains mixin configuration information and should thus be scanned when the default mixin configuration is
+  /// Indicates that an assembly contains mixin configuration information and should be scanned when the default mixin configuration is
   /// initialized.
   /// </summary>
   /// <remarks>
