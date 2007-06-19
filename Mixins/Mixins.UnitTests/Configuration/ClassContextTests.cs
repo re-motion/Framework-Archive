@@ -66,21 +66,29 @@ namespace Mixins.UnitTests.Configuration
       Assert.AreSame (mixinContext2, classContext.GetOrAddMixinContext (typeof (BT7Mixin2)));
     }
 
-    [Test][ExpectedException (typeof (InvalidOperationException))]
-    public void ThrowsOnDuplicateClassContexts ()
-    {
-      ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
-      context.AddClassContext (new ClassContext (typeof (BaseType1)));
-    }
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AppContextThrowsOnDuplicateClassContexts ()
+		{
+			ApplicationContext context = ApplicationContextBuilder.BuildContextFromAssemblies (Assembly.GetExecutingAssembly ());
+			context.AddClassContext (new ClassContext (typeof (BaseType1)));
+		}
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
-    public void ThrowsOnDuplicateMixinContexts ()
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Object was tried to be added twice", MatchType = MessageMatch.Contains)]
+    public void ClassContextThrowsOnDuplicateMixinContextsInCtor ()
     {
-      ClassContext context = new ClassContext (typeof (string));
-      context.AddMixin (typeof (object));
-      context.AddMixin (typeof (object));
+      new ClassContext (typeof (string), typeof (object), typeof (object));
     }
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ClassContextThrowsOnDuplicateMixinContextsInAdd ()
+		{
+			ClassContext context = new ClassContext (typeof (string));
+			context.AddMixin (typeof (object));
+			context.AddMixin (typeof (object));
+		}
 
     [Test]
     public void DoubleAssembliesAreIgnored ()
@@ -98,7 +106,7 @@ namespace Mixins.UnitTests.Configuration
     public void DoubleTypesAreIgnored ()
     {
       ApplicationContext context = new ApplicationContextBuilder(null).AddType (typeof (BaseType1)).AddType (typeof (BaseType1))
-          .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).Analyze();
+          .AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin1)).AddType (typeof (BT1Mixin2)).AddType (typeof (BT1Mixin2)).BuildContext();
 
       ClassContext classContext = context.GetClassContext (typeof (BaseType1));
       Assert.AreEqual (2, classContext.MixinCount);

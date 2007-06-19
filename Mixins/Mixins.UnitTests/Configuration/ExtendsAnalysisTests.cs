@@ -20,7 +20,7 @@ namespace Mixins.UnitTests.Configuration
     public void ExtendsAttributeAppliesToInheritanceChain ()
     {
       ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (ExtendingMixin))
-          .AddType (typeof (ExtendsTargetDerivedWithoutExtends)).Analyze ();
+          .AddType (typeof (ExtendsTargetDerivedWithoutExtends)).BuildContext ();
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).ContainsMixin (typeof (ExtendingMixin)));
       Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).MixinCount);
     }
@@ -31,7 +31,7 @@ namespace Mixins.UnitTests.Configuration
     public void InheritedDuplicateExtensionIsIgnored ()
     {
       ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (ExtendingMixin))
-          .AddType (typeof (ExtendsTargetDerivedWithExtends)).Analyze ();
+          .AddType (typeof (ExtendsTargetDerivedWithExtends)).BuildContext ();
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).ContainsMixin (typeof (ExtendingMixin)));
       Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithExtends)).MixinCount);
     }
@@ -46,7 +46,7 @@ namespace Mixins.UnitTests.Configuration
     public void SubclassExtensionOverridesBaseExtends ()
     {
       ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (DerivedExtendingMixin))
-          .Analyze();
+          .BuildContext();
 
       Assert.IsFalse (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (ExtendingMixin)));
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (DerivedExtendingMixin)));
@@ -61,7 +61,7 @@ namespace Mixins.UnitTests.Configuration
     public void ExplicitApplicationOfBaseAndDerivedMixinToSameClass()
     {
       ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (ExtendingMixin)).AddType (typeof (DerivedExtendingMixin))
-          .AddType (typeof (DerivedExtendingMixin2)).Analyze ();
+          .AddType (typeof (DerivedExtendingMixin2)).BuildContext ();
 
       Assert.IsFalse (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (ExtendingMixin)));
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithDerivedExtends)).ContainsMixin (typeof (DerivedExtendingMixin)));
@@ -80,7 +80,7 @@ namespace Mixins.UnitTests.Configuration
         + "ExtendsTargetBase.")]
     public void ThrowsOnDuplicateExtendsForSameClass ()
     {
-      new ApplicationContextBuilder (null).AddType (typeof (DoubleExtendingMixin)).Analyze ();
+      new ApplicationContextBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildContext ();
     }
 
     [Extends (typeof (ExtendsTargetBase))]
@@ -91,7 +91,7 @@ namespace Mixins.UnitTests.Configuration
     [Test]
     public void DuplicateExtendsForSameClassInInheritanceHierarchyIsIgnored ()
     {
-      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (MixinExtendingBaseAndDerived)).Analyze ();
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (MixinExtendingBaseAndDerived)).BuildContext ();
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetBase)).ContainsMixin (typeof (MixinExtendingBaseAndDerived)));
       Assert.IsTrue (context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).ContainsMixin (typeof (MixinExtendingBaseAndDerived)));
       Assert.AreEqual (1, context.GetClassContext (typeof (ExtendsTargetDerivedWithoutExtends)).MixinCount);

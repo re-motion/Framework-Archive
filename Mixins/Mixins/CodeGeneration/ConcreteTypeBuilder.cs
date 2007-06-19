@@ -9,24 +9,32 @@ namespace Mixins.CodeGeneration
   public class ConcreteTypeBuilder : CallContextSingletonBase<ConcreteTypeBuilder, DefaultInstanceCreator<ConcreteTypeBuilder>>
   {
     private IModuleManager _scope;
-    // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache would actually cause
-    // errors
+    // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache could actually cause
+    // errors (depending on how it was implemented)
     private InterlockedCache<ClassDefinition, Type> _typeCache = new InterlockedCache<ClassDefinition, Type>();
+
+		private object _scopeLockObject = new object ();
 
     public IModuleManager Scope
     {
       get
       {
-        if (_scope == null)
-        {
-          _scope = new DynamicProxy.ModuleManager();
-        }
-        return _scope;
+				lock (_scopeLockObject)
+				{
+					if (_scope == null)
+					{
+						_scope = new DynamicProxy.ModuleManager();
+					}
+					return _scope;
+				}
       }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _scope = value;
+				ArgumentUtility.CheckNotNull ("value", value);
+				lock (_scopeLockObject)
+				{
+					_scope = value;
+				}
       }
     }
 

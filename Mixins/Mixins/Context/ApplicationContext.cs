@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Mixins.Definitions;
-using Mixins.Utilities.Singleton;
 using Rubicon.Utilities;
 using Mixins.Validation;
 
@@ -10,6 +9,9 @@ namespace Mixins.Context
   /// <summary>
   /// Manages the set of class contexts active for the current thread.
   /// </summary>
+	/// <threadsafety static="true" instance="false">
+	///    <para>Instances of this class are meant to be used one-per-thread, see <see cref="MixinConfiguration.ActiveContext"/>.</para>
+	/// </threadsafety>
   public class ApplicationContext
   {
     private Dictionary<Type, ClassContext> _classContexts;

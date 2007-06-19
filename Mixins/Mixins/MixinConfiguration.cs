@@ -36,12 +36,12 @@ namespace Mixins
   ///     // myType1 is an instantiation of MyType with the default mixin configuration
   ///     MyType myType1 = ObjectFactory.Create&lt;MyType&gt; ().With();
   /// 
-  ///     using (new MixinConfiguration (typeof (MyType), typeof (SpecialMixin)))
+  ///     using (MixinConfiguration.ScopedExtend (typeof (MyType), typeof (SpecialMixin)))
   ///     {
   ///       // myType2 is an instantiation of MyType with a specific configuration, which contains only SpecialMixin
   ///       MyType myType2 = ObjectFactory.Create&lt;MyType&gt; ().With();
   /// 
-  ///       using (MixinConfiguration.CreateEmptyConfiguration())
+	///       using (MixinConfiguration.ScopedEmpty())
   ///       {
   ///         // myType3 is an instantiation of MyType without any mixins
   ///         MyType myType3 = ObjectFactory.Create&lt;MyType&gt; ().With();
