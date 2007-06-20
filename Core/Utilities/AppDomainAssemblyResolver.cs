@@ -45,13 +45,11 @@ namespace Rubicon.Utilities
 
     private Assembly AssemblyResolveHandler (object sender, ResolveEventArgs args)
     {
-      AssemblyName assemblyName = new AssemblyName (args.Name);
-
-      string localAssemblyLocation = CopyAssemblyToDynamicDirectory (args, assemblyName.Name + ".dll");
+      string localAssemblyLocation = CopyAssemblyToDynamicDirectory (args, args.Name + ".dll");
       if (localAssemblyLocation == null)
-        localAssemblyLocation = CopyAssemblyToDynamicDirectory (args, assemblyName.Name + ".exe");
+        localAssemblyLocation = CopyAssemblyToDynamicDirectory (args, args.Name + ".exe");
       if (localAssemblyLocation == null)
-        throw CreateFileNotFoundException (assemblyName.Name);
+        throw CreateFileNotFoundException (args.Name);
 
       return Assembly.LoadFrom (localAssemblyLocation);
     }
@@ -61,9 +59,9 @@ namespace Rubicon.Utilities
       string assemblyLocation = Path.Combine (_parentAppDomainSetup.ApplicationBase, assemblyFileName);
       if (!File.Exists (assemblyLocation))
         return null;
-
-      Assembly reflectionOnlyAssembly = Assembly.ReflectionOnlyLoadFrom (assemblyLocation);
-      if (reflectionOnlyAssembly.FullName != args.Name)
+      
+      AssemblyName assemblyName = AssemblyName.GetAssemblyName (assemblyLocation);
+      if (assemblyName != new AssemblyName(args.Name))
         throw CreateFileLoadException (args.Name);
 
       return CopyAssembly (_dynamicDirectory, assemblyLocation);
