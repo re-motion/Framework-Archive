@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -89,9 +90,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     }
 
     [Test]
-    [Ignore("Not sure if this test is required, since a relation with 2 virtual end points is already covered by the RelationDefinition ctor.")]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "The Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute requires that one side contains the foreign key for relation.\r\n"
+        "The 'Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute' requires that one side contains the foreign key for relation.\r\n"
         + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
         + "property: NoContainsKeyLeftSide")]
     public void GetMetadata_WithNeitherSideContainingTheKey ()

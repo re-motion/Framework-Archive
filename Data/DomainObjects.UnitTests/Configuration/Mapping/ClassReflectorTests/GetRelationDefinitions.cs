@@ -9,7 +9,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflectorTests
 {
   [TestFixture]
-  public class GetRelationDefintions: TestBase
+  public class GetRelationDefintions : TestBase
   {
     private RelationDefinitionChecker _relationDefinitionChecker;
     private RelationDefinitionCollection _relationDefinitions;
@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     private ClassDefinition _classWithManySideRelationPropertiesClassDefinition;
     private ClassDefinition _classWithOneSideRelationPropertiesClassDefinition;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
 
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    public void GetRelationDefinitions_ForManySide()
+    public void GetRelationDefinitions_ForManySide ()
     {
       RelationDefinitionCollection expectedDefinitions = new RelationDefinitionCollection();
       expectedDefinitions.Add (CreateNoAttributeRelationDefinition());
@@ -43,13 +43,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
 
       List<RelationDefinition> actualList = classReflector.GetRelationDefinitions (_classDefinitions, _relationDefinitions);
-      
+
       _relationDefinitionChecker.Check (expectedDefinitions, _relationDefinitions);
       Assert.That (actualList, Is.EqualTo (_relationDefinitions));
     }
 
     [Test]
-    public void GetRelationDefinitions_ForOneSide()
+    public void GetRelationDefinitions_ForOneSide ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithOneSideRelationProperties));
 
@@ -60,70 +60,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void GetRelationDefinitions_WithMissingClassDefinition()
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties'.",
+        MatchType = MessageMatch.Contains)]
+    public void GetRelationDefinitions_WithMissingClassDefinition ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
-
-      try
-      {
-        classReflector.GetRelationDefinitions (new ClassDefinitionCollection(), _relationDefinitions);
-      }
-      catch (MappingException e)
-      {
-        StringAssert.StartsWith (
-            "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties'.",
-            e.Message);
-
-        throw;
-      }
+      classReflector.GetRelationDefinitions (new ClassDefinitionCollection(), _relationDefinitions);
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForBidirectionalRelation()
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
+        MatchType = MessageMatch.Contains)]
+    public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForBidirectionalRelation ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithManySideRelationProperties));
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection();
       classDefinitions.Add (CreateClassWithManySideRelationPropertiesClassDefinition());
-
-      try
-      {
-        classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
-      }
-      catch (MappingException e)
-      {
-        StringAssert.StartsWith (
-            "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
-            e.Message);
-
-        throw;
-      }
+      classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForUnidirectionalRelation()
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
+        MatchType = MessageMatch.Contains)]
+    public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForUnidirectionalRelation ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithMixedProperties));
       ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection();
       classDefinitions.Add (CreateClassWithMixedPropertiesClassDefinition());
-
-      try
-      {
-        classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
-      }
-      catch (MappingException e)
-      {
-        StringAssert.StartsWith (
-            "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
-            e.Message);
-
-        throw;
-      }
+      classReflector.GetRelationDefinitions (classDefinitions, _relationDefinitions);
     }
 
-    private ClassDefinition CreateClassWithOneSideRelationPropertiesClassDefinition()
+    private ClassDefinition CreateClassWithOneSideRelationPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithOneSideRelationProperties",
@@ -135,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithManySideRelationPropertiesClassDefinition()
+    private ClassDefinition CreateClassWithManySideRelationPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithManySideRelationProperties",
@@ -149,7 +119,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithMixedPropertiesClassDefinition()
+    private ClassDefinition CreateClassWithMixedPropertiesClassDefinition ()
     {
       ReflectionBasedClassDefinition classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithMixedProperties",
@@ -216,7 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               true));
     }
 
-    private RelationDefinition CreateNoAttributeRelationDefinition()
+    private RelationDefinition CreateNoAttributeRelationDefinition ()
     {
       return new RelationDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NoAttribute",
@@ -229,7 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               null));
     }
 
-    private RelationDefinition CreateNotNullableRelationDefinition()
+    private RelationDefinition CreateNotNullableRelationDefinition ()
     {
       return new RelationDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.NotNullable",
@@ -242,7 +212,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               null));
     }
 
-    private RelationDefinition CreateUnidirectionalRelationDefinition()
+    private RelationDefinition CreateUnidirectionalRelationDefinition ()
     {
       return new RelationDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.Unidirectional",
@@ -252,7 +222,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           CreateAnonymousRelationEndPointDefinition());
     }
 
-    private RelationDefinition CreateBidirectionalOneToOneRelationDefinition()
+    private RelationDefinition CreateBidirectionalOneToOneRelationDefinition ()
     {
       return new RelationDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToOne",
@@ -264,7 +234,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               false));
     }
 
-    private RelationDefinition CreateBidirectionalOneToManyRelationDefinition()
+    private RelationDefinition CreateBidirectionalOneToManyRelationDefinition ()
     {
       return new RelationDefinition (
           "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.BidirectionalOneToMany",
@@ -304,7 +274,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
           sortExpression);
     }
 
-    private AnonymousRelationEndPointDefinition CreateAnonymousRelationEndPointDefinition()
+    private AnonymousRelationEndPointDefinition CreateAnonymousRelationEndPointDefinition ()
     {
       return new AnonymousRelationEndPointDefinition (_classWithOneSideRelationPropertiesClassDefinition);
     }
