@@ -356,6 +356,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       relationReflector.GetMetadata (_relationDefinitions);
     }
 
+    [Test]
+    [ExpectedException (typeof (MappingException), ExpectedMessage =
+       "A bidirectional relation can only have one virtual relation end point.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
+        + "property: NoContainsKeyLeftSide")]
+    public void GetMetadata_WithTwoVirtualEndPoints ()
+    {
+      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide", true, false);
+      PropertyInfo propertyInfo = type.GetProperty ("NoContainsKeyLeftSide");
+
+      RelationReflector relationReflector = new RelationReflector (propertyInfo, new ClassDefinitionCollection ());
+      relationReflector.GetMetadata (_relationDefinitions);
+    }
+
     private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
     {
       return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);

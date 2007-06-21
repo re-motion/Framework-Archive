@@ -89,21 +89,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       relationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
-    [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage = 
-        "The 'Rubicon.Data.DomainObjects.DBBidirectionalRelationAttribute' requires that one side contains the foreign key for relation.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide, "
-        + "property: NoContainsKeyLeftSide")]
-    public void GetMetadata_WithNeitherSideContainingTheKey ()
-    {
-      Type type = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
-          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidBidirectionalRelationLeftSide", true, false);
-      PropertyInfo propertyInfo = type.GetProperty ("NoContainsKeyLeftSide");
-      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
-
-      relationEndPointReflector.GetMetadata (_classDefinitions);
-    }
-
     [Mandatory]
     private int Int32Property
     {

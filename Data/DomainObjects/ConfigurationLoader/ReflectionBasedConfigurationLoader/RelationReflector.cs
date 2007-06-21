@@ -58,7 +58,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private void ValidateVirtualEndPointPropertyInfo ()
     {
-      GetOppositePropertyInfo(); 
+      RelationEndPointReflector oppositeRelationEndPointReflector = CreateOppositeRelationEndPointReflector ();
+      if (oppositeRelationEndPointReflector.IsVirtualEndRelationEndpoint ())
+      {
+        throw CreateMappingException (
+            null,
+            PropertyInfo,
+            "A bidirectional relation can only have one virtual relation end point.",
+            BidirectionalRelationAttribute.GetType ());
+      }
     }
 
     protected override void ValidatePropertyInfo ()
@@ -82,8 +90,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       if (!IsBidirectionalRelation)
         return CreateOppositeAnonymousRelationEndPointDefinition();
 
-      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (GetOppositePropertyInfo ());
-      return relationEndPointReflector.GetMetadata (_classDefinitions);
+      RelationEndPointReflector oppositeRelationEndPointReflector = CreateOppositeRelationEndPointReflector();
+      return oppositeRelationEndPointReflector.GetMetadata (_classDefinitions);
     }
 
     private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition ()
@@ -96,6 +104,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       {
         throw CreateMappingException (null, PropertyInfo, e.Message);
       }
+    }
+
+    private RelationEndPointReflector CreateOppositeRelationEndPointReflector ()
+    {
+      return RelationEndPointReflector.CreateRelationEndPointReflector (GetOppositePropertyInfo ());
     }
 
     private void AddRelationDefinitionToClassDefinitions (RelationDefinition relationDefinition)
