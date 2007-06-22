@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -40,7 +41,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 
     public DataContainer GetDataContainer ()
     {
-      return DataContainer;
+			return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, typeof (DomainObject), "GetDataContainer");
     }
 
     public abstract string StringProperty { get; set; }
