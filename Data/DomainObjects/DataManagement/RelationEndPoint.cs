@@ -154,7 +154,7 @@ public abstract class RelationEndPoint : IEndPoint
   public virtual DataContainer GetDataContainer ()
   {
     DomainObject domainObject = GetDomainObject ();
-    return domainObject.DataContainer;
+    return domainObject.GetDataContainer();
   }
 
   public virtual ObjectID ObjectID

@@ -46,7 +46,7 @@ public class RelationEndPointCollection : CommonCollection
   {
     RelationEndPointCollection oppositeEndPoints = new RelationEndPointCollection ();
 
-    foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
+    foreach (RelationEndPointID endPointID in domainObject.GetDataContainer().RelationEndPointIDs)
       oppositeEndPoints.Combine (GetOppositeRelationEndPoints (this[endPointID]));
 
     return oppositeEndPoints;

@@ -27,11 +27,6 @@ public class TestDomainBase : BindableDomainObject
 
   // methods and properties
 
-  public new DataContainer DataContainer 
-  {
-    get { return base.DataContainer; }
-  }
-
 //  public new DomainObject GetRelatedObject (string propertyName)
 //  {
 //    return base.GetRelatedObject (propertyName);

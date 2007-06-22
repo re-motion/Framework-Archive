@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNotNull (order.ID);
       Assert.AreEqual (StateType.New, order.State);
-      Assert.AreSame (order, order.DataContainer.DomainObject);
+			Assert.AreSame (order, order.InternalDataContainer.DomainObject);
     }
 
     [Test]
@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNotNull (order.ID);
       Assert.AreEqual (StateType.New, order.State);
-      Assert.AreSame (order, order.DataContainer.DomainObject);
+			Assert.AreSame (order, order.InternalDataContainer.DomainObject);
     }
 
     [Test]
@@ -105,7 +105,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       customer.Name = "Arthur Dent";
 
       Assert.AreEqual ("Arthur Dent", customer.Name);
-      Assert.AreEqual (string.Empty, customer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].OriginalValue);
+			Assert.AreEqual (string.Empty, customer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>());
       Assert.AreEqual (StateType.New, customer.State);
     }
 
@@ -228,11 +228,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Customer = customer;
       order.OrderItems.Add (orderItem);
 
-      Assert.IsNull (ceo.DataContainer.Timestamp);
-      Assert.IsNull (customer.DataContainer.Timestamp);
-      Assert.IsNull (order.DataContainer.Timestamp);
-      Assert.IsNull (orderTicket.DataContainer.Timestamp);
-      Assert.IsNull (orderItem.DataContainer.Timestamp);
+			Assert.IsNull (ceo.InternalDataContainer.Timestamp);
+			Assert.IsNull (customer.InternalDataContainer.Timestamp);
+			Assert.IsNull (order.InternalDataContainer.Timestamp);
+			Assert.IsNull (orderTicket.InternalDataContainer.Timestamp);
+			Assert.IsNull (orderItem.InternalDataContainer.Timestamp);
 
       ClientTransactionMock.Commit ();
       ReInitializeTransaction ();
@@ -273,11 +273,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (42, order.OrderNumber);
       Assert.AreEqual (new DateTime (2005, 2, 1), order.DeliveryDate);
 
-      Assert.IsNotNull (ceo.DataContainer.Timestamp);
-      Assert.IsNotNull (customer.DataContainer.Timestamp);
-      Assert.IsNotNull (order.DataContainer.Timestamp);
-      Assert.IsNotNull (orderTicket.DataContainer.Timestamp);
-      Assert.IsNotNull (orderItem.DataContainer.Timestamp);
+			Assert.IsNotNull (ceo.InternalDataContainer.Timestamp);
+			Assert.IsNotNull (customer.InternalDataContainer.Timestamp);
+			Assert.IsNotNull (order.InternalDataContainer.Timestamp);
+			Assert.IsNotNull (orderTicket.InternalDataContainer.Timestamp);
+			Assert.IsNotNull (orderItem.InternalDataContainer.Timestamp);
     }
 
     [Test]
@@ -354,11 +354,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Employee employee = Employee.NewObject ();
       employee.Name = "Mr. Prosser";
 
-      Assert.IsTrue (employee.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
+			Assert.IsTrue (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
 
       ClientTransactionMock.Commit ();
 
-      Assert.IsFalse (employee.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
+			Assert.IsFalse (employee.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"].HasChanged);
     }
 
     [Test]

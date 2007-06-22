@@ -93,10 +93,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (0, _supervisor.Subordinates.Count);
       Assert.IsNull (_subordinate1.Supervisor);
       Assert.IsNull (_subordinate2.Supervisor);
-      Assert.IsNull (_subordinate1.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
-      Assert.IsNull (_subordinate2.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
-      Assert.AreEqual (StateType.Changed, _subordinate1.DataContainer.State);
-      Assert.AreEqual (StateType.Changed, _subordinate2.DataContainer.State);
+			Assert.IsNull (_subordinate1.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.IsNull (_subordinate2.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"]);
+			Assert.AreEqual (StateType.Changed, _subordinate1.InternalDataContainer.State);
+			Assert.AreEqual (StateType.Changed, _subordinate2.InternalDataContainer.State);
     }
 
     [Test]

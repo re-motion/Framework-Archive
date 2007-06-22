@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     private PropertyValue GetPropertyValue (PropertyAccessor propertyAccessor)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.DataContainer.PropertyValues[propertyAccessor.PropertyIdentifier];
+      return propertyAccessor.DomainObject.GetDataContainer().PropertyValues[propertyAccessor.PropertyIdentifier];
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor)

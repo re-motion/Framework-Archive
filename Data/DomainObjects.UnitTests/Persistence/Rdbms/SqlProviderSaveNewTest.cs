@@ -141,8 +141,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       existingSubordinate.Supervisor = newSupervisor;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (existingSubordinate.DataContainer);
-      collection.Add (newSupervisor.DataContainer);
+			collection.Add (existingSubordinate.InternalDataContainer);
+			collection.Add (newSupervisor.InternalDataContainer);
 
       Provider.Save (collection);
 
@@ -164,7 +164,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newObjectID = order.ID;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (order.DataContainer);
+			collection.Add (order.InternalDataContainer);
 
       Provider.Save (collection);
 
@@ -187,8 +187,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       newOrder.Official = existingOfficial;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (newOrder.DataContainer);
-      collection.Add (newCustomer.DataContainer);
+			collection.Add (newOrder.InternalDataContainer);
+			collection.Add (newCustomer.InternalDataContainer);
 
       Provider.Save (collection);
 

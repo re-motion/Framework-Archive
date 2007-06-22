@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         catch (ArgumentException ex)
         {
           throw new ArgumentException (string.Format ("The domain object type {0} does not have a mapping property named '{1}'.",
-            _domainObject.DataContainer.ClassDefinition.ClassType.FullName, propertyName), "propertyName", ex);
+            _domainObject.GetDataContainer().ClassDefinition.ClassType.FullName, propertyName), "propertyName", ex);
         }
       }
     }
@@ -91,6 +91,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   	IEnumerator IEnumerable.GetEnumerator ()
   	{
 			return GetEnumerator ();
+  	}
+
+  	public bool Contains (string propertyIdentifier)
+  	{
+			ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+			return PropertyAccessor.IsValidProperty (classDefinition, propertyIdentifier);
   	}
   }
 }

@@ -11,6 +11,7 @@ using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
 using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 {
@@ -612,7 +613,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     {
       OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
 
-      DataContainer dataContainer = orderItem.DataContainer;
+      DataContainerIndirection dataContainer = orderItem.DataContainer;
 
       dataContainer.SetValue ("Product", "newProduct");
 
@@ -772,7 +773,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
     private void InitializeEventReceivers (Order order)
     {
-      _orderDataContainer = order.DataContainer;
+      _orderDataContainer = order.InternalDataContainer;
       _orderPropertyValues = _orderDataContainer.PropertyValues;
       _orderDeliveryDateProperty = _orderPropertyValues["DeliveryDate"];
       _orderCustomerProperty = _orderPropertyValues["Customer"];

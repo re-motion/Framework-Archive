@@ -38,8 +38,8 @@ public class DataManager
       if (domainObject.State != StateType.Deleted)
         _relationEndPointMap.CheckMandatoryRelations (domainObject);
 
-      if (domainObject.DataContainer.State != StateType.Unchanged)
-        changedDataContainers.Add (domainObject.DataContainer);
+      if (domainObject.GetDataContainer().State != StateType.Unchanged)
+        changedDataContainers.Add (domainObject.GetDataContainer());
     }
 
     return changedDataContainers;
@@ -156,8 +156,8 @@ public class DataManager
   private void PerformDelete (DomainObject domainObject)
   {
     _relationEndPointMap.PerformDelete (domainObject);
-    _dataContainerMap.PerformDelete (domainObject.DataContainer);
-    domainObject.DataContainer.Delete ();
+    _dataContainerMap.PerformDelete (domainObject.GetDataContainer());
+    domainObject.GetDataContainer().Delete ();
   }
 
   private void BeginDelete (
@@ -223,7 +223,7 @@ public class DataManager
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)
   {
-    if (domainObject.DataContainer.ClientTransaction != _clientTransaction)
+    if (domainObject.GetDataContainer().ClientTransaction != _clientTransaction)
     {
       throw CreateClientTransactionsDifferException (
           "Cannot delete DomainObject '{0}', because it belongs to a different ClientTransaction.",

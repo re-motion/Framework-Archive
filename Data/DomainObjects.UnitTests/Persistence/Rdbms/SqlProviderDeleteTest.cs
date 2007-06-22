@@ -65,7 +65,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       subordinate.Delete ();
       computer.Delete ();
 
-      DataContainerCollection containers = CreateDataContainerCollection (supervisor.DataContainer, subordinate.DataContainer, computer.DataContainer);
+			DataContainerCollection containers = CreateDataContainerCollection (supervisor.InternalDataContainer, subordinate.InternalDataContainer,
+					computer.InternalDataContainer);
 
       _provider.Connect ();
       _provider.Save (containers);
@@ -85,8 +86,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       deletedOrderTicket.Delete ();
 
       _provider.Connect ();
-      _provider.Save (CreateDataContainerCollection (changedOrderTicket.DataContainer));
-      _provider.Save (CreateDataContainerCollection (deletedOrderTicket.DataContainer));
+			_provider.Save (CreateDataContainerCollection (changedOrderTicket.InternalDataContainer));
+			_provider.Save (CreateDataContainerCollection (deletedOrderTicket.InternalDataContainer));
     }
 
     [Test]
@@ -105,8 +106,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       deletedObject.Delete ();
 
       _provider.Connect ();
-      _provider.Save (CreateDataContainerCollection (changedObject.DataContainer));
-      _provider.Save (CreateDataContainerCollection (deletedObject.DataContainer));
+			_provider.Save (CreateDataContainerCollection (changedObject.InternalDataContainer));
+			_provider.Save (CreateDataContainerCollection (deletedObject.InternalDataContainer));
     }
 
     private DataContainerCollection CreateDataContainerCollection (params DataContainer[] dataContainers)
@@ -122,7 +123,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
       orderTicket.Delete ();
-      return orderTicket.DataContainer;
+			return orderTicket.InternalDataContainer;
     }
   }
 }

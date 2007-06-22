@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
       classWithAllDataTypes.Delete ();
-      DataContainer deletedContainer = classWithAllDataTypes.DataContainer;
+      DataContainer deletedContainer = classWithAllDataTypes.InternalDataContainer;
 
       Provider.Connect ();
       CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedContainer);
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.Delete ();
-      DataContainer deletedOrderContainer = order.DataContainer;
+      DataContainer deletedOrderContainer = order.InternalDataContainer;
       
       Provider.Connect ();
       CommandBuilder commandBuilder = new DeleteCommandBuilder (Provider, deletedOrderContainer);

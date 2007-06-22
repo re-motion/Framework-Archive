@@ -83,11 +83,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       get { return base.CurrentProperty; }
     }
-
-		[StorageClassNone]
-		public new PropertyIndexer Properties
-		{
-			get { return base.Properties; }
-		}
   }
 }

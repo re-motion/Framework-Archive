@@ -90,12 +90,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     protected abstract string DelimitedNullStringArrayProperty { get; set; }
 
     [StorageClassNone]
-    public new DataContainer DataContainer
-    {
-      get { return base.DataContainer; }
-    }
-
-    [StorageClassNone]
     public ObjectID ObjectID
     {
       get { return base.ID; }

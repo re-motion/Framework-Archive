@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       ClientTransaction clientTransaction = new ClientTransaction ();
       Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
-      _map.PerformDelete (order1.DataContainer);
+			_map.PerformDelete (order1.InternalDataContainer);
     }
 
     private DataContainer CreateNewOrderDataContainer ()
@@ -125,7 +125,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       order.Official = Official.GetObject (DomainObjectIDs.Official1);
       order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
-      return order.DataContainer;
+			return order.InternalDataContainer;
     }
   }
 }

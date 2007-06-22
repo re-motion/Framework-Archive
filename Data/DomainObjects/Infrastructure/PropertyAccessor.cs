@@ -162,7 +162,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
       _domainObject = domainObject;
       _propertyIdentifier = propertyIdentifier;
-      _classDefinition = _domainObject.DataContainer.ClassDefinition;
+      _classDefinition = _domainObject.GetDataContainer().ClassDefinition;
       _kind = PropertyAccessor.GetPropertyKind (_classDefinition, _propertyIdentifier);
 
       _strategy = PropertyAccessor.GetStrategy (_kind);

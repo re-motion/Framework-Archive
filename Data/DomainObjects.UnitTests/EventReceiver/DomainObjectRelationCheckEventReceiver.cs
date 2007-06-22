@@ -51,7 +51,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
       string changedProperty = args.PropertyName;
 
-      if (CardinalityType.One == domainObject.DataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+			if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
       {
         DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
         changingRelatedObjects.Add (changedProperty, relatedDomainObject);
@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
       string changedProperty = args.PropertyName;
 
-      if (CardinalityType.One == domainObject.DataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+			if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
       {
         DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
         changedRelatedObjects.Add (changedProperty, relatedDomainObject);

@@ -20,7 +20,7 @@ public class AnonymousEndPoint : IEndPoint
   // construction and disposing
 
   public AnonymousEndPoint (DomainObject domainObject, RelationDefinition relationDefinition)
-      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, relationDefinition)
+      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, relationDefinition)
   {
   }
 
@@ -77,7 +77,7 @@ public class AnonymousEndPoint : IEndPoint
   public virtual DataContainer GetDataContainer ()
   {
     DomainObject domainObject = GetDomainObject ();
-    return domainObject.DataContainer;
+    return domainObject.GetDataContainer();
   }
 
   public virtual ObjectID ObjectID

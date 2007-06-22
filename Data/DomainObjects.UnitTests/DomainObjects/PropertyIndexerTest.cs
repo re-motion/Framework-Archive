@@ -64,5 +64,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
 			}));
 		}
+
+		[Test]
+		public void Contains ()
+		{
+			Order order = Order.NewObject ();
+			Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"));
+			Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official"));
+			Assert.IsTrue (order.Properties.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+			Assert.IsFalse (order.Properties.Contains ("OrderTicket"));
+			Assert.IsFalse (order.Properties.Contains ("Bla"));
+		}
   }
 }

@@ -385,15 +385,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       ClientTransactionMock.Commit ();
 
-      object orderTimestamp = order.DataContainer.Timestamp;
-      object oldOrderTicketTimestamp = oldOrderTicket.DataContainer.Timestamp;
-      object newOrderTicketTimestamp = newOrderTicket.DataContainer.Timestamp;
+			object orderTimestamp = order.InternalDataContainer.Timestamp;
+			object oldOrderTicketTimestamp = oldOrderTicket.InternalDataContainer.Timestamp;
+			object newOrderTicketTimestamp = newOrderTicket.InternalDataContainer.Timestamp;
 
       ClientTransactionMock.Commit ();
 
-      Assert.AreEqual (orderTimestamp, order.DataContainer.Timestamp);
-      Assert.AreEqual (oldOrderTicketTimestamp, oldOrderTicket.DataContainer.Timestamp);
-      Assert.AreEqual (newOrderTicketTimestamp, newOrderTicket.DataContainer.Timestamp);
+			Assert.AreEqual (orderTimestamp, order.InternalDataContainer.Timestamp);
+			Assert.AreEqual (oldOrderTicketTimestamp, oldOrderTicket.InternalDataContainer.Timestamp);
+			Assert.AreEqual (newOrderTicketTimestamp, newOrderTicket.InternalDataContainer.Timestamp);
     }
 
     [Test]
@@ -409,20 +409,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       ClientTransactionMock.Commit ();
 
-      object orderTimestamp = order.DataContainer.Timestamp;
-      object oldOrderTicketTimestamp = oldOrderTicket.DataContainer.Timestamp;
-      object newOrderTicketTimestamp = newOrderTicket.DataContainer.Timestamp;
-      object oldOrderOfNewOrderTicketTimestamp = oldOrderOfNewOrderTicket.DataContainer.Timestamp;
+			object orderTimestamp = order.InternalDataContainer.Timestamp;
+			object oldOrderTicketTimestamp = oldOrderTicket.InternalDataContainer.Timestamp;
+			object newOrderTicketTimestamp = newOrderTicket.InternalDataContainer.Timestamp;
+			object oldOrderOfNewOrderTicketTimestamp = oldOrderOfNewOrderTicket.InternalDataContainer.Timestamp;
 
       order.OrderTicket = oldOrderTicket;
       oldOrderOfNewOrderTicket.OrderTicket = newOrderTicket;
 
       ClientTransactionMock.Commit ();
 
-      Assert.AreEqual (orderTimestamp, order.DataContainer.Timestamp);
-      Assert.IsFalse (oldOrderTicketTimestamp.Equals (oldOrderTicket.DataContainer.Timestamp));
-      Assert.IsFalse (newOrderTicketTimestamp.Equals (newOrderTicket.DataContainer.Timestamp));
-      Assert.AreEqual (oldOrderOfNewOrderTicketTimestamp, oldOrderOfNewOrderTicket.DataContainer.Timestamp);
+			Assert.AreEqual (orderTimestamp, order.InternalDataContainer.Timestamp);
+			Assert.IsFalse (oldOrderTicketTimestamp.Equals (oldOrderTicket.InternalDataContainer.Timestamp));
+			Assert.IsFalse (newOrderTicketTimestamp.Equals (newOrderTicket.InternalDataContainer.Timestamp));
+			Assert.AreEqual (oldOrderOfNewOrderTicketTimestamp, oldOrderOfNewOrderTicket.InternalDataContainer.Timestamp);
     }
 
     [Test]
@@ -481,7 +481,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction clientTransaction = new ClientTransaction ();
       Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
 
-      Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
+			Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
     }
 
     [Test]
@@ -494,7 +494,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction, true);
       Assert.AreEqual (StateType.Deleted, order.State);
-      Assert.AreSame (clientTransaction, order.DataContainer.ClientTransaction);
+			Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
     }
 
     [Test]

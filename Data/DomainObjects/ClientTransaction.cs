@@ -253,7 +253,7 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.DataContainer);
+    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
   }
 
   /// <summary>
@@ -432,7 +432,7 @@ public class ClientTransaction : ITransaction
 
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.DataContainer, relationEndPointID);
+      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
       if (relatedDataContainer != null)
       {
         SetClientTransaction (relatedDataContainer);

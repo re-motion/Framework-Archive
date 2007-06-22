@@ -666,7 +666,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     {
       OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
 
-      DataContainer dataContainer = orderItem.DataContainer;
+			DataContainer dataContainer = orderItem.InternalDataContainer;
 
       dataContainer.SetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product", "newProduct");
 
@@ -726,8 +726,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       PropertyDefinition propertyDefinition =
           new ReflectionBasedPropertyDefinition (
-              (ReflectionBasedClassDefinition) employee.DataContainer.ClassDefinition, "testproperty", "testproperty", typeof (string), true, 10);
-      PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
+							(ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition, "testproperty", "testproperty", typeof (string), true, 10);
+			PropertyValueCollection propertyValues = employee.InternalDataContainer.PropertyValues;
 
       Assert.IsFalse (propertyValues.Contains ("testproperty"));
 
@@ -747,13 +747,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       PropertyDefinition propertyDefinition =
           new ReflectionBasedPropertyDefinition (
-              (ReflectionBasedClassDefinition) employee.DataContainer.ClassDefinition,
+              (ReflectionBasedClassDefinition) employee.InternalDataContainer.ClassDefinition,
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name",
               "Name",
               typeof (string),
               true,
               10);
-      PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
+      PropertyValueCollection propertyValues = employee.InternalDataContainer.PropertyValues;
 
       Assert.IsTrue (propertyValues.Contains ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Name"));
 
@@ -839,7 +839,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
     private void InitializeEventReceivers (Order order)
     {
-      _orderDataContainer = order.DataContainer;
+			_orderDataContainer = order.InternalDataContainer;
       _orderPropertyValues = _orderDataContainer.PropertyValues;
       _orderDeliveryDateProperty = _orderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate"];
       _orderCustomerProperty = _orderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];

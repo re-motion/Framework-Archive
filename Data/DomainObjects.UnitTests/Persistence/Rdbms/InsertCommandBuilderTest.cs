@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ConstructorChecksForConnectedProvider ()
     {
       Order order = Order.NewObject ();
-      new InsertCommandBuilder (Provider, order.DataContainer);
+			new InsertCommandBuilder (Provider, order.InternalDataContainer);
     }
 
     [Test]
@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Order order = Order.GetObject (DomainObjectIDs.Order1);
 
       Provider.Connect ();
-      new InsertCommandBuilder (Provider, order.DataContainer);
+			new InsertCommandBuilder (Provider, order.InternalDataContainer);
     }
   }
 }

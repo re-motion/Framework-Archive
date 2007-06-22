@@ -105,9 +105,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (_orderTicket.Order);
       Assert.IsNull (_order.OrderTicket);
-      Assert.IsNull (_orderTicket.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+			Assert.IsNull (_orderTicket.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
       Assert.AreEqual (StateType.Changed, _order.State);
-      Assert.AreEqual (StateType.Unchanged, _order.DataContainer.State);
+			Assert.AreEqual (StateType.Unchanged, _order.InternalDataContainer.State);
     }
 
     [Test]
@@ -117,8 +117,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.IsNull (_orderTicket.Order);
       Assert.IsNull (_order.OrderTicket);
-      Assert.IsNull (_orderTicket.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
-      Assert.AreEqual (StateType.Changed, _orderTicket.DataContainer.State);
+			Assert.IsNull (_orderTicket.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+			Assert.AreEqual (StateType.Changed, _orderTicket.InternalDataContainer.State);
     }
 
     [Test]

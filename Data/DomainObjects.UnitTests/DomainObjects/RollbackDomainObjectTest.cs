@@ -80,15 +80,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
       computer.SerialNumber = "1111111111111";
 
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].OriginalValue);
-      Assert.AreEqual ("1111111111111", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].Value);
+      Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
+			Assert.AreEqual ("1111111111111", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
 
       computer.Delete ();
       ClientTransactionMock.Rollback ();
 
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].OriginalValue);
-      Assert.AreEqual ("63457-kol-34", computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].Value);
-      Assert.IsFalse (computer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged);
+			Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>());
+			Assert.AreEqual ("63457-kol-34", computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>());
+			Assert.IsFalse (computer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged);
     }
 
     [Test]

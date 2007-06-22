@@ -11,12 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    [StorageClassNone]
-    public new DataContainer DataContainer
-    {
-      get { return base.DataContainer; }
-    }
-
     public new DomainObject GetRelatedObject (string propertyName)
     {
       return base.GetRelatedObject (propertyName);

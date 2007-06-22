@@ -183,9 +183,9 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    if (!DataContainer.PropertyValues.Contains (propertyName))
+    if (!Properties.Contains (propertyName))
       return null;
-    return State == StateType.New && !DataContainer.PropertyValues[propertyName].HasChanged;
+		return State == StateType.New && !Properties[propertyName].HasChanged;
   }
 
   #region IBusinessObject Members

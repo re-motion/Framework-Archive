@@ -269,7 +269,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
     private void Customer_CommittingForCommittedEventForObjectChangedBackToOriginal (object sender, EventArgs e)
     {
-      _customer.Name = (string) _customer.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].OriginalValue;
+			_customer.Name = _customer.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>();
     }
   }
 }

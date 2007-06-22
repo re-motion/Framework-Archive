@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       location.Client = null;
 
       Assert.IsNull (location.Client);
-      Assert.IsNull (location.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
+      Assert.IsNull (location.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client"]);
       Assert.AreEqual (StateType.Changed, location.State);
       Assert.AreEqual (StateType.Unchanged, oldClient.State);
     }
@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       client.ParentClient = newClient;
 
       Assert.AreSame (newClient, client.ParentClient);
-      Assert.AreEqual (newClient.ID, client.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"]);
+			Assert.AreEqual (newClient.ID, client.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"]);
       Assert.AreEqual (StateType.Changed, client.State);
       Assert.AreEqual (StateType.Unchanged, newClient.State);
     }
@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       eventReceiver.Check (new ChangeState[0]);
       Assert.IsNull (client.ParentClient);
-      Assert.IsNull (client.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"]);
+			Assert.IsNull (client.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"]);
       Assert.AreEqual (StateType.Unchanged, client.State);
     }
   }

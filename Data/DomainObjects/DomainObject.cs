@@ -453,26 +453,31 @@ public class DomainObject
     get { return _dataContainer.ClientTransaction; }
   }
 
-  /// <summary>
+	[Obsolete ("Do not access the DataContainer of a DomainObject to retrieve field values, use its Properties member instead.")]
+	public DataContainerIndirection DataContainer
+	{
+		get { return new DataContainerIndirection (this); }
+	}
+
+		/// <summary>
   /// Gets the <see cref="DataContainer"/> of the <see cref="DomainObject"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  protected internal DataContainer DataContainer
+  internal DataContainer GetDataContainer()
   {
-    get 
-    {
-      CheckIfObjectIsDiscarded ();
-      return _dataContainer; 
-    }
-    internal set
-    {
-      if (_dataContainer != null)
-      {
-        throw new InvalidOperationException ("The data container can only be set once.");
-      }
-      _dataContainer = value;
-    }
+    CheckIfObjectIsDiscarded ();
+    return _dataContainer; 
   }
+
+	internal void SetDataContainer(DataContainer value)
+  {
+    if (_dataContainer != null)
+    {
+      throw new InvalidOperationException ("The data container can only be set once.");
+    }
+    _dataContainer = value;
+  }
+
 
   /// <summary>
   /// Deletes the <see cref="DomainObject"/>.
@@ -505,12 +510,12 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckIfObjectIsDiscarded();
-    if (!PropertyAccessor.IsValidProperty (DataContainer.ClassDefinition, propertyName))
+    if (!PropertyAccessor.IsValidProperty (GetDataContainer().ClassDefinition, propertyName))
     {
       string message = string.Format (
           "The property identifier '{0}' is not a valid property of domain object type {1}.",
           propertyName,
-          DataContainer.ClassDefinition.ClassType.FullName);
+          GetDataContainer().ClassDefinition.ClassType.FullName);
       throw new ArgumentException (message, "propertyName");
     }
 

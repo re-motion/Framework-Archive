@@ -23,7 +23,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
       DomainObject domainObject, 
       IRelationEndPointDefinition definition, 
       ObjectID oppositeObjectID) 
-      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, definition, oppositeObjectID)
+      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, definition, oppositeObjectID)
   {
   }
 
@@ -39,7 +39,7 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
       DomainObject domainObject, 
       string propertyName,
       ObjectID oppositeObjectID) 
-      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, propertyName, oppositeObjectID)
+      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, propertyName, oppositeObjectID)
   {
   }
 

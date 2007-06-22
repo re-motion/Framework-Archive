@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _collectionWithExtensions.Add ("Name2", _extension2);
 
       _order = Order.NewObject ();
-      _dataContainer = _order.DataContainer;
+			_dataContainer = _order.InternalDataContainer;
       _propertyValue = _dataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
     }
 

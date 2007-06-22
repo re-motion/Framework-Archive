@@ -27,7 +27,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       DomainObject domainObject, 
       VirtualRelationEndPointDefinition definition, 
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, definition, oppositeDomainObjects)
+      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, definition, oppositeDomainObjects)
   {
   }
 
@@ -43,7 +43,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
       DomainObject domainObject, 
       string propertyName,
       DomainObjectCollection oppositeDomainObjects) 
-      : this (domainObject.DataContainer.ClientTransaction, domainObject.ID, propertyName, oppositeDomainObjects)
+      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, propertyName, oppositeDomainObjects)
   {
   }
 

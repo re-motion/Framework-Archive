@@ -1,4 +1,6 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 {
@@ -44,10 +46,15 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // methods and properties
 
-    public new DataContainer DataContainer
+    public new DataContainerIndirection DataContainer
     {
       get { return base.DataContainer; }
     }
+
+		public DataContainer InternalDataContainer
+		{
+			get { return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, "GetDataContainer"); }
+		}
 
     public new DomainObject GetRelatedObject (string propertyName)
     {

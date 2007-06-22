@@ -51,11 +51,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
-
-		[StorageClassNone]
-		public new PropertyIndexer Properties
-		{
-			get { return base.Properties; }
-		}
   }
 }

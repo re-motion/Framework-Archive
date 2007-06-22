@@ -75,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetNullFromNonNullableValueType()
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject();
-      classWithAllDataTypes.DataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = null;
+			classWithAllDataTypes.InternalDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = null;
       Dev.Null = classWithAllDataTypes.BooleanProperty;
     }
 
@@ -490,8 +490,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
 
-      Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
+			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
     }
 
     [Test]
@@ -505,8 +505,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order = Order.GetObject (DomainObjectIDs.Order1, clientTransactionMock, true);
 
       Assert.AreEqual (StateType.Deleted, order.State);
-      Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
+			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
     }
 
     [Test]
@@ -515,8 +515,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
       Order order = Order.NewObject (clientTransactionMock);
 
-      Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-      Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
+			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
     }
 
     [Test]
@@ -543,7 +543,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetDomainObjectType ()
     {
       Customer customer = Customer.NewObject ();
-      Assert.AreEqual (typeof (Customer), customer.DataContainer.DomainObjectType);
+			Assert.AreEqual (typeof (Customer), customer.InternalDataContainer.DomainObjectType);
     }
   }
 }

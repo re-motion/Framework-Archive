@@ -1,4 +1,6 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Development.UnitTesting;
 
 #pragma warning disable 0618
 
@@ -22,9 +24,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     }
 
     [StorageClassNone]
-    public new DataContainer DataContainer
+    public DataContainer InternalDataContainer
     {
-      get { return base.DataContainer; }
+      get { return (DataContainer) PrivateInvoke.InvokeNonPublicMethod (this, "GetDataContainer"); }
     }
 
     public new DomainObject GetRelatedObject (string propertyName)
@@ -56,6 +58,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
       base.Delete();
     }
+
+		[StorageClassNone]
+		public new PropertyIndexer Properties
+		{
+			get { return base.Properties; }
+		}
   }
 }
 #pragma warning restore 0618

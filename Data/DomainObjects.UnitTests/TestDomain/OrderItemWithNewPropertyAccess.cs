@@ -17,18 +17,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    public int Position
-    {
-      get { return (int) DataContainer["Position"]; }
-      set { DataContainer["Position"] = value; }
-    }
-
-    public string Product
-    {
-      get { return (string) DataContainer["Product"]; }
-      set { DataContainer["Product"] = value; }
-    }
-
     [DBBidirectionalRelation ("OrderItems")]
     public abstract OrderWithNewPropertyAccess Order { get; set; }
 

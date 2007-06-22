@@ -96,7 +96,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetNewAndUnchangedDomainObjects ()
     {
-      DataContainer container1 = Order.NewObject ().DataContainer;
+			DataContainer container1 = Order.NewObject ().InternalDataContainer;
       DataContainer container2 = TestDataContainerFactory.CreateOrder2DataContainer ();
       _dataManager.RegisterExistingDataContainer (container2);
 
@@ -232,7 +232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Computer computer = Computer.NewObject ();
       ObjectID id = computer.ID;
 
-      Assert.AreSame (computer.DataContainer, _dataManager.DataContainerMap[id]);
+			Assert.AreSame (computer.InternalDataContainer, _dataManager.DataContainerMap[id]);
 
       _dataManager.Rollback ();
 

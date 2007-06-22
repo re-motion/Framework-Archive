@@ -336,8 +336,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _order.OrderTicket = _newOrderTicket;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+			Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+			Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
       Assert.AreSame (_order, _newOrderTicket.Order);
@@ -350,8 +350,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       _newOrderTicket.Order = _order;
 
-      Assert.IsNull (_oldOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
-      Assert.AreEqual (_order.ID, _newOrderTicket.DataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+			Assert.IsNull (_oldOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+			Assert.AreEqual (_order.ID, _newOrderTicket.InternalDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.AreSame (_order, _newOrderTicket.Order);
       Assert.AreSame (_newOrderTicket, _order.OrderTicket);
@@ -375,10 +375,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void NoPropertyValueEventForRelationChange ()
     {
       PropertyValueEventReceiver oldOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _oldOrderTicket.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+					_oldOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       PropertyValueEventReceiver newOrderTicketPropertyEventReceiver = new PropertyValueEventReceiver (
-          _newOrderTicket.DataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
+					_newOrderTicket.InternalDataContainer.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"]);
 
       _order.OrderTicket = _newOrderTicket;
 

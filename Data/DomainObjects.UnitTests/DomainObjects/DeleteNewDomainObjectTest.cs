@@ -22,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       base.SetUp ();
 
       _newOrder = Order.NewObject ();
-      _newOrderContainer = _newOrder.DataContainer;
+      _newOrderContainer = _newOrder.InternalDataContainer;
       _newOrderPropertyValues = _newOrderContainer.PropertyValues;
       _orderNumberValue = _newOrderPropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"];
       _newOrderTicket = OrderTicket.NewObject (_newOrder);
@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void DomainObjectDataContainer ()
     {
       _newOrder.Delete ();
-      DataContainer dataContainer = _newOrder.DataContainer;
+      DataContainer dataContainer = _newOrder.InternalDataContainer;
     }
 
     [Test]
@@ -225,7 +225,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void DataContainerIsDiscarded ()
     {
-      DataContainer newDataContainer = _newOrder.DataContainer;
+      DataContainer newDataContainer = _newOrder.InternalDataContainer;
       Assert.IsFalse (newDataContainer.IsDiscarded);
 
       _newOrder.Delete ();
@@ -336,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyValueCollectionIsDiscarded ()
     {
-      PropertyValueCollection propertyValueCollection = _newOrder.DataContainer.PropertyValues;
+      PropertyValueCollection propertyValueCollection = _newOrder.InternalDataContainer.PropertyValues;
       Assert.IsFalse (propertyValueCollection.IsDiscarded);
 
       _newOrder.Delete ();
@@ -446,7 +446,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void PropertyValueIsDiscarded ()
     {
-      PropertyValue propertyValue = _newOrder.DataContainer.PropertyValues[0];
+      PropertyValue propertyValue = _newOrder.InternalDataContainer.PropertyValues[0];
       Assert.IsFalse (propertyValue.IsDiscarded);
 
       _newOrder.Delete ();

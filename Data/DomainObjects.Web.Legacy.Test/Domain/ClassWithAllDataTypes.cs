@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.NullableValueTypes;
 
 using Rubicon.Globalization;
@@ -87,7 +88,7 @@ public class ClassWithAllDataTypes : BindableDomainObject
     }
   }
 
-  public new DataContainer DataContainer
+  public new DataContainerIndirection DataContainer
   {
     get { return base.DataContainer; }
   }

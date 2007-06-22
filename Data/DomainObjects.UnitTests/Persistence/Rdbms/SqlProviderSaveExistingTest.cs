@@ -608,7 +608,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         orderTicket.Order = Order.GetObject (DomainObjectIDs.Order2);
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (orderTicket.DataContainer);
+				collection.Add (orderTicket.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
@@ -625,7 +625,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         order.Official = (Official) ClientTransactionMock.GetObject (DomainObjectIDs.Official2);
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (order.DataContainer);
+				collection.Add (order.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
@@ -646,7 +646,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ceo.Company = Partner.GetObject (DomainObjectIDs.Partner1);
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (ceo.DataContainer);
+				collection.Add (ceo.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
@@ -667,7 +667,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ceo.Company = Supplier.GetObject (DomainObjectIDs.Supplier1);
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (ceo.DataContainer);
+				collection.Add (ceo.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
@@ -688,7 +688,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         computer.Employee = null;
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (computer.DataContainer);
+				collection.Add (computer.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
@@ -710,7 +710,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         ceo.Company = null;
 
         DataContainerCollection collection = new DataContainerCollection ();
-        collection.Add (ceo.DataContainer);
+				collection.Add (ceo.InternalDataContainer);
 
         sqlProvider.Save (collection);
       }
