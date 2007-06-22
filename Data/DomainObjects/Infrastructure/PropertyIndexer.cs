@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -9,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// Provides an indexer to access a specific property of a domain object. Instances of this value type are returned by
   /// <see cref="DomainObject.Properties"/>.
   /// </summary>
-  public struct PropertyIndexer
+  public struct PropertyIndexer : IEnumerable<PropertyAccessor>
   {
     private DomainObject _domainObject;
     
@@ -50,5 +52,45 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         }
       }
     }
+
+		/// <summary>
+		/// Gets the number of properties defined by the domain object. This corresponds to the number of <see cref="PropertyAccessor"/> objects
+		/// indexable by this structure and enumerated by <see cref="GetEnumerator"/>.
+		/// </summary>
+		/// <value>The number of properties defined by the domain object.</value>
+  	public int Count
+  	{
+			get
+			{
+				ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+				IRelationEndPointDefinition[] endPointDefinitions = classDefinition.GetRelationEndPointDefinitions ();
+				int count = classDefinition.GetPropertyDefinitions ().Count;
+				foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
+				{
+					if (endPointDefinition.IsVirtual)
+						++count;
+				}
+				return count;
+			}
+  	}
+
+  	public IEnumerator<PropertyAccessor> GetEnumerator ()
+  	{
+			ClassDefinition classDefinition = _domainObject.ID.ClassDefinition;
+
+  		foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions())
+  			yield return this[propertyDefinition.PropertyName];
+
+			foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetRelationEndPointDefinitions ())
+			{
+				if (endPointDefinition.IsVirtual)
+					yield return this[endPointDefinition.PropertyName];
+			}
+  	}
+
+  	IEnumerator IEnumerable.GetEnumerator ()
+  	{
+			return GetEnumerator ();
+  	}
   }
 }

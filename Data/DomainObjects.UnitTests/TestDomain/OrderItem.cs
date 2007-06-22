@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -50,5 +51,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
     [DBBidirectionalRelation ("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
+
+		[StorageClassNone]
+		public new PropertyIndexer Properties
+		{
+			get { return base.Properties; }
+		}
   }
 }

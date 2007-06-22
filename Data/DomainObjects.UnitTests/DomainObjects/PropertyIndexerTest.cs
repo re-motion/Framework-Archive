@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Mapping;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -30,5 +31,38 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       PropertyIndexer indexer = new PropertyIndexer (IndustrialSector.NewObject ());
       object o = indexer["Bla"];
     }
+
+		[Test]
+		public void Count ()
+		{
+			Order order = Order.NewObject ();
+			Assert.AreEqual (6, order.Properties.Count);
+
+			OrderItem orderItem = OrderItem.NewObject ();
+			Assert.AreEqual (3, orderItem.Properties.Count);
+
+			ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.NewObject ();
+			Assert.AreEqual (41, cwadt.Properties.Count);
+		}
+
+		[Test]
+		public void GetEnumerator ()
+		{
+			Order order = Order.NewObject();
+			List<string> propertyNames = new List<string> ();
+			foreach (PropertyAccessor propertyAccessor in order.Properties)
+			{
+				propertyNames.Add (propertyAccessor.PropertyIdentifier);
+			}
+
+			Assert.That (propertyNames, Is.EquivalentTo (new string[] {
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber",
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.DeliveryDate",
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Official",
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket",
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+				"Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"
+			}));
+		}
   }
 }
