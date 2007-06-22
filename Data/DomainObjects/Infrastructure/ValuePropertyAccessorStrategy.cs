@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -21,26 +22,37 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private PropertyValue GetPropertyValue (PropertyAccessor propertyAccessor)
     {
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       return propertyAccessor.DomainObject.DataContainer.PropertyValues[propertyAccessor.PropertyIdentifier];
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor)
     {
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       return GetPropertyValue(propertyAccessor).HasChanged;
     }
 
+		public bool IsNull (PropertyAccessor propertyAccessor)
+		{
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
+			return GetValueWithoutTypeCheck (propertyAccessor) == null;
+		}
+
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       return GetPropertyValue (propertyAccessor).Value;
     }
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, object value)
     {
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       GetPropertyValue (propertyAccessor).Value = value;
     }
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
+			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
       return GetPropertyValue (propertyAccessor).OriginalValue;
     }
   }

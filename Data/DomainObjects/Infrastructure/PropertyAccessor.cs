@@ -249,7 +249,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    /// <summary>
+		/// <summary>
+		/// Gets a value indicating whether the property's value is <see langword="null"/>.
+		/// </summary>
+		/// <value>True if this instance is null; otherwise, false.</value>
+		/// <remarks>This can be used to efficiently check whether a related object property has a value without actually loading the related
+		/// object.</remarks>
+  	public bool IsNull
+  	{
+			get
+			{
+				DomainObject.CheckIfObjectIsDiscarded ();
+				return _strategy.IsNull (this);
+			}
+  	}
+
+  	/// <summary>
     /// Gets the property's value.
     /// </summary>
     /// <typeparam name="T">

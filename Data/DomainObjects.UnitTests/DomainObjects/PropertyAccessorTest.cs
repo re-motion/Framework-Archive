@@ -8,13 +8,16 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
   public class PropertyAccessorTest : ClientTransactionBaseTest
   {
-    private static PropertyAccessor CreateAccessor (DomainObject domainObject, string propertyIdentifier)
+  	private int _prop;
+
+  	private static PropertyAccessor CreateAccessor (DomainObject domainObject, string propertyIdentifier)
     {
       ConstructorInfo ctor =
           typeof (PropertyAccessor).GetConstructor (
@@ -409,5 +412,88 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       CreateAccessor (IndustrialSector.NewObject(), "Rubicon.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")
           .GetOriginalValue<int>();
     }
+
+		[Test]
+		public void IsNullPropertyValue ()
+		{
+			ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.NewObject ();
+			Assert.IsTrue (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull);
+			Assert.IsFalse (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"].IsNull);
+
+			cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].SetValue<bool?> (true);
+			Assert.IsFalse (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull);
+
+			cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].SetValue<bool?> (null);
+			Assert.IsTrue (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull);
+
+			cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].SetValue<bool?> (null);
+			Assert.IsTrue (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull);
+
+			Assert.IsTrue (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull);
+			Assert.IsFalse (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].IsNull);
+
+			cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].SetValue ("");
+			Assert.IsFalse (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull);
+
+			cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].SetValue<string> (null);
+			Assert.IsTrue (cwadt.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull);
+		}
+
+		[Test]
+		public void IsNullRelatedObjectCollection ()
+		{
+			Order newOrder = Order.NewObject ();
+			Assert.IsFalse (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].IsNull);
+		}
+
+		[Test]
+		public void IsNullRelatedObjectNonVirtualEndPoint ()
+		{
+			Order newOrder = Order.NewObject ();
+			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull);
+
+			newOrder.Customer = Customer.NewObject ();
+			Assert.IsFalse (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull);
+
+			newOrder.Customer = null;
+			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull);
+
+			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransaction.Current);
+			Order existingOrder = Order.GetObject (DomainObjectIDs.Order1);
+
+			eventReceiver.Clear ();
+			Assert.AreEqual (0, eventReceiver.LoadedDomainObjects.Count);
+
+			Assert.IsFalse (existingOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull);
+			Assert.AreEqual (0, eventReceiver.LoadedDomainObjects.Count, "The IsNull check did not cause the object to be loaded.");
+
+			Assert.IsFalse (existingOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].GetValue<Customer> () == null);
+			Assert.AreEqual (1, eventReceiver.LoadedDomainObjects.Count, "An ordinary check does cause the object to be loaded.");
+		}
+
+		[Test]
+		public void IsNullRelatedObjectVirtualEndPoint ()
+		{
+			Order newOrder = Order.NewObject ();
+			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull);
+
+			newOrder.OrderTicket = OrderTicket.NewObject ();
+			Assert.IsFalse (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull);
+
+			newOrder.OrderTicket = null;
+			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull);
+
+			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransaction.Current);
+			Order existingOrder = Order.GetObject (DomainObjectIDs.Order1);
+
+			eventReceiver.Clear ();
+			Assert.AreEqual (0, eventReceiver.LoadedDomainObjects.Count);
+
+			Assert.IsFalse (existingOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull);
+			Assert.AreEqual (1, eventReceiver.LoadedDomainObjects.Count, "For virtual end points, the IsNull unfortunately does cause a load.");
+
+			Assert.IsFalse (existingOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValue<OrderTicket> () == null);
+			Assert.AreEqual (1, eventReceiver.LoadedDomainObjects.Count, "An ordinary check does cause the object to be loaded.");
+		}
   }
 }
