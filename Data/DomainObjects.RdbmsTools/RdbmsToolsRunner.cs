@@ -26,9 +26,15 @@ namespace Rubicon.Data.DomainObjects.RdbmsTools
       appDomainSetup.DynamicBase = Path.Combine (Path.GetTempPath(), "Rubicon");
       if (!string.IsNullOrEmpty (rdbmsToolsParameter.ConfigFile))
       {
-        appDomainSetup.ConfigurationFile = Path.IsPathRooted (rdbmsToolsParameter.ConfigFile)
-                                               ? rdbmsToolsParameter.ConfigFile
-                                               : Path.Combine (rdbmsToolsParameter.BaseDirectory, rdbmsToolsParameter.ConfigFile);
+        appDomainSetup.ConfigurationFile = rdbmsToolsParameter.ConfigFile;
+        if (!File.Exists (appDomainSetup.ConfigurationFile))
+        {
+          throw new FileNotFoundException (
+              string.Format (
+                  "The configuration file supplied by the 'config' parameter was not found.\r\nFile: {0}", 
+                  appDomainSetup.ConfigurationFile),
+              appDomainSetup.ConfigurationFile);
+        }
       }
       return new RdbmsToolsRunner (appDomainSetup, rdbmsToolsParameter);
     }
