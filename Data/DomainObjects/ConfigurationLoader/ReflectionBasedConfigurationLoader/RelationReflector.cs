@@ -41,8 +41,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       }
       else
       {
-        //if (relationDefinitions.Contains (GetRelationID()))
-        //  return (RelationDefinition) relationDefinitions[GetRelationID()];
+        if (relationDefinitions.Contains (GetRelationID ()))
+          return (RelationDefinition) relationDefinitions[GetRelationID ()];
         
         RelationDefinition relationDefinition = new RelationDefinition (
             GetRelationID(),
