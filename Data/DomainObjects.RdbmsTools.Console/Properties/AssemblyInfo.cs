@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle ("Rubicon DomainObjects Database Tools Console")]
 [assembly: AssemblyDescription ("Console application for the Rubicon DomainObjects Database Tools Library")]
-[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
+[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
 [assembly: AssemblyCopyright("(c) 2003 - 2007 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.40.202")]
+[assembly: AssemblyVersion("1.7.43.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

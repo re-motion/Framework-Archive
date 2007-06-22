@@ -28,7 +28,7 @@ using System.Reflection;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.40.202")]
+[assembly: AssemblyVersion("1.7.43.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -46,7 +46,7 @@ using System.Reflection;
 //       (1) If the KeyName can be found in the CSP, that key is used.
 //       (2) If the KeyName does not exist and the KeyFile does exist, the key 
 //           in the KeyFile is installed into the CSP and used.
-//   (*) In order to create a KeyFile, you can use the sn.exe (Strong Identifier) utility.
+//   (*) In order to create a KeyFile, you can use the sn.exe (Strong Name) utility.
 //       When specifying the KeyFile, the location of the KeyFile should be
 //       relative to the project output directory which is
 //       %Project Directory%\obj\<configuration>. For example, if your KeyFile is
