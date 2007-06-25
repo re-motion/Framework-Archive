@@ -1,7 +1,7 @@
 using System;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 
-namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class DoubleImplementer : IBaseType2
   {

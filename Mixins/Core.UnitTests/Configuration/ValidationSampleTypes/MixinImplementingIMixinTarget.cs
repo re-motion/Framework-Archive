@@ -1,7 +1,7 @@
 using System;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   public class MixinImplementingIMixinTarget : IMixinTarget
   {

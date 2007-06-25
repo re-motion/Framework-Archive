@@ -1,6 +1,6 @@
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 
-namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   [BT1]
   public class MixinAddingBT1Attribute

@@ -1,4 +1,4 @@
-namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   [Multi]
   public class MixinAddingAllowMultipleToClassAndMember

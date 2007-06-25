@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.UnitTests.Configuration.ValidationSampleTypes
+namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
 {
   interface IInvisible { }
 
