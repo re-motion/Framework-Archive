@@ -33,15 +33,7 @@
   <ItemGroup>
     <Reference Include="nunit.framework, Version=2.4.0.2, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files\NUnit 2.4\bin\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Core, Version=1.7.40.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libraries\Commons\trunk\Core\bin\Debug\Rubicon.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rubicon.Development, Version=1.7.40.202, Culture=neutral, PublicKeyToken=ad97c3e83e217fcd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\libraries\Commons\trunk\Development\Core\bin\Debug\Rubicon.Development.dll</HintPath>
+      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -168,7 +160,15 @@
     <Compile Include="SampleTypes\NullMixin.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mixins\Mixins.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Mixins.csproj">
       <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
       <Name>Mixins</Name>
     </ProjectReference>
