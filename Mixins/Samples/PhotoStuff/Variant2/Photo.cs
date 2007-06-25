@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins;
+using Rubicon.Mixins;
 
 namespace Samples.PhotoStuff.Variant2
 {

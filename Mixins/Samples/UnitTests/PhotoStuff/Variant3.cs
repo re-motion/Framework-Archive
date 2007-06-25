@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins;
+using Rubicon.Mixins;
 using Samples.PhotoStuff;
 using Samples.PhotoStuff.Variant3;
 using NUnit.Framework;
@@ -25,7 +25,6 @@ namespace Samples.UnitTests.PhotoStuff
               return pi.IsDefined (typeof (StoredAttribute), false);
             });
 
-        Mixins.CodeGeneration.ConcreteTypeBuilder.Current.Scope.SaveAssembly ();
         Assert.AreEqual (2, properties.Length);
       }
     }

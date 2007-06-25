@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins;
+using Rubicon.Mixins;
 using Samples.PhotoStuff;
 using Samples.PhotoStuff.Variant1;
 using NUnit.Framework;

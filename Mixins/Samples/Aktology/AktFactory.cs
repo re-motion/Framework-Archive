@@ -1,8 +1,8 @@
 using System;
 using Samples.Aktology.Akten;
 using Samples.Aktology.Mixins;
-using Mixins;
-using Mixins.Context;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Context;
 
 namespace Samples.Aktology
 {

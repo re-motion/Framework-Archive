@@ -1,5 +1,5 @@
 using System;
-using Mixins;
+using Rubicon.Mixins;
 using Samples.Aktology.Akten;
 
 namespace Samples.Aktology.Mixins

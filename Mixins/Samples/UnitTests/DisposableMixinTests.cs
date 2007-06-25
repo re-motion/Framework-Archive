@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using Mixins;
+using Rubicon.Mixins;
 
 namespace Samples.UnitTests
 {

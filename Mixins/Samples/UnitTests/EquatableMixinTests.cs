@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
-using Mixins;
-using Mixins.CodeGeneration;
+using Rubicon.Mixins;
+using Rubicon.Mixins.CodeGeneration;
 using System.Reflection;
 
 namespace Samples.UnitTests
