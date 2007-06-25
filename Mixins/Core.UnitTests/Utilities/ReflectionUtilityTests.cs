@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
 using Rubicon;
 using Rubicon.Collections;
 
-namespace Mixins.UnitTests.Utilities
+namespace Rubicon.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class ReflectionUtilityTests
@@ -93,7 +93,7 @@ namespace Mixins.UnitTests.Utilities
       Assert.AreEqual (1, arguments.Count);
       Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T3"; }));
 
-      Type thisAttribute = typeof (Mixin).Assembly.GetType ("Mixins.ThisAttribute");
+      Type thisAttribute = typeof (Mixin).Assembly.GetType ("Rubicon.Mixins.ThisAttribute");
       arguments = new List<Type> (ReflectionUtility.GetGenericParametersAssociatedWithAttribute (typeof (C<,,>), thisAttribute));
       Assert.AreEqual (1, arguments.Count);
       Assert.IsNotNull (arguments.Find (delegate (Type arg) { return arg.Name == "T2"; }));

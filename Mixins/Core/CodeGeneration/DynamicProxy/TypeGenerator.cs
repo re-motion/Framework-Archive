@@ -4,18 +4,18 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Mixins.Definitions;
-using Mixins.Utilities;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
-using LoadArrayElementExpression = Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
+using LoadArrayElementExpression = Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
 using Rubicon.Text;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class TypeGenerator: ITypeGenerator
   {

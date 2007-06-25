@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   public interface IAttributableDefinition : IVisitableDefinition
   {

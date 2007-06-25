@@ -1,8 +1,8 @@
 using System;
-using Mixins.Definitions;
-using Mixins.Validation;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public class DefaultBaseClassRules : RuleSetBase
   {

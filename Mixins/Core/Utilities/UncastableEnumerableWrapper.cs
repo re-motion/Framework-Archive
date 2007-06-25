@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   /// <summary>
   /// Wraps an enumerable object so that the wrapped object cannot be cast back to its original type.

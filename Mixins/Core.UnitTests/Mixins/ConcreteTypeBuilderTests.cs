@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Mixins.CodeGeneration;
+using Rubicon.Mixins.CodeGeneration;
 using System.Reflection;
 using Rubicon.Development.UnitTesting;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class ConcreteTypeBuilderTests : MixinTestBase

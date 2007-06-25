@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public class SignatureChecker
   {

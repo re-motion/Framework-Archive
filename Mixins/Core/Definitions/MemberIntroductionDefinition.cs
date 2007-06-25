@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Rubicon.Utilities;
 using System.Reflection;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{InterfaceMember}")]

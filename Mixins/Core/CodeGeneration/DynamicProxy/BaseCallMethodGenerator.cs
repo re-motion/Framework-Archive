@@ -1,13 +1,13 @@
 using System;
 using System.Reflection;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
-using Mixins.Definitions;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 
-using LoadArrayElementExpression = Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
+using LoadArrayElementExpression = Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class BaseCallMethodGenerator
   {

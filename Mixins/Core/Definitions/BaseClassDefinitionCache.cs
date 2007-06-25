@@ -1,11 +1,11 @@
 using System;
-using Mixins.Definitions.Building;
-using Mixins.Utilities.Singleton;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Utilities.Singleton;
 using Rubicon.Collections;
-using Mixins.Context;
-using Mixins.Validation;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   public class BaseClassDefinitionCache : CallContextSingletonBase<BaseClassDefinitionCache, DefaultInstanceCreator<BaseClassDefinitionCache>>
   {

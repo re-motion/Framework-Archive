@@ -1,7 +1,7 @@
 using System;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// This interface is implicitly implemented by all mixed types and objects returned by <see cref="TypeFactory"/> and <see cref="ObjectFactory"/>.

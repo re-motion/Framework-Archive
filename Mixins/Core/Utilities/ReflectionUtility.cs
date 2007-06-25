@@ -4,7 +4,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public static class ReflectionUtility
   {

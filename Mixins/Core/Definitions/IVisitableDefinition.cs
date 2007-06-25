@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   public interface IVisitableDefinition
   {

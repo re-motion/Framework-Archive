@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   [Extends (typeof (BaseType3))]
   [Serializable]

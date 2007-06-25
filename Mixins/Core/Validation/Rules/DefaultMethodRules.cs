@@ -1,11 +1,11 @@
 using System;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using System.Reflection;
-using Mixins.Utilities;
-using Mixins.Validation;
-using Mixins.CodeGeneration;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Validation;
+using Rubicon.Mixins.CodeGeneration;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public class DefaultMethodRules : RuleSetBase
   {

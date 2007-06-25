@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins;
+using Rubicon.Mixins;
 using Rubicon.Collections;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Mixins.Context
+namespace Rubicon.Mixins.Context
 {
 	/// <summary>
 	/// Provides support for building mixin configuration data for an application from the declarative configuration attributes

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins.Definitions;
-using Mixins.Validation;
-using Mixins.Validation.Rules;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Validation;
+using Rubicon.Mixins.Validation.Rules;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public static class Validator
   {

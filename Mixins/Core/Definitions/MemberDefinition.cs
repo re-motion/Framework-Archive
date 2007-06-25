@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]

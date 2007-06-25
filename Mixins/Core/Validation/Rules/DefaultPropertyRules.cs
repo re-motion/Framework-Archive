@@ -1,9 +1,9 @@
 using System;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using System.Reflection;
-using Mixins.Validation;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public class DefaultPropertyRules : RuleSetBase
   {

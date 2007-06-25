@@ -1,11 +1,11 @@
 using System;
-using Mixins.UnitTests.Mixins.CodeGenSampleTypes;
+using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using NUnit.Framework;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class CodeGenerationTests : MixinTestBase
@@ -429,11 +429,11 @@ namespace Mixins.UnitTests.Mixins
         BaseType1 bt1 = ObjectFactory.Create<BaseType1>().With();
         MethodInfo[] allMethods = bt1.GetType().GetMethods (BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
         string[] allMethodNames = Array.ConvertAll<MethodInfo, string> (allMethods, delegate (MethodInfo mi) { return mi.Name; });
-        Assert.That (allMethodNames, List.Contains ("Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop1"));
-        Assert.That (allMethodNames, List.Contains ("Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop2"));
+        Assert.That (allMethodNames, List.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop1"));
+        Assert.That (allMethodNames, List.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop2"));
         
-        Assert.That (allMethodNames, List.Not.Contains ("Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop1"));
-        Assert.That (allMethodNames, List.Not.Contains ("Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
+        Assert.That (allMethodNames, List.Not.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.set_Prop1"));
+        Assert.That (allMethodNames, List.Not.Contains ("Rubicon.Mixins.UnitTests.SampleTypes.InterfaceWithPartialProperties.get_Prop2"));
       }
     }
 

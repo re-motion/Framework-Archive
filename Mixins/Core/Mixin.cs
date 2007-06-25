@@ -1,10 +1,10 @@
 using System;
 using System.Diagnostics;
 using Rubicon.Utilities;
-using Mixins.Utilities;
-using Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Provides reflective access to the mixins integrated with a target class.

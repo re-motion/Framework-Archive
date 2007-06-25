@@ -3,7 +3,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
 
-namespace Mixins.Utilities.Serialization
+namespace Rubicon.Mixins.Utilities.Serialization
 {
   public static class ReflectionObjectSerializer
   {

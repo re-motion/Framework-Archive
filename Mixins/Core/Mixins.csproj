@@ -7,8 +7,8 @@
     <ProjectGuid>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mixins</RootNamespace>
-    <AssemblyName>Mixins</AssemblyName>
+    <RootNamespace>Rubicon.Mixins</RootNamespace>
+    <AssemblyName>Rubicon.Mixins</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Mixins.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Rubicon.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,11 +32,9 @@
   <ItemGroup>
     <Reference Include="Castle.DynamicProxy, Version=2.0.0.1, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
+      <HintPath>..\..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
@@ -58,6 +56,7 @@
     <Compile Include="Definitions\Building\MemberChain.cs" />
     <Compile Include="Definitions\IDefinitionItemCollection.cs" />
     <Compile Include="Definitions\CovariantDefinitionItemCollectionWrapper.cs" />
+    <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="UsesAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\AttributeReplicator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\PropertyReference.cs" />
@@ -188,6 +187,7 @@
   <ItemGroup>
     <None Include="Definitions\Definitions.cd" />
     <None Include="Context\Context.cd" />
+    <None Include="Mixins.build" />
     <None Include="Mixins.cd" />
     <None Include="Validation\Validation.cd" />
   </ItemGroup>

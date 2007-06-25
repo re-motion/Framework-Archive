@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   public class ThisDependencyDefinition : DependencyDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>

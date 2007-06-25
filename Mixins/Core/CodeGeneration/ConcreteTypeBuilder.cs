@@ -1,10 +1,10 @@
 using System;
-using Mixins.Utilities.Singleton;
-using Mixins.Definitions;
+using Rubicon.Mixins.Utilities.Singleton;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
-namespace Mixins.CodeGeneration
+namespace Rubicon.Mixins.CodeGeneration
 {
   public class ConcreteTypeBuilder : CallContextSingletonBase<ConcreteTypeBuilder, DefaultInstanceCreator<ConcreteTypeBuilder>>
   {

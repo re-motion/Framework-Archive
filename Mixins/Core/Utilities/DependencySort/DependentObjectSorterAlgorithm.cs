@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
-namespace Mixins.Utilities.DependencySort
+namespace Rubicon.Mixins.Utilities.DependencySort
 {
   public class DependentObjectSorterAlgorithm<T>
   {

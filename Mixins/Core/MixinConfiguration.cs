@@ -1,11 +1,11 @@
 using System;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
-using Mixins.Utilities.Singleton;
-using Mixins.Context;
+using Rubicon.Mixins.Utilities.Singleton;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Manages the mixin configuration for the current thread.
@@ -58,7 +58,7 @@ namespace Mixins
   public class MixinConfiguration : IDisposable
   {
     private static CallContextSingleton<ApplicationContext> _activeContext =
-        new CallContextSingleton<ApplicationContext> ("Mixins.MixinConfiguration._activeContext",
+        new CallContextSingleton<ApplicationContext> ("Rubicon.Mixins.MixinConfiguration._activeContext",
         delegate { return ApplicationContextBuilder.BuildDefaultContext(); });
 
     /// <summary>

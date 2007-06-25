@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.CodeGeneration
+namespace Rubicon.Mixins.CodeGeneration
 {
   public interface IMixinTypeGenerator
   {

@@ -6,7 +6,7 @@ using Castle.DynamicProxy.Generators.Emitters;
 using System.Reflection.Emit;
 using System.Reflection;
 
-namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public class VirtualMethodInvocationExpression : MethodInvocationExpression
   {

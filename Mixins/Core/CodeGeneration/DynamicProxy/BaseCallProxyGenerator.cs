@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using System.Reflection;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class BaseCallProxyGenerator
   {

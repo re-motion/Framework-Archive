@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Mixins.Utilities.Serialization;
+using Rubicon.Mixins.Utilities.Serialization;
 using NUnit.Framework;
 using System.Runtime.Serialization;
 using Rubicon;
@@ -12,7 +12,7 @@ using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 using AssertionException=NUnit.Framework.AssertionException;
 
-namespace Mixins.UnitTests.Utilities.Serialization
+namespace Rubicon.Mixins.UnitTests.Utilities.Serialization
 {
   [TestFixture]
   public class SafeReflectionSerializationTests

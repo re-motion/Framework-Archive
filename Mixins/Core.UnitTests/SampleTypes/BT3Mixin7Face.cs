@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public class BT3Mixin7Face: Mixin<ICBaseType3BT3Mixin4>
   {

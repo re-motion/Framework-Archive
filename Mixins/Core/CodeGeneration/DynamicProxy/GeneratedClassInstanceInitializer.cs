@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using System.Reflection;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
-using Mixins.Utilities;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
+using Rubicon.Mixins.Utilities;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {

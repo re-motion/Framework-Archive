@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public interface IValidationLog
   {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public interface IBT3Mixin6ThisDependencies : IBaseType31, IBaseType32, IBaseType33, IBT3Mixin4
   {

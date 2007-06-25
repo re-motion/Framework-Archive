@@ -1,15 +1,15 @@
 using System;
 using System.Reflection.Emit;
-using Mixins.CodeGeneration;
-using Mixins.Context;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.Validation;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Validation;
 using Rubicon.Reflection;
 using System.Reflection;
 using Rubicon.Text;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Provides support for instantiating type which are combined with mixins.

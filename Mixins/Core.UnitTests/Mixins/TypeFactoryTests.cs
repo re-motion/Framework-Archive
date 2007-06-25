@@ -1,13 +1,13 @@
 using System;
-using Mixins;
-using Mixins.Context;
-using Mixins.Definitions;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
 using NUnit.Framework;
-using Mixins.CodeGeneration;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class TypeFactoryTests

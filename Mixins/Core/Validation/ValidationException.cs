@@ -1,9 +1,9 @@
 using System;
 using System.Text;
-using Mixins;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
 	/// <summary>
 	/// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents

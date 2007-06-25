@@ -7,11 +7,11 @@ using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon;
 using Rubicon.Utilities;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class ExtendedClassEmitter : IAttributableEmitter
   {

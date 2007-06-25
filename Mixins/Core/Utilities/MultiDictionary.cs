@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   // TODO: Remove when Rubicon.Collections.MultiDictionary is available
   [Serializable]

@@ -1,9 +1,9 @@
 using System;
-using Mixins.UnitTests.SampleTypes;
-using Mixins.Utilities;
+using Rubicon.Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Utilities
+namespace Rubicon.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class GenericTypeInstantiatorTests

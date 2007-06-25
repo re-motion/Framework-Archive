@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
 using System.Reflection;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using System.Reflection.Emit;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Mixins.UnitTests.Utilities
+namespace Rubicon.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class ReflectionEmitUtilityTests

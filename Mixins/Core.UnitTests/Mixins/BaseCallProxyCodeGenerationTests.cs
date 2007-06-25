@@ -1,12 +1,12 @@
 using System;
-using Mixins.CodeGeneration;
-using Mixins.Definitions;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Definitions;
 using NUnit.Framework;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
-using Mixins.UnitTests.Mixins.CodeGenSampleTypes;
+using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class BaseCallProxyCodeGenerationTests : MixinTestBase
@@ -88,15 +88,15 @@ namespace Mixins.UnitTests.Mixins
           Assert.IsTrue (req.Type.IsAssignableFrom (proxyType));
 
         MethodInfo methodImplementdByMixin =
-            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByMixin);
 
         MethodInfo methodImplementdByBCOverridden =
-            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCOverridden);
 
         MethodInfo methodImplementdByBCNotOverridden =
-            proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
+            proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType35.IfcMethod2", BindingFlags.NonPublic | BindingFlags.Instance);
         Assert.IsNotNull (methodImplementdByBCNotOverridden);
       }
     }
@@ -109,7 +109,7 @@ namespace Mixins.UnitTests.Mixins
         Type t = TypeFactory.GetConcreteType (typeof (BaseType3));
         Type proxyType = t.GetNestedType ("BaseCallProxy");
 
-        Assert.IsNotNull (proxyType.GetMethod ("Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
       }
     }
 

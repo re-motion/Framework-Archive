@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public class DefaultThisDependencyRules : DefaultDependencyRulesBase<ThisDependencyDefinition, RequiredFaceTypeDefinition>
   {

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
-using Mixins.Validation;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins.Context
+namespace Rubicon.Mixins.Context
 {
   /// <summary>
   /// Manages the set of class contexts active for the current thread.

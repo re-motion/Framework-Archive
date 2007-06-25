@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
-  <Class Name="Mixins.Definitions.BaseClassDefinition">
+  <Class Name="Rubicon.Mixins.Definitions.BaseClassDefinition">
     <Position X="3.75" Y="3.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\BaseClassDefinition.cs</FileName>
@@ -28,14 +28,14 @@
       <Property Name="MixinTypeInstantiator" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
-    <AssociationLine Name="IntroducedInterfaces" Type="Mixins.Definitions.InterfaceIntroductionDefinition">
+    <AssociationLine Name="IntroducedInterfaces" Type="Rubicon.Mixins.Definitions.InterfaceIntroductionDefinition">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.183" Y="0.091" />
       </MemberNameLabel>
     </AssociationLine>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Mixins.Definitions.BaseClassDefinitionCache">
+  <Class Name="Rubicon.Mixins.Definitions.BaseClassDefinitionCache">
     <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\BaseClassDefinitionCache.cs</FileName>
@@ -47,7 +47,7 @@
       <Field Name="s_definitionBuilder" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Mixins.Context.ClassContext" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Context.ClassContext" Collapsed="true">
     <Position X="0.5" Y="4" Width="1.25" />
     <TypeIdentifier>
       <FileName>Context\ClassContext.cs</FileName>
@@ -55,7 +55,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Mixins.Definitions.MixinDefinition">
+  <Class Name="Rubicon.Mixins.Definitions.MixinDefinition">
     <Position X="10.5" Y="3.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\MixinDefinition.cs</FileName>
@@ -76,7 +76,7 @@
       <Method Name="MixinDefinition" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
-    <AssociationLine Name="InterfaceIntroductions" Type="Mixins.Definitions.InterfaceIntroductionDefinition" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="InterfaceIntroductions" Type="Rubicon.Mixins.Definitions.InterfaceIntroductionDefinition" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="11.344" Y="4.851" />
         <Point X="11.344" Y="7.187" />
@@ -85,7 +85,7 @@
     </AssociationLine>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Mixins.Definitions.InterfaceIntroductionDefinition">
+  <Class Name="Rubicon.Mixins.Definitions.InterfaceIntroductionDefinition">
     <Position X="8" Y="7" Width="3" />
     <TypeIdentifier>
       <FileName>Definitions\InterfaceIntroductionDefinition.cs</FileName>
@@ -106,7 +106,7 @@
     </Members>
     <Lollipop Orientation="Bottom" Position="0.232" />
   </Class>
-  <Class Name="Mixins.Definitions.ClassDefinition">
+  <Class Name="Rubicon.Mixins.Definitions.ClassDefinition">
     <Position X="5.25" Y="0.5" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\ClassDefinition.cs</FileName>
@@ -129,7 +129,7 @@
     </Members>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Mixins.Definitions.EventDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.EventDefinition" Collapsed="true">
     <Position X="9.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\EventDefinition.cs</FileName>
@@ -137,7 +137,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Mixins.Definitions.MethodDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.MethodDefinition" Collapsed="true">
     <Position X="9.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\MethodDefinition.cs</FileName>
@@ -145,7 +145,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Mixins.Definitions.PropertyDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.PropertyDefinition" Collapsed="true">
     <Position X="9.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\PropertyDefinition.cs</FileName>
@@ -153,7 +153,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="Mixins.Definitions.MemberDefinition">
+  <Class Name="Rubicon.Mixins.Definitions.MemberDefinition">
     <Position X="12.75" Y="0.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\MemberDefinition.cs</FileName>
@@ -179,13 +179,13 @@
     </Members>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Mixins.Definitions.EventIntroductionDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.EventIntroductionDefinition" Collapsed="true">
     <Position X="12.75" Y="9.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\EventIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
-    <InheritanceLine Type="Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
+    <InheritanceLine Type="Rubicon.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="15.75" Y="9.062" />
         <Point X="15.375" Y="9.062" />
@@ -194,13 +194,13 @@
       </Path>
     </InheritanceLine>
   </Class>
-  <Class Name="Mixins.Definitions.MethodIntroductionDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.MethodIntroductionDefinition" Collapsed="true">
     <Position X="12.75" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\MethodIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
-    <InheritanceLine Type="Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
+    <InheritanceLine Type="Rubicon.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="15.75" Y="9.062" />
         <Point X="15.375" Y="9.062" />
@@ -209,13 +209,13 @@
       </Path>
     </InheritanceLine>
   </Class>
-  <Class Name="Mixins.Definitions.PropertyIntroductionDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.PropertyIntroductionDefinition" Collapsed="true">
     <Position X="12.75" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Definitions\PropertyIntroductionDefinition.cs</FileName>
       <HashCode>AIAAAAAIAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAA=</HashCode>
     </TypeIdentifier>
-    <InheritanceLine Type="Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true">
+    <InheritanceLine Type="Rubicon.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;" FixedFromPoint="true">
       <Path>
         <Point X="15.75" Y="9.062" />
         <Point X="15.375" Y="9.062" />
@@ -224,7 +224,7 @@
       </Path>
     </InheritanceLine>
   </Class>
-  <Class Name="Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;">
+  <Class Name="Rubicon.Mixins.Definitions.MemberIntroductionDefinition&lt;TMemberInfo, TMemberDefinition&gt;">
     <Position X="15.75" Y="8.25" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\MemberIntroductionDefinition.cs</FileName>
@@ -241,35 +241,35 @@
     </Members>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Mixins.Definitions.BaseDependencyDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.BaseDependencyDefinition" Collapsed="true">
     <Position X="14.75" Y="3.5" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\BaseDependencyDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mixins.Definitions.ThisDependencyDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.ThisDependencyDefinition" Collapsed="true">
     <Position X="14.75" Y="4.25" Width="2" />
     <TypeIdentifier>
       <FileName>Definitions\ThisDependencyDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mixins.Definitions.RequiredBaseCallTypeDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.RequiredBaseCallTypeDefinition" Collapsed="true">
     <Position X="5.25" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\RequiredBaseCallTypeDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mixins.Definitions.RequiredFaceTypeDefinition" Collapsed="true">
+  <Class Name="Rubicon.Mixins.Definitions.RequiredFaceTypeDefinition" Collapsed="true">
     <Position X="2.25" Y="6.75" Width="2.25" />
     <TypeIdentifier>
       <FileName>Definitions\RequiredFaceTypeDefinition.cs</FileName>
       <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mixins.Definitions.RequirementDefinitionBase&lt;TSelf, TDependency&gt;">
+  <Class Name="Rubicon.Mixins.Definitions.RequirementDefinitionBase&lt;TSelf, TDependency&gt;">
     <Position X="3.5" Y="8.25" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\RequirementDefinitionBase.cs</FileName>
@@ -285,7 +285,7 @@
     </Members>
     <Lollipop Orientation="Left" Position="0.173" />
   </Class>
-  <Class Name="Mixins.Definitions.DependencyDefinitionBase&lt;TRequirement, TSelf&gt;">
+  <Class Name="Rubicon.Mixins.Definitions.DependencyDefinitionBase&lt;TRequirement, TSelf&gt;">
     <Position X="17.75" Y="4.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Definitions\DependencyDefinitionBase.cs</FileName>
@@ -303,7 +303,7 @@
       <Method Name="HasSameDependerAsAggregator" Hidden="true" />
       <Property Name="Parent" Hidden="true" />
     </Members>
-    <AssociationLine Name="Depender" Type="Mixins.Definitions.MixinDefinition" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="Depender" Type="Rubicon.Mixins.Definitions.MixinDefinition" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="17.75" Y="6.08" />
         <Point X="12.5" Y="6.08" />

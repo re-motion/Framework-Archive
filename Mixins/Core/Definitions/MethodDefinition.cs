@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   public class MethodDefinition : MemberDefinition, IVisitableDefinition

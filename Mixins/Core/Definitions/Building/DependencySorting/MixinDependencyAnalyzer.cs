@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Utilities;
-using Mixins.Utilities.DependencySort;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Text;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building.DependencySorting
+namespace Rubicon.Mixins.Definitions.Building.DependencySorting
 {
   public class MixinDependencyAnalyzer : IDependencyAnalyzer<MixinDefinition>
   {

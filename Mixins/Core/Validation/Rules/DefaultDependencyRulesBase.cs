@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public abstract class DefaultDependencyRulesBase<TDependency, TRequirement> : RuleSetBase
       where TDependency : DependencyDefinitionBase<TRequirement, TDependency>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="Tahoma" Size="8.25" />
-  <Class Name="Mixins.Context.ApplicationContext">
+  <Class Name="Rubicon.Mixins.Context.ApplicationContext">
     <Position X="0.5" Y="1.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Context\ApplicationContext.cs</FileName>
@@ -18,7 +18,7 @@
       <Field Name="_classContexts" Hidden="true" />
     </Members>
   </Class>
-  <Class Name="Mixins.Context.ClassContext">
+  <Class Name="Rubicon.Mixins.Context.ClassContext">
     <Position X="4.75" Y="1.5" Width="2.5" />
     <TypeIdentifier>
       <FileName>Context\ClassContext.cs</FileName>
@@ -52,7 +52,7 @@
     <TypeIdentifier />
     <Lollipop Position="0.731" Collapsed="true" />
   </Class>
-  <Class Name="Mixins.Context.MixinContext">
+  <Class Name="Rubicon.Mixins.Context.MixinContext">
     <Position X="9.25" Y="3.25" Width="2.75" />
     <TypeIdentifier>
       <FileName>Context\MixinContext.cs</FileName>

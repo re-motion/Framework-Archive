@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public class MethodSignatureEqualityComparer : IEqualityComparer<MethodInfo>
   {

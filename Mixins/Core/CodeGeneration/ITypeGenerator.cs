@@ -1,7 +1,7 @@
 using System;
 using System.Reflection.Emit;
 
-namespace Mixins.CodeGeneration
+namespace Rubicon.Mixins.CodeGeneration
 {
   public interface ITypeGenerator
   {

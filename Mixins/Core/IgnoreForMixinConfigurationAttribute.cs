@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Causes the mixin engine to ignore all mixin configuration attributes on the type this attribute is applied to when building the default

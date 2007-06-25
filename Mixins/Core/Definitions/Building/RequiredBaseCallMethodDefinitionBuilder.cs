@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Text;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class RequiredBaseCallMethodDefinitionBuilder
   {

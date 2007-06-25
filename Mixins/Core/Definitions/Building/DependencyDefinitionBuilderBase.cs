@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public abstract class DependencyDefinitionBuilderBase<TRequirement, TDependency>
       where TDependency : DependencyDefinitionBase<TRequirement, TDependency>

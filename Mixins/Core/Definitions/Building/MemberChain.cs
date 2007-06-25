@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   /// <summary>
   /// MemberChain takes an enumeration of members and orders them according to the hierarchy of their declaring types. This can be used

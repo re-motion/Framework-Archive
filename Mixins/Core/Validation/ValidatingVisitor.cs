@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public class ValidatingVisitor : IDefinitionVisitor
   {

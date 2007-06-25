@@ -4,9 +4,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using Castle.DynamicProxy.Generators.Emitters;
-using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class CustomEventEmitter : IAttributableEmitter
   {

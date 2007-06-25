@@ -1,11 +1,11 @@
 using System;
 using System.Runtime.Serialization;
-using Mixins.Definitions;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class SerializationTests : MixinTestBase

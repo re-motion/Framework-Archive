@@ -1,8 +1,8 @@
 using System;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 using Rubicon.Utilities;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Indicates that a mixin extends a specific class, providing some part of its functionality or public interface.

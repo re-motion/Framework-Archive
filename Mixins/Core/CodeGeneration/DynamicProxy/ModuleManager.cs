@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using System.IO;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class ModuleManager : IModuleManager
   {
-    private ModuleScope _scope = new ModuleScope ();
+    private ModuleScope _scope = new ModuleScope (true);
 
     public ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration)
     {

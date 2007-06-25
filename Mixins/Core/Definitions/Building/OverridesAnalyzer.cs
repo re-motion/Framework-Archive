@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions;
-using Mixins.Utilities;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon;
 using Rubicon.Collections;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class OverridesAnalyzer<T> where T : MemberDefinition
   {

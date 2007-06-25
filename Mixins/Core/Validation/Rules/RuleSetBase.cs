@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public abstract class RuleSetBase : IRuleSet
   {

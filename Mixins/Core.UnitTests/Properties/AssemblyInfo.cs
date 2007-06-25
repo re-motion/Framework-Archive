@@ -1,16 +1,17 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Mixins;
+using Rubicon.Mixins;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle ("Mixins.UnitTests")]
+[assembly: AssemblyTitle ("Rubicon.Mixins.UnitTests")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("rubicon")]
-[assembly: AssemblyProduct ("Mixins.UnitTests")]
+[assembly: AssemblyProduct ("Rubicon.Mixins.UnitTests")]
 [assembly: AssemblyCopyright ("Copyright © rubicon 2007")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
@@ -36,3 +37,9 @@ using Mixins;
 [assembly: AssemblyFileVersion ("1.0.0.0")]
 
 [assembly: ContainsMixinInfo]
+
+#pragma warning disable 1699
+[assembly: AssemblyDelaySign (false)]
+[assembly: AssemblyKeyFile (@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyName ("")]
+#pragma warning restore 1699

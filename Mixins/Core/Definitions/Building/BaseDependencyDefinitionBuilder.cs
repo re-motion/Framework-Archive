@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class BaseDependencyDefinitionBuilder : DependencyDefinitionBuilderBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
   {

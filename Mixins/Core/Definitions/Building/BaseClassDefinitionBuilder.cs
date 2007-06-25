@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 using System.Reflection;
-using Mixins.Definitions.Building.DependencySorting;
-using Mixins.Utilities;
-using Mixins.Utilities.DependencySort;
+using Rubicon.Mixins.Definitions.Building.DependencySorting;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class BaseClassDefinitionBuilder
   {

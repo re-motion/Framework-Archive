@@ -1,14 +1,14 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Mixins.CodeGeneration;
+using Rubicon.Mixins.CodeGeneration;
 using NUnit.Framework;
-using Mixins.Definitions;
-using Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Context;
 using System.Reflection;
-using Mixins.Definitions.Building;
+using Rubicon.Mixins.Definitions.Building;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   public abstract class MixinTestBase
   {

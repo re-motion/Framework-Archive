@@ -5,7 +5,7 @@ using System.Text;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using System.Reflection;
 
-namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public class PropertyReference : Reference
   {

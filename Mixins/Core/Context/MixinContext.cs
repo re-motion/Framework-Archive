@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Mixins.Utilities;
-using Mixins.Utilities.Serialization;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Utilities.Serialization;
 using Rubicon.Utilities;
 using Rubicon.Collections;
 
-namespace Mixins.Context
+namespace Rubicon.Mixins.Context
 {
 	/// <summary>
 	/// Represents a single mixin applied to a target class.

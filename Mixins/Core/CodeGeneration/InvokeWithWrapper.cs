@@ -1,6 +1,6 @@
 using Rubicon.Reflection;
 
-namespace Mixins.CodeGeneration
+namespace Rubicon.Mixins.CodeGeneration
 {
   public struct InvokeWithWrapper<T>
   {

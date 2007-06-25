@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using Rubicon.Utilities;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public class EventSignatureEqualityComparer : IEqualityComparer<EventInfo>
   {

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Mixins;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.Utilities;
-using Mixins.Utilities.Serialization;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Utilities;
+using Rubicon.Mixins.Utilities.Serialization;
 using Rubicon.Utilities;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Mixins.Context
+namespace Rubicon.Mixins.Context
 {
 	/// <summary>
 	/// Holds the mixin configuration information for a single mixin target class.

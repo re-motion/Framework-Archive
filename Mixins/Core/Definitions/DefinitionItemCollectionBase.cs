@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   public abstract class DefinitionItemCollectionBase<TKey, TValue> : IEnumerable<TValue>

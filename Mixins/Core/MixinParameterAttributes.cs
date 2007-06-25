@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   // Indicates that a mixin's method initialization parameter or a type parameter should be assigned the mixin's This value at initialization or
   // the mixin's This type at configuration analysis time.

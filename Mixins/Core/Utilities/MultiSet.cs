@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   [DebuggerDisplay ("Count = {_items.Count}")]
   internal class MultiSet<T> : IEnumerable<T>

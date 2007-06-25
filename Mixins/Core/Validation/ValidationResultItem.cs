@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public struct ValidationResultItem : IDefaultValidationResultItem
   {

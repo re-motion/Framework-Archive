@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public interface IDefaultValidationResultItem
   {

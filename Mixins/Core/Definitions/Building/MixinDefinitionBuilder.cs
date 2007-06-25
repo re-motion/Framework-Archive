@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins;
-using Mixins.Context;
+using Rubicon.Mixins;
+using Rubicon.Mixins.Context;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class MixinDefinitionBuilder
   {

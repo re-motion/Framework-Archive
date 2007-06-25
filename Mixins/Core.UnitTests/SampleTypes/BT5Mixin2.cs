@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   class BT5Mixin2
   {

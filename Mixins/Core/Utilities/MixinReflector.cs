@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public class MixinReflector
   {

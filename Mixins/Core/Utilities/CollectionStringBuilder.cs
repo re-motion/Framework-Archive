@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Rubicon;
 using Rubicon.Text;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public static class CollectionStringBuilder
   {

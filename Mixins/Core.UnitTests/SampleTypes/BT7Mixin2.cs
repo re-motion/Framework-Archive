@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public interface IBT7Mixin2Reqs : IBT7Mixin3, IBaseType7
   {

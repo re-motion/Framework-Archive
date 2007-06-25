@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   public abstract class ClassDefinition : IVisitableDefinition, IAttributableDefinition

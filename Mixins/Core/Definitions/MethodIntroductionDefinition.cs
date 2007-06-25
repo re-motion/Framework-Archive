@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   public class MethodIntroductionDefinition : MemberIntroductionDefinition<MethodInfo, MethodDefinition>

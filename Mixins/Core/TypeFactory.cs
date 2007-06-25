@@ -1,12 +1,12 @@
 using System;
-using Mixins.CodeGeneration;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.Validation;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Validation;
 using Rubicon.Utilities;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Provides support for combining mixins and target classes into concrete, "mixed", instantiable types.

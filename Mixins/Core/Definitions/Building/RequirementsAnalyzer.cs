@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class RequirementsAnalyzer
   {

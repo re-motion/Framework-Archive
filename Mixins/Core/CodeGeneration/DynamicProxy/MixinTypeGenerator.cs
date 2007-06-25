@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Mixins.CodeGeneration.DynamicProxy.DPExtensions;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.Utilities;
+using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 using System.Runtime.Serialization;
 
-namespace Mixins.CodeGeneration.DynamicProxy
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public class MixinTypeGenerator: IMixinTypeGenerator
   {

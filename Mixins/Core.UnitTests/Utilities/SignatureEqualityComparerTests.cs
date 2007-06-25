@@ -1,12 +1,12 @@
 using System;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
 using System.Reflection;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Collections.Generic;
 using Rubicon;
 
-namespace Mixins.UnitTests.Utilities
+namespace Rubicon.Mixins.UnitTests.Utilities
 {
   [TestFixture]
   public class SignatureEqualityComparerTests

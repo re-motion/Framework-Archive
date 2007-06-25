@@ -1,14 +1,14 @@
 using System;
 using System.Reflection;
-using Mixins.CodeGeneration;
-using Mixins.Context;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
-using Mixins.Utilities;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Mixins
+namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
   public class MixinReflectionTests: MixinTestBase

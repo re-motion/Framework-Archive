@@ -1,4 +1,4 @@
-namespace Mixins.Utilities.Singleton
+namespace Rubicon.Mixins.Utilities.Singleton
 {
   public class DefaultInstanceCreator<T> : IInstanceCreator<T> where T : new()
   {

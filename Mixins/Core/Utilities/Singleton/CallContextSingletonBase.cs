@@ -1,6 +1,6 @@
 using System;
 
-namespace Mixins.Utilities.Singleton
+namespace Rubicon.Mixins.Utilities.Singleton
 {
   public class CallContextSingletonBase<TSelf, TCreator> where TCreator : IInstanceCreator<TSelf>, new()
   {

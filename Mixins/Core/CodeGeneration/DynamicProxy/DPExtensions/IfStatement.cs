@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public class IfStatement : Statement
   {

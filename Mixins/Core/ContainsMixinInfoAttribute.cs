@@ -1,7 +1,7 @@
 using System;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
   /// <summary>
   /// Indicates that an assembly contains mixin configuration information and should be scanned when the default mixin configuration is

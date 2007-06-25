@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 
-namespace Mixins.CodeGeneration.DynamicProxy.DPExtensions
+namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   public static class AttributeReplicator
   {

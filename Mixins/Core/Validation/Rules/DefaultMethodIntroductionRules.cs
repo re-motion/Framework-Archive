@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
-using Mixins.Validation;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins.Validation.Rules
+namespace Rubicon.Mixins.Validation.Rules
 {
   public class DefaultMethodIntroductionRules: RuleSetBase
   {

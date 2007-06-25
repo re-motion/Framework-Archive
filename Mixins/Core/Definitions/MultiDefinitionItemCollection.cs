@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
 
-namespace Mixins.Definitions
+namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {_items.Count}")]

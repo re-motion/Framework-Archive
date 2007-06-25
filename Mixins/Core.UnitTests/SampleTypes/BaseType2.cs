@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Mixins.UnitTests.SampleTypes
+namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
   public interface IBaseType2
   {

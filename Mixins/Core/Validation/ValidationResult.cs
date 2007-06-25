@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 using Rubicon.Text;
 
-namespace Mixins.Validation
+namespace Rubicon.Mixins.Validation
 {
   public struct ValidationResult
   {

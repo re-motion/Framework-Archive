@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins.Utilities;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
-using ReflectionUtility=Mixins.Utilities.ReflectionUtility;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
-namespace Mixins.Definitions.Building
+namespace Rubicon.Mixins.Definitions.Building
 {
   public class MemberDefinitionBuilder
   {

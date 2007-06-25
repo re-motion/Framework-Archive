@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.CodeGeneration
+namespace Rubicon.Mixins.CodeGeneration
 {
   public interface IModuleManager
   {

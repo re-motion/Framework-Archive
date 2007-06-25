@@ -1,7 +1,7 @@
 using System;
-using Mixins.Validation;
+using Rubicon.Mixins.Validation;
 
-namespace Mixins
+namespace Rubicon.Mixins
 {
 	/// <summary>
 	/// Thrown when there is a profound error in the mixin configuration which is detected during configuration analysis. The problem prevents

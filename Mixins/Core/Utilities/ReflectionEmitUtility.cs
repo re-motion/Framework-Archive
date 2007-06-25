@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 using Rubicon.Utilities;
 using System.Collections;
 
-namespace Mixins.Utilities
+namespace Rubicon.Mixins.Utilities
 {
   public static class ReflectionEmitUtility
   {
