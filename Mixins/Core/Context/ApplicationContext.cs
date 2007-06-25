@@ -9,9 +9,9 @@ namespace Rubicon.Mixins.Context
   /// <summary>
   /// Manages the set of class contexts active for the current thread.
   /// </summary>
-	/// <threadsafety static="true" instance="false">
-	///    <para>Instances of this class are meant to be used one-per-thread, see <see cref="MixinConfiguration.ActiveContext"/>.</para>
-	/// </threadsafety>
+  /// <threadsafety static="true" instance="false">
+  ///    <para>Instances of this class are meant to be used one-per-thread, see <see cref="MixinConfiguration.ActiveContext"/>.</para>
+  /// </threadsafety>
   public class ApplicationContext
   {
     private Dictionary<Type, ClassContext> _classContexts;
@@ -191,16 +191,16 @@ namespace Rubicon.Mixins.Context
       _registeredInterfaces.Add (interfaceType, associatedClassContext);
     }
 
-		/// <summary>
-		/// Registers an interface to be associated with the <see cref="ClassContext"/> for the given type. Later calls to <see cref="ResolveInterface"/>
-		/// with the given interface type will result in the registered context being returned.
-		/// </summary>
-		/// <param name="interfaceType">Type of the interface to be registered.</param>
-		/// <param name="associatedClassType">The type whose class context is to be associated with the interface type.</param>
-		/// <exception cref="InvalidOperationException">The interface has already been registered.</exception>
-		/// <exception cref="ArgumentNullException">One of the parameters is <see langword="null"/>.</exception>
-		/// <exception cref="ArgumentException">The <paramref name="interfaceType"/> argument is not an interface or no <see cref="ClassContext"/> for
-		/// <paramref name="associatedClassType"/> has been added to this application context.</exception>
+    /// <summary>
+    /// Registers an interface to be associated with the <see cref="ClassContext"/> for the given type. Later calls to <see cref="ResolveInterface"/>
+    /// with the given interface type will result in the registered context being returned.
+    /// </summary>
+    /// <param name="interfaceType">Type of the interface to be registered.</param>
+    /// <param name="associatedClassType">The type whose class context is to be associated with the interface type.</param>
+    /// <exception cref="InvalidOperationException">The interface has already been registered.</exception>
+    /// <exception cref="ArgumentNullException">One of the parameters is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">The <paramref name="interfaceType"/> argument is not an interface or no <see cref="ClassContext"/> for
+    /// <paramref name="associatedClassType"/> has been added to this application context.</exception>
     public void RegisterInterface (Type interfaceType, Type associatedClassType)
     {
       ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);

@@ -23,7 +23,7 @@ namespace Rubicon.Mixins.Definitions.Building
     {
       ArgumentUtility.CheckNotNull ("classContext", classContext);
 
-			classContext.Freeze ();
+      classContext.Freeze ();
 
       if (classContext.Type.ContainsGenericParameters)
       {

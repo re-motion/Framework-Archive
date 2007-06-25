@@ -5,30 +5,30 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Validation
 {
-	/// <summary>
-	/// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents
-	/// code being generated from the configuration. See also <see cref="ConfigurationException"/>.
-	/// </summary>
+  /// <summary>
+  /// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents
+  /// code being generated from the configuration. See also <see cref="ConfigurationException"/>.
+  /// </summary>
   public class ValidationException : Exception
   {
     public readonly IValidationLog ValidationLog;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidationException"/> class.
-		/// </summary>
-		/// <param name="message">The exception message.</param>
-		/// <param name="log">The validation log.</param>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    /// <param name="log">The validation log.</param>
     public ValidationException (string message, IValidationLog log)
         : base (message)
     {
       ValidationLog = log;
     }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ValidationException"/> class and creates a descriptive message from the validation log.
-		/// </summary>
-		/// <param name="log">The validation log log.</param>
-		/// <exception cref="ArgumentNullException">The log is empty.</exception>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class and creates a descriptive message from the validation log.
+    /// </summary>
+    /// <param name="log">The validation log log.</param>
+    /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (IValidationLog log)
       : this (BuildExceptionString (log), log)
     {
@@ -36,7 +36,7 @@ namespace Rubicon.Mixins.Validation
 
     private static string BuildExceptionString (IValidationLog log)
     {
-			ArgumentUtility.CheckNotNull ("log", log);
+      ArgumentUtility.CheckNotNull ("log", log);
 
       StringBuilder sb = new StringBuilder ("Some parts of the mixin configuration could not be validated.");
       foreach (ValidationResult item in log.GetResults())

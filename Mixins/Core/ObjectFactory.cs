@@ -26,7 +26,7 @@ namespace Rubicon.Mixins
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
   /// </remarks>
-	/// <threadsafety static="true" instance="true"/>
+  /// <threadsafety static="true" instance="true"/>
   public static class ObjectFactory
   {
     /// <summary>
@@ -72,18 +72,18 @@ namespace Rubicon.Mixins
     /// to instantiate.
     /// </exception>
     /// <remarks>
-		/// <para>
-		/// Usually, the mixin types configured in the <see cref="ClassContext"/> of a target class are simply instantiated when the mixed
-		/// instance is initialized. Use this method instead of <see cref="Create"/> to supply pre-instantiated mixins instead.
-		/// </para>
-		/// <para>
+    /// <para>
+    /// Usually, the mixin types configured in the <see cref="ClassContext"/> of a target class are simply instantiated when the mixed
+    /// instance is initialized. Use this method instead of <see cref="Create"/> to supply pre-instantiated mixins instead.
+    /// </para>
+    /// <para>
     /// This method internally uses <see cref="TypeFactory.GetConcreteType"/>. Note that this means that mixed types are created even for instances
     /// which do not have an active mixin configuration. Thus, all objects created via this method can be treated in the same way,
     /// however it might be inefficient to create arbitrary non-mixed objects using this method.
     /// </para>
     /// <para>
-		/// The <see cref="CreateWithMixinInstances{T}"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
-		/// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
+    /// The <see cref="CreateWithMixinInstances{T}"/> method supports the creation of instances from their complete interfaces: <typeparamref name="T"/> can be an
+    /// interface registered in the <see cref="MixinConfiguration.ActiveContext"/>. See also <see cref="CompleteInterfaceAttribute"/>.
     /// </para>
     /// </remarks>
     public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)

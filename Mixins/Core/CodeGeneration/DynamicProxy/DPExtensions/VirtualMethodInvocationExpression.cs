@@ -11,24 +11,24 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
   public class VirtualMethodInvocationExpression : MethodInvocationExpression
   {
     public VirtualMethodInvocationExpression(MethodInfo method, params Expression[] args)
-			: base (method, args)
-		{
-		}
+      : base (method, args)
+    {
+    }
 
-		public VirtualMethodInvocationExpression(MethodEmitter method, params Expression[] args)
-		  : base (method, args)
-		{
-		}
+    public VirtualMethodInvocationExpression(MethodEmitter method, params Expression[] args)
+      : base (method, args)
+    {
+    }
 
-		public VirtualMethodInvocationExpression(Reference owner, MethodEmitter method, params Expression[] args)
+    public VirtualMethodInvocationExpression(Reference owner, MethodEmitter method, params Expression[] args)
       : base (owner, method, args)
-		{
-		}
+    {
+    }
 
     public VirtualMethodInvocationExpression (Reference owner, MethodInfo method, params Expression[] args)
       : base (owner, method, args)
-		{
-		}
+    {
+    }
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {

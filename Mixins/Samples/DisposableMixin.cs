@@ -16,7 +16,7 @@ namespace Samples
         if (disposing)
           CleanupManagedResources ();
         CleanupUnmanagedResources ();
-				_disposed = true;
+        _disposed = true;
       }
     }
 

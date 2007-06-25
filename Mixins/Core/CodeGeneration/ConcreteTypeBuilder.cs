@@ -13,28 +13,28 @@ namespace Rubicon.Mixins.CodeGeneration
     // errors (depending on how it was implemented)
     private InterlockedCache<ClassDefinition, Type> _typeCache = new InterlockedCache<ClassDefinition, Type>();
 
-		private object _scopeLockObject = new object ();
+    private object _scopeLockObject = new object ();
 
     public IModuleManager Scope
     {
       get
       {
-				lock (_scopeLockObject)
-				{
-					if (_scope == null)
-					{
-						_scope = new DynamicProxy.ModuleManager();
-					}
-					return _scope;
-				}
+        lock (_scopeLockObject)
+        {
+          if (_scope == null)
+          {
+            _scope = new DynamicProxy.ModuleManager();
+          }
+          return _scope;
+        }
       }
       set
       {
-				ArgumentUtility.CheckNotNull ("value", value);
-				lock (_scopeLockObject)
-				{
-					_scope = value;
-				}
+        ArgumentUtility.CheckNotNull ("value", value);
+        lock (_scopeLockObject)
+        {
+          _scope = value;
+        }
       }
     }
 

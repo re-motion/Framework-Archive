@@ -27,7 +27,7 @@ namespace Rubicon.Mixins
   /// <see cref="MixinConfiguration"/> class if the configuration needs to be adapted.
   /// </para>
   /// </remarks>
-	/// <threadsafety static="true" instance="true"/>
+  /// <threadsafety static="true" instance="true"/>
   public static class TypeFactory
   {
     /// <summary>

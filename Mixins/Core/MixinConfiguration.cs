@@ -41,7 +41,7 @@ namespace Rubicon.Mixins
   ///       // myType2 is an instantiation of MyType with a specific configuration, which contains only SpecialMixin
   ///       MyType myType2 = ObjectFactory.Create&lt;MyType&gt; ().With();
   /// 
-	///       using (MixinConfiguration.ScopedEmpty())
+  ///       using (MixinConfiguration.ScopedEmpty())
   ///       {
   ///         // myType3 is an instantiation of MyType without any mixins
   ///         MyType myType3 = ObjectFactory.Create&lt;MyType&gt; ().With();
@@ -65,7 +65,7 @@ namespace Rubicon.Mixins
     /// Gets a value indicating whether this instance has an active mixin configuration context.
     /// </summary>
     /// <value>
-    /// 	True if there is an active configuration context for the current thread (actually <see cref="CallContext"/>); otherwise, false.
+    ///   True if there is an active configuration context for the current thread (actually <see cref="CallContext"/>); otherwise, false.
     /// </value>
     /// <remarks>
     /// The <see cref="ActiveContext"/> property will always return a non-<see langword="null"/> application context, no matter whether one was
@@ -105,107 +105,107 @@ namespace Rubicon.Mixins
       get { return MixinConfiguration.HasActiveContext ? MixinConfiguration.ActiveContext : null; }
     }
 
-		/// <summary>
-		/// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with the given
-		/// <see cref="ApplicationContext"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
-		/// is called.
-		/// </summary>
-		/// <param name="newActiveContext">The new active configuration context.</param>
-		/// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-		/// <exception cref="ArgumentNullException">The <paramref name="newActiveContext"/> parameter is <see langword="null"/>.</exception>
-		public static IDisposable ScopedReplace (ApplicationContext newActiveContext)
-		{
-			ArgumentUtility.CheckNotNull ("newActiveContext", newActiveContext);
+    /// <summary>
+    /// Temporarily replaces the mixin configuration associated with the current thread (actually <see cref="CallContext"/>) with the given
+    /// <see cref="ApplicationContext"/>. The original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method
+    /// is called.
+    /// </summary>
+    /// <param name="newActiveContext">The new active configuration context.</param>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="newActiveContext"/> parameter is <see langword="null"/>.</exception>
+    public static IDisposable ScopedReplace (ApplicationContext newActiveContext)
+    {
+      ArgumentUtility.CheckNotNull ("newActiveContext", newActiveContext);
 
-			MixinConfiguration newConfiguration = new MixinConfiguration ();
-			MixinConfiguration.SetActiveContext (newActiveContext);
-			return newConfiguration;
-		}
+      MixinConfiguration newConfiguration = new MixinConfiguration ();
+      MixinConfiguration.SetActiveContext (newActiveContext);
+      return newConfiguration;
+    }
 
     /// <summary>
     /// Creates a new, empty mixin configuration and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-		/// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called.
+    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called.
     /// </summary>
     /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
     /// <remarks>
-		/// This is equivalent to using the <see cref="ScopedReplace(ApplicationContext)"/> method and passing it an empty
-		/// <see cref="ApplicationContext"/> that does not inherit anything from a parent context.
+    /// This is equivalent to using the <see cref="ScopedReplace(ApplicationContext)"/> method and passing it an empty
+    /// <see cref="ApplicationContext"/> that does not inherit anything from a parent context.
     /// </remarks>
-		public static IDisposable ScopedEmpty ()
+    public static IDisposable ScopedEmpty ()
     {
       return ScopedReplace (new ApplicationContext (null));
     }
 
-		/// <summary>
-		/// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-		/// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
-		/// from the current <see cref="ActiveContext"/> and associates the given <paramref name="baseType"/> with the given <paramref name="mixinTypes"/>
-		/// (replacing the configuration for <paramref name="baseType"/> if any).
-		/// </summary>
-		/// <param name="baseType">A type for which a specific mixin configuration should be set up.</param>
-		/// <param name="mixinTypes">The mixin types to be associated with the <paramref name="baseType"/>.</param>
-		/// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-		/// <exception cref="ArgumentNullException">The <paramref name="baseType"/> or the <paramref name="mixinTypes"/> parameter is
-		/// <see langword="null"/>.</exception>
-  	public static IDisposable ScopedExtend (Type baseType, params Type[] mixinTypes)
-  	{
-			ArgumentUtility.CheckNotNull ("baseType", baseType);
-			ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
+    /// <summary>
+    /// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
+    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
+    /// from the current <see cref="ActiveContext"/> and associates the given <paramref name="baseType"/> with the given <paramref name="mixinTypes"/>
+    /// (replacing the configuration for <paramref name="baseType"/> if any).
+    /// </summary>
+    /// <param name="baseType">A type for which a specific mixin configuration should be set up.</param>
+    /// <param name="mixinTypes">The mixin types to be associated with the <paramref name="baseType"/>.</param>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="baseType"/> or the <paramref name="mixinTypes"/> parameter is
+    /// <see langword="null"/>.</exception>
+    public static IDisposable ScopedExtend (Type baseType, params Type[] mixinTypes)
+    {
+      ArgumentUtility.CheckNotNull ("baseType", baseType);
+      ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
 
-  		return ScopedExtend (new ClassContext (baseType, mixinTypes));
-  	}
+      return ScopedExtend (new ClassContext (baseType, mixinTypes));
+    }
 
-		/// <summary>
-		/// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-		/// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
-		/// from the current <see cref="ActiveContext"/> and includes the given <paramref name="classContexts"/> (overriding any existing configuration
-		/// for the same types).
-		/// </summary>
-		/// <param name="classContexts">The class contexts to be included in the mixin configuration.</param>
-		/// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-		/// <exception cref="ArgumentNullException">The <paramref name="classContexts"/> parameter is <see langword="null"/>.</exception>
-		public static IDisposable ScopedExtend (params ClassContext[] classContexts)
-		{
-			ArgumentUtility.CheckNotNull ("classContexts", classContexts);
+    /// <summary>
+    /// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
+    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
+    /// from the current <see cref="ActiveContext"/> and includes the given <paramref name="classContexts"/> (overriding any existing configuration
+    /// for the same types).
+    /// </summary>
+    /// <param name="classContexts">The class contexts to be included in the mixin configuration.</param>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="classContexts"/> parameter is <see langword="null"/>.</exception>
+    public static IDisposable ScopedExtend (params ClassContext[] classContexts)
+    {
+      ArgumentUtility.CheckNotNull ("classContexts", classContexts);
 
-			ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromClasses (MixinConfiguration.PeekActiveContext, classContexts);
-			return ScopedReplace (newContext);
-		}
+      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromClasses (MixinConfiguration.PeekActiveContext, classContexts);
+      return ScopedReplace (newContext);
+    }
 
-		/// <summary>
-		/// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
-		/// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
-		/// from the current <see cref="ActiveContext"/> and includes all mixin configuration declaratively specified in the given list of
-		/// <paramref name="assemblies"/>.
-		/// </summary>
-		/// <param name="assemblies">The assemblies to be analyzed into the mixin configuration.</param>
-		/// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
-		/// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
-		public static IDisposable ScopedExtend (params Assembly[] assemblies)
-		{
-			ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+    /// <summary>
+    /// Creates an <see cref="ApplicationContext"/> and temporarily associates it with the current thread (actually <see cref="CallContext"/>). The
+    /// original configuration will be restored when the returned object's <see cref="IDisposable.Dispose"/> method is called. The created context inherits
+    /// from the current <see cref="ActiveContext"/> and includes all mixin configuration declaratively specified in the given list of
+    /// <paramref name="assemblies"/>.
+    /// </summary>
+    /// <param name="assemblies">The assemblies to be analyzed into the mixin configuration.</param>
+    /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
+    public static IDisposable ScopedExtend (params Assembly[] assemblies)
+    {
+      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
 
-			ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies);
-			return ScopedReplace (newContext);
-		}
+      ApplicationContext newContext = ApplicationContextBuilder.BuildContextFromAssemblies (MixinConfiguration.PeekActiveContext, assemblies);
+      return ScopedReplace (newContext);
+    }
 
     private ApplicationContext _previousContext = null;
     private bool _disposed;
 
-		/// <summary>
-		/// Creates a mixin configuration object which resets the current <see	cref="ActiveContext"/> when its <see cref="IDisposable.Dispose"/> method is called.
-		/// </summary>
+    /// <summary>
+    /// Creates a mixin configuration object which resets the current <see cref="ActiveContext"/> when its <see cref="IDisposable.Dispose"/> method is called.
+    /// </summary>
     private MixinConfiguration ()
     {
-			_previousContext = MixinConfiguration.PeekActiveContext;
-		}
+      _previousContext = MixinConfiguration.PeekActiveContext;
+    }
 
-  	/// <summary>
+    /// <summary>
     /// When called for the first time, restores the <see cref="ApplicationContext"/> that was the <see cref="ActiveContext"/> for the current
     /// thread (<see cref="CallContext"/>) before this object was constructed.
     /// </summary>
     /// <remarks>
-		/// After this method has been called for the first time, further calls have no effects. If the <see cref="IDisposable.Dispose"/> method is not called, the
+    /// After this method has been called for the first time, further calls have no effects. If the <see cref="IDisposable.Dispose"/> method is not called, the
     /// original configuration will not be restored by this object.
     /// </remarks>
     void IDisposable.Dispose ()
