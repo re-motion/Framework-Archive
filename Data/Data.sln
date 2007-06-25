@@ -91,10 +91,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 	ProjectSection(SolutionItems) = preProject
 		..\build\buildversion.xml = ..\build\buildversion.xml
-		..\Commons.build = ..\Commons.build
-		..\build\Commons.Doc.include.build = ..\build\Commons.Doc.include.build
 		..\build\Commons.include.build = ..\build\Commons.include.build
 		..\build\properties.include.build = ..\build\properties.include.build
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.CodeGenerator.UnitTests", "DomainObjects.Legacy.CodeGenerator.UnitTests\Data.DomainObjects.Legacy.CodeGenerator.UnitTests.csproj", "{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}"
@@ -108,6 +109,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{B0AA27
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8373F6F2-B707-4D06-8ECF-7411813CECD5}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -119,6 +123,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\prereq\Assemblies\log4net.xml = ..\prereq\Assemblies\log4net.xml
 		..\prereq\Assemblies\nunit.framework.dll = ..\prereq\Assemblies\nunit.framework.dll
 		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy", "DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj", "{E6A8B6CE-2E19-4C01-9D41-63899FE52020}"
@@ -164,6 +171,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsToo
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
