@@ -71,33 +71,6 @@ public interface IBusinessObject
   /// </exception>
   void SetProperty (string propertyIdentifier, object value);
 
-  /// <overloads> Gets or sets the value accessed through the specified property. </overloads>
-  /// <summary> Gets or sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
-  /// <param name="property"> 
-  ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
-  /// </param>
-  /// <value> The property value for the <paramref name="property"/> parameter. </value>
-  /// <exception cref="Exception"> 
-  ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
-  /// </exception>
-  object this [IBusinessObjectProperty property] { get; set; }
-
-  /// <summary> 
-  ///   Gets or Sets the value accessed through the <see cref="IBusinessObjectProperty"/> identified by the passed 
-  ///   <paramref name="propertyIdentifier"/>. 
-  /// </summary>
-  /// <param name="propertyIdentifier"> 
-  ///   A <see cref="String"/> identifing the <see cref="IBusinessObjectProperty"/> used to access the value. 
-  /// </param>
-  /// <value> 
-  ///   The property value for the <see cref="IBusinessObjectProperty"/> identified by the 
-  ///   <paramref name="propertyIdentifier"/> parameter. 
-  /// </value>
-  /// <exception cref="Exception"> 
-  ///   Thrown if the <paramref name="propertyIdentifier"/> is not part of this business object's class. 
-  /// </exception>
-  object this [string propertyIdentifier] { get; set; }
-
   /// <overloads> Gets the string representation of the value accessed through the specified property.  </overloads>
   /// <summary> 
   ///   Gets the string representation of the value accessed through the specified 

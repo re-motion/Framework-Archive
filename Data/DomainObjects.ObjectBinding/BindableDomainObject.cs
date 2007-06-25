@@ -200,36 +200,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   }
 
   /// <summary>
-  /// Gets or sets the value of a given <see cref="IBusinessObjectProperty"/>.
-  /// </summary>
-  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
-  /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
-  /// <exception cref="ArgumentException"><paramref name="value"/> has an invalid type for the property.</exception>
-  // TODO Doc: returns null if it is equal to the MinValue of the type
-  object IBusinessObject.this[IBusinessObjectProperty property]
-  {
-    get { return ((IBusinessObject) this).GetProperty (property); }
-    set { ((IBusinessObject) this).SetProperty (property, value); }
-  }
-
-  /// <summary>
-  /// Gets or sets the value of the property with a given name.
-  /// </summary>
-  /// <value>The value of the property. Must not be <see langword="null"/>.</value>
-  /// <param name="property">The property identifier of the property to return.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
-  /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
-  /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
-  // TODO Doc: exceptions
-  // all exceptions from GetBusinessObjectProperty
-  object IBusinessObject.this[string property]
-  {
-    get { return ((IBusinessObject) this).GetProperty (property); }
-    set { ((IBusinessObject) this).SetProperty (property, value); }
-  }
-
-  /// <summary>
   /// Gets the string representation of the value of the specified <paramref name="property"/>.
   /// </summary>
   /// <param name="property">The name of the requested property.</param>

@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
+using StringProperty=Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {

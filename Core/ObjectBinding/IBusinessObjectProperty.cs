@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Rubicon.ObjectBinding
 {
@@ -18,7 +19,7 @@ public interface IBusinessObjectProperty
 {
   /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
   /// <value> <see langword="true"/> if this property contains multiple values. </value>
-  /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/>. </remarks>
+  /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/> or <see cref="IList{T}"/>. </remarks>
   bool IsList { get; }
 
   /// <summary> Creates a list. </summary>
@@ -42,7 +43,7 @@ public interface IBusinessObjectProperty
   ///     This is the type of elements returned by the <see cref="IBusinessObject.GetProperty"/> method
   ///     and set via the <see cref="IBusinessObject.SetProperty"/> method.
   ///   </para><para>
-  ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> 
+  ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> or <see cref="IList{T}"/> 
   ///     interface, and the items contained in this list must have a type of <see cref="ItemType"/>.
   ///   </para>
   /// </remarks>

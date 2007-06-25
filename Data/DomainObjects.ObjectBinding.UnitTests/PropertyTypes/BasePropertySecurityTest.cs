@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;
 using Rubicon.Security;
+using StringProperty=Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.StringProperty;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 {

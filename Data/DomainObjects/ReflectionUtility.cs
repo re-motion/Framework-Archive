@@ -236,15 +236,7 @@ namespace Rubicon.Data.DomainObjects
     /// </returns>
     public static bool IsObjectList (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      for (Type currentType = type; currentType.BaseType != null; currentType = currentType.BaseType)
-      {
-        if (currentType.IsGenericType && typeof (ObjectList<>).IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
-          return true;
-      }
-
-      return false;
+      return Rubicon.Utilities.ReflectionUtility.CanAscribe (type, typeof (ObjectList<>));
     }
 
     /// <summary>
@@ -260,19 +252,10 @@ namespace Rubicon.Data.DomainObjects
     /// </exception>
     public static Type GetObjectListTypeParameter (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      for (Type currentType = type; currentType.BaseType != null; currentType = currentType.BaseType)
-      {
-        if (currentType.IsGenericType && typeof (ObjectList<>).IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
-        {
-          if (currentType.ContainsGenericParameters)
-            return null;
-          return currentType.GetGenericArguments ()[0];
-        }
-      }
-
-      throw new ArgumentTypeException ("type", typeof (ObjectList<>), type);
+      Type[] typeParameters = Rubicon.Utilities.ReflectionUtility.GetAscribedGenericArguments (type, typeof (ObjectList<>));
+      if (typeParameters == null)
+        return null;
+      return typeParameters[0];
     }
   }
 }

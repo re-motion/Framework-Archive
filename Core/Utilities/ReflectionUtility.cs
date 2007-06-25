@@ -133,5 +133,76 @@ namespace Rubicon.Utilities
       else 
         throw new ArgumentException ("Argument must be FieldInfo or PropertyInfo.", "fieldOrProperty");
     }
+
+    /// <summary>
+    /// Evaluates whether the <paramref name="type"/> can be ascribed to the <paramref name="genericType"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> to check. Must not be <see langword="null" />.</param>
+    /// <param name="genericType">The <see cref="Type"/> to check the <paramref name="type"/> against. Must not be <see langword="null" />.</param>
+    /// <returns>
+    /// <see langword="true"/> if the <paramref name="type"/> is not the <paramref name="genericType"/> or it's instantiation, 
+    /// it's subclass or the implementation of an interface in case the <paramref name="genericType"/> is an interface..
+    /// </returns>
+    public static bool CanAscribe (Type type, Type genericType)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("genericType", genericType);
+
+      if (genericType.IsInterface)
+        return Array.Exists (type.GetInterfaces (), delegate (Type current) { return CanAscribeInternal (current, genericType); });
+      else
+        return CanAscribeInternal(type, genericType);
+    }
+
+    /// <summary>
+    /// Returns the type arguments for the ascribed <paramref name="genericType"/>.
+    /// </summary>
+    /// <param name="type">The <see cref="Type"/> for which to return the type parameter. Must not be <see langword="null" />.</param>
+    /// <param name="genericType">The <see cref="Type"/> to check the <paramref name="type"/> against. Must not be <see langword="null" />.</param>
+    /// <returns>A <see cref="Type"/> array containing the generic arguments of the <paramref name="type"/>.</returns>
+    /// <exception cref="ArgumentTypeException">
+    /// Thrown if the <paramref name="type"/> is not the <paramref name="genericType"/> or it's instantiation, it's subclass or the implementation
+    /// of an interface in case the <paramref name="genericType"/> is an interface.
+    /// </exception>
+    public static Type[] GetAscribedGenericArguments (Type type, Type genericType)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("genericType", genericType);
+      
+      if (genericType.IsInterface)
+      {
+        Type interfaceType = Array.Find (type.GetInterfaces (), delegate (Type current) { return CanAscribeInternal (current, genericType); });
+        if (interfaceType == null)
+          throw new ArgumentTypeException ("type", genericType, type);
+
+        return GetAscribedGenericArgumentsInternal (interfaceType, genericType);
+      }
+      else
+      {
+        return GetAscribedGenericArgumentsInternal (type, genericType);
+      }
+    }
+
+    private static bool CanAscribeInternal (Type type, Type genericType)
+    {
+      for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+      {
+        if (currentType.IsGenericType && genericType.IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
+          return true;
+      }
+
+      return false;
+    }
+
+    private static Type[] GetAscribedGenericArgumentsInternal (Type type, Type genericType)
+    {
+      for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+      {
+        if (currentType.IsGenericType && genericType.IsAssignableFrom (currentType.GetGenericTypeDefinition ()))
+          return currentType.GetGenericArguments ();
+      }
+
+      throw new ArgumentTypeException ("type", genericType, type);
+    }
   }
 }

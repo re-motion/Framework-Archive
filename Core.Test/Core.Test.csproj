@@ -286,6 +286,11 @@
     <Compile Include="Utilities\NameValueCollectionUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithInterface.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\GetAscribedGenericArguments_WithClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\CanAscribe_WithClass.cs" />
+    <Compile Include="Utilities\ReflectionUtilityTests\SampleTypes.cs" />
     <Compile Include="Utilities\StubStringUtility.cs">
       <SubType>Code</SubType>
     </Compile>
