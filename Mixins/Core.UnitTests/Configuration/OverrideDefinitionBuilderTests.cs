@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class OverrideDefinitionBuilderTests
@@ -177,21 +177,24 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider Mixins.UnitTests.SampleTypes.BT5Mixin1.Method.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin1.Method.",
+       MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseMethod ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin1));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider Mixins.UnitTests.SampleTypes.BT5Mixin4.Property.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin4.Property.",
+       MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseProperty ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin4));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider Mixins.UnitTests.SampleTypes.BT5Mixin5.Event.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Could not find base member for overrider .*BT5Mixin5.Event.",
+        MatchType = MessageMatch.Regex)]
     public void ThrowsWhenInexistingOverrideBaseEvent ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin5));

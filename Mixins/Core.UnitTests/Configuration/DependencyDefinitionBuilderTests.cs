@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using System.Reflection;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class DependencyDefinitionBuilderTests
@@ -86,7 +86,7 @@ namespace Mixins.UnitTests.Configuration
         Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.BaseCallMethods.Count);
 
         RequiredBaseCallMethodDefinition member1 = req1.BaseCallMethods[typeof (IBaseType31).GetMethod ("IfcMethod")];
-        Assert.AreEqual ("Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
+        Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
         Assert.AreSame (req1, member1.DeclaringType);
         Assert.AreSame (req1, member1.Parent);
 
@@ -97,7 +97,7 @@ namespace Mixins.UnitTests.Configuration
         Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.BaseCallMethods.Count);
 
         RequiredBaseCallMethodDefinition member2 = req2.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
-        Assert.AreEqual ("Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
+        Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
         Assert.AreSame (req2, member2.DeclaringType);
         Assert.AreSame (req2, member2.Parent);
 
@@ -232,7 +232,7 @@ namespace Mixins.UnitTests.Configuration
 
       ThisDependencyDefinition d1 = m7.ThisDependencies[typeof (ICBaseType3BT3Mixin4)];
       Assert.IsNull (d1.GetImplementer ());
-      Assert.AreEqual ("Mixins.UnitTests.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
+      Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.ICBaseType3BT3Mixin4", d1.FullName);
       Assert.AreSame (m7, d1.Parent);
 
       Assert.IsTrue (d1.IsAggregate);

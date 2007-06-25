@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ApplicationContextTests

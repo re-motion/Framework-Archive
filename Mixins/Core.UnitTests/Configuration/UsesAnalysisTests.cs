@@ -1,9 +1,9 @@
 using System;
-using Mixins.Context;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class UsesAnalysisTests
@@ -178,8 +178,8 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.SampleTypes.NullMixin are "
-       + "configured for target type Mixins.UnitTests.Configuration.UsesAnalysisTests+DerivedWithDuplicateUses.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*NullMixin are configured for target type "
+        + ".*DerivedWithDuplicateUses.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnUsesDuplicateOnSameClass ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DerivedWithDuplicateUses)).BuildContext ();
@@ -207,27 +207,24 @@ namespace Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+BaseGenericMixin`2 are configured for target type Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+DuplicateWithGenerics1.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+        + "type .*DuplicateWithGenerics1.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics1 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics1)).BuildContext ();
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+BaseGenericMixin`2 are configured for target type Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+DuplicateWithGenerics2.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+        + "type .*DuplicateWithGenerics2.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics2 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics2)).BuildContext ();
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+BaseGenericMixin`2 are configured for target type Mixins.UnitTests.Configuration."
-       + "UsesAnalysisTests+DuplicateWithGenerics3.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*BaseGenericMixin`2 are configured for target "
+        + "type .*DuplicateWithGenerics3.", MatchType = MessageMatch.Regex)]
     public void DuplicateDetectionAlsoWorksForGenerics3 ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DuplicateWithGenerics3)).BuildContext ();

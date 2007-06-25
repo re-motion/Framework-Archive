@@ -1,11 +1,11 @@
 using System;
 using NUnit.Framework;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 using System.Threading;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 
-namespace Mixins.UnitTests.Configurationw
+namespace Rubicon.Mixins.UnitTests.Configurationw
 {
   [TestFixture]
   public class MixinConfigurationTests

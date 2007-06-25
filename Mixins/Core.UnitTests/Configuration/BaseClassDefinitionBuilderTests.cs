@@ -1,11 +1,11 @@
 using System;
-using Mixins.Context;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class BaseClassDefinitionBuilderTests

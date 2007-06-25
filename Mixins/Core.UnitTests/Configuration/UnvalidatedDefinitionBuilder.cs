@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mixins.Context;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   public static class UnvalidatedDefinitionBuilder
   {

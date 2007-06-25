@@ -1,8 +1,8 @@
 using System;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ExtendsAnalysisTests
@@ -75,9 +75,8 @@ namespace Mixins.UnitTests.Configuration
     public class DoubleExtendingMixin { }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin Mixins.UnitTests.Configuration."
-        + "ExtendsAnalysisTests+DoubleExtendingMixin are configured for target type Mixins.UnitTests.Configuration.ExtendsAnalysisTests+"
-        + "ExtendsTargetBase.")]
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Two instances of mixin .*DoubleExtendingMixin are "
+        + "configured for target type .*ExtendsTargetBase.", MatchType = MessageMatch.Regex)]
     public void ThrowsOnDuplicateExtendsForSameClass ()
     {
       new ApplicationContextBuilder (null).AddType (typeof (DoubleExtendingMixin)).BuildContext ();

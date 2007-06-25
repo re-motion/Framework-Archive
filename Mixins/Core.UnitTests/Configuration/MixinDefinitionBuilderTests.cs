@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions.Building;
+using Rubicon.Mixins.Definitions.Building;
 using NUnit.Framework;
-using Mixins.Context;
+using Rubicon.Mixins.Context;
 using System.Reflection;
-using Mixins.Definitions;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Runtime.Serialization;
-using Mixins.UnitTests.Utilities;
+using Rubicon.Mixins.UnitTests.Utilities;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class MixinDefinitionBuilderTests

@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Mixins.Definitions;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class MemberDefinitionBuilderTests

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Mixins.Definitions.Building;
-using Mixins.Definitions.Building.DependencySorting;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Definitions.Building.DependencySorting;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
-using Mixins.Definitions;
-using Mixins.Utilities.DependencySort;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class MixinDependencySortTests

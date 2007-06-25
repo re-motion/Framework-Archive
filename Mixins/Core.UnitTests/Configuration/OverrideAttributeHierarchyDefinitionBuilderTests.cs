@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Mixins.Definitions;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class OverrideAttributeHierarchyDefinitionBuilderTests

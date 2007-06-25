@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins.Validation;
+using Rubicon.Mixins.Validation;
 using NUnit.Framework;
-using Mixins.Context;
-using Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.UnitTests.SampleTypes;
 using Rubicon.Development.UnitTesting;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ClassContextTests

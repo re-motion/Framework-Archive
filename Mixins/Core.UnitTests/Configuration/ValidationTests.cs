@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Mixins.Context;
-using Mixins.Definitions.Building;
-using Mixins.UnitTests.Configuration.ValidationSampleTypes;
-using Mixins.UnitTests.Mixins;
-using Mixins.UnitTests.SampleTypes;
-using Mixins.Validation;
+using Rubicon.Mixins.Context;
+using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
+using Rubicon.Mixins.UnitTests.Mixins;
+using Rubicon.Mixins.UnitTests.SampleTypes;
+using Rubicon.Mixins.Validation;
 using NUnit.Framework;
-using Mixins.Definitions;
+using Rubicon.Mixins.Definitions;
 
-namespace Mixins.UnitTests.Configuration
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class ValidationTests
@@ -223,7 +223,7 @@ namespace Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (DateTime));
       DefaultValidationLog log = Validator.Validate (bc);
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeSealed", log));
       Assert.AreEqual (0, log.GetNumberOfWarnings());
     }
 
@@ -232,7 +232,7 @@ namespace Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (AbstractMixin));
       DefaultValidationLog log = Validator.Validate (bc);
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAbstract", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAbstract", log));
       Assert.AreEqual (0, log.GetNumberOfWarnings ());
     }
 
@@ -242,7 +242,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
       DefaultValidationLog log = Validator.Validate (definition.Methods[typeof (BaseType4).GetMethod ("NonVirtualMethod")]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
     }
 
     [Test]
@@ -251,7 +251,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithFinalMethod), typeof (MixinForFinalMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustNotBeFinal", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustNotBeFinal", log));
     }
 
     [Test]
@@ -260,7 +260,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
       DefaultValidationLog log = Validator.Validate (definition.Properties[typeof (BaseType4).GetProperty ("NonVirtualProperty")]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
     }
 
     [Test]
@@ -269,7 +269,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType4), typeof (BT4Mixin1));
       DefaultValidationLog log = Validator.Validate (definition.Events[typeof (BaseType4).GetEvent ("NonVirtualEvent")]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
     }
 
     [Test]
@@ -279,7 +279,7 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log =
           Validator.Validate (definition.Properties[typeof (BaseWithGetterOnly).GetProperty ("Property")].Overrides[0]);
 
-      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultPropertyRules.NewMemberAddedByOverride", log));
+      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultPropertyRules.NewMemberAddedByOverride", log));
     }
 
     [Test]
@@ -288,7 +288,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (IBT1Mixin1));
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (IBT1Mixin1)]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinCannotBeInterface", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinCannotBeInterface", log));
     }
 
     [Test]
@@ -297,7 +297,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (DoubleImplementer));
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (DoubleImplementer)].InterfaceIntroductions[typeof (IBaseType2)]);
 
-      Assert.IsTrue (HasWarning ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceWillShadowBaseClassInterface", log));
+      Assert.IsTrue (HasWarning ("Rubicon.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.InterfaceWillShadowBaseClassInterface", log));
     }
 
     [Test]
@@ -306,7 +306,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType2), typeof (MixinIntroducingInternalInterface));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IntroducedInterfaceMustBePublic", log));
     }
 
     [Test]
@@ -315,7 +315,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassThisDependency));
       DefaultValidationLog log = Validator.Validate (definition.RequiredFaceTypes[typeof (BaseType3)]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceClassMustBeAssignableFromTargetType", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceClassMustBeAssignableFromTargetType", log));
     }
 
     [Test]
@@ -324,7 +324,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (BT3Mixin2));
       DefaultValidationLog log = Validator.Validate (definition.RequiredFaceTypes[typeof (IBaseType32)]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
     }
 
     [Test]
@@ -333,7 +333,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithInvisibleThisDependency));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.RequiredFaceTypeMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.RequiredFaceTypeMustBePublic", log));
     }
 
     [Test]
@@ -344,7 +344,7 @@ namespace Mixins.UnitTests.Configuration
           definition.Mixins[typeof (MixinWithUnsatisfiedThisDependency)].
               ThisDependencies[typeof (IServiceProvider)]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
     }
 
     [Test]
@@ -353,7 +353,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin2));
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5Mixin2)]);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]
@@ -372,8 +372,8 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
     }
 
     [Test]
@@ -392,7 +392,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinImplementingIMixinTarget));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IMixinTargetCannotBeIntroduced", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultInterfaceIntroductionRules.IMixinTargetCannotBeIntroduced", log));
     }
 
     [Test]
@@ -401,7 +401,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
       Assert.AreEqual (2, log.GetNumberOfFailures());
     }
 
@@ -411,7 +411,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultAttributeRules.AllowMultipleRequired", log));
       Assert.AreEqual (2, log.GetNumberOfFailures());
     }
 
@@ -442,7 +442,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (InternalNester.PublicNested));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]
@@ -451,7 +451,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (PublicNester.InternalNested));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]
@@ -460,7 +460,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (InternalNester.InternalNested));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]
@@ -470,7 +470,7 @@ namespace Mixins.UnitTests.Configuration
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (MixinWithNonVirtualMethodToBeOverridden));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
     }
 
     [Test]
@@ -479,7 +479,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (AbstractMixin));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.AbstractMethodMustBeOverridden", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.AbstractMethodMustBeOverridden", log));
     }
 
     [Test]
@@ -488,7 +488,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingSameClassMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log));
     }
 
     [Test]
@@ -507,7 +507,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (IBaseType2));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAnInterface", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAnInterface", log));
     }
 
     [Test]
@@ -516,7 +516,7 @@ namespace Mixins.UnitTests.Configuration
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (AbstractMixinWithoutBase));
       DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log));
     }
 
     [Test]
@@ -526,9 +526,9 @@ namespace Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (definition);
 
       ValidationException exception = new ValidationException (log);
-      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Mixins.UnitTests.Configuration."
-          + "ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Mixins.UnitTests.Configuration.ValidationSampleTypes."
-          + "AbstractMixinWithoutBase -> Mixins.UnitTests.SampleTypes.ClassOverridingMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+      Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Rubicon.Mixins.UnitTests.Configuration."
+					+ "ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes."
+					+ "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
           + "exceptions. First error: OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase" + Environment.NewLine + "See Log.GetResults() "
           + "for a full list of issues.", exception.Message);
 
