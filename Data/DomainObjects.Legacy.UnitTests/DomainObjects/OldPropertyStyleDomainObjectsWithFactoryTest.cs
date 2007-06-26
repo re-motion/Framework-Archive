@@ -609,10 +609,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
       using (new FactoryInstantiationScope ())
       {
         ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+        using (new ClientTransactionScope (clientTransactionMock))
+        {
+          Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
 
-        Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-        Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+          Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
+          Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+        }
       }
     }
 
@@ -622,15 +625,18 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
       using (new FactoryInstantiationScope ())
       {
         ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+        using (new ClientTransactionScope (clientTransactionMock))
+        {
+          Order order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1);
 
-        order.Delete ();
+          order.Delete();
 
-        order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, clientTransactionMock, true);
+          order = (Order) TestDomainBase.GetObject (DomainObjectIDs.Order1, true);
 
-        Assert.AreEqual (StateType.Deleted, order.State);
-        Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
-        Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+          Assert.AreEqual (StateType.Deleted, order.State);
+          Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
+          Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));
+        }
       }
     }
 

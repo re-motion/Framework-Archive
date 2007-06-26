@@ -18,16 +18,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
       return (Folder) DomainObject.GetObject (id, includeDeleted);
     }
 
-    public static new Folder GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Folder) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new Folder GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (Folder) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing

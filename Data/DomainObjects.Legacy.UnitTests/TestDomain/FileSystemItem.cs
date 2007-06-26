@@ -18,16 +18,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
       return (FileSystemItem) DomainObject.GetObject (id, includeDeleted);
     }
 
-    public static new FileSystemItem GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (FileSystemItem) DomainObject.GetObject (id, clientTransaction);
-    }
-
-    public static new FileSystemItem GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      return (FileSystemItem) DomainObject.GetObject (id, clientTransaction, includeDeleted);
-    }
-
     // member fields
 
     // construction and disposing

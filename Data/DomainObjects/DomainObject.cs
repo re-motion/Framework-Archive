@@ -193,7 +193,7 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.", true)]
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -207,7 +207,7 @@ public class DomainObject
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that is loaded. Must not be <see langword="null"/>.</param>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <see cref="DomainObject"/>.</param>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <see cref="DomainObject"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
@@ -217,7 +217,7 @@ public class DomainObject
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="MissingMethodException">The concrete <see cref="DomainObject"/> doesn't implement the required constructor.</exception>
-  [Obsolete ("This method is obsolete, use the generic variant instead.")]
+  [Obsolete ("This method is obsolete, use the generic variant instead.", true)]
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);

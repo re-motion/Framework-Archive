@@ -13,11 +13,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
       return (Region) DomainObject.GetObject (id);
     }
 
-    public static new Region GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      return (Region) DomainObject.GetObject (id, clientTransaction);
-    }
-
     // member fields
 
     // construction and disposing
