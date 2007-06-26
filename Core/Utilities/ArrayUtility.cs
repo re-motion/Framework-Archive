@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Rubicon.Utilities
 {
@@ -106,7 +107,19 @@ namespace Rubicon.Utilities
     
     public static Array Convert (ICollection collection, Type elementType)
     {
+      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull ("elementType", elementType);
+
       Array result = Array.CreateInstance (elementType, collection.Count);
+      collection.CopyTo (result, 0);
+      return result;
+    }
+
+    public static T[] Convert<T> (ICollection<T> collection)
+    {
+      ArgumentUtility.CheckNotNull ("collection", collection);
+
+      T[] result = (T[]) Array.CreateInstance (typeof (T), collection.Count);
       collection.CopyTo (result, 0);
       return result;
     }

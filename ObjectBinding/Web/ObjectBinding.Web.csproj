@@ -99,6 +99,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.csproj">
+      <Project>{18C1D36B-CC05-4334-BF29-DE5A886DA89D}</Project>
+      <Name>Mixins</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Web\Core\Web.csproj">
       <Name>Web</Name>
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>

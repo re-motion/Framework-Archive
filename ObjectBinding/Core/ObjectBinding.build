@@ -20,6 +20,7 @@
       </sources>
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.outputdir}/Rubicon.Mixins.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Design.dll"/>

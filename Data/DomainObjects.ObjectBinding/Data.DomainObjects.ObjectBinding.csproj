@@ -153,9 +153,6 @@
     <Compile Include="IsRequiredAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ItemTypeAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PropertyTypes\BooleanProperty.cs">
       <SubType>Code</SubType>
     </Compile>

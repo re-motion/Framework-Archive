@@ -100,6 +100,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy",
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins", "..\..\Mixins\Core\Mixins.csproj", "{18C1D36B-CC05-4334-BF29-DE5A886DA89D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +160,10 @@ Global
 		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
