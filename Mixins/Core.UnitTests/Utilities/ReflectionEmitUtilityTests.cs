@@ -2,7 +2,6 @@ using System;
 using NUnit.Framework;
 using System.Reflection;
 using Rubicon.Mixins.Utilities;
-using System.Reflection.Emit;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace Rubicon.Mixins.UnitTests.Utilities
@@ -10,9 +9,9 @@ namespace Rubicon.Mixins.UnitTests.Utilities
   [TestFixture]
   public class ReflectionEmitUtilityTests
   {
-    public class AttributeWithParams : Attribute
+    public class AttributeWithPropertyParams : Attribute
     {
-      public AttributeWithParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
+      public AttributeWithPropertyParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
       {
       }
 
@@ -25,6 +24,23 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       public string[] SNamedArray { get { return null; }  set { } }
       public object[] ONamedArray { get { return null; }  set { } }
       public Type[] TNamedArray { get { return null; }  set { } }
+    }
+
+    public class AttributeWithPropertyAndFieldParams : Attribute
+    {
+      public AttributeWithPropertyAndFieldParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
+      {
+      }
+
+      public int INamed { get { return 0; } set { } }
+      public string SNamed { get { return null; } set { } }
+      public object ONamed { get { return null; } set { } }
+      public Type TNamed { get { return null; } set { } }
+
+      public int[] INamedArray { get { return null; } set { } }
+      public string[] SNamedArray { get { return null; } set { } }
+      public object[] ONamedArray { get { return null; } set { } }
+      public Type[] TNamedArray { get { return null; } set { } }
 
       public int INamedF;
       public string SNamedF;
@@ -37,7 +53,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       public Type[] TNamedArrayF;
     }
 
-    [AttributeWithParams (
+    [AttributeWithPropertyParams (
       1, 
       "1", 
       null, 
@@ -61,7 +77,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     {
     }
 
-    [AttributeWithParams (
+    [AttributeWithPropertyAndFieldParams (
       1,
       "1",
       null,
@@ -70,6 +86,16 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       new int[] { 2, 3 },
       new string[] { "2", "3" },
       new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+
+      INamed = 5, 
+      SNamed = "P5", 
+      ONamed = "Pbla", 
+      TNamed = typeof (float),
+
+      INamedArray = new int[] {1, 2, 3}, 
+      SNamedArray = new string[] {"P1", null, "P2"}, 
+      ONamedArray = new object[] {1, 2, null}, 
+      TNamedArray = new Type[] {typeof (Random), null},
 
       INamedF = 5, 
       SNamedF = "5",
@@ -85,37 +111,34 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     {
     }
 
-    [Test]
-    [Ignore("TODO: FS")]
-    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedParameters ()
+    private static void CheckCtorArgs (ReflectionEmitUtility.CustomAttributeBuilderData data)
     {
-      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedParameters))[0];
-      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
-
       Assert.AreEqual (8, data.ConstructorArgs.Length);
 
       Assert.AreEqual (1, data.ConstructorArgs[0]);
       Assert.AreEqual ("1", data.ConstructorArgs[1]);
       Assert.AreEqual (null, data.ConstructorArgs[2]);
-      Assert.AreEqual (typeof(object), data.ConstructorArgs[3]);
+      Assert.AreEqual (typeof (object), data.ConstructorArgs[3]);
 
-      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] {2, 3}));
-      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] {"2", "3"}));
-      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] {null, "foo", typeof (object)}));
-      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
+      Assert.That (data.ConstructorArgs[4], Is.EqualTo (new int[] { 2, 3 }));
+      Assert.That (data.ConstructorArgs[5], Is.EqualTo (new string[] { "2", "3" }));
+      Assert.That (data.ConstructorArgs[6], Is.EqualTo (new object[] { null, "foo", typeof (object) }));
+      Assert.That (data.ConstructorArgs[7], Is.EqualTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
+    }
 
-
+    private static void CheckNamedArguments (ReflectionEmitUtility.CustomAttributeBuilderData data, Type attributeType)
+    {
       Assert.AreEqual (8, data.NamedProperties.Length);
 
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("INamed"), data.NamedProperties[0]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("SNamed"), data.NamedProperties[1]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("ONamed"), data.NamedProperties[2]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("TNamed"), data.NamedProperties[3]);
+      Assert.AreEqual (attributeType.GetProperty ("INamed"), data.NamedProperties[0]);
+      Assert.AreEqual (attributeType.GetProperty ("SNamed"), data.NamedProperties[1]);
+      Assert.AreEqual (attributeType.GetProperty ("ONamed"), data.NamedProperties[2]);
+      Assert.AreEqual (attributeType.GetProperty ("TNamed"), data.NamedProperties[3]);
 
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("INamedArray"), data.NamedProperties[4]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("SNamedArray"), data.NamedProperties[5]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("ONamedArray"), data.NamedProperties[6]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetProperty ("TNamedArray"), data.NamedProperties[7]);
+      Assert.AreEqual (attributeType.GetProperty ("INamedArray"), data.NamedProperties[4]);
+      Assert.AreEqual (attributeType.GetProperty ("SNamedArray"), data.NamedProperties[5]);
+      Assert.AreEqual (attributeType.GetProperty ("ONamedArray"), data.NamedProperties[6]);
+      Assert.AreEqual (attributeType.GetProperty ("TNamedArray"), data.NamedProperties[7]);
 
       Assert.AreEqual (8, data.PropertyValues.Length);
 
@@ -124,55 +147,25 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.AreEqual ("Pbla", data.PropertyValues[2]);
       Assert.AreEqual (typeof (float), data.PropertyValues[3]);
 
-      Assert.That (data.PropertyValues[4], Is.EquivalentTo (new int[] {1, 2, 3}));
-      Assert.That (data.PropertyValues[5], Is.EquivalentTo (new string[] {"P1", null, "P2"}));
-      Assert.That (data.PropertyValues[6], Is.EquivalentTo (new object[] {1, 2, null}));
-      Assert.That (data.PropertyValues[7], Is.EquivalentTo (new Type[] {typeof (Random), null}));
-
-
-      Assert.AreEqual (1, data.ConstructorArgs[0]);
-      Assert.AreEqual ("1", data.ConstructorArgs[1]);
-      Assert.AreEqual (null, data.ConstructorArgs[2]);
-      Assert.AreEqual (typeof (object), data.ConstructorArgs[3]);
-
-      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] { 2, 3 }));
-      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] { "2", "3" }));
-      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] { null, "foo", typeof (object) }));
-      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
-
+      Assert.That (data.PropertyValues[4], Is.EquivalentTo (new int[] { 1, 2, 3 }));
+      Assert.That (data.PropertyValues[5], Is.EquivalentTo (new string[] { "P1", null, "P2" }));
+      Assert.That (data.PropertyValues[6], Is.EquivalentTo (new object[] { 1, 2, null }));
+      Assert.That (data.PropertyValues[7], Is.EquivalentTo (new Type[] { typeof (Random), null }));
     }
 
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields ()
+    private static void CheckNamedFields (ReflectionEmitUtility.CustomAttributeBuilderData data, Type attributeType)
     {
-      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
-      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
-
-      Assert.AreEqual (8, data.ConstructorArgs.Length);
-
-      Assert.AreEqual (1, data.ConstructorArgs[0]);
-      Assert.AreEqual ("1", data.ConstructorArgs[1]);
-      Assert.AreEqual (null, data.ConstructorArgs[2]);
-      Assert.AreEqual (typeof(object), data.ConstructorArgs[3]);
-
-      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] {2, 3}));
-      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] {"2", "3"}));
-      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] {null, "foo", typeof (object)}));
-      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
-
-
       Assert.AreEqual (8, data.NamedFields.Length);
 
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("INamedF"), data.NamedFields[0]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("SNamedF"), data.NamedFields[1]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("ONamedF"), data.NamedFields[2]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("TNamedF"), data.NamedFields[3]);
+      Assert.AreEqual (attributeType.GetField ("INamedF"), data.NamedFields[0]);
+      Assert.AreEqual (attributeType.GetField ("SNamedF"), data.NamedFields[1]);
+      Assert.AreEqual (attributeType.GetField ("ONamedF"), data.NamedFields[2]);
+      Assert.AreEqual (attributeType.GetField ("TNamedF"), data.NamedFields[3]);
 
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("INamedArrayF"), data.NamedFields[4]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("SNamedArrayF"), data.NamedFields[5]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("ONamedArrayF"), data.NamedFields[6]);
-      Assert.AreEqual (typeof (AttributeWithParams).GetField ("TNamedArrayF"), data.NamedFields[7]);
+      Assert.AreEqual (attributeType.GetField ("INamedArrayF"), data.NamedFields[4]);
+      Assert.AreEqual (attributeType.GetField ("SNamedArrayF"), data.NamedFields[5]);
+      Assert.AreEqual (attributeType.GetField ("ONamedArrayF"), data.NamedFields[6]);
+      Assert.AreEqual (attributeType.GetField ("TNamedArrayF"), data.NamedFields[7]);
 
       Assert.AreEqual (8, data.FieldValues.Length);
 
@@ -185,19 +178,43 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.That (data.FieldValues[5], Is.EquivalentTo (new string[] { "1", null, "2" }));
       Assert.That (data.FieldValues[6], Is.EquivalentTo (new object[] { 1, 2, null }));
       Assert.That (data.FieldValues[7], Is.EquivalentTo (new Type[] { typeof (Random), null }));
+    }
 
+    [Test]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedParameters ()
+    {
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedParameters))[0];
+      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
 
+      CheckCtorArgs(data);
+      CheckNamedArguments(data, typeof (AttributeWithPropertyParams));
+    }
 
-      Assert.AreEqual (1, data.ConstructorArgs[0]);
-      Assert.AreEqual ("1", data.ConstructorArgs[1]);
-      Assert.AreEqual (null, data.ConstructorArgs[2]);
-      Assert.AreEqual (typeof (object), data.ConstructorArgs[3]);
+    [Test]
+    [Ignore ("Due to a bug in the .NET framework, this seems not to work on all .NET 2.0 installations at the moment. Waiting for a service pack...")]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields ()
+    {
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
+      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
 
-      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] { 2, 3 }));
-      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] { "2", "3" }));
-      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] { null, "foo", typeof (object) }));
-      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
+      CheckCtorArgs (data);
+      CheckNamedArguments (data, typeof (AttributeWithPropertyAndFieldParams));
+      CheckNamedFields (data, typeof (AttributeWithPropertyAndFieldParams));
+    }
 
+    [Test (Description = "This traps the framework bug with named fields. Can be removed once "
+        + "CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields works as intended.")]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type .*AttributeWithPropertyAndFieldParams declares "
+        + "public fields: .*. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes with public fields are currently not supported.",
+        MatchType = MessageMatch.Regex)]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields_Throws ()
+    {
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
+      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
+
+      CheckCtorArgs (data);
+      CheckNamedArguments (data, typeof (AttributeWithPropertyAndFieldParams));
+      CheckNamedFields (data, typeof (AttributeWithPropertyAndFieldParams));
     }
   }
 }

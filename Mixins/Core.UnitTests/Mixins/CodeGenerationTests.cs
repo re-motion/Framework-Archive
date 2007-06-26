@@ -60,29 +60,39 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     public class ReplicatableAttribute : Attribute
     {
-      public readonly int I;
-      public readonly string S;
-      public double Named;
+      private readonly int _i;
+      private readonly string _s;
+      private double _named;
 
       public ReplicatableAttribute(int i)
       {
-        I = i;
+        _i = i;
       }
 
       public ReplicatableAttribute (string s)
       {
-        S = s;
+        _s = s;
+      }
+
+      public int I
+      {
+        get { return _i; }
+      }
+
+      public string S
+      {
+        get { return _s; }
       }
 
       public double Named2
       {
         get
         {
-          return Named;
+          return _named;
         }
         set
         {
-          Named = value;
+          _named = value;
         }
       }
     }
@@ -95,7 +105,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       [Replicatable("bla")]
       public int Property
       {
-        [Replicatable(5, Named = 1.0)]
+        [Replicatable(5, Named2 = 1.0)]
         get { return _property; }
         [Replicatable (5, Named2 = 2.0)]
         set { _property = value; }
@@ -231,7 +241,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual ("bla", atts[0].S);
       Assert.IsTrue (property.GetGetMethod (true).IsSpecialName);
       atts = (ReplicatableAttribute[]) property.GetGetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.AreEqual( 1.0, atts[0].Named);
+      Assert.AreEqual( 1.0, atts[0].Named2);
 
       Assert.IsTrue (property.GetSetMethod (true).IsSpecialName);
       atts = (ReplicatableAttribute[]) property.GetSetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);

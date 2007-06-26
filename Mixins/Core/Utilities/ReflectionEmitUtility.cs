@@ -41,6 +41,8 @@ namespace Rubicon.Mixins.Utilities
     {
       ArgumentUtility.CheckNotNull ("attributeData", attributeData);
 
+      CheckForPublicFields (attributeData.Constructor.DeclaringType);
+
       object[] constructorArgs = new object[attributeData.ConstructorArguments.Count];
       for (int i = 0; i < constructorArgs.Length; ++i)
         constructorArgs[i] = GetRealCustomAttributeArgumentValue (attributeData.ConstructorArguments[i]);
@@ -70,6 +72,21 @@ namespace Rubicon.Mixins.Utilities
 
       return new CustomAttributeBuilderData (constructorArgs, namedProperties.ToArray (), propertyValues.ToArray (), namedFields.ToArray (),
           fieldValues.ToArray ());
+    }
+
+    // This is due to a bug in CustomAttributeData.GetCustomAttributes, where CustomAttributeData misinterprets named arguments if public fields
+    // are present on a type, see ReflectionEmitUtilityTests.CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields_Throws.
+    // This check can be removed when the bug has been fixed with a .NET 2.0 framework service pack.
+    private static void CheckForPublicFields (Type type)
+    {
+      FieldInfo[] fields = type.GetFields (BindingFlags.Instance | BindingFlags.Public);
+      if (fields.Length > 0)
+      {
+        string message = string.Format ("Type {0} declares public fields: {1}. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes "
+            + "with public fields are currently not supported.", type.FullName,
+            CollectionStringBuilder.BuildCollectionString (fields, ", ", delegate (FieldInfo field) { return field.Name; }));
+        throw new NotSupportedException (message);
+      }
     }
 
     private static object GetRealCustomAttributeArgumentValue (CustomAttributeTypedArgument typedArgument)
