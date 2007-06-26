@@ -129,9 +129,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     public void Extensions ()
     {
       ClientTransactionExtensionWithQueryFiltering extension = new ClientTransactionExtensionWithQueryFiltering ();
-      ClientTransaction.Current.Extensions.Add ("Name", extension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("Name", extension);
 
-      ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (ClientTransaction.Current);
+      ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (ClientTransactionScope.CurrentTransaction);
 
       Assert.IsNotNull (deserializedClientTransaction);
       Assert.IsNotNull (deserializedClientTransaction.Extensions);
@@ -185,14 +185,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjects, collections);
 
-      object[] deserializedObjects = (object[]) SerializeAndDeserialize (new object[] { domainObjects, collections, ClientTransaction.Current, eventReceiver });
+      object[] deserializedObjects = (object[]) SerializeAndDeserialize (new object[] { domainObjects, collections, ClientTransactionScope.CurrentTransaction, eventReceiver });
 
       Assert.AreEqual (4, deserializedObjects.Length);
 
       DomainObject[] deserializedDomainObjects = (DomainObject[]) deserializedObjects[0];
       DomainObjectCollection[] deserializedCollections = (DomainObjectCollection[]) deserializedObjects[1];
       ClientTransaction deserializedClientTransaction = (ClientTransaction) deserializedObjects[2];
-      ClientTransaction.SetCurrent (deserializedClientTransaction);
+      ClientTransactionScope.SetCurrentTransaction (deserializedClientTransaction);
       SequenceEventReceiver deserializedEventReceiver = (SequenceEventReceiver) deserializedObjects[3];
 
       Assert.AreEqual (9, deserializedDomainObjects.Length);
@@ -439,7 +439,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       desNewCeo1.Delete ();
       desNewOrderItem1.Delete ();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     [Test]

@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
       base.TearDown();
       _testDataContainerFactory = null;
       _clientTransactionMock = null;
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
     }
 
     protected ClientTransactionMock ClientTransactionMock
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     protected void ReInitializeTransaction ()
     {
       _clientTransactionMock = new ClientTransactionMock ();
-      ClientTransaction.SetCurrent (_clientTransactionMock);
+      ClientTransactionScope.SetCurrentTransaction (_clientTransactionMock);
       _testDataContainerFactory = new TestDataContainerFactory (_clientTransactionMock);
     }
 

@@ -35,8 +35,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
     {
       base.OnInit (e);
 
-      if (ClientTransaction.HasCurrent)
-        _clientTransaction = ClientTransaction.Current;
+      if (ClientTransactionScope.HasCurrentTransaction)
+        _clientTransaction = ClientTransactionScope.CurrentTransaction;
       else
         _clientTransaction = new ClientTransaction ();
     }

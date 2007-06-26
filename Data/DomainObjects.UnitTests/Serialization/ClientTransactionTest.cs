@@ -137,7 +137,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void RelationEndPointMapTest ()
     {
-      RelationEndPointMap relationEndPointMap = new RelationEndPointMap (ClientTransaction.Current);
+      RelationEndPointMap relationEndPointMap = new RelationEndPointMap (ClientTransactionScope.CurrentTransaction);
 
       RelationEndPointMap deserializedRelationEndPointMap = (RelationEndPointMap) SerializeAndDeserialize (relationEndPointMap);
 
@@ -159,7 +159,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerMapTest ()
     {
-      DataContainerMap dataContainerMap = new DataContainerMap (ClientTransaction.Current);
+      DataContainerMap dataContainerMap = new DataContainerMap (ClientTransactionScope.CurrentTransaction);
       DataContainer dataContainer = DataContainer.CreateNew (DomainObjectIDs.Customer1);
       dataContainerMap.Register (dataContainer);
 
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataManagerTest ()
     {
-      DataManager dataManager = new DataManager (ClientTransaction.Current);
+      DataManager dataManager = new DataManager (ClientTransactionScope.CurrentTransaction);
 
       DataManager deserializedDataManager = (DataManager) SerializeAndDeserialize (dataManager);
 
@@ -181,7 +181,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void QueryManagerTest ()
     {
-      QueryManager queryManager = new QueryManager (ClientTransaction.Current);
+      QueryManager queryManager = new QueryManager (ClientTransactionScope.CurrentTransaction);
 
       QueryManager deserializedQueryManager = (QueryManager) SerializeAndDeserialize (queryManager);
 

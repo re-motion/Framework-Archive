@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       if (domainObject != null)
         return domainObject.ClientTransaction;
       else
-        return ClientTransaction.Current;
+        return ClientTransactionScope.CurrentTransaction;
     }
   }
 }

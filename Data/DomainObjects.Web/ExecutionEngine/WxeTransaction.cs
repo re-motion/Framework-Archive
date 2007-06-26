@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
@@ -41,15 +42,15 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// Gets the current <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or <see langword="null"/> if none is set.
   /// </summary>
   /// <remarks>
-  /// As opposed to <see cref="Rubicon.Data.DomainObjects.ClientTransaction.Current"/> this property returns <see langword="null"/>, 
-  /// if <see cref="Rubicon.Data.DomainObjects.ClientTransaction.HasCurrent"/> is false.
+  /// As opposed to <see cref="ClientTransactionScope.CurrentTransaction"/> this property returns <see langword="null"/>, 
+  /// if <see cref="ClientTransactionScope.HasCurrentTransaction"/> is false.
   /// </remarks>
   protected override ClientTransaction CurrentTransaction
   {
     get 
     { 
-      if (ClientTransaction.HasCurrent)
-        return ClientTransaction.Current;
+      if (ClientTransactionScope.HasCurrentTransaction)
+        return ClientTransactionScope.CurrentTransaction;
       else
         return null;
     }
@@ -61,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <param name="transaction">The new transaction.</param>
   protected override void SetCurrentTransaction (ClientTransaction transaction)
   {
-    ClientTransaction.SetCurrent (transaction);
+    ClientTransactionScope.SetCurrentTransaction (transaction);
   }
 
   /// <summary>

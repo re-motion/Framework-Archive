@@ -336,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
         newOrder1EventReceiver.RelationChanged (newOrder1, "OrderTicket");
       }
 
-      ClientTransaction.Current.Extensions.Add ("Extension", extension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("Extension", extension);
       mockRepository.ReplayAll ();
 
       //1
@@ -603,7 +603,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       newOrderItem1.Delete ();
 
       //21
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
       mockRepository.VerifyAll ();
     }
@@ -658,7 +658,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       }
 
       customer.Delete ();
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
     }
 
     [Test]
@@ -761,8 +761,8 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       ((OrderItem)existingCustomer.Orders[0].OrderItems[0]).Delete ();
       existingCustomer.Orders[0].Delete ();
 
-      ClientTransaction.Current.Commit ();
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.SetCurrentTransaction (null);
 
       newCustomer = Customer.GetObject (newCustomer.ID);
       existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);

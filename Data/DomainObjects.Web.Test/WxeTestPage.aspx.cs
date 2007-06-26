@@ -65,7 +65,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       {
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new CreateRootTestTransactedFunction (ClientTransaction.Current));
+        ExecuteFunction (new CreateRootTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
       }
       else
       {
@@ -81,7 +81,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       {
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new CreateNoneTestTransactedFunction (ClientTransaction.Current));
+        ExecuteFunction (new CreateNoneTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
       }
       else
       {
@@ -136,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       if (!IsReturningPostBack)
       {
         SetInt32Property (5, new ClientTransaction());
-        ClientTransaction.SetCurrent (null);
+        ClientTransactionScope.SetCurrentTransaction (null);
 
         RememberCurrentClientTransaction();
 
@@ -146,7 +146,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       {
         CheckCurrentClientTransactionRestored();
 
-        if (GetInt32Property (ClientTransaction.Current) != 10)
+        if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set property value.");
 
         if (GetInt32Property (new ClientTransaction()) != 5)
@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       if (!IsReturningPostBack)
       {
         SetInt32Property (5, new ClientTransaction());
-        ClientTransaction.SetCurrent (null);
+        ClientTransactionScope.SetCurrentTransaction (null);
 
         RememberCurrentClientTransaction();
 
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       {
         CheckCurrentClientTransactionRestored();
 
-        if (GetInt32Property (ClientTransaction.Current) != 10)
+        if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
 
         if (GetInt32Property (new ClientTransaction()) != 5)
@@ -199,14 +199,14 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void RememberCurrentClientTransaction()
     {
-      CurrentWxeTestPageFunction.CurrentClientTransaction = ClientTransaction.Current;
+      CurrentWxeTestPageFunction.CurrentClientTransaction = ClientTransactionScope.CurrentTransaction;
     }
 
     private void CheckCurrentClientTransactionRestored()
     {
-      if (CurrentWxeTestPageFunction.CurrentClientTransaction != ClientTransaction.Current)
+      if (CurrentWxeTestPageFunction.CurrentClientTransaction != ClientTransactionScope.CurrentTransaction)
         throw new TestFailureException (
-            "ClientTransaction.Current was not properly restored to the state before the WxeTransactedFunction was called.");
+            "ClientTransactionScope.CurrentTransaction was not properly restored to the state before the WxeTransactedFunction was called.");
     }
 
     private void ShowResultText (string text)

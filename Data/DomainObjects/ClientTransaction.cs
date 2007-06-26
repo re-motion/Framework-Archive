@@ -17,7 +17,7 @@ namespace Rubicon.Data.DomainObjects
 /// <list type="bullet">
 ///   <item>
 ///     <description>
-///       The transaction is initialized automatically through <see cref="Current"/> and is associated with the current <see cref="System.Threading.Thread"/>.
+///       The transaction is initialized automatically through <see cref="ClientTransactionScope.CurrentTransaction"/> and is associated with the current <see cref="System.Threading.Thread"/>.
 ///     </description>
 ///   </item>
 ///   <item>   
@@ -34,48 +34,6 @@ public class ClientTransaction : ITransaction
   // types
 
   // static members and constants
-
-  private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransaction.Current";
-
-  /// <summary>
-  /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="Current"/>. 
-  /// </summary>
-  /// <remarks>
-  /// Even if the value returned by <b>HasCurrent</b> is false, <see cref="Current"/> will return a <see cref="ClientTransaction"/>. See <see cref="Current"/> for further de.
-  /// </remarks>
-  public static bool HasCurrent
-  {
-    get { return GetCurrentInternal () != null ; }
-  }
-
-  /// <summary>
-  /// Gets the default <b>ClientTransaction</b> of the current thread. 
-  /// </summary>
-  /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is created.</remarks>
-  public static ClientTransaction Current
-  {
-    get 
-    {
-      if (!HasCurrent)
-        SetCurrent (new ClientTransaction ());
-      
-      return GetCurrentInternal ();
-    }
-  }
-
-  /// <summary>
-  /// Sets the default <b>ClientTransaction</b> of the current thread.
-  /// </summary>
-  /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
-  public static void SetCurrent (ClientTransaction clientTransaction)
-  {
-    CallContext.SetData (c_callContextKey, clientTransaction);
-  }
-
-  private static ClientTransaction GetCurrentInternal ()
-  {
-    return (ClientTransaction) CallContext.GetData (c_callContextKey);
-  }
 
   // member fields
 

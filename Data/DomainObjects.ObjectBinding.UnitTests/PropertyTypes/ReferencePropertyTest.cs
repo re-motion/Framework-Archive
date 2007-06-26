@@ -46,7 +46,7 @@ public class ReferencePropertyTest : DatabaseTest
     
     Order order = (Order) businessObjects[0];
     Assert.IsTrue (object.ReferenceEquals (_orderTicket.ClientTransaction, order.ClientTransaction));
-    Assert.IsFalse (object.ReferenceEquals (ClientTransaction.Current, order.ClientTransaction));
+    Assert.IsFalse (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
   }
 
   [Test]
@@ -60,7 +60,7 @@ public class ReferencePropertyTest : DatabaseTest
     Assert.IsTrue (businessObjects.Length > 0);
     
     Order order = (Order) businessObjects[0];
-    Assert.IsTrue (object.ReferenceEquals (ClientTransaction.Current, order.ClientTransaction));
+    Assert.IsTrue (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
   }
 
   [Test]
@@ -74,7 +74,7 @@ public class ReferencePropertyTest : DatabaseTest
     Assert.IsTrue (businessObjects.Length > 0);
     
     Order order = (Order) businessObjects[0];
-    Assert.IsTrue (object.ReferenceEquals (ClientTransaction.Current, order.ClientTransaction));
+    Assert.IsTrue (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
   }
 
   private PropertyInfo GetOrderProperty ()

@@ -132,7 +132,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
     {
       Save ();
       
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
       ((WxePage) this.Page).ExecuteNextStep ();
     }
   }

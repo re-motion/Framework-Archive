@@ -534,21 +534,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void AutoInitializationOfCurrent ()
     {
-      ClientTransaction.SetCurrent (null);
-      Assert.IsNotNull (ClientTransaction.Current);
+      ClientTransactionScope.SetCurrentTransaction (null);
+      Assert.IsNotNull (ClientTransactionScope.CurrentTransaction);
     }
 
     [Test]
     public void HasCurrentTrue ()
     {
-      Assert.IsTrue (ClientTransaction.HasCurrent);
+      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
     public void HasCurrentFalse ()
     {
-      ClientTransaction.SetCurrent (null);
-      Assert.IsFalse (ClientTransaction.HasCurrent);
+      ClientTransactionScope.SetCurrentTransaction (null);
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
@@ -558,7 +558,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       try
       {
-        ClientTransaction.Current.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.Fail ("MandatoryRelationNotSetException was expected");
       }
       catch (MandatoryRelationNotSetException ex)
@@ -577,7 +577,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       try
       {
-        ClientTransaction.Current.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.Fail ("MandatoryRelationNotSetException was expected");
       }
       catch (MandatoryRelationNotSetException ex)
@@ -592,23 +592,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void HasChanged ()
     {
-      Assert.IsFalse (ClientTransaction.Current.HasChanged ());
+      Assert.IsFalse (ClientTransactionScope.CurrentTransaction.HasChanged ());
       Order order1 = Order.GetObject (DomainObjectIDs.Order1);
       order1.OrderNumber = order1.OrderNumber + 1;
-      Assert.IsTrue (ClientTransaction.Current.HasChanged ());
+      Assert.IsTrue (ClientTransactionScope.CurrentTransaction.HasChanged ());
     }
 
     [Test]
     public void ApplicationData ()
     {
-      Assert.IsNotNull (ClientTransaction.Current.ApplicationData);
-      Assert.IsAssignableFrom (typeof (Dictionary<Enum, object>), ClientTransaction.Current.ApplicationData);
+      Assert.IsNotNull (ClientTransactionScope.CurrentTransaction.ApplicationData);
+      Assert.IsAssignableFrom (typeof (Dictionary<Enum, object>), ClientTransactionScope.CurrentTransaction.ApplicationData);
 
-      Assert.IsFalse (ClientTransaction.Current.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
-      ClientTransaction.Current.ApplicationData[ApplicationDataKey.Key1] = "TestData";
-      Assert.AreEqual ("TestData", ClientTransaction.Current.ApplicationData[ApplicationDataKey.Key1]);
-      ClientTransaction.Current.ApplicationData.Remove (ApplicationDataKey.Key1);
-      Assert.IsFalse (ClientTransaction.Current.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
+      Assert.IsFalse (ClientTransactionScope.CurrentTransaction.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
+      ClientTransactionScope.CurrentTransaction.ApplicationData[ApplicationDataKey.Key1] = "TestData";
+      Assert.AreEqual ("TestData", ClientTransactionScope.CurrentTransaction.ApplicationData[ApplicationDataKey.Key1]);
+      ClientTransactionScope.CurrentTransaction.ApplicationData.Remove (ApplicationDataKey.Key1);
+      Assert.IsFalse (ClientTransactionScope.CurrentTransaction.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
     }
   }
 }

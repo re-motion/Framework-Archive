@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.UnitTests
     [SetUp]
     public virtual void SetUp()
     {
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
     }
   }
 }

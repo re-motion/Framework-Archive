@@ -34,7 +34,7 @@ public class CreateRootTestTransactedFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    if (ClientTransaction.Current == PreviousClientTransaction)
+    if (ClientTransactionScope.CurrentTransaction == PreviousClientTransaction)
       throw new TestFailureException ("The WxeTransactedFunction did not properly set a new ClientTransaction.");
   }
 

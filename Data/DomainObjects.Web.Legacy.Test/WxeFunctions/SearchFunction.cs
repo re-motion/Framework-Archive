@@ -40,7 +40,7 @@ public class SearchFunction : WxeTransactedFunction
 
   public void Requery ()
   {
-    Result = ClientTransaction.Current.QueryManager.GetCollection (SearchObject.CreateQuery ());
+    Result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (SearchObject.CreateQuery ());
   }
 
   private void Step1 ()

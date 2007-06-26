@@ -59,7 +59,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       base.SetUp ();
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
     }
   }
 }

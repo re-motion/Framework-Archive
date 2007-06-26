@@ -155,7 +155,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("id", id);
 
-    return (T) ClientTransaction.Current.GetObject (id, includeDeleted);
+    return (T) ClientTransactionScope.CurrentTransaction.GetObject (id, includeDeleted);
   }
 
   /// <summary>
@@ -329,7 +329,7 @@ public class DomainObject
   /// which delegates to <see cref="DomainObject.NewObject"/>, passing it the required constructor arguments.</remarks>
   protected DomainObject ()
   {
-    ClientTransaction clientTransaction = ClientTransaction.Current;
+    ClientTransaction clientTransaction = ClientTransactionScope.CurrentTransaction;
     clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
 
     _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());

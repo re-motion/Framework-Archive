@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _location1EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_location1);
       _client1EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_client1);
 
-      ClientTransaction.Current.Extensions.Add ("Name", _extension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("Name", _extension);
     }
 
     [Test]

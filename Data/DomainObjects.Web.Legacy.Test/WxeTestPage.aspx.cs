@@ -72,7 +72,7 @@ public class WxeTestPage : WxePage
     {
       RememberCurrentClientTransaction ();
 
-      ExecuteFunction (new CreateRootTestTransactedFunction (ClientTransaction.Current));
+      ExecuteFunction (new CreateRootTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
     }
     else
     {
@@ -88,7 +88,7 @@ public class WxeTestPage : WxePage
     {
       RememberCurrentClientTransaction ();
 
-      ExecuteFunction (new CreateNoneTestTransactedFunction (ClientTransaction.Current));
+      ExecuteFunction (new CreateNoneTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
     }
     else
     {
@@ -143,7 +143,7 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       SetInt32Property (5, new ClientTransaction ());
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
 
       RememberCurrentClientTransaction ();
 
@@ -153,7 +153,7 @@ public class WxeTestPage : WxePage
     {
       CheckCurrentClientTransactionRestored ();
 
-      if (GetInt32Property (ClientTransaction.Current) != 10)
+      if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not set property value.");
 
       if (GetInt32Property (new ClientTransaction ()) != 5)
@@ -168,7 +168,7 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       SetInt32Property (5, new ClientTransaction ());
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
 
       RememberCurrentClientTransaction ();
 
@@ -178,7 +178,7 @@ public class WxeTestPage : WxePage
     {
       CheckCurrentClientTransactionRestored ();
 
-      if (GetInt32Property (ClientTransaction.Current) != 10)
+      if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
 
       if (GetInt32Property (new ClientTransaction ()) != 5)
@@ -206,13 +206,13 @@ public class WxeTestPage : WxePage
 
   private void RememberCurrentClientTransaction ()
   {
-    CurrentWxeTestPageFunction.CurrentClientTransaction = ClientTransaction.Current;
+    CurrentWxeTestPageFunction.CurrentClientTransaction = ClientTransactionScope.CurrentTransaction;
   }
 
   private void CheckCurrentClientTransactionRestored ()
   {
-    if (CurrentWxeTestPageFunction.CurrentClientTransaction != ClientTransaction.Current)
-      throw new TestFailureException ("ClientTransaction.Current was not properly restored to the state before the WxeTransactedFunction was called.");
+    if (CurrentWxeTestPageFunction.CurrentClientTransaction != ClientTransactionScope.CurrentTransaction)
+      throw new TestFailureException ("ClientTransactionScope.CurrentTransaction was not properly restored to the state before the WxeTransactedFunction was called.");
   }
 
   private void ShowResultText (string text)

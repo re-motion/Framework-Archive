@@ -160,8 +160,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     private void CommitAndReInitializeCurrentClientTransaction ()
     {
-      ClientTransaction.Current.Commit ();
-      ClientTransaction.SetCurrent (new ClientTransaction ());
+      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.SetCurrentTransaction (new ClientTransaction ());
     }
   }
 }

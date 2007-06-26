@@ -357,7 +357,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         + "support the requested constructor with signature (Rubicon.Data.DomainObjects.ClientTransaction).")]
     public void OldConstructorMismatch2 ()
     {
-      ClassWithWrongConstructor.NewObject (ClientTransaction.Current);
+      ClassWithWrongConstructor.NewObject (ClientTransactionScope.CurrentTransaction);
     }
 
     [Test]
@@ -368,7 +368,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       using (new FactoryInstantiationScope ())
       {
-        ClassWithWrongConstructor.NewObject (ClientTransaction.Current);
+        ClassWithWrongConstructor.NewObject (ClientTransactionScope.CurrentTransaction);
       }
     }
 

@@ -458,7 +458,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 			newOrder.Customer = null;
 			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull);
 
-			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransaction.Current);
+			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransactionScope.CurrentTransaction);
 			Order existingOrder = Order.GetObject (DomainObjectIDs.Order1);
 
 			eventReceiver.Clear ();
@@ -483,7 +483,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 			newOrder.OrderTicket = null;
 			Assert.IsTrue (newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull);
 
-			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransaction.Current);
+			ClientTransactionEventReceiver eventReceiver = new ClientTransactionEventReceiver (ClientTransactionScope.CurrentTransaction);
 			Order existingOrder = Order.GetObject (DomainObjectIDs.Order1);
 
 			eventReceiver.Clear ();

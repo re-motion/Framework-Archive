@@ -9,37 +9,37 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [SetUp]
     public void SetUp ()
     {
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ClientTransaction.SetCurrent (null);
+      ClientTransactionScope.SetCurrentTransaction (null);
     }
 
     [Test]
     public void ScopeSetsAndResetsCurrentTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Assert.AreNotSame (clientTransaction, ClientTransaction.Current);
+      Assert.AreNotSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
       using (new ClientTransactionScope (clientTransaction))
       {
-        Assert.AreSame (clientTransaction, ClientTransaction.Current);
+        Assert.AreSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
       }
-      Assert.AreNotSame (clientTransaction, ClientTransaction.Current);
+      Assert.AreNotSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
     }
 
     [Test]
     public void ScopeSetsNullTransaction ()
     {
-      ClientTransaction.SetCurrent (new ClientTransaction ());
-      Assert.IsTrue (ClientTransaction.HasCurrent);
+      ClientTransactionScope.SetCurrentTransaction (new ClientTransaction ());
+      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
       using (new ClientTransactionScope (null))
       {
-        Assert.IsFalse (ClientTransaction.HasCurrent);
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       }
-      Assert.IsTrue (ClientTransaction.HasCurrent);
+      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
-      ClientTransaction original = ClientTransaction.Current;
+      ClientTransaction original = ClientTransactionScope.CurrentTransaction;
       
       Assert.AreNotSame (clientTransaction1, original);
       Assert.AreNotSame (clientTransaction2, original);
@@ -55,25 +55,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (new ClientTransactionScope (clientTransaction1))
       {
-        Assert.AreSame (clientTransaction1, ClientTransaction.Current);
+        Assert.AreSame (clientTransaction1, ClientTransactionScope.CurrentTransaction);
         using (new ClientTransactionScope (clientTransaction2))
         {
-          Assert.AreSame (clientTransaction2, ClientTransaction.Current);
+          Assert.AreSame (clientTransaction2, ClientTransactionScope.CurrentTransaction);
         }
-        Assert.AreSame (clientTransaction1, ClientTransaction.Current);
+        Assert.AreSame (clientTransaction1, ClientTransactionScope.CurrentTransaction);
       }
-      Assert.AreSame (original, ClientTransaction.Current);
+      Assert.AreSame (original, ClientTransactionScope.CurrentTransaction);
     }
 
     [Test]
     public void LeavesEmptyTransaction ()
     {
-      Assert.IsFalse (ClientTransaction.HasCurrent);
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       using (new ClientTransactionScope (new ClientTransaction ()))
       {
-        Assert.IsTrue (ClientTransaction.HasCurrent);
+        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
       }
-      Assert.IsFalse (ClientTransaction.HasCurrent);
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
   }
 }

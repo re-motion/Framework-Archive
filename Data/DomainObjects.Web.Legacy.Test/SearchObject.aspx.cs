@@ -83,7 +83,7 @@ public class SearchObjectPage : WxePage
 
   private void ResultList_EditableRowChangesSaved (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
-    ClientTransaction.Current.Commit ();
+    ClientTransactionScope.CurrentTransaction.Commit ();
   }
 }
 }

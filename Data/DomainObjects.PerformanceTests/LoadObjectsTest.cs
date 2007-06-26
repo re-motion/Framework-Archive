@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        ClientTransaction.SetCurrent (null);
+        ClientTransactionScope.SetCurrentTransaction (null);
         Client client = Client.GetObject (_clientID);
 
         stopwatch.Start ();
@@ -74,7 +74,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        ClientTransaction.SetCurrent (null);
+        ClientTransactionScope.SetCurrentTransaction (null);
         Client client = Client.GetObject (_clientID);
 
         stopwatch.Start ();

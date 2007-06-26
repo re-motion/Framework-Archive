@@ -36,13 +36,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository = new MockRepository ();
       _extension = _mockRepository.CreateMock<IClientTransactionExtension> ();
 
-      ClientTransaction.Current.Extensions.Add ("Name", _extension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("Name", _extension);
     }
 
     [Test]
     public void Extensions ()
     {
-      Assert.IsNotNull (ClientTransaction.Current.Extensions);
+      Assert.IsNotNull (ClientTransactionScope.CurrentTransaction.Extensions);
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ObjectsLoadedWithEvents ()
     {
       ClientTransactionMockEventReceiver clientTransactionEventReceiver =
-          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
+          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransactionScope.CurrentTransaction);
 
       using (_mockRepository.Ordered ())
       {
@@ -98,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.Constraints (Mocks_Property.Value ("Count", 1));
 
         clientTransactionEventReceiver.Loaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransactionScope.CurrentTransaction), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
       }
 
       _mockRepository.ReplayAll ();
@@ -605,7 +605,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Query query = new Query ("OrderQuery");
       query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
 
-      ClientTransaction.Current.QueryManager.GetCollection (query);
+      ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       _mockRepository.BackToRecord (_extension);
 
       _extension.FilterQueryResult (null, null);
@@ -613,7 +613,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.QueryManager.GetCollection (query);
+      ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
 
       _mockRepository.VerifyAll ();
     }
@@ -634,7 +634,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.QueryManager.GetCollection (query);
+      ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
 
       _mockRepository.VerifyAll ();
     }
@@ -645,9 +645,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Query query = new Query ("OrderQuery");
       query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4);
       IClientTransactionExtension filteringExtension = _mockRepository.CreateMock<ClientTransactionExtensionWithQueryFiltering> ();
-      ClientTransaction.Current.Extensions.Add ("FilteringExtension", filteringExtension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("FilteringExtension", filteringExtension);
       IClientTransactionExtension lastExtension = _mockRepository.CreateMock<IClientTransactionExtension> ();
-      ClientTransaction.Current.Extensions.Add ("LastExtension", lastExtension);
+      ClientTransactionScope.CurrentTransaction.Extensions.Add ("LastExtension", lastExtension);
 
 
       using (_mockRepository.Ordered ())
@@ -669,7 +669,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      DomainObjectCollection queryResult = ClientTransaction.Current.QueryManager.GetCollection (query);
+      DomainObjectCollection queryResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
       Assert.AreEqual (1, queryResult.Count);
 
       _mockRepository.VerifyAll ();
@@ -692,7 +692,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
       _mockRepository.VerifyAll ();
     }
@@ -715,7 +715,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
       _mockRepository.VerifyAll ();
     }
@@ -738,7 +738,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
       _mockRepository.VerifyAll ();
     }
@@ -753,7 +753,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.BackToRecord (_extension);
 
       ClientTransactionMockEventReceiver clientTransactionMockEventReceiver =
-          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
+          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransactionScope.CurrentTransaction);
 
       DomainObjectMockEventReceiver computerEventReveiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (computer);
 
@@ -765,12 +765,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
 
         clientTransactionMockEventReceiver.Committing (null, null);
-        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransactionScope.CurrentTransaction), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
 
         computerEventReveiver.Committed (computer, EventArgs.Empty);
 
         clientTransactionMockEventReceiver.Committed (null, null);
-        LastCall.Constraints (Mocks_Is.Same (ClientTransaction.Current), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
+        LastCall.Constraints (Mocks_Is.Same (ClientTransactionScope.CurrentTransaction), Mocks_Property.ValueConstraint ("DomainObjects", Mocks_Property.Value ("Count", 1)));
 
         _extension.Committed (null);
         LastCall.Constraints (Mocks_Property.Value ("Count", 1) & Mocks_List.IsIn (computer));
@@ -778,7 +778,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit ();
 
       _mockRepository.VerifyAll ();
     }
@@ -824,7 +824,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransactionScope.CurrentTransaction.Rollback ();
 
       _mockRepository.VerifyAll ();
     }
