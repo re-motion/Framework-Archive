@@ -202,6 +202,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       CheckNamedFields (data, typeof (AttributeWithPropertyAndFieldParams));
     }
 
+    [Ignore ("TODO: FS")]
     [Test (Description = "This traps the framework bug with named fields. Can be removed once "
         + "CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields works as intended.")]
     [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type .*AttributeWithPropertyAndFieldParams declares "
