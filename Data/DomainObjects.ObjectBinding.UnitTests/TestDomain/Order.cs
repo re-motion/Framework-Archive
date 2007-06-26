@@ -30,26 +30,26 @@ public class Order : TestDomainBase
 
   public int OrderNumber
   {
-    get { return (int) DataContainer["OrderNumber"]; }
-    set { DataContainer["OrderNumber"] = value; }
+    get { return Properties["OrderNumber"].GetValue<int>(); }
+    set { Properties["OrderNumber"].SetValue (value); }
   }
 
   public DateTime DeliveryDate
   {
-    get { return (DateTime) DataContainer["DeliveryDate"]; }
-    set { DataContainer["DeliveryDate"] = value; }
+    get { return Properties["DeliveryDate"].GetValue<DateTime>(); }
+    set { Properties["DeliveryDate"].SetValue (value); }
   }
 
   public OrderTicket OrderTicket
   {
-    get { return (OrderTicket) GetRelatedObject ("OrderTicket"); }
-    set { SetRelatedObject ("OrderTicket", value); }
+    get { return Properties["OrderTicket"].GetValue<OrderTicket>(); }
+    set { Properties["OrderTicket"].SetValue (value); }
   }
 
   [IsReadOnly]
   public ObjectList<OrderItem> OrderItems
   {
-    get { return (ObjectList<OrderItem>) GetRelatedObjects ("OrderItems"); }
+    get { return Properties["OrderItems"].GetValue <ObjectList<OrderItem>>(); }
   }
 }
 }

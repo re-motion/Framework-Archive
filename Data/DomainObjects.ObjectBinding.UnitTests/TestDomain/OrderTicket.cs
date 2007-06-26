@@ -33,14 +33,14 @@ public class OrderTicket : TestDomainBase
 
   public string FileName
   {
-    get { return (string) DataContainer.GetValue ("FileName"); }
-    set { DataContainer.SetValue ("FileName", value); }
+    get { return Properties["FileName"].GetValue<string>(); }
+    set { Properties["FileName"].SetValue (value); }
   }
 
   public Order Order
   {
-    get { return (Order) GetRelatedObject ("Order"); }
-    set { SetRelatedObject ("Order", value); }
+    get { return Properties["Order"].GetValue<Order>(); }
+    set { Properties["Order"].SetValue (value); }
   }
 }
 }

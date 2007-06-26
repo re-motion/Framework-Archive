@@ -37,20 +37,20 @@ public class OrderItem : TestDomainBase
 
   public int Position 
   {
-    get { return (int) DataContainer["Position"]; }
-    set { DataContainer["Position"] = value; }
+    get { return Properties["Position"].GetValue<int>(); }
+    set { Properties["Position"].SetValue (value); }
   }
 
   public string Product
   {
-    get { return (string) DataContainer["Product"]; }
-    set { DataContainer["Product"] = value; }
+    get { return Properties["Product"].GetValue<string>(); }
+    set { Properties["Product"].SetValue (value); }
   }
 
   public Order Order
   {
-    get { return (Order) GetRelatedObject ("Order"); }
-    set { SetRelatedObject ("Order", value); }
+    get { return Properties["Order"].GetValue<Order>(); }
+    set { Properties["Order"].SetValue (value); }
   }
 }
 }

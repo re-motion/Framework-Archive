@@ -26,6 +26,23 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       public Type[] TNamedArray { get { return null; }  set { } }
     }
 
+    public class AttributeWithFieldParams : Attribute
+    {
+      public AttributeWithFieldParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
+      {
+      }
+
+      public int INamedF;
+      public string SNamedF;
+      public object ONamedF;
+      public Type TNamedF;
+
+      public int[] INamedArrayF;
+      public string[] SNamedArrayF;
+      public object[] ONamedArrayF;
+      public Type[] TNamedArrayF;
+    }
+
     public class AttributeWithPropertyAndFieldParams : Attribute
     {
       public AttributeWithPropertyAndFieldParams (int i, string s, object o, Type t, int[] iArray, string[] sArray, object[] oArray, Type[] tArray)
@@ -73,7 +90,31 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       ONamedArray = new object[] {1, 2, null}, 
       TNamedArray = new Type[] {typeof (Random), null}
     )]
-    public class TestAttributeApplicationWithCtorArgumentsAndNamedParameters
+    public class TestAttributeApplicationWithCtorArgumentsAndNamedProperties
+    {
+    }
+
+    [AttributeWithFieldParams (
+      1,
+      "1",
+      null,
+      typeof (object),
+
+      new int[] { 2, 3 },
+      new string[] { "2", "3" },
+      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+
+      INamedF = 5,
+      SNamedF = "5",
+      ONamedF = "bla",
+      TNamedF = typeof (float),
+
+      INamedArrayF = new int[] { 1, 2, 3 },
+      SNamedArrayF = new string[] { "1", null, "2" },
+      ONamedArrayF = new object[] { 1, 2, null },
+      TNamedArrayF = new Type[] { typeof (Random), null }
+    )]
+    public class TestAttributeApplicationWithCtorArgumentsAndNamedFields
     {
     }
 
@@ -107,7 +148,7 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       ONamedArrayF = new object[] { 1, 2, null },
       TNamedArrayF = new Type[] { typeof (Random), null }
     )]
-    public class TestAttributeApplicationWithCtorArgumentsAndNamedFields
+    public class TestAttributeApplicationWithCtorArgumentsNamedPropertiesAndNamedFields
     {
     }
 
@@ -181,9 +222,9 @@ namespace Rubicon.Mixins.UnitTests.Utilities
     }
 
     [Test]
-    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedParameters ()
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedProperties ()
     {
-      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedParameters))[0];
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedProperties))[0];
       ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
 
       CheckCtorArgs(data);
@@ -192,9 +233,9 @@ namespace Rubicon.Mixins.UnitTests.Utilities
 
     [Test]
     [Ignore ("Due to a bug in the .NET framework, this seems not to work on all .NET 2.0 installations at the moment. Waiting for a service pack...")]
-    public void CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields ()
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsNamedPropertiesAndNamedFields ()
     {
-      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsNamedPropertiesAndNamedFields))[0];
       ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
 
       CheckCtorArgs (data);
@@ -202,20 +243,15 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       CheckNamedFields (data, typeof (AttributeWithPropertyAndFieldParams));
     }
 
-    [Ignore ("TODO: FS")]
     [Test (Description = "This traps the framework bug with named fields. Can be removed once "
-        + "CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields works as intended.")]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type .*AttributeWithPropertyAndFieldParams declares "
-        + "public fields: .*. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes with public fields are currently not supported.",
-        MatchType = MessageMatch.Regex)]
-    public void CreateAttributeBuilderFromData_WithCtorArgumentsNamedArgumentsAndNamedFields_Throws ()
+        + "CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields works as intended.")]
+    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Type .*AttributeWithFieldParams declares "
+    + "public fields: .*. Due to a bug in CustomAttributeData.GetCustomAttributes, attributes with public fields are currently not supported.",
+    MatchType = MessageMatch.Regex)]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields ()
     {
       CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
       ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
-
-      CheckCtorArgs (data);
-      CheckNamedArguments (data, typeof (AttributeWithPropertyAndFieldParams));
-      CheckNamedFields (data, typeof (AttributeWithPropertyAndFieldParams));
     }
   }
 }
