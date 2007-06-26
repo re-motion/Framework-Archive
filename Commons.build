@@ -14,12 +14,11 @@
   <property name="prereq.assemblies" value="${solution.basedir}/prereq/assemblies" />
   <property name="project.basedir" value="${solution.basedir}/${project.dir}" dynamic="true" />
   <property name="build.outputdir" value="${build.basedir}/${nant.settings.currentframework}/bin/${project.config}" dynamic="true" />
-  <property name="build.temp.basedir" value="${build.basedir}/temp" dynamic="true" />
+  <property name="build.temp.root" value="" overwrite="false" />
   <property name="build.temp.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/${project.config}" dynamic="true" />
   <property name="build.test.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/tests/${project.config}" dynamic="true" />
   <property name="build.update.assembly-info" value="true" overwrite="false" />
   <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" dynamic="true" />
-
   <property name="sql.exe" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn\osql.exe" overwrite="false" />
   <property name="sql.instance" value="localhost" overwrite="false" />
 
@@ -37,8 +36,12 @@
 
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" unless="${property::exists('build.local')}" />
     <property name="build.basedir" value="${solution.basedir}/build/Current" if="${property::exists('build.local')}" />
+    
+    <property name="build.temp.basedir" value="${build.temp.root}/${build.version.noconfig}" unless="${property::exists('build.local')}" />
+    <property name="build.temp.basedir" value="${build.temp.root}/Current" if="${property::exists('build.local')}" />
+    <property name="build.temp.basedir" value="${build.basedir}/temp" dynamic="true" if="${string::get-length(build.temp.root) == 0}"/>
   </target>
-
+  
   <!--======================= CONFIGURATION  =======================-->
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
 
@@ -296,7 +299,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding" depends="Core">
+  <target name="ObjectBinding" depends="Core, Mixins">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <property name="project.output" value="Rubicon.ObjectBinding" />
@@ -304,7 +307,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="ObjectBinding.Web" depends="Core, ObjectBinding, Web">
+  <target name="ObjectBinding.Web" depends="Core, Mixins, ObjectBinding, Web">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
@@ -313,7 +316,7 @@
   </target>
 
   <target name="ObjectBinding.Web.CodeGenerator" 
-      depends="Core, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.ObjectBinding">
+      depends="Core, Mixins, Web, ObjectBinding, ObjectBinding.Web, Data.DomainObjects, Data.DomainObjects.Legacy, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="ObjectBinding.Web.CodeGenerator" />
     <property name="project.dir" value="ObjectBinding/Web.CodeGenerator/Core" />
     <property name="project.output" value="UIGen" />
@@ -391,7 +394,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Clients.Web" depends="Core, Web, ObjectBinding, ObjectBinding.Web, 
+  <target name="SecurityManager.Clients.Web" depends="Core, ObjectBinding, ObjectBinding.Web, Web, 
         Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, Data.DomainObjects.ObjectBinding.Web, 
         SecurityManager.Core">
     <property name="project.name" value="SecurityManager.Clients.Web" />
@@ -448,7 +451,7 @@
     <call target="buildtest" />
   </target>
 
-  <target name="ObjectBinding.Reflection" depends="Core, ObjectBinding, ObjectBinding.Web, Web">
+  <target name="ObjectBinding.Reflection" depends="Core, Mixins, ObjectBinding, ObjectBinding.Web, Web">
     <property name="project.name" value="ObjectBinding.Reflection" />
     <property name="project.dir" value="ObjectBinding/Reflection" />
     <property name="project.output" value="Rubicon.ObjectBinding.Reflection" />
