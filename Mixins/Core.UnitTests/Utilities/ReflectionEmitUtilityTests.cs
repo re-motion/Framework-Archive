@@ -37,23 +37,59 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       public Type[] TNamedArrayF;
     }
 
-    [AttributeWithParams (1, "1", null, typeof (object),
-      new int[]{2, 3}, new string[] {"2", "3"}, new object[] {null, "foo", typeof (object)}, new Type[] {typeof (string), typeof (int), typeof(double)},
+    [AttributeWithParams (
+      1, 
+      "1", 
+      null, 
+      typeof (object),
       
-      INamed = 5, SNamed = "5", ONamed = "bla", TNamed = typeof (float),
-      INamedArray = new int[] {1, 2, 3}, SNamedArray = new string[] {"1", null, "2"}, ONamedArray = new object[] {1, 2, null}, TNamedArray = new Type[] {typeof (Random), null},
-    
-      INamedF = 5, SNamedF = "5", ONamedF = "bla", TNamedF = typeof (float),
-    INamedArrayF = new int[] { 1, 2, 3 }, SNamedArrayF = new string[] { "1", null, "2" }, ONamedArrayF = new object[] { 1, 2, null }, TNamedArrayF = new Type[] { typeof (Random), null })
-    ]
-    public class TestAttributeApplication
+      new int[]{2, 3}, 
+      new string[] {"2", "3"}, 
+      new object[] {null, "foo", typeof (object)}, new Type[] {typeof (string), typeof (int), typeof(double)},
+      
+      INamed = 5, 
+      SNamed = "P5", 
+      ONamed = "Pbla", 
+      TNamed = typeof (float),
+
+      INamedArray = new int[] {1, 2, 3}, 
+      SNamedArray = new string[] {"P1", null, "P2"}, 
+      ONamedArray = new object[] {1, 2, null}, 
+      TNamedArray = new Type[] {typeof (Random), null}
+    )]
+    public class TestAttributeApplicationWithCtorArgumentsAndNamedParameters
+    {
+    }
+
+    [AttributeWithParams (
+      1,
+      "1",
+      null,
+      typeof (object),
+
+      new int[] { 2, 3 },
+      new string[] { "2", "3" },
+      new object[] { null, "foo", typeof (object) }, new Type[] { typeof (string), typeof (int), typeof (double) },
+
+      INamedF = 5, 
+      SNamedF = "5",
+      ONamedF = "bla",
+      TNamedF = typeof (float),
+
+      INamedArrayF = new int[] { 1, 2, 3 },
+      SNamedArrayF = new string[] { "1", null, "2" },
+      ONamedArrayF = new object[] { 1, 2, null },
+      TNamedArrayF = new Type[] { typeof (Random), null }
+    )]
+    public class TestAttributeApplicationWithCtorArgumentsAndNamedFields
     {
     }
 
     [Test]
-    public void CreateAttributeBuilderFromData ()
+    [Ignore("TODO: FS")]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedParameters ()
     {
-      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplication))[0];
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedParameters))[0];
       ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
 
       Assert.AreEqual (8, data.ConstructorArgs.Length);
@@ -84,14 +120,46 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.AreEqual (8, data.PropertyValues.Length);
 
       Assert.AreEqual (5, data.PropertyValues[0]);
-      Assert.AreEqual ("5", data.PropertyValues[1]);
-      Assert.AreEqual ("bla", data.PropertyValues[2]);
+      Assert.AreEqual ("P5", data.PropertyValues[1]);
+      Assert.AreEqual ("Pbla", data.PropertyValues[2]);
       Assert.AreEqual (typeof (float), data.PropertyValues[3]);
 
       Assert.That (data.PropertyValues[4], Is.EquivalentTo (new int[] {1, 2, 3}));
-      Assert.That (data.PropertyValues[5], Is.EquivalentTo (new string[] {"1", null, "2"}));
+      Assert.That (data.PropertyValues[5], Is.EquivalentTo (new string[] {"P1", null, "P2"}));
       Assert.That (data.PropertyValues[6], Is.EquivalentTo (new object[] {1, 2, null}));
       Assert.That (data.PropertyValues[7], Is.EquivalentTo (new Type[] {typeof (Random), null}));
+
+
+      Assert.AreEqual (1, data.ConstructorArgs[0]);
+      Assert.AreEqual ("1", data.ConstructorArgs[1]);
+      Assert.AreEqual (null, data.ConstructorArgs[2]);
+      Assert.AreEqual (typeof (object), data.ConstructorArgs[3]);
+
+      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] { 2, 3 }));
+      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] { "2", "3" }));
+      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] { null, "foo", typeof (object) }));
+      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
+
+    }
+
+    [Test]
+    [Ignore ("TODO: FS")]
+    public void CreateAttributeBuilderFromData_WithCtorArgumentsAndNamedFields ()
+    {
+      CustomAttributeData cad = CustomAttributeData.GetCustomAttributes (typeof (TestAttributeApplicationWithCtorArgumentsAndNamedFields))[0];
+      ReflectionEmitUtility.CustomAttributeBuilderData data = ReflectionEmitUtility.GetCustomAttributeBuilderData (cad);
+
+      Assert.AreEqual (8, data.ConstructorArgs.Length);
+
+      Assert.AreEqual (1, data.ConstructorArgs[0]);
+      Assert.AreEqual ("1", data.ConstructorArgs[1]);
+      Assert.AreEqual (null, data.ConstructorArgs[2]);
+      Assert.AreEqual (typeof(object), data.ConstructorArgs[3]);
+
+      Assert.That (data.ConstructorArgs[4], Is.EquivalentTo (new int[] {2, 3}));
+      Assert.That (data.ConstructorArgs[5], Is.EquivalentTo (new string[] {"2", "3"}));
+      Assert.That (data.ConstructorArgs[6], Is.EquivalentTo (new object[] {null, "foo", typeof (object)}));
+      Assert.That (data.ConstructorArgs[7], Is.EquivalentTo (new Type[] { typeof (string), typeof (int), typeof (double) }));
 
 
       Assert.AreEqual (8, data.NamedFields.Length);
