@@ -5,7 +5,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class LoadArrayElementExpression : Expression
+  internal class LoadArrayElementExpression : Expression
   {
     private readonly ConstReference index;
     private readonly Reference arrayReference;

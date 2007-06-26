@@ -7,7 +7,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class IndirectFieldReference : Reference
+  internal class IndirectFieldReference : Reference
   {
     private readonly FieldInfo _field;
 

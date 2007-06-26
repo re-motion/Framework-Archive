@@ -8,7 +8,7 @@ using Castle.DynamicProxy.Generators.Emitters;
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
   // Converts an expression to a reference by saving it as a temporary local variable at time of emitting
-  public class ExpressionReference : Reference
+  internal class ExpressionReference : Reference
   {
     private Expression _expression;
     private MethodEmitter _methodEmitter;

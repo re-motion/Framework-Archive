@@ -8,7 +8,7 @@ using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class CustomEventEmitter : IAttributableEmitter
+  internal class CustomEventEmitter : IAttributableEmitter
   {
     private EventBuilder builder;
     private MethodEmitter addMethod;

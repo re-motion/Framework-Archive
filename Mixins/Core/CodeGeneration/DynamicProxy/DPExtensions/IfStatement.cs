@@ -6,7 +6,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class IfStatement : Statement
+  internal class IfStatement : Statement
   {
     private ConditionExpression _condition;
     private Statement[] _thenStatements;

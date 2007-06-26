@@ -9,7 +9,7 @@ using LoadArrayElementExpression = Rubicon.Mixins.CodeGeneration.DynamicProxy.DP
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class BaseCallMethodGenerator
+  internal class BaseCallMethodGenerator
   {
     private CustomMethodEmitter _methodEmitter;
     private BaseClassDefinition _baseClassConfiguration;

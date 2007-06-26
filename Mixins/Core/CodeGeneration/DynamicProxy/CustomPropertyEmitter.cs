@@ -9,7 +9,7 @@ using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class CustomPropertyEmitter : IAttributableEmitter
+  internal class CustomPropertyEmitter : IAttributableEmitter
   {
     private PropertyBuilder builder;
     private MethodEmitter getMethod;

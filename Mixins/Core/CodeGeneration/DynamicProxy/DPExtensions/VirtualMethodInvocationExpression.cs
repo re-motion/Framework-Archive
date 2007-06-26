@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class VirtualMethodInvocationExpression : MethodInvocationExpression
+  internal class VirtualMethodInvocationExpression : MethodInvocationExpression
   {
     public VirtualMethodInvocationExpression(MethodInfo method, params Expression[] args)
       : base (method, args)

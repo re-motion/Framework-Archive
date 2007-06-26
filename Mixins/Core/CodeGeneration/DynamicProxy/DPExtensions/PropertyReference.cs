@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class PropertyReference : Reference
+  internal class PropertyReference : Reference
   {
     private PropertyInfo _property;
 

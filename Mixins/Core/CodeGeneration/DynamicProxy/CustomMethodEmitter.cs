@@ -9,7 +9,7 @@ using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class CustomMethodEmitter : IAttributableEmitter
+  internal class CustomMethodEmitter : IAttributableEmitter
   {
     private MethodEmitter _innerEmitter;
     private AbstractTypeEmitter _parentEmitter;

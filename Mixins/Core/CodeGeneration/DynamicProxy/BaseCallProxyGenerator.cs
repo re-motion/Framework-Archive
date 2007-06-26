@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class BaseCallProxyGenerator
+  internal class BaseCallProxyGenerator
   {
     private static readonly MethodInfo _getObjectDataMethod =
         typeof (ISerializable).GetMethod ("GetObjectData", new Type[] { typeof (SerializationInfo), typeof (StreamingContext) });

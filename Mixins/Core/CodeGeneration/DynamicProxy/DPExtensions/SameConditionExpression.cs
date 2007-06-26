@@ -5,7 +5,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public class SameConditionExpression : ConditionExpression
+  internal class SameConditionExpression : ConditionExpression
   {
     private Expression _left;
     private Expression _right;

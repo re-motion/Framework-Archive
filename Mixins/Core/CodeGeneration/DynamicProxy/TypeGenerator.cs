@@ -17,7 +17,7 @@ using Rubicon.Text;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class TypeGenerator: ITypeGenerator
+  internal class TypeGenerator : ITypeGenerator
   {
     private ModuleManager _module;
     private BaseClassDefinition _configuration;

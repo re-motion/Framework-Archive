@@ -13,7 +13,7 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class MixinTypeGenerator: IMixinTypeGenerator
+  internal class MixinTypeGenerator : IMixinTypeGenerator
   {
     private ModuleManager _module;
     private MixinDefinition _configuration;

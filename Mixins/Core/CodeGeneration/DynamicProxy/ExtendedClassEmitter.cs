@@ -13,7 +13,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
-  public class ExtendedClassEmitter : IAttributableEmitter
+  internal class ExtendedClassEmitter : IAttributableEmitter
   {
     private AbstractTypeEmitter _innerEmitter;
 

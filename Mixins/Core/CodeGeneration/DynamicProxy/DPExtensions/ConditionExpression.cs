@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions
 {
-  public abstract class ConditionExpression : Expression
+  internal abstract class ConditionExpression : Expression
   {
     public abstract OpCode BranchIfTrue { get; }
     public abstract OpCode BranchIfFalse { get; }

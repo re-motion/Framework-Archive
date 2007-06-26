@@ -404,7 +404,7 @@ namespace Rubicon.Utilities
       {
         return Enum.Parse (underlyingType, value, false);
       }
-      catch (ArgumentException e)
+      catch (ArgumentException)
       {
         throw new ParseException (string.Format ("{0} is not a valid value for {1}.", value, underlyingType.Name));
       }
