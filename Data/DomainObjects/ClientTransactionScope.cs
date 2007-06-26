@@ -12,19 +12,54 @@ namespace Rubicon.Data.DomainObjects
   {
     private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.CurrentTransaction";
 
-    private ClientTransaction _previousValue;
+    private ClientTransaction _previousTransaction;
+    private ClientTransaction _scopedTransaction;
     private bool _wasDisposed = false;
+    private AutoRollbackBehavior _autoRollbackBehavior;
+
+    /// <summary>
+    /// Creates a new <see cref="ClientTransaction"/> and assigns it to the <see cref="CurrentTransaction"/> property.
+    /// </summary>
+    /// <remarks>By default, any changes made to the scope's transaction which are not committed are automatically rolled back at the end of the
+    /// scope. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    public ClientTransactionScope ()
+      : this (AutoRollbackBehavior.Rollback)
+    {
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ClientTransaction"/> and assigns it to the <see cref="CurrentTransaction"/> property.
+    /// </summary>
+    /// <param name="autoRollbackBehavior">Specifies the automatic rollback behavior to be exhibited by this scope.</param>
+    public ClientTransactionScope (AutoRollbackBehavior autoRollbackBehavior)
+      : this (new ClientTransaction (), autoRollbackBehavior)
+    {
+    }
 
     /// <summary>
     /// Temporarily sets <see cref="CurrentTransaction"/>.
     /// </summary>
-    /// <param name="temporaryCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
-    public ClientTransactionScope (ClientTransaction temporaryCurrentTransaction)
+    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
+    /// <remarks>By default, no changes made within the scope are automatically rolled back. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    public ClientTransactionScope (ClientTransaction scopedCurrentTransaction)
+        : this (scopedCurrentTransaction, AutoRollbackBehavior.None)
     {
-      if (ClientTransactionScope.HasCurrentTransaction)
-        _previousValue = ClientTransactionScope.CurrentTransaction;
+    }
 
-      ClientTransactionScope.SetCurrentTransaction (temporaryCurrentTransaction);
+    /// <summary>
+    /// Temporarily sets <see cref="CurrentTransaction"/>.
+    /// </summary>
+    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
+    /// <param name="autoRollbackBehavior">Specifies the automatic rollback behavior to be exhibited by this scope.</param>
+    public ClientTransactionScope (ClientTransaction scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior)
+    {
+      _autoRollbackBehavior = autoRollbackBehavior;
+
+      if (ClientTransactionScope.HasCurrentTransaction)
+        _previousTransaction = ClientTransactionScope.CurrentTransaction;
+
+      ClientTransactionScope.SetCurrentTransaction (scopedCurrentTransaction);
+      _scopedTransaction = scopedCurrentTransaction;
     }
 
     /// <summary>
@@ -54,14 +89,45 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Resets <see cref="CurrentTransaction"/> to the value it had before this scope was instantiated.
+    /// Gets or sets a value indicating whether this scope will automatically call <see cref="ClientTransaction.Rollback"/> on a transaction
+    /// with uncommitted changed objects when the scope's <see cref="Dispose"/> method is invoked.
+    /// </summary>
+    /// <value>An <see cref="AutoRollbackBehavior"/> value indicating how the scope should behave when it is disposed and its transaction's changes
+    /// have not been committed.</value>
+    public AutoRollbackBehavior AutoRollbackBehavior
+    {
+      get { return _autoRollbackBehavior; }
+      set { _autoRollbackBehavior = value; }
+    }
+
+    /// <summary>
+    /// Gets the transaction this scope was created for.
+    /// </summary>
+    /// <value>The transaction passed to the scope's constructor or automatically created by the scope.</value>
+    public ClientTransaction ScopedTransaction
+    {
+      get { return _scopedTransaction; }
+    }
+
+    /// <summary>
+    /// Resets <see cref="CurrentTransaction"/> to the value it had before this scope was instantiated and performs the
+    /// <see cref="AutoRollbackBehavior"/>. This method is ignored when executed more than once.
     /// </summary>
     public void Dispose ()
     {
       if (!_wasDisposed)
       {
-        ClientTransactionScope.SetCurrentTransaction (_previousValue);
+        ExecuteAutoRollbackBehavior ();
+        ClientTransactionScope.SetCurrentTransaction (_previousTransaction);
         _wasDisposed = true;
+      }
+    }
+
+    private void ExecuteAutoRollbackBehavior ()
+    {
+      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
+      {
+        ScopedTransaction.Rollback ();
       }
     }
 
