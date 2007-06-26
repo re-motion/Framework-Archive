@@ -160,7 +160,7 @@ namespace Rubicon.Collections
     }
 
     ///<summary>
-    ///Copies the elements of the <see cref="Set{T}"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/see> index.
+    ///Copies the elements of the <see cref="Set{T}"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
     ///</summary>
     ///
     ///<param name="array">The one-dimensional <see cref="T:System.Array"></see> that is the destination of the elements copied.
