@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public static Order NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return Order.NewObject();
       }
@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<Order> (id);
       }
@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<Order> (id, includeDeleted);
       }

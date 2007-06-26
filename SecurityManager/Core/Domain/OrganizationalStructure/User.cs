@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     internal static User NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<User> ().With ();
       }
@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<User> (id);
       }

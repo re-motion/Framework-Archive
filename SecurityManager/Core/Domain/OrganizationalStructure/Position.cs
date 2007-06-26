@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     internal static Position NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<Position> ().With ();
       }

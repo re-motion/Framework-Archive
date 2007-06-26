@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     public new static OrderItem GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return OrderItem.GetObject (id);
       }

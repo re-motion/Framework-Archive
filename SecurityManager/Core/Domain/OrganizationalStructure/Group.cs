@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     internal static Group NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<Group> ().With ();
       }
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<Group> (id);
       }

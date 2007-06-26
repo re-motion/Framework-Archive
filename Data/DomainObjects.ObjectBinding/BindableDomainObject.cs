@@ -77,7 +77,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
     
-    using (new CurrentTransactionScope (clientTransaction))
+    using (new ClientTransactionScope (clientTransaction))
     {
       return DomainObject.GetObject<BindableDomainObject> (id);
     }
@@ -104,7 +104,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    using (new CurrentTransactionScope (clientTransaction))
+    using (new ClientTransactionScope (clientTransaction))
     {
       return DomainObject.GetObject<BindableDomainObject> (id, includeDeleted);
     }
@@ -157,7 +157,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/>
 	/// should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with CurrentTransactionScope instead.", true)]
+  [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with ClientTransactionScope instead.", true)]
 	protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
     Initialize ();

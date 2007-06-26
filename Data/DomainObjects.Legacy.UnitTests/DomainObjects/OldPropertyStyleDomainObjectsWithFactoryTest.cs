@@ -638,7 +638,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     public void OldCreateNewObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      using (new CurrentTransactionScope (clientTransactionMock))
+      using (new ClientTransactionScope (clientTransactionMock))
       {
         Order order = new Order ();
 

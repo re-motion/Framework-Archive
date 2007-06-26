@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static SecurableClassDefinition NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<SecurableClassDefinition> ().With ();
       }
@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<SecurableClassDefinition> (id);
       }

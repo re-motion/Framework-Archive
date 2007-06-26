@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   {
     public static AccessTypeReference NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<AccessTypeReference> ().With ();
       }

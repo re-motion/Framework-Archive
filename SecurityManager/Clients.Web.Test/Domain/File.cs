@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public static File NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.NewObject<File> ().With ();
       }
@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 
     public static new File GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<File> (id);
       }

@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public static GroupType NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<GroupType> ().With ();
       }

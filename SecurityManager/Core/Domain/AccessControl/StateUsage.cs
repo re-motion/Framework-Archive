@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
   {
     public static StateUsage NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<StateUsage> ().With ();
       }

@@ -26,7 +26,7 @@ public class ReferencePropertyTest : DatabaseTest
     base.SetUp ();
 
     _clientTransaction = new ClientTransaction ();
-    using (new CurrentTransactionScope (_clientTransaction))
+    using (new ClientTransactionScope (_clientTransaction))
     {
       _order = new Order();
       _orderTicket = new OrderTicket (_order);

@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     public static Role NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<Role> ().With ();
       }

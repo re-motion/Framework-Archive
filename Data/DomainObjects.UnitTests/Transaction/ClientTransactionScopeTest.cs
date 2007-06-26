@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
-  public class CurrentTransactionScopeTest
+  public class ClientTransactionScopeTest
   {
     [SetUp]
     public void SetUp ()
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
       Assert.AreNotSame (clientTransaction, ClientTransaction.Current);
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         Assert.AreSame (clientTransaction, ClientTransaction.Current);
       }
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ClientTransaction.SetCurrent (new ClientTransaction ());
       Assert.IsTrue (ClientTransaction.HasCurrent);
-      using (new CurrentTransactionScope (null))
+      using (new ClientTransactionScope (null))
       {
         Assert.IsFalse (ClientTransaction.HasCurrent);
       }
@@ -53,10 +53,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreNotSame (clientTransaction2, original);
       Assert.IsNotNull (original);
 
-      using (new CurrentTransactionScope (clientTransaction1))
+      using (new ClientTransactionScope (clientTransaction1))
       {
         Assert.AreSame (clientTransaction1, ClientTransaction.Current);
-        using (new CurrentTransactionScope (clientTransaction2))
+        using (new ClientTransactionScope (clientTransaction2))
         {
           Assert.AreSame (clientTransaction2, ClientTransaction.Current);
         }
@@ -69,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void LeavesEmptyTransaction ()
     {
       Assert.IsFalse (ClientTransaction.HasCurrent);
-      using (new CurrentTransactionScope (new ClientTransaction ()))
+      using (new ClientTransactionScope (new ClientTransaction ()))
       {
         Assert.IsTrue (ClientTransaction.HasCurrent);
       }

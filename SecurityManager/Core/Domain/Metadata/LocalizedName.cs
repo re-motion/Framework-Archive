@@ -12,7 +12,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   {
     public static LocalizedName NewObject (ClientTransaction clientTransaction, string text, Culture culture, MetadataObject metadataObject)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<LocalizedName> ().With (text, culture, metadataObject);
       }

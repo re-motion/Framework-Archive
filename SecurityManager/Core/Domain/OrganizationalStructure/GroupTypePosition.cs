@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
   {
     public static GroupTypePosition NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<GroupTypePosition> ().With ();
       }

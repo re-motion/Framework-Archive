@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
      public static StateCombination NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<StateCombination> ().With ();
       }

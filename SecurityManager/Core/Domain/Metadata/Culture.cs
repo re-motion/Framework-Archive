@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   {
     public static Culture NewObject (ClientTransaction clientTransaction, string cultureName)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<Culture> ().With (cultureName);
       }

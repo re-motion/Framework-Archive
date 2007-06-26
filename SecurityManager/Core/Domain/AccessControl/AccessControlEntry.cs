@@ -27,7 +27,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public static AccessControlEntry NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<AccessControlEntry>().With();
       }
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public new static AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<AccessControlEntry> (id);
       }

@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   {
     public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<AbstractRoleDefinition> ().With ();
       }
@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public static AbstractRoleDefinition NewObject (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return NewObject<AbstractRoleDefinition> ().With (metadataItemID, name, value);
       }

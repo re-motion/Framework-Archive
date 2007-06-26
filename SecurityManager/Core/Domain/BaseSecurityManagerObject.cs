@@ -8,7 +8,7 @@ namespace Rubicon.SecurityManager.Domain
   {
     public static new BaseSecurityManagerObject GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<BaseSecurityManagerObject> (id);
       }

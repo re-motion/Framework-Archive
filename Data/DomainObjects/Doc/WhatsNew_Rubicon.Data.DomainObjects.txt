@@ -3,6 +3,26 @@
 
 - Explizite Interface-Implementierungen werden nun nicht mehr per default Teil des Mappings. 
   Sie kˆnnen mit StorageClassAttribute (StorageClass.Transaction) explizt in das Mapping aufgenommen werden.
+  
+- DomainObject.DataContainer, Get/SetRelatedObject und GetRelatedObjects sind obsolet und sollte nicht mehr benutzt werden (stattdessen
+  CurrentProperty und Properties[...] verwenden). DomainObject.DataContainer liefert keinen DataContainer mehr, sondern ein "Indirection"-Objekt
+  mit ‰hnlicher Schnittstelle, so dass Legacy-Code weiter compiliert werden kann.
+  
+  Regular Expressions f¸r das Ersetzen der alten Methoden mit neuen:
+  "\({:i(\.:i)*}\):b*DataContainer\.GetValue:b*\({:q}\)"
+  "\({:i(\.:i)*}\):b*DataContainer:b*\[{:q}\]"
+  "\({:i(\.:i)*}\):b*GetRelatedObject:b*\({:q}\)"
+  "\({:i(\.:i)*}\):b*GetRelatedObjects:b*\({:q}\)"
+  -> "Properties[\2].GetValue<\1>()"
+  
+  "DataContainer\.SetValue:b*\({:q}, {:i(\.:i)*}\)"
+  "DataContainer\[{:q}\] = {:i(\.:i)*}"
+  "SetRelatedObject:b*\({:q}, {:i(\.:i)*}\)"
+  -> "Properties[\1].SetValue (\2)"
+  
+- CurrentTransactionScope heiﬂt jetzt ClientTransactionScope.  
+- Der DomainObject-Konstruktor mit ClientTransaction-Parameter ist nun obsolet, seine Verwendung erzeugt einen Compiler-Fehler. ClientTransactionScope
+  muss statt dessen verwendet werden.
 
 1.7.42.0
 ========

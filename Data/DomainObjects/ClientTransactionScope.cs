@@ -7,7 +7,7 @@ namespace Rubicon.Data.DomainObjects
   /// </summary>
   /// <remarks>The constructor of this class temporarily sets <see cref="ClientTransaction.Current"/> to the given transaction intance, remembering
   /// its previous value. The <see cref="Dispose"/> method resets <see cref="ClientTransaction.Current"/> to the remembered value.</remarks>
-  public class CurrentTransactionScope : IDisposable
+  public class ClientTransactionScope : IDisposable
   {
     private ClientTransaction _previousValue;
     private bool _wasDisposed = false;
@@ -16,7 +16,7 @@ namespace Rubicon.Data.DomainObjects
     /// Temporarily sets <see cref="ClientTransaction.Current"/>.
     /// </summary>
     /// <param name="temporaryCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
-    public CurrentTransactionScope (ClientTransaction temporaryCurrentTransaction)
+    public ClientTransactionScope (ClientTransaction temporaryCurrentTransaction)
     {
       if (ClientTransaction.HasCurrent)
       {

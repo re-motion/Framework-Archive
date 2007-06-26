@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests.TestDomain
 
     public static new ClientBoundBaseClass GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
-      using (new CurrentTransactionScope (clientTransaction))
+      using (new ClientTransactionScope (clientTransaction))
       {
         return DomainObject.GetObject<ClientBoundBaseClass> (id);
       }

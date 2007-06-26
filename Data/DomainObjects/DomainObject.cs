@@ -197,7 +197,7 @@ public class DomainObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    using (new CurrentTransactionScope (clientTransaction))
+    using (new ClientTransactionScope (clientTransaction))
     {
       return GetObject<DomainObject> (id);
     }
@@ -221,7 +221,7 @@ public class DomainObject
   protected static DomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    using (new CurrentTransactionScope (clientTransaction))
+    using (new ClientTransactionScope (clientTransaction))
     {
       return GetObject<DomainObject> (id, includeDeleted);
     }
@@ -342,7 +342,7 @@ public class DomainObject
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with CurrentTransactionScope instead.", true)]
+  [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with ClientTransactionScope instead.", true)]
   protected DomainObject (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
