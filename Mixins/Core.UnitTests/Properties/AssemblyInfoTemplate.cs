@@ -54,6 +54,9 @@ using Rubicon.Mixins;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
+[assembly: ContainsMixinInfo]
+
 #pragma warning disable 1699
 [assembly: AssemblyDelaySign (false)]
 [assembly: AssemblyKeyFile (@"@keyfile@")]
