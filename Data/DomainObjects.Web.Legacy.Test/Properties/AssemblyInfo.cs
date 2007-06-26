@@ -59,6 +59,9 @@ using System.Runtime.CompilerServices;
 //   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
 //       documentation for more information on this.
 //
+
+#pragma warning disable 1699
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
+#pragma warning restore 1699

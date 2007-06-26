@@ -19,12 +19,7 @@ public class OrderTicket : TestDomainBase
   // construction and disposing
 
   // New OrderTickets need an associated order for correct initialization.
-  public OrderTicket (Order order) : this (order, ClientTransaction.Current)
-  {
-  }
-
-  // New OrderTickets need an associated order for correct initialization.
-  public OrderTicket (Order order, ClientTransaction clientTransaction) : base (clientTransaction)
+  public OrderTicket (Order order)
   {
     ArgumentUtility.CheckNotNull ("order", order);
     Order = order;

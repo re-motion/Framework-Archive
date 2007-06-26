@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
     {
     }
 
-    protected AbstractClassWithoutDerivations (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected AbstractClassWithoutDerivations (DataContainer dataContainer)
       : base (dataContainer)
     {

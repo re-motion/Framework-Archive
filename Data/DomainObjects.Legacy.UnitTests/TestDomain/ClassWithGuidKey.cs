@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public ClassWithGuidKey (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected ClassWithGuidKey (DataContainer dataContainer)
       : base (dataContainer)
     {

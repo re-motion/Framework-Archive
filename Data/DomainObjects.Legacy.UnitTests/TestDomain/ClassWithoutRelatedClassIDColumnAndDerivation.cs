@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public ClassWithoutRelatedClassIDColumnAndDerivation (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected ClassWithoutRelatedClassIDColumnAndDerivation (DataContainer dataContainer)
       : base (dataContainer)
     {

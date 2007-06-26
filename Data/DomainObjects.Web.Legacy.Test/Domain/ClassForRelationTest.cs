@@ -29,10 +29,6 @@ public class ClassForRelationTest : BindableDomainObject
   {
   }
 
-  public ClassForRelationTest (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
   protected ClassForRelationTest (DataContainer dataContainer) : base (dataContainer)
   {
   }

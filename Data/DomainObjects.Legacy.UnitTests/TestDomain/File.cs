@@ -36,11 +36,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public File (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected File (DataContainer dataContainer)
       : base (dataContainer)
     {

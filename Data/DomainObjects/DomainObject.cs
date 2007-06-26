@@ -342,7 +342,7 @@ public class DomainObject
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="DomainObject"/> should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with CurrentTransactionScope instead.")]
+  [Obsolete ("This constructor is obsolete, use the DomainObject() one in conjunction with CurrentTransactionScope instead.", true)]
   protected DomainObject (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);

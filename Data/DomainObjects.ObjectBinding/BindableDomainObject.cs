@@ -157,7 +157,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <see cref="BindableDomainObject"/>
 	/// should be part of. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
-  [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with CurrentTransactionScope instead.")]
+  [Obsolete ("This constructor is obsolete, use the BindableDomainObject() one in conjunction with CurrentTransactionScope instead.", true)]
 	protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
     Initialize ();

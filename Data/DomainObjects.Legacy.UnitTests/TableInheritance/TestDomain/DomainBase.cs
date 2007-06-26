@@ -17,12 +17,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
       InitializeNew ();
     }
 
-    protected DomainBase (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-      InitializeNew ();
-    }
-
     protected DomainBase (DataContainer dataContainer)
       : base (dataContainer)
     {

@@ -23,12 +23,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    // New customers cannot be created directly.
-    protected Company (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected Company (DataContainer dataContainer)
       : base (dataContainer)
     {

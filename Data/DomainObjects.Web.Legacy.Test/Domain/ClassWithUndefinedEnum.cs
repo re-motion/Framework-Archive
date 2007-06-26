@@ -28,10 +28,6 @@ public class ClassWithUndefinedEnum : BindableDomainObject
   {
   }
 
-  public ClassWithUndefinedEnum (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
   protected ClassWithUndefinedEnum (DataContainer dataContainer) : base (dataContainer)
   {
   }

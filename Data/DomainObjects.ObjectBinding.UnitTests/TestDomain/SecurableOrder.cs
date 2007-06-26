@@ -16,8 +16,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     // construction and disposing
 
-    public SecurableOrder (ClientTransaction clientTransaction, IObjectSecurityStrategy securityStrategy)
-      : base (clientTransaction)
+    public SecurableOrder (IObjectSecurityStrategy securityStrategy)
     {
       _securityStrategy = securityStrategy;
     }

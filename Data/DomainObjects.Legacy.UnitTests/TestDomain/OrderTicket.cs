@@ -26,13 +26,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
 
     // New OrderTickets need an associated order for correct initialization.
     public OrderTicket (Order order)
-      : this (order, ClientTransaction.Current)
-    {
-    }
-
-    // New OrderTickets need an associated order for correct initialization.
-    public OrderTicket (Order order, ClientTransaction clientTransaction)
-      : base (clientTransaction)
     {
       ArgumentUtility.CheckNotNull ("order", order);
       Order = order;

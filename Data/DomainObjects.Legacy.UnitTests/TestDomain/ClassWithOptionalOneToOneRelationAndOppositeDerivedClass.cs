@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public ClassWithOptionalOneToOneRelationAndOppositeDerivedClass (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected ClassWithOptionalOneToOneRelationAndOppositeDerivedClass (DataContainer dataContainer)
       : base (dataContainer)
     {

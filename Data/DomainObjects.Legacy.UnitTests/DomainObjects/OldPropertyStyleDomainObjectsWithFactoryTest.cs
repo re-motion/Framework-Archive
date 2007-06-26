@@ -637,10 +637,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.DomainObjects
     [Test]
     public void OldCreateNewObjectWithTransaction ()
     {
-      using (new FactoryInstantiationScope ())
+      ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
+      using (new CurrentTransactionScope (clientTransactionMock))
       {
-        ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-        Order order = new Order (clientTransactionMock);
+        Order order = new Order ();
 
         Assert.AreSame (clientTransactionMock, order.DataContainer.ClientTransaction);
         Assert.IsFalse (object.ReferenceEquals (this.ClientTransactionMock, order.DataContainer.ClientTransaction));

@@ -26,10 +26,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
     {
     }
 
-    public Address (ClientTransaction clientTransaction) : base (clientTransaction)
-    {
-    }
-
     protected Address (DataContainer dataContainer)
       : base (dataContainer)
     {

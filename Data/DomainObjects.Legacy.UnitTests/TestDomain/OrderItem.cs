@@ -23,11 +23,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public OrderItem (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected OrderItem (DataContainer dataContainer)
       : base (dataContainer)
     {

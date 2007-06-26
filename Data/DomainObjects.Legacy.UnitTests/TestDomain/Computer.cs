@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public Computer (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected Computer (DataContainer dataContainer)
       : base (dataContainer)
     {

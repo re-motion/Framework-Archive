@@ -43,10 +43,6 @@ public class ClassWithAllDataTypes : BindableDomainObject
   {
   }
 
-  public ClassWithAllDataTypes (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
   protected ClassWithAllDataTypes (DataContainer dataContainer) : base (dataContainer)
   {
   }

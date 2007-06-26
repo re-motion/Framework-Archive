@@ -22,11 +22,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public Location (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected Location (DataContainer dataContainer)
       : base (dataContainer)
     {

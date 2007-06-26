@@ -21,11 +21,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public IndustrialSector (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected IndustrialSector (DataContainer dataContainer)
       : base (dataContainer)
     {

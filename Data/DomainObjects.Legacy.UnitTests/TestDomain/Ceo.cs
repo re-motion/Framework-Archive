@@ -23,12 +23,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    // CEOs can only be created within this assembly.
-    internal Ceo (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected Ceo (DataContainer dataContainer)
       : base (dataContainer)
     {

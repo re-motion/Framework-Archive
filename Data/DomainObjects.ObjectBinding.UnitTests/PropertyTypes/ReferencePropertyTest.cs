@@ -26,8 +26,11 @@ public class ReferencePropertyTest : DatabaseTest
     base.SetUp ();
 
     _clientTransaction = new ClientTransaction ();
-    _order = new Order (_clientTransaction);
-    _orderTicket = new OrderTicket (_order, _clientTransaction);
+    using (new CurrentTransactionScope (_clientTransaction))
+    {
+      _order = new Order();
+      _orderTicket = new OrderTicket (_order);
+    }
     _orderTicketBusinessObjectClass = new DomainObjectClass (MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (OrderTicket)));
   }
 

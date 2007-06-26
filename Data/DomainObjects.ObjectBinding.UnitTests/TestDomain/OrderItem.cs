@@ -22,10 +22,6 @@ public class OrderItem : TestDomainBase
   {
   }
 
-  public OrderItem (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
   protected OrderItem (DataContainer dataContainer) : base (dataContainer)
   {
   }

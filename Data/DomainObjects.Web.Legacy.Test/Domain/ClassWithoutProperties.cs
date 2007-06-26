@@ -28,10 +28,6 @@ public class ClassWithoutProperties : BindableDomainObject
   {
   }
 
-  public ClassWithoutProperties (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
   protected ClassWithoutProperties (DataContainer dataContainer) : base (dataContainer)
   {
   }

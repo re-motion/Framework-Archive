@@ -26,10 +26,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
     {
     }
 
-    public HistoryEntry (ClientTransaction clientTransaction) : base (clientTransaction)
-    {
-    }
-
     protected HistoryEntry (DataContainer dataContainer)
       : base (dataContainer)
     {

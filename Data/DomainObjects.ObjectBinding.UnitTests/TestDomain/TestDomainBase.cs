@@ -17,10 +17,6 @@ public class TestDomainBase : BindableDomainObject
   {
   }
 
-	protected TestDomainBase (ClientTransaction clientTransaction) : base (clientTransaction)
-	{
-	}
-
   protected TestDomainBase (DataContainer dataContainer) : base (dataContainer)
   {
   }

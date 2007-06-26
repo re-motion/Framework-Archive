@@ -26,10 +26,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance.TestDomai
     {
     }
 
-    public Order (ClientTransaction clientTransaction) : base (clientTransaction)
-    {
-    }
-
     protected Order (DataContainer dataContainer)
       : base (dataContainer)
     {

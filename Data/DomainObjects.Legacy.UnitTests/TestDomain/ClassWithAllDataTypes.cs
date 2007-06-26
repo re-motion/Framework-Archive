@@ -31,11 +31,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public ClassWithAllDataTypes (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected ClassWithAllDataTypes (DataContainer dataContainer)
       : base (dataContainer)
     {

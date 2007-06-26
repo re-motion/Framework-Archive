@@ -16,11 +16,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain
     {
     }
 
-    public ClassNotInMapping (ClientTransaction clientTransaction)
-      : base (clientTransaction)
-    {
-    }
-
     protected ClassNotInMapping (DataContainer dataContainer)
       : base (dataContainer)
     {
