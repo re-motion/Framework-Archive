@@ -18,6 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       _testHelper = new MetadataTestHelper ();
       _importer = new MetadataImporter (_testHelper.Transaction);
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]

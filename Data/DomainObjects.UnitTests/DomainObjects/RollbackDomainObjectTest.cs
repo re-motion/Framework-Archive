@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ClientTransactionMock.Rollback ();
 
-      ObjectID id = newOrder.ID;
+      int number = newOrder.OrderNumber;
     }
 
     [Test]

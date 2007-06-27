@@ -13,20 +13,28 @@ namespace Rubicon.Data.DomainObjects
 /// Represents an in-memory transaction.
 /// </summary>
 /// <remarks>
+/// <para>
 /// There are two ways a <see cref="ClientTransaction"/> can be used:<br />
 /// <list type="bullet">
 ///   <item>
 ///     <description>
-///       The transaction is initialized automatically through <see cref="ClientTransactionScope.CurrentTransaction"/> and is associated with the current <see cref="System.Threading.Thread"/>.
+///       The transaction is initialized automatically through <see cref="ClientTransactionScope.CurrentTransaction"/> and is associated with the
+///       current <see cref="System.Threading.Thread"/>.
 ///     </description>
 ///   </item>
 ///   <item>   
 ///     <description>
 ///       Multiple transactions can be instantiated with the constructor and used side-by-side. 
-///       Every <see cref="DomainObject"/> must then be associated with the particular transaction.
+///       Every <see cref="DomainObject"/> must then be associated with the current thread via <see cref="ClientTransactionScope"/>, e.g. by calling
+///       <see cref="EnterScope"/>.
 ///     </description>
 ///   </item>
 /// </list>
+/// </para>
+/// <para>
+/// <see cref="ClientTransaction">ClientTransaction's</see> methods temporarily set the <see cref="ClientTransactionScope"/> to this instance to
+/// ensure they are executed in the right context.
+/// </para>
 /// </remarks>
 [Serializable]
 public class ClientTransaction : ITransaction
@@ -104,13 +112,26 @@ public class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it.
+  /// </summary>
+  /// <returns>A new <see cref="ClientTransactionScope"/> fot rhis transaction.</returns>
+  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this)</c>.</remarks>
+  public ClientTransactionScope EnterScope ()
+  {
+    return new ClientTransactionScope (this);
+  }
+
+  /// <summary>
   /// Returns whether at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed.
   /// </summary>
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
-    return changedDomainObjects.Count > 0;
+    using (EnterScope ())
+    {
+      DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
+      return changedDomainObjects.Count > 0;
+    }
   }
 
   /// <summary>
@@ -120,20 +141,23 @@ public class ClientTransaction : ITransaction
   /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
-    BeginCommit ();
-    DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed, StateType.New }); 
-
-    DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
-    if (changedDataContainers.Count > 0)
+    using (EnterScope ())
     {
-      using (PersistenceManager persistenceManager = new PersistenceManager ())
-      {
-        persistenceManager.Save (changedDataContainers);
-      }
-    }
+      BeginCommit();
+      DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.New});
 
-    _dataManager.Commit ();
-    EndCommit (changedButNotDeletedDomainObjects);
+      DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit();
+      if (changedDataContainers.Count > 0)
+      {
+        using (PersistenceManager persistenceManager = new PersistenceManager())
+        {
+          persistenceManager.Save (changedDataContainers);
+        }
+      }
+
+      _dataManager.Commit();
+      EndCommit (changedButNotDeletedDomainObjects);
+    }
   }
 
   /// <summary>
@@ -141,12 +165,15 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    BeginRollback ();
-    DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed, StateType.Deleted });
-    
-    _dataManager.Rollback ();
+    using (EnterScope ())
+    {
+      BeginRollback();
+      DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.Deleted});
 
-    EndRollback (changedButNotNewDomainObjects);
+      _dataManager.Rollback();
+
+      EndRollback (changedButNotNewDomainObjects);
+    }
   }
 
   /// <summary>
@@ -162,7 +189,10 @@ public class ClientTransaction : ITransaction
   /// </exception>
   protected internal virtual DomainObject GetObject (ObjectID id)
   {
-    return GetObject (id, false);
+    using (EnterScope ())
+    {
+      return GetObject (id, false);
+    }
   }
 
   /// <summary>
@@ -181,24 +211,28 @@ public class ClientTransaction : ITransaction
   protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-
-    return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
+    using (EnterScope ())
+    {
+      return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
+    }
   }
 
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
-    
-    using (PersistenceManager persistenceManager = new PersistenceManager ())
+    using (EnterScope ())
     {
-      DataContainer newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition); 
-      SetClientTransaction (newDataContainer);
-      _dataManager.RegisterNewDataContainer (newDataContainer);
-      
-      return newDataContainer;
-    }    
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
+
+      using (PersistenceManager persistenceManager = new PersistenceManager())
+      {
+        DataContainer newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition);
+        SetClientTransaction (newDataContainer);
+        _dataManager.RegisterNewDataContainer (newDataContainer);
+
+        return newDataContainer;
+      }
+    }
   }
 
   /// <summary>
@@ -211,7 +245,10 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
+    using (EnterScope ())
+    {
+      return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
+    }
   }
 
   /// <summary>
@@ -225,13 +262,16 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    using (EnterScope ())
+    {
+      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
-    DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
-    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
+      _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+      DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
+      _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
 
-    return relatedObject;
+      return relatedObject;
+    }
   }
 
   /// <summary>
@@ -244,14 +284,16 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    using (EnterScope ())
+    {
+      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+      _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+      DomainObject relatedObject = _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
+      _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Original);
 
-    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
-    DomainObject relatedObject = _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
-    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Original);
-
-    return relatedObject;
+      return relatedObject;
+    }
   }
 
   /// <summary>
@@ -264,14 +306,16 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    using (EnterScope ())
+    {
+      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+      _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+      DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
+      _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects.Clone (true), ValueAccess.Current);
 
-    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
-    DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
-    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects.Clone (true), ValueAccess.Current);
-
-    return relatedObjects;
+      return relatedObjects;
+    }
   }
 
   /// <summary>
@@ -284,14 +328,16 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    using (EnterScope ())
+    {
+      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+      _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+      DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
+      _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Original);
 
-    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
-    DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
-    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Original);
-
-    return relatedObjects;
+      return relatedObjects;
+    }
   }  
 
   /// <summary>
@@ -311,7 +357,10 @@ public class ClientTransaction : ITransaction
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
+    using (EnterScope ())
+    {
+      _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
+    }
   }
   
   /// <summary>
@@ -325,8 +374,10 @@ public class ClientTransaction : ITransaction
   protected internal virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-
-    _dataManager.Delete (domainObject);
+    using (EnterScope ())
+    {
+      _dataManager.Delete (domainObject);
+    }
   }
 
   /// <summary>
@@ -346,18 +397,20 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-
-    using (PersistenceManager persistenceManager = new PersistenceManager ())
+    using (EnterScope ())
     {
-      DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
-      SetClientTransaction (dataContainer);
+      using (PersistenceManager persistenceManager = new PersistenceManager())
+      {
+        DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
+        SetClientTransaction (dataContainer);
 
-      _dataManager.RegisterExistingDataContainer (dataContainer);
+        _dataManager.RegisterExistingDataContainer (dataContainer);
 
-      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
-      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
+        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
-      return dataContainer.DomainObject;
+        return dataContainer.DomainObject;
+      }
     }
   }
 
@@ -385,26 +438,28 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
-
-    using (PersistenceManager persistenceManager = new PersistenceManager ())
+    using (EnterScope ())
     {
-      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
-      if (relatedDataContainer != null)
-      {
-        SetClientTransaction (relatedDataContainer);
-        _dataManager.RegisterExistingDataContainer (relatedDataContainer);
+      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
-        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {relatedDataContainer.DomainObject}, true);
-        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
-
-        return relatedDataContainer.DomainObject;
-      }
-      else
+      using (PersistenceManager persistenceManager = new PersistenceManager())
       {
-        _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
-        return null;
+        DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
+        if (relatedDataContainer != null)
+        {
+          SetClientTransaction (relatedDataContainer);
+          _dataManager.RegisterExistingDataContainer (relatedDataContainer);
+
+          DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {relatedDataContainer.DomainObject}, true);
+          OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
+          return relatedDataContainer.DomainObject;
+        }
+        else
+        {
+          _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
+          return null;
+        }
       }
     }
   }
@@ -422,11 +477,13 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-
-    using (PersistenceManager persistenceManager = new PersistenceManager ())
+    using (EnterScope ())
     {
-      DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
-      return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);
+      using (PersistenceManager persistenceManager = new PersistenceManager())
+      {
+        DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
+        return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);
+      }
     }
   }
 
@@ -443,12 +500,14 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-
-    return MergeLoadedDomainObjects (
-        dataContainers, 
-        relationEndPointID.Definition.PropertyType,
-        relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
-        relationEndPointID);
+    using (EnterScope ())
+    {
+      return MergeLoadedDomainObjects (
+          dataContainers,
+          relationEndPointID.Definition.PropertyType,
+          relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
+          relationEndPointID);
+    }
   }
 
   /// <summary>
@@ -464,8 +523,10 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-
-    return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
+    using (EnterScope ())
+    {
+      return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
+    }
   }
 
   /// <summary>
@@ -486,20 +547,23 @@ public class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
-    SetClientTransaction (newLoadedDataContainers);
-    _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
+    using (EnterScope ())
+    {
+      DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
+      SetClientTransaction (newLoadedDataContainers);
+      _dataManager.RegisterExistingDataContainers (newLoadedDataContainers);
 
-    DomainObjectCollection domainObjects = DomainObjectCollection.Create (
-        collectionType, _dataManager.DataContainerMap.MergeWithRegisteredDataContainers (dataContainers), requiredItemType);
+      DomainObjectCollection domainObjects = DomainObjectCollection.Create (
+          collectionType, _dataManager.DataContainerMap.MergeWithRegisteredDataContainers (dataContainers), requiredItemType);
 
-    if (relationEndPointID != null)
-      _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
+      if (relationEndPointID != null)
+        _dataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
 
-    DomainObjectCollection newLoadedDomainObjects = new DomainObjectCollection (newLoadedDataContainers, true);
-    OnLoaded (new ClientTransactionEventArgs (newLoadedDomainObjects));
+      DomainObjectCollection newLoadedDomainObjects = new DomainObjectCollection (newLoadedDataContainers, true);
+      OnLoaded (new ClientTransactionEventArgs (newLoadedDomainObjects));
 
-    return domainObjects;
+      return domainObjects;
+    }
   }
       
   /// <summary>
@@ -510,8 +574,11 @@ public class ClientTransaction : ITransaction
   protected void SetClientTransaction (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
-    foreach (DataContainer dataContainer in dataContainers)
-      SetClientTransaction (dataContainer);
+    using (EnterScope ())
+    {
+      foreach (DataContainer dataContainer in dataContainers)
+        SetClientTransaction (dataContainer);
+    }
   }
 
   /// <summary>
@@ -522,7 +589,10 @@ public class ClientTransaction : ITransaction
   protected void SetClientTransaction (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    dataContainer.SetClientTransaction (this);
+    using (EnterScope ())
+    {
+      dataContainer.SetClientTransaction (this);
+    }
   }
 
   /// <summary>
@@ -531,15 +601,18 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    foreach (DomainObject loadedDomainObject in args.DomainObjects)
-      loadedDomainObject.EndObjectLoading ();
-
-    if (args.DomainObjects.Count != 0)
+    using (EnterScope ())
     {
-      _extensions.ObjectsLoaded (args.DomainObjects);
+      foreach (DomainObject loadedDomainObject in args.DomainObjects)
+        loadedDomainObject.EndObjectLoading();
 
-      if (Loaded != null)
-        Loaded (this, args);
+      if (args.DomainObjects.Count != 0)
+      {
+        _extensions.ObjectsLoaded (args.DomainObjects);
+
+        if (Loaded != null)
+          Loaded (this, args);
+      }
     }
   }
 
@@ -549,10 +622,13 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    _extensions.Committing (args.DomainObjects);
+    using (EnterScope ())
+    {
+      _extensions.Committing (args.DomainObjects);
 
-    if (Committing != null)
-      Committing (this, args);
+      if (Committing != null)
+        Committing (this, args);
+    }
   }
 
   /// <summary>
@@ -561,10 +637,13 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    if (Committed != null)
-      Committed (this, args);
+    using (EnterScope ())
+    {
+      if (Committed != null)
+        Committed (this, args);
 
-    _extensions.Committed (args.DomainObjects);
+      _extensions.Committed (args.DomainObjects);
+    }
   }
 
   /// <summary>
@@ -573,10 +652,13 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    _extensions.RollingBack (args.DomainObjects);
+    using (EnterScope ())
+    {
+      _extensions.RollingBack (args.DomainObjects);
 
-    if (RollingBack != null)
-      RollingBack (this, args);
+      if (RollingBack != null)
+        RollingBack (this, args);
+    }
   }
 
   /// <summary>
@@ -585,10 +667,13 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    if (RolledBack != null)
-      RolledBack (this, args);
+    using (EnterScope ())
+    {
+      if (RolledBack != null)
+        RolledBack (this, args);
 
-    _extensions.RolledBack (args.DomainObjects);
+      _extensions.RolledBack (args.DomainObjects);
+    }
   }
 
   /// <summary>
@@ -606,10 +691,13 @@ public class ClientTransaction : ITransaction
   {
     get 
     {
-      if (_queryManager == null)
-        _queryManager = new QueryManager (this);
+      using (EnterScope ())
+      {
+        if (_queryManager == null)
+          _queryManager = new QueryManager (this);
 
-      return _queryManager; 
+        return _queryManager;
+      }
     }
   }
 

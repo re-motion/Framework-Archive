@@ -152,7 +152,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       customers.Add (customer);
 
-      Customer copy = Customer.GetObject (customer.ID, new ClientTransaction ());
+      Customer copy;
+      using (new ClientTransactionScope ())
+      {
+        copy = Customer.GetObject (customer.ID);
+      }
 
       Assert.IsFalse (customers.ContainsObject (copy));
     }

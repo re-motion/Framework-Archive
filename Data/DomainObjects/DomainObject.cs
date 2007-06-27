@@ -176,6 +176,18 @@ public class DomainObject
     return GetObject<DomainObject> (id, includeDeleted);
   }
 
+  /// <summary>
+  /// Loads a DomainObject into another transaction.
+  /// </summary>
+  /// <typeparam name="T">The type of domain object to load.</typeparam>
+  /// <param name="sourceObject">The source object to load in the destination transaction.</param>
+  /// <param name="destinationTransaction">The destination transaction to load the source object in.</param>
+  /// <returns>A <typeparamref name="T"/> reference which constitutes the same domain object as <paramref name="sourceObject"/>, but loaded
+  /// into <paramref name="destinationTransaction"/>.</returns>
+  /// <remarks>
+  /// This method is the equivalent of opening a <see cref="ClientTransactionScope"/> for the <paramref name="destinationTransaction"/> and
+  /// calling <see cref="DomainObject.GetObject{T}(ObjectID)"/> with <paramref name="sourceObject">sourceObject's</paramref> <see cref="ID"/>.
+  /// </remarks>
   public static T LoadIntoTransaction<T> (T sourceObject, ClientTransaction destinationTransaction)
       where T : DomainObject
   {
@@ -325,6 +337,7 @@ public class DomainObject
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Deleted;
 
+  private ObjectID _id;
   private DataContainer _dataContainer;
 
   // construction and disposing
@@ -343,6 +356,8 @@ public class DomainObject
 
     _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     _dataContainer.SetDomainObject (this);
+
+    _id = _dataContainer.ID;
   }
 
   #region Legacy constructors
@@ -360,6 +375,8 @@ public class DomainObject
 
     _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     _dataContainer.SetDomainObject (this);
+
+    _id = _dataContainer.ID;
   }
 
   /// <summary>
@@ -396,6 +413,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     _dataContainer = dataContainer;
+    _id = _dataContainer.ID;
   }
 
   /// <summary>
@@ -417,8 +435,7 @@ public class DomainObject
   {
     get 
     {
-      CheckIfObjectIsDiscarded ();
-      return _dataContainer.ID; 
+      return _id;
     }
   }
 
@@ -457,6 +474,8 @@ public class DomainObject
   /// <summary>
   /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to which the <see cref="DomainObject"/> belongs.
   /// </summary>
+  [Obsolete ("Association of DomainObjects with a single ClientTransaction will soon be removed, don't use this any longer. Use "
+      + "ClientTransactionScope.CurrentTransaction and DomainObject.CanBeUsedInTransaction instead.")]
   public ClientTransaction ClientTransaction
   {
     get { return _dataContainer.ClientTransaction; }
@@ -465,7 +484,12 @@ public class DomainObject
 	[Obsolete ("Do not access the DataContainer of a DomainObject to retrieve field values, use its Properties member instead.")]
 	public DataContainerIndirection DataContainer
 	{
-		get { return new DataContainerIndirection (this); }
+		get
+    {
+      CheckIfObjectIsDiscarded ();
+      CheckIfRightTransaction ();
+      return new DataContainerIndirection (this);
+    }
 	}
 
 		/// <summary>
@@ -475,6 +499,7 @@ public class DomainObject
   internal DataContainer GetDataContainer()
   {
     CheckIfObjectIsDiscarded ();
+    CheckIfRightTransaction ();
     return _dataContainer; 
   }
 
@@ -487,7 +512,6 @@ public class DomainObject
     _dataContainer = value;
   }
 
-
   /// <summary>
   /// Deletes the <see cref="DomainObject"/>.
   /// </summary>
@@ -499,6 +523,33 @@ public class DomainObject
 
     ClientTransaction.Delete (this);
   }
+
+  #region Transaction handling
+  /// <summary>
+  /// Determines whether this instance can be used in the specified transaction.
+  /// </summary>
+  /// <param name="transaction">The transaction to check this object against.</param>
+  /// <returns>
+  /// True if this instance can be used in the specified transaction; otherwise, false.
+  /// </returns>
+  /// <remarks>If this method returns false, <see cref="EnlistInTransaction"/> can be used to enlist this instance in another transaction.</remarks>
+  public bool CanBeUsedInTransaction (ClientTransaction transaction)
+  {
+    return _dataContainer.ClientTransaction == transaction;
+  }
+
+  private void CheckIfRightTransaction ()
+  {
+    if (!CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction))
+    {
+      string message = string.Format ("Domain object '{0}' cannot be used in the current transaction as it was loaded or created in another "
+          + "transaction. Use a ClientTransactionScope to set the right transaction, or call EnlistInCurrentTransaction to enlist the object "
+          + "with the current transaction.", ID);
+      throw new ClientTransactionsDifferException (message);
+    }
+  }
+
+  #endregion
 
   #region Property access
 
@@ -587,7 +638,12 @@ public class DomainObject
   /// <returns>A <see cref="PropertyIndexer"/> object which can be used to select a specific property of this <see cref="DomainObject"/>.</returns>
   protected internal PropertyIndexer Properties
   {
-    get { return new PropertyIndexer (this); }
+    get
+    {
+      CheckIfObjectIsDiscarded ();
+      CheckIfRightTransaction ();
+      return new PropertyIndexer (this);
+    }
   }
 
   #endregion

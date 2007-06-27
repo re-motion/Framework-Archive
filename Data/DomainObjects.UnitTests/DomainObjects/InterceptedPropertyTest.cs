@@ -113,9 +113,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         return NewObject<ClassWithWrongConstructor> ().With();
       }
 
-      public static ClassWithWrongConstructor NewObject (ClientTransaction clientTransaction)
+      public static ClassWithWrongConstructor NewObject (double d)
       {
-        return NewObject<ClassWithWrongConstructor> ().With (clientTransaction);
+        return NewObject<ClassWithWrongConstructor> ().With (d);
       }
 
       public ClassWithWrongConstructor (string s)
@@ -331,10 +331,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = 
-        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+ClassWithWrongConstructor does not "
-        + "support the requested constructor with signature ().")]
-    public void OldConstructorMismatch1()
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
+        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature ().")]
+    public void NewConstructorMismatch1 ()
     {
       ClassWithWrongConstructor.NewObject();
     }
@@ -342,33 +341,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
         + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
-        + "().")]
-    public void NewConstructorMismatch1 ()
-    {
-      using (new FactoryInstantiationScope ())
-      {
-        ClassWithWrongConstructor.NewObject();
-      }
-    }
-
-    [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage =
-        "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects.InterceptedPropertyTest+ClassWithWrongConstructor does not "
-        + "support the requested constructor with signature (Rubicon.Data.DomainObjects.ClientTransaction).")]
-    public void OldConstructorMismatch2 ()
-    {
-      ClassWithWrongConstructor.NewObject (ClientTransactionScope.CurrentTransaction);
-    }
-
-    [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Type Rubicon.Data.DomainObjects.UnitTests.DomainObjects."
-        + "InterceptedPropertyTest+ClassWithWrongConstructor does not support the requested constructor with signature "
-        + "(Rubicon.Data.DomainObjects.ClientTransaction).")]
+        + "(System.Double).")]
     public void NewConstructorMismatch2 ()
     {
       using (new FactoryInstantiationScope ())
       {
-        ClassWithWrongConstructor.NewObject (ClientTransactionScope.CurrentTransaction);
+        ClassWithWrongConstructor.NewObject (3.0);
       }
     }
 

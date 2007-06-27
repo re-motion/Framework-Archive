@@ -15,6 +15,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       base.SetUp ();
 
       _transaction = new ClientTransaction ();
+      _transaction.EnterScope ();
     }
 
     [Test]
@@ -65,8 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Permission permission = Permission.NewObject (transaction);
+      Permission permission = Permission.NewObject (_transaction);
 
       permission.Index = 1;
       Assert.AreEqual (1, permission.Index);

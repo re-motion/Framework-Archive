@@ -111,61 +111,70 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        "Property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' of DomainObject "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be set to DomainObject "
-        + "'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid', because the objects do not belong to the same ClientTransaction.")]
+    [ExpectedException (typeof (ClientTransactionsDifferException),
+      ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+        MatchType = MessageMatch.Regex)]
     public void SetRelatedObjectWithOtherClientTransaction ()
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderTicket orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2, clientTransaction);
-
+      OrderTicket orderTicket2;
+      using (new ClientTransactionScope ())
+      {
+        orderTicket2 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+      }
       _map.SetRelatedObject (new RelationEndPointID (order1.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), orderTicket2);
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid' at position 2 into collection of property "
-        + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.")]
+    [ExpectedException (typeof (ClientTransactionsDifferException),
+       ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+       MatchType = MessageMatch.Regex)]
     public void PerformCollectionAddWithOtherClientTransaction ()
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
+      OrderItem orderItem3;
+      using (new ClientTransactionScope ())
+      {
+        orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
+      }
 
       order1.OrderItems.Add (orderItem3);
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid' at position 0 into collection of property "
-        + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.")]
+    [ExpectedException (typeof (ClientTransactionsDifferException),
+        ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+        MatchType = MessageMatch.Regex)]
     public void PerformCollectionInsertWithOtherClientTransaction ()
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
       ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
+      OrderItem orderItem3;
+
+      using (new ClientTransactionScope ())
+      {
+        orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
+      }
 
       order1.OrderItems.Insert (0, orderItem3);
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        "Cannot remove DomainObject 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' from collection of property "
-        + "'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.")]
+    [ExpectedException (typeof (ClientTransactionsDifferException),
+        ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+        MatchType = MessageMatch.Regex)]
     public void PerformCollectionRemoveWithOtherClientTransaction ()
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1, clientTransaction);
+      OrderItem orderItem1;
+      using (new ClientTransactionScope())
+      {
+        orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+      }
 
       order1.OrderItems.Remove (orderItem1);
     }
@@ -175,8 +184,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      OrderItem orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3, clientTransaction);
+      OrderItem orderItem3;
+      using (new ClientTransactionScope ())
+      {
+        orderItem3 = OrderItem.GetObject (DomainObjectIDs.OrderItem3);
+      }
 
       int index = order1.OrderItems.IndexOf (DomainObjectIDs.OrderItem1);
 
@@ -187,24 +199,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       }
       catch (ClientTransactionsDifferException ex)
       {
-        string actualMessage = string.Format (
-            "Cannot replace DomainObject at position {0} with DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
-            + " in collection of property 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject "
-            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction.",
-            index);
-
-        Assert.AreEqual (actualMessage, ex.Message);
+        string expectedMessage = "Domain object 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid' cannot be used in the "
+            + "current transaction as it was loaded or created in another transaction.";
+        Assert.IsTrue (ex.Message.Contains (expectedMessage));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = 
-        "Cannot remove DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from RelationEndPointMap, "
-        + "because it belongs to a different ClientTransaction.")]
+    [ExpectedException (typeof (ClientTransactionsDifferException),
+        ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+        MatchType = MessageMatch.Regex)]
     public void PerformDeletionWithOtherClientTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
+      Order order1;
+      using (new ClientTransactionScope ())
+      {
+        order1 = Order.GetObject (DomainObjectIDs.Order1);
+      }
 
       _map.PerformDelete (order1);
     }

@@ -31,6 +31,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
@@ -61,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       Tenant tenant = _testHelper.CreateTenant (transaction, "NewTenant2", "UID: testTenant");
       _testHelper.CreateGroup (transaction, "NewGroup2", "UID: testGroup", null, tenant);
 

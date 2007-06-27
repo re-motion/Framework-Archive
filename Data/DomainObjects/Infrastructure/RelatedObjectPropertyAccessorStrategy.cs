@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public RelationEndPoint GetRelationEndPoint (PropertyAccessor accessor)
     {
 			ArgumentUtility.CheckNotNull ("accessor", accessor);
-      return accessor.DomainObject.ClientTransaction.DataManager.RelationEndPointMap[CreateRelationEndPointID (accessor)];
+      return accessor.DomainObject.GetDataContainer().ClientTransaction.DataManager.RelationEndPointMap[CreateRelationEndPointID (accessor)];
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor)
@@ -54,19 +54,19 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   	public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.ClientTransaction.GetRelatedObject (CreateRelationEndPointID (propertyAccessor));
+      return propertyAccessor.DomainObject.GetDataContainer ().ClientTransaction.GetRelatedObject (CreateRelationEndPointID (propertyAccessor));
     }
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, object value)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      propertyAccessor.DomainObject.ClientTransaction.SetRelatedObject (CreateRelationEndPointID (propertyAccessor), (DomainObject) value);
+      propertyAccessor.DomainObject.GetDataContainer ().ClientTransaction.SetRelatedObject (CreateRelationEndPointID (propertyAccessor), (DomainObject) value);
     }
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.ClientTransaction.GetOriginalRelatedObject (CreateRelationEndPointID (propertyAccessor));
+      return propertyAccessor.DomainObject.GetDataContainer ().ClientTransaction.GetOriginalRelatedObject (CreateRelationEndPointID (propertyAccessor));
     }
   }
 }

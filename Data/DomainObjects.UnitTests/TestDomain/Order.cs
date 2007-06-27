@@ -14,33 +14,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Order> ().With();
     }
 
-    public static Order NewObject (ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return Order.NewObject();
-      }
-    }
-
     public new static Order GetObject (ObjectID id)
     {
       return DomainObject.GetObject<Order> (id);
     }
 
-    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static Order GetObject (ObjectID id, bool includeDeleted)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<Order> (id);
-      }
-    }
-
-    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<Order> (id, includeDeleted);
-      }
+      return DomainObject.GetObject<Order> (id, includeDeleted);
     }
 
     protected Order ()

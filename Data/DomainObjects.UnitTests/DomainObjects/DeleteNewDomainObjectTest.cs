@@ -45,11 +45,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDiscardedException))]
     public void DomainObjectID ()
     {
+      ObjectID oldID = _newOrder.ID;
       _newOrder.Delete ();
-      ObjectID id = _newOrder.ID;
+      ObjectID newID = _newOrder.ID;
+      Assert.AreEqual (oldID, newID);
     }
 
     [Test]

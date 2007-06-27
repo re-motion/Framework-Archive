@@ -6,6 +6,8 @@ namespace Rubicon.SecurityManager.Domain
 {
   public abstract class BaseSecurityManagerObject : BindableDomainObject
   {
+    private ClientTransaction _clientTransaction;
+
     public static new BaseSecurityManagerObject GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       using (new ClientTransactionScope (clientTransaction))
@@ -16,11 +18,24 @@ namespace Rubicon.SecurityManager.Domain
 
     protected BaseSecurityManagerObject ()
     {
+      _clientTransaction = ClientTransactionScope.CurrentTransaction;
+    }
+
+    protected override void OnLoaded ()
+    {
+      base.OnLoaded ();
+      _clientTransaction = ClientTransactionScope.CurrentTransaction;
     }
 
     public new void Delete ()
     {
       base.Delete();
+    }
+
+    [StorageClassNone]
+    public new ClientTransaction ClientTransaction
+    {
+      get { return _clientTransaction; }
     }
   }
 }

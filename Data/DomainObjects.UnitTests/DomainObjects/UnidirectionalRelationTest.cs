@@ -112,15 +112,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ClientTransactionMock.Commit ();
 
-      ClientTransaction otherClientTransaction = new ClientTransaction ();
-      client1 = Client.GetObject (clientID1, otherClientTransaction);
-      client2 = Client.GetObject (clientID2, otherClientTransaction);
-      location = Location.GetObject (locationID, otherClientTransaction);
+      using (new ClientTransactionScope ())
+      {
+        client1 = Client.GetObject (clientID1);
+        client2 = Client.GetObject (clientID2);
+        location = Location.GetObject (locationID);
 
-      Assert.IsNotNull (client1);
-      Assert.IsNotNull (client2);
-      Assert.IsNotNull (location);
-      Assert.AreSame (client1, location.Client);
+        Assert.IsNotNull (client1);
+        Assert.IsNotNull (client2);
+        Assert.IsNotNull (location);
+        Assert.AreSame (client1, location.Client);
+      }
     }
 
     [Test]
@@ -183,13 +185,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
       ClientTransactionMock.Commit ();
 
-      ClientTransaction otherClientTransaction = new ClientTransaction ();
-      newClient1 = Client.GetObject (newClientID1, otherClientTransaction);
-      newClient2 = Client.GetObject (newClientID2, otherClientTransaction);
+      using (new ClientTransactionScope ())
+      {
+        newClient1 = Client.GetObject (newClientID1);
+        newClient2 = Client.GetObject (newClientID2);
 
-      Assert.IsNotNull (newClient1);
-      Assert.IsNotNull (newClient2);
-      Assert.AreSame (newClient1, newClient2.ParentClient);
+        Assert.IsNotNull (newClient1);
+        Assert.IsNotNull (newClient2);
+        Assert.AreSame (newClient1, newClient2.ParentClient);
+      }
     }
   }
 }

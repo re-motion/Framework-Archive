@@ -24,6 +24,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
       base.SetUp ();
 
       _transaction = new ClientTransaction ();
+      _transaction.EnterScope ();
+
       _metadataObject = SecurableClassDefinition.NewObject (_transaction);
       _metadataObject.Name = "Technical Name";
 

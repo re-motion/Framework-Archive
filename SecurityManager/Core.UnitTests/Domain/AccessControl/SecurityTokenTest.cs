@@ -12,11 +12,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   public class SecurityTokenTest : DomainTest
   {
     private OrganizationalStructureFactory _factory;
+    ClientTransaction _transaction;
 
     public override void SetUp ()
     {
       base.SetUp ();
       _factory = new OrganizationalStructureFactory ();
+      _transaction = new ClientTransaction ();
+      _transaction.EnterScope ();
     }
 
     [Test]
@@ -34,8 +37,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
       User user = null;
 
       SecurityToken token = new SecurityToken (user, tenant, CreateOwningGroups (), CreateAbstractRoles ());
@@ -46,8 +48,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningGroups_Empty ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
       User user = null;
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (), CreateAbstractRoles ());
@@ -58,9 +59,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningGroups ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group = CreateGroup (transaction, "Testgroup", null, tenant);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group = CreateGroup (_transaction, "Testgroup", null, tenant);
       User user = null;
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group), CreateAbstractRoles ());
@@ -72,10 +72,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningGroupRoles_Empty ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group = CreateGroup (transaction, "Testgroup", null, tenant);
-      User user = CreateUser (transaction, "test.user", group, tenant);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group = CreateGroup (_transaction, "Testgroup", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group, tenant);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group), CreateAbstractRoles ());
 
@@ -85,12 +84,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningGroupRoles_WithoutUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      User user = CreateUser (transaction, "test.user", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Role officialInGroup1 = CreateRole (_transaction, user, group1, officialPosition);
 
       SecurityToken token = new SecurityToken (null, null, CreateOwningGroups (group1), CreateAbstractRoles ());
 
@@ -101,16 +99,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetOwningGroupRoles_WithRoles ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      Group group2 = CreateGroup (transaction, "Other group", null, tenant);
-      User user = CreateUser (transaction, "test.user", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Position managerPosition = CreatePosition (transaction, "Manager");
-      Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
-      Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
-      Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Other group", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Position managerPosition = CreatePosition (_transaction, "Manager");
+      Role officialInGroup1 = CreateRole (_transaction, user, group1, officialPosition);
+      Role managerInGroup1 = CreateRole (_transaction, user, group1, managerPosition);
+      Role officialInGroup2 = CreateRole (_transaction, user, group2, officialPosition);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group1), CreateAbstractRoles ());
 
@@ -122,10 +119,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetUserGroups_WithoutUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Group1", null, tenant);
-      Group group2 = CreateGroup (transaction, "Group2", null, tenant);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Group1", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Group2", null, tenant);
       User user = null;
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group2), CreateAbstractRoles ());
@@ -136,12 +132,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetUserGroups_WithUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group parentGroup1 = CreateGroup (transaction, "ParentGroup1", null, tenant);
-      Group group1 = CreateGroup (transaction, "Group1", parentGroup1, tenant);
-      Group group2 = CreateGroup (transaction, "Group2", null, tenant);
-      User user = CreateUser (transaction, "test.user", group1, tenant);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group parentGroup1 = CreateGroup (_transaction, "ParentGroup1", null, tenant);
+      Group group1 = CreateGroup (_transaction, "Group1", parentGroup1, tenant);
+      Group group2 = CreateGroup (_transaction, "Group2", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group1, tenant);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group2), CreateAbstractRoles ());
 
@@ -153,10 +148,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesUserTenant_MatchesUserInTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "TestTenant");
-      Group group = CreateGroup (transaction, "Testgroup", null, tenant);
-      User user = CreateUser (transaction, "test.user", group, tenant);
+      Tenant tenant = CreateTenant (_transaction, "TestTenant");
+      Group group = CreateGroup (_transaction, "Testgroup", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group, tenant);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (), CreateAbstractRoles ());
 
@@ -166,12 +160,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesUserTenant_MatchesUserInParentTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant parentTenant = CreateTenant (transaction, "ParentTenant");
-      Tenant tenant = CreateTenant (transaction, "TestTenant");
+      Tenant parentTenant = CreateTenant (_transaction, "ParentTenant");
+      Tenant tenant = CreateTenant (_transaction, "TestTenant");
       tenant.Parent = parentTenant;
-      Group group = CreateGroup (transaction, "Testgroup", null, parentTenant);
-      User user = CreateUser (transaction, "test.user", group, parentTenant);
+      Group group = CreateGroup (_transaction, "Testgroup", null, parentTenant);
+      User user = CreateUser (_transaction, "test.user", group, parentTenant);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (), CreateAbstractRoles ());
 
@@ -181,8 +174,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void MatchesUserTenant_DoesNotMatchWithoutUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
 
       SecurityToken token = new SecurityToken (null, null, CreateOwningGroups (), CreateAbstractRoles ());
 
@@ -192,16 +184,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void ContainsRoleForOwningGroupAndPosition_DoesNotContain ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      Group group2 = CreateGroup (transaction, "Other group", null, tenant);
-      User user = CreateUser (transaction, "test.user", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Position managerPosition = CreatePosition (transaction, "Manager");
-      Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
-      Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
-      Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Other group", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Position managerPosition = CreatePosition (_transaction, "Manager");
+      Role officialInGroup1 = CreateRole (_transaction, user, group1, officialPosition);
+      Role managerInGroup1 = CreateRole (_transaction, user, group1, managerPosition);
+      Role officialInGroup2 = CreateRole (_transaction, user, group2, officialPosition);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group2), CreateAbstractRoles ());
 
@@ -211,16 +202,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void ContainsRoleForOwningGroupAndPosition_Contains ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      Group group2 = CreateGroup (transaction, "Other group", null, tenant);
-      User user = CreateUser (transaction, "test.user", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Position managerPosition = CreatePosition (transaction, "Manager");
-      Role officialInGroup1 = CreateRole (transaction, user, group1, officialPosition);
-      Role managerInGroup1 = CreateRole (transaction, user, group1, managerPosition);
-      Role officialInGroup2 = CreateRole (transaction, user, group2, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Other group", null, tenant);
+      User user = CreateUser (_transaction, "test.user", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Position managerPosition = CreatePosition (_transaction, "Manager");
+      Role officialInGroup1 = CreateRole (_transaction, user, group1, officialPosition);
+      Role managerInGroup1 = CreateRole (_transaction, user, group1, managerPosition);
+      Role officialInGroup2 = CreateRole (_transaction, user, group2, officialPosition);
 
       SecurityToken token = new SecurityToken (user, null, CreateOwningGroups (group1), CreateAbstractRoles ());
 
@@ -230,17 +220,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void ContainsRoleForUserGroupAndPosition_DoesNotContain ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      Group group2 = CreateGroup (transaction, "Other group", null, tenant);
-      User user1 = CreateUser (transaction, "test.user1", group1, tenant);
-      User user2 = CreateUser (transaction, "test.user2", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Position managerPosition = CreatePosition (transaction, "Manager");
-      Role user1OfficialInGroup1 = CreateRole (transaction, user1, group1, officialPosition);
-      Role user2ManagerInGroup1 = CreateRole (transaction, user2, group1, managerPosition);
-      Role user1OfficialInGroup2 = CreateRole (transaction, user1, group2, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Other group", null, tenant);
+      User user1 = CreateUser (_transaction, "test.user1", group1, tenant);
+      User user2 = CreateUser (_transaction, "test.user2", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Position managerPosition = CreatePosition (_transaction, "Manager");
+      Role user1OfficialInGroup1 = CreateRole (_transaction, user1, group1, officialPosition);
+      Role user2ManagerInGroup1 = CreateRole (_transaction, user2, group1, managerPosition);
+      Role user1OfficialInGroup2 = CreateRole (_transaction, user1, group2, officialPosition);
 
       SecurityToken token = new SecurityToken (user1, null, CreateOwningGroups (group1), CreateAbstractRoles ());
 
@@ -250,17 +239,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void ContainsRoleForUserGroupAndPosition_Contains ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      Tenant tenant = CreateTenant (transaction, "Testtenant");
-      Group group1 = CreateGroup (transaction, "Testgroup", null, tenant);
-      Group group2 = CreateGroup (transaction, "Other group", null, tenant);
-      User user1 = CreateUser (transaction, "test.user1", group1, tenant);
-      User user2 = CreateUser (transaction, "test.user2", group1, tenant);
-      Position officialPosition = CreatePosition (transaction, "Official");
-      Position managerPosition = CreatePosition (transaction, "Manager");
-      Role user1OfficialInGroup1 = CreateRole (transaction, user1, group1, officialPosition);
-      Role user2ManagerInGroup1 = CreateRole (transaction, user2, group1, managerPosition);
-      Role user1OfficialInGroup2 = CreateRole (transaction, user1, group2, officialPosition);
+      Tenant tenant = CreateTenant (_transaction, "Testtenant");
+      Group group1 = CreateGroup (_transaction, "Testgroup", null, tenant);
+      Group group2 = CreateGroup (_transaction, "Other group", null, tenant);
+      User user1 = CreateUser (_transaction, "test.user1", group1, tenant);
+      User user2 = CreateUser (_transaction, "test.user2", group1, tenant);
+      Position officialPosition = CreatePosition (_transaction, "Official");
+      Position managerPosition = CreatePosition (_transaction, "Manager");
+      Role user1OfficialInGroup1 = CreateRole (_transaction, user1, group1, officialPosition);
+      Role user2ManagerInGroup1 = CreateRole (_transaction, user2, group1, managerPosition);
+      Role user1OfficialInGroup2 = CreateRole (_transaction, user1, group2, officialPosition);
 
       SecurityToken token = new SecurityToken (user1, null, CreateOwningGroups (group1), CreateAbstractRoles ());
 

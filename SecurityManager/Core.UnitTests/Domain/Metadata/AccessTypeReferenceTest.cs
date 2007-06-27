@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       AccessTypeReference accessTypeReference = AccessTypeReference.NewObject (transaction);
 
       accessTypeReference.Index = 1;

@@ -47,14 +47,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private static GroupTypePosition CreateGroupTypePosition ()
     {
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      GroupTypePosition groupTypePosition = GroupTypePosition.NewObject (ClientTransactionScope.CurrentTransaction);
 
-      GroupTypePosition groupTypePosition = GroupTypePosition.NewObject (clientTransaction);
-      
-      groupTypePosition.GroupType = GroupType.NewObject (clientTransaction);
+      groupTypePosition.GroupType = GroupType.NewObject (ClientTransactionScope.CurrentTransaction);
       groupTypePosition.GroupType.Name = "GroupTypeName";
 
-      groupTypePosition.Position = factory.CreatePosition (clientTransaction);
+      groupTypePosition.Position = factory.CreatePosition (ClientTransactionScope.CurrentTransaction);
       groupTypePosition.Position.Name = "PositionName";
 
       return groupTypePosition;

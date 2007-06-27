@@ -303,12 +303,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        ExpectedMessage = "Cannot delete DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it belongs to a different ClientTransaction.")]
+       ExpectedMessage = "Domain object '.*' cannot be used in the current transaction as it was loaded or created in another transaction.",
+       MatchType = MessageMatch.Regex)]
     public void DeleteWithOtherClientTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
-
+      Order order1;
+      using (new ClientTransactionScope ())
+      {
+        order1 = Order.GetObject (DomainObjectIDs.Order1);
+      }
       _dataManager.Delete (order1);
     }
   }

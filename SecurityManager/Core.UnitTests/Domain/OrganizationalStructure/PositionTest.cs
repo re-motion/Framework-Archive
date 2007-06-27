@@ -12,6 +12,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class PositionTest : DomainTest
   {
+    private OrganizationalStructureTestHelper _testHelper;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      _testHelper = new OrganizationalStructureTestHelper ();
+      _testHelper.Transaction.EnterScope ();
+    }
+
     [Test]
     public void FindAll ()
     {
@@ -28,24 +37,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void DeletePosition_WithAccessControlEntry ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      Position position = testHelper.CreatePosition ("Position");
-      AccessControlEntry ace = testHelper.CreateAceWithPosition (position, GroupSelection.All);
+      using (testHelper.Transaction.EnterScope ())
+      {
+        Position position = testHelper.CreatePosition ("Position");
+        AccessControlEntry ace = testHelper.CreateAceWithPosition (position, GroupSelection.All);
 
-      position.Delete ();
+        position.Delete();
 
-      Assert.IsTrue (ace.IsDiscarded);
+        Assert.IsTrue (ace.IsDiscarded);
+      }
     }
 
     [Test]
     public void DeletePosition_WithRole ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, tenant);
-      Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, tenant);
-      User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-      Position position = testHelper.CreatePosition ("Position");
-      Role role = testHelper.CreateRole (user, roleGroup, position);
+      Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
+      Group userGroup = _testHelper.CreateGroup ("UserGroup", Guid.NewGuid ().ToString(), null, tenant);
+      Group roleGroup = _testHelper.CreateGroup ("RoleGroup", Guid.NewGuid ().ToString (), null, tenant);
+      User user = _testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+      Position position = _testHelper.CreatePosition ("Position");
+      Role role = _testHelper.CreateRole (user, roleGroup, position);
 
       position.Delete ();
 
@@ -55,10 +66,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DeletePosition_WithGroupTypePosition ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      GroupType groupType = testHelper.CreateGroupType ("GroupType");
-      Position position = testHelper.CreatePosition ("Position");
-      GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
+      GroupType groupType = _testHelper.CreateGroupType ("GroupType");
+      Position position = _testHelper.CreatePosition ("Position");
+      GroupTypePosition concretePosition = _testHelper.CreateGroupTypePosition (groupType, position);
 
       position.Delete ();
 
@@ -68,8 +78,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetDisplayName ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      Position position = testHelper.CreatePosition ("PositionName");
+      Position position = _testHelper.CreatePosition ("PositionName");
 
       Assert.AreEqual ("PositionName", position.DisplayName);
     }
@@ -77,8 +86,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetSecurityStrategy ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
 
       IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy ();
       Assert.IsNotNull (objectSecurityStrategy);
@@ -90,8 +98,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetSecurityStrategy_SameTwice ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
 
       Assert.AreSame (position.GetSecurityStrategy (), position.GetSecurityStrategy ());
     }
@@ -99,8 +106,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetSecurableType ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      ISecurableObject position = testHelper.CreatePosition ("PositionName");
+      ISecurableObject position = _testHelper.CreatePosition ("PositionName");
 
       Assert.AreSame (typeof (Position), position.GetSecurableType());
     }
@@ -108,8 +114,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void DomainObjectSecurityContextFactoryImplementation ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      Position position = testHelper.CreatePosition ("PositionName");
+      Position position = _testHelper.CreatePosition ("PositionName");
       IDomainObjectSecurityContextFactory factory = position;
 
       Assert.IsFalse (factory.IsDiscarded);
@@ -124,8 +129,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void CreateSecurityContext ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      Position position = testHelper.CreatePosition ("PositionName");
+      Position position = _testHelper.CreatePosition ("PositionName");
       position.Delegation = Delegation.Enabled;
 
       SecurityContext securityContext = ((ISecurityContextFactory) position).CreateSecurityContext ();

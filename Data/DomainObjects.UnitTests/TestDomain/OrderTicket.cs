@@ -31,14 +31,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<OrderTicket> (id, includeDeleted);
     }
 
-    public new static OrderTicket GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return OrderTicket.GetObject (id);
-      }
-    }
-
     protected OrderTicket ()
     {
     }

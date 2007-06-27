@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddAccessType_TwoNewAccessTypes ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       AccessTypeDefinition accessType0 = AccessTypeDefinition.NewObject  (transaction);
       AccessTypeDefinition accessType1 = AccessTypeDefinition.NewObject  (transaction);
       SecurableClassDefinitionWrapper classDefinitionWrapper = new SecurableClassDefinitionWrapper (SecurableClassDefinition.NewObject (transaction));
@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void AddStateProperty ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       StatePropertyDefinition stateProperty = StatePropertyDefinition.NewObject  (transaction);
       SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
@@ -179,9 +179,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice", transaction);
+      using (transaction.EnterScope())
+      {
+        invoiceClass = DomainObject.LoadIntoTransaction (invoiceClass, ClientTransactionScope.CurrentTransaction);
+        DomainObject.LoadIntoTransaction (invoiceClass, ClientTransactionScope.CurrentTransaction);
+        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice", transaction);
 
-      MetadataObjectAssert.AreEqual (invoiceClass, foundClass);
+        MetadataObjectAssert.AreEqual (invoiceClass, foundClass);
+      }
     }
 
     [Test]
@@ -196,9 +201,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce", transaction);
+      using (transaction.EnterScope())
+      {
+        SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce", transaction);
 
-      Assert.IsNull (foundClass);
+        Assert.IsNull (foundClass);
+      }
     }
 
     [Test]
@@ -219,7 +227,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       SecurableClassDefinition[] expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitions (10);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = expectedClassDefinitions[0].ClientTransaction;
+      transaction.EnterScope();
+
       DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
 
       Assert.AreEqual (10, result.Count);
@@ -233,7 +243,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       SecurableClassDefinition[] expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = expectedClassDefinitions[0].ClientTransaction;
+      transaction.EnterScope ();
       DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses (transaction);
 
       Assert.AreEqual (10, result.Count);
@@ -248,7 +259,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       SecurableClassDefinition[] expectedBaseClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10);
       SecurableClassDefinition expectedBaseClassDefinition = expectedBaseClassDefinitions[4];
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = expectedBaseClassDefinitions[0].ClientTransaction;
+      transaction.EnterScope ();
       SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID, transaction);
 
       Assert.AreEqual (10, actualBaseClassDefinition.DerivedClasses.Count);
@@ -259,7 +271,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
       DateTime changedAt = classDefinition.ChangedAt;
       Thread.Sleep (50);
@@ -275,7 +287,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void CreateAccessControlList_TwoNewAcls ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
       DateTime changedAt = classDefinition.ChangedAt;
       Thread.Sleep (50);
@@ -297,7 +309,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessTypes (10);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = expectedClassDefinition.ClientTransaction;
+      transaction.EnterScope ();
+
       SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);
 
       Assert.AreEqual (10, actualClassDefinition.AccessTypes.Count);
@@ -311,7 +325,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (10);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = expectedClassDefinition.ClientTransaction;
+      transaction.EnterScope ();
+
       SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);
 
       Assert.AreEqual (10, actualClassDefinition.AccessControlLists.Count);
@@ -322,7 +338,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
       Assert.AreNotEqual (DateTime.MinValue, classDefinition.ChangedAt);
@@ -331,7 +347,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Touch_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject (transaction);
 
       DateTime creationDate = classDefinition.ChangedAt;

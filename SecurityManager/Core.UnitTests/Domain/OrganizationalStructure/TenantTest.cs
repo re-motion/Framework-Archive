@@ -32,6 +32,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       base.SetUp ();
 
       _testHelper = new OrganizationalStructureTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
@@ -113,11 +114,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       ThreadRunner.Run (delegate ()
           {
-            Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: OtherTenant");
+            using (_testHelper.Transaction.EnterScope ())
+            {
+              Tenant otherTenant = _testHelper.CreateTenant ("OtherTenant", "UID: OtherTenant");
 
-            Assert.IsNull (Tenant.Current);
-            Tenant.Current = otherTenant;
-            Assert.AreSame (otherTenant, Tenant.Current);
+              Assert.IsNull (Tenant.Current);
+              Tenant.Current = otherTenant;
+              Assert.AreSame (otherTenant, Tenant.Current);
+            }
 
           });
 

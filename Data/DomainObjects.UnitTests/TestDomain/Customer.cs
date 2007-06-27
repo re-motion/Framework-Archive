@@ -23,14 +23,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<Customer> (id);
     }
 
-    public new static Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return Customer.GetObject (id);
-      }
-    }
-
     protected Customer ()
     {
     }

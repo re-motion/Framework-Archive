@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetDisplayName ()
     {
-      GroupType groupType = GroupType.NewObject (new ClientTransaction());
+      GroupType groupType = GroupType.NewObject (ClientTransactionScope.CurrentTransaction);
       groupType.Name = "GroupTypeName";
 
       Assert.AreEqual ("GroupTypeName", groupType.DisplayName);

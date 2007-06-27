@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
 		public ClientTransaction ClientTransaction
 		{
-			get { return _domainObject.ClientTransaction; }
+      get { return _domainObject.GetDataContainer ().ClientTransaction; }
 		}
 
 		public DomainObject DomainObject

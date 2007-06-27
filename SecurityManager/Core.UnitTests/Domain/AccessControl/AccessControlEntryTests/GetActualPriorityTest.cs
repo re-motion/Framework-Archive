@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 
@@ -29,7 +30,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     public void EmptyAce ()
     {
       AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
-
       Assert.AreEqual (0, ace.ActualPriority);
     }
 

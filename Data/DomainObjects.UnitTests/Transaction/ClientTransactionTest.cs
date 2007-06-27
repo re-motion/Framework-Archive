@@ -479,22 +479,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void GetObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
+      using (new ClientTransactionScope (clientTransaction))
+      {
+        Order order = Order.GetObject (DomainObjectIDs.Order1);
 
-			Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
+        Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
+        Assert.IsTrue (order.CanBeUsedInTransaction (clientTransaction));
+      }
     }
 
     [Test]
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
+      using (new ClientTransactionScope (clientTransaction))
+      {
+        Order order = Order.GetObject (DomainObjectIDs.Order1);
 
-      order.Delete ();
+        order.Delete();
 
-      order = Order.GetObject (DomainObjectIDs.Order1, clientTransaction, true);
-      Assert.AreEqual (StateType.Deleted, order.State);
-			Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
+        order = Order.GetObject (DomainObjectIDs.Order1, true);
+        Assert.AreEqual (StateType.Deleted, order.State);
+        Assert.AreSame (clientTransaction, order.InternalDataContainer.ClientTransaction);
+        Assert.IsTrue (order.CanBeUsedInTransaction (clientTransaction));
+      }
     }
 
     [Test]
@@ -503,25 +511,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction1);
-      order1.OrderNumber = 50;
+      Order order1;
+      using (clientTransaction1.EnterScope())
+      {
+        order1 = Order.GetObject (DomainObjectIDs.Order1);
+        order1.OrderNumber = 50;
+      }
 
-      Order order2 = Order.GetObject (DomainObjectIDs.Order2, clientTransaction2);
-      order2.OrderNumber = 60;
+      Order order2;
+      using (clientTransaction2.EnterScope())
+      {
+        order2 = Order.GetObject (DomainObjectIDs.Order2);
+        order2.OrderNumber = 60;
+      }
 
       clientTransaction1.Commit ();
       clientTransaction2.Commit ();
 
       ClientTransaction clientTransaction3 = new ClientTransaction ();
+      using (clientTransaction3.EnterScope ())
+      {
+        Order changedOrder1 = Order.GetObject (DomainObjectIDs.Order1);
+        Order changedOrder2 = Order.GetObject (DomainObjectIDs.Order2);
 
-      Order changedOrder1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction3);
-      Order changedOrder2 = Order.GetObject (DomainObjectIDs.Order2, clientTransaction3);
+        Assert.IsFalse (ReferenceEquals (order1, changedOrder1));
+        Assert.IsFalse (ReferenceEquals (order2, changedOrder2));
 
-      Assert.IsFalse (ReferenceEquals (order1, changedOrder1));
-      Assert.IsFalse (ReferenceEquals (order2, changedOrder2));
-
-      Assert.AreEqual (50, changedOrder1.OrderNumber);
-      Assert.AreEqual (60, changedOrder2.OrderNumber);
+        Assert.AreEqual (50, changedOrder1.OrderNumber);
+        Assert.AreEqual (60, changedOrder2.OrderNumber);
+      }
     }
 
     [Test]
@@ -613,6 +631,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual ("TestData", ClientTransactionScope.CurrentTransaction.ApplicationData[ApplicationDataKey.Key1]);
       ClientTransactionScope.CurrentTransaction.ApplicationData.Remove (ApplicationDataKey.Key1);
       Assert.IsFalse (ClientTransactionScope.CurrentTransaction.ApplicationData.ContainsKey (ApplicationDataKey.Key1));
+    }
+
+    [Test]
+    public void ClientTransactionGetObjectIsIndependentOfCurrentTransaction ()
+    {
+      ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
+      Order order = (Order) clientTransactionMock.GetObject (DomainObjectIDs.Order1);
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      Assert.IsTrue (order.CanBeUsedInTransaction (clientTransactionMock));
+
+      using (clientTransactionMock.EnterScope ())
+      {
+        Assert.IsTrue (order.OrderTicket.CanBeUsedInTransaction (clientTransactionMock));
+        Assert.IsTrue (order.Official.CanBeUsedInTransaction (clientTransactionMock));
+        Assert.IsTrue (order.OrderItems[0].CanBeUsedInTransaction (clientTransactionMock));
+      }
+    }
+
+    [Test]
+    public void ClientTransactionEventsTriggeredInRightTransaction ()
+    {
+      ClientTransactionMock mock = new ClientTransactionMock();
+      int events = 0;
+      mock.Committed += delegate { ++events; Assert.AreSame (mock, ClientTransactionScope.CurrentTransaction); };
+      mock.Committing += delegate { ++events; Assert.AreSame (mock, ClientTransactionScope.CurrentTransaction); };
+      mock.Loaded += delegate { ++events; Assert.AreSame (mock, ClientTransactionScope.CurrentTransaction); };
+      mock.RolledBack += delegate { ++events; Assert.AreSame (mock, ClientTransactionScope.CurrentTransaction); };
+      mock.RollingBack += delegate { ++events; Assert.AreSame (mock, ClientTransactionScope.CurrentTransaction); };
+
+      Assert.AreEqual (0, events);
+      mock.GetObject (DomainObjectIDs.Order1);
+      Assert.AreEqual (1, events); // loaded
+
+      events = 0;
+      mock.Commit ();
+      Assert.AreEqual (2, events); // committing, committed
+
+      events = 0;
+      mock.Rollback ();
+      Assert.AreEqual (2, events); // rollingback, rolledback
     }
   }
 }

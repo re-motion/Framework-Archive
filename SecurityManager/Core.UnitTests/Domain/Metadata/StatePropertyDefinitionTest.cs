@@ -15,6 +15,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       base.SetUp ();
 
       _testHelper = new MetadataTestHelper ();
+      _testHelper.Transaction.EnterScope ();
     }
 
     [Test]
@@ -129,11 +130,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       _testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, transaction);
+      using (transaction.EnterScope())
+      {
+        expectdPropertyDefinition = DomainObject.LoadIntoTransaction (expectdPropertyDefinition, transaction);
+        StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, transaction);
 
-      Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
-      for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)
-        Assert.AreEqual (expectdPropertyDefinition.DefinedStates[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
+        Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
+        for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)
+          Assert.AreEqual (expectdPropertyDefinition.DefinedStates[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
+      }
     }
 
   }

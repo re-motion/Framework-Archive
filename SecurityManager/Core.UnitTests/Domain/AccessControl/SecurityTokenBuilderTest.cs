@@ -11,6 +11,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class SecurityTokenBuilderTest : DomainTest
   {
+    private ClientTransaction _transaction;
+
     public override void TestFixtureSetUp ()
     {
       base.TestFixtureSetUp ();
@@ -19,14 +21,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       dbFixtures.CreateOrganizationalStructureWithTwoTenants ();
     }
 
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      _transaction = new ClientTransaction ();
+      _transaction.EnterScope ();
+    }
+
     [Test]
     public void Create_AbstractRolesEmpty ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
 
       Assert.IsEmpty (token.AbstractRoles);
     }
@@ -34,11 +42,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidAbstractRole ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext (ProjectRoles.QualityManager);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRoles, Rubicon.SecurityManager.UnitTests", token.AbstractRoles[0].Name);
@@ -47,11 +54,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidAbstractRoles ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext (ProjectRoles.QualityManager, ProjectRoles.Developer);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
 
       Assert.AreEqual (2, token.AbstractRoles.Count);
     }
@@ -60,11 +66,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
     public void Create_WithNotExistingAbstractRole ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext (ProjectRoles.Developer, UndefinedAbstractRoles.Undefined, ProjectRoles.QualityManager);
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
+      SecurityToken token = builder.CreateToken (_transaction, CreateTestUser (), context);
 
       Assert.AreEqual (2, token.AbstractRoles.Count);
     }
@@ -72,12 +77,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       Assert.AreEqual ("test.user", token.User.UserName);
     }
@@ -86,23 +90,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The user 'notexisting.user' could not be found.")]
     public void Create_WithNotExistingUser ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
       IPrincipal user = CreateNotExistingUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
     }
 
     [Test]
     public void Create_WithValidOwningTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       Assert.IsNotNull (token.OwningTenant);
       Assert.AreEqual ("UID: testTenant", token.OwningTenant.UniqueIdentifier);
@@ -111,12 +113,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithoutOwningTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithoutOwningTenant ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       Assert.IsNull (token.OwningTenant);
     }
@@ -125,23 +126,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The tenant 'UID: NotExistingTenant' could not be found.")]
     public void Create_WithNotExistingOwningTenant ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithNotExistingOwningTenant ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
     }
 
     [Test]
     public void Create_WithValidOwningGroup ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       AccessControlObjectAssert.ContainsGroup ("UID: testOwningGroup", token.OwningGroups);
     }
@@ -149,12 +148,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithoutOwningGroup ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithoutOwningGroup ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       Assert.IsEmpty (token.OwningGroups);
     }
@@ -163,23 +161,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), ExpectedMessage = "The group 'UID: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingOwningGroup ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithNotExistingOwningGroup ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
     }
 
     [Test]
     public void Create_WithParentOwningGroup ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContext ();
       IPrincipal user = CreateTestUser ();
 
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
-      SecurityToken token = builder.CreateToken (transaction, user, context);
+      SecurityToken token = builder.CreateToken (_transaction, user, context);
 
       AccessControlObjectAssert.ContainsGroup ("UID: testRootGroup", token.OwningGroups);
     }

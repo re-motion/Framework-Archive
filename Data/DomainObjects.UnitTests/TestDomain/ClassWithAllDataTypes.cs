@@ -25,14 +25,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       return DomainObject.GetObject<ClassWithAllDataTypes> (id);
     }
 
-    public new static ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
-    {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<ClassWithAllDataTypes> (id);
-      }
-    }
-
     private bool _onLoadedHasBeenCalled;
 
     protected ClassWithAllDataTypes ()

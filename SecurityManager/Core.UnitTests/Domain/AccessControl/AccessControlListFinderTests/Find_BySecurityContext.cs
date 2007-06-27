@@ -26,6 +26,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     {
       base.SetUp ();
       _testHelper = new AccessControlTestHelper ();
+      _currentClassDefinition.ClientTransaction.EnterScope ();
     }
 
     [Test]
@@ -33,9 +34,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
     {
       AccessControlList expectedAccessControlList = (AccessControlList) _currentClassDefinition.AccessControlLists[0];
       SecurityContext context = new SecurityContext (typeof (Order));
-     
+   
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      AccessControlList foundAcl = aclFinder.Find (new ClientTransaction (), context);
+      AccessControlList foundAcl = aclFinder.Find (ClientTransactionScope.CurrentTransaction, context);
 
       Assert.AreEqual (expectedAccessControlList.ID, foundAcl.ID);
     }
@@ -48,7 +49,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlLi
       SecurityContext context = new SecurityContext (typeof (PremiumOrder));
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (new ClientTransaction (), context);
+      aclFinder.Find (ClientTransactionScope.CurrentTransaction, context);
     }
   }
 }

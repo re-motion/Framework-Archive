@@ -13,12 +13,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return NewObject<Order>().With();
     }
 
-    public new static Order GetObject (ObjectID id, ClientTransaction clientTransaction)
+    public new static Order GetObject (ObjectID id)
     {
-      using (new ClientTransactionScope (clientTransaction))
-      {
-        return DomainObject.GetObject<Order> (id);
-      }
+      return DomainObject.GetObject<Order> (id);
     }
 
     protected Order()

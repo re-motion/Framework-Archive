@@ -487,36 +487,46 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObjectWithTransaction ()
     {
+      Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
-
-			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
-			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
+      using (new ClientTransactionScope (clientTransactionMock))
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
+      }
+      Assert.IsTrue (order.CanBeUsedInTransaction (clientTransactionMock));
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
     }
 
     [Test]
     public void GetDeletedObjectWithTransaction ()
     {
+      Order order;
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      Order order = Order.GetObject (DomainObjectIDs.Order1, clientTransactionMock);
+      using (new ClientTransactionScope (clientTransactionMock))
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
 
-      order.Delete ();
+        order.Delete();
 
-      order = Order.GetObject (DomainObjectIDs.Order1, clientTransactionMock, true);
+        order = Order.GetObject (DomainObjectIDs.Order1, true);
 
-      Assert.AreEqual (StateType.Deleted, order.State);
-			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
-			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
+        Assert.AreEqual (StateType.Deleted, order.State);
+      }
+      Assert.IsTrue (order.CanBeUsedInTransaction (clientTransactionMock));
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
     }
 
     [Test]
     public void CreateNewObjectWithTransaction ()
     {
       ClientTransactionMock clientTransactionMock = new ClientTransactionMock ();
-      Order order = Order.NewObject (clientTransactionMock);
-
-			Assert.AreSame (clientTransactionMock, order.InternalDataContainer.ClientTransaction);
-			Assert.IsFalse (ReferenceEquals (this.ClientTransactionMock, order.InternalDataContainer.ClientTransaction));
+      Order order;
+      using (new ClientTransactionScope (clientTransactionMock))
+      {
+        order = Order.NewObject ();
+      }
+      Assert.IsTrue (order.CanBeUsedInTransaction (clientTransactionMock));
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
     }
 
     [Test]

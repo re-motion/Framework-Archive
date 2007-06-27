@@ -105,16 +105,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       ObjectID id = _newOrder.ID;
     }
-
+    
     [Test]
     [ExpectedException (typeof (ClientTransactionsDifferException),
-        ExpectedMessage = "Cannot remove DataContainer 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from DataContainerMap, because it belongs to a different ClientTransaction.")]
+        ExpectedMessage = "Cannot remove DataContainer '.*' from DataContainerMap, because it belongs to a different ClientTransaction.",
+        MatchType = MessageMatch.Regex)]
     public void PerformDeleteWithOtherClientTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
-      Order order1 = Order.GetObject (DomainObjectIDs.Order1, clientTransaction);
+      using (new ClientTransactionScope ())
+      {
+        Order order1 = Order.GetObject (DomainObjectIDs.Order1);
 
-			_map.PerformDelete (order1.InternalDataContainer);
+        _map.PerformDelete (order1.InternalDataContainer);
+      }
     }
 
     private DataContainer CreateNewOrderDataContainer ()
@@ -125,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       order.Official = Official.GetObject (DomainObjectIDs.Official1);
       order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
 
-			return order.InternalDataContainer;
+      return order.InternalDataContainer;
     }
   }
 }

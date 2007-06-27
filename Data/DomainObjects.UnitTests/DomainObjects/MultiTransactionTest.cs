@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -18,8 +19,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.IsNotNull (order2);
         Assert.AreNotSame (order, order2);
         Assert.AreEqual (order.ID, order2.ID);
-        Assert.AreSame (ClientTransactionScope.CurrentTransaction, order2.ClientTransaction);
-        Assert.AreNotSame (order.ClientTransaction, order2.ClientTransaction);
+        Assert.IsTrue (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      }
+    }
+
+    [Test]
+    public void LoadIntoTransactionSameReferenceIfSameTransaction ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Order order2 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
+      Assert.AreSame (order, order2);
+
+      using (new ClientTransactionScope ())
+      {
+        Order order3 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
+        Order order4 = DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
+        Assert.AreSame (order3, order4);
+        Assert.AreNotSame (order, order3);
       }
     }
 
@@ -78,6 +95,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       using (new ClientTransactionScope ())
       {
         DomainObject.LoadIntoTransaction (order, ClientTransactionScope.CurrentTransaction);
+      }
+    }
+
+    [Test]
+    public void CanBeUsedInTransaction ()
+    {
+      Order order = Order.NewObject ();
+      Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      Assert.IsFalse (order.CanBeUsedInTransaction (new ClientTransaction()));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = "Domain object '.*' cannot be used in the current transaction "
+        + "as it was loaded or created in another transaction. Use a ClientTransactionScope to set the right transaction, or call "
+        + "EnlistInCurrentTransaction to enlist the object with the current transaction.", MatchType = MessageMatch.Regex)]
+    public void ThrowsWhenCannotBeUsedInTransaction ()
+    {
+      Order order = Order.NewObject ();
+      using (new ClientTransactionScope ())
+      {
+        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        int i = order.OrderNumber;
       }
     }
   }

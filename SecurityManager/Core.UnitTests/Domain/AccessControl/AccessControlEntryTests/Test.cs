@@ -119,11 +119,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (10);
 
       ClientTransaction transaction = new ClientTransaction();
-      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, transaction);
+      using (transaction.EnterScope())
+      {
+        AccessControlEntry ace = AccessControlEntry.GetObject (aceID, transaction);
 
-      Assert.AreEqual (10, ace.Permissions.Count);
-      for (int i = 0; i < 10; i++)
-        Assert.AreEqual (string.Format ("Access Type {0}", i), ((Permission) ace.Permissions[i]).AccessType.Name);
+        Assert.AreEqual (10, ace.Permissions.Count);
+        for (int i = 0; i < 10; i++)
+          Assert.AreEqual (string.Format ("Access Type {0}", i), ((Permission) ace.Permissions[i]).AccessType.Name);
+      }
     }
 
     [Test]
@@ -184,11 +187,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       _testHelper.Transaction.Commit ();
       ClientTransaction clientTransaction = new ClientTransaction ();
       AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID, clientTransaction);
-      aceActual.Tenant = TenantSelection.OwningTenant;
+      using (clientTransaction.EnterScope())
+      {
+        aceActual.Tenant = TenantSelection.OwningTenant;
 
-      Assert.IsNotNull (aceActual.SpecificTenant);
-      aceActual.Delete ();
-      clientTransaction.Commit ();
+        Assert.IsNotNull (aceActual.SpecificTenant);
+        aceActual.Delete ();
+        clientTransaction.Commit ();
+      }
     }
   }
 }

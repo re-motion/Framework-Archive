@@ -49,6 +49,7 @@ namespace Rubicon.SecurityManager.UnitTests
      _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
      _context = new SecurityContext (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", null, null);
      _transaction = new ClientTransaction ();
+     _transaction.EnterScope ();
      _ace = CreateAce (_transaction);
      _principal = CreateUser ();
   
@@ -199,22 +200,25 @@ namespace Rubicon.SecurityManager.UnitTests
 
     private AccessControlEntry CreateAce (ClientTransaction transaction)
     {
-      AccessControlEntry ace = AccessControlEntry.NewObject (transaction);
+      using (transaction.EnterScope())
+      {
+        AccessControlEntry ace = AccessControlEntry.NewObject (transaction);
 
-      AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (transaction, Guid.NewGuid (), "QualityManager", 0);
-      ace.SpecificAbstractRole = abstractRole;
+        AbstractRoleDefinition abstractRole = AbstractRoleDefinition.NewObject (transaction, Guid.NewGuid (), "QualityManager", 0);
+        ace.SpecificAbstractRole = abstractRole;
 
-      AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Read|MyTypeName", 0);
-      AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Write|MyTypeName", 1);
-      AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
+        AccessTypeDefinition readAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Read|MyTypeName", 0);
+        AccessTypeDefinition writeAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Write|MyTypeName", 1);
+        AccessTypeDefinition deleteAccessType = AccessTypeDefinition.NewObject  (transaction, Guid.NewGuid (), "Delete|MyTypeName", 2);
 
-      ace.AttachAccessType (readAccessType);
-      ace.AttachAccessType (writeAccessType);
-      ace.AttachAccessType (deleteAccessType);
+        ace.AttachAccessType (readAccessType);
+        ace.AttachAccessType (writeAccessType);
+        ace.AttachAccessType (deleteAccessType);
 
-      ace.AllowAccess (readAccessType);
+        ace.AllowAccess (readAccessType);
 
-      return ace;
+        return ace;
+      }
     }
 
     private IPrincipal CreateUser ()

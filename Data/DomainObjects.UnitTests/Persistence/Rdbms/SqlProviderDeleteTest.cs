@@ -79,15 +79,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      OrderTicket changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1, clientTransaction1);
-      changedOrderTicket.FileName = @"C:\NewFile.jpg";
+      OrderTicket changedOrderTicket;
+      DataContainer changedDataContainer;
+      using (new ClientTransactionScope (clientTransaction1))
+      {
+        changedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        changedOrderTicket.FileName = @"C:\NewFile.jpg";
+        changedDataContainer = changedOrderTicket.InternalDataContainer;
+      }
 
-      OrderTicket deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1, clientTransaction2);
-      deletedOrderTicket.Delete ();
+      OrderTicket deletedOrderTicket;
+      DataContainer deletedDataContainer;
+      using (new ClientTransactionScope (clientTransaction2))
+      {
+        deletedOrderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        deletedOrderTicket.Delete();
+        deletedDataContainer = deletedOrderTicket.InternalDataContainer;
+      }
 
       _provider.Connect ();
-			_provider.Save (CreateDataContainerCollection (changedOrderTicket.InternalDataContainer));
-			_provider.Save (CreateDataContainerCollection (deletedOrderTicket.InternalDataContainer));
+      _provider.Save (CreateDataContainerCollection (changedDataContainer));
+      _provider.Save (CreateDataContainerCollection (deletedDataContainer));
     }
 
     [Test]
@@ -97,17 +109,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
 
-      ClassWithAllDataTypes changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction1);
+      DataContainer changedDataContainer;
+      ClassWithAllDataTypes changedObject;
 
-      changedObject.StringProperty = "New text";
+      using (new ClientTransactionScope (clientTransaction1))
+      {
+        changedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+        changedDataContainer = changedObject.InternalDataContainer;
+        changedObject.StringProperty = "New text";
+      }
 
-      ClassWithAllDataTypes deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1, clientTransaction2);
-
-      deletedObject.Delete ();
-
+      DataContainer deletedDataContainer;
+      ClassWithAllDataTypes deletedObject;
+      
+      using (new ClientTransactionScope (clientTransaction2))
+      {
+        deletedObject = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+        deletedDataContainer = deletedObject.InternalDataContainer;
+        deletedObject.Delete ();
+      }
+      
       _provider.Connect ();
-			_provider.Save (CreateDataContainerCollection (changedObject.InternalDataContainer));
-			_provider.Save (CreateDataContainerCollection (deletedObject.InternalDataContainer));
+      _provider.Save (CreateDataContainerCollection (changedDataContainer));
+      _provider.Save (CreateDataContainerCollection (deletedDataContainer));
     }
 
     private DataContainerCollection CreateDataContainerCollection (params DataContainer[] dataContainers)
