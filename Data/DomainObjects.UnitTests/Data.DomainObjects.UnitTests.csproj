@@ -124,6 +124,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\GenericClass.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
+    <Compile Include="DomainObjects\MultiTransactionTest.cs" />
     <Compile Include="DomainObjects\PropertyAccessorTest.cs" />
     <Compile Include="DomainObjects\PropertyIndexerTest.cs" />
     <Compile Include="Factories\ConfigurationFactory.cs" />

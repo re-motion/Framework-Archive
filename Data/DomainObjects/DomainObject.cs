@@ -176,6 +176,15 @@ public class DomainObject
     return GetObject<DomainObject> (id, includeDeleted);
   }
 
+  public static T LoadIntoTransaction<T> (T sourceObject, ClientTransaction destinationTransaction)
+      where T : DomainObject
+  {
+    using (new ClientTransactionScope (destinationTransaction, AutoRollbackBehavior.None))
+    {
+      return DomainObject.GetObject<T> (sourceObject.ID);
+    }
+  }
+
   #endregion
 
   #region Obsolete GetObject legacy methods
