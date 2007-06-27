@@ -38,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     public override void TearDown ()
     {
-      _transactionScope.Dispose ();
+      _transactionScope.Leave ();
       base.TearDown ();
     }
 

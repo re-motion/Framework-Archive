@@ -11,10 +11,10 @@ namespace Rubicon.Data.DomainObjects
   /// <remarks>
   /// <para>
   /// The constructor of this class temporarily sets <see cref="CurrentTransaction"/> to the given transaction intance, remembering
-  /// its previous value. The <see cref="Dispose"/> method resets <see cref="CurrentTransaction"/> to the remembered value (executing the scope's
+  /// its previous value. The <see cref="Leave"/> method resets <see cref="CurrentTransaction"/> to the remembered value (executing the scope's
   /// <see cref="AutoRollbackBehavior"/> as applicable). Employ a <c>using</c> block to set a new <see cref="CurrentTransaction"/> for the current
   /// thread and to restore the previous transaction (and execute the <see cref="AutoRollbackBehavior"/>) in a scoped way. If
-  /// <see cref="Dispose"/> is not called, the previous transaction is not automatically restored and the <see cref="AutoRollbackBehavior"/> is not
+  /// <see cref="Leave"/> is not called, the previous transaction is not automatically restored and the <see cref="AutoRollbackBehavior"/> is not
   /// executed, but other than that no resource leaks or problems are to be expected.
   /// </para>
   /// </remarks>
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects
 
     private ClientTransaction _previousTransaction;
     private ClientTransaction _scopedTransaction;
-    private bool _wasDisposed = false;
+    private bool _hasBeenLeft = false;
     private AutoRollbackBehavior _autoRollbackBehavior;
 
     /// <summary>
@@ -116,7 +116,7 @@ namespace Rubicon.Data.DomainObjects
 
     /// <summary>
     /// Gets or sets a value indicating whether this scope will automatically call <see cref="ClientTransaction.Rollback"/> on a transaction
-    /// with uncommitted changed objects when the scope's <see cref="Dispose"/> method is invoked.
+    /// with uncommitted changed objects when the scope's <see cref="Leave"/> method is invoked.
     /// </summary>
     /// <value>An <see cref="AutoRollbackBehavior"/> value indicating how the scope should behave when it is disposed and its transaction's changes
     /// have not been committed.</value>
@@ -139,14 +139,19 @@ namespace Rubicon.Data.DomainObjects
     /// Resets <see cref="CurrentTransaction"/> to the value it had before this scope was instantiated and performs the
     /// <see cref="AutoRollbackBehavior"/>. This method is ignored when executed more than once.
     /// </summary>
-    public void Dispose ()
+    public void Leave ()
     {
-      if (!_wasDisposed)
-      {
-        ExecuteAutoRollbackBehavior ();
-        ClientTransactionScope.SetCurrentTransaction (_previousTransaction);
-        _wasDisposed = true;
-      }
+      if (_hasBeenLeft)
+        throw new InvalidOperationException ("The ClientTransactionScope has already been left.");
+
+      ExecuteAutoRollbackBehavior ();
+      ClientTransactionScope.SetCurrentTransaction (_previousTransaction);
+      _hasBeenLeft = true;
+    }
+
+    void IDisposable.Dispose ()
+    {
+      Leave ();
     }
 
     private void ExecuteAutoRollbackBehavior ()

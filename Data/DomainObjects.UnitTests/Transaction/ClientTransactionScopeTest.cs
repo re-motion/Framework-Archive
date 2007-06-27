@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [TearDown]
     public void TearDown ()
     {
-      _outermostScope.Dispose ();
+      _outermostScope.Leave ();
     }
 
     [Test]
@@ -284,6 +284,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         Assert.AreEqual (2, eventCounter.Commits);
         Assert.AreEqual (2, eventCounter.Rollbacks);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionScope has already been left.")]
+    public void LeaveTwiceThrows ()
+    {
+      ClientTransactionScope scope = new ClientTransactionScope ();
+      scope.Leave ();
+      scope.Leave ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The ClientTransactionScope has already been left.")]
+    public void LeaveAndDisposeThrows ()
+    {
+      using (ClientTransactionScope scope = new ClientTransactionScope ())
+      {
+        scope.Leave();
       }
     }
   }

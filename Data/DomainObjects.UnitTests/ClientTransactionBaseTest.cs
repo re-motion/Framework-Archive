@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       if (_transactionScope != null)
       {
-        _transactionScope.Dispose();
+        _transactionScope.Leave();
         _transactionScope = null;
         _clientTransactionMock = null;
       }
