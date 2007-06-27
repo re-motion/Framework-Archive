@@ -63,9 +63,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
       SecurityConfigurationMock.SetCurrent (new SecurityConfiguration ());
+      base.TearDown ();
     }
 
     [Test]

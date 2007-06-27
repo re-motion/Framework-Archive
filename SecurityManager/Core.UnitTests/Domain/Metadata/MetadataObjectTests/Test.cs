@@ -37,10 +37,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     }
 
     [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
       Thread.CurrentThread.CurrentCulture = _backupCulture;
       Thread.CurrentThread.CurrentUICulture = _backupUICulture;
+      base.TearDown ();
     }
 
     [Test]

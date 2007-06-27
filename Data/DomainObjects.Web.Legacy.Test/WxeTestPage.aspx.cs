@@ -143,9 +143,10 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       SetInt32Property (5, new ClientTransaction ());
-      ClientTransactionScope.SetCurrentTransaction (null);
 
-      RememberCurrentClientTransaction ();
+      new ClientTransactionScope (null);
+
+      RememberCurrentClientTransaction();
 
       ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
@@ -168,7 +169,8 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       SetInt32Property (5, new ClientTransaction ());
-      ClientTransactionScope.SetCurrentTransaction (null);
+
+      new ClientTransactionScope (null);
 
       RememberCurrentClientTransaction ();
 

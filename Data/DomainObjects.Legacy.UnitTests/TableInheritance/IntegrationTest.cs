@@ -169,16 +169,21 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
       DerivedClassWithEntityWithHierarchy derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
       Assert.AreEqual (DomainObjectIDs.Client, derivedClassWithEntity1.ClientFromAbstractBaseClass.ID);
-      ClientTransactionScope.SetCurrentTransaction (null);
 
-      derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
-      Assert.AreEqual (client2, derivedClassWithEntity1.ClientFromDerivedClassWithEntity.ID);
-      ClientTransactionScope.SetCurrentTransaction (null);
 
-      DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
-          DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
+      using (new ClientTransactionScope ())
+      {
+        derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
+        Assert.AreEqual (client2, derivedClassWithEntity1.ClientFromDerivedClassWithEntity.ID);
+      }
 
-      Assert.AreEqual (DomainObjectIDs.Client, derivedClassWithEntityFromBaseClass1.ClientFromDerivedClassWithEntityFromBaseClass.ID);
+      using (new ClientTransactionScope ())
+      {
+        DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
+            DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
+
+        Assert.AreEqual (DomainObjectIDs.Client, derivedClassWithEntityFromBaseClass1.ClientFromDerivedClassWithEntityFromBaseClass.ID);
+      }
     }
 
     [Test]
@@ -186,16 +191,22 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       DerivedClassWithEntityWithHierarchy derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
       Assert.AreEqual (_rootFolderID, derivedClassWithEntity1.FileSystemItemFromAbstractBaseClass.ID);
-      ClientTransactionScope.SetCurrentTransaction (null);
 
-      derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
-      Assert.AreEqual (_fileInRootFolderID, derivedClassWithEntity1.FileSystemItemFromDerivedClassWithEntity.ID);
-      ClientTransactionScope.SetCurrentTransaction (null);
 
-      DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
-          DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
+      using (new ClientTransactionScope ())
+      {
+        derivedClassWithEntity1 = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
+        Assert.AreEqual (_fileInRootFolderID, derivedClassWithEntity1.FileSystemItemFromDerivedClassWithEntity.ID);
+      }
 
-      Assert.AreEqual (_fileInFolder1ID, derivedClassWithEntityFromBaseClass1.FileSystemItemFromDerivedClassWithEntityFromBaseClass.ID);
+
+      using (new ClientTransactionScope ())
+      {
+        DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
+            DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
+
+        Assert.AreEqual (_fileInFolder1ID, derivedClassWithEntityFromBaseClass1.FileSystemItemFromDerivedClassWithEntityFromBaseClass.ID);
+      }
     }
 
     private ObjectID CreateFolderObjectID (string guid)

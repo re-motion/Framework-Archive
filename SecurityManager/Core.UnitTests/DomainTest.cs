@@ -12,6 +12,8 @@ namespace Rubicon.SecurityManager.UnitTests
 
     // member fields
 
+    private ClientTransactionScope _clientTransactionScope;
+
     // construction and disposing
 
     protected DomainTest()
@@ -28,7 +30,13 @@ namespace Rubicon.SecurityManager.UnitTests
     [SetUp]
     public virtual void SetUp()
     {
-      ClientTransactionScope.SetCurrentTransaction (null);
+      _clientTransactionScope = new ClientTransactionScope ();
+    }
+
+    [TearDown]
+    public virtual void TearDown ()
+    {
+      _clientTransactionScope.Dispose ();
     }
   }
 }

@@ -57,9 +57,10 @@ namespace Rubicon.SecurityManager.UnitTests
     }
 
     [TearDown]
-    public void TearDown()
+    public override void TearDown()
     {
       LogManager.ResetConfiguration();
+      base.TearDown();
     }
 
     [Test]

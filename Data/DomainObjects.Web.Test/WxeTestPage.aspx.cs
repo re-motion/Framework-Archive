@@ -136,8 +136,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       if (!IsReturningPostBack)
       {
         SetInt32Property (5, new ClientTransaction());
-        ClientTransactionScope.SetCurrentTransaction (null);
-
+        new ClientTransactionScope (null);
+        
         RememberCurrentClientTransaction();
 
         ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
@@ -161,8 +161,8 @@ namespace Rubicon.Data.DomainObjects.Web.Test
       if (!IsReturningPostBack)
       {
         SetInt32Property (5, new ClientTransaction());
-        ClientTransactionScope.SetCurrentTransaction (null);
-
+        new ClientTransactionScope (null);
+        
         RememberCurrentClientTransaction();
 
         ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));

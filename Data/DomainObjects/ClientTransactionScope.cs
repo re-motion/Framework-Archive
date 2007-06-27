@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects
     /// Sets the default <b>ClientTransaction</b> of the current thread.
     /// </summary>
     /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
-    public static void SetCurrentTransaction (ClientTransaction clientTransaction)
+    private static void SetCurrentTransaction (ClientTransaction clientTransaction)
     {
       CallContext.SetData (c_callContextKey, clientTransaction);
     }
