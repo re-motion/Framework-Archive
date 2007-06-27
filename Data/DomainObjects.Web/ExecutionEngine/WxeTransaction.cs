@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <param name="transaction">The new transaction.</param>
   protected override void SetCurrentTransaction (ClientTransaction transaction)
   {
-    ClientTransactionScope.SetCurrentTransaction (transaction);
+    new ClientTransactionScope (transaction);
   }
 
   /// <summary>

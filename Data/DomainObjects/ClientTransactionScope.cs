@@ -4,17 +4,28 @@ using System.Runtime.Remoting.Messaging;
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Provides a mechanism for temporarily setting <see cref="CurrentTransaction"/> to a given <see cref="ClientTransaction"/> instance.
+  /// Manages a thread's <see cref="CurrentTransaction"/> and provides a mechanism for temporarily setting it to a given
+  /// <see cref="ClientTransaction"/> instance in a scoped way. Optionally, the scope can also automatically rollback a transaction at the end
+  /// of the scope.
   /// </summary>
-  /// <remarks>The constructor of this class temporarily sets <see cref="CurrentTransaction"/> to the given transaction intance, remembering
-  /// its previous value. The <see cref="Dispose"/> method resets <see cref="CurrentTransaction"/> to the remembered value.</remarks>
+  /// <remarks>
+  /// <para>
+  /// The constructor of this class temporarily sets <see cref="CurrentTransaction"/> to the given transaction intance, remembering
+  /// its previous value. The <see cref="Dispose"/> method resets <see cref="CurrentTransaction"/> to the remembered value (executing the scope's
+  /// <see cref="AutoRollbackBehavior"/> as applicable). Employ a <c>using</c> block to set a new <see cref="CurrentTransaction"/> for the current
+  /// thread and to restore the previous transaction (and execute the <see cref="AutoRollbackBehavior"/>) in a scoped way. If
+  /// <see cref="Dispose"/> is not called, the previous transaction is not automatically restored and the <see cref="AutoRollbackBehavior"/> is not
+  /// executed, but other than that no resource leaks or problems are to be expected.
+  /// </para>
+  /// </remarks>
   public class ClientTransactionScope : IDisposable
   {
     /// <summary>
     /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="CurrentTransaction"/>. 
     /// </summary>
     /// <remarks>
-    /// Even if the value returned by <b>HasCurrentTransaction</b> is false, <see cref="CurrentTransaction"/> will return a <see cref="ClientTransaction"/>. See <see cref="CurrentTransaction"/> for further de.
+    /// Even if the value returned by <b>HasCurrentTransaction</b> is false, <see cref="CurrentTransaction"/> will return a
+    /// <see cref="ClientTransaction"/>. See <see cref="CurrentTransaction"/> for further information.
     /// </remarks>
     public static bool HasCurrentTransaction
     {
@@ -24,7 +35,8 @@ namespace Rubicon.Data.DomainObjects
     /// <summary>
     /// Gets the default <b>ClientTransaction</b> of the current thread. 
     /// </summary>
-    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is created.</remarks>
+    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is
+    /// created.</remarks>
     public static ClientTransaction CurrentTransaction
     {
       get
@@ -140,9 +152,7 @@ namespace Rubicon.Data.DomainObjects
     private void ExecuteAutoRollbackBehavior ()
     {
       if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
-      {
         Rollback ();
-      }
     }
 
     /// <summary>
@@ -152,7 +162,8 @@ namespace Rubicon.Data.DomainObjects
     /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
     public void Commit ()
     {
-      ScopedTransaction.Commit ();
+      if (ScopedTransaction != null)
+        ScopedTransaction.Commit ();
     }
 
     /// <summary>
@@ -160,7 +171,8 @@ namespace Rubicon.Data.DomainObjects
     /// </summary>
     public void Rollback ()
     {
-      ScopedTransaction.Rollback ();
+      if (ScopedTransaction != null)
+        ScopedTransaction.Rollback ();
     }
   }
 }

@@ -9,16 +9,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class ClientTransactionScopeTest
   {
+    private ClientTransactionScope _outermostScope;
+
     [SetUp]
     public void SetUp ()
     {
-      ClientTransactionScope.SetCurrentTransaction (null);
+      _outermostScope = new ClientTransactionScope ();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ClientTransactionScope.SetCurrentTransaction (null);
+      _outermostScope.Dispose ();
     }
 
     [Test]
@@ -36,13 +38,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScopeSetsNullTransaction ()
     {
-      ClientTransactionScope.SetCurrentTransaction (new ClientTransaction ());
-      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
-      using (new ClientTransactionScope (null))
+      using (new ClientTransactionScope (new ClientTransaction ()))
       {
-        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
+        using (new ClientTransactionScope (null))
+        {
+          Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+        }
+        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
       }
-      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
@@ -71,12 +75,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void LeavesEmptyTransaction ()
     {
-      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
-      using (new ClientTransactionScope (new ClientTransaction ()))
+      using (new ClientTransactionScope (null))
       {
-        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+        using (new ClientTransactionScope (new ClientTransaction()))
+        {
+          Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
+        }
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       }
-      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]

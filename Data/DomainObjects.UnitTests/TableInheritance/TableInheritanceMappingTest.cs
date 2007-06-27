@@ -12,6 +12,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public const string CreateTestDataFileName = "DataDomainObjects_CreateTableInheritanceTestData.sql";
     public const string TableInheritanceTestDomainProviderID = "TableInheritanceTestDomain";
 
+    private ClientTransactionScope _transactionScope;
+
     public TableInheritanceMappingTest()
       : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
     {
@@ -31,7 +33,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration ());
       MappingConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetMappingConfiguration ());
       ConfigurationWrapper.SetCurrent (null);
-      ClientTransactionScope.SetCurrentTransaction (null);
+      _transactionScope = new ClientTransactionScope ();
+    }
+
+    public override void TearDown ()
+    {
+      _transactionScope.Dispose ();
+      base.TearDown ();
     }
 
     protected DomainObjectIDs DomainObjectIDs

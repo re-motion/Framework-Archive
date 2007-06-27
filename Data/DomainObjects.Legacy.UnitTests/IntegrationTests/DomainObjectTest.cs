@@ -762,13 +762,14 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       existingCustomer.Orders[0].Delete ();
 
       ClientTransactionScope.CurrentTransaction.Commit ();
-      ClientTransactionScope.SetCurrentTransaction (null);
+      using (new ClientTransactionScope ())
+      {
+        newCustomer = Customer.GetObject (newCustomer.ID);
+        existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
 
-      newCustomer = Customer.GetObject (newCustomer.ID);
-      existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
-
-      Assert.AreEqual (0, newCustomer.Orders.Count);
-      Assert.AreEqual (0, existingCustomer.Orders.Count);
+        Assert.AreEqual (0, newCustomer.Orders.Count);
+        Assert.AreEqual (0, existingCustomer.Orders.Count);
+      }
     }
 
     private void InitializeEventReceivers (Order order)

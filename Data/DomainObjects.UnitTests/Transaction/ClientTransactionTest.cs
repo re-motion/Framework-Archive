@@ -534,8 +534,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void AutoInitializationOfCurrent ()
     {
-      ClientTransactionScope.SetCurrentTransaction (null);
-      Assert.IsNotNull (ClientTransactionScope.CurrentTransaction);
+      using (new ClientTransactionScope (null))
+      {
+        Assert.IsNotNull (ClientTransactionScope.CurrentTransaction);
+      }
     }
 
     [Test]
@@ -547,8 +549,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void HasCurrentFalse ()
     {
-      ClientTransactionScope.SetCurrentTransaction (null);
-      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+      using (new ClientTransactionScope (null))
+      {
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+      }
     }
 
     [Test]

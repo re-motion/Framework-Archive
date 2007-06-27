@@ -27,6 +27,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
 
     private DomainObjectIDs _domainObjectIDs;
     private FakeDomainObjectsConfiguration _domainObjectsConfiguration;
+    private ClientTransactionScope _clientTransactionScope;
 
     // construction and disposing
 
@@ -59,7 +60,13 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     {
       base.SetUp ();
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      ClientTransactionScope.SetCurrentTransaction (null);
+      _clientTransactionScope = new ClientTransactionScope ();
+    }
+
+    public override void TearDown ()
+    {
+      _clientTransactionScope.Dispose ();
+      base.TearDown ();
     }
   }
 }

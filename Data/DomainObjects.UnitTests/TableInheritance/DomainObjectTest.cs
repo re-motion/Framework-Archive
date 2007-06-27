@@ -106,11 +106,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       expectedCustomer.LastName = "NewLastName";
       expectedCustomer.Region = expectedNewRegion;
 
-      CommitAndReInitializeCurrentClientTransaction ();
-
-      Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
-      Assert.AreEqual ("NewLastName", actualCustomer.LastName);
-      Assert.AreEqual (expectedNewRegion.ID, actualCustomer.Region.ID);
+      ClientTransactionScope.CurrentTransaction.Commit ();
+      using (new ClientTransactionScope ())
+      {
+        Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
+        Assert.AreEqual ("NewLastName", actualCustomer.LastName);
+        Assert.AreEqual (expectedNewRegion.ID, actualCustomer.Region.ID);
+      }
     }
 
     [Test]
@@ -130,11 +132,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       expectedAddress.Country = "Österreich";
       expectedAddress.Person = expectedCustomer;
 
-      CommitAndReInitializeCurrentClientTransaction ();
-
-      Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
-      Assert.IsNotNull (actualCustomer);
-      Assert.AreEqual (expectedAddress.ID, actualCustomer.Address.ID); 
+      ClientTransactionScope.CurrentTransaction.Commit ();
+      using (new ClientTransactionScope ())
+      {
+        Customer actualCustomer = Customer.GetObject (expectedCustomer.ID);
+        Assert.IsNotNull (actualCustomer);
+        Assert.AreEqual (expectedAddress.ID, actualCustomer.Address.ID);
+      }
     }
 
     [Test]
@@ -146,22 +150,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
         historyEntry.Delete ();
 
       customer.Delete ();
-      CommitAndReInitializeCurrentClientTransaction ();
+      
 
-      try
-      {
-        Customer.GetObject (DomainObjectIDs.Customer);
-        Assert.Fail ("ObjectNotFoundException was expected.");
-      }
-      catch (ObjectNotFoundException)
-      {
-      }
-    }
-
-    private void CommitAndReInitializeCurrentClientTransaction ()
-    {
       ClientTransactionScope.CurrentTransaction.Commit ();
-      ClientTransactionScope.SetCurrentTransaction (new ClientTransaction ());
+      using (new ClientTransactionScope ())
+      {
+        try
+        {
+          Customer.GetObject (DomainObjectIDs.Customer);
+          Assert.Fail ("ObjectNotFoundException was expected.");
+        }
+        catch (ObjectNotFoundException)
+        {
+        }
+      }
     }
   }
 }
