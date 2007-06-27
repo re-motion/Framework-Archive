@@ -10,6 +10,46 @@ namespace Rubicon.Data.DomainObjects
   /// its previous value. The <see cref="Dispose"/> method resets <see cref="CurrentTransaction"/> to the remembered value.</remarks>
   public class ClientTransactionScope : IDisposable
   {
+    /// <summary>
+    /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="CurrentTransaction"/>. 
+    /// </summary>
+    /// <remarks>
+    /// Even if the value returned by <b>HasCurrentTransaction</b> is false, <see cref="CurrentTransaction"/> will return a <see cref="ClientTransaction"/>. See <see cref="CurrentTransaction"/> for further de.
+    /// </remarks>
+    public static bool HasCurrentTransaction
+    {
+      get { return GetCurrentTransactionInternal () != null; }
+    }
+
+    /// <summary>
+    /// Gets the default <b>ClientTransaction</b> of the current thread. 
+    /// </summary>
+    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is created.</remarks>
+    public static ClientTransaction CurrentTransaction
+    {
+      get
+      {
+        if (!HasCurrentTransaction)
+          SetCurrentTransaction (new ClientTransaction ());
+
+        return GetCurrentTransactionInternal ();
+      }
+    }
+
+    private static ClientTransaction GetCurrentTransactionInternal ()
+    {
+      return (ClientTransaction) CallContext.GetData (c_callContextKey);
+    }
+
+   /// <summary>
+    /// Sets the default <b>ClientTransaction</b> of the current thread.
+    /// </summary>
+    /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
+    public static void SetCurrentTransaction (ClientTransaction clientTransaction)
+    {
+      CallContext.SetData (c_callContextKey, clientTransaction);
+    }
+
     private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.CurrentTransaction";
 
     private ClientTransaction _previousTransaction;
@@ -63,32 +103,6 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="CurrentTransaction"/>. 
-    /// </summary>
-    /// <remarks>
-    /// Even if the value returned by <b>HasCurrentTransaction</b> is false, <see cref="CurrentTransaction"/> will return a <see cref="ClientTransaction"/>. See <see cref="CurrentTransaction"/> for further de.
-    /// </remarks>
-    public static bool HasCurrentTransaction
-    {
-      get { return GetCurrentTransactionInternal () != null ; }
-    }
-
-    /// <summary>
-    /// Gets the default <b>ClientTransaction</b> of the current thread. 
-    /// </summary>
-    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is created.</remarks>
-    public static ClientTransaction CurrentTransaction
-    {
-      get 
-      {
-        if (!HasCurrentTransaction)
-          SetCurrentTransaction (new ClientTransaction ());
-      
-        return GetCurrentTransactionInternal ();
-      }
-    }
-
-    /// <summary>
     /// Gets or sets a value indicating whether this scope will automatically call <see cref="ClientTransaction.Rollback"/> on a transaction
     /// with uncommitted changed objects when the scope's <see cref="Dispose"/> method is invoked.
     /// </summary>
@@ -127,22 +141,26 @@ namespace Rubicon.Data.DomainObjects
     {
       if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
       {
-        ScopedTransaction.Rollback ();
+        Rollback ();
       }
     }
 
     /// <summary>
-    /// Sets the default <b>ClientTransaction</b> of the current thread.
+    /// Commits the transaction scoped by this object. This is equivalent to <c>ScopedTransaction.Commt()</c>.
     /// </summary>
-    /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
-    public static void SetCurrentTransaction (ClientTransaction clientTransaction)
+    /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
+    /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
+    public void Commit ()
     {
-      CallContext.SetData (c_callContextKey, clientTransaction);
+      ScopedTransaction.Commit ();
     }
 
-    private static ClientTransaction GetCurrentTransactionInternal ()
+    /// <summary>
+    /// Performs a rollback on the transaction scoped by this object. This is equivalent to <c>ScopedTransaction.Rollback()</c>.
+    /// </summary>
+    public void Rollback ()
     {
-      return (ClientTransaction) CallContext.GetData (c_callContextKey);
+      ScopedTransaction.Rollback ();
     }
   }
 }

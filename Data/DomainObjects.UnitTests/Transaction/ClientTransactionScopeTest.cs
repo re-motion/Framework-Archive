@@ -132,18 +132,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
     }
 
-    class RollbackEventReceiver
+    class TransactionEventCounter
     {
       public int Rollbacks = 0;
+      public int Commits = 0;
 
-      public RollbackEventReceiver (ClientTransaction clientTransaction)
+      public TransactionEventCounter (ClientTransaction clientTransaction)
       {
         clientTransaction.RolledBack += new ClientTransactionEventHandler (ClientTransaction_RolledBack);
+        clientTransaction.Committed += new ClientTransactionEventHandler (ClientTransaction_Committed);
       }
 
       void ClientTransaction_RolledBack (object sender, ClientTransactionEventArgs args)
       {
         ++Rollbacks;
+      }
+
+      void ClientTransaction_Committed (object sender, ClientTransactionEventArgs args)
+      {
+        ++Commits;
       }
     }
 
@@ -151,7 +158,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void NoAutoRollbackWhenNoneBehavior ()
     {
       ClientTransactionMock mock = new ClientTransactionMock();
-      RollbackEventReceiver eventReceiver = new RollbackEventReceiver(mock);
+      TransactionEventCounter eventCounter = new TransactionEventCounter(mock);
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.None))
       {
@@ -161,13 +168,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         order.OrderItems.Add (OrderItem.NewObject ());
       }
 
-      Assert.AreEqual (0, eventReceiver.Rollbacks);
+      Assert.AreEqual (0, eventCounter.Rollbacks);
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.None))
       {
       }
 
-      Assert.AreEqual (0, eventReceiver.Rollbacks);
+      Assert.AreEqual (0, eventCounter.Rollbacks);
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.None))
       {
@@ -177,14 +184,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         scope.ScopedTransaction.Rollback ();
       }
 
-      Assert.AreEqual (1, eventReceiver.Rollbacks);
+      Assert.AreEqual (1, eventCounter.Rollbacks);
     }
 
     [Test]
     public void AutoRollbackWhenRollbackBehavior ()
     {
       ClientTransactionMock mock = new ClientTransactionMock ();
-      RollbackEventReceiver eventReceiver = new RollbackEventReceiver (mock);
+      TransactionEventCounter eventCounter = new TransactionEventCounter (mock);
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
       {
@@ -192,8 +199,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         order.OrderNumber = 0xbadf00d;
       }
 
-      Assert.AreEqual (1, eventReceiver.Rollbacks);
-      eventReceiver.Rollbacks = 0;
+      Assert.AreEqual (1, eventCounter.Rollbacks);
+      eventCounter.Rollbacks = 0;
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
       {
@@ -201,8 +208,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         order.OrderTicket = OrderTicket.NewObject ();
       }
 
-      Assert.AreEqual (1, eventReceiver.Rollbacks);
-      eventReceiver.Rollbacks = 0;
+      Assert.AreEqual (1, eventCounter.Rollbacks);
+      eventCounter.Rollbacks = 0;
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
       {
@@ -210,35 +217,67 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         order.OrderItems.Add (OrderItem.NewObject ());
       }
 
-      Assert.AreEqual (1, eventReceiver.Rollbacks);
-      eventReceiver.Rollbacks = 0;
+      Assert.AreEqual (1, eventCounter.Rollbacks);
+      eventCounter.Rollbacks = 0;
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
       {
       }
 
-      Assert.AreEqual (0, eventReceiver.Rollbacks);
-
-      using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
-      {
-        Order order = Order.GetObject (new DomainObjectIDs ().Order1);
-        order.OrderNumber = 0xbadf00d;
-        scope.ScopedTransaction.Rollback ();
-      }
-
-      Assert.AreEqual (1, eventReceiver.Rollbacks);
-      eventReceiver.Rollbacks = 0;
+      Assert.AreEqual (0, eventCounter.Rollbacks);
 
       using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
       {
         Order order = Order.GetObject (new DomainObjectIDs ().Order1);
         order.OrderNumber = 0xbadf00d;
         scope.ScopedTransaction.Rollback ();
+      }
+
+      Assert.AreEqual (1, eventCounter.Rollbacks);
+      eventCounter.Rollbacks = 0;
+
+      using (ClientTransactionScope scope = new ClientTransactionScope (mock, AutoRollbackBehavior.Rollback))
+      {
+        Order order = Order.GetObject (new DomainObjectIDs ().Order1);
+        order.OrderNumber = 0xbadf00d;
+        scope.ScopedTransaction.Rollback ();
 
         order.OrderNumber = 0xbadf00d;
       }
 
-      Assert.AreEqual (2, eventReceiver.Rollbacks);
+      Assert.AreEqual (2, eventCounter.Rollbacks);
+    }
+
+    [Test]
+    public void CommitAndRollbackOnScope ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      TransactionEventCounter eventCounter = new TransactionEventCounter (transaction);
+      using (ClientTransactionScope scope = new ClientTransactionScope (transaction))
+      {
+        Assert.AreEqual (0, eventCounter.Commits);
+        Assert.AreEqual (0, eventCounter.Rollbacks);
+
+        scope.Commit ();
+
+        Assert.AreEqual (1, eventCounter.Commits);
+        Assert.AreEqual (0, eventCounter.Rollbacks);
+
+        scope.Rollback ();
+
+        Assert.AreEqual (1, eventCounter.Commits);
+        Assert.AreEqual (1, eventCounter.Rollbacks);
+
+        transaction.Commit ();
+
+        Assert.AreEqual (2, eventCounter.Commits);
+        Assert.AreEqual (1, eventCounter.Rollbacks);
+
+        transaction.Rollback ();
+
+        Assert.AreEqual (2, eventCounter.Commits);
+        Assert.AreEqual (2, eventCounter.Rollbacks);
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Globalization;
 

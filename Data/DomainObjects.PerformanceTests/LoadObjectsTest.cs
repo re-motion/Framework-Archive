@@ -48,16 +48,18 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        ClientTransactionScope.SetCurrentTransaction (null);
-        Client client = Client.GetObject (_clientID);
+        using (new ClientTransactionScope (AutoRollbackBehavior.None))
+        {
+          Client client = Client.GetObject (_clientID);
 
-        stopwatch.Start ();
+          stopwatch.Start();
 
-        DomainObjectCollection files = client.Files;
+          DomainObjectCollection files = client.Files;
 
-        stopwatch.Stop ();
+          stopwatch.Stop();
 
-        Assert.AreEqual (6000, files.Count);
+          Assert.AreEqual (6000, files.Count);
+        }
       }
 
       double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;
@@ -74,15 +76,17 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       Stopwatch stopwatch = new Stopwatch ();
       for (int i = 0; i < numberOfTests; i++)
       {
-        ClientTransactionScope.SetCurrentTransaction (null);
-        Client client = Client.GetObject (_clientID);
+        using (new ClientTransactionScope (AutoRollbackBehavior.None))
+        {
+          Client client = Client.GetObject (_clientID);
 
-        stopwatch.Start ();
+          stopwatch.Start();
 
-        DomainObjectCollection clientBoundBaseClasses = client.ClientBoundBaseClasses;
+          DomainObjectCollection clientBoundBaseClasses = client.ClientBoundBaseClasses;
 
-        stopwatch.Stop ();
-        Assert.AreEqual (4000, clientBoundBaseClasses.Count);
+          stopwatch.Stop();
+          Assert.AreEqual (4000, clientBoundBaseClasses.Count);
+        }
       }
 
       double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;

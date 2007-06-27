@@ -241,12 +241,10 @@ namespace Rubicon.Web.ExecutionEngine
         {
           CommitTransaction (_transaction);
         }
-        catch (Exception)
+        finally
         {
           SetCurrentTransaction (currentTransaction);
-          throw;
         }
-        SetCurrentTransaction (currentTransaction);
         _transaction.Release ();
         _transaction = null;
       }
@@ -295,12 +293,10 @@ namespace Rubicon.Web.ExecutionEngine
         {
           RollbackTransaction (_transaction);
         }
-        catch (Exception)
+        finally
         {
           SetCurrentTransaction (currentTransaction);
-          throw;
         }
-        SetCurrentTransaction (currentTransaction);
         _transaction.Release ();
         _transaction = null;
       }
