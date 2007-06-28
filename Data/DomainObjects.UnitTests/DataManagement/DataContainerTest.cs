@@ -24,8 +24,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
           new ReflectionBasedClassDefinition ("Order", "Order", c_testDomainProviderID, typeof (Order), false);
 
       _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", idValue));
-
       _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);
+
+      ClientTransactionMock currentTransaction = new ClientTransactionMock ();
+      currentTransaction.SetClientTransaction (_existingDataContainer);
+      currentTransaction.SetClientTransaction (_newDataContainer);
+      currentTransaction.EnterScope ();
 
       _nameDefinition = new ReflectionBasedPropertyDefinition (orderClass, "Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");

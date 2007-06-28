@@ -281,6 +281,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     {
       DataContainer orderContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Order1);
       DataContainer officialContainer = _persistenceManager.LoadDataContainer (DomainObjectIDs.Official1);
+      ClientTransactionMock.SetClientTransaction (orderContainer);
+      ClientTransactionMock.SetClientTransaction (officialContainer);
 
       DataContainerCollection dataContainers = new DataContainerCollection ();
       dataContainers.Add (orderContainer);

@@ -18,10 +18,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       SetDatabaseModifyable ();
     }
 
+
+    private DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
+    {
+      DataContainer dataContainer = Provider.CreateNewDataContainer (classDefinition);
+      ClientTransactionMock.SetClientTransaction (dataContainer);
+      return dataContainer;
+    }
+
+    private DataContainer LoadDataContainer (ObjectID id)
+    {
+      DataContainer dataContainer = Provider.LoadDataContainer (id);
+      ClientTransactionMock.SetClientTransaction (dataContainer);
+      return dataContainer;
+    }
+
     [Test]
     public void NewDataContainer ()
     {
-      DataContainer newDataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions["Computer"]);
+      DataContainer newDataContainer = CreateNewDataContainer(TestMappingConfiguration.Current.ClassDefinitions["Computer"]);
 
       newDataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"] = "123";
 
@@ -32,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Provider.Save (collection);
 
-      DataContainer loadedDataContainer = Provider.LoadDataContainer (newObjectID);
+      DataContainer loadedDataContainer = LoadDataContainer (newObjectID);
 
       Assert.IsNotNull (loadedDataContainer);
       Assert.AreEqual (newDataContainer.ID, loadedDataContainer.ID);
@@ -43,7 +58,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
 
-      DataContainer classWithAllDataTypes = Provider.CreateNewDataContainer (classDefinition);
+      DataContainer classWithAllDataTypes = CreateNewDataContainer (classDefinition);
       ObjectID newID = classWithAllDataTypes.ID;
 
       classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"] = true;
@@ -82,7 +97,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
-        classWithAllDataTypes = Provider.LoadDataContainer (newID);
+        classWithAllDataTypes = LoadDataContainer(newID);
 
         Assert.AreEqual (true, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
         Assert.AreEqual (42, classWithAllDataTypes["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
@@ -146,8 +161,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Provider.Save (collection);
 
-      DataContainer newSupervisorContainer = Provider.LoadDataContainer (newSupervisor.ID);
-      DataContainer existingSubordinateContainer = Provider.LoadDataContainer (existingSubordinate.ID);
+      DataContainer newSupervisorContainer = LoadDataContainer (newSupervisor.ID);
+      DataContainer existingSubordinateContainer = LoadDataContainer (existingSubordinate.ID);
 
       Assert.IsNotNull (newSupervisorContainer);
       Assert.AreEqual (newSupervisorContainer.ID, existingSubordinateContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"));
@@ -168,7 +183,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Provider.Save (collection);
 
-      DataContainer loadedDataContainer = Provider.LoadDataContainer (newObjectID);
+      DataContainer loadedDataContainer = LoadDataContainer (newObjectID);
 
       Assert.IsNotNull (loadedDataContainer);
       Assert.AreEqual (DomainObjectIDs.Customer1, loadedDataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"));
@@ -192,8 +207,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       Provider.Save (collection);
 
-      DataContainer newCustomerContainer = Provider.LoadDataContainer (newCustomer.ID);
-      DataContainer newOrderContainer = Provider.LoadDataContainer (newOrder.ID);
+      DataContainer newCustomerContainer = LoadDataContainer (newCustomer.ID);
+      DataContainer newOrderContainer = LoadDataContainer (newOrder.ID);
 
       Assert.IsNotNull (newCustomerContainer);
       Assert.IsNotNull (newOrderContainer);
@@ -207,7 +222,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);
@@ -222,6 +237,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+        ClientTransactionMock.SetClientTransaction (dataContainer);
         Assert.IsNull (dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"]);
       }
     }
@@ -232,7 +248,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);
@@ -247,6 +263,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+        ClientTransactionMock.SetClientTransaction (dataContainer);
         ResourceManager.IsEmptyImage ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
       }
     }
@@ -257,7 +274,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       ObjectID newID;
       using (Provider)
       {
-        DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+        DataContainer dataContainer = CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
         newID = dataContainer.ID;
 
         SetDefaultValues (dataContainer);
@@ -272,6 +289,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
       {
         DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+        ClientTransactionMock.SetClientTransaction (dataContainer);
         ResourceManager.IsEqualToImageLarger1MB ((byte[]) dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"));
       }
     }

@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Infrastructure;
@@ -339,6 +341,7 @@ public class DomainObject
 
   private ObjectID _id;
   private DataContainer _dataContainer;
+  private Set<ClientTransaction> _enlistedTransactions;
 
   // construction and disposing
 
@@ -358,6 +361,8 @@ public class DomainObject
     _dataContainer.SetDomainObject (this);
 
     _id = _dataContainer.ID;
+    _enlistedTransactions = new Set<ClientTransaction> ();
+    _enlistedTransactions.Add (clientTransaction);
   }
 
   #region Legacy constructors
@@ -377,6 +382,8 @@ public class DomainObject
     _dataContainer.SetDomainObject (this);
 
     _id = _dataContainer.ID;
+    _enlistedTransactions = new Set<ClientTransaction> ();
+    _enlistedTransactions.Add (clientTransaction);
   }
 
   /// <summary>
@@ -398,7 +405,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    SetDataContainerForLoading (dataContainer);
+    PrepareWhenLoading (dataContainer);
   }
   #endregion
 
@@ -409,11 +416,13 @@ public class DomainObject
   /// </summary>
   /// <param name="dataContainer">The data container to be associated with the loaded domain object.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
-  internal void SetDataContainerForLoading (DataContainer dataContainer)
+  internal void PrepareWhenLoading (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
     _dataContainer = dataContainer;
     _id = _dataContainer.ID;
+    _enlistedTransactions = new Set<ClientTransaction> ();
+    _enlistedTransactions.Add (dataContainer.ClientTransaction);
   }
 
   /// <summary>
@@ -535,7 +544,8 @@ public class DomainObject
   /// <remarks>If this method returns false, <see cref="EnlistInTransaction"/> can be used to enlist this instance in another transaction.</remarks>
   public bool CanBeUsedInTransaction (ClientTransaction transaction)
   {
-    return _dataContainer.ClientTransaction == transaction;
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+    return _dataContainer.ClientTransaction == transaction || _enlistedTransactions.Contains (transaction);
   }
 
   private void CheckIfRightTransaction ()
@@ -543,10 +553,43 @@ public class DomainObject
     if (!CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction))
     {
       string message = string.Format ("Domain object '{0}' cannot be used in the current transaction as it was loaded or created in another "
-          + "transaction. Use a ClientTransactionScope to set the right transaction, or call EnlistInCurrentTransaction to enlist the object "
-          + "with the current transaction.", ID);
+          + "transaction. Use a ClientTransactionScope to set the right transaction, or call EnlistInTransaction to enlist the object "
+          + "in the current transaction.", ID);
       throw new ClientTransactionsDifferException (message);
     }
+  }
+
+  /// <summary>
+  /// Allows this domain object to be used in the context a given transaction without needing to explicitly reload it there.
+  /// </summary>
+  /// <param name="transaction">The transaction this domain object should be used in.</param>
+  /// <remarks>
+  /// <para>
+  /// Unlike <see cref="DomainObject.LoadIntoTransaction"/>, this method does not create a new <see cref="DomainObject"/> reference, but instead
+  /// marks this <see cref="DomainObject"/> for use in the given transaction. After this, the same object reference can be used in both the
+  /// transaction it was originally created in and the transactions it has been enlisted in.
+  /// </para>
+  /// <para>
+  /// Using a <see cref="DomainObject"/> in two different transactions at the same time will result in its <see cref="Properties"/> differing
+  /// depending on which transaction is currently active. For example, if a property is changed (and even committed) in transaction A and the object
+  /// has been enlisted in transaction B before transaction's A commit, transaction B will never see the changes committed by transaction A.
+  /// </para>
+  /// </remarks>
+  public void EnlistInTransaction (ClientTransaction transaction)
+  {
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+    try
+    {
+      transaction.GetObject (ID);
+    }
+    catch (ObjectNotFoundException ex)
+    {
+      string message = string.Format ("The domain object '{0}' cannot be enlisted in the given transaction because it does not exist in that "
+          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", ID);
+      throw new ArgumentException (message, "transaction", ex);
+    }
+    _enlistedTransactions.Add (transaction);
   }
 
   #endregion
