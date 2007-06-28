@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     {
       DomainObject domainObject = businessObject as DomainObject;
       if (domainObject != null)
-        return domainObject.ClientTransaction;
+        return domainObject.InitialClientTransaction;
       else
         return ClientTransactionScope.CurrentTransaction;
     }

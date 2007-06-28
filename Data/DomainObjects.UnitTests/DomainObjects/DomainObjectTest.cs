@@ -553,7 +553,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void GetDomainObjectType ()
     {
       Customer customer = Customer.NewObject ();
-			Assert.AreEqual (typeof (Customer), customer.InternalDataContainer.DomainObjectType);
+      Assert.AreEqual (typeof (Customer), customer.InternalDataContainer.DomainObjectType);
+    }
+
+    [Test]
+    public void FirstClientTransaction ()
+    {
+      ClientTransaction outerTransaction = ClientTransactionScope.CurrentTransaction;
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (new ClientTransactionScope ())
+      {
+        Assert.AreSame (outerTransaction, order.InitialClientTransaction);
+        Assert.AreNotSame (ClientTransactionScope.ActiveScope.ScopedTransaction, order.InitialClientTransaction);
+
+        order.EnlistInTransaction (ClientTransactionScope.ActiveScope.ScopedTransaction);
+
+        Assert.AreSame (outerTransaction, order.InitialClientTransaction);
+        Assert.AreNotSame (ClientTransactionScope.ActiveScope.ScopedTransaction, order.InitialClientTransaction);
+      }
     }
   }
 }

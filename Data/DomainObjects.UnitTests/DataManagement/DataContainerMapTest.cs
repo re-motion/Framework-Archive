@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       _map = new DataContainerMap (ClientTransactionMock);
       _newOrder = CreateNewOrderDataContainer ();
-      _existingOrder = TestDataContainerFactory.CreateOrder1DataContainer ();
+      _existingOrder = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
     }
 
     [Test]
@@ -52,8 +52,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (1, _map.Count);
 
       Order order = (Order) _existingOrder.DomainObject;
-      order.Delete ();
-      _map.Commit ();
+      order.Delete();
+      _map.Commit();
 
       Assert.AreEqual (0, _map.Count);
     }
@@ -82,17 +82,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void RollbackForDeletedObject ()
     {
-      _map.Register (_existingOrder);
+      using (ClientTransactionMock.EnterScope ())
+      {
+        _map.Register (_existingOrder);
 
-      Order order = (Order) _existingOrder.DomainObject;
-      order.Delete ();
-      Assert.AreEqual (StateType.Deleted, _existingOrder.State);
+        Order order = (Order) _existingOrder.DomainObject;
+        order.Delete();
+        Assert.AreEqual (StateType.Deleted, _existingOrder.State);
 
-      _map.Rollback ();
+        _map.Rollback();
 
-      _existingOrder = _map[_existingOrder.ID];
-      Assert.IsNotNull (_existingOrder);
-      Assert.AreEqual (StateType.Unchanged, _existingOrder.State);
+        _existingOrder = _map[_existingOrder.ID];
+        Assert.IsNotNull (_existingOrder);
+        Assert.AreEqual (StateType.Unchanged, _existingOrder.State);
+      }
     }
 
     [Test]

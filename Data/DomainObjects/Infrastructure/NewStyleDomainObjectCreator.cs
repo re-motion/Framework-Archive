@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Type concreteType = factory.GetConcreteDomainObjectType(dataContainer.DomainObjectType);
       DomainObject instance = (DomainObject) System.Runtime.Serialization.FormatterServices.GetSafeUninitializedObject (concreteType);
       factory.PrepareUnconstructedInstance (instance);
-      instance.PrepareWhenLoading (dataContainer);
+      instance.InitializeFromDataContainer (dataContainer);
       return instance;
     }
 

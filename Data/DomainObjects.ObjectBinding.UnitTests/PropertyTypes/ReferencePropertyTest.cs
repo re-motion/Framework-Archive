@@ -45,8 +45,11 @@ public class ReferencePropertyTest : DatabaseTest
     Assert.IsTrue (businessObjects.Length > 0);
     
     Order order = (Order) businessObjects[0];
-    Assert.IsTrue (object.ReferenceEquals (_orderTicket.ClientTransaction, order.ClientTransaction));
-    Assert.IsFalse (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
+    Assert.AreSame (_orderTicket.InitialClientTransaction, order.InitialClientTransaction);
+    Assert.AreNotSame (ClientTransactionScope.CurrentTransaction, order.InitialClientTransaction);
+    Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+    Assert.IsTrue (order.CanBeUsedInTransaction (_clientTransaction));
+    
   }
 
   [Test]
@@ -60,7 +63,9 @@ public class ReferencePropertyTest : DatabaseTest
     Assert.IsTrue (businessObjects.Length > 0);
     
     Order order = (Order) businessObjects[0];
-    Assert.IsTrue (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
+
+    Assert.AreSame (ClientTransactionScope.CurrentTransaction, order.InitialClientTransaction);
+    Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
   }
 
   [Test]
@@ -74,7 +79,9 @@ public class ReferencePropertyTest : DatabaseTest
     Assert.IsTrue (businessObjects.Length > 0);
     
     Order order = (Order) businessObjects[0];
-    Assert.IsTrue (object.ReferenceEquals (ClientTransactionScope.CurrentTransaction, order.ClientTransaction));
+
+    Assert.AreSame (ClientTransactionScope.CurrentTransaction, order.InitialClientTransaction);
+    Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
   }
 
   private PropertyInfo GetOrderProperty ()

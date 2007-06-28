@@ -38,7 +38,10 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
     public void Saving_DisacardedDomainObject ()
     {
       Tenant tenant = _factory.CreateTenant (_clientTransaction);
-      tenant.Delete ();
+      using (_clientTransaction.EnterScope ())
+      {
+        tenant.Delete ();
+      }
 
       _clientTransaction.Commit ();
 

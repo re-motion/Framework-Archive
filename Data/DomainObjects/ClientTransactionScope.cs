@@ -55,6 +55,7 @@ namespace Rubicon.Data.DomainObjects
 
     private static ClientTransaction GetCurrentTransactionInternal ()
     {
+      // TODO: change to use ActiveScope.ScopedTransaction when automatic transaction initialization is turned off
       return (ClientTransaction) CallContext.GetData (c_callContextKey);
     }
 

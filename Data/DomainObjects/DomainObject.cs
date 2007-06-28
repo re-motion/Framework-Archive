@@ -340,7 +340,7 @@ public class DomainObject
   public event EventHandler Deleted;
 
   private ObjectID _id;
-  private DataContainer _dataContainer;
+  private ClientTransaction _initialClientTransaction; // the ClientTransaction this object was originally created or loaded with
   private Set<ClientTransaction> _enlistedTransactions;
 
   // construction and disposing
@@ -349,20 +349,17 @@ public class DomainObject
   /// Initializes a new <see cref="DomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
   /// </summary>
   /// <remarks>Any constructors implemented on concrete domain objects should delegate to this base constructor, apart from the infrastructure
-  /// constructor (see <see cref="DomainObject(DataContainer)"/>). As domain objects generally should not be constructed via the
+  /// constructor (see <see cref="DomainObject(DomainObjects.DataContainer)"/>). As domain objects generally should not be constructed via the
   /// <c>new</c> operator, these constructors must therefor remain protected, and the concrete domain objects should have a static "NewObject" method,
   /// which delegates to <see cref="DomainObject.NewObject"/>, passing it the required constructor arguments.</remarks>
   protected DomainObject ()
   {
-    ClientTransaction clientTransaction = ClientTransactionScope.CurrentTransaction;
-    clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
+    ClientTransactionScope.CurrentTransaction.NewObjectCreating (GetPublicDomainObjectType ());
 
-    _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
-    _dataContainer.SetDomainObject (this);
+    DataContainer firstDataContainer = ClientTransactionScope.CurrentTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
+    firstDataContainer.SetDomainObject (this);
 
-    _id = _dataContainer.ID;
-    _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (clientTransaction);
+    InitializeFromDataContainer (firstDataContainer);
   }
 
   #region Legacy constructors
@@ -378,12 +375,10 @@ public class DomainObject
 
     clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
 
-    _dataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
-    _dataContainer.SetDomainObject (this);
+    DataContainer firstDataContainer = _initialClientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
+    firstDataContainer.SetDomainObject (this);
 
-    _id = _dataContainer.ID;
-    _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (clientTransaction);
+    InitializeFromDataContainer (firstDataContainer);
   }
 
   /// <summary>
@@ -399,13 +394,13 @@ public class DomainObject
   /// using any constructor.
   /// </para>
   /// </remarks>
-  /// <param name="dataContainer">The <see cref="DataContainer"/> to be associated with the loaded domain object.</param>
+  /// <param name="dataContainer">The <see cref="DomainObjects.DataContainer"/> to be associated with the loaded domain object.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
   protected DomainObject (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    PrepareWhenLoading (dataContainer);
+    InitializeFromDataContainer (dataContainer);
   }
   #endregion
 
@@ -416,13 +411,15 @@ public class DomainObject
   /// </summary>
   /// <param name="dataContainer">The data container to be associated with the loaded domain object.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="dataContainer"/> parameter is null.</exception>
-  internal void PrepareWhenLoading (DataContainer dataContainer)
+  internal void InitializeFromDataContainer (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    _dataContainer = dataContainer;
-    _id = _dataContainer.ID;
+
+    _initialClientTransaction = dataContainer.ClientTransaction;
+
+    _id = dataContainer.ID;
     _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (dataContainer.ClientTransaction);
+    _enlistedTransactions.Add (_initialClientTransaction);
   }
 
   /// <summary>
@@ -449,7 +446,7 @@ public class DomainObject
   }
 
   /// <summary>
-  /// Gets the current state of the <see cref="DomainObject"/>.
+  /// Gets the current state of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public StateType State
@@ -457,15 +454,16 @@ public class DomainObject
     get
     {
       CheckIfObjectIsDiscarded ();
-      if (_dataContainer.State == StateType.Unchanged)
+      DataContainer dataContainer = GetDataContainer ();
+      if (dataContainer.State == StateType.Unchanged)
       {
-        if (ClientTransaction.HasRelationChanged (this))
+        if (ClientTransactionScope.CurrentTransaction.HasRelationChanged (this))
           return StateType.Changed;
         else
           return StateType.Unchanged;
       }
 
-      return _dataContainer.State;
+      return dataContainer.State;
     }
   }
 
@@ -477,19 +475,32 @@ public class DomainObject
   /// </remarks>
   public bool IsDiscarded
   {
-    get { return _dataContainer.IsDiscarded; }
+    get { return ClientTransactionScope.CurrentTransaction.DataManager.IsDiscarded (ID); }
+  }
+
+  protected internal void CheckIfObjectIsDiscarded ()
+  {
+    if (IsDiscarded)
+      throw new ObjectDiscardedException (ID);
   }
 
   /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to which the <see cref="DomainObject"/> belongs.
+  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> this <see cref="DomainObject"/> instance was originally created or loaded
+  /// with. In addition, the <see cref="DomainObject"/> can be used from other transactions as well, see <see cref="CanBeUsedInTransaction"/>
+  /// and <see cref="EnlistInTransaction"/>.
   /// </summary>
-  [Obsolete ("Association of DomainObjects with a single ClientTransaction will soon be removed, don't use this any longer. Use "
-      + "ClientTransactionScope.CurrentTransaction and DomainObject.CanBeUsedInTransaction instead.")]
-  public ClientTransaction ClientTransaction
+  /// <remarks>
+  /// <see cref="InitialClientTransaction"/> is just for reference, the properties and methods of <see cref="DomainObject"/> will usually use
+  /// the <see cref="ClientTransactionScope.CurrentTransaction"/>.
+  /// </remarks>
+  public ClientTransaction InitialClientTransaction
   {
-    get { return _dataContainer.ClientTransaction; }
+    get { return _initialClientTransaction; }
   }
 
+  /// <summary>
+  /// </summary>
+  /// <value></value>
 	[Obsolete ("Do not access the DataContainer of a DomainObject to retrieve field values, use its Properties member instead.")]
 	public DataContainerIndirection DataContainer
 	{
@@ -502,23 +513,20 @@ public class DomainObject
 	}
 
 		/// <summary>
-  /// Gets the <see cref="DataContainer"/> of the <see cref="DomainObject"/>.
+  /// Gets the <see cref="DomainObjects.DataContainer"/> of the <see cref="DomainObject"/> in the <see cref="ClientTransactionScope.CurrentTransaction"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   internal DataContainer GetDataContainer()
   {
     CheckIfObjectIsDiscarded ();
     CheckIfRightTransaction ();
-    return _dataContainer; 
-  }
 
-	internal void SetDataContainer(DataContainer value)
-  {
-    if (_dataContainer != null)
-    {
-      throw new InvalidOperationException ("The data container can only be set once.");
-    }
-    _dataContainer = value;
+    DataContainer dataContainer = ClientTransactionScope.CurrentTransaction.DataManager.DataContainerMap[ID];
+    if (dataContainer == null)
+      dataContainer = ClientTransactionScope.CurrentTransaction.LoadDataContainerForExistingObject (this);
+    Assertion.Assert (dataContainer != null);
+
+    return dataContainer;
   }
 
   /// <summary>
@@ -529,8 +537,9 @@ public class DomainObject
   protected void Delete ()
   {
     CheckIfObjectIsDiscarded ();
+    CheckIfRightTransaction ();
 
-    ClientTransaction.Delete (this);
+    ClientTransactionScope.CurrentTransaction.Delete (this);
   }
 
   #region Transaction handling
@@ -545,7 +554,7 @@ public class DomainObject
   public bool CanBeUsedInTransaction (ClientTransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
-    if (_dataContainer.ClientTransaction == transaction || _enlistedTransactions.Contains (transaction))
+    if (_enlistedTransactions.Contains (transaction))
       return true;
     else if (ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects)
     {
@@ -959,12 +968,6 @@ public class DomainObject
   internal void PropertyValueChanged (object sender, PropertyChangeEventArgs args)
   {
     OnPropertyChanged (args);
-  }
-
-  protected internal void CheckIfObjectIsDiscarded ()
-  {
-    if (IsDiscarded)
-      throw new ObjectDiscardedException (_dataContainer.GetID());
   }
 }
 }

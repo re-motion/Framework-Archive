@@ -453,6 +453,8 @@ public class DataContainer
 
   private void Discard ()
   {
+    _clientTransaction.DataManager.MarkDiscarded (ID);
+
     _propertyValues.Discard ();
     _clientTransaction = null;
 

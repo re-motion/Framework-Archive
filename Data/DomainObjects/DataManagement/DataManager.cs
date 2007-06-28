@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -16,6 +17,7 @@ public class DataManager
   private ClientTransaction _clientTransaction;
   private DataContainerMap _dataContainerMap;
   private RelationEndPointMap _relationEndPointMap;
+  private Set<ObjectID> _discardedObjects;
 
   // construction and disposing
 
@@ -26,6 +28,7 @@ public class DataManager
     _clientTransaction = clientTransaction;
     _dataContainerMap = new DataContainerMap (clientTransaction);
     _relationEndPointMap = new RelationEndPointMap (clientTransaction);
+    _discardedObjects = new Set<ObjectID> ();
   }
 
   // methods and properties
@@ -155,9 +158,12 @@ public class DataManager
 
   private void PerformDelete (DomainObject domainObject)
   {
+    DataContainer dataContainer = domainObject.GetDataContainer ();  // rescue dataContainer before the map deletes is
+
     _relationEndPointMap.PerformDelete (domainObject);
-    _dataContainerMap.PerformDelete (domainObject.GetDataContainer());
-    domainObject.GetDataContainer().Delete ();
+    _dataContainerMap.PerformDelete (dataContainer);
+    
+    dataContainer.Delete ();
   }
 
   private void BeginDelete (
@@ -234,6 +240,18 @@ public class DataManager
   private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
   {
     return new ClientTransactionsDifferException (string.Format (message, args));
+  }
+
+  public void MarkDiscarded (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    _discardedObjects.Add (id);
+  }
+
+  public bool IsDiscarded (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    return _discardedObjects.Contains (id);
   }
 }
 }

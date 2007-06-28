@@ -121,6 +121,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = "Domain object '.*' cannot be used in the current transaction "
+        + "as it was loaded or created in another transaction. Use a ClientTransactionScope to set the right transaction, or call "
+        + "EnlistInTransaction to enlist the object in the current transaction.", MatchType = MessageMatch.Regex)]
+    public void ThrowsOnDeleteWhenCannotBeUsedInTransaction ()
+    {
+      Order order = Order.NewObject ();
+      using (new ClientTransactionScope ())
+      {
+        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        order.Delete();
+      }
+    }
+
+    [Test]
     public void LoadedObjectCanBeEnlistedInTransaction ()
     {
       ClientTransaction newTransaction = new ClientTransaction ();
@@ -169,7 +183,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("This will work once DomainObject retrieves its DataContainer from the CurrentTransaction.")]
     public void EnlistedObjectCanBeUsedInTwoTransactions ()
     {
       ClientTransaction newTransaction = new ClientTransaction ();
@@ -186,10 +199,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       {
         Assert.AreNotEqual (5, order.OrderNumber);
         order.OrderNumber = 6;
-        Assert.AreEqual (5, order.OrderNumber);
+        Assert.AreEqual (6, order.OrderNumber);
       }
 
-      Assert.AreNotEqual (6, order.OrderNumber);
+      Assert.AreEqual (5, order.OrderNumber);
     }
 
     [Test]
@@ -211,7 +224,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("This will work once DomainObject retrieves its DataContainer from the CurrentTransaction.")]
     public void DeletedObjectCanBeEnlistedInTransactionIfNotCommitted ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -228,7 +240,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("This will work once DomainObject retrieves its DataContainer from the CurrentTransaction.")]
     public void CommitOnlyInfluencesTransactionsEnlistedAfterCommit ()
     {
       SetDatabaseModifyable ();

@@ -399,18 +399,54 @@ public class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("id", id);
     using (EnterScope ())
     {
-      using (PersistenceManager persistenceManager = new PersistenceManager())
-      {
-        DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
-        SetClientTransaction (dataContainer);
+      DataContainer dataContainer = LoadDataContainer (id);
 
-        _dataManager.RegisterExistingDataContainer (dataContainer);
+      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
+      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
-        DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
-        OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+      return dataContainer.DomainObject;
+    }
+  }
 
-        return dataContainer.DomainObject;
-      }
+  /// <summary>
+  /// Loads a <see cref="DataContainer"/> from the datasource for an existing <see cref="DomainObject"/>.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to load the <see cref="DataContainer"/> for. Must not be <see langword="null"/>.</param>
+  /// <returns>The <see cref="DataContainer"/> that was loaded.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="domainObject"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  internal protected virtual DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    using (EnterScope ())
+    {
+      DataContainer dataContainer = LoadDataContainer (domainObject.ID);
+      dataContainer.SetDomainObject (domainObject);
+
+      DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {dataContainer.DomainObject}, true);
+      OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
+
+      return dataContainer;
+    }
+  }
+
+  private DataContainer LoadDataContainer (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+    using (PersistenceManager persistenceManager = new PersistenceManager())
+    {
+      DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
+      SetClientTransaction (dataContainer);
+
+      _dataManager.RegisterExistingDataContainer (dataContainer);
+      return dataContainer;
     }
   }
 

@@ -315,5 +315,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       }
       _dataManager.Delete (order1);
     }
+
+    [Test]
+    public void IsDiscarded ()
+    {
+      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+      Assert.IsFalse (_dataManager.IsDiscarded (orderItem1.ID));
+      _dataManager.MarkDiscarded (orderItem1.ID);
+      Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
+    }
+
+    [Test]
+    public void DeleteLoadedDiscardsOnCommit ()
+    {
+      using (ClientTransactionMock.EnterScope ())
+      {
+        SetDatabaseModifyable();
+
+        OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+        orderItem1.Delete();
+
+        Assert.IsFalse (_dataManager.IsDiscarded (orderItem1.ID));
+
+        ClientTransactionMock.Commit();
+
+        Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
+      }
+    }
+
+    [Test]
+    public void DeleteNewDiscardsImmediatelyOnCommit ()
+    {
+      using (ClientTransactionMock.EnterScope ())
+      {
+        OrderItem orderItem1 = OrderItem.NewObject();
+
+        Assert.IsFalse (_dataManager.IsDiscarded (orderItem1.ID));
+
+        orderItem1.Delete();
+
+        Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
+      }
+    }
   }
 }
