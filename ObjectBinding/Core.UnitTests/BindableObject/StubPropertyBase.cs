@@ -6,8 +6,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   public class StubPropertyBase : PropertyBase
   {
-    public StubPropertyBase (PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (propertyInfo, listInfo, isRequired)
+    public StubPropertyBase (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
+        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
     {
     }
   }

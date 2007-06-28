@@ -19,9 +19,10 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     {
       Value0 = 0,
       Value1 = 1,
-      Value2 = 2
+      Value2 = 2,
+      Value3 = 3
     }
-
+    
     // static members and constants
 
     public static ClassWithAllDataTypes NewObject ()

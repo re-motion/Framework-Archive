@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
@@ -12,8 +13,15 @@ namespace Rubicon.ObjectBinding.BindableObject
       get { return s_instance; }
     }
 
+    private readonly InterlockedCache<Type, BindableObjectClass> _businessObjectClassCache = new InterlockedCache<Type, BindableObjectClass>();
+
     public BindableObjectProvider ()
     {
+    }
+
+    public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache
+    {
+      get { return _businessObjectClassCache; }
     }
 
     /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>

@@ -7,14 +7,17 @@ namespace Rubicon.ObjectBinding.BindableObject
 {
   public abstract class PropertyBase : IBusinessObjectProperty
   {
+    private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyInfo _propertyInfo;
     private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
 
-    protected PropertyBase (PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
+    protected PropertyBase (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
     {
+      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
+      _businessObjectProvider = businessObjectProvider;
       _propertyInfo = propertyInfo;
       _listInfo = listInfo;
       _isRequired = isRequired;
@@ -107,7 +110,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public IBusinessObjectProvider BusinessObjectProvider
     {
-      get { throw new NotImplementedException(); }
+      get { return _businessObjectProvider; }
     }
 
     public PropertyInfo PropertyInfo

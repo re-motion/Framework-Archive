@@ -21,7 +21,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Initialize ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (SimpleClass), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (SimpleClass), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleClass)));
       Assert.That (bindableObjectClass.Identifier, Is.EqualTo ("SimpleClass"));
@@ -32,18 +33,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetPropertyDefinition ()
     {
-      PropertyReflector propertyReflector = new PropertyReflector (GetPropertyInfo (typeof (SimpleClass), "String"));
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      PropertyReflector propertyReflector = new PropertyReflector (GetPropertyInfo (typeof (SimpleClass), "String"), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       CheckPropertyBase (propertyReflector.GetMetadata(), bindableObjectClass.GetPropertyDefinition ("String"));
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), 
+    [ExpectedException (typeof (KeyNotFoundException),
         ExpectedMessage = "The property 'Invalid' was not found on business object class 'ClassWithAllDataTypes'.")]
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       bindableObjectClass.GetPropertyDefinition ("Invalid");
     }
@@ -51,10 +54,17 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetPropertyDefinitions ()
     {
-      TypeReflector typeReflector = new TypeReflector (typeof (ClassWithAllDataTypes));
-      PropertyBase[] expectedProperties = typeReflector.GetProperties();
-      
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      PropertyBase[] expectedProperties = new PropertyBase[]
+          {
+              CreateProperty (typeof (ClassWithAllDataTypes), "String"),
+              CreateProperty (typeof (ClassWithAllDataTypes), "Object"),
+              CreateProperty (typeof (ClassWithAllDataTypes), "ObjectArray"),
+              CreateProperty (typeof (ClassWithAllDataTypes), "ListOfObject"),
+              CreateProperty (typeof (ClassWithAllDataTypes), "ObjectArrayList")
+          };
+
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
       IBusinessObjectProperty[] actualProperties = bindableObjectClass.GetPropertyDefinitions();
 
       Assert.That (actualProperties.Length, Is.EqualTo (expectedProperties.Length));
@@ -86,7 +96,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
         Assert.That (expectedProperty.ListInfo.ItemType, Is.EqualTo (actualProperty.ListInfo.ItemType), "ListInfo.ItemType");
       Assert.That (expectedProperty.IsRequired, Is.EqualTo (actualProperty.IsRequired), "IsRequired");
 
-      if (typeof (IBusinessObjectStringProperty).IsAssignableFrom (actualProperty.GetType ()))
+      if (typeof (IBusinessObjectStringProperty).IsAssignableFrom (actualProperty.GetType()))
         CheckStringProperty ((IBusinessObjectStringProperty) actualProperty, expectedProperty);
     }
 
@@ -96,6 +106,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
           expectedProperty.MaxLength,
           Is.EqualTo (((IBusinessObjectStringProperty) actualProperty).MaxLength),
           "MaxLength");
+    }
+
+    private PropertyBase CreateProperty (Type type, string propertyName)
+    {
+      PropertyReflector propertyReflector = new PropertyReflector (GetPropertyInfo (type, propertyName), _bindableObjectProvider);
+      return propertyReflector.GetMetadata();
     }
   }
 }

@@ -160,7 +160,8 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       base.OnInitialized();
 
-      _bindableObjectClass = new BindableObjectClass (Configuration.BaseClass.Type, BindableObjectProvider.Instance);
+      ClassReflector classReflector = new ClassReflector (Configuration.BaseClass.Type, BindableObjectProvider.Instance);
+      _bindableObjectClass = classReflector.GetMetadata();
     }
   }
 }

@@ -43,13 +43,15 @@
   <ItemGroup>
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
+    <Compile Include="BindableObject\BooleanPropertyTest.cs" />
+    <Compile Include="BindableObject\ClassWithBoolean.cs" />
     <Compile Include="ListInfoTest.cs" />
     <Compile Include="BindableObject\UnboundClass.cs" />
     <Compile Include="BindableObject\PropertyReflectorTest.cs" />
     <Compile Include="BindableObject\PropertyBaseTest.cs" />
     <Compile Include="BindableObject\StubPropertyBase.cs" />
     <Compile Include="BindableObject\TestBase.cs" />
-    <Compile Include="BindableObject\TypeReflectorTest.cs" />
+    <Compile Include="BindableObject\ClassReflectorTest.cs" />
     <Compile Include="BindableObject\SimpleClass.cs" />
     <Compile Include="BindableObject\BindableObjectProviderTest.cs" />
     <Compile Include="BindableObject\ClassWithAllDataTypes.cs" />

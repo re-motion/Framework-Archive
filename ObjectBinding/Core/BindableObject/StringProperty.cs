@@ -7,8 +7,13 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly int? _maxLength;
 
-    public StringProperty (PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired, int? maxLength)
-        : base (propertyInfo, listInfo, isRequired)
+    public StringProperty (
+        BindableObjectProvider businessObjectProvider,
+        PropertyInfo propertyInfo,
+        IListInfo listInfo,
+        bool isRequired,
+        int? maxLength)
+        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
     {
       _maxLength = maxLength;
     }

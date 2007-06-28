@@ -7,19 +7,17 @@ namespace Rubicon.ObjectBinding.BindableObject
   public class BindableObjectClass : IBusinessObjectClass
   {
     private readonly Type _type;
-    private readonly PropertyCollection _properties;
-    private readonly BindableObjectProvider _provider;
+    private readonly BindableObjectProvider _businessObjectProvider;
+    private readonly PropertyCollection _properties = new PropertyCollection ();
 
-    public BindableObjectClass (Type type, BindableObjectProvider provider)
+    protected internal BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
     {
       //TODO: Check for value type
       ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("provider", provider);
+      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
       _type = type;
-      _provider = provider;
-      TypeReflector typeReflector = new TypeReflector (type);
-      _properties = new PropertyCollection (typeReflector.GetProperties());
+      _businessObjectProvider = businessObjectProvider;
     }
 
     /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passed <paramref name="propertyIdentifier"/>. </summary>
@@ -58,7 +56,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type.</value>
     public IBusinessObjectProvider BusinessObjectProvider
     {
-      get { return _provider; }
+      get { return _businessObjectProvider; }
     }
 
     /// <summary>
@@ -93,6 +91,14 @@ namespace Rubicon.ObjectBinding.BindableObject
     public Type Type
     {
       get { return _type; }
+    }
+
+    internal void SetProperties (IList<PropertyBase> properties)
+    {
+      ArgumentUtility.CheckNotNull ("properties", properties);
+
+      foreach (PropertyBase property in properties)
+        _properties.Add (property);
     }
   }
 }

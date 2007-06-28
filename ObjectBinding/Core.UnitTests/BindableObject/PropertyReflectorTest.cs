@@ -11,13 +11,30 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   [TestFixture]
   public class PropertyReflectorTest : TestBase
   {
+    private BindableObjectProvider _businessObjectProvider;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _businessObjectProvider = new BindableObjectProvider();
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "Object");
+
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      Assert.That (propertyReflector.PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (propertyReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
+    }
+
     [Test]
     public void GetMetadata_WithObject ()
     {
-      Type type = typeof (ClassWithAllDataTypes);
-      PropertyInfo propertyInfo = GetPropertyInfo (type, "Object");
-
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "Object");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -32,10 +49,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadata_WithArray ()
     {
-      Type type = typeof (ClassWithAllDataTypes);
-      PropertyInfo propertyInfo = GetPropertyInfo (type, "ObjectArray");
-
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "ObjectArray");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -52,10 +67,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadata_WithListOfT ()
     {
-      Type type = typeof (ClassWithAllDataTypes);
-      PropertyInfo propertyInfo = GetPropertyInfo (type, "ListOfObject");
-
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "ListOfObject");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -72,10 +85,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadata_WithArrayList ()
     {
-      Type type = typeof (ClassWithAllDataTypes);
-      PropertyInfo propertyInfo = GetPropertyInfo (type, "ObjectArrayList");
-
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "ObjectArrayList");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
@@ -92,10 +103,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadata_WithString ()
     {
-      Type type = typeof (ClassWithAllDataTypes);
-      PropertyInfo propertyInfo = GetPropertyInfo (type, "String");
-
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo);
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 

@@ -9,12 +9,26 @@ namespace Rubicon.ObjectBinding.BindableObject
   public class PropertyReflector
   {
     private readonly PropertyInfo _propertyInfo;
+    private readonly BindableObjectProvider _businessObjectProvider;
 
-    public PropertyReflector (PropertyInfo propertyInfo)
+    public PropertyReflector (PropertyInfo propertyInfo, BindableObjectProvider businessObjectProvider)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+
       _propertyInfo = propertyInfo;
+      _businessObjectProvider = businessObjectProvider;
     }
+
+    public PropertyInfo PropertyInfo
+    {
+      get { return _propertyInfo; }
+    } 
+
+    public BindableObjectProvider BusinessObjectProvider
+    {
+      get { return _businessObjectProvider; }
+    } 
 
     public PropertyBase GetMetadata ()
     {
@@ -22,12 +36,12 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (itemType == typeof (string))
         return CreateStringProperty();
 
-      return new NotSupportedProperty (_propertyInfo, GetListInfo(), GetIsRequired());
+      return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired());
     }
 
     private StringProperty CreateStringProperty ()
     {
-      return new StringProperty (_propertyInfo, GetListInfo(), GetIsRequired(), GetMaxLength());
+      return new StringProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired(), GetMaxLength());
     }
 
     private Type GetItemType ()

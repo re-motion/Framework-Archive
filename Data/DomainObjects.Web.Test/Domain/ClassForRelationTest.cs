@@ -33,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [StorageClassNone]
     public ClassWithAllDataTypes.EnumType EnumProperty
     {
-      get { return ClassWithAllDataTypes.EnumType.Value0; }
+      get { return ClassWithAllDataTypes.EnumType.Value3; }
     }
 
     [ItemType (typeof (ClassWithAllDataTypes))]

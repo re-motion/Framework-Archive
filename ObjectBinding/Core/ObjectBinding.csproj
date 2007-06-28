@@ -105,13 +105,14 @@
     <Compile Include="BindableObject\BindableObjectClass.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
+    <Compile Include="BindableObject\BooleanProperty.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
     <Compile Include="BindableObject\NotSupportedProperty.cs" />
     <Compile Include="BindableObject\PropertyBase.cs" />
     <Compile Include="BindableObject\PropertyCollection.cs" />
     <Compile Include="BindableObject\PropertyReflector.cs" />
-    <Compile Include="BindableObject\TypeReflector.cs" />
+    <Compile Include="BindableObject\ClassReflector.cs" />
     <Compile Include="BindableObject\StringProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
