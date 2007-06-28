@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Text;
-
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
-  public class PropertyCollection:KeyedCollection<string, PropertyBase>
+  public class PropertyCollection : KeyedCollection<string, PropertyBase>
   {
     public PropertyCollection (IList<PropertyBase> properties)
     {
       foreach (PropertyBase property in properties)
-        Add (property);      
+        Add (property);
     }
 
     ///<summary>

@@ -15,7 +15,9 @@ namespace Rubicon.Utilities
     {
       if (property == null)
         return null;
-      return new CreateListMethod (property.CreateList);
+      if (!property.IsList)
+        throw new ArgumentException (string.Format ("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), "property");
+      return property.ListInfo.CreateList;
     }
 
     /// <summary>

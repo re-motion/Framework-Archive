@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Rubicon.ObjectBinding
 {
@@ -19,23 +18,12 @@ public interface IBusinessObjectProperty
 {
   /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
   /// <value> <see langword="true"/> if this property contains multiple values. </value>
-  /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/> or <see cref="IList{T}"/>. </remarks>
+  /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/>. </remarks>
   bool IsList { get; }
 
-  /// <summary> Creates a list. </summary>
-  /// <returns> A new list with the specified number of empty elements. </returns>
-  /// <remarks>
-  ///   Use this method to create a new list in order to ensure that the correct list type is used
-  ///   (<see cref="Array"/>, <see cref="ArrayList"/>, etc.)
-  /// </remarks>
-  IList CreateList (int count);
-
-  /// <summary> Gets the type of a single value item. </summary>
-  /// <remarks> If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as 
-  ///   <see cref="PropertyType"/>. 
-  ///   Otherwise, the item type is the type of a list item.
-  /// </remarks>
-  Type ItemType { get; }
+  /// <summary>Gets the <see cref="IListInfo"/> for this <see cref="IBusinessObjectProperty"/>.</summary>
+  /// <value>An onject implementing <see cref="IListInfo"/> or <see langword="null"/> if <see cref="IsList"/> evaluates <see langword="false"/>.</value>
+  IListInfo ListInfo { get; }
 
   /// <summary> Gets the type of the property. </summary>
   /// <remarks> 
@@ -43,8 +31,8 @@ public interface IBusinessObjectProperty
   ///     This is the type of elements returned by the <see cref="IBusinessObject.GetProperty"/> method
   ///     and set via the <see cref="IBusinessObject.SetProperty"/> method.
   ///   </para><para>
-  ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> or <see cref="IList{T}"/> 
-  ///     interface, and the items contained in this list must have a type of <see cref="ItemType"/>.
+  ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> 
+  ///     interface, and the items contained in this list must have a type of <see cref="ListInfo"/>.<see cref="IListInfo.ItemType"/>.
   ///   </para>
   /// </remarks>
   Type PropertyType { get; }

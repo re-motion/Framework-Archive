@@ -3,24 +3,20 @@ using System.Collections;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
   public abstract class PropertyBase : IBusinessObjectProperty
   {
     private readonly PropertyInfo _propertyInfo;
-    private readonly bool _isList;
-    private readonly Type _itemType;
+    private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
 
-
-    protected PropertyBase (PropertyInfo propertyInfo, Type itemType, bool isList, bool isRequired)
+    protected PropertyBase (PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("itemType", itemType);
 
       _propertyInfo = propertyInfo;
-      _itemType = itemType;
-      _isList = isList;
+      _listInfo = listInfo;
       _isRequired = isRequired;
     }
 
@@ -29,28 +25,20 @@ namespace Rubicon.ObjectBinding
     /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/>. </remarks>
     public bool IsList
     {
-      get { return _isList; }
+      get { return _listInfo != null; }
     }
 
-    /// <summary> Creates a list. </summary>
-    /// <returns> A new list with the specified number of empty elements. </returns>
-    /// <remarks>
-    ///   Use this method to create a new list in order to ensure that the correct list type is used
-    ///   (<see cref="Array"/>, <see cref="ArrayList"/>, etc.)
-    /// </remarks>
-    public IList CreateList (int count)
+    /// <summary>Gets the <see cref="IListInfo"/> for this <see cref="IBusinessObjectProperty"/>.</summary>
+    /// <value>An onject implementing <see cref="IListInfo"/>.</value>
+    /// <exception cref="InvalidOperationException">Thrown if the property is not a list property.</exception>
+    public IListInfo ListInfo
     {
-      throw new NotImplementedException();
-    }
-
-    /// <summary> Gets the type of a single value item. </summary>
-    /// <remarks> If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as 
-    ///   <see cref="PropertyType"/>. 
-    ///   Otherwise, the item type is the type of a list item.
-    /// </remarks>
-    public Type ItemType
-    {
-      get { return _itemType; }
+      get
+      {
+        if (_listInfo == null)
+          throw new InvalidOperationException (string.Format ("Cannot access ListInfo for non-list properties.\r\nProperty: {0}", Identifier));
+        return _listInfo;
+      }
     }
 
     /// <summary> Gets the type of the property. </summary>
@@ -60,7 +48,7 @@ namespace Rubicon.ObjectBinding
     ///     and set via the <see cref="IBusinessObject.SetProperty"/> method.
     ///   </para><para>
     ///     If <see cref="IsList"/> is <see langword="true"/>, the property type must implement the <see cref="IList"/> 
-    ///     interface, and the items contained in this list must have a type of <see cref="ItemType"/>.
+    ///     interface, and the items contained in this list must have a type of <see cref="ListInfo"/>.<see cref="IListInfo.ItemType"/>.
     ///   </para>
     /// </remarks>
     public Type PropertyType
@@ -125,6 +113,16 @@ namespace Rubicon.ObjectBinding
     public PropertyInfo PropertyInfo
     {
       get { return _propertyInfo; }
+    }
+
+    public object ConvertFromNativePropertyType (object nativeValue)
+    {
+      return nativeValue;
+    }
+
+    public object ConvertToNativePropertyType (object publicValue)
+    {
+      return publicValue;
     }
   }
 }

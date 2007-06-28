@@ -20,7 +20,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 
     public IBusinessObjectClass ReferenceClass
     {
-      get { return new DomainObjectClass ((IsList) ? ItemType : PropertyType); }
+      get { return new DomainObjectClass ((IsList) ? ListInfo.ItemType : PropertyType); }
     }
 
     public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject businessObject, string queryID)

@@ -47,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     public override object ToInternalType (object publicValue)
     {
       if (!IsNullableType && publicValue == null)
-        throw new InvalidNullAssignmentException (ItemType);
+        throw new InvalidNullAssignmentException (UnderlyingType);
 
       return publicValue;
     }

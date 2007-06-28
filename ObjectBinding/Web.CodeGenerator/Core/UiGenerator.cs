@@ -530,7 +530,7 @@ namespace Rubicon.ObjectBinding.Web.CodeGenerator
 				if (! HasInterface(property.GetType(), "Rubicon.ObjectBinding.IBusinessObjectReferenceProperty") || isList != property.IsList)
 					continue;
 
-				string[] referencedClassNameInfo = property.ItemType.FullName.Split('.');
+				string[] referencedClassNameInfo = ((BaseProperty)property).UnderlyingType.FullName.Split('.');
 				string referencedClassName = referencedClassNameInfo[referencedClassNameInfo.Length - 1];
 
 				Replacer.ReplaceInfo replaceInfo = new Replacer.ReplaceInfo();

@@ -1,8 +1,7 @@
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
-namespace Rubicon.ObjectBinding.UnitTests
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class BindableObjectProviderTest

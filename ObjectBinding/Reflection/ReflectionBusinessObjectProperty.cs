@@ -69,31 +69,28 @@ namespace Rubicon.ObjectBinding.Reflection
     }
 
     private PropertyInfo _propertyInfo;
-    private Type _itemType;
-    private bool _isList;
+    private IListInfo _listInfo;
+
 
     protected ReflectionBusinessObjectProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
     {
       _propertyInfo = propertyInfo;
-      _itemType = itemType;
-      _isList = isList;
+      _listInfo = isList ? new ListInfo (itemType) : null;
     }
 
     public bool IsList
     {
-      get { return _isList; }
+      get { return _listInfo != null; }
     }
 
-    public IList CreateList (int count)
+    public IListInfo ListInfo
     {
-      if (! IsList)
-        throw new InvalidOperationException ("Cannot create lists for non-list properties.");
-      return Array.CreateInstance (_itemType, count);
-    }
-
-    public Type ItemType
-    {
-      get { return _itemType; }
+      get
+      {
+        if (_listInfo == null)
+          throw new InvalidOperationException ("Cannot retrieve ListInfo for non-list properties.");
+        return _listInfo;
+      }
     }
 
     public virtual Type PropertyType

@@ -17,9 +17,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
   {
     private PropertyInfo _propertyInfo;
     private bool _isRequired;
-    private Type _itemType;
-    private bool _isList;
     private bool _isReadOnly;
+    private Type _underlyingType;
+    private IListInfo _listInfo;
     private IBusinessObjectClass _businessObjectClass;
 
     /// <summary>
@@ -28,9 +28,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     /// <param name="businessObjectClass">The <see cref="IBusinessObjectClass"/> to which this <see cref="IBusinessObjectProperty"/> belongs.</param>
     /// <param name="propertyInfo">The <see cref="System.Reflection.PropertyInfo"/> object of the property.</param>
     /// <param name="isRequired">A value indicating if the property is required by the business model, or not.</param>
-    /// <param name="itemType">The type of the property value.</param>
+    /// <param name="underlyingType">The type of the property value.</param>
     /// <param name="isList">A value indicating if the property contains multiple objects.</param>
-    protected internal BaseProperty (IBusinessObjectClass businessObjectClass, PropertyInfo propertyInfo, bool isRequired, Type itemType, bool isList)
+    protected internal BaseProperty (IBusinessObjectClass businessObjectClass, PropertyInfo propertyInfo, bool isRequired, Type underlyingType, bool isList)
     {
       ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
@@ -38,11 +38,11 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       _businessObjectClass = businessObjectClass;
       _propertyInfo = propertyInfo;
       _isRequired = isRequired;
-      _itemType = itemType;
-      _isList = isList;
+      _underlyingType = underlyingType;
+      _listInfo = isList ? new ListInfo (underlyingType) : null;
 
       //TODO: Remove this code once the Data.DomainObjects.ObjectBinding.Legacy assembly has been extracted.
-      if (propertyInfo.CanWrite || (isList && typeof (IList).IsAssignableFrom (propertyInfo.PropertyType)))
+      if (propertyInfo.CanWrite || (IsList && typeof (IList).IsAssignableFrom (propertyInfo.PropertyType)))
       {
         IsReadOnlyAttribute isReadOnlyAttribute = AttributeUtility.GetCustomAttribute<IsReadOnlyAttribute> (propertyInfo, true);
         _isReadOnly = isReadOnlyAttribute != null;
@@ -59,29 +59,33 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
-    /// <value><see langword="true"/> if this property contains multiple values; otherwise <see langword="false"/>. </value>
+    /// <value> <see langword="true"/> if this property contains multiple values. </value>
+    /// <remarks> Multiple values are provided via any type implementing <see cref="IList"/>. </remarks>
     public bool IsList
     {
-      get { return _isList; }
+      get { return _listInfo != null; }
     }
 
-    /// <summary> Creates a list. </summary>
-    /// <returns> A new array with the specified number of empty elements. </returns>
-    public IList CreateList (int count)
+    /// <summary>Gets the <see cref="IListInfo"/> for this <see cref="IBusinessObjectProperty"/>.</summary>
+    /// <value>An onject implementing <see cref="IListInfo"/>.</value>
+    /// <exception cref="InvalidOperationException">Thrown if the property is not a list property.</exception>
+    public IListInfo ListInfo
     {
-      if (!IsList)
-        throw new InvalidOperationException ("Cannot create lists for non-list properties.");
-
-      return Array.CreateInstance (_itemType, count);
+      get
+      {
+        if (_listInfo == null)
+          throw new InvalidOperationException ("Cannot access ListInfo for non-list properties.");
+        return _listInfo;
+      }
     }
 
     /// <summary> Gets the type of a single value item. </summary>
     /// <remarks>If <see cref="IsList"/> is <see langword="false"/>, the item type is the same as <see cref="PropertyType"/>. 
     ///   Otherwise, the item type is the type of a list item.
     /// </remarks>
-    public Type ItemType
+    public Type UnderlyingType
     {
-      get { return _itemType; }
+      get { return _underlyingType; }
     }
 
     /// <summary> Gets the type of the property. </summary>
@@ -211,8 +215,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
     /// <exception cref="InvalidNullAssignmentException"><paramref name="publicValue"/> is <see langword="null"/> and this value is not supported by this property.</exception>
     public virtual object ToInternalType (object publicValue)
     {
-      if (_itemType.IsValueType && publicValue == null)
-        throw new InvalidNullAssignmentException (_itemType);
+      if (_underlyingType.IsValueType && publicValue == null)
+        throw new InvalidNullAssignmentException (_underlyingType);
 
       return publicValue;
     }
@@ -235,12 +239,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       }
       else
       {
-        FieldInfo minValueFieldInfo = _itemType.GetField ("MinValue");
+        FieldInfo minValueFieldInfo = _underlyingType.GetField ("MinValue");
 
         if (minValueFieldInfo == null)
           return false;
 
-        return minValueFieldInfo.GetValue (_itemType).ToString() == internalValue.ToString();
+        return minValueFieldInfo.GetValue (_underlyingType).ToString () == internalValue.ToString ();
       }
     }
   }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
   public class BindableObjectProvider : BusinessObjectProvider
   {

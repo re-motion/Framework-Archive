@@ -1,21 +1,15 @@
 using System;
 using Rubicon.Mixins;
+using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
   public class BindableObjectMixin : Mixin<object>, IBusinessObject
   {
-    private IBusinessObjectClass _businessObjectClass;
+    private BindableObjectClass _bindableObjectClass;
 
     public BindableObjectMixin ()
     {
-    }
-
-    /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
-    /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>
-    public IBusinessObjectClass BusinessObjectClass
-    {
-      get { return _businessObjectClass; }
     }
 
     /// <overloads> Gets the value accessed through the specified property. </overloads>
@@ -27,7 +21,14 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     public object GetProperty (IBusinessObjectProperty property)
     {
-      throw new NotImplementedException();
+      PropertyBase propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
+
+      object nativeValue;
+
+      //TODO: catch and wrap the TargetException
+      nativeValue = propertyBase.PropertyInfo.GetValue (This, new object[0]);
+
+      return propertyBase.ConvertFromNativePropertyType (nativeValue);
     }
 
     /// <summary>
@@ -44,7 +45,8 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     public object GetProperty (string propertyIdentifier)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      return GetProperty (_bindableObjectClass.GetPropertyDefinition (propertyIdentifier));
     }
 
     /// <overloads> Sets the value accessed through the specified property. </overloads>
@@ -58,7 +60,12 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     public void SetProperty (IBusinessObjectProperty property, object value)
     {
-      throw new NotImplementedException();
+      PropertyBase propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
+
+      object nativeValue = propertyBase.ConvertToNativePropertyType (value);
+
+      //TODO: catch and wrap the TargetException
+      propertyBase.PropertyInfo.SetValue (This, nativeValue, new object[0]);
     }
 
     /// <summary>
@@ -78,7 +85,8 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     public void SetProperty (string propertyIdentifier, object value)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      SetProperty (_bindableObjectClass.GetPropertyDefinition (propertyIdentifier), value);
     }
 
     /// <overloads> Gets the string representation of the value accessed through the specified property.  </overloads>
@@ -134,11 +142,25 @@ namespace Rubicon.ObjectBinding
       throw new NotImplementedException();
     }
 
+    /// <summary> Gets the <see cref="BindableObjectClass"/> of this business object. </summary>
+    /// <value> An <see cref="BindableObjectClass"/> instance acting as the business object's type. </value>
+    public BindableObjectClass BusinessObjectClass
+    {
+      get { return _bindableObjectClass; }
+    }
+
+    /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
+    /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return _bindableObjectClass; }
+    }
+
     protected override void OnInitialized ()
     {
-      base.OnInitialized ();
+      base.OnInitialized();
 
-      _businessObjectClass = new BindableObjectClass (Configuration.BaseClass.Type, BindableObjectProvider.Instance);
+      _bindableObjectClass = new BindableObjectClass (Configuration.BaseClass.Type, BindableObjectProvider.Instance);
     }
   }
 }

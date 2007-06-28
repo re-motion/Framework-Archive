@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
   public class TypeReflector
   {

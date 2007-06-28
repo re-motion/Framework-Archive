@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace Rubicon.ObjectBinding.UnitTests
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   public class TestBase
   {

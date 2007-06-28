@@ -1,20 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
-using Rubicon.Utilities;
-
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
-  //TODO: doc and check existing doc
   public class StringProperty : PropertyBase, IBusinessObjectStringProperty
   {
     private readonly int? _maxLength;
 
-    public StringProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isRequired, int? maxLength)
-        : base (propertyInfo, itemType, isList, isRequired)
+    public StringProperty (PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired, int? maxLength)
+        : base (propertyInfo, listInfo, isRequired)
     {
       _maxLength = maxLength;
     }

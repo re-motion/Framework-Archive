@@ -102,16 +102,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableObjectAttribute.cs" />
-    <Compile Include="BindableObjectClass.cs" />
-    <Compile Include="BindableObjectMixin.cs" />
-    <Compile Include="BindableObjectProvider.cs" />
+    <Compile Include="BindableObject\BindableObjectClass.cs" />
+    <Compile Include="BindableObject\BindableObjectMixin.cs" />
+    <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
-    <Compile Include="NotSupportedProperty.cs" />
-    <Compile Include="PropertyBase.cs" />
-    <Compile Include="PropertyCollection.cs" />
-    <Compile Include="PropertyReflector.cs" />
-    <Compile Include="TypeReflector.cs" />
-    <Compile Include="StringProperty.cs" />
+    <Compile Include="ListInfo.cs" />
+    <Compile Include="BindableObject\NotSupportedProperty.cs" />
+    <Compile Include="BindableObject\PropertyBase.cs" />
+    <Compile Include="BindableObject\PropertyCollection.cs" />
+    <Compile Include="BindableObject\PropertyReflector.cs" />
+    <Compile Include="BindableObject\TypeReflector.cs" />
+    <Compile Include="BindableObject\StringProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

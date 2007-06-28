@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 
     protected virtual object GetUndefinedValue ()
     {
-      UndefinedEnumValueAttribute undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute> (ItemType, true);
+      UndefinedEnumValueAttribute undefinedEnumValueAttribute = AttributeUtility.GetCustomAttribute<UndefinedEnumValueAttribute> (UnderlyingType, true);
       if (undefinedEnumValueAttribute != null)
         return undefinedEnumValueAttribute.Value;
 

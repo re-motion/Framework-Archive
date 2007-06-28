@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
-  //TODO: doc and check existing doc
   public class BindableObjectClass : IBusinessObjectClass
   {
     private readonly Type _type;
@@ -14,13 +13,13 @@ namespace Rubicon.ObjectBinding
     public BindableObjectClass (Type type, BindableObjectProvider provider)
     {
       //TODO: Check for value type
-      ArgumentUtility.CheckNotNull ("type", type);      
+      ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("provider", provider);
 
       _type = type;
       _provider = provider;
       TypeReflector typeReflector = new TypeReflector (type);
-      _properties = new PropertyCollection (typeReflector.GetProperties ());
+      _properties = new PropertyCollection (typeReflector.GetProperties());
     }
 
     /// <summary> Returns the <see cref="IBusinessObjectProperty"/> for the passed <paramref name="propertyIdentifier"/>. </summary>

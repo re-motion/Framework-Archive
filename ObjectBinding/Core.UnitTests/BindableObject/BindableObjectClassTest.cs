@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class BindableObjectClassTest : TestBase
@@ -81,8 +81,9 @@ namespace Rubicon.ObjectBinding.UnitTests
       Assert.That (actualProperty, Is.Not.Null);
       Assert.That (actualProperty.GetType(), Is.SameAs (expectedProperty.GetType()), "BusinessObjectPropertyType");
       Assert.That (expectedProperty.PropertyType, Is.EqualTo (actualProperty.PropertyType), "PropertyType");
-      Assert.That (expectedProperty.ItemType, Is.EqualTo (actualProperty.ItemType), "ItemType");
       Assert.That (expectedProperty.IsList, Is.EqualTo (actualProperty.IsList), "IsList");
+      if (expectedProperty.IsList)
+        Assert.That (expectedProperty.ListInfo.ItemType, Is.EqualTo (actualProperty.ListInfo.ItemType), "ListInfo.ItemType");
       Assert.That (expectedProperty.IsRequired, Is.EqualTo (actualProperty.IsRequired), "IsRequired");
 
       if (typeof (IBusinessObjectStringProperty).IsAssignableFrom (actualProperty.GetType ()))

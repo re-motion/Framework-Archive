@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rubicon.Utilities;
+using Rubicon.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding.UnitTests
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class TypeReflectorTest

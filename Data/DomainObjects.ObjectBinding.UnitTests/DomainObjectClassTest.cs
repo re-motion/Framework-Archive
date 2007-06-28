@@ -39,7 +39,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       IBusinessObjectProperty orderNumberProperty = _domainObjectClass.GetPropertyDefinition ("OrderNumber");
       Assert.That (orderNumberProperty, Is.InstanceOfType (typeof (Int32Property)));
       Assert.That (orderNumberProperty.Identifier, Is.EqualTo ("OrderNumber"));
-      Assert.That (orderNumberProperty.ItemType, Is.SameAs (typeof (int)));
+      Assert.That (orderNumberProperty.PropertyType, Is.SameAs (typeof (int)));
+      Assert.That (((BaseProperty) orderNumberProperty).UnderlyingType, Is.SameAs (typeof (int)));
     }
 
     [Test]
@@ -48,7 +49,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
       IBusinessObjectProperty orderItemsProperty = _domainObjectClass.GetPropertyDefinition ("OrderItems");
       Assert.That (orderItemsProperty, Is.InstanceOfType (typeof (ReferenceProperty)));
       Assert.That (orderItemsProperty.Identifier, Is.EqualTo ("OrderItems"));
-      Assert.That (orderItemsProperty.ItemType, Is.SameAs (typeof (OrderItem)));
+      Assert.That (orderItemsProperty.ListInfo.ItemType, Is.SameAs (typeof (OrderItem)));
     }
 
     [Test]
