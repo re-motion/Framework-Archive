@@ -48,25 +48,34 @@ namespace Rubicon.Data.DomainObjects
       }
     }
 
+    public static ClientTransactionScope ActiveScope
+    {
+      get { return (ClientTransactionScope) CallContext.GetData (c_callContextScopeKey);}
+    }
+
     private static ClientTransaction GetCurrentTransactionInternal ()
     {
       return (ClientTransaction) CallContext.GetData (c_callContextKey);
     }
 
-   /// <summary>
-    /// Sets the default <b>ClientTransaction</b> of the current thread.
-    /// </summary>
-    /// <param name="clientTransaction">The <b>ClientTransaction</b> to which the current <b>ClientTransaction</b> is set.</param>
     private static void SetCurrentTransaction (ClientTransaction clientTransaction)
     {
       CallContext.SetData (c_callContextKey, clientTransaction);
     }
 
-    private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.CurrentTransaction";
+    private static void SetActiveScope (ClientTransactionScope scope)
+    {
+      CallContext.SetData (c_callContextScopeKey, scope);
+    }
 
+    private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.CurrentTransaction";
+    private const string c_callContextScopeKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.ActiveScope";
+
+    private ClientTransactionScope _previousScope;
     private ClientTransaction _previousTransaction;
     private ClientTransaction _scopedTransaction;
     private bool _hasBeenLeft = false;
+    private bool _autoEnlistDomainObjects = false;
     private AutoRollbackBehavior _autoRollbackBehavior;
 
     /// <summary>
@@ -107,10 +116,13 @@ namespace Rubicon.Data.DomainObjects
     {
       _autoRollbackBehavior = autoRollbackBehavior;
 
+      _previousScope = ClientTransactionScope.ActiveScope;
+
       if (ClientTransactionScope.HasCurrentTransaction)
         _previousTransaction = ClientTransactionScope.CurrentTransaction;
 
       ClientTransactionScope.SetCurrentTransaction (scopedCurrentTransaction);
+      ClientTransactionScope.SetActiveScope (this);
       _scopedTransaction = scopedCurrentTransaction;
     }
 
@@ -136,6 +148,18 @@ namespace Rubicon.Data.DomainObjects
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether <see cref="DomainObject"/> instances are automatically enlisted in the current transaction within
+    /// this scope.
+    /// </summary>
+    /// <value>True if <see cref="DomainObject"/> instances are automatically enlisted in the current transaction when accessed;
+    /// otherwise, false.</value>
+    public bool AutoEnlistDomainObjects
+    {
+      get { return _autoEnlistDomainObjects; }
+      set { _autoEnlistDomainObjects = value; }
+    }
+
+    /// <summary>
     /// Resets <see cref="CurrentTransaction"/> to the value it had before this scope was instantiated and performs the
     /// <see cref="AutoRollbackBehavior"/>. This method is ignored when executed more than once.
     /// </summary>
@@ -146,6 +170,7 @@ namespace Rubicon.Data.DomainObjects
 
       ExecuteAutoRollbackBehavior ();
       ClientTransactionScope.SetCurrentTransaction (_previousTransaction);
+      ClientTransactionScope.SetActiveScope (_previousScope);
       _hasBeenLeft = true;
     }
 

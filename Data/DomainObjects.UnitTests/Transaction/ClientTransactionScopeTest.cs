@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -20,7 +19,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [TearDown]
     public void TearDown ()
     {
-      _outermostScope.Leave ();
+      if (ClientTransactionScope.ActiveScope != null)
+      {
+        Assert.AreSame (_outermostScope, ClientTransactionScope.ActiveScope);
+        _outermostScope.Leave();
+      }
     }
 
     [Test]
@@ -50,25 +53,43 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void ActiveScope ()
+    {
+      _outermostScope.Leave();
+      Assert.IsNull (ClientTransactionScope.ActiveScope);
+      using (ClientTransactionScope scope = new ClientTransactionScope ())
+      {
+        Assert.IsNotNull (ClientTransactionScope.ActiveScope);
+        Assert.AreSame (scope, ClientTransactionScope.ActiveScope);
+      }
+    }
+
+    [Test]
     public void NestedScopes ()
     {
       ClientTransaction clientTransaction1 = new ClientTransaction ();
       ClientTransaction clientTransaction2 = new ClientTransaction ();
+      ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
       ClientTransaction original = ClientTransactionScope.CurrentTransaction;
       
       Assert.AreNotSame (clientTransaction1, original);
       Assert.AreNotSame (clientTransaction2, original);
       Assert.IsNotNull (original);
 
-      using (new ClientTransactionScope (clientTransaction1))
+      using (ClientTransactionScope scope1 = new ClientTransactionScope (clientTransaction1))
       {
         Assert.AreSame (clientTransaction1, ClientTransactionScope.CurrentTransaction);
-        using (new ClientTransactionScope (clientTransaction2))
+        Assert.AreSame (scope1, ClientTransactionScope.ActiveScope);
+
+        using (ClientTransactionScope scope2 = new ClientTransactionScope (clientTransaction2))
         {
+          Assert.AreSame (scope2, ClientTransactionScope.ActiveScope);
           Assert.AreSame (clientTransaction2, ClientTransactionScope.CurrentTransaction);
         }
+        Assert.AreSame (scope1, ClientTransactionScope.ActiveScope);
         Assert.AreSame (clientTransaction1, ClientTransactionScope.CurrentTransaction);
       }
+      Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
       Assert.AreSame (original, ClientTransactionScope.CurrentTransaction);
     }
 
@@ -303,6 +324,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (ClientTransactionScope scope = new ClientTransactionScope ())
       {
         scope.Leave();
+      }
+    }
+
+    [Test]
+    public void NoAutoEnlistingByDefault ()
+    {
+      Order order = Order.GetObject (new DomainObjectIDs ().Order1);
+      Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      using (ClientTransactionScope scope = new ClientTransactionScope ())
+      {
+        Assert.IsFalse (scope.AutoEnlistDomainObjects);
+        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      }
+    }
+
+    [Test]
+    public void AutoEnlistingIfRequested ()
+    {
+      Order order1 = Order.GetObject (new DomainObjectIDs ().Order1);
+      Order order2 = Order.GetObject (new DomainObjectIDs ().Order2);
+      
+      Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      ClientTransaction clientTransaction = new ClientTransaction ();
+
+      using (ClientTransactionScope scope = clientTransaction.EnterScope())
+      {
+        scope.AutoEnlistDomainObjects = true;
+        Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        scope.AutoEnlistDomainObjects = false;
+        Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.IsFalse (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+      }
+
+      using (ClientTransactionScope scope = clientTransaction.EnterScope ())
+      {
+        Assert.IsFalse (scope.AutoEnlistDomainObjects);
+        Assert.IsFalse (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        scope.AutoEnlistDomainObjects = true;
+        Assert.IsTrue (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        scope.AutoEnlistDomainObjects = false;
+        Assert.IsTrue (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       }
     }
   }

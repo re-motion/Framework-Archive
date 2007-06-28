@@ -545,7 +545,15 @@ public class DomainObject
   public bool CanBeUsedInTransaction (ClientTransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
-    return _dataContainer.ClientTransaction == transaction || _enlistedTransactions.Contains (transaction);
+    if (_dataContainer.ClientTransaction == transaction || _enlistedTransactions.Contains (transaction))
+      return true;
+    else if (ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects)
+    {
+      EnlistInTransaction (transaction);
+      return true;
+    }
+    else
+      return false;
   }
 
   private void CheckIfRightTransaction ()
