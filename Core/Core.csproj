@@ -121,7 +121,6 @@
     <Compile Include="ObjectBinding\IBusinessObjectBooleanProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectDateTimeProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectEnumerationProperty.cs" />
-    <Compile Include="ObjectBinding\IBusinessObjectInstanceEnumerationProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectNumericProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectReferenceProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectStringProperty.cs" />

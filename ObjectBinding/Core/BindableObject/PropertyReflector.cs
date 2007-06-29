@@ -37,7 +37,9 @@ namespace Rubicon.ObjectBinding.BindableObject
         return CreateStringProperty();
       if (nativeType == typeof (bool))
         return CreateBooleanProperty();
-      return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired());
+      if (nativeType.IsEnum && nativeType.IsValueType)
+        return CreateEnumerationProperty ();
+      return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
     }
 
     private StringProperty CreateStringProperty ()
@@ -48,6 +50,11 @@ namespace Rubicon.ObjectBinding.BindableObject
     private PropertyBase CreateBooleanProperty ()
     {
       return new BooleanProperty(_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+    }
+
+    private PropertyBase CreateEnumerationProperty ()
+    {
+      return new EnumerationProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
     }
 
     private Type GetNativeType ()

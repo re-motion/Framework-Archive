@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -32,20 +30,30 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithBoolean ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Boolean");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (BooleanProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Boolean"));
+    }
+
+    [Test]
+    public void GetMetadata_WithEnum ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Enum");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (EnumerationProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Enum"));
+    }
+
+    [Test]
     public void GetMetadata_WithString ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
-      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
-
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("String");
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (StringProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (propertyInfo));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("String"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (string)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (((StringProperty)businessObjectProperty).MaxLength, Is.Null);
     }
 
     [Test]
@@ -58,6 +66,14 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Ignore ("TODO: test")]
     public void GetMetadata_WithMaxLengthStringAttribute ()
     {
+    }
+
+    private IBusinessObjectProperty GetMetadataFromPropertyReflector (string propertyName)
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), propertyName);
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      return propertyReflector.GetMetadata ();
     }
   }
 }

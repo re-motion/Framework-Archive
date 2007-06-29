@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     {
     }
 
-    public virtual IEnumerationValueInfo[] GetEnabledValues ()
+    public virtual IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
     {
       return GetValues (false);
     }

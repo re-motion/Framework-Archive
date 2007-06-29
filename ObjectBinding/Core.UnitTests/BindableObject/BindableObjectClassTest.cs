@@ -26,7 +26,9 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
       Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleClass)));
-      Assert.That (bindableObjectClass.Identifier, Is.EqualTo ("SimpleClass"));
+      Assert.That (
+          bindableObjectClass.Identifier,
+          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.SimpleClass, Rubicon.ObjectBinding.UnitTests"));
       Assert.That (bindableObjectClass.RequiresWriteBack, Is.False);
       Assert.That (bindableObjectClass.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
@@ -43,7 +45,9 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     [Test]
     [ExpectedException (typeof (KeyNotFoundException),
-        ExpectedMessage = "The property 'Invalid' was not found on business object class 'ClassWithAllDataTypes'.")]
+        ExpectedMessage = 
+        "The property 'Invalid' was not found on business object class "
+        + "'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.ClassWithAllDataTypes, Rubicon.ObjectBinding.UnitTests'.")]
     public void GetPropertyDefinition_WithInvalidPropertyName ()
     {
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
@@ -56,7 +60,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDefinitions ()
     {
       Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
-      PropertyBase[] expectedProperties = new PropertyBase[] { CreateProperty (type, "Scalar"), CreateProperty (type, "Array") };
+      PropertyBase[] expectedProperties = new PropertyBase[] {CreateProperty (type, "Scalar"), CreateProperty (type, "Array")};
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();

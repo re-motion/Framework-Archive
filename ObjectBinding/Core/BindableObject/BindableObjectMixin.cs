@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public class BindableObjectMixin : Mixin<object>, IBusinessObject
   {
     private BindableObjectClass _bindableObjectClass;

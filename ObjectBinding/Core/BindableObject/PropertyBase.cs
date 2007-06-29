@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public abstract class PropertyBase : IBusinessObjectProperty
   {
     private readonly BindableObjectProvider _businessObjectProvider;

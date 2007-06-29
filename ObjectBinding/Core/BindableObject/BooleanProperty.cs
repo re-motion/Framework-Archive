@@ -4,6 +4,7 @@ using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty
   {
     [ResourceIdentifiers]

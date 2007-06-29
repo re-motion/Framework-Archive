@@ -207,9 +207,6 @@
     <Compile Include="SearchObjectProvider.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UndefinedEnumValueAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

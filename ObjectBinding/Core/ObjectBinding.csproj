@@ -106,6 +106,7 @@
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BooleanProperty.cs" />
+    <Compile Include="BindableObject\EnumerationProperty.cs" />
     <Compile Include="Globalization\BooleanProperty.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -155,6 +156,7 @@
     <Compile Include="IBusinessObjectClassSource.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UndefinedEnumValueAttribute.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.build" />
     <EmbeddedResource Include="Design\PropertyPathPickerControl.resx">

@@ -1,6 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.Web.Legacy.Test.Domain
 {

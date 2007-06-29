@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public class BindableObjectClass : IBusinessObjectClass
   {
     private readonly Type _type;
@@ -85,7 +86,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </value>
     public string Identifier
     {
-      get { return _type.Name; }
+      get { return TypeUtility.GetPartialAssemblyQualifiedName (_type); }
     }
 
     public Type Type

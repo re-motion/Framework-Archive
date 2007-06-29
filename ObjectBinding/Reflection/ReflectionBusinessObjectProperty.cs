@@ -237,7 +237,7 @@ namespace Rubicon.ObjectBinding.Reflection
     //    get { return false; }
     //  }
 
-    public IEnumerationValueInfo[] GetEnabledValues()
+    public IEnumerationValueInfo[] GetEnabledValues(IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValues();
     }
@@ -290,7 +290,7 @@ namespace Rubicon.ObjectBinding.Reflection
     {
     }
 
-    public IEnumerationValueInfo[] GetEnabledValues()
+    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
     {
       return GetValues (false);
     }
@@ -364,7 +364,7 @@ namespace Rubicon.ObjectBinding.Reflection
     }
   }
 
-  public class ReflectionBusinessObjectInstanceEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectInstanceEnumerationProperty
+  public class ReflectionBusinessObjectInstanceEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectEnumerationProperty
   {
     private IEnumerationValueInfo[] _valueInfos;
     private bool _isRequired;
@@ -393,19 +393,9 @@ namespace Rubicon.ObjectBinding.Reflection
       return _valueInfos;
     }
 
-    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
+    public IEnumerationValueInfo[] GetAllValues ()
     {
       return _valueInfos;
-    }
-
-    IEnumerationValueInfo[] Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty.GetEnabledValues()
-    {
-      return GetEnabledValues (null);
-    }
-
-    IEnumerationValueInfo[] Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty.GetAllValues()
-    {
-      return GetAllValues (null);
     }
 
     public IEnumerationValueInfo GetValueInfoByValue (object value)

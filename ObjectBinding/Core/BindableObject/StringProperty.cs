@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public class StringProperty : PropertyBase, IBusinessObjectStringProperty
   {
     private readonly int? _maxLength;

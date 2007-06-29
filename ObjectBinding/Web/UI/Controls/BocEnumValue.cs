@@ -51,8 +51,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
   // static members
 	
-  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectEnumerationProperty), typeof (IBusinessObjectInstanceEnumerationProperty) };
+  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof (IBusinessObjectEnumerationProperty) };
 
   private static readonly object s_selectionChangedEvent = new object();
 
@@ -534,19 +533,9 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   {
     if (Property == null)
       return new IEnumerationValueInfo[0];
-    IBusinessObjectInstanceEnumerationProperty instanceEnumProperty = 
-        Property as IBusinessObjectInstanceEnumerationProperty;
-    if (instanceEnumProperty != null)
-    {
-      if (DataSource != null && DataSource.BusinessObject != null)
-        return instanceEnumProperty.GetEnabledValues (DataSource.BusinessObject);
-      else
-        return instanceEnumProperty.GetEnabledValues();
-    }
-    else
-    {
-      return Property.GetEnabledValues();
-    }
+    if (DataSource == null || DataSource.BusinessObject == null)
+      return Property.GetEnabledValues (null);
+    return Property.GetEnabledValues (DataSource.BusinessObject);
   }
 
   /// <summary> Ensures that the list of enum values has been populated. </summary>

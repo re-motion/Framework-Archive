@@ -4,6 +4,7 @@ using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public class BindableObjectProvider : BusinessObjectProvider
   {
     private static BindableObjectProvider s_instance = new BindableObjectProvider();
