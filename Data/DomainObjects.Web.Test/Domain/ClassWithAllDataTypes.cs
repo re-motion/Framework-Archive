@@ -17,7 +17,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [EnumDescriptionResource ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
     public enum EnumType
     {
-      Value0 = 0,
       Value1 = 1,
       Value2 = 2,
       Value3 = 3

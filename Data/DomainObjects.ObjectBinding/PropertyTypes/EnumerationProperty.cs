@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 
@@ -69,14 +70,21 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 
     public override object FromInternalType (IBusinessObject bindableObject, object internalValue)
     {
+       DomainObjectClass domainObjectClass = BusinessObjectClass as DomainObjectClass;
+       if (domainObjectClass != null && domainObjectClass.ClassDefinition is ReflectionBasedClassDefinition)
+       {
+         if (!IsList && IsDefaultValue (bindableObject, internalValue))
+           return null;
+       }
+
       ArgumentUtility.CheckNotNullAndType<Enum> ("internalValue", internalValue);
       ArgumentUtility.CheckValidEnumValue ("internalValue", (Enum) internalValue);
 
-      object undefinedValue = GetUndefinedValue ();
-      if ((undefinedValue != null) && internalValue.Equals (undefinedValue))
-        return null;
+       object undefinedValue = GetUndefinedValue();
+       if ((undefinedValue != null) && internalValue.Equals (undefinedValue))
+         return null;
 
-      return base.FromInternalType (bindableObject, internalValue);
+       return base.FromInternalType (bindableObject, internalValue);
     }
 
     public override object ToInternalType (object publicValue)

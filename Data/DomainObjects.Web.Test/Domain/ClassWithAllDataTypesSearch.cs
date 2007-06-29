@@ -10,7 +10,7 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
   private string _stringProperty;
   private byte? _bytePropertyFrom;
   private byte? _bytePropertyTo;
-  private ClassWithAllDataTypes.EnumType _enumProperty;
+  private ClassWithAllDataTypes.EnumType _enumProperty = ClassWithAllDataTypes.EnumType.Value1;
   private DateTime? _datePropertyFrom;
   private DateTime? _datePropertyTo;
   private DateTime? _dateTimePropertyFrom;

@@ -229,7 +229,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       get { return DomainObjectProvider.Instance; }
     }
 
-    private bool IsDefaultValue (IBusinessObject bindableObject, object internalValue)
+    protected bool IsDefaultValue (IBusinessObject bindableObject, object internalValue)
     {
       DomainObjectClass domainObjectClass = _businessObjectClass as DomainObjectClass;
       if (domainObjectClass != null && domainObjectClass.ClassDefinition is ReflectionBasedClassDefinition)

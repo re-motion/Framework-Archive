@@ -1,3 +1,7 @@
+1.7.45.0
+========
+- Bugfix: RPA mit Attribut-Mapping konnte nicht mit Enums umgehen, die keinen 0-Wert hatten.
+
 1.7.43.0
 ========
 
