@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
@@ -54,16 +55,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetPropertyDefinitions ()
     {
-      PropertyBase[] expectedProperties = new PropertyBase[]
-          {
-              CreateProperty (typeof (ClassWithAllDataTypes), "String"),
-              CreateProperty (typeof (ClassWithAllDataTypes), "Object"),
-              CreateProperty (typeof (ClassWithAllDataTypes), "ObjectArray"),
-              CreateProperty (typeof (ClassWithAllDataTypes), "ListOfObject"),
-              CreateProperty (typeof (ClassWithAllDataTypes), "ObjectArrayList")
-          };
+      Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
+      PropertyBase[] expectedProperties = new PropertyBase[] { CreateProperty (type, "Scalar"), CreateProperty (type, "Array") };
 
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
       IBusinessObjectProperty[] actualProperties = bindableObjectClass.GetPropertyDefinitions();
 

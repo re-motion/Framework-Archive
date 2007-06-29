@@ -3,6 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
@@ -60,11 +61,29 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
+    [Ignore ("TODO: test")]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "")]
+    public void GetProperty_WithoutGetter ()
+    {
+      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleClass>().With());
+      businessObject.GetProperty ("String");
+    }
+
+    [Test]
     public void SetProperty_WithPropertyIdentifier ()
     {
       _businessObject.SetProperty ("String", "A String");
 
-      Assert.That ( _bindableObject.String, Is.EqualTo ("A String"));
+      Assert.That (_bindableObject.String, Is.EqualTo ("A String"));
+    }
+
+    [Test]
+    [Ignore ("TODO: test")]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "")]
+    public void GetProperty_WithoutSetter ()
+    {
+      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleClass>().With());
+      businessObject.SetProperty ("String", null);
     }
 
     [Test]

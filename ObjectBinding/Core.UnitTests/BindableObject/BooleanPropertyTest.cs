@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
@@ -14,23 +15,22 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [SetUp]
     public void SetUp ()
     {
-      _businessObjectProvider = new BindableObjectProvider ();
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithBoolean), _businessObjectProvider);
+      _businessObjectProvider = new BindableObjectProvider();
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
       _businessObjectClass = classReflector.GetMetadata();
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    public void GetDefaultValue_Boolean ()
+    public void GetDefaultValue_Scalar ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition("Boolean");
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
 
     [Test]
     [Ignore ("TODO: test")]
-    public void GetDefaultValue_NullableBoolean ()
+    public void GetDefaultValue_NullableScalar ()
     {
       IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableBoolean");
 
@@ -39,18 +39,18 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     [Test]
     [Ignore ("TODO: test")]
-    public void GetDefaultValue_BooleanArray ()
+    public void GetDefaultValue_Array ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("BooleanArray");
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Array");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
 
     [Test]
     [Ignore ("TODO: test")]
-    public void GetDefaultValue_NullableBooleanArray ()
+    public void GetDefaultValue_NullableArray ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableBooleanArray");
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableArray");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }

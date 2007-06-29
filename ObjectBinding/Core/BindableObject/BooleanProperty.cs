@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)
     {
-      throw new NotImplementedException();
+      return false;
     }
   }
 }

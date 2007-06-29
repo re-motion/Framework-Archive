@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {

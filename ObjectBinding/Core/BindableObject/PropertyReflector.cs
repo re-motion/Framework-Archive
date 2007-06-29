@@ -32,16 +32,27 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     public PropertyBase GetMetadata ()
     {
-      Type itemType = GetItemType();
-      if (itemType == typeof (string))
+      Type nativeType = GetNativeType();
+      if (nativeType == typeof (string))
         return CreateStringProperty();
-
+      if (nativeType == typeof (bool))
+        return CreateBooleanProperty();
       return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired());
     }
 
     private StringProperty CreateStringProperty ()
     {
       return new StringProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired(), GetMaxLength());
+    }
+
+    private PropertyBase CreateBooleanProperty ()
+    {
+      return new BooleanProperty(_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+    }
+
+    private Type GetNativeType ()
+    {
+      return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
     }
 
     private Type GetItemType ()
@@ -82,6 +93,8 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private bool GetIsRequired ()
     {
+      if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
+        return true;
       return false;
     }
 
