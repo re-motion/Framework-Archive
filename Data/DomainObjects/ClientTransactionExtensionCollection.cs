@@ -128,6 +128,15 @@ namespace Rubicon.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
+    public void ObjectLoading (ObjectID id)
+    {
+      ArgumentUtility.CheckNotNull ("id", id);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.ObjectLoading (id);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("loadedDomainObjects", loadedDomainObjects);

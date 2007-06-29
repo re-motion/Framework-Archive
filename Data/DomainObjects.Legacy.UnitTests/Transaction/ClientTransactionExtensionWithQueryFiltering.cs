@@ -13,6 +13,10 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction
     {
     }
 
+    public virtual void ObjectLoading (ObjectID id)
+    {
+    }
+
     public virtual void ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
     {
     }

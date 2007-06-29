@@ -91,5 +91,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       get { return base.DataManager; }
     }
+
+    public new bool IsReadOnly
+    {
+      get { return base.IsReadOnly; }
+      set { base.IsReadOnly = value; }
+    }
   }
 }

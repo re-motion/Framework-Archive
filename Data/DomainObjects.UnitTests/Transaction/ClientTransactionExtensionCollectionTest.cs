@@ -349,6 +349,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void ObjectsLoading ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension1.ObjectLoading (_order.ID);
+        _extension2.ObjectLoading (_order.ID);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _collectionWithExtensions.ObjectLoading (_order.ID);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
     public void FilterQueryResult ()
     {
       DomainObjectCollection domainObjects = new DomainObjectCollection ();

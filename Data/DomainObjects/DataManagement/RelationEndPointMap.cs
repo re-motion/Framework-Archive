@@ -96,9 +96,11 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ObjectEndPoint objectEndPoint = (ObjectEndPoint) _relationEndPoints[endPointID];
     if (objectEndPoint == null)
       return _clientTransaction.LoadRelatedObject (endPointID);
-    
+
     if (objectEndPoint.OppositeObjectID == null)
+    {
       return null;
+    }
 
     return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, false);
   }
@@ -113,7 +115,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return _clientTransaction.LoadRelatedObject (endPointID);
 
     if (objectEndPoint.OriginalOppositeObjectID == null)
+    {
       return null;
+    }
 
     return _clientTransaction.GetObject (objectEndPoint.OriginalOppositeObjectID, true);
   }

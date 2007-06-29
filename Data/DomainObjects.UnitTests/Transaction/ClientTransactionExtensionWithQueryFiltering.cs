@@ -10,6 +10,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
     }
 
+    public void ObjectLoading (ObjectID id)
+    {
+    }
+
     public virtual void NewObjectCreated (DomainObject newDomainObject)
     {
     }

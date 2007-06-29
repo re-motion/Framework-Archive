@@ -26,6 +26,11 @@ namespace Rubicon.Security.Data.DomainObjects
 
     #region IClientTransactionExtension Implementation
 
+    void IClientTransactionExtension.ObjectLoading (ObjectID id)
+    {
+    }
+
+
     void IClientTransactionExtension.ObjectsLoaded (DomainObjectCollection loadedDomainObjects)
     {
     }

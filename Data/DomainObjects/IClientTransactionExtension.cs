@@ -17,6 +17,15 @@ namespace Rubicon.Data.DomainObjects
     void NewObjectCreating (Type type);
 
     /// <summary>
+    /// This method is invoked, when a <see cref="DomainObject"/> is about to be loaded, after its <see cref="DataContainer"/> has been created
+    /// but before the <see cref="DataContainer"/> is associated with the <see cref="ClientTransaction"/>.
+    /// </summary>
+    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to be loaded. This is <see langword="null"/> if a loaded
+    /// related object does not have a value.</param>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
+    void ObjectLoading (ObjectID id);
+
+    /// <summary>
     /// This method is invoked, when one or multiple <see cref="DomainObject"/>s were loaded. 
     /// </summary>
     /// <param name="loadedDomainObjects">A collection of all <see cref="DomainObject"/>s that were loaded.</param>
