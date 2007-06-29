@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
@@ -12,12 +14,28 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private BindableObjectProvider _businessObjectProvider;
     private IBusinessObjectClass _businessObjectClass;
 
+    private CultureInfo _uiCultureBackup;
+    private CultureInfo _cultureEnUs;
+    private CultureInfo _cultureDeAt;
+
     [SetUp]
     public void SetUp ()
     {
       _businessObjectProvider = new BindableObjectProvider();
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
       _businessObjectClass = classReflector.GetMetadata();
+
+      _cultureEnUs = new CultureInfo ("en-US");
+      _cultureDeAt = new CultureInfo ("de-AT");
+
+      _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      Thread.CurrentThread.CurrentUICulture = _uiCultureBackup;
     }
 
     [Test]
@@ -29,16 +47,14 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetDefaultValue_NullableScalar ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableBoolean");
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetDefaultValue_Array ()
     {
       IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Array");
@@ -47,7 +63,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetDefaultValue_NullableArray ()
     {
       IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableArray");
@@ -56,9 +71,32 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    public void GetDisplayName ()
+    public void GetDisplayName_InvariantCulture ()
     {
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
+      Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
+    }
+
+    [Test]
+    public void GetDisplayName_EnUs ()
+    {
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
+      
+      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
+      Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
+    }
+
+    [Test]
+    public void GetDisplayName_CultureDeAt ()
+    {
+      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
+      
+      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Ja"));
+      Assert.That (property.GetDisplayName (false), Is.EqualTo ("Nein"));
     }
 
     [Test]

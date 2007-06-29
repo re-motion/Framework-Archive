@@ -1,10 +1,22 @@
 using System;
 using System.Reflection;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
   public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty
   {
+    [ResourceIdentifiers]
+    [MultiLingualResources ("Rubicon.ObjectBinding.Globalization.BooleanProperty")]
+    private enum ResourceIdentifier
+    {
+      True,
+      False
+    }
+
+    private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager = new DoubleCheckedLockingContainer<IResourceManager> (
+        delegate { return MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), false); });
+
     public BooleanProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
         : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
     {
@@ -16,7 +28,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     public string GetDisplayName (bool value)
     {
-      throw new NotImplementedException();
+      return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
     }
 
     /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>
@@ -27,7 +39,14 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)
     {
+      if (IsNullable())
+        return null;
       return false;
+    }
+
+    private bool IsNullable ()
+    {
+      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

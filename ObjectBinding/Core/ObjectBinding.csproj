@@ -106,6 +106,11 @@
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BooleanProperty.cs" />
+    <Compile Include="Globalization\BooleanProperty.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BooleanProperty.resx</DependentUpon>
+    </Compile>
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
     <Compile Include="BindableObject\NotSupportedProperty.cs" />
@@ -157,6 +162,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Design\PropertyPickerControl.resx">
       <DependentUpon>PropertyPickerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BooleanProperty.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Doc\include\NamespaceDoc.xml" />
   </ItemGroup>
