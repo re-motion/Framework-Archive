@@ -54,6 +54,7 @@
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <Compile Include="Mixins\ObjectFactoryTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />
+    <Compile Include="SampleTypes\BaseTypeWithDuckBaseMixin.cs" />
     <Compile Include="SampleTypes\BT7Mixin1.cs" />
     <Compile Include="SampleTypes\BT7Mixin3.cs" />
     <Compile Include="SampleTypes\BT7Mixin2.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="SampleTypes\BT7Mixin8.cs" />
     <Compile Include="SampleTypes\BT7Mixin9.cs" />
     <Compile Include="SampleTypes\BT7Mixin10.cs" />
+    <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\IntroductionDefinitionBuilderTests.cs" />

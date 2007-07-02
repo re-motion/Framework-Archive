@@ -16,5 +16,16 @@ namespace Rubicon.Mixins.Definitions
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
     }
+
+    public override ClassDefinition GetImplementer ()
+    {
+      ClassDefinition implementer = base.GetImplementer ();
+      // check for duck interface
+      if (implementer == null && !RequiredType.IsEmptyInterface)
+      {
+        implementer = Depender.BaseClass; // duck interface
+      }
+      return implementer;
+    }
   }
 }

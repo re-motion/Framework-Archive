@@ -79,20 +79,14 @@ namespace Rubicon.Mixins.Definitions
 
     public abstract void Accept (IDefinitionVisitor visitor);
 
-    public ClassDefinition GetImplementer()
+    public virtual ClassDefinition GetImplementer()
     {
       if (RequiredType.Type.IsAssignableFrom (_depender.BaseClass.Type))
-      {
         return _depender.BaseClass;
-      }
       else if (_depender.BaseClass.IntroducedInterfaces.HasItem (RequiredType.Type))
-      {
         return _depender.BaseClass.IntroducedInterfaces[RequiredType.Type].Implementer;
-      }
       else
-      {
         return null;
-      }
     }
   }
 }

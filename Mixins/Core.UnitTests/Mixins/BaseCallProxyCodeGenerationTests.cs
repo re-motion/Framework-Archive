@@ -129,5 +129,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (MixinWithThisAsBase)).With ();
       Assert.AreEqual ("MixinWithThisAsBase.IfcMethod-BaseType3.IfcMethod", bt3.IfcMethod());
     }
+
+    [Test]
+    public void BaseCallMethodToDuckInterface ()
+    {
+      BaseTypeWithDuckBaseMixin duckBase = ObjectFactory.Create<BaseTypeWithDuckBaseMixin> ().With ();
+      Assert.AreEqual ("DuckBaseMixin.MethodImplementedOnBase-BaseTypeWithDuckBaseMixin.MethodImplementedOnBase", duckBase.MethodImplementedOnBase ());
+    }
   }
 }

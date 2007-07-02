@@ -128,6 +128,35 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void DuckTypingBaseInterface ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseTypeWithDuckBaseMixin), typeof (DuckBaseMixin)))
+      {
+        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseTypeWithDuckBaseMixin));
+        Assert.IsTrue (baseClass.Mixins.HasItem (typeof (DuckBaseMixin)));
+        MixinDefinition mixin = baseClass.Mixins[typeof (DuckBaseMixin)];
+        Assert.IsTrue (baseClass.RequiredBaseCallTypes.HasItem (typeof (IDuckBaseRequirements)));
+        Assert.IsTrue (new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].FindRequiringMixins()).Contains (mixin));
+
+        Assert.IsTrue (mixin.BaseDependencies.HasItem (typeof (IDuckBaseRequirements)));
+        Assert.AreSame (baseClass, mixin.BaseDependencies[typeof (IDuckBaseRequirements)].GetImplementer());
+
+        Assert.AreSame (mixin, mixin.BaseDependencies[typeof (IDuckBaseRequirements)].Depender);
+        Assert.IsNull (mixin.BaseDependencies[typeof (IDuckBaseRequirements)].Aggregator);
+        Assert.AreEqual (0, mixin.BaseDependencies[typeof (IDuckBaseRequirements)].AggregatedDependencies.Count);
+
+        Assert.AreSame (baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)],
+            mixin.BaseDependencies[typeof (IDuckBaseRequirements)].RequiredType);
+
+        Assert.AreEqual (1, baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods.Count);
+        Assert.AreSame (typeof (IDuckBaseRequirements).GetMethod ("MethodImplementedOnBase"),
+            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].InterfaceMethod);
+        Assert.AreSame (baseClass.Methods[typeof (BaseTypeWithDuckBaseMixin).GetMethod ("MethodImplementedOnBase")],
+            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].ImplementingMethod);
+      }
+    }
+
+    [Test]
     public void Dependencies ()
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
