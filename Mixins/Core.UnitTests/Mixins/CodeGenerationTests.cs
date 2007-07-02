@@ -159,38 +159,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void MixinsAreInitializedWithTarget ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin2)).With ();
-      BT3Mixin2 mixin = Mixin.Get<BT3Mixin2> (bt3);
-      Assert.IsNotNull (mixin);
-      Assert.AreSame (bt3, mixin.This);
-    }
-
-    [Test]
-    public void MixinsAreInitializedWithBase ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3>(typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-      Assert.IsNotNull (mixin);
-      Assert.AreSame (bt3, mixin.This);
-      Assert.IsNotNull (mixin.Base);
-      Assert.AreNotSame (bt3, mixin.Base);
-    }
-
-    [Test]
-    public void MixinsAreInitializedWithConfiguration ()
-    {
-      BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin1)).With ();
-      BT3Mixin1 mixin = Mixin.Get<BT3Mixin1> (bt3);
-      Assert.IsNotNull (mixin);
-      Assert.AreSame (bt3, mixin.This);
-      Assert.IsNotNull (mixin.Base);
-      Assert.AreNotSame (bt3, mixin.Base);
-      Assert.AreSame (((IMixinTarget) bt3).Configuration.Mixins[typeof (BT3Mixin1)], mixin.Configuration);
-    }
-
-    [Test]
     public void GenericMixinsAreSpecialized ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();
@@ -257,90 +225,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (eventInfo.GetAddMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
       Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsSpecialName);
       Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
-    }
-
-    [Test]
-    public void CompleteFaceInterfacesAddedByMixins()
-    {
-      ICBaseType3BT3Mixin4 complete = CreateMixedObject<BaseType3> (typeof (BT3Mixin7Face), typeof (BT3Mixin4)).With () as ICBaseType3BT3Mixin4;
-
-      Assert.IsNotNull (complete);
-      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType33) complete).IfcMethod ());
-      Assert.AreEqual ("BaseType3.IfcMethod", ((IBaseType34) complete).IfcMethod ());
-      Assert.AreEqual ("BaseType3.IfcMethod2", complete.IfcMethod2 ());
-      Assert.AreEqual ("BaseType3.IfcMethod-BT3Mixin4.Foo", Mixin.Get<BT3Mixin7Face> (complete).InvokeThisMethods());
-    }
-
-    [Test]
-    public void CompleteFaceInterfacesAddedExplicitly ()
-    {
-      object complete = ObjectFactory.Create<BaseType6>().With();
-
-      Assert.IsNotNull (complete);
-      Assert.IsTrue (complete is BaseType6);
-      Assert.IsTrue (complete is ICBT6Mixin1);
-      Assert.IsTrue (complete is ICBT6Mixin2);
-      Assert.IsTrue (complete is ICBT6Mixin3);
-    }
-
-
-
-    [Test]
-    public void CompleteFaceInterfaceAsTypeArgument ()
-    {
-      ICBT6Mixin1 complete = ObjectFactory.Create<ICBT6Mixin1> ().With ();
-
-      Assert.IsNotNull (complete);
-      Assert.IsTrue (complete is BaseType6);
-      Assert.IsTrue (complete is ICBT6Mixin1);
-      Assert.IsTrue (complete is ICBT6Mixin2);
-      Assert.IsTrue (complete is ICBT6Mixin3);
-    }
-
-    public interface IEmptyInterface { }
-
-    [Test]
-    public void CompleteFaceInterfaceAddedImperativelyAsTypeArgument ()
-    {
-      using (MixinConfiguration.ScopedEmpty ())
-      {
-        MixinConfiguration.ActiveContext.GetOrAddClassContext (typeof (BaseType6)).AddCompleteInterface (typeof (IEmptyInterface));
-        MixinConfiguration.ActiveContext.RegisterInterface (typeof (IEmptyInterface), typeof (BaseType6));
-
-        IEmptyInterface complete = ObjectFactory.Create<IEmptyInterface> ().With ();
-
-        Assert.IsNotNull (complete);
-        Assert.IsTrue (complete is BaseType6);
-        Assert.IsTrue (complete is IEmptyInterface);
-      }
-    }
-
-    [Test]
-    public void CompleteFaceInterfaceAsTypeArgumentWithMixins ()
-    {
-      ICBT6Mixin1 complete = ObjectFactory.CreateWithMixinInstances<ICBT6Mixin1> (new BT6Mixin1()).With ();
-
-      Assert.IsNotNull (complete);
-      Assert.IsTrue (complete is BaseType6);
-      Assert.IsTrue (complete is ICBT6Mixin1);
-      Assert.IsTrue (complete is ICBT6Mixin2);
-      Assert.IsTrue (complete is ICBT6Mixin3);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
-        MatchType = MessageMatch.Contains)]
-    public void InterfaceAsTypeArgumentWithoutCompleteness ()
-    {
-      ObjectFactory.Create<IBaseType2> ().With ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "not been registered",
-        MatchType = MessageMatch.Regex)]
-    public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
-    {
-      ObjectFactory.CreateWithMixinInstances<IBaseType2> ().With ();
     }
 
     class Foo1

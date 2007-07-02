@@ -36,6 +36,8 @@
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ApplicationContextBuilderTests.cs" />
@@ -50,6 +52,7 @@
     <Compile Include="Configuration\UsesAnalysisTests.cs" />
     <None Include="Mixins.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
+    <Compile Include="Mixins\ObjectFactoryTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />
     <Compile Include="SampleTypes\BT7Mixin1.cs" />
     <Compile Include="SampleTypes\BT7Mixin3.cs" />

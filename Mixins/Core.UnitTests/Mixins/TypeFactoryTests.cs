@@ -54,32 +54,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void PartialInstantiation()
-    {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        BT1Mixin1 m1 = new BT1Mixin1();
-        BaseType1 bt1 = ObjectFactory.CreateWithMixinInstances<BaseType1> (m1).With();
-
-        Assert.IsNotNull (Mixin.Get<BT1Mixin1> (bt1));
-        Assert.AreSame (m1, Mixin.Get<BT1Mixin1> (bt1));
-        Assert.IsNotNull (Mixin.Get<BT1Mixin2> (bt1));
-        Assert.AreNotSame (m1, Mixin.Get<BT1Mixin2> (bt1));
-      }
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException))]
-    public void ThrowsOnWrongInstantiation ()
-    {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        BT2Mixin1 m1 = new BT2Mixin1();
-        ObjectFactory.CreateWithMixinInstances<BaseType3> (m1).With();
-      }
-    }
-
-    [Test]
     public void DefinitionGeneratedEvenIfNoConfig()
     {
       Assert.IsFalse (MixinConfiguration.ActiveContext.ContainsClassContext (typeof (object)));
