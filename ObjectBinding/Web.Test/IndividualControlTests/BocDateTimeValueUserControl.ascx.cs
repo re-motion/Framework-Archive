@@ -86,7 +86,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
     UnboundReadOnlyBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) person.GetBusinessObjectProperty("DateOfBirth");
     UnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
 
-    UnboundDateOfDeathField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateProperty) person.GetBusinessObjectProperty("DateOfDeath");
+    UnboundDateOfDeathField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) person.GetBusinessObjectProperty("DateOfDeath");
     UnboundDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
     //UnboundReadOnlyDateOfDeathField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateProperty) person.GetBusinessObjectProperty("DateOfDeath");
     UnboundReadOnlyDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);

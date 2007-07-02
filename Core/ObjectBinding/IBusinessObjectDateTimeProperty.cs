@@ -2,17 +2,18 @@ using System;
 
 namespace Rubicon.ObjectBinding
 {
-  //TODO: Enum for Date and DateTime
   /// <summary> The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime"/> values. </summary>
   public interface IBusinessObjectDateTimeProperty : IBusinessObjectProperty
   {
+    DateTimeType Type { get; }
   }
 
-  /// <summary> 
-  ///   The <b>IBusinessObjectDateProperty</b> interface is used for accessing <see cref="DateTime"/> values whose time
-  ///   component will be ignored and potentially not persisted. 
+  /// <summary>
+  /// The <see cref="DateTimeType"/> enum defines the list of possible data types supported by the <see cref="IBusinessObjectDateTimeProperty"/>.
   /// </summary>
-  public interface IBusinessObjectDateProperty : IBusinessObjectProperty
+  public enum DateTimeType
   {
+    DateTime,
+    Date
   }
 }

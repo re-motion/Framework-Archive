@@ -417,10 +417,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
       string formatString = _formatString;
       if (StringUtility.IsNullOrEmpty (formatString))
       {
-        if (PropertyPath.LastProperty is IBusinessObjectDateProperty)
-          formatString = "d";
-        else if (PropertyPath.LastProperty is IBusinessObjectDateTimeProperty)
-          formatString = "g";
+        if (PropertyPath.LastProperty is IBusinessObjectDateTimeProperty)
+        {
+          if (((IBusinessObjectDateTimeProperty)PropertyPath.LastProperty).Type == DateTimeType.Date)
+            formatString = "d";
+          else
+            formatString = "g";
+        }
       }
 
       try

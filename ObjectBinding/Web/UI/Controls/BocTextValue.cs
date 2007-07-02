@@ -33,7 +33,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   //  statics
 
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateProperty), typeof (IBusinessObjectDateTimeProperty) };
+      typeof (IBusinessObjectNumericProperty), typeof (IBusinessObjectStringProperty), typeof (IBusinessObjectDateTimeProperty) };
 
   private static readonly object s_textChangedEvent = new object();
 
@@ -615,17 +615,31 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   private BocTextValueType GetBocTextValueType (IBusinessObjectProperty property)
   {
     if (property is IBusinessObjectStringProperty)
+    {
       return BocTextValueType.String;
-    else if (property is IBusinessObjectInt32Property)
-      return BocTextValueType.Integer;
-    else if (property is IBusinessObjectDoubleProperty)
-      return BocTextValueType.Double;
-    else if (property is IBusinessObjectDateProperty)
-      return BocTextValueType.Date;
+    }
+    else if (property is IBusinessObjectNumericProperty)
+    {
+      IBusinessObjectNumericProperty numericProperty = (IBusinessObjectNumericProperty) property;
+      if (numericProperty.Type == typeof (int))
+        return BocTextValueType.Integer;
+      else if (numericProperty.Type == typeof (double))
+        return BocTextValueType.Double;
+      else
+        throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType ());
+    }
     else if (property is IBusinessObjectDateTimeProperty)
-      return BocTextValueType.DateTime;
+    {
+      IBusinessObjectDateTimeProperty dateTimeProperty = (IBusinessObjectDateTimeProperty) property;
+      if (dateTimeProperty.Type == DateTimeType.Date)
+        return BocTextValueType.Date;
+      else
+        return BocTextValueType.DateTime;
+    }
     else
-      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType());
+    {
+      throw new NotSupportedException ("BocTextValue does not support property type " + property.GetType ());
+    }
   }
 
   /// <summary> Gets or sets the current value. </summary>

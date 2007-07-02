@@ -167,9 +167,6 @@
     <Compile Include="TestDomain\TestSearchObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UndefinedValueTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

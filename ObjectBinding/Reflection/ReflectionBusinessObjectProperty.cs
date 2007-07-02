@@ -34,9 +34,9 @@ namespace Rubicon.ObjectBinding.Reflection
       if (itemType == typeof (string))
         return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
       else if (itemType == typeof (int))
-        return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
+        return new ReflectionBusinessObjectNumericProperty (propertyInfo, itemType, isList, isNullableType);
       else if (itemType == typeof (double))
-        return new ReflectionBusinessObjectDoubleProperty (propertyInfo, itemType, isList, isNullableType);
+        return new ReflectionBusinessObjectNumericProperty (propertyInfo, itemType, isList, isNullableType);
       else if (itemType == typeof (bool))
         return new ReflectionBusinessObjectBooleanProperty (propertyInfo, itemType, isList, isNullableType);
       else if (itemType == typeof (DateTime))
@@ -185,29 +185,24 @@ namespace Rubicon.ObjectBinding.Reflection
     }
   }
 
-  public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNullableProperty, IBusinessObjectInt32Property
+  public class ReflectionBusinessObjectNumericProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectNumericProperty
   {
-    public ReflectionBusinessObjectInt32Property (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    private readonly Type _type;
+
+    public ReflectionBusinessObjectNumericProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
         : base (propertyInfo, itemType, isList, isNullable)
     {
+      _type = itemType;
     }
 
     public bool AllowNegative
     {
       get { return true; }
     }
-  }
 
-  public class ReflectionBusinessObjectDoubleProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDoubleProperty
-  {
-    public ReflectionBusinessObjectDoubleProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
-        : base (propertyInfo, itemType, isList, isNullable)
+    public Type Type
     {
-    }
-
-    public bool AllowNegative
-    {
-      get { return true; }
+      get { return _type; }
     }
   }
 
@@ -258,11 +253,16 @@ namespace Rubicon.ObjectBinding.Reflection
     }
   }
 
-  public class ReflectionBusinessObjectDateProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDateProperty
+  public class ReflectionBusinessObjectDateProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDateTimeProperty
   {
     public ReflectionBusinessObjectDateProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
         : base (propertyInfo, itemType, isList, isNullable)
     {
+    }
+
+    public DateTimeType Type
+    {
+      get { return DateTimeType.Date; }
     }
 
     protected internal override object FromInternalType (object internalValue)
@@ -278,6 +278,11 @@ namespace Rubicon.ObjectBinding.Reflection
     public ReflectionBusinessObjectDateTimeProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
         : base (propertyInfo, itemType, isList, isNullable)
     {
+    }
+
+    public DateTimeType Type
+    {
+      get { return DateTimeType.DateTime; }
     }
   }
 

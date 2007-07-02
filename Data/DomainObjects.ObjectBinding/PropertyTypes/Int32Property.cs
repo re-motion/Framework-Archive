@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-  public class Int32Property: NullableProperty, IBusinessObjectInt32Property
+  public class Int32Property: NullableProperty, IBusinessObjectNumericProperty
   {
     public Int32Property (
         IBusinessObjectClass businessObjectClass,
@@ -21,6 +21,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     public bool AllowNegative
     {
       get { return true; }
+    }
+
+    /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
+    public Type Type
+    {
+      get { return typeof (int); }
     }
 
     public override object FromInternalType (IBusinessObject bindableObject, object internalValue)

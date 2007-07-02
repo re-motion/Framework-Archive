@@ -18,6 +18,11 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     {
     }
 
+    public DateTimeType Type
+    {
+      get { return DateTimeType.DateTime; }
+    }
+
     public override object FromInternalType (IBusinessObject bindableObject, object internalValue)
     {
       if (IsList)

@@ -64,8 +64,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
 
   // static members
 	
-  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectDateTimeProperty), typeof (IBusinessObjectDateProperty) };
+  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof (IBusinessObjectDateTimeProperty) };
 
   private static readonly string s_datePickerScriptFileKey = typeof (BocDateTimeValue).FullName + "_DatePickerScript";
   private static readonly string s_styleFileKey = typeof (BocDateTimeValue).FullName + "_Style";
@@ -936,8 +935,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   }
 
   /// <summary>
-  ///   Evaluates the type of <paramref name="Property"/> and returns the appropriate 
-  ///   <see cref="BocDateTimeValueType"/>.
+  ///   Evaluates the type of <paramref name="property"/> and returns the appropriate <see cref="BocDateTimeValueType"/>.
   /// </summary>
   /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be evaluated. </param>
   /// <returns> The matching <see cref="BocDateTimeValueType"/></returns>
@@ -946,12 +944,14 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     if (property == null)
       return BocDateTimeValueType.Undefined;
 
-    if (property is IBusinessObjectDateTimeProperty)
-      return BocDateTimeValueType.DateTime;
-    else if (property is IBusinessObjectDateProperty)
+    IBusinessObjectDateTimeProperty dateTimeProperty = property as IBusinessObjectDateTimeProperty;
+    if (dateTimeProperty == null)
+      throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
+
+    if (dateTimeProperty.Type == DateTimeType.Date)
       return BocDateTimeValueType.Date;
     else
-      throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
+      return BocDateTimeValueType.DateTime;
   }
 
   private void DetermineClientScriptLevel() 

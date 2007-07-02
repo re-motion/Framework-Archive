@@ -36,7 +36,7 @@ public sealed class ControlFactory
     {
       if (property is IBusinessObjectStringProperty || property is IBusinessObjectNumericProperty)
         return new BocTextValue();
-      else if (property is IBusinessObjectDateTimeProperty || property is IBusinessObjectDateProperty)
+      else if (property is IBusinessObjectDateTimeProperty)
         return new BocDateTimeValue();
       else if (property is IBusinessObjectBooleanProperty)
         return new BocBooleanValue();

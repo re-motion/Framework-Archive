@@ -5,7 +5,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-  public class DateProperty: NullableProperty, IBusinessObjectDateProperty
+  public class DateProperty: NullableProperty, IBusinessObjectDateTimeProperty
   {
     public DateProperty (
         IBusinessObjectClass businessObjectClass,
@@ -16,6 +16,11 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
         bool isNullableType)
       : base (businessObjectClass, propertyInfo, isRequired, itemType, isList, isNullableType)
     {
+    }
+
+    public DateTimeType Type
+    {
+      get { return DateTimeType.Date; }
     }
 
     public override object FromInternalType (IBusinessObject bindableObject, object internalValue)
