@@ -53,7 +53,7 @@ public class BusinessObjectReflector
     {
       object internalValue = _bindableObject.GetProperty (property);
 
-      value = ((EnumerationProperty)property).GetValueInfoByValue (internalValue).DisplayName;
+      value = ((EnumerationProperty)property).GetValueInfoByValue (internalValue, _bindableObject).DisplayName;
       count = 1;
     }
     else

@@ -15,8 +15,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private IBusinessObjectClass _businessObjectClass;
 
     private CultureInfo _uiCultureBackup;
-    private CultureInfo _cultureEnUs;
-    private CultureInfo _cultureDeAt;
 
     [SetUp]
     public void SetUp ()
@@ -24,9 +22,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       _businessObjectProvider = new BindableObjectProvider();
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
       _businessObjectClass = classReflector.GetMetadata();
-
-      _cultureEnUs = new CultureInfo ("en-US");
-      _cultureDeAt = new CultureInfo ("de-AT");
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -77,26 +72,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
       Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
       Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
-    }
-
-    [Test]
-    public void GetDisplayName_EnUs ()
-    {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
-      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
-      
-      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
-      Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
-    }
-
-    [Test]
-    public void GetDisplayName_CultureDeAt ()
-    {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
-      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
-      
-      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Ja"));
-      Assert.That (property.GetDisplayName (false), Is.EqualTo ("Nein"));
     }
 
     [Test]

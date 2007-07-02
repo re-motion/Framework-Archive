@@ -162,7 +162,8 @@
     <echo message="Target has executed."/>
   </target>
 
-  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, Mixins.UnitTests,
+  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.UnitTests, ObjectBinding.Web.UnitTests, 
+      Mixins.UnitTests,
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
       Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests, 
@@ -455,6 +456,19 @@
     <property name="project.name" value="ObjectBinding.Reflection" />
     <property name="project.dir" value="ObjectBinding/Reflection" />
     <property name="project.output" value="Rubicon.ObjectBinding.Reflection" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+  </target>
+
+  <target name="ObjectBinding.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Development.Core" cascade="false"/>
+    <call target="ObjectBinding" cascade="false"/>
+    <call target="Mixins" cascade="false"/>
+
+    <property name="project.name" value="ObjectBinding.UnitTests" />
+    <property name="project.dir" value="ObjectBinding/Core.UnitTests" />
+    <property name="project.output" value="Rubicon.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>

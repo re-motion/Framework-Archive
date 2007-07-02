@@ -37,8 +37,6 @@
       <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
@@ -73,6 +71,7 @@
     <Compile Include="BindableObject\BindableObjectProviderTest.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithAllDataTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="ObjectBinding.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

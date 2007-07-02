@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     /// <param name="value">
     ///   An enum value that belongs to the enum identified by <see cref="BaseProperty.PropertyType"/>.
     /// </param>
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNull ("value", value);
 
@@ -115,12 +115,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return new EnumerationValueInfo (value, value.ToString (), enumDisplayName, isEnabled);
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
 
       object value = Enum.Parse (PropertyType, identifier, false);
-      return GetValueInfoByValue (value);
+      return GetValueInfoByValue (value, businessObject);
     }
 
     // TODO: Remove this property. Check if we can do so.

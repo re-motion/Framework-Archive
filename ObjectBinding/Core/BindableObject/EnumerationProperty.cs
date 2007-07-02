@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty
   {
-    private Enum _undefinedValue;
+    private readonly Enum _undefinedValue;
 
     public EnumerationProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
         : base (businessObjectProvider, propertyInfo, listInfo, isRequired)

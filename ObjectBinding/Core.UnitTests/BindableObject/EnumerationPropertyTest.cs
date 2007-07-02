@@ -24,8 +24,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private IBusinessObjectClass _businessObjectClassForEnumWithResources;
 
     private CultureInfo _uiCultureBackup;
-    private CultureInfo _cultureEnUs;
-    private CultureInfo _cultureDeAt;
 
     private MockRepository _mockRepository;
     private IBusinessObject _mockBusinessObject;
@@ -37,9 +35,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       _businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<TestEnum>));
       _businessObjectClassForEnumWithUndefinedValue = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithUndefinedValue>));
       _businessObjectClassForEnumWithResources = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithResources>));
-
-      _cultureEnUs = new CultureInfo ("en-US");
-      _cultureDeAt = new CultureInfo ("de-AT");
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -108,40 +103,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
           {
               new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
               new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Value 2", true),
-              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
-          };
-
-      CheckEnumerationValueInfos (expected, property.GetAllValues ());
-    }
-
-    [Test]
-    public void GetAllValues_WithEnUs ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
-      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
-          {
-              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Value 2", true),
-              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
-          };
-
-      CheckEnumerationValueInfos (expected, property.GetAllValues ());
-    }
-
-    [Test]
-    public void GetAllValues_WithDeAt ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
-      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
-          {
-              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
-              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Wert 2", true),
               new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
           };
 
@@ -253,30 +214,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetValueInfoByValue_WithEnUs ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-          property.GetValueInfoByValue (EnumWithResources.Value1, null));
-    }
-
-    [Test]
-    public void GetValueInfoByValue_WithDeAt ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
-          property.GetValueInfoByValue (EnumWithResources.Value1, null));
-    }
-
-    [Test]
     public void GetValueInfoByValue_WithDescription ()
     {
       IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
@@ -333,30 +270,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-          property.GetValueInfoByIdentifier ("Value1", null));
-    }
-
-    [Test]
-    public void GetValueInfoByIdentifier_WithEnUs ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-          property.GetValueInfoByIdentifier ("Value1", null));
-    }
-
-    [Test]
-    public void GetValueInfoByIdentifier_WithDeAt ()
-    {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
-
-      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
           property.GetValueInfoByIdentifier ("Value1", null));
     }
 

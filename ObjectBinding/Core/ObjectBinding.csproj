@@ -75,9 +75,6 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
     <Reference Include="System.Design">
       <Name>system.design</Name>
     </Reference>
@@ -86,9 +83,6 @@
     </Reference>
     <Reference Include="System.Windows.Forms">
       <Name>system.windows.forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
     </Reference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core</Name>
