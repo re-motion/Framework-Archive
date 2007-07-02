@@ -146,11 +146,10 @@ namespace Rubicon.Utilities
     public static string GetDescription (System.Enum value, CultureInfo culture)
     {
       Type enumType = value.GetType();
-      EnumDescriptionResourceAttribute[] resourceAttributes = (EnumDescriptionResourceAttribute[]) 
-            enumType.GetCustomAttributes (typeof (EnumDescriptionResourceAttribute), false);
-      if (resourceAttributes.Length > 0)
+      EnumDescriptionResourceAttribute resourceAttribute = AttributeUtility.GetCustomAttribute<EnumDescriptionResourceAttribute>(enumType, false);
+      if (resourceAttribute != null)
       {
-        ResourceManager rm = GetResourceManager (resourceAttributes[0].BaseName, enumType.Assembly);
+        ResourceManager rm = GetResourceManager (resourceAttribute.BaseName, enumType.Assembly);
         return rm.GetString (enumType.FullName + "." + value.ToString(), culture);
       }
       else
@@ -189,11 +188,11 @@ namespace Rubicon.Utilities
       IDictionary dictionary = new HybridDictionary (fields.Length);
       foreach (FieldInfo field in fields)
       {
-        EnumDescriptionAttribute[] descriptionAttributes = (EnumDescriptionAttribute[]) field.GetCustomAttributes (typeof (EnumDescriptionAttribute), false);
-        if (descriptionAttributes.Length > 0)
+        EnumDescriptionAttribute descriptionAttribute = AttributeUtility.GetCustomAttribute<EnumDescriptionAttribute> (field, false);
+        if (descriptionAttribute != null)
         {
           System.Enum value = (System.Enum) field.GetValue (null);
-          dictionary.Add (value, descriptionAttributes[0].Description);
+          dictionary.Add (value, descriptionAttribute.Description);
         }
       }
       return dictionary;
