@@ -10,6 +10,18 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly Enum _undefinedValue;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="businessObjectProvider"></param>
+    /// <param name="propertyInfo"></param>
+    /// <param name="listInfo"></param>
+    /// <param name="isRequired"></param>
+    /// <exception cref="InvalidOperationException">
+    /// The enum type has an UndefinedEnumValueAttribute with a value that does not match the enum's type.
+    /// <para>- or -</para>
+    /// <para>The property is nullable and the property's type defines an UndefinedEnumValueAttribute</para>
+    /// </exception>
     public EnumerationProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
         : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
     {
@@ -52,8 +64,6 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (value == null)
         return null;
 
-      CheckEnumType (value);
-
       Enum enumValue = (Enum) value;
       if (IsUndefinedValue (enumValue))
         return null;
@@ -74,7 +84,6 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       if (nativeValue != null)
       {
-        CheckEnumType (nativeValue);
         if (IsUndefinedValue ((Enum) nativeValue))
           return null;
       }
@@ -118,13 +127,26 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (undefinedEnumValueAttribute == null)
         return null;
 
-      return undefinedEnumValueAttribute.Value;
-    }
+      if (!UnderlyingType.IsInstanceOfType (undefinedEnumValueAttribute.Value))
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "The enum type '{0}' defines a '{1}' with an enum value that belongs to a different enum type.",
+                UnderlyingType,
+                typeof (UndefinedEnumValueAttribute)));
+      }
 
-    private void CheckEnumType (object value)
-    {
-      if (!UnderlyingType.IsInstanceOfType (value))
-        throw new ArgumentTypeException ("value", UnderlyingType, value.GetType());
+      if (IsNullable)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "The property '{0}' defined on type '{1}' must not be nullable since the property's type already defines a '{2}'.",
+                Identifier,
+                PropertyInfo.DeclaringType,
+                typeof (UndefinedEnumValueAttribute)));
+      }
+
+      return undefinedEnumValueAttribute.Value;
     }
   }
 }
