@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test.Domain
     [StorageClassNone]
     public DomainObjectCollection ComputedList
     {
-      get { return null; }
+      get { return new DomainObjectCollection(); }
     }
 
     [DBColumn ("TableWithAllDataTypesMandatory")]

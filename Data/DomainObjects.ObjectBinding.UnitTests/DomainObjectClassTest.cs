@@ -73,36 +73,24 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void GetPropertyDefinitionsDoesNotReturnIsDiscarded ()
+    public void GetPropertyDefinitionsExpected ()
     {
-      AssertPropertyIsNotContained ("IsDiscarded", _domainObjectClass.GetPropertyDefinitions ());
+      IBusinessObjectProperty[] propertyDefinitions = _domainObjectClass.GetPropertyDefinitions ();
+      Assert.That (propertyDefinitions.Length, Is.EqualTo (4));
+      AssertPropertyIsContained ("OrderNumber", propertyDefinitions);
+      AssertPropertyIsContained ("DeliveryDate", propertyDefinitions);
+      AssertPropertyIsContained ("OrderTicket", propertyDefinitions);
+      AssertPropertyIsContained ("OrderItems", propertyDefinitions);
     }
 
-    [Test]
-    public void GetPropertyDefinitionsDoesNotReturnState ()
-    {
-      AssertPropertyIsNotContained ("State", _domainObjectClass.GetPropertyDefinitions ());
-    }
-
-    [Test]
-    public void GetPropertyDefinitionsDoesNotReturnClientTransaction ()
-    {
-      AssertPropertyIsNotContained ("ClientTransaction", _domainObjectClass.GetPropertyDefinitions ());
-    }
-
-    [Test]
-    public void GetPropertyDefinitionsDoesNotReturnID ()
-    {
-      AssertPropertyIsNotContained ("ID", _domainObjectClass.GetPropertyDefinitions ());
-    }
-
-    private void AssertPropertyIsNotContained (string propertyName, IBusinessObjectProperty[] properties)
+    private void AssertPropertyIsContained (string propertyName, IBusinessObjectProperty[] properties)
     {
       foreach (IBusinessObjectProperty property in properties)
       {
         if (propertyName == property.Identifier)
-          Assert.Fail ("Provided array must not contain property '{0}'.", propertyName);
+          return;
       }
+      Assert.Fail ("Provided array must contain property '{0}'.", propertyName);
     }
   }
 }

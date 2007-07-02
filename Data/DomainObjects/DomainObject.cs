@@ -502,7 +502,7 @@ public class DomainObject
   /// </summary>
   /// <value></value>
 	[Obsolete ("Do not access the DataContainer of a DomainObject to retrieve field values, use its Properties member instead.")]
-	public DataContainerIndirection DataContainer
+	protected DataContainerIndirection DataContainer
 	{
 		get
     {
