@@ -247,12 +247,12 @@ namespace Rubicon.ObjectBinding.Reflection
       return _booleanToEnumConverter.GetValues();
     }
 
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValueInfoByValue (value);
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValueInfoByIdentifier (identifier);
     }
@@ -328,7 +328,7 @@ namespace Rubicon.ObjectBinding.Reflection
     ///   An enum value that belongs to the enum identified by <see cref="ReflectionBusinessObjectProperty.PropertyType"/>.
     /// </param>
     /// <returns></returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       if (value == null)
       {
@@ -347,7 +347,7 @@ namespace Rubicon.ObjectBinding.Reflection
       }
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       object value = Enum.Parse (PropertyType, identifier, false);
 
@@ -398,7 +398,7 @@ namespace Rubicon.ObjectBinding.Reflection
       return _valueInfos;
     }
 
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       foreach (IEnumerationValueInfo valueInfo in _valueInfos)
       {
@@ -409,7 +409,7 @@ namespace Rubicon.ObjectBinding.Reflection
           string.Format ("The value '{0}' is not part of the possible values for this Instance Enumeration.", value), "value");
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       foreach (IEnumerationValueInfo valueInfo in _valueInfos)
       {

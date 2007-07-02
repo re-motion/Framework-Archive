@@ -40,14 +40,9 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)
     {
-      if (IsNullable())
+      if (IsNullable)
         return null;
       return false;
-    }
-
-    private bool IsNullable ()
-    {
-      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

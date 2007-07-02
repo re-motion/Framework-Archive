@@ -3,10 +3,12 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  public enum TestEnum
+  public enum EnumWithDescription
   {
+    [EnumDescription ("Value I")]
     Value1 = 1,
+     [EnumDescription ("Value II")]
     Value2 = 2,
-    Value3 = 3
-  }
+    ValueWithoutDescription = 3
+ }
 }

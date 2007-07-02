@@ -533,9 +533,12 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   {
     if (Property == null)
       return new IEnumerationValueInfo[0];
-    if (DataSource == null || DataSource.BusinessObject == null)
-      return Property.GetEnabledValues (null);
-    return Property.GetEnabledValues (DataSource.BusinessObject);
+    return Property.GetEnabledValues (GetBusinessObject());
+  }
+
+  private IBusinessObject GetBusinessObject ()
+  {
+    return (Property != null && DataSource != null) ? DataSource.BusinessObject : null;
   }
 
   /// <summary> Ensures that the list of enum values has been populated. </summary>
@@ -569,7 +572,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       }
       else if (_oldInternalValue != null && Property != null)
       {
-        IEnumerationValueInfo oldEnumerationValueInfo = Property.GetValueInfoByIdentifier (_oldInternalValue);        
+        IEnumerationValueInfo oldEnumerationValueInfo = Property.GetValueInfoByIdentifier (_oldInternalValue, GetBusinessObject());        
         if (oldEnumerationValueInfo != null && ! oldEnumerationValueInfo.IsEnabled)
           itemWithIdentifierToRemove = _oldInternalValue;
         _oldInternalValue = null;
@@ -682,7 +685,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       _value = value;
 
       if (Property != null && _value != null)
-        _enumerationValueInfo = Property.GetValueInfoByValue (_value);
+        _enumerationValueInfo = Property.GetValueInfoByValue (_value, GetBusinessObject());
       else
         _enumerationValueInfo = null;
 
@@ -712,7 +715,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     get 
     {
       if (_enumerationValueInfo == null && Property != null && _value != null)
-        _enumerationValueInfo = Property.GetValueInfoByValue (_value);
+        _enumerationValueInfo = Property.GetValueInfoByValue (_value, GetBusinessObject());
 
       return _enumerationValueInfo; 
     }
@@ -758,7 +761,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     else if (_internalValue != null && Property != null)
     {
       //  Can get a new EnumerationValueInfo
-      _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue);
+      _enumerationValueInfo = Property.GetValueInfoByIdentifier (_internalValue, GetBusinessObject());
       _value = _enumerationValueInfo.Value;
     }
     else if (_internalValue == null)

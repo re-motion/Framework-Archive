@@ -69,12 +69,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return _booleanToEnumConverter.GetValues();
     }
 
-    public IEnumerationValueInfo GetValueInfoByValue (object value)
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValueInfoByValue (value);
     }
 
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValueInfoByIdentifier (identifier);
     }

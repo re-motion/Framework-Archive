@@ -21,24 +21,22 @@ namespace Rubicon.ObjectBinding
     IEnumerationValueInfo[] GetAllValues();
 
     /// <summary> Returns a list of the enumeration's values that can be used in the current context. </summary>
-    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enum values. </param>
-    /// <returns> 
-    ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the enabled values in the enumeration. 
-    /// </returns>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>
+    /// <returns>A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the enabled values in the enumeration. </returns>
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
     IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject);
 
     /// <overloads> Returns a specific enumeration value. </overloads>
     /// <summary> Returns a specific enumeration value. </summary>
     /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
-    IEnumerationValueInfo GetValueInfoByValue (object value);
+    IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject);
 
     /// <summary> Returns a specific enumeration value. </summary>
-    /// <param name="identifier"> 
-    ///   The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for. 
-    /// </param>
+    /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
-    IEnumerationValueInfo GetValueInfoByIdentifier (string identifier);
+    IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject);
   }
 }

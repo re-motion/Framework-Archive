@@ -12,6 +12,8 @@ namespace Rubicon.ObjectBinding.BindableObject
     private readonly PropertyInfo _propertyInfo;
     private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
+    private readonly Type _underlyingType;
+    private readonly bool _isNullable;
 
     protected PropertyBase (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
     {
@@ -22,6 +24,8 @@ namespace Rubicon.ObjectBinding.BindableObject
       _propertyInfo = propertyInfo;
       _listInfo = listInfo;
       _isRequired = isRequired;
+      _underlyingType = GetUnderlyingType();
+      _isNullable = GetNullability();
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -119,14 +123,35 @@ namespace Rubicon.ObjectBinding.BindableObject
       get { return _propertyInfo; }
     }
 
-    public object ConvertFromNativePropertyType (object nativeValue)
+    public virtual object ConvertFromNativePropertyType (object nativeValue)
     {
       return nativeValue;
     }
 
-    public object ConvertToNativePropertyType (object publicValue)
+    public virtual object ConvertToNativePropertyType (object publicValue)
     {
       return publicValue;
+    }
+
+    protected Type UnderlyingType
+    {
+      get { return _underlyingType; }
+    }
+
+    protected bool IsNullable
+    {
+      get { return _isNullable; }
+    }
+
+    private Type GetUnderlyingType ()
+    {
+      Type type = IsList ? ListInfo.ItemType : PropertyType;
+      return Nullable.GetUnderlyingType (type) ?? type;
+    }
+
+    private bool GetNullability ()
+    {
+      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

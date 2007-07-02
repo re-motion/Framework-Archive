@@ -189,7 +189,7 @@ public abstract class BusinessObject: IBusinessObject
     else if (property is IBusinessObjectEnumerationProperty)
     {
       IBusinessObjectEnumerationProperty enumProperty = (IBusinessObjectEnumerationProperty) property;
-      IEnumerationValueInfo enumValueInfo = enumProperty.GetValueInfoByValue (value);
+      IEnumerationValueInfo enumValueInfo = enumProperty.GetValueInfoByValue (value, businessObject);
       if (enumValueInfo == null)
         return string.Empty;
       strValue = enumValueInfo.DisplayName;
@@ -251,24 +251,6 @@ public abstract class BusinessObject: IBusinessObject
   public void SetProperty (string propertyIdentifier, object value)
   {
     SetProperty (GetBusinessObjectProperty (propertyIdentifier), value);
-  }
-
-  /// <overloads> Gets or sets the value accessed through the specified property. </overloads>
-  /// <summary> Gets or sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
-  public object this [IBusinessObjectProperty property]
-  {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
-  }
-
-  /// <summary> 
-  ///   Gets or Sets the value accessed through the <see cref="IBusinessObjectProperty"/> identified by the passed 
-  ///   <paramref name="propertyIdentifier"/>. 
-  /// </summary>
-  public object this [string propertyIdentifier]
-  {
-    get { return GetProperty (propertyIdentifier); }
-    set { SetProperty (propertyIdentifier, value); }
   }
 
   /// <overloads> Gets the string representation of the value accessed through the specified property.  </overloads>

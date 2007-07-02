@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 using Rubicon.Utilities;
@@ -12,25 +13,39 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   [TestFixture]
   public class EnumerationPropertyTest : TestBase
   {
+    [UndefinedEnumValue (EnumWithUndefinedValue.UndefinedValue)]
+    private enum EnumWithUndefinedValueFromOtherType
+    {
+    }
+
     private BindableObjectProvider _businessObjectProvider;
     private IBusinessObjectClass _businessObjectClass;
+    private IBusinessObjectClass _businessObjectClassForEnumWithUndefinedValue;
+    private IBusinessObjectClass _businessObjectClassForEnumWithResources;
 
     private CultureInfo _uiCultureBackup;
     private CultureInfo _cultureEnUs;
     private CultureInfo _cultureDeAt;
 
+    private MockRepository _mockRepository;
+    private IBusinessObject _mockBusinessObject;
+
     [SetUp]
     public void SetUp ()
     {
       _businessObjectProvider = new BindableObjectProvider();
-      ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<TestEnum>), _businessObjectProvider);
-      _businessObjectClass = classReflector.GetMetadata();
+      _businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<TestEnum>));
+      _businessObjectClassForEnumWithUndefinedValue = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithUndefinedValue>));
+      _businessObjectClassForEnumWithResources = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithResources>));
 
       _cultureEnUs = new CultureInfo ("en-US");
       _cultureDeAt = new CultureInfo ("de-AT");
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+      _mockRepository = new MockRepository();
+      _mockBusinessObject = _mockRepository.CreateMock<IBusinessObject>();
     }
 
     [TearDown]
@@ -40,7 +55,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetAllValues ()
     {
       IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
@@ -51,48 +65,438 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
               new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true)
           };
 
-      CheckEnumerationValueInfos (property.GetAllValues(), expected);
+      CheckEnumerationValueInfos (expected, property.GetAllValues());
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetAllValues_Nullable ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Nullable");
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
+              new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
+              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    public void GetAllValues_WithUndefinedValue ()
+    {
+      IBusinessObjectEnumerationProperty property = 
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (EnumWithUndefinedValue.Value1, "Value1", "Value1", true),
+              new EnumerationValueInfo (EnumWithUndefinedValue.Value2, "Value2", "Value2", true),
+              new EnumerationValueInfo (EnumWithUndefinedValue.Value3, "Value3", "Value3", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
+    }
+
+
+    [Test]
+    public void GetAllValues_WithInvariantCulture ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Value 2", true),
+              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
+    }
+
+    [Test]
+    public void GetAllValues_WithEnUs ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Value 2", true),
+              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
+    }
+
+    [Test]
+    public void GetAllValues_WithDeAt ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
+              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Wert 2", true),
+              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
+    }
+
+    [Test]
+    public void GetAllValues_WithDescription ()
+    {
+      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
+              new EnumerationValueInfo (EnumWithDescription.Value2, "Value2", "Value II", true),
+              new EnumerationValueInfo (EnumWithDescription.ValueWithoutDescription, "ValueWithoutDescription", "ValueWithoutDescription", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
+    }
+
+
+    [Test]
     public void GetEnabledValues ()
     {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+             new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
+             new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
+             new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
+    }
+
+
+    [Test]
+    public void GetValueInfoByValue_WithValidEnumValue ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
+          property.GetValueInfoByValue (TestEnum.Value1, null));
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithNull ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithUndefinedEnumValue ()
+    {
+      IBusinessObjectEnumerationProperty property = 
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByValue (EnumWithUndefinedValue.UndefinedValue, null), Is.Null);
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithInvalidEnumValue ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo ((TestEnum) (-1), "-1", "-1", false),
+          property.GetValueInfoByValue ((TestEnum) (-1), null));
     }
 
     [Test]
     [Ignore ("TODO: test")]
-    public void GetValueInfoByValue ()
+    public void GetValueInfoByValue_WithDisabledEnumValue ()
     {
+      IBusinessObjectEnumerationProperty property = 
+          (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("DisabledFromProperty");
+      _mockRepository.ReplayAll();
+
+      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, _mockBusinessObject);
+
+      _mockRepository.VerifyAll();
+      CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", false), actual);
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    public void GetValueInfoByIdentifier ()
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void GetValueInfoByValue_WithEnumValueFromOtherType ()
     {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null);
     }
 
-    private void CheckEnumerationValueInfos (IEnumerationValueInfo[] actual, EnumerationValueInfo[] expected)
+
+    [Test]
+    public void GetValueInfoByValue_WithInvariantCulture ()
+    {
+      IBusinessObjectEnumerationProperty property = 
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+          property.GetValueInfoByValue (EnumWithResources.Value1, null));
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithEnUs ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+          property.GetValueInfoByValue (EnumWithResources.Value1, null));
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithDeAt ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
+          property.GetValueInfoByValue (EnumWithResources.Value1, null));
+    }
+
+    [Test]
+    public void GetValueInfoByValue_WithDescription ()
+    {
+      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
+          property.GetValueInfoByValue (EnumWithDescription.Value1, null));
+    }
+
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithValidEnumValue ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
+          property.GetValueInfoByIdentifier("Value1", null));
+    }
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithNull ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
+    }
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithUndefinedEnumValue ()
+    {
+      IBusinessObjectEnumerationProperty property =
+         (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByIdentifier ("UndefinedValue", null), Is.Null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ParseException))]
+    public void GetValueInfoByIdentifier_WithInvalidIdentifier ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      property.GetValueInfoByIdentifier ("Invalid", null);
+    }
+
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithInvariantCulture ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+          property.GetValueInfoByIdentifier ("Value1", null));
+    }
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithEnUs ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureEnUs;
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
+          property.GetValueInfoByIdentifier ("Value1", null));
+    }
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithDeAt ()
+    {
+      IBusinessObjectEnumerationProperty property =
+          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+
+      Thread.CurrentThread.CurrentUICulture = _cultureDeAt;
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Wert 1", true),
+          property.GetValueInfoByIdentifier ("Value1", null));
+    }
+
+    [Test]
+    public void GetValueInfoByIdentifier_WithDescription ()
+    {
+      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
+          property.GetValueInfoByIdentifier ("Value1", null));
+    }
+
+
+    [Test]
+    public void ConvertFromNativePropertyType ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertFromNativePropertyType (TestEnum.Value1), Is.EqualTo (TestEnum.Value1));
+    }
+
+    [Test]
+    public void ConvertFromNativePropertyType_WithNull ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertFromNativePropertyType (null), Is.Null);
+    }
+
+    [Test]
+    public void ConvertFromNativePropertyType_WithUndefinedValue ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.UndefinedValue), Is.Null);
+    }
+
+    [Test]
+    public void ConvertFromNativePropertyType_WithInvalidEnumValue ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertFromNativePropertyType ((TestEnum) (-1)), Is.EqualTo ((TestEnum) (-1)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void ConvertFromNativePropertyType_WithEnumValueFromOtherType ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1);
+    }
+
+
+    [Test]
+    public void ConvertToNativePropertyType ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertFromNativePropertyType (TestEnum.Value1), Is.EqualTo (TestEnum.Value1));
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_WithNull ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertToNativePropertyType (null), Is.Null);
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_WithUndefinedValue ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertToNativePropertyType (null), Is.EqualTo (EnumWithUndefinedValue.UndefinedValue));
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_WithInvalidEnumValue ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertToNativePropertyType ((TestEnum) (-1)), Is.EqualTo ((TestEnum) (-1)));
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_WithEnumValueFromOtherType ()
+    {
+      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.ConvertToNativePropertyType (EnumWithUndefinedValue.Value1), Is.EqualTo (EnumWithUndefinedValue.Value1));
+    }
+
+
+    [Test]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "")]
+    [Ignore ("TODO: test")]
+    public void Initialize_NullableWithUndefinedValue ()
+    {
+      _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Nullable");
+    }
+
+    [Test]
+    [ExpectedException (typeof (Exception), ExpectedMessage = "")]
+    [Ignore ("TODO: test")]
+    public void Initialize_WithUndefinedEnumValueFromOtherType ()
+    {
+      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>));
+      businessObjectClass.GetPropertyDefinition ("Scalar");
+    }
+
+    private IBusinessObjectClass GetBusinessObejctClass (Type type)
+    {
+      ClassReflector classReflectorForEnumWithUndefinedValue = new ClassReflector (type, _businessObjectProvider);
+      return classReflectorForEnumWithUndefinedValue.GetMetadata ();
+    }
+
+    private void CheckEnumerationValueInfos (EnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
     {
       ArgumentUtility.CheckNotNull ("expected", expected);
 
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Length, Is.EqualTo (expected.Length));
       for (int i = 0; i < expected.Length; i++)
-      {
-        Assert.That (actual[i], Is.Not.Null);
-        Assert.That (actual[i].Value, Is.EqualTo (expected[i].Value));
-        Assert.That (actual[i].Identifier, Is.EqualTo (expected[i].Identifier));
-        Assert.That (actual[i].IsEnabled, Is.EqualTo (expected[i].IsEnabled));
-        Assert.That (actual[i].DisplayName, Is.EqualTo (expected[i].DisplayName));
-      }
+        CheckEnumerationValueInfo (expected[i], actual[i]);
+    }
+
+    private void CheckEnumerationValueInfo (EnumerationValueInfo expected, IEnumerationValueInfo actual)
+    {
+      ArgumentUtility.CheckNotNull ("expected", expected);
+
+      Assert.That (actual, Is.InstanceOfType (expected.GetType()));
+      Assert.That (actual.Value, Is.EqualTo (expected.Value));
+      Assert.That (actual.Identifier, Is.EqualTo (expected.Identifier));
+      Assert.That (actual.IsEnabled, Is.EqualTo (expected.IsEnabled));
+      Assert.That (actual.DisplayName, Is.EqualTo (expected.DisplayName));
     }
   }
 }

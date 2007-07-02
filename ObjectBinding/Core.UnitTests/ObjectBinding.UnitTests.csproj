@@ -51,12 +51,18 @@
     <Compile Include="BindableObject\TestDomain\ClassWithValueType.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithListProperties.cs" />
-    <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />
+    <Compile Include="BindableObject\TestDomain\EnumWithDescription.cs" />
+    <Compile Include="BindableObject\TestDomain\EnumWithResoruces.cs" />
     <Compile Include="BindableObject\TestDomain\EnumWithUndefinedValue.cs" />
     <Compile Include="BindableObject\TestDomain\TestEnum.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleValueType.cs" />
     <Compile Include="BindableObject\UndefinedValueTest.cs" />
+    <Compile Include="Globalization\EnumWithResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnumWithResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ListInfoTest.cs" />
     <Compile Include="BindableObject\PropertyReflectorTests\Common.cs" />
     <Compile Include="BindableObject\PropertyBaseTest.cs" />
@@ -89,6 +95,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\EnumWithResources.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\EnumWithResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumWithResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
