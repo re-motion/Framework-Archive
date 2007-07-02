@@ -504,11 +504,7 @@ public class ClientTransaction : ITransaction
         }
         else
         {
-          // TODO: TBD
-          // should we signal ObjectLoading (null) here? this is supposedly only called if the virtual side of a 1:1 relationship is accessed (and
-          // is null)
-          // this definitely needs to be forbidden in read-only transactions; but wouldn't it be enough to just not perform that registration?
-          System.Diagnostics.Debugger.Break ();
+          // ObjectLoading (null);
           _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
           return null;
         }
