@@ -33,28 +33,29 @@ namespace Rubicon.ObjectBinding.BindableObject
     public PropertyBase GetMetadata ()
     {
       Type nativeType = GetNativeType();
-      if (nativeType == typeof (string))
-        return CreateStringProperty();
-      if (nativeType == typeof (bool))
-        return CreateBooleanProperty();
-      if (nativeType.IsEnum && nativeType.IsValueType)
-        return CreateEnumerationProperty ();
-      return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
-    }
 
-    private StringProperty CreateStringProperty ()
-    {
-      return new StringProperty (_businessObjectProvider, _propertyInfo, GetListInfo(), GetIsRequired(), GetMaxLength());
-    }
-
-    private PropertyBase CreateBooleanProperty ()
-    {
-      return new BooleanProperty(_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
-    }
-
-    private PropertyBase CreateEnumerationProperty ()
-    {
-      return new EnumerationProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      if (nativeType == typeof (Boolean))
+        return new BooleanProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Byte))
+        return new ByteProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Decimal))
+        return new DecimalProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Double))
+        return new DoubleProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType.IsEnum && nativeType.IsValueType)
+        return new EnumerationProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Int16))
+        return new Int16Property (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Int32))
+        return new Int32Property (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Int64))
+        return new Int64Property (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (Single))
+        return new SingleProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (String))
+        return new StringProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired (), GetMaxLength ());
+      else
+        return new NotSupportedProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
     }
 
     private Type GetNativeType ()

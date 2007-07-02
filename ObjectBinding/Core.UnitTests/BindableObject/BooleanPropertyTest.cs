@@ -37,7 +37,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDefaultValue_Scalar ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectBooleanProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
@@ -45,7 +45,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDefaultValue_NullableScalar ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
+      IBusinessObjectBooleanProperty property = CreateProperty ("NullableScalar");
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
@@ -53,7 +53,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDefaultValue_Array ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Array");
+      IBusinessObjectBooleanProperty property = new BooleanProperty (
+          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false);
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
@@ -61,7 +62,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDefaultValue_NullableArray ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("NullableArray");
+      IBusinessObjectBooleanProperty property = new BooleanProperty (
+          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false);
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
@@ -69,7 +71,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetDisplayName_InvariantCulture ()
     {
-      IBusinessObjectBooleanProperty property = (IBusinessObjectBooleanProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectBooleanProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
       Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
@@ -79,7 +81,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetAllValues ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("NullableScalar");
       BooleanEnumerationValueInfo[] expected = new BooleanEnumerationValueInfo[]
           {
               new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
@@ -92,7 +94,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetEnabledValues ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("NullableScalar");
       BooleanEnumerationValueInfo[] expected = new BooleanEnumerationValueInfo[]
           {
               new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
@@ -105,7 +107,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithTrue ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       CheckEnumerationValueInfo (
           new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
@@ -115,7 +117,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithFalse ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       CheckEnumerationValueInfo (
           new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property),
@@ -125,7 +127,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithNull ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
     }
@@ -133,7 +135,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithTrue ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       CheckEnumerationValueInfo (
           new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
@@ -143,7 +145,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithFalse ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       CheckEnumerationValueInfo (
           new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property),
@@ -153,7 +155,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithNull ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.GetValueInfoByIdentifier (null, null), Is.Null);
     }
@@ -161,11 +163,16 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithEmptyString ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.GetValueInfoByIdentifier (string.Empty, null), Is.Null);
     }
 
+
+    private BooleanProperty CreateProperty (string propertyName)
+    {
+      return new BooleanProperty (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false);
+    }
 
     private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
     {

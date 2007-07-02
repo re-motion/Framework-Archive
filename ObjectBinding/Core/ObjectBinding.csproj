@@ -75,6 +75,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Design">
       <Name>system.design</Name>
     </Reference>
@@ -84,6 +85,7 @@
     <Reference Include="System.Windows.Forms">
       <Name>system.windows.forms</Name>
     </Reference>
+    <Reference Include="System.Xml" />
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
@@ -100,7 +102,15 @@
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BooleanProperty.cs" />
+    <Compile Include="BindableObject\DecimalProperty.cs" />
+    <Compile Include="BindableObject\DoubleProperty.cs" />
+    <Compile Include="BindableObject\SingleProperty.cs" />
+    <Compile Include="BindableObject\Int64Property.cs" />
+    <Compile Include="BindableObject\ByteProperty.cs" />
+    <Compile Include="BindableObject\Int16Property.cs" />
     <Compile Include="BindableObject\EnumerationProperty.cs" />
+    <Compile Include="BindableObject\Int32Property.cs" />
+    <Compile Include="BindableObject\NumericPropertyBase.cs" />
     <Compile Include="Globalization\BooleanProperty.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

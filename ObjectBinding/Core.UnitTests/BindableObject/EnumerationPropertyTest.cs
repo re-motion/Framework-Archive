@@ -14,9 +14,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   public class EnumerationPropertyTest : TestBase
   {
     private BindableObjectProvider _businessObjectProvider;
-    private IBusinessObjectClass _businessObjectClass;
-    private IBusinessObjectClass _businessObjectClassForEnumWithUndefinedValue;
-    private IBusinessObjectClass _businessObjectClassForEnumWithResources;
 
     private CultureInfo _uiCultureBackup;
 
@@ -27,9 +24,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void SetUp ()
     {
       _businessObjectProvider = new BindableObjectProvider();
-      _businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<TestEnum>));
-      _businessObjectClassForEnumWithUndefinedValue = GetBusinessObejctClass (typeof (ClassWithUndefinedEnumValue));
-      _businessObjectClassForEnumWithResources = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithResources>));
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -47,7 +41,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
               new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
@@ -61,7 +55,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues_Nullable ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
               new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
@@ -75,8 +69,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues_WithUndefinedValue ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
               new EnumerationValueInfo (EnumWithUndefinedValue.Value1, "Value1", "Value1", true),
@@ -91,8 +84,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues_WithInvariantCulture ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
 
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
@@ -107,8 +99,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetAllValues_WithDescription ()
     {
-      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
 
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
@@ -124,7 +115,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnabledValues ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
               new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
@@ -139,7 +130,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithValidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
@@ -149,7 +140,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithNull ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
     }
@@ -157,8 +148,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithUndefinedEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
       Assert.That (property.GetValueInfoByValue (EnumWithUndefinedValue.UndefinedValue, null), Is.Null);
     }
@@ -166,7 +156,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithInvalidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo ((TestEnum) (-1), "-1", "-1", false),
@@ -177,8 +167,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Ignore ("TODO: test")]
     public void GetValueInfoByValue_WithDisabledEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("DisabledFromProperty");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "DisabledFromProperty");
       _mockRepository.ReplayAll();
 
       IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, _mockBusinessObject);
@@ -194,7 +183,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
         + "the enum type was 'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.TestEnum'.")]
     public void GetValueInfoByValue_WitEnumValueFromOtherType ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null);
     }
@@ -203,8 +192,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithInvariantCulture ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
@@ -214,8 +202,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByValue_WithDescription ()
     {
-      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
@@ -226,7 +213,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_WithValidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
@@ -236,7 +223,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_WithNull ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
     }
@@ -244,8 +231,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_WithUndefinedEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
       Assert.That (property.GetValueInfoByIdentifier ("UndefinedValue", null), Is.Null);
     }
@@ -254,7 +240,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [ExpectedException (typeof (ParseException))]
     public void GetValueInfoByIdentifier_WithInvalidIdentifier ()
     {
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       property.GetValueInfoByIdentifier ("Invalid", null);
     }
@@ -263,8 +249,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_WithInvariantCulture ()
     {
-      IBusinessObjectEnumerationProperty property =
-          (IBusinessObjectEnumerationProperty) _businessObjectClassForEnumWithResources.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
@@ -274,8 +259,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetValueInfoByIdentifier_WithDescription ()
     {
-      IBusinessObjectClass businessObjectClass = GetBusinessObejctClass (typeof (ClassWithValueType<EnumWithDescription>));
-      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) businessObjectClass.GetPropertyDefinition ("Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
 
       CheckEnumerationValueInfo (
           new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
@@ -286,7 +270,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertFromNativePropertyType (TestEnum.Value1), Is.EqualTo (TestEnum.Value1));
     }
@@ -294,7 +278,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType_WithNull ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertFromNativePropertyType (null), Is.Null);
     }
@@ -302,7 +286,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType_WithUndefinedValue ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
       Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.UndefinedValue), Is.Null);
     }
@@ -310,7 +294,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType_WithInvalidEnumValue ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertFromNativePropertyType ((TestEnum) (-1)), Is.EqualTo ((TestEnum) (-1)));
     }
@@ -318,7 +302,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType_WithEnumValueFromOtherType ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1);
       Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1), Is.EqualTo (EnumWithUndefinedValue.Value1));
@@ -328,7 +312,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertToNativePropertyType ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertFromNativePropertyType (TestEnum.Value1), Is.EqualTo (TestEnum.Value1));
     }
@@ -336,7 +320,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertToNativePropertyType_WithNull ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertToNativePropertyType (null), Is.Null);
     }
@@ -344,7 +328,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertToNativePropertyType_WithUndefinedValue ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClassForEnumWithUndefinedValue.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
       Assert.That (property.ConvertToNativePropertyType (null), Is.EqualTo (EnumWithUndefinedValue.UndefinedValue));
     }
@@ -352,7 +336,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertToNativePropertyType_WithInvalidEnumValue ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertToNativePropertyType ((TestEnum) (-1)), Is.EqualTo ((TestEnum) (-1)));
     }
@@ -360,7 +344,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertToNativePropertyType_WithEnumValueFromOtherType ()
     {
-      PropertyBase property = (PropertyBase) _businessObjectClass.GetPropertyDefinition ("Scalar");
+      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       Assert.That (property.ConvertToNativePropertyType (EnumWithUndefinedValue.Value1), Is.EqualTo (EnumWithUndefinedValue.Value1));
     }
@@ -373,8 +357,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
         + " must not be nullable since the property's type already defines a 'Rubicon.ObjectBinding.UndefinedEnumValueAttribute'.")]
     public void Initialize_NullableWithUndefinedValue ()
     {
-      new EnumerationProperty (
-          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar"), null, false);
+      CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "NullableScalar");
     }
 
     [Test]
@@ -384,14 +367,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
         + "defines a 'Rubicon.ObjectBinding.UndefinedEnumValueAttribute' with an enum value that belongs to a different enum type.")]
     public void Initialize_WithUndefinedEnumValueFromOtherType ()
     {
-      new EnumerationProperty (
-          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar"),  null, false);
+      CreateProperty(typeof (ClassWithValueType<EnumWithUndefinedValueFromOtherType>), "Scalar");
     }
 
-    private IBusinessObjectClass GetBusinessObejctClass (Type type)
+    private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      ClassReflector classReflectorForEnumWithUndefinedValue = new ClassReflector (type, _businessObjectProvider);
-      return classReflectorForEnumWithUndefinedValue.GetMetadata();
+      return new EnumerationProperty (_businessObjectProvider, GetPropertyInfo (type, propertyName),  null, false);
     }
 
     private void CheckEnumerationValueInfos (EnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)

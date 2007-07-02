@@ -39,12 +39,75 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithByte ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Byte");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (ByteProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Byte"));
+    }
+
+    [Test]
+    public void GetMetadata_WithDecimal ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Decimal");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DecimalProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Decimal"));
+    }
+
+    [Test]
+    public void GetMetadata_WithDouble ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Double");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DoubleProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Double"));
+    }
+
+    [Test]
     public void GetMetadata_WithEnum ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Enum");
 
       Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (EnumerationProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Enum"));
+    }
+
+    [Test]
+    public void GetMetadata_WithInt16 ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int16");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int16Property)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int16"));
+    }
+
+    [Test]
+    public void GetMetadata_WithInt32 ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int32");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int32Property)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int32"));
+    }
+
+    [Test]
+    public void GetMetadata_WithInt64 ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int64");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int64Property)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int64"));
+    }
+
+    [Test]
+    public void GetMetadata_WithSingle ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Single");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (SingleProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Single"));
     }
 
     [Test]
