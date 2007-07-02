@@ -5,7 +5,7 @@ using Rubicon.Globalization;
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
-  public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty
+  public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {
     [ResourceIdentifiers]
     [MultiLingualResources ("Rubicon.ObjectBinding.Globalization.BooleanProperty")]
@@ -15,12 +15,14 @@ namespace Rubicon.ObjectBinding.BindableObject
       False
     }
 
+    private BooleanToEnumPropertyConverter _booleanToEnumPropertyConverter;
     private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager = new DoubleCheckedLockingContainer<IResourceManager> (
         delegate { return MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), false); });
 
     public BooleanProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
         : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
     {
+      _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter (this);
     }
 
     /// <summary> Returns the human readable value of the boolean property. </summary>
@@ -43,6 +45,43 @@ namespace Rubicon.ObjectBinding.BindableObject
       if (IsNullable)
         return null;
       return false;
+    }
+
+    /// <summary> Returns a list of all the enumeration's values. </summary>
+    /// <returns> 
+    ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
+    /// </returns>
+    public IEnumerationValueInfo[] GetAllValues ()
+    {
+      return _booleanToEnumPropertyConverter.GetValues();
+    }
+
+    /// <summary> Returns a list of the enumeration's values that can be used in the current context. </summary>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>
+    /// <returns>A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the enabled values in the enumeration. </returns>
+    /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
+    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
+    {
+      return _booleanToEnumPropertyConverter.GetValues ();
+    }
+
+    /// <overloads> Returns a specific enumeration value. </overloads>
+    /// <summary> Returns a specific enumeration value. </summary>
+    /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
+    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
+    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    {
+      return _booleanToEnumPropertyConverter.GetValueInfoByValue (value);
+    }
+
+    /// <summary> Returns a specific enumeration value. </summary>
+    /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
+    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
+    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    {
+      return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
     }
   }
 }

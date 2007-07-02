@@ -5,6 +5,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
@@ -74,10 +75,117 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
     }
 
+
     [Test]
-    [Ignore ("TODO: test")]
-    public void IBusinessObjectEnumerationProperty ()
+    public void IBusinessObjectEnumerationProperty_GetAllValues ()
     {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
+      BooleanEnumerationValueInfo[] expected = new BooleanEnumerationValueInfo[]
+          {
+              new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
+              new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetAllValues());
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetEnabledValues ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("NullableScalar");
+      BooleanEnumerationValueInfo[] expected = new BooleanEnumerationValueInfo[]
+          {
+              new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
+              new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithTrue ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
+          property.GetValueInfoByValue (true, null));
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithFalse ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property),
+          property.GetValueInfoByValue (false, null));
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByValue_WithNull ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithTrue ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new BooleanEnumerationValueInfo (true, (IBusinessObjectBooleanProperty) property),
+          property.GetValueInfoByIdentifier ("True", null));
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithFalse ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      CheckEnumerationValueInfo (
+          new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property),
+          property.GetValueInfoByIdentifier ("False", null));
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithNull ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByIdentifier (null, null), Is.Null);
+    }
+
+    [Test]
+    public void IBusinessObjectEnumerationProperty_GetValueInfoByIdentifier_WithEmptyString ()
+    {
+      IBusinessObjectEnumerationProperty property = (IBusinessObjectEnumerationProperty) _businessObjectClass.GetPropertyDefinition ("Scalar");
+
+      Assert.That (property.GetValueInfoByIdentifier (string.Empty, null), Is.Null);
+    }
+
+
+    private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
+    {
+      ArgumentUtility.CheckNotNull ("expected", expected);
+
+      Assert.That (actual, Is.Not.Null);
+      Assert.That (actual.Length, Is.EqualTo (expected.Length));
+      for (int i = 0; i < expected.Length; i++)
+        CheckEnumerationValueInfo (expected[i], actual[i]);
+    }
+
+    private void CheckEnumerationValueInfo (BooleanEnumerationValueInfo expected, IEnumerationValueInfo actual)
+    {
+      ArgumentUtility.CheckNotNull ("expected", expected);
+
+      Assert.That (actual, Is.InstanceOfType (expected.GetType()));
+      Assert.That (actual.Value, Is.EqualTo (expected.Value));
+      Assert.That (actual.Identifier, Is.EqualTo (expected.Identifier));
+      Assert.That (actual.IsEnabled, Is.EqualTo (expected.IsEnabled));
+      Assert.That (actual.DisplayName, Is.EqualTo (expected.DisplayName));
     }
   }
 }
