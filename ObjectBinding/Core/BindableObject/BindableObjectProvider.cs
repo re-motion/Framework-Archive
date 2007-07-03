@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
@@ -33,7 +34,15 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     protected override IDictionary ServiceDictionary
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+    }
+
+    public BindableObjectClass GetBindableObjectClass (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      ClassReflector classReflector = new ClassReflector (type, this);
+      return classReflector.GetMetadata ();
     }
   }
 }

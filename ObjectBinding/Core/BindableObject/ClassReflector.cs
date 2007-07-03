@@ -31,17 +31,15 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     public BindableObjectClass GetMetadata ()
     {
-      return _businessObjectProvider.BusinessObjectClassCache.GetOrCreateValue (
-          _type,
-          delegate
-          {
-            BindableObjectClass bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);
+      return _businessObjectProvider.BusinessObjectClassCache.GetOrCreateValue (_type, delegate { return CreateBindableObjectClass(); });
+    }
 
-            ClassReflector classReflector = new ClassReflector (_type, _businessObjectProvider);
-            bindableObjectClass.SetProperties (classReflector.GetProperties());
+    private BindableObjectClass CreateBindableObjectClass ()
+    {
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);
+      bindableObjectClass.SetProperties (GetProperties());
 
-            return bindableObjectClass;
-          });
+      return bindableObjectClass;
     }
 
     private List<PropertyBase> GetProperties ()
