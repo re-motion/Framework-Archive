@@ -84,6 +84,186 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "Web\ExecutionEng
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.UnitTests", "Data\DomainObjects.UnitTests\Data.DomainObjects.UnitTests.csproj", "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.CodeGenerator", "Data\DomainObjects.Legacy.CodeGenerator\Data.DomainObjects.Legacy.CodeGenerator.csproj", "{49FE5865-4141-4BB0-AD13-CB42546C87ED}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.CodeGenerator.Console", "Data\DomainObjects.Legacy.CodeGenerator.Console\Data.DomainObjects.Legacy.CodeGenerator.Console.csproj", "{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding", "Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj", "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.Web", "Data\DomainObjects.ObjectBinding.Web\Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.PerformanceTests", "Data\DomainObjects.PerformanceTests\Data.DomainObjects.PerformanceTests.csproj", "{717B711E-97AB-4751-97C5-C0491D1919FA}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web", "Data\DomainObjects.Web\Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.ObjectBinding.UnitTests", "Data\DomainObjects.ObjectBinding.UnitTests\Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{21EC480E-91C6-4558-963B-796698DBB668}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.Test", "Data\DomainObjects.Web.Test\Data.DomainObjects.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy", "Data\DomainObjects.Legacy\Data.DomainObjects.Legacy.csproj", "{E6A8B6CE-2E19-4C01-9D41-63899FE52020}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.UnitTests", "Data\DomainObjects.Legacy.UnitTests\Data.DomainObjects.Legacy.UnitTests.csproj", "{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.Legacy.Test", "Data\DomainObjects.Web.Legacy.Test\Data.DomainObjects.Web.Legacy.Test.csproj", "{FC03706A-039A-40CB-8859-FB887352646E}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools.UnitTests", "Data\DomainObjects.RdbmsTools.UnitTests\Data.DomainObjects.RdbmsTools.UnitTests.csproj", "{C38242F1-5E19-460C-B506-2B4E00470358}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools", "Data\DomainObjects.RdbmsTools\Data.DomainObjects.RdbmsTools.csproj", "{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.RdbmsTools.Console", "Data\DomainObjects.RdbmsTools.Console\Data.DomainObjects.RdbmsTools.Console.csproj", "{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests.TestDomain", "Security\Core.UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj", "{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Metadata.Extractor", "Security\Metadata.Extractor\Security.Metadata.Extractor.csproj", "{E294058B-D4F0-4124-BD22-15E44F57749B}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.MSBuild.Tasks", "Security\MSBuild.Tasks\Security.MSBuild.Tasks.csproj", "{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Web", "Security\Web\Security.Web.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Web.UnitTests", "Security\Web.UnitTests\Security.Web.UnitTests.csproj", "{5ED46C3D-6273-4025-8ECF-0550BBFC403A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core", "SecurityManager\Core\SecurityManager.Core.csproj", "{990B8638-A08F-4A94-B01A-E7DAEF089F27}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core.UnitTests", "SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj", "{65B86B2E-D54D-425B-B681-82449E31BA01}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Metadata.Importer", "SecurityManager\Metadata.Importer\SecurityManager.Metadata.Importer.csproj", "{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web", "SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj", "{558839F6-D762-47BA-A26C-1D4AA75D0994}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test.SetupDB", "SecurityManager\Clients.Web.Test.SetupDB\SecurityManager.Clients.Web.Test.SetupDB.csproj", "{F9D890F8-EB08-4D58-BDFA-6C6540F15795}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web.Test", "SecurityManager\Clients.Web.Test\SecurityManager.Clients.Web.Test.csproj", "{1FF52B13-C212-4ADA-86E0-04E49A808FE0}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects", "Security\Data.DomainObjects\Security.Data.DomainObjects.csproj", "{D4397460-CE03-43E6-87F7-3A4E50B8250E}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects.UnitTests", "Security\Data.DomainObjects.UnitTests\Security.Data.DomainObjects.UnitTests.csproj", "{60F06986-924D-4543-ADB8-239D0E1365A8}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.UnitTests", "ObjectBinding\Core.UnitTests\ObjectBinding.UnitTests.csproj", "{5C1EB605-33ED-4A19-91B0-D060638191FB}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins", "Mixins\Core\Mixins.csproj", "{18C1D36B-CC05-4334-BF29-DE5A886DA89D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A26DF385-8556-4278-A6D9-0AD27ECE4D7A}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
@@ -117,6 +297,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
 		..\prereq\Assemblies\Rhino.Mocks.dll = ..\prereq\Assemblies\Rhino.Mocks.dll
 		..\prereq\Assemblies\Rhino.Mocks.xml = ..\prereq\Assemblies\Rhino.Mocks.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.UnitTests", "Mixins\Core.UnitTests\Mixins.UnitTests.csproj", "{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects", "Data\DomainObjects\Data.DomainObjects.csproj", "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Security\Core\Security.csproj", "{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests", "Security\Core.UnitTests\Security.UnitTests.csproj", "{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
 Global
@@ -181,6 +385,142 @@ Global
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49FE5865-4141-4BB0-AD13-CB42546C87ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49FE5865-4141-4BB0-AD13-CB42546C87ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49FE5865-4141-4BB0-AD13-CB42546C87ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49FE5865-4141-4BB0-AD13-CB42546C87ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8F1779-C744-4EB0-A3B6-AF6AC73ADF91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06C0145-A94A-48AE-B186-BC3C8E8F3650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{717B711E-97AB-4751-97C5-C0491D1919FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{717B711E-97AB-4751-97C5-C0491D1919FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{717B711E-97AB-4751-97C5-C0491D1919FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{717B711E-97AB-4751-97C5-C0491D1919FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21EC480E-91C6-4558-963B-796698DBB668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21EC480E-91C6-4558-963B-796698DBB668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21EC480E-91C6-4558-963B-796698DBB668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21EC480E-91C6-4558-963B-796698DBB668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A8B6CE-2E19-4C01-9D41-63899FE52020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB96A8C6-3CCF-4610-871B-4CCBC8DF2872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC03706A-039A-40CB-8859-FB887352646E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C38242F1-5E19-460C-B506-2B4E00470358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38242F1-5E19-460C-B506-2B4E00470358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C38242F1-5E19-460C-B506-2B4E00470358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C38242F1-5E19-460C-B506-2B4E00470358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E0C110-5BC5-4E30-B3CF-4C6012FEE1EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6505EE0-0F6B-4CB6-ACC7-1C05C0E236BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E294058B-D4F0-4124-BD22-15E44F57749B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E294058B-D4F0-4124-BD22-15E44F57749B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E294058B-D4F0-4124-BD22-15E44F57749B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E294058B-D4F0-4124-BD22-15E44F57749B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ED46C3D-6273-4025-8ECF-0550BBFC403A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ED46C3D-6273-4025-8ECF-0550BBFC403A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ED46C3D-6273-4025-8ECF-0550BBFC403A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ED46C3D-6273-4025-8ECF-0550BBFC403A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65B86B2E-D54D-425B-B681-82449E31BA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65B86B2E-D54D-425B-B681-82449E31BA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65B86B2E-D54D-425B-B681-82449E31BA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65B86B2E-D54D-425B-B681-82449E31BA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28A3431B-A3A8-4E8D-BDA8-CB3CC7EA2894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FF52B13-C212-4ADA-86E0-04E49A808FE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FF52B13-C212-4ADA-86E0-04E49A808FE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FF52B13-C212-4ADA-86E0-04E49A808FE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FF52B13-C212-4ADA-86E0-04E49A808FE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C1EB605-33ED-4A19-91B0-D060638191FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18C1D36B-CC05-4334-BF29-DE5A886DA89D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
