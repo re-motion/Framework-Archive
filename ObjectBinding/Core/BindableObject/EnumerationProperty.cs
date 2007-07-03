@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -10,20 +9,13 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly Enum _undefinedValue;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="businessObjectProvider"></param>
-    /// <param name="propertyInfo"></param>
-    /// <param name="listInfo"></param>
-    /// <param name="isRequired"></param>
     /// <exception cref="InvalidOperationException">
     /// The enum type has an UndefinedEnumValueAttribute with a value that does not match the enum's type.
     /// <para>- or -</para>
     /// <para>The property is nullable and the property's type defines an UndefinedEnumValueAttribute</para>
     /// </exception>
-    public EnumerationProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+    public EnumerationProperty (Parameters parameters)
+        : base (parameters)
     {
       _undefinedValue = GetUndefinedValue();
     }

@@ -1,13 +1,12 @@
 using System;
-using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class Int64Property : NumericPropertyBase
   {
-    public Int64Property (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+    public Int64Property (Parameters parameters)
+        : base (parameters)
     {
     }
 

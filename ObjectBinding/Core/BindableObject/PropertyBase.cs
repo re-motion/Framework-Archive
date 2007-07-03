@@ -8,6 +8,25 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public abstract class PropertyBase : IBusinessObjectProperty
   {
+    public struct Parameters
+    {
+      public readonly BindableObjectProvider BusinessObjectProvider;
+      public readonly PropertyInfo PropertyInfo;
+      public readonly IListInfo ListInfo;
+      public readonly bool IsRequired;
+
+      public Parameters (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
+      {
+        ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+        ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+
+        BusinessObjectProvider = businessObjectProvider;
+        PropertyInfo = propertyInfo;
+        ListInfo = listInfo;
+        IsRequired = isRequired;
+      }
+    }
+    
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyInfo _propertyInfo;
     private readonly IListInfo _listInfo;
@@ -15,15 +34,12 @@ namespace Rubicon.ObjectBinding.BindableObject
     private readonly Type _underlyingType;
     private readonly bool _isNullable;
 
-    protected PropertyBase (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
+    protected PropertyBase (Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-
-      _businessObjectProvider = businessObjectProvider;
-      _propertyInfo = propertyInfo;
-      _listInfo = listInfo;
-      _isRequired = isRequired;
+      _businessObjectProvider = parameters.BusinessObjectProvider;
+      _propertyInfo = parameters.PropertyInfo;
+      _listInfo = parameters.ListInfo;
+      _isRequired = parameters.IsRequired;
       _underlyingType = GetUnderlyingType();
       _isNullable = GetNullability();
     }

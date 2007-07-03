@@ -372,7 +372,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (_businessObjectProvider, GetPropertyInfo (type, propertyName),  null, false);
+      return new EnumerationProperty (new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (type, propertyName),  null, false));
     }
 
     private void CheckEnumerationValueInfos (EnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)

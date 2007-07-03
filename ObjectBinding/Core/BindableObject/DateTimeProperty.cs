@@ -1,13 +1,12 @@
 using System;
-using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class DateTimeProperty : DateTimePropertyBase
   {
-    public DateTimeProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+    public DateTimeProperty (Parameters parameters)
+        : base (parameters)
     {
     }
 

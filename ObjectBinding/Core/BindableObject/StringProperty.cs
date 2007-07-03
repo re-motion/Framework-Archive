@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
@@ -8,13 +7,9 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly int? _maxLength;
 
-    public StringProperty (
-        BindableObjectProvider businessObjectProvider,
-        PropertyInfo propertyInfo,
-        IListInfo listInfo,
-        bool isRequired,
-        int? maxLength)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+
+    public StringProperty (Parameters parameters, int? maxLength)
+        : base (parameters)
     {
       _maxLength = maxLength;
     }

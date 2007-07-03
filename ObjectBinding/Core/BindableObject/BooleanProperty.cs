@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -15,12 +14,14 @@ namespace Rubicon.ObjectBinding.BindableObject
       False
     }
 
-    private BooleanToEnumPropertyConverter _booleanToEnumPropertyConverter;
+    private readonly BooleanToEnumPropertyConverter _booleanToEnumPropertyConverter;
+
     private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager = new DoubleCheckedLockingContainer<IResourceManager> (
         delegate { return MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), false); });
 
-    public BooleanProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+
+    public BooleanProperty (Parameters parameters)
+        : base (parameters)
     {
       _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter (this);
     }
@@ -62,7 +63,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
     public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
     {
-      return _booleanToEnumPropertyConverter.GetValues ();
+      return _booleanToEnumPropertyConverter.GetValues();
     }
 
     /// <overloads> Returns a specific enumeration value. </overloads>

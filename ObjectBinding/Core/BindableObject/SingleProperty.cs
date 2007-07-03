@@ -1,13 +1,12 @@
 using System;
-using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
   public class SingleProperty : NumericPropertyBase
   {
-    public SingleProperty (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+    public SingleProperty (Parameters parameters)
+        : base (parameters)
     {
     }
 

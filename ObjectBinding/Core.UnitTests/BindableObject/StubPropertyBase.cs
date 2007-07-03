@@ -7,7 +7,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   public class StubPropertyBase : PropertyBase
   {
     public StubPropertyBase (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
-        : base (businessObjectProvider, propertyInfo, listInfo, isRequired)
+        : base (new Parameters(businessObjectProvider, propertyInfo, listInfo, isRequired))
     {
     }
   }

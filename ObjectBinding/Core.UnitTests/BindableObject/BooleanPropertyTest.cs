@@ -54,7 +54,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void GetDefaultValue_Array ()
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
-          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false);
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
@@ -63,7 +64,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void GetDefaultValue_NullableArray ()
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
-          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false);
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
@@ -171,7 +173,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     private BooleanProperty CreateProperty (string propertyName)
     {
-      return new BooleanProperty (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false);
+      return new BooleanProperty (
+          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false));
     }
 
     private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
