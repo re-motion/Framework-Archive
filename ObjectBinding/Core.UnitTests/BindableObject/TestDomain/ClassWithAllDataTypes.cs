@@ -7,6 +7,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
   {
     private bool _boolean;
     private byte _byte;
+    private DateTime _date;
+    private DateTime _dateTime;
     private decimal _decimal;
     private double _double;
     private TestEnum _enum;
@@ -32,10 +34,17 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       set { _byte = value; }
     }
 
-    public TestEnum Enum
+    [DateProperty]
+    public DateTime Date
     {
-      get { return _enum; }
-      set { _enum = value; }
+      get { return _date; }
+      set { _date = value; }
+    }
+
+    public DateTime DateTime
+    {
+      get { return _dateTime; }
+      set { _dateTime = value; }
     }
 
     public decimal Decimal
@@ -48,6 +57,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     {
       get { return _double; }
       set { _double = value; }
+    }
+
+    public TestEnum Enum
+    {
+      get { return _enum; }
+      set { _enum = value; }
     }
 
     public short Int16

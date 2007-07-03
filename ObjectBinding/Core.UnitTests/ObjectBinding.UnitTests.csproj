@@ -42,6 +42,7 @@
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
+    <Compile Include="BindableObject\DateTimePropertyTest.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTest.cs" />
     <Compile Include="BindableObject\NumericPropertyTest.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />

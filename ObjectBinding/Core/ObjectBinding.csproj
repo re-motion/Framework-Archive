@@ -102,6 +102,9 @@
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\BooleanProperty.cs" />
+    <Compile Include="BindableObject\DateProperty.cs" />
+    <Compile Include="BindableObject\DateTimeProperty.cs" />
+    <Compile Include="BindableObject\DateTimePropertyBase.cs" />
     <Compile Include="BindableObject\DecimalProperty.cs" />
     <Compile Include="BindableObject\DoubleProperty.cs" />
     <Compile Include="BindableObject\SingleProperty.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="BindableObject\EnumerationProperty.cs" />
     <Compile Include="BindableObject\Int32Property.cs" />
     <Compile Include="BindableObject\NumericPropertyBase.cs" />
+    <Compile Include="DatePropertyAttribute.cs" />
     <Compile Include="Globalization\BooleanProperty.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -48,6 +48,24 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithDate ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Date");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DateProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Date"));
+    }
+
+    [Test]
+    public void GetMetadata_WithDateTime ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("DateTime");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DateTimeProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("DateTime"));
+    }
+
+    [Test]
     public void GetMetadata_WithDecimal ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Decimal");

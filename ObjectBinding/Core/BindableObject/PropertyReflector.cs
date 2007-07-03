@@ -38,6 +38,10 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new BooleanProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
       else if (nativeType == typeof (Byte))
         return new ByteProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (DateTime) && AttributeUtility.IsDefined<DatePropertyAttribute> (_propertyInfo, true))
+        return new DateProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      else if (nativeType == typeof (DateTime))
+        return new DateTimeProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
       else if (nativeType == typeof (Decimal))
         return new DecimalProperty (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
       else if (nativeType == typeof (Double))
