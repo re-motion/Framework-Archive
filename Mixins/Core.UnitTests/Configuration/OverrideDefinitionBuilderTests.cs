@@ -204,9 +204,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Ambiguous override", MatchType = MessageMatch.Contains)]
     public void ThrowsOnTargetClassOverridingMultipleMixinMethods()
     {
-      using (MixinConfiguration.ScopedExtend(typeof (ClassOverridingMixinMethod), typeof (AbstractMixin), typeof(AbstractMixin2)))
+      using (MixinConfiguration.ScopedExtend(typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)))
       {
-        TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMethod));
+        TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
       }
     }
   }

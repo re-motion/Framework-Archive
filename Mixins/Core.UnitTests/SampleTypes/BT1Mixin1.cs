@@ -30,8 +30,15 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       set { BackingField = value; } // no getter
     }
 
+    public bool VirtualEventAddCalled = false;
+    public bool VirtualEventRemoveCalled = false;
+
     [Override]
-    public virtual event EventHandler VirtualEvent;
+    public virtual event EventHandler VirtualEvent
+    {
+      add { VirtualEventAddCalled = true; }
+      remove { VirtualEventRemoveCalled = true; }
+    }
 
 
     [BT1M1Attribute]

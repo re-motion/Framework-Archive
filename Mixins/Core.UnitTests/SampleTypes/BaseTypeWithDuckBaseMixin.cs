@@ -9,7 +9,12 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   {
     public virtual string MethodImplementedOnBase ()
     {
-      return "BaseTypeWithDuckBaseMixin.MethodImplementedOnBase";
+      return "BaseTypeWithDuckBaseMixin.MethodImplementedOnBase-" + ProtectedMethodImplementedOnBase();
+    }
+
+    protected virtual string ProtectedMethodImplementedOnBase ()
+    {
+      return "BaseTypeWithDuckBaseMixin.ProtectedMethodImplementedOnBase";
     }
   }
 }

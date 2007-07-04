@@ -4,19 +4,19 @@ using System.Text;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  [Uses(typeof(AbstractMixin))]
+  [Uses(typeof(MixinWithSingleAbstractMethod))]
   [Serializable]
-  public class ClassOverridingMixinMethod
+  public class ClassOverridingSingleMixinMethod
   {
     [Override]
     public string AbstractMethod(int i)
     {
-      return "ClassOverridingMixinMethod.AbstractMethod-" + i;
+      return "ClassOverridingSingleMixinMethod.AbstractMethod-" + i;
     }
 
     public virtual string OverridableMethod (int i)
     {
-      return "ClassOverridingMixinMethod-" + i;
+      return "ClassOverridingSingleMixinMethod-" + i;
     }
   }
 }

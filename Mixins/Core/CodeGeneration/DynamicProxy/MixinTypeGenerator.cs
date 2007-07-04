@@ -53,7 +53,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private void ImplementOverrides ()
     {
       PropertyReference targetReference = new PropertyReference (SelfReference.Self, MixinReflector.GetTargetProperty (TypeBuilder.BaseType));
-      foreach (MethodDefinition method in _configuration.Methods)
+      foreach (MethodDefinition method in _configuration.GetAllMethods())
       {
         if (method.Overrides.Count > 1)
           throw new NotSupportedException ("The code generator does not support mixin methods with more than one override.");

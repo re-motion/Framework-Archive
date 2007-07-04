@@ -227,6 +227,50 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (eventInfo.GetRemoveMethod (true).IsDefined (typeof (ReplicatableAttribute), false));
     }
 
+    [Test]
+    public void OverrideClassMethods ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With();
+      
+      Assert.AreEqual ("BT1Mixin1.VirtualMethod", bt1.VirtualMethod ());
+    }
+
+    [Test]
+    public void OverrideClassProperties ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
+
+      Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
+      Assert.AreNotEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
+
+      bt1.VirtualProperty = "FooBar";
+      Assert.AreEqual ("BaseType1.BackingField", bt1.VirtualProperty);
+      Assert.AreEqual ("FooBar", Mixin.Get<BT1Mixin1> (bt1).BackingField);
+
+      bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin2)).With ();
+
+      Assert.AreEqual ("Mixin2ForBT1.VirtualProperty", bt1.VirtualProperty);
+      bt1.VirtualProperty = "Foobar";
+      Assert.AreEqual ("Mixin2ForBT1.VirtualProperty", bt1.VirtualProperty);
+    }
+
+    [Test]
+    public void OverrideClassEvents ()
+    {
+      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (BT1Mixin1)).With ();
+
+      EventHandler eventHandler = delegate { };
+
+      Assert.IsFalse (Mixin.Get<BT1Mixin1> (bt1).VirtualEventAddCalled);
+      bt1.VirtualEvent += eventHandler;
+      Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventAddCalled);
+
+      Assert.IsFalse (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
+      bt1.VirtualEvent -= eventHandler;
+      Assert.IsTrue (Mixin.Get<BT1Mixin1> (bt1).VirtualEventRemoveCalled);
+    }
+
+
     class Foo1
     { }
 
@@ -250,19 +294,39 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void OverrideMixinMethod ()
     {
-      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With();
-      IAbstractMixin comAsIAbstractMixin = com as IAbstractMixin;
+      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With();
+      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
       Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("AbstractMixin.ImplementedMethod-ClassOverridingMixinMethod.AbstractMethod-25", comAsIAbstractMixin.ImplementedMethod());
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedMethod-ClassOverridingMixinMembers.AbstractMethod-25",
+          comAsIAbstractMixin.ImplementedMethod ());
+    }
+
+    [Test]
+    public void OverrideMixinProperty ()
+    {
+      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
+      Assert.IsNotNull (comAsIAbstractMixin);
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedProperty-ClassOverridingMixinMembers.AbstractProperty",
+          comAsIAbstractMixin.ImplementedProperty ());
+    }
+
+    [Test]
+    public void OverrideMixinEvent ()
+    {
+      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
+      Assert.IsNotNull (comAsIAbstractMixin);
+      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedEvent", comAsIAbstractMixin.ImplementedEvent ());
     }
 
     [Test]
     public void DoubleOverride ()
     {
-      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
+      ClassOverridingSingleMixinMethod com = CreateMixedObject<ClassOverridingSingleMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
       IMixinOverridingClassMethod comAsIAbstractMixin = com as IMixinOverridingClassMethod;
       Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIAbstractMixin.AbstractMethod(25));
+      Assert.AreEqual ("ClassOverridingSingleMixinMethod.AbstractMethod-25", comAsIAbstractMixin.AbstractMethod (25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
     }
 

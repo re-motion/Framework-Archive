@@ -83,9 +83,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeHasConfigurationField ()
     {
-      ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
+      ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
 
-      Type t = Mixin.Get<AbstractMixin> (targetInstance).GetType();
+      Type t = Mixin.Get<MixinWithAbstractMembers> (targetInstance).GetType();
       Assert.IsNotNull (t.GetField ("__configuration"));
       Assert.IsTrue (t.GetField ("__configuration").IsStatic);
     }
@@ -93,19 +93,19 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedObjectFieldHoldsConfiguration ()
     {
-      ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
-      AbstractMixin mixin = Mixin.Get<AbstractMixin> (targetInstance);
+      ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      MixinWithAbstractMembers mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
 
       Assert.IsNotNull (mixin.GetType ().GetField ("__configuration"));
-      Assert.AreSame (((IMixinTarget)targetInstance).Configuration.Mixins[typeof(AbstractMixin)],
+      Assert.AreSame (((IMixinTarget)targetInstance).Configuration.Mixins[typeof(MixinWithAbstractMembers)],
           mixin.GetType ().GetField ("__configuration").GetValue (mixin));
     }
 
     [Test]
     public void GeneratedTypeIsSerializable ()
     {
-      ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
-      AbstractMixin mixin = Mixin.Get<AbstractMixin> (targetInstance);
+      ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      MixinWithAbstractMembers mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
       Assert.IsTrue (mixin.GetType ().IsSerializable);
       Serializer.Serialize ((object) targetInstance);
     }
@@ -113,12 +113,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeIsDeserializable ()
     {
-      ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
-      AbstractMixin mixin = Mixin.Get<AbstractMixin> (targetInstance);
+      ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      MixinWithAbstractMembers mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
 
       mixin.I = 13;
 
-      AbstractMixin mixinA = Serializer.SerializeAndDeserialize (mixin);
+      MixinWithAbstractMembers mixinA = Serializer.SerializeAndDeserialize (mixin);
       Assert.AreEqual (mixin.I, mixinA.I);
       Assert.AreNotSame (mixin, mixinA);
     }
@@ -126,17 +126,17 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedTypeCorrectlySerializesThisBaseAndConfiguration()
     {
-      ClassOverridingMixinMethod targetInstance = CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixin)).With ();
-      AbstractMixin mixin = Mixin.Get<AbstractMixin> (targetInstance);
+      ClassOverridingMixinMembers targetInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
+      MixinWithAbstractMembers mixin = Mixin.Get<MixinWithAbstractMembers> (targetInstance);
 
       Assert.AreEqual (targetInstance, MixinReflector.GetTargetProperty (mixin.GetType()).GetValue (mixin, null));
       Assert.AreEqual (MixinReflector.GetBaseCallProxyType(targetInstance),
           MixinReflector.GetBaseProperty (mixin.GetType ()).GetValue (mixin, null).GetType());
-      Assert.AreEqual (((IMixinTarget)targetInstance).Configuration.Mixins[typeof (AbstractMixin)],
+      Assert.AreEqual (((IMixinTarget)targetInstance).Configuration.Mixins[typeof (MixinWithAbstractMembers)],
           MixinReflector.GetConfigurationProperty (mixin.GetType ()).GetValue (mixin, null));
 
-      ClassOverridingMixinMethod targetInstanceA = Serializer.SerializeAndDeserialize (targetInstance);
-      AbstractMixin mixinA = Mixin.Get<AbstractMixin> (targetInstanceA);
+      ClassOverridingMixinMembers targetInstanceA = Serializer.SerializeAndDeserialize (targetInstance);
+      MixinWithAbstractMembers mixinA = Mixin.Get<MixinWithAbstractMembers> (targetInstanceA);
 
       Assert.AreEqual (targetInstanceA, MixinReflector.GetTargetProperty (mixinA.GetType ()).GetValue (mixinA, null));
       Assert.AreEqual (MixinReflector.GetBaseCallProxyType (targetInstanceA),
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Serializable]
-    public abstract class AbstractMixinImplementingISerializable : AbstractMixin, ISerializable
+    public abstract class AbstractMixinImplementingISerializable : MixinWithAbstractMembers, ISerializable
     {
       public AbstractMixinImplementingISerializable ()
       {
@@ -164,8 +164,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void RespectsISerializable ()
     {
-      ClassOverridingMixinMethod targetInstance =
-          CreateMixedObject<ClassOverridingMixinMethod> (typeof (AbstractMixinImplementingISerializable)).With ();
+      ClassOverridingMixinMembers targetInstance =
+          CreateMixedObject<ClassOverridingMixinMembers> (typeof (AbstractMixinImplementingISerializable)).With ();
       AbstractMixinImplementingISerializable mixin = Mixin.Get<AbstractMixinImplementingISerializable> (targetInstance);
 
       mixin.I = 15;
@@ -175,7 +175,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual (32, mixinA.I);
     }
 
-    public abstract class NotSerializableMixin : AbstractMixin
+    public abstract class NotSerializableMixin : MixinWithAbstractMembers
     {
     }
 
@@ -183,13 +183,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [ExpectedException (typeof (SerializationException), ExpectedMessage = "is not marked as serializable", MatchType = MessageMatch.Contains)]
     public void ThrowsIfAbstractMixinTypeNotSerializable()
     {
-      ClassOverridingMixinMethod targetInstance =
-          CreateMixedObject<ClassOverridingMixinMethod> (typeof (NotSerializableMixin)).With ();
+      ClassOverridingMixinMembers targetInstance =
+          CreateMixedObject<ClassOverridingMixinMembers> (typeof (NotSerializableMixin)).With ();
 
       Serializer.SerializeAndDeserialize (targetInstance);
     }
 
-    public abstract class NotSerializableMixinWithISerializable : AbstractMixin, ISerializable
+    public abstract class NotSerializableMixinWithISerializable : MixinWithAbstractMembers, ISerializable
     {
       public NotSerializableMixinWithISerializable ()
       {
@@ -207,8 +207,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void AllowsAbstractMixinTypeNotSerializableWithISerializable ()
     {
-      ClassOverridingMixinMethod targetInstance =
-          CreateMixedObject<ClassOverridingMixinMethod> (typeof (NotSerializableMixinWithISerializable)).With ();
+      ClassOverridingMixinMembers targetInstance =
+          CreateMixedObject<ClassOverridingMixinMembers> (typeof (NotSerializableMixinWithISerializable)).With ();
 
       Serializer.SerializeAndDeserialize (targetInstance);
     }
@@ -216,22 +216,22 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void SerializationOfGeneratedMixinWorks ()
     {
-      ClassOverridingMixinMethod com = CreateMixedObject<ClassOverridingMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
+      ClassOverridingSingleMixinMethod com = CreateMixedObject<ClassOverridingSingleMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
       IMixinOverridingClassMethod comAsIfc = com as IMixinOverridingClassMethod;
       Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com));
 
       Assert.IsNotNull (comAsIfc);
-      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", comAsIfc.AbstractMethod (25));
+      Assert.AreEqual ("ClassOverridingSingleMixinMethod.AbstractMethod-25", comAsIfc.AbstractMethod (25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
 
-      ClassOverridingMixinMethod com2 = Serializer.SerializeAndDeserialize (com);
+      ClassOverridingSingleMixinMethod com2 = Serializer.SerializeAndDeserialize (com);
       IMixinOverridingClassMethod com2AsIfc = com as IMixinOverridingClassMethod;
       Assert.IsNotNull (Mixin.Get<MixinOverridingClassMethod> ((object) com2));
       Assert.AreNotSame (Mixin.Get<MixinOverridingClassMethod> ((object) com),
           Mixin.Get<MixinOverridingClassMethod> ((object) com2));
 
       Assert.IsNotNull (com2AsIfc);
-      Assert.AreEqual ("ClassOverridingMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
+      Assert.AreEqual ("ClassOverridingSingleMixinMethod.AbstractMethod-25", com2AsIfc.AbstractMethod (25));
       Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com2.OverridableMethod (13));
     }
   }

@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Validation;
 
 namespace Rubicon.Mixins.Validation.Rules
 {
@@ -9,6 +11,7 @@ namespace Rubicon.Mixins.Validation.Rules
     {
       visitor.MixinRules.Add (new DelegateValidationRule<MixinDefinition> (MixinCannotBeInterface));
       visitor.MixinRules.Add (new DelegateValidationRule<MixinDefinition> (MixinMustBePublic));
+      visitor.MixinRules.Add (new DelegateValidationRule<MixinDefinition> (MixinWithOverriddenMembersMustHavePublicOrProtectedDefaultCtor));
     }
 
     private void MixinCannotBeInterface (DelegateValidationRule<MixinDefinition>.Args args)
@@ -19,6 +22,14 @@ namespace Rubicon.Mixins.Validation.Rules
     private void MixinMustBePublic (DelegateValidationRule<MixinDefinition>.Args args)
     {
       SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
+    }
+
+    private void MixinWithOverriddenMembersMustHavePublicOrProtectedDefaultCtor (DelegateValidationRule<MixinDefinition>.Args args)
+    {
+      ConstructorInfo defaultCtor = args.Definition.Type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null, Type.EmptyTypes, null);
+      SingleMust (!args.Definition.HasOverriddenMembers() || (defaultCtor != null && (defaultCtor.IsPublic || defaultCtor.IsFamily)),
+          args.Log, args.Self);
     }
   }
 }

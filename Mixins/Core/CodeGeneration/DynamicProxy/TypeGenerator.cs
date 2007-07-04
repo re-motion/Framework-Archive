@@ -238,18 +238,28 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementOverrides ()
     {
-      foreach (MethodDefinition method in _configuration.Methods)
+      foreach (MethodDefinition method in _configuration.GetAllMethods())
       {
         if (method.Overrides.Count > 0)
           ImplementOverride (method);
       }
     }
 
-    private void ImplementOverride (MethodDefinition method)
+    private CustomMethodEmitter ImplementOverride (MethodDefinition method)
     {
       MethodInfo proxyMethod = _baseCallGenerator.GetProxyMethodForOverriddenMethod (method);
       CustomMethodEmitter methodOverride = Emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
       methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
+      return methodOverride;
+    }
+
+    private void ImplementOverride (PropertyDefinition property)
+    {
+      CustomPropertyEmitter propertyOverride = Emitter.CreatePropertyOverrideOrInterfaceImplementation (property.PropertyInfo);
+      if (property.GetMethod != null)
+        propertyOverride.GetMethod = ImplementOverride (property.GetMethod).InnerEmitter;
+      if (property.SetMethod != null)
+        propertyOverride.SetMethod = ImplementOverride (property.SetMethod).InnerEmitter;
     }
 
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)

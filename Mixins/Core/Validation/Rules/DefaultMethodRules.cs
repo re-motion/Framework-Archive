@@ -16,6 +16,7 @@ namespace Rubicon.Mixins.Validation.Rules
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (AbstractMethodMustBeOverridden));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (NoCircularOverrides));
       visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase));
+      visitor.MethodRules.Add (new DelegateValidationRule<MethodDefinition> (OverridingMethodMustBePublic));
     }
 
     private void OverriddenMethodMustBeVirtual (DelegateValidationRule<MethodDefinition>.Args args)
@@ -46,6 +47,11 @@ namespace Rubicon.Mixins.Validation.Rules
     {
       SingleMust (!(args.Definition.DeclaringClass is MixinDefinition) || args.Definition.Overrides.Count == 0
           || MixinReflector.GetMixinBaseType (args.Definition.DeclaringClass.Type) != null, args.Log, args.Self);
+    }
+
+    private void OverridingMethodMustBePublic (DelegateValidationRule<MethodDefinition>.Args args)
+    {
+      SingleMust (args.Definition.Base == null || args.Definition.MethodInfo.IsPublic, args.Log, args.Self);
     }
   }
 }

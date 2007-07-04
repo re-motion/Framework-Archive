@@ -230,7 +230,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfAbstractBaseClass ()
     {
-      BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (AbstractMixin));
+      BaseClassDefinition bc = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (MixinWithAbstractMembers));
       DefaultValidationLog log = Validator.Validate (bc);
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustNotBeAbstract", log));
       Assert.AreEqual (0, log.GetNumberOfWarnings ());
@@ -466,8 +466,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfOverriddenMixinMethodNotVirtual ()
     {
-      BaseClassDefinition definition =
-          UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (MixinWithNonVirtualMethodToBeOverridden));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+          typeof (MixinWithNonVirtualMethodToBeOverridden));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual", log));
@@ -476,7 +476,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfAbstractMixinMethodHasNoOverride ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (AbstractMixin));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.AbstractMethodMustBeOverridden", log));
@@ -485,7 +485,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfCrossOverridesOnSameMethods ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingSameClassMethod));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+          typeof (MixinOverridingSameClassMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.NoCircularOverrides", log));
@@ -494,7 +495,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void SucceedsIfCrossOverridesNotOnSameMethods ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (MixinOverridingClassMethod));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+          typeof (MixinOverridingClassMethod));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.AreEqual (0, log.GetNumberOfFailures());
@@ -513,22 +515,87 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfMixinMethodIsOverriddenWhichHasNoThisProperty ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (AbstractMixinWithoutBase));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod), typeof (AbstractMixinWithoutBase));
       DefaultValidationLog log = Validator.Validate (definition);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase", log));
     }
 
     [Test]
+    public void FailsIfOverridingMethodIsNotPublic ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
+          typeof (MixinWithAbstractMembers));
+      DefaultValidationLog log = Validator.Validate (definition.Methods[typeof (ClassWithNonPublicOverrider).GetMethod ("AbstractMethod",
+          BindingFlags.NonPublic | BindingFlags.Instance)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfOverridingPropertyIsNotPublic ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
+          typeof (MixinWithAbstractMembers));
+      DefaultValidationLog log = Validator.Validate (definition.Properties[typeof (ClassWithNonPublicOverrider).GetProperty ("AbstractProperty",
+          BindingFlags.NonPublic | BindingFlags.Instance)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfOverridingEventIsNotPublic ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithNonPublicOverrider),
+          typeof (MixinWithAbstractMembers));
+      DefaultValidationLog log = Validator.Validate (definition.Events[typeof (ClassWithNonPublicOverrider).GetEvent ("AbstractEvent",
+          BindingFlags.NonPublic | BindingFlags.Instance)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMethodRules.OverridingMethodMustBePublic", log));
+    }
+
+    [Test]
+    public void FailsIfNoPublicOrProtectedCtorInBaseClass ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassWithPrivateCtor),
+          typeof (NullMixin));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseClassRules.BaseClassMustHavePublicOrProtectedCtor", log));
+    }
+
+    [Test]
+    public void FailsIfNoPublicOrProtectedDefaultCtorInMixinClassWithOverriddenMembers ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod),
+          typeof (MixinWithPrivateCtorAndVirtualMethod));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinWithOverriddenMembersMustHavePublicOrProtectedDefaultCtor",
+          log));
+    }
+
+    [Test]
+    public void SucceedsIfNoPublicOrProtectedDefaultCtorInMixinClassWithoutOverriddenMembers ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object),
+          typeof (MixinWithPrivateCtorAndVirtualMethod));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+    }
+
+    [Test]
     public void ValidationException ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod), typeof (AbstractMixinWithoutBase));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingSingleMixinMethod), typeof (AbstractMixinWithoutBase));
       DefaultValidationLog log = Validator.Validate (definition);
 
       ValidationException exception = new ValidationException (log);
       Assert.AreEqual ("Some parts of the mixin configuration could not be validated." + Environment.NewLine + "Rubicon.Mixins.UnitTests.Configuration."
           + "ValidationSampleTypes.AbstractMixinWithoutBase.AbstractMethod (Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes."
-          + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
+          + "AbstractMixinWithoutBase -> Rubicon.Mixins.UnitTests.SampleTypes.ClassOverridingSingleMixinMethod): There were 1 errors, 0 warnings, and 0 unexpected "
           + "exceptions. First error: OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase" + Environment.NewLine + "See Log.GetResults() "
           + "for a full list of issues.", exception.Message);
 

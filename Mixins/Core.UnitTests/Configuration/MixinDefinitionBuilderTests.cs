@@ -62,27 +62,27 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
       {
-        BaseClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMethod));
-        MixinDefinition mixin = overrider.Mixins[typeof (AbstractMixin)];
+        BaseClassDefinition overrider = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
+        MixinDefinition mixin = overrider.Mixins[typeof (MixinWithAbstractMembers)];
         Assert.IsNotNull (mixin);
         Assert.IsTrue (mixin.HasOverriddenMembers());
 
-        MethodDefinition method = mixin.Methods[typeof (AbstractMixin).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
+        MethodDefinition method = mixin.Methods[typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
         Assert.IsNotNull (method);
-        MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMethod).GetMethod ("AbstractMethod")];
+        MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMembers).GetMethod ("AbstractMethod")];
         Assert.IsNotNull (overridingMethod);
         Assert.AreSame (method, overridingMethod.Base);
-        Assert.IsTrue (method.Overrides.HasItem (typeof (ClassOverridingMixinMethod)));
-        Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMethod)]);
+        Assert.IsTrue (method.Overrides.HasItem (typeof (ClassOverridingMixinMembers)));
+        Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMembers)]);
       }
     }
 
     [Test]
     public void NotOverriddenAbstractMixinMethodSucceeds()
     {
-      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (AbstractMixin));
-      MixinDefinition mixin = bt1.Mixins[typeof (AbstractMixin)];
-      MethodDefinition method = mixin.Methods[typeof (AbstractMixin).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
+      BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithAbstractMembers));
+      MixinDefinition mixin = bt1.Mixins[typeof (MixinWithAbstractMembers)];
+      MethodDefinition method = mixin.Methods[typeof (MixinWithAbstractMembers).GetMethod ("AbstractMethod", BindingFlags.Instance | BindingFlags.NonPublic)];
       Assert.AreEqual (0, method.Overrides.Count);
     }
 
@@ -90,14 +90,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [ExpectedException (typeof (ConfigurationException))]
     public void ThrowsOnMixinMethodOverridedWrongSig()
     {
-      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethodWrongSig), typeof (AbstractMixin));
+      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethodWrongSig), typeof (MixinWithAbstractMembers));
     }
 
     [Test]
     [ExpectedException (typeof (ConfigurationException))]
     public void ThrowsOnMixinOverrideWithoutMixin()
     {
-      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMethod));
+      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassOverridingMixinMembers));
     }
 
     [Test]

@@ -69,6 +69,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     public MethodInfo GetProxyMethodForOverriddenMethod (MethodDefinition method)
     {
+      Assertion.Assert (_overriddenMethodToImplementationMap.ContainsKey (method), "The method " + method.Name
+            + " must be registered with the BaseCallProxyGenerator.");
       return _overriddenMethodToImplementationMap[method];
     }
 
@@ -85,7 +87,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void ImplementBaseCallsForOverriddenMethodsOnTarget ()
     {
-      foreach (MethodDefinition method in _baseClassConfiguration.Methods)
+      foreach (MethodDefinition method in _baseClassConfiguration.GetAllMethods())
       {
         if (method.Overrides.Count > 0)
           ImplementBaseCallForOverridenMethodOnTarget (method);

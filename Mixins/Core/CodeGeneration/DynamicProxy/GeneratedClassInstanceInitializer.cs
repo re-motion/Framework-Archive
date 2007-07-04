@@ -95,7 +95,17 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (mixinDefinition.HasOverriddenMembers())
         mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
 
-      object mixinInstance = Activator.CreateInstance (mixinType);
+      object mixinInstance;
+      try
+      {
+        mixinInstance = Activator.CreateInstance (mixinType);
+      }
+      catch (MissingMethodException ex)
+      {
+        string message = string.Format ("Cannot instantiate mixin {0}, there is no public default constructor.",
+            mixinDefinition.Type);
+        throw new MissingMethodException (message, ex);
+      }
 
       InitializeMixinInstance (mixinDefinition, mixinInstance, mixinTargetInstance);
       return mixinInstance;

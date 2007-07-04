@@ -52,6 +52,11 @@
     <Compile Include="Configuration\UsesAnalysisTests.cs" />
     <None Include="Mixins.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\ClassOverridingMixinEvent.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\ClassWithNonPublicOverrider.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\ClassWithPrivateCtor.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithEvent.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinWithPrivateCtorAndVirtualMethod.cs" />
     <Compile Include="Mixins\ObjectFactoryTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckBaseMixin.cs" />
@@ -66,6 +71,8 @@
     <Compile Include="SampleTypes\BT7Mixin8.cs" />
     <Compile Include="SampleTypes\BT7Mixin9.cs" />
     <Compile Include="SampleTypes\BT7Mixin10.cs" />
+    <Compile Include="SampleTypes\ClassOverridingSingleMixinMethod.cs" />
+    <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
     <Compile Include="Configuration\InheritanceDefinitionBuilderTests.cs" />
@@ -118,8 +125,8 @@
     <Compile Include="Mixins\CodeGenSampleTypes\MixinWithThisAsBase.cs" />
     <Compile Include="Mixins\TypeFactoryTests.cs" />
     <Compile Include="Utilities\ReflectionUtilityTests.cs" />
-    <Compile Include="SampleTypes\AbstractMixin.cs" />
-    <Compile Include="SampleTypes\ClassOverridingMixinMethod.cs" />
+    <Compile Include="SampleTypes\MixinWithAbstractMembers.cs" />
+    <Compile Include="SampleTypes\ClassOverridingMixinMembers.cs" />
     <Compile Include="SampleTypes\ClassOverridingMixinMethodWrongSig.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnsatisfiedThisDependency.cs" />

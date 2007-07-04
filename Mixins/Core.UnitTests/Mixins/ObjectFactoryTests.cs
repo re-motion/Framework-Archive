@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using NUnit.Framework;
+using Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
@@ -208,6 +209,30 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void InterfaceAsTypeArgumentWithoutCompletenessWithMixins ()
     {
       ObjectFactory.CreateWithMixinInstances<IBaseType2> ().With ();
+    }
+
+    [Test]
+    public void MixinWithoutPublicCtor ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      {
+        MixinWithPrivateCtorAndVirtualMethod mixin = MixinWithPrivateCtorAndVirtualMethod.Create ();
+        object o = ObjectFactory.CreateWithMixinInstances<object> (mixin).With ();
+        Assert.IsNotNull (o);
+        Assert.IsNotNull (Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
+        Assert.AreSame (mixin, Mixin.Get<MixinWithPrivateCtorAndVirtualMethod> (o));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Cannot instantiate mixin Rubicon.Mixins.UnitTests.Configuration."
+        + "ValidationSampleTypes.MixinWithPrivateCtorAndVirtualMethod, there is no public default constructor.")]
+    public void ThrowsWhenMixinWithoutPublicDefaultCtorShouldBeInstantiated ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithPrivateCtorAndVirtualMethod)))
+      {
+        ObjectFactory.CreateWithMixinInstances<object> ().With ();
+      }
     }
   }
 }

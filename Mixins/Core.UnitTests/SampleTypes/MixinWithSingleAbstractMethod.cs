@@ -2,27 +2,23 @@ using System;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  public interface IAbstractMixin
-  {
-    string ImplementedMethod();
-  }
-
   [Serializable]
-  public abstract class AbstractMixin : Mixin<object, object>, IAbstractMixin
+  public abstract class MixinWithSingleAbstractMethod : Mixin<object, object>
   {
     public int I;
 
     public string ImplementedMethod ()
     {
-      return "AbstractMixin.ImplementedMethod-" + AbstractMethod(25);
+      return "MixinWithSingleAbstractMethod.ImplementedMethod-" + AbstractMethod (25);
     }
 
     protected abstract string AbstractMethod (int i);
   }
 
   [Serializable]
-  public abstract class AbstractMixin2 : Mixin<object, object>
+  public abstract class MixinWithSingleAbstractMethod2 : Mixin<object, object>
   {
     protected abstract string AbstractMethod (int i);
   }
+
 }

@@ -148,11 +148,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreSame (baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)],
             mixin.BaseDependencies[typeof (IDuckBaseRequirements)].RequiredType);
 
-        Assert.AreEqual (1, baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods.Count);
+        Assert.AreEqual (2, baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods.Count);
         Assert.AreSame (typeof (IDuckBaseRequirements).GetMethod ("MethodImplementedOnBase"),
             baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].InterfaceMethod);
         Assert.AreSame (baseClass.Methods[typeof (BaseTypeWithDuckBaseMixin).GetMethod ("MethodImplementedOnBase")],
             baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].ImplementingMethod);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException),
+        ExpectedMessage = "is not fulfilled - method MethodImplementedOnBase does not have an equivalent", MatchType = MessageMatch.Regex)]
+    public void ThrowsWhenUnfulfilled ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckBaseMixinWithoutOverrides)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (object));
       }
     }
 

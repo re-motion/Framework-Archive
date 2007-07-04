@@ -45,32 +45,32 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void GeneratedMixinTypesAreCached()
     {
-      ClassOverridingMixinMethod c1 = ObjectFactory.Create<ClassOverridingMixinMethod>().With();
-      ClassOverridingMixinMethod c2 = ObjectFactory.Create<ClassOverridingMixinMethod> ().With ();
+      ClassOverridingMixinMembers c1 = ObjectFactory.Create<ClassOverridingMixinMembers>().With();
+      ClassOverridingMixinMembers c2 = ObjectFactory.Create<ClassOverridingMixinMembers> ().With ();
 
-      Assert.AreSame (Mixin.Get<AbstractMixin> (c1).GetType(), Mixin.Get<AbstractMixin> (c2).GetType());
+      Assert.AreSame (Mixin.Get<MixinWithAbstractMembers> (c1).GetType(), Mixin.Get<MixinWithAbstractMembers> (c2).GetType());
     }
 
     [Test]
     public void MixinTypeCacheIsBoundToConcreteTypeBuilder ()
     {
-      ClassOverridingMixinMethod c1 = ObjectFactory.Create<ClassOverridingMixinMethod> ().With ();
+      ClassOverridingMixinMembers c1 = ObjectFactory.Create<ClassOverridingMixinMembers> ().With ();
       ConcreteTypeBuilder.SetCurrent (null);
-      ClassOverridingMixinMethod c2 = ObjectFactory.Create<ClassOverridingMixinMethod> ().With ();
+      ClassOverridingMixinMembers c2 = ObjectFactory.Create<ClassOverridingMixinMembers> ().With ();
 
-      Assert.AreNotSame (Mixin.Get<AbstractMixin> (c1).GetType (), Mixin.Get<AbstractMixin> (c2).GetType ());
+      Assert.AreNotSame (Mixin.Get<MixinWithAbstractMembers> (c1).GetType (), Mixin.Get<MixinWithAbstractMembers> (c2).GetType ());
     }
 
     [Test]
     public void MixinTypeCacheEvenWorksForSerialization ()
     {
-      ClassOverridingMixinMethod c1 = ObjectFactory.Create<ClassOverridingMixinMethod> ().With ();
-      ClassOverridingMixinMethod c2 = ObjectFactory.Create<ClassOverridingMixinMethod> ().With ();
+      ClassOverridingMixinMembers c1 = ObjectFactory.Create<ClassOverridingMixinMembers> ().With ();
+      ClassOverridingMixinMembers c2 = ObjectFactory.Create<ClassOverridingMixinMembers> ().With ();
 
-      Assert.AreSame (Mixin.Get<AbstractMixin> (c1).GetType (), Mixin.Get<AbstractMixin> (c2).GetType ());
+      Assert.AreSame (Mixin.Get<MixinWithAbstractMembers> (c1).GetType (), Mixin.Get<MixinWithAbstractMembers> (c2).GetType ());
 
-      ClassOverridingMixinMethod[] array = Serializer.SerializeAndDeserialize (new ClassOverridingMixinMethod[] { c1, c2 });
-      Assert.AreSame (Mixin.Get<AbstractMixin> (array[0]).GetType (), Mixin.Get<AbstractMixin> (array[1]).GetType ());
+      ClassOverridingMixinMembers[] array = Serializer.SerializeAndDeserialize (new ClassOverridingMixinMembers[] { c1, c2 });
+      Assert.AreSame (Mixin.Get<MixinWithAbstractMembers> (array[0]).GetType (), Mixin.Get<MixinWithAbstractMembers> (array[1]).GetType ());
     }
   }
 }

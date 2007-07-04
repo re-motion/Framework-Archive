@@ -102,7 +102,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void GeneratedTypeImplementsOverriddenMembers ()
+    public void GeneratedTypeImplementsOverriddenMemthods ()
     {
       using (MixinConfiguration.ScopedExtend(typeof (BaseType3), typeof (BT3Mixin7Base), typeof(BT3Mixin4)))
       {
@@ -111,6 +111,32 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
         Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType3.IfcMethod", BindingFlags.Public | BindingFlags.Instance));
       }
+    }
+
+    [Test]
+    public void GeneratedTypeImplementsOverriddenMethods ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin1)))
+      {
+        Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
+        Type proxyType = t.GetNestedType ("BaseCallProxy");
+
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.VirtualMethod", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.add_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.remove_VirtualEvent", BindingFlags.Public | BindingFlags.Instance));
+      }
+
+      using (MixinConfiguration.ScopedExtend (typeof (BaseType1), typeof (BT1Mixin2)))
+      {
+        Type t = TypeFactory.GetConcreteType (typeof (BaseType1));
+        Type proxyType = t.GetNestedType ("BaseCallProxy");
+
+        Assert.IsNotNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.get_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+        Assert.IsNull (proxyType.GetMethod ("Rubicon.Mixins.UnitTests.SampleTypes.BaseType1.set_VirtualProperty", BindingFlags.Public | BindingFlags.Instance));
+      }
+
     }
 
     [Test]
@@ -134,7 +160,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void BaseCallMethodToDuckInterface ()
     {
       BaseTypeWithDuckBaseMixin duckBase = ObjectFactory.Create<BaseTypeWithDuckBaseMixin> ().With ();
-      Assert.AreEqual ("DuckBaseMixin.MethodImplementedOnBase-BaseTypeWithDuckBaseMixin.MethodImplementedOnBase", duckBase.MethodImplementedOnBase ());
+      Assert.AreEqual ("DuckBaseMixin.MethodImplementedOnBase-BaseTypeWithDuckBaseMixin.MethodImplementedOnBase-"
+          + "DuckBaseMixin.ProtectedMethodImplementedOnBase-BaseTypeWithDuckBaseMixin.ProtectedMethodImplementedOnBase",
+          duckBase.MethodImplementedOnBase ());
     }
   }
 }

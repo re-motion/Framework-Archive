@@ -88,6 +88,24 @@ namespace Rubicon.Mixins.Definitions
         yield return eventDefinition;
     }
 
+    public IEnumerable<MethodDefinition> GetAllMethods ()
+    {
+      foreach (MethodDefinition method in Methods)
+        yield return method;
+      foreach (PropertyDefinition property in Properties)
+      {
+        if (property.GetMethod != null)
+          yield return property.GetMethod;
+        if (property.SetMethod != null)
+          yield return property.SetMethod;
+      }
+      foreach (EventDefinition eventDef in Events)
+      {
+        yield return eventDef.AddMethod;
+        yield return eventDef.RemoveMethod;
+      }
+    }
+
     public abstract void Accept (IDefinitionVisitor visitor);
 
     protected void AcceptForChildren (IDefinitionVisitor visitor)
