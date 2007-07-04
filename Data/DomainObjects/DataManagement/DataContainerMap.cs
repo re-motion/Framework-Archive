@@ -58,7 +58,7 @@ public class DataContainerMap : IEnumerable
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-
+    _clientTransaction.DataContainerMapRegistering (dataContainer);
     _dataContainers.Add (dataContainer);
   }
 
@@ -68,7 +68,15 @@ public class DataContainerMap : IEnumerable
     CheckClientTransactionForDeletion (dataContainer);
 
     if (dataContainer.State == StateType.New)
-      _dataContainers.Remove (dataContainer);    
+      Remove(dataContainer);    
+  }
+
+  private void Remove (DataContainer dataContainer)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    _clientTransaction.DataContainerMapUnregistering (dataContainer);
+
+    _dataContainers.Remove (dataContainer);
   }
 
   public void Commit ()
@@ -78,7 +86,7 @@ public class DataContainerMap : IEnumerable
       DataContainer dataContainer = _dataContainers[i];
       
       if (dataContainer.State == StateType.Deleted)
-        _dataContainers.Remove (i);
+        Remove (dataContainer);
 
       dataContainer.Commit ();
     }
@@ -91,7 +99,7 @@ public class DataContainerMap : IEnumerable
       DataContainer dataContainer = _dataContainers[i];
 
       if (dataContainer.State == StateType.New)
-        _dataContainers.Remove (dataContainer);
+        Remove (dataContainer);
 
       dataContainer.Rollback ();
     }

@@ -47,8 +47,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     foreach (DomainObject deletedDomainObject in deletedDomainObjects)
     {
-      foreach (RelationEndPointID endPointID in deletedDomainObject.GetDataContainer().RelationEndPointIDs)
-        _relationEndPoints.Remove (endPointID);
+      foreach (RelationEndPointID endPointID in deletedDomainObject.GetDataContainer ().RelationEndPointIDs)
+        Remove (endPointID);
     }
   }
 
@@ -62,16 +62,19 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     foreach (DomainObject newDomainObject in newDomainObjects)
     {
       foreach (RelationEndPointID endPointID in newDomainObject.GetDataContainer().RelationEndPointIDs)
-        _relationEndPoints.Remove (endPointID);
+        Remove (endPointID);
     }
   }
 
   public void PerformDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    CheckClientTransactionForDeletion (domainObject);
 
-    foreach (RelationEndPointID endPointID in domainObject.GetDataContainer().RelationEndPointIDs)
+    RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainer ().RelationEndPointIDs;
+    CheckClientTransactionForDeletion (domainObject);
+    _clientTransaction.RelationEndPointMapPerformingDelete (relationEndPointIDs);
+
+    foreach (RelationEndPointID endPointID in relationEndPointIDs)
     {
       RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
 
@@ -84,7 +87,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       endPoint.PerformDelete ();
 
       if (domainObject.State == StateType.New)
-        _relationEndPoints.Remove (endPointID);
+        Remove (endPointID);
     }
   }
 
@@ -429,10 +432,18 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   private void Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+    _clientTransaction.RelationEndPointMapRegistering (endPoint);
     if (endPoint.IsNull)
       throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
 
     _relationEndPoints.Add (endPoint);
+  }
+
+  private void Remove (RelationEndPointID endPointID)
+  {
+    ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+    _clientTransaction.RelationEndPointMapUnregistering (endPointID);
+    _relationEndPoints.Remove (endPointID);
   }
 
   private void CheckCardinality (

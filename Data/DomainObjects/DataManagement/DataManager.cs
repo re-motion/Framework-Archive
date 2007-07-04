@@ -245,6 +245,7 @@ public class DataManager
   public void MarkDiscarded (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
+    _clientTransaction.DataManagerMarkingObjectDiscarded (id);
     _discardedObjects.Add (id);
   }
 

@@ -779,6 +779,7 @@
     <Compile Include="Transaction\ClientTransactionExtensionRelationChangesTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionWithQueryFiltering.cs" />
+    <Compile Include="Transaction\ClientTransactionListenerTest.cs" />
     <Compile Include="Transaction\ClientTransactionTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -790,6 +791,7 @@
     <Compile Include="EventReceiver\PropertyValueCollectionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
+    <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">

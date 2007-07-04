@@ -793,6 +793,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Assert.Fail ();
     }
-
   }
 }

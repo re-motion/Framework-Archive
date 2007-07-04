@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
@@ -96,6 +97,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       get { return base.IsReadOnly; }
       set { base.IsReadOnly = value; }
+    }
+
+    public new void AddListener (IClientTransactionListener listener)
+    {
+      base.AddListener (listener);
     }
   }
 }

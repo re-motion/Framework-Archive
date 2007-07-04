@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
@@ -80,6 +81,7 @@ public class ClientTransaction : ITransaction
   private QueryManager _queryManager;
   private ClientTransactionExtensionCollection _extensions;
   private Dictionary<Enum, object> _applicationData;
+  private CompoundClientTransactionListener _listeners;
 
   // construction and disposing
 
@@ -92,6 +94,7 @@ public class ClientTransaction : ITransaction
     _dataManager = new DataManager (this);
     _extensions = new ClientTransactionExtensionCollection ();
     _applicationData = new Dictionary<Enum, object> ();
+    _listeners = new CompoundClientTransactionListener ();
   }
 
   // methods and properties
@@ -117,6 +120,11 @@ public class ClientTransaction : ITransaction
   public ClientTransactionExtensionCollection Extensions
   {
     get { return _extensions; }
+  }
+
+  protected internal void AddListener (IClientTransactionListener listener)
+  {
+    _listeners.AddListener (listener);
   }
 
   /// <summary>
@@ -504,7 +512,6 @@ public class ClientTransaction : ITransaction
         }
         else
         {
-          // ObjectLoading (null);
           _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
           return null;
         }
@@ -937,98 +944,146 @@ public class ClientTransaction : ITransaction
 
   internal void NewObjectCreating (Type type)
   {
+    _listeners.NewObjectCreating (type);
     _extensions.NewObjectCreating (type);
   }
 
   internal void ObjectLoading (ObjectID id)
   {
+    _listeners.ObjectLoading (id);
     _extensions.ObjectLoading (id);
   }
 
   private void ObjectsLoaded (DomainObjectCollection domainObjects)
   {
+    _listeners.ObjectsLoaded (domainObjects);
     _extensions.ObjectsLoaded (domainObjects);
   }
 
   internal void ObjectDeleting (DomainObject domainObject)
   {
+    _listeners.ObjectDeleting (domainObject);
     _extensions.ObjectDeleting (domainObject);
   }
 
   internal void ObjectDeleted (DomainObject domainObject)
   {
+    _listeners.ObjectDeleted (domainObject);
     _extensions.ObjectDeleted (domainObject);
   }
 
   internal void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
   {
+    _listeners.PropertyValueReading (dataContainer, propertyValue, valueAccess);
     _extensions.PropertyValueReading (dataContainer, propertyValue, valueAccess);
   }
 
   internal void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
   {
+    _listeners.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
     _extensions.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
   }
 
   internal void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
   {
+    _listeners.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
     _extensions.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
   }
 
   internal void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
   {
+    _listeners.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
     _extensions.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
   }
 
   private void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
   {
+    _listeners.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
     _extensions.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
   }
 
   private void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
   {
+    _listeners.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
     _extensions.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
   }
 
   private void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
   {
+    _listeners.RelationReading (domainObject, propertyName, valueAccess);
     _extensions.RelationReading (domainObject, propertyName, valueAccess);
   }
 
   internal void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
   {
+    _listeners.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
     _extensions.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
   }
 
   internal void RelationChanged (DomainObject domainObject, string propertyName)
   {
+    _listeners.RelationChanged (domainObject, propertyName);
     _extensions.RelationChanged (domainObject, propertyName);
   }
 
   internal void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
   {
+    _listeners.FilterQueryResult (queryResult, query);
     _extensions.FilterQueryResult (queryResult, query);
   }
 
   private void TransactionCommitting (DomainObjectCollection domainObjects)
   {
+    _listeners.TransactionCommitting (domainObjects);
     _extensions.Committing (domainObjects);
   }
 
   private void TransactionCommitted (DomainObjectCollection domainObjects)
   {
+    _listeners.TransactionCommitted (domainObjects);
     _extensions.Committed (domainObjects);
   }
 
   private void TransactionRollingBack (DomainObjectCollection domainObjects)
   {
+    _listeners.TransactionRollingBack (domainObjects);
     _extensions.RollingBack (domainObjects);
   }
 
   private void TransactionRolledBack (DomainObjectCollection domainObjects)
   {
+    _listeners.TransactionRolledBack (domainObjects);
     _extensions.RolledBack (domainObjects);
   }
 
+  internal void RelationEndPointMapRegistering (RelationEndPoint endPoint)
+  {
+    _listeners.RelationEndPointMapRegistering (endPoint);
+  }
+
+  internal void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
+  {
+    _listeners.RelationEndPointMapUnregistering (endPointID);
+  }
+
+  internal void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs)
+  {
+    _listeners.RelationEndPointMapPerformingDelete (endPointIDs);
+  }
+
+  internal void DataManagerMarkingObjectDiscarded (ObjectID id)
+  {
+    _listeners.DataManagerMarkingObjectDiscarded (id);
+  }
+
+  internal void DataContainerMapRegistering (DataContainer container)
+  {
+    _listeners.DataContainerMapRegistering (container);
+  }
+
+  internal void DataContainerMapUnregistering (DataContainer container)
+  {
+    _listeners.DataContainerMapUnregistering (container);
+  }
 }
 }
