@@ -1,39 +1,41 @@
 using System;
+using Rubicon.ObjectBinding;
 
-namespace Rubicon.ObjectBinding
+namespace Rubicon.ObjectBinding.BindableObject
 {
-  /// <summary> 
-  ///   The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
-  ///   <see cref="IBusinessObject"/> instances.
-  /// </summary>
-  public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
+  //TODO: doc
+  public class ReferenceProperty : PropertyBase, IBusinessObjectReferenceProperty
   {
+    public ReferenceProperty (Parameters parameters)
+        : base (parameters)
+    {
+    }
+
     /// <summary> Gets the class information for elements of this property. </summary>
     /// <value> 
     ///   The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.
     /// </value>
-    IBusinessObjectClass ReferenceClass { get; }
+    public IBusinessObjectClass ReferenceClass
+    {
+      get { throw new NotImplementedException(); }
+    }
 
     /// <summary> 
     ///   Gets a flag indicating whether it is possible to get a list of the objects that can be assigned to this property.
     /// </summary>
-    /// <param name="requiresIdentity">
-    /// A flag that if <see langword="true"/> determines that the objects must implement <see cref="IBusinessObjectWithIdentity"/>.
-    /// </param>
-    /// <returns> <see langword="true"/> if it is possible to get the available objects from the object model. </returns>
+    /// <value> <see langword="true"/> if it is possible to get the available objects from the object model. </value>
     /// <remarks> 
-    ///   Use the <see cref="SearchAvailableObjects"/> method (or an object model specific overload) to get the list of 
+    ///   Use the <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method (or an object model specific overload) to get the list of 
     ///   objects.
     /// </remarks>
-    bool SupportsSearchAvailableObjects (bool requiresIdentity);
+    public bool SupportsSearchAvailableObjects (bool requiresIdentity)
+    {
+      throw new NotImplementedException();
+    }
 
     /// <summary> 
     ///   Searches the object model for the <see cref="IBusinessObject"/> instances that can be assigned to this property.
     /// </summary>
-    /// <param name="requiresIdentity">
-    /// A flag that if <see langword="true"/> determines that the return value muss consist only of objects implenting 
-    /// <see cref="IBusinessObjectWithIdentity"/>.
-    /// </param>
     /// <param name="obj"> The business object for which to search for the possible objects to be referenced. </param>
     /// <param name="searchStatement"> 
     ///   A <see cref="string"/> containing a search statement. Can be <see langword="null"/>.
@@ -42,7 +44,7 @@ namespace Rubicon.ObjectBinding
     ///   A list of the <see cref="IBusinessObject"/> instances available. Must not return <see langword="null"/>.
     /// </returns>
     /// <exception cref="NotSupportedException">
-    ///   Thrown if <see cref="SupportsSearchAvailableObjects"/> evaluated <see langword="false"/> but this method
+    ///   Thrown if <see cref="IBusinessObjectReferenceProperty.SupportsSearchAvailableObjects"/> evaluated <see langword="false"/> but this method
     ///   has been called anyways.
     /// </exception>
     /// <remarks> 
@@ -53,29 +55,38 @@ namespace Rubicon.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement); 
+    public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement)
+    {
+      throw new NotImplementedException();
+    }
 
     /// <summary>
-    ///   Gets a flag indicating if <see cref="Create"/> may be called to implicitly create a new business object 
+    ///   Gets a flag indicating if <see cref="IBusinessObjectReferenceProperty.Create"/> may be called to implicitly create a new business object 
     ///   for editing in case the object reference is null.
     /// </summary>
-    bool CreateIfNull { get; }
+    public bool CreateIfNull
+    {
+      get { throw new NotImplementedException(); }
+    }
 
     /// <summary>
-    ///   If <see cref="CreateIfNull"/> is <see langword="true"/>, this method can be used to create a new business 
+    ///   If <see cref="IBusinessObjectReferenceProperty.CreateIfNull"/> is <see langword="true"/>, this method can be used to create a new business 
     ///   object.
     /// </summary>
     /// <param name="referencingObject"> 
     ///   The business object containing the reference property whose value will be assigned the newly created object. 
     /// </param>
     /// <exception cref="NotSupportedException"> 
-    ///   Thrown if this method is called although <see cref="CreateIfNull"/> evaluated <see langword="false"/>. 
+    ///   Thrown if this method is called although <see cref="IBusinessObjectReferenceProperty.CreateIfNull"/> evaluated <see langword="false"/>. 
     /// </exception>
     /// <remarks>
     ///   A use case for the <b>Create</b> method is the instantiation of an business object without a unique identifier,
     ///   usually an <b>Aggregate</b>. The aggregate reference can be <see langword="null"/> until one of its values
     ///   is set in the user interface.
     /// </remarks>
-    IBusinessObject Create (IBusinessObject referencingObject);
+    public IBusinessObject Create (IBusinessObject referencingObject)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

@@ -83,10 +83,9 @@ namespace Rubicon.Utilities
     public static TResult[] Convert<TSource, TResult> (TSource[] array)
       where TResult: TSource 
     {
-      TResult[] result = new TResult[array.Length];
-      for (int i = 0; i < array.Length; ++i)
-        result[i] = (TResult) array[i];
-      return result;
+      if (array == null)
+        return null;
+      return Array.ConvertAll<TSource, TResult> (array, delegate (TSource current) { return (TResult) current; });
     }
 
     public static Array Convert (Array array, Type elementType)

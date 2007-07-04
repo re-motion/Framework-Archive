@@ -443,7 +443,7 @@ namespace Rubicon.ObjectBinding.Reflection
       get { return new ReflectionBusinessObjectClass (PropertyType); }
     }
 
-    public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string searchStatement)
+    public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement)
     {
       if (searchStatement == "*")
         return ReflectionBusinessObjectStorage.GetObjects (obj.GetType());
@@ -451,9 +451,9 @@ namespace Rubicon.ObjectBinding.Reflection
         return new IBusinessObjectWithIdentity[0];
     }
 
-    public bool SupportsSearchAvailableObjects
+    public bool SupportsSearchAvailableObjects (bool requiresIdentity)
     {
-      get { return true; }
+      return true;
     }
 
     public bool CreateIfNull

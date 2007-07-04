@@ -107,6 +107,7 @@
     <Compile Include="BindableObject\DateTimePropertyBase.cs" />
     <Compile Include="BindableObject\DecimalProperty.cs" />
     <Compile Include="BindableObject\DoubleProperty.cs" />
+    <Compile Include="BindableObject\ReferenceProperty.cs" />
     <Compile Include="BindableObject\SingleProperty.cs" />
     <Compile Include="BindableObject\Int64Property.cs" />
     <Compile Include="BindableObject\ByteProperty.cs" />

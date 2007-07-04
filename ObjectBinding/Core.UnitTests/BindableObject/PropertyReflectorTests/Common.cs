@@ -120,6 +120,15 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithBusinessObject ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("BusinessObject");
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (ReferenceProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("BusinessObject"));
+    }
+
+    [Test]
     public void GetMetadata_WithSingle ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Single");

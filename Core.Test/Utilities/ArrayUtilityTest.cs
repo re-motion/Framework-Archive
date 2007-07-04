@@ -29,6 +29,12 @@ public class ArrayUtilityTest
   }
 
   [Test]
+  public void TestConvertWithNull ()
+  {
+    Assert.IsNull (ArrayUtility.Convert<object, string> (null));
+  }
+
+  [Test]
   public void TestInsertFirst()
   {
     string[] s1 = { "a", "b", "c", "d" };

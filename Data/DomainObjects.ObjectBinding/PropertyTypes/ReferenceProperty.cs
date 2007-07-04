@@ -23,10 +23,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       get { return new DomainObjectClass ((IsList) ? ListInfo.ItemType : PropertyType); }
     }
 
-    public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject businessObject, string queryID)
+    public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject businessObject, string queryID)
     {
       if (queryID == null || queryID == string.Empty)
-        return new BindableDomainObject[] {};
+        return new IBusinessObjectWithIdentity[] { };
 
       QueryDefinition definition = QueryConfiguration.Current.QueryDefinitions.GetMandatory (queryID);
       if (definition.QueryType != QueryType.Collection)
@@ -43,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return availableObjects;
     }
 
-    public bool SupportsSearchAvailableObjects
+    public bool SupportsSearchAvailableObjects (bool requiresIdentity)
     {
-      get { return true; }
+      return true;
     }
 
     public bool CreateIfNull

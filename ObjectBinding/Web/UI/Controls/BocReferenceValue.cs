@@ -1050,13 +1050,13 @@ public class BocReferenceValue:
     if (Property == null)
       return;
 
-    IBusinessObjectWithIdentity[] businessObjects = null;
+    IBusinessObject[] businessObjects = null;
 
     //  Get all matching business objects
     if (DataSource != null && DataSource.BusinessObject != null)
-      businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, _select);
+      businessObjects = Property.SearchAvailableObjects (true, DataSource.BusinessObject, _select);
 
-    RefreshBusinessObjectList (businessObjects);
+    RefreshBusinessObjectList (ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity> (businessObjects));
   }
 
   /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
