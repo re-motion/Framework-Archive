@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -32,38 +33,48 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     public PropertyBase GetMetadata ()
     {
-      Type nativeType = GetNativeType();
+      Type underlyingType = GetUnderlyingType();
       PropertyBase.Parameters parameters = new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
 
-      if (nativeType == typeof (Boolean))
+      if (underlyingType == typeof (Boolean))
         return new BooleanProperty (parameters);
-      else if (nativeType == typeof (Byte))
+      else if (underlyingType == typeof (Byte))
         return new ByteProperty (parameters);
-      else if (nativeType == typeof (DateTime) && AttributeUtility.IsDefined<DatePropertyAttribute> (_propertyInfo, true))
+      else if (underlyingType == typeof (DateTime) && AttributeUtility.IsDefined<DatePropertyAttribute> (_propertyInfo, true))
         return new DateProperty (parameters);
-      else if (nativeType == typeof (DateTime))
+      else if (underlyingType == typeof (DateTime))
         return new DateTimeProperty (parameters);
-      else if (nativeType == typeof (Decimal))
+      else if (underlyingType == typeof (Decimal))
         return new DecimalProperty (parameters);
-      else if (nativeType == typeof (Double))
+      else if (underlyingType == typeof (Double))
         return new DoubleProperty (parameters);
-      else if (nativeType.IsEnum && nativeType.IsValueType)
+      else if (underlyingType.IsEnum)
         return new EnumerationProperty (parameters);
-      else if (nativeType == typeof (Int16))
+      else if (underlyingType == typeof (Int16))
         return new Int16Property (parameters);
-      else if (nativeType == typeof (Int32))
+      else if (underlyingType == typeof (Int32))
         return new Int32Property (parameters);
-      else if (nativeType == typeof (Int64))
+      else if (underlyingType == typeof (Int64))
         return new Int64Property (parameters);
-      else if (nativeType == typeof (Single))
+      else if (IsBusinessObjectType (underlyingType))
+        return new ReferenceProperty (parameters);
+      else if (underlyingType == typeof (Single))
         return new SingleProperty (parameters);
-      else if (nativeType == typeof (String))
+      else if (underlyingType == typeof (String))
         return new StringProperty (parameters, GetMaxLength ());
       else
         return new NotSupportedProperty (parameters);
     }
 
-    private Type GetNativeType ()
+    private bool IsBusinessObjectType (Type type)
+    {
+      if (typeof (IBusinessObject).IsAssignableFrom (type))
+        return true;
+
+      return false;
+    }
+
+    private Type GetUnderlyingType ()
     {
       return Nullable.GetUnderlyingType (GetItemType()) ?? GetItemType();
     }
@@ -93,12 +104,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private IListInfo GetListInfo ()
     {
-      bool isList =
-          _propertyInfo.PropertyType.IsArray
-          || ReflectionUtility.CanAscribe (_propertyInfo.PropertyType, typeof (IList<>))
-          || typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType);
-
-      if (isList)
+      if (typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType))
         return new ListInfo (GetItemType());
 
       return null;

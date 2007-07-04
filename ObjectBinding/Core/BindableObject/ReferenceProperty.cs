@@ -1,5 +1,6 @@
 using System;
 using Rubicon.ObjectBinding;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
@@ -12,30 +13,49 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     /// <summary> Gets the class information for elements of this property. </summary>
-    /// <value> 
-    ///   The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.
-    /// </value>
-    public IBusinessObjectClass ReferenceClass
+    /// <value>The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.</value>
+    public BindableObjectClass ReferenceClass
     {
-      get { throw new NotImplementedException(); }
+      get { return BusinessObjectProvider.GetBindableObjectClass (UnderlyingType); }
+    }
+
+    /// <summary> Gets the class information for elements of this property. </summary>
+    /// <value>The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.</value>
+    IBusinessObjectClass IBusinessObjectReferenceProperty.ReferenceClass
+    {
+      get { return ReferenceClass; }
     }
 
     /// <summary> 
     ///   Gets a flag indicating whether it is possible to get a list of the objects that can be assigned to this property.
     /// </summary>
-    /// <value> <see langword="true"/> if it is possible to get the available objects from the object model. </value>
+    /// <param name="requiresIdentity">
+    /// A flag that if <see langword="true"/> determines that the objects must implement <see cref="IBusinessObjectWithIdentity"/>.
+    /// </param>
+    /// <returns> <see langword="true"/> if it is possible to get the available objects from the object model. </returns>
     /// <remarks> 
     ///   Use the <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method (or an object model specific overload) to get the list of 
     ///   objects.
     /// </remarks>
     public bool SupportsSearchAvailableObjects (bool requiresIdentity)
     {
-      throw new NotImplementedException();
+      //Type searchServiceType = AttributeUtility.GetCustomAttribute<BindableObjectSearchServiceTypeAttribte> (ReferenceClass.Type, true).Type;
+      //IBusinessObjectSearchService searchService = BusinessObjectProvider.GetService (searchServiceType);
+      //if (searchService == null)
+      //  return requiresIdentity ? new IBusinessObjectWithIdentity[0] : new IBusinessObject[0];
+
+      //if (requiresIdentity && !searchService.SupportsIdentity (this, obj))
+      //  throw new NotSupportedException ();
+      
+      throw new NotImplementedException ();
     }
 
     /// <summary> 
     ///   Searches the object model for the <see cref="IBusinessObject"/> instances that can be assigned to this property.
     /// </summary>
+    /// <param name="requiresIdentity">
+    /// A flag that if <see langword="true"/> determines that the return value muss consist only of objects implenting 
+    /// <see cref="IBusinessObjectWithIdentity"/>.
     /// <param name="obj"> The business object for which to search for the possible objects to be referenced. </param>
     /// <param name="searchStatement"> 
     ///   A <see cref="string"/> containing a search statement. Can be <see langword="null"/>.
@@ -57,8 +77,19 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement)
     {
+      ArgumentUtility.CheckNotNull ("obj", obj);
+
+      //Type searchServiceType = AttributeUtility.GetCustomAttribute<BindableObjectSearchServiceTypeAttribte> (ReferenceClass.Type, true).Type;
+      //IBusinessObjectSearchService searchService = BusinessObjectProvider.GetService (searchServiceType);
+      //if (searchService == null)
+      //  return requiresIdentity ? new IBusinessObjectWithIdentity[0] : new IBusinessObject[0];
+
+      //if (requiresIdentity && !searchService.SupportsIdentity (this, obj))
+      //  throw new NotSupportedException ();
+
+      //return searchService.Search (this, obj, searchStatement);
       throw new NotImplementedException();
-    }
+   }
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="IBusinessObjectReferenceProperty.Create"/> may be called to implicitly create a new business object 
@@ -66,7 +97,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </summary>
     public bool CreateIfNull
     {
-      get { throw new NotImplementedException(); }
+      get { return false; }
     }
 
     /// <summary>
@@ -86,7 +117,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </remarks>
     public IBusinessObject Create (IBusinessObject referencingObject)
     {
-      throw new NotImplementedException();
+      throw new NotSupportedException (string.Format ("Create method is not supported by '{0}'.", GetType().FullName));
     }
   }
 }

@@ -31,6 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
       Assert.That (propertyBase.IsRequired, Is.True);
       Assert.That (propertyBase.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
+      Assert.That (((IBusinessObjectProperty)propertyBase).BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
 
     [Test]

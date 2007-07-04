@@ -93,6 +93,18 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithEnumBase ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<Enum>), "Scalar");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (NotSupportedProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
+    }
+
+    [Test]
     public void GetMetadata_WithInt16 ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int16");
@@ -120,7 +132,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
-    [Ignore("TODO: test")]
+    [Ignore ("TODO: test")]
     public void GetMetadata_WithBusinessObject ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("BusinessObject");

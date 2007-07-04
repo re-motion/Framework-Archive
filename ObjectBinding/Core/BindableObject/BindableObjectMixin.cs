@@ -154,7 +154,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>
     IBusinessObjectClass IBusinessObject.BusinessObjectClass
     {
-      get { return _bindableObjectClass; }
+      get { return BusinessObjectClass; }
     }
 
     protected override void OnInitialized ()

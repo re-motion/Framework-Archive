@@ -122,16 +122,18 @@ namespace Rubicon.ObjectBinding.BindableObject
       throw new NotImplementedException();
     }
 
-    /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this property. </summary>
-    /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type. </value>
-    /// <remarks>
-    ///   <note type="inotes">
-    ///     Must not return <see langword="null"/>.
-    ///   </note>
-    /// </remarks>
-    public IBusinessObjectProvider BusinessObjectProvider
+    /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>
+    /// <value> An instance of the <see cref="BindableObjectProvider"/> type. </value>
+    public BindableObjectProvider BusinessObjectProvider
     {
       get { return _businessObjectProvider; }
+    }
+
+    /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this property. </summary>
+    /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type. </value>
+    IBusinessObjectProvider IBusinessObjectProperty.BusinessObjectProvider
+    {
+      get { return BusinessObjectProvider; }
     }
 
     public PropertyInfo PropertyInfo
