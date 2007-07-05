@@ -2,6 +2,23 @@
 ========
 - Bugfix: RPA mit Attribut-Mapping konnte nicht mit Enums umgehen, die keinen 0-Wert hatten.
 
+- DomainObject.Properties ist nun enumerierbar und hat eine Count-Eigenschaft
+
+- DomainObjects sind nicht mehr direkt mit einem DataContainer verbunden, die Daten kommen immer aus der aktuellen ClientTransaction.
+- DomainObject.DataContainer wird nur mehr aus Kompatibilitätsgründen angeboten und sollte nicht mehr benutzt werden; die Methoden des
+  zurückgegebenen Objeks arbeiten auf den Daten aus der aktuellen ClientTransaction.
+- DomainObjects können zunächst nur in jener Transaktion benutzt werden, in der sie geladen oder erzeugt wurden
+  (DomainObjects.InitialClientTransaction). Durch DomainObject.EnlistInTransaction kann erlaubt werden, dieselbe DomainObject-Instanz auch in anderen
+  Transaktionen zu benutzen. Um Änderungen aus einer Transaktion in eine andere mitzunehmen, müssen diese jedoch vor dem Aufruf von
+  EnlistInTransaction committed werden.
+
+- Die aktuelle Transaktion ist nicht mehr über ClientTransaction.Current, sondern über ClientTransactionScope.CurrentTransaction abrufbar.
+- Der aktuelle ClientTransactionScope ist über ClientTransactionScope.ActiveScope abrufbar.
+- ClientTransactionScope.AutoRollbackBehavior kann benutzt werden, um am Ende eines Scopes ein automatisches Rollback aller nicht committeten
+  Änderungen durchzuführen.
+- ClientTransactionScope.AutoEnlistDomainObjects bewirkt, dass DomainObjects anderer Transaktionen automatisch in der vom Scope verwalteten
+  Transaktion verwendet werden dürfen (ohne explizit EnlistInTransaction aufzurufen).
+
 1.7.43.0
 ========
 

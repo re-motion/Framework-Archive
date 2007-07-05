@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   	public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.GetDataContainer ().ClientTransaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      return ClientTransactionScope.CurrentTransaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
     }
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, object value)
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor)
     {
 			ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return propertyAccessor.DomainObject.GetDataContainer ().ClientTransaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      return ClientTransactionScope.CurrentTransaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
     }
   }
 }
