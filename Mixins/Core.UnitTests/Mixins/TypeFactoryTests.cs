@@ -53,6 +53,18 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       }
     }
 
+    [Uses (typeof (NullMixin))]
+    public class GenericTypeWithMixin<T>
+    { }
+
+    [Test]
+    public void GetActiveConfigurationWithGenericTypes ()
+    {
+      BaseClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
+      Assert.AreEqual (typeof (GenericTypeWithMixin<int>), def.Type);
+      Assert.IsTrue (def.Mixins.HasItem (typeof (NullMixin)));
+    }
+
     [Test]
     public void DefinitionGeneratedEvenIfNoConfig()
     {

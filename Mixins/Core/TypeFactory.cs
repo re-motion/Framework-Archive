@@ -136,9 +136,20 @@ namespace Rubicon.Mixins
     public static BaseClassDefinition GetActiveConfiguration (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (targetType);
+      
+      Type typeToLookup;
+      if (targetType.IsGenericType)
+        typeToLookup = targetType.GetGenericTypeDefinition ();
+      else
+        typeToLookup = targetType;
+
+      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeToLookup);
       if (context == null)
-        context = new ClassContext (targetType);
+        context = new ClassContext (typeToLookup);
+
+      if (targetType.IsGenericType)
+        context = context.SpecializeWithTypeArguments (targetType.GetGenericArguments ());
+
       return BaseClassDefinitionCache.Current.GetBaseClassDefinition (context);
     }
   }

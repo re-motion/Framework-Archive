@@ -6,6 +6,7 @@ using NUnit.Framework;
 using Rubicon.Mixins.CodeGeneration;
 using System.Reflection;
 using Rubicon.Development.UnitTesting;
+using System.IO;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -71,6 +72,27 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       ClassOverridingMixinMembers[] array = Serializer.SerializeAndDeserialize (new ClassOverridingMixinMembers[] { c1, c2 });
       Assert.AreSame (Mixin.Get<MixinWithAbstractMembers> (array[0]).GetType (), Mixin.Get<MixinWithAbstractMembers> (array[1]).GetType ());
+    }
+
+    [Test]
+    [Ignore ("TODO: FS: When DynamicProxy supports save paths")]
+    public void Save ()
+    {
+      string path = Path.GetTempFileName ();
+
+      try
+      {
+        ConcreteTypeBuilder.Current.Scope.SaveAssembly (path);
+        Assert.IsTrue (File.Exists (path));
+
+        AssemblyName assemblyName = AssemblyName.GetAssemblyName (path);
+        Assert.IsNotNull (assemblyName);
+        Assert.AreEqual ("CastleDynProxy2", assemblyName.Name);
+      }
+      finally
+      {
+        File.Delete (path);
+      }
     }
   }
 }

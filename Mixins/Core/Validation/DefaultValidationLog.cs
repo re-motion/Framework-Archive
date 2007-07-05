@@ -109,10 +109,54 @@ namespace Rubicon.Mixins.Validation
       ++failures;
     }
 
-    public void UnexpectedException<TDefinition> (IValidationRule<TDefinition> rule, Exception ex) where TDefinition : IVisitableDefinition
+    public void UnexpectedException (IValidationRule rule, Exception ex)
     {
       GetCurrentResult ().Exceptions.Add (new ValidationExceptionResultItem (rule, ex));
       ++exceptions;
+    }
+
+    public void MergeIn (IValidationLog log)
+    {
+      foreach (ValidationResult mergedResult in log.GetResults ())
+      {
+        ValidationResult? activeResult = FindMatchingResult (mergedResult.Definition);
+        if (activeResult == null)
+        {
+          activeResult = new ValidationResult (mergedResult.Definition);
+          _results.Add (activeResult.Value);
+        }
+
+        foreach (ValidationResultItem resultItem in mergedResult.Successes)
+        {
+          activeResult.Value.Successes.Add (resultItem);
+          ++successes;
+        }
+        foreach (ValidationResultItem resultItem in mergedResult.Failures)
+        {
+          activeResult.Value.Failures.Add (resultItem);
+          ++failures;
+        }
+        foreach (ValidationResultItem resultItem in mergedResult.Warnings)
+        {
+          activeResult.Value.Warnings.Add (resultItem);
+          ++warnings;
+        }
+        foreach (ValidationExceptionResultItem resultItem in mergedResult.Exceptions)
+        {
+          activeResult.Value.Exceptions.Add (resultItem);
+          ++exceptions;
+        }
+      }
+    }
+
+    private ValidationResult? FindMatchingResult (IVisitableDefinition definition)
+    {
+      foreach (ValidationResult result in GetResults ())
+      {
+        if (result.Definition == definition)
+          return result;
+      }
+      return null;
     }
   }
 }

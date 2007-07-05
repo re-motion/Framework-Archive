@@ -24,6 +24,35 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Uses (typeof (NullMixin))]
+    public class GenericBaseWithMixin<T>
+    {
+    }
+
+    public class GenericDerivedWithInheritedMixin<T> : GenericBaseWithMixin<T>
+    {
+    }
+
+    [Test]
+    public void UsesAttributeIsInheritedOnOpenGenericTypes ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (GenericDerivedWithInheritedMixin<>)).BuildContext ();
+      Assert.IsTrue (context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (GenericDerivedWithInheritedMixin<>)).MixinCount);
+    }
+
+    public class NonGenericDerivedWithInheritedMixinFromGeneric : GenericBaseWithMixin<int>
+    {
+    }
+
+    [Test]
+    public void UsesAttributeIsInheritedOnNonGenericTypesInheritingFromGeneric ()
+    {
+      ApplicationContext context = new ApplicationContextBuilder (null).AddType (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).BuildContext ();
+      Assert.IsTrue (context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).ContainsMixin (typeof (NullMixin)));
+      Assert.AreEqual (1, context.GetClassContext (typeof (NonGenericDerivedWithInheritedMixinFromGeneric)).MixinCount);
+    }
+
+    [Uses (typeof (NullMixin))]
     [IgnoreForMixinConfiguration]
     public class DerivedWithUses : BaseWithUses
     {

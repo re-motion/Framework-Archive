@@ -25,17 +25,16 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return _scope; }
     }
 
-    public string SaveAssembly ()
+    public void SaveAssembly (string path)
     {
       try
       {
         _scope.SaveAssembly ();
       }
-      catch (NullReferenceException)
+      catch (NullReferenceException ex)
       {
-        return null;
+        throw new InvalidOperationException ("No type has yet been built.");
       }
-      return Path.Combine (Environment.CurrentDirectory, ModuleScope.FILE_NAME);
     }
 
     public void InitializeInstance (IMixinTarget instance)

@@ -60,37 +60,32 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void ValidationVisitsSomething ()
     {
-      IEnumerable<IVisitableDefinition> definitions = BuildAllBaseDefinitions();
-      DefaultValidationLog log = Validator.Validate (definitions);
-
+      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
       Assert.IsTrue (log.ResultCount > 1);
     }
 
     [Test]
     public void ValidationDump ()
     {
-      IEnumerable<IVisitableDefinition> definitions = BuildAllBaseDefinitions();
-      DefaultValidationLog log = Validator.Validate (definitions);
-      ConsoleDumper.DumpValidationResults (log.GetResults());
+      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      ConsoleDumper.DumpValidationResults (log.GetResults ());
     }
 
     [Test]
     public void ValidationResultDefinition ()
     {
-      List<IVisitableDefinition> definitions = new List<IVisitableDefinition> (BuildAllBaseDefinitions ());
-      DefaultValidationLog log = Validator.Validate (definitions);
+      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
 
       IEnumerator<ValidationResult> results = log.GetResults().GetEnumerator();
       Assert.IsTrue (results.MoveNext());
       ValidationResult firstResult = results.Current;
-      Assert.AreSame (definitions[0], firstResult.Definition);
+      Assert.IsNotNull (firstResult.Definition);
     }
 
     [Test]
     public void AllIsValid ()
     {
-      IEnumerable<IVisitableDefinition> definitions = BuildAllBaseDefinitions();
-      DefaultValidationLog log = Validator.Validate (definitions);
+      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
       Assert.AreEqual (0, log.GetNumberOfFailures());
       Assert.AreEqual (0, log.GetNumberOfWarnings());
       Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions());
@@ -203,9 +198,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void HasDefaultRules ()
     {
-      IEnumerable<IVisitableDefinition> definitions = BuildAllBaseDefinitions();
-      DefaultValidationLog log = Validator.Validate (definitions);
-      Assert.IsTrue (log.GetNumberOfRulesExecuted() > 0);
+      IValidationLog log = MixinConfiguration.ActiveContext.Validate ();
+      Assert.IsTrue (log.GetNumberOfRulesExecuted () > 0);
     }
 
     [Test]
@@ -600,6 +594,109 @@ namespace Rubicon.Mixins.UnitTests.Configuration
           + "for a full list of issues.", exception.Message);
 
       Assert.AreSame (log, exception.ValidationLog);
+    }
+
+    [Test]
+    public void Merge ()
+    {
+      IValidationLog sourceLog = new DefaultValidationLog ();
+      Exception exception = new Exception ();
+
+      BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+      BaseClassDefinition bt2 = TypeFactory.GetActiveConfiguration (typeof (BaseType2));
+      BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      BaseClassDefinition bt4 = TypeFactory.GetActiveConfiguration (typeof (BaseType4));
+
+      sourceLog.ValidationStartsFor (bt1);
+      sourceLog.Succeed (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Success", "Success"));
+      sourceLog.Warn (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Warn", "Warn"));
+      sourceLog.Fail (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Fail", "Fail"));
+      sourceLog.UnexpectedException (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Except", "Except"), exception);
+      sourceLog.ValidationEndsFor (bt1);
+
+      sourceLog.ValidationStartsFor (bt4);
+      sourceLog.Succeed (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Success2", "Success2"));
+      sourceLog.Warn (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Warn2", "Warn2"));
+      sourceLog.Fail (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Fail2", "Fail2"));
+      sourceLog.UnexpectedException (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "Except2", "Except2"), exception);
+      sourceLog.ValidationEndsFor (bt4);
+
+      IValidationLog resultLog = new DefaultValidationLog ();
+      resultLog.ValidationStartsFor (bt2);
+      resultLog.Succeed (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "0", "0"));
+      resultLog.Warn (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "1", "1"));
+      resultLog.Fail (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "2", "2"));
+      resultLog.UnexpectedException (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "3", "3"), exception);
+      resultLog.ValidationEndsFor (bt2);
+
+      resultLog.ValidationStartsFor (bt1);
+      resultLog.Succeed (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "4", "4"));
+      resultLog.Warn (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "5", "5"));
+      resultLog.Fail (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "6", "6"));
+      resultLog.UnexpectedException (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "7", "7"), exception);
+      resultLog.ValidationEndsFor (bt1);
+
+      resultLog.ValidationStartsFor (bt3);
+      resultLog.Succeed (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "8", "8"));
+      resultLog.Warn (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "9", "9"));
+      resultLog.Fail (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "10", "10"));
+      resultLog.UnexpectedException (new DelegateValidationRule<BaseClassDefinition> (delegate { }, "11", "11"), exception);
+      resultLog.ValidationEndsFor (bt3);
+
+      resultLog.MergeIn (sourceLog);
+      Assert.AreEqual (5, resultLog.GetNumberOfSuccesses ());
+      Assert.AreEqual (5, resultLog.GetNumberOfWarnings ());
+      Assert.AreEqual (5, resultLog.GetNumberOfFailures ());
+      Assert.AreEqual (5, resultLog.GetNumberOfUnexpectedExceptions ());
+
+      List<ValidationResult> results = new List<ValidationResult> (resultLog.GetResults ());
+
+      Assert.AreEqual (4, results.Count);
+
+      Assert.AreEqual (bt2, results[0].Definition);
+      Assert.AreEqual (1, results[0].Successes.Count);
+      Assert.AreEqual (1, results[0].Failures.Count);
+      Assert.AreEqual (1, results[0].Warnings.Count);
+      Assert.AreEqual (1, results[0].Exceptions.Count);
+
+      Assert.AreEqual (bt1, results[1].Definition);
+      
+      Assert.AreEqual (2, results[1].Successes.Count);
+      Assert.AreEqual ("4", results[1].Successes[0].Message);
+      Assert.AreEqual ("Success", results[1].Successes[1].Message);
+
+      Assert.AreEqual (2, results[1].Warnings.Count);
+      Assert.AreEqual ("5", results[1].Warnings[0].Message);
+      Assert.AreEqual ("Warn", results[1].Warnings[1].Message);
+      
+      Assert.AreEqual (2, results[1].Failures.Count);
+      Assert.AreEqual ("6", results[1].Failures[0].Message);
+      Assert.AreEqual ("Fail", results[1].Failures[1].Message);
+
+      Assert.AreEqual (2, results[1].Exceptions.Count);
+      Assert.AreEqual (exception, results[1].Exceptions[0].Exception);
+      Assert.AreEqual (exception, results[1].Exceptions[1].Exception);
+
+      Assert.AreEqual (bt3, results[2].Definition);
+      Assert.AreEqual (1, results[2].Successes.Count);
+      Assert.AreEqual (1, results[2].Failures.Count);
+      Assert.AreEqual (1, results[2].Warnings.Count);
+      Assert.AreEqual (1, results[2].Exceptions.Count);
+
+      Assert.AreEqual (bt4, results[3].Definition);
+
+      Assert.AreEqual (1, results[3].Successes.Count);
+      Assert.AreEqual ("Success2", results[3].Successes[0].Message);
+
+      Assert.AreEqual (1, results[3].Warnings.Count);
+      Assert.AreEqual ("Warn2", results[3].Warnings[0].Message);
+
+      Assert.AreEqual (1, results[3].Failures.Count);
+      Assert.AreEqual ("Fail2", results[3].Failures[0].Message);
+
+      Assert.AreEqual (1, results[3].Exceptions.Count);
+      Assert.AreEqual (exception, results[3].Exceptions[0].Exception);
+
     }
   }
 }

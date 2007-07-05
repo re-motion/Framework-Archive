@@ -551,5 +551,18 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (two.ContainsMixin (typeof (BT1Mixin1)));
       Assert.IsTrue (two.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
     }
+
+    [Test]
+    public void SpecializeWithTypeArguments ()
+    {
+      ClassContext original = new ClassContext (typeof (List<>));
+      original.AddMixin (typeof (BT1Mixin1)).AddExplicitDependency (typeof (IBaseType2));
+
+      ClassContext specialized = original.SpecializeWithTypeArguments (new Type[] { typeof (int) });
+      Assert.IsNotNull (specialized);
+      Assert.AreEqual (typeof (List<int>), specialized.Type);
+      Assert.IsTrue (specialized.ContainsMixin (typeof (BT1Mixin1)));
+      Assert.IsTrue (specialized.GetOrAddMixinContext (typeof (BT1Mixin1)).ContainsExplicitDependency (typeof (IBaseType2)));
+    }
   }
 }

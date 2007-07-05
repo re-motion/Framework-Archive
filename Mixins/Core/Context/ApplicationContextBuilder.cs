@@ -211,6 +211,8 @@ namespace Rubicon.Mixins.Context
         Type currentBaseType = targetType.BaseType;
         while (currentBaseType != null)
         {
+          if (currentBaseType.IsGenericType)
+            currentBaseType = currentBaseType.GetGenericTypeDefinition ();
           AnalyzeInheritedMixins (targetType, currentBaseType);
           currentBaseType = currentBaseType.BaseType;
         }

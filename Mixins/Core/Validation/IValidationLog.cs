@@ -14,7 +14,7 @@ namespace Rubicon.Mixins.Validation
     void Succeed (IValidationRule rule);
     void Warn (IValidationRule rule);
     void Fail (IValidationRule rule);
-    void UnexpectedException<TDefinition> (IValidationRule<TDefinition> rule, Exception ex) where TDefinition : IVisitableDefinition;
+    void UnexpectedException (IValidationRule rule, Exception ex);
 
     // methods for reading the log
 
@@ -26,5 +26,6 @@ namespace Rubicon.Mixins.Validation
     int GetNumberOfSuccesses ();
     int GetNumberOfUnexpectedExceptions ();
     int GetNumberOfRulesExecuted ();
+    void MergeIn (IValidationLog log);
   }
 }

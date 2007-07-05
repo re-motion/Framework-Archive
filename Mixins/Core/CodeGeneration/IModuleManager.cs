@@ -10,7 +10,7 @@ namespace Rubicon.Mixins.CodeGeneration
     ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration);
     IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration);
 
-    string SaveAssembly ();
+    void SaveAssembly (string path);
 
     void InitializeInstance (IMixinTarget instance);
     void InitializeInstance (IMixinTarget instance, object[] extensions);

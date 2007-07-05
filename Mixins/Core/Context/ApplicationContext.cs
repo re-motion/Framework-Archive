@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
 using Rubicon.Mixins.Validation;
 
@@ -152,12 +153,49 @@ namespace Rubicon.Mixins.Context
     /// <remarks>This method retrieves definition items for all the <see cref="ClassContexts"/> known by this application context and uses the
     /// <see cref="Validator"/> class to validate them. The validation results can be inspected, passed to a <see cref="ValidationException"/>, or
     /// be dumped using the <see cref="ConsoleDumper"/>.</remarks>
+    /// <exception cref="NotSupportedException">The <see cref="ApplicationContext"/> contains a <see cref="ClassContext"/> for a generic type, of
+    /// which it cannot make a closed generic type. Because closed types are needed for validation, this <see cref="ApplicationContext"/>
+    /// cannot be validated as a whole. Even in this case, the configuration might still be correct, but validation is deferred to
+    /// <see cref="TypeFactory.GetActiveConfiguration"/>.</exception>
     public IValidationLog Validate()
     {
       List<IVisitableDefinition> definitions = new List<IVisitableDefinition>();
+      List<ValidationException> exceptions = new List<ValidationException> ();
+
       foreach (ClassContext classContext in MixinConfiguration.ActiveContext.ClassContexts)
-        definitions.Add (TypeFactory.GetActiveConfiguration (classContext.Type));
-      return Validator.Validate (definitions);
+      {
+        Type typeToVerify;
+        if (classContext.Type.IsGenericTypeDefinition)
+        {
+          try
+          {
+            typeToVerify = GenericTypeInstantiator.EnsureClosedType (classContext.Type);
+          }
+          catch (NotSupportedException ex)
+          {
+            string message = string.Format ("The ApplicationContext contains a ClassContext for the generic type {0}, of which it cannot make a "
+                + "closed type. Because closed types are needed for validation, the ApplicationContext cannot be validated as a whole. The "
+                + "configuration might still be correct, but validation is deferred to TypeFactory.GetActiveConfiguration.", classContext.Type);
+            throw new NotSupportedException (message, ex);
+          }
+        }
+        else
+          typeToVerify = classContext.Type;
+
+        try
+        {
+          definitions.Add (TypeFactory.GetActiveConfiguration (typeToVerify));
+        }
+        catch (ValidationException exception)
+        {
+          exceptions.Add (exception);
+        }
+      }
+      DefaultValidationLog log = Validator.Validate (definitions);
+      foreach (ValidationException exception in exceptions)
+        log.MergeIn (exception.ValidationLog);
+
+      return log;
     }
 
     /// <summary>

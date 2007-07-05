@@ -433,5 +433,35 @@ namespace Rubicon.Mixins.Context
         sb.Append (" => ").Append (completeInterfaceType.FullName);
       return sb.ToString();
     }
- }
+
+    /// <summary>
+    /// Creates a clone of the current class context, replacing its generic parameters with type arguments. This method is only allowed on
+    /// class contexts representing a generic type definition.
+    /// </summary>
+    /// <param name="genericArguments">The type arguments to specialize this context's <see cref="Type"/> with.</param>
+    /// <returns>A <see cref="ClassContext"/> which is identical to this one except its <see cref="Type"/> being specialized with the
+    /// given <paramref name="genericArguments"/>.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="genericArguments"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException"><see cref="Type"/> is not a generic type definition.</exception>
+    public ClassContext SpecializeWithTypeArguments (Type[] genericArguments)
+    {
+      ArgumentUtility.CheckNotNull ("genericArguments", genericArguments);
+
+      if (!Type.IsGenericTypeDefinition)
+        throw new InvalidOperationException ("This method is only allowed on generic type definitions.");
+      
+      lock (_lockObject)
+      {
+        ClassContext newInstance = new ClassContext (Type.MakeGenericType (genericArguments));
+
+        foreach (MixinContext mixinContext in Mixins)
+          mixinContext.CloneAndAddTo (newInstance);
+
+        foreach (Type completeInterface in CompleteInterfaces)
+          newInstance.AddCompleteInterface (completeInterface);
+
+        return newInstance;
+      }
+    }
+  }
 }

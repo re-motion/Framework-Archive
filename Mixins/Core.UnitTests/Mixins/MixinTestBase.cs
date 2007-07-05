@@ -32,7 +32,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       string path;
       try
       {
-        path = ConcreteTypeBuilder.Current.Scope.SaveAssembly ();
+        path = Path.Combine (Environment.CurrentDirectory, "CastleDynProxy2.dll");
+        try
+        {
+          ConcreteTypeBuilder.Current.Scope.SaveAssembly (path);
+        }
+        catch (InvalidOperationException ex)
+        {
+          Console.WriteLine (ex.Message);
+          return;
+        }
       }
       catch (Exception ex)
       {
@@ -42,14 +51,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       ConcreteTypeBuilder.SetCurrent (null);
 
-      if (path != null || !File.Exists(path))
-      {
-        VerifyPEFile (path);
-      }
-      else
-      {
-        Console.WriteLine ("Assembly file was not saved.");
-      }
+      VerifyPEFile (path);
     }
 
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
