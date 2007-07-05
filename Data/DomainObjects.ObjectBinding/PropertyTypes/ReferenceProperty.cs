@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       get { return new DomainObjectClass ((IsList) ? ListInfo.ItemType : PropertyType); }
     }
 
-    public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject businessObject, string queryID)
+    public IBusinessObject[] SearchAvailableObjects (IBusinessObject businessObject, bool requiresIdentity, string queryID)
     {
       if (queryID == null || queryID == string.Empty)
         return new IBusinessObjectWithIdentity[] { };
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return availableObjects;
     }
 
-    public bool SupportsSearchAvailableObjects (bool requiresIdentity)
+    public bool SupportsSearchAvailableObjects (bool supportsIdentity)
     {
       return true;
     }

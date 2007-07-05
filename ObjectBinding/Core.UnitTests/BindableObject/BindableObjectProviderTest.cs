@@ -24,7 +24,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetInstance ()
     {
-      Assert.That (BindableObjectProvider.Instance, Is.InstanceOfType (typeof (BindableObjectProvider)));
+      Assert.That (BindableObjectProvider.Instance, Is.TypeOf (typeof (BindableObjectProvider)));
     }
 
     [Test]

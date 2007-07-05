@@ -34,7 +34,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Boolean");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (BooleanProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (BooleanProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Boolean"));
     }
 
@@ -43,7 +43,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Byte");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (ByteProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (ByteProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Byte"));
     }
 
@@ -52,7 +52,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Date");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DateProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DateProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Date"));
     }
 
@@ -61,7 +61,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("DateTime");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DateTimeProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DateTimeProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("DateTime"));
     }
 
@@ -70,7 +70,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Decimal");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DecimalProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DecimalProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Decimal"));
     }
 
@@ -79,7 +79,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Double");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (DoubleProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DoubleProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Double"));
     }
 
@@ -88,7 +88,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Enum");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (EnumerationProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (EnumerationProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Enum"));
     }
 
@@ -100,7 +100,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (NotSupportedProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (NotSupportedProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
     }
 
@@ -109,7 +109,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int16");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int16Property)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int16Property)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int16"));
     }
 
@@ -118,7 +118,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int32");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int32Property)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int32Property)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int32"));
     }
 
@@ -127,7 +127,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int64");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (Int64Property)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int64Property)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int64"));
     }
 
@@ -136,7 +136,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("BusinessObject");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (ReferenceProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (ReferenceProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("BusinessObject"));
     }
 
@@ -145,7 +145,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Single");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (SingleProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (SingleProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Single"));
     }
 
@@ -154,7 +154,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("String");
 
-      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (StringProperty)));
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (StringProperty)));
       Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("String"));
     }
 

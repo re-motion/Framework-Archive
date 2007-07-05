@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
+  [BindableObject]
   public class ClassWithValueType<T>
       where T: struct
   {

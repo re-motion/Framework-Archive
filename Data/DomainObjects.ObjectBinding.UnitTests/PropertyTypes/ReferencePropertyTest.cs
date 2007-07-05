@@ -39,7 +39,7 @@ public class ReferencePropertyTest : DatabaseTest
   {
     ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
-    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (true, _orderTicket, "AllOrders");
+    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (_orderTicket, true, "AllOrders");
     
     Assert.IsNotNull (businessObjects);
     Assert.IsTrue (businessObjects.Length > 0);
@@ -57,7 +57,7 @@ public class ReferencePropertyTest : DatabaseTest
   {
     ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
-    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (true, new BusinessObjectWithIdentity (), "AllOrders");
+    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (new BusinessObjectWithIdentity (), true, "AllOrders");
     
     Assert.IsNotNull (businessObjects);
     Assert.IsTrue (businessObjects.Length > 0);
@@ -73,7 +73,7 @@ public class ReferencePropertyTest : DatabaseTest
   {
     ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
 
-    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (true, null, "AllOrders");
+    IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (null, true, "AllOrders");
     
     Assert.IsNotNull (businessObjects);
     Assert.IsTrue (businessObjects.Length > 0);

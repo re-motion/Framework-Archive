@@ -17,24 +17,25 @@ namespace Rubicon.ObjectBinding
     /// <summary> 
     ///   Gets a flag indicating whether it is possible to get a list of the objects that can be assigned to this property.
     /// </summary>
-    /// <param name="requiresIdentity">
-    /// A flag that if <see langword="true"/> determines that the objects must implement <see cref="IBusinessObjectWithIdentity"/>.
+    /// <param name="supportsIdentity">
+    /// A flag that if <see langword="true"/> determines that the objects returned by <see cref="SearchAvailableObjects"/> will implement 
+    /// <see cref="IBusinessObjectWithIdentity"/>.
     /// </param>
     /// <returns> <see langword="true"/> if it is possible to get the available objects from the object model. </returns>
     /// <remarks> 
     ///   Use the <see cref="SearchAvailableObjects"/> method (or an object model specific overload) to get the list of 
     ///   objects.
     /// </remarks>
-    bool SupportsSearchAvailableObjects (bool requiresIdentity);
+    bool SupportsSearchAvailableObjects (bool supportsIdentity);
 
     /// <summary> 
     ///   Searches the object model for the <see cref="IBusinessObject"/> instances that can be assigned to this property.
     /// </summary>
+    /// <param name="referencingObject"> The business object for which to search for the possible objects to be referenced. </param>
     /// <param name="requiresIdentity">
     /// A flag that if <see langword="true"/> determines that the return value muss consist only of objects implenting 
     /// <see cref="IBusinessObjectWithIdentity"/>.
     /// </param>
-    /// <param name="obj"> The business object for which to search for the possible objects to be referenced. </param>
     /// <param name="searchStatement"> 
     ///   A <see cref="string"/> containing a search statement. Can be <see langword="null"/>.
     /// </param>
@@ -53,7 +54,7 @@ namespace Rubicon.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement); 
+    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, bool requiresIdentity, string searchStatement); 
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="Create"/> may be called to implicitly create a new business object 

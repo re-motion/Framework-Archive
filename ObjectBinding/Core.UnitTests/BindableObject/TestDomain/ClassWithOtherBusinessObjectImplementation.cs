@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  public abstract class OtherBusinessObjectImplementation : IBusinessObject
+  public abstract class ClassWithOtherBusinessObjectImplementation : IBusinessObject
   {
     public abstract object GetProperty (IBusinessObjectProperty property);
 

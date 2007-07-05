@@ -443,15 +443,15 @@ namespace Rubicon.ObjectBinding.Reflection
       get { return new ReflectionBusinessObjectClass (PropertyType); }
     }
 
-    public IBusinessObject[] SearchAvailableObjects (bool requiresIdentity, IBusinessObject obj, string searchStatement)
+    public IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, bool requiresIdentity, string searchStatement)
     {
       if (searchStatement == "*")
-        return ReflectionBusinessObjectStorage.GetObjects (obj.GetType());
+        return ReflectionBusinessObjectStorage.GetObjects (referencingObject.GetType());
       else
         return new IBusinessObjectWithIdentity[0];
     }
 
-    public bool SupportsSearchAvailableObjects (bool requiresIdentity)
+    public bool SupportsSearchAvailableObjects (bool supportsIdentity)
     {
       return true;
     }

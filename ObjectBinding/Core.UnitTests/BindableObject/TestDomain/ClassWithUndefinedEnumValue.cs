@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
+  [BindableObject]
   public class ClassWithUndefinedEnumValue
   {
     private EnumWithUndefinedValue _scalar;

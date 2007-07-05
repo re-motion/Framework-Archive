@@ -1054,7 +1054,7 @@ public class BocReferenceValue:
 
     //  Get all matching business objects
     if (DataSource != null && DataSource.BusinessObject != null)
-      businessObjects = Property.SearchAvailableObjects (true, DataSource.BusinessObject, _select);
+      businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, true, _select);
 
     RefreshBusinessObjectList (ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity> (businessObjects));
   }
