@@ -673,7 +673,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (2, events); // rollingback, rolledback
     }
 
-
     [Test]
     public void ReadOnly ()
     {
@@ -681,117 +680,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsFalse (clientTransaction.IsReadOnly);
       clientTransaction.IsReadOnly = true;
       Assert.IsTrue (clientTransaction.IsReadOnly);
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionCanGetPropertyValues ()
-    {
-      ClientTransactionMock clientTransaction = new ClientTransactionMock ();
-      using (clientTransaction.EnterScope ())
-      {
-        Order order = Order.GetObject (DomainObjectIDs.Order1);
-        clientTransaction.IsReadOnly = true;
-        int orderNumber = order.OrderNumber;
-      }
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionCanGetObjectsIfAlreadyLoaded ()
-    {
-      ClientTransactionMock clientTransaction = new ClientTransactionMock ();
-      using (clientTransaction.EnterScope ())
-      {
-        Order order = Order.GetObject (DomainObjectIDs.Order1);
-        clientTransaction.IsReadOnly = true;
-        Order order2 = Order.GetObject (DomainObjectIDs.Order1);
-        Assert.AreSame (order, order2);
-      }
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionCanGetRelatedObjectsIfAlreadyLoaded ()
-    {
-      ClientTransactionMock clientTransaction = new ClientTransactionMock ();
-      using (clientTransaction.EnterScope ())
-      {
-        Order order = Order.GetObject (DomainObjectIDs.Order1);
-        OrderItem orderItem = order.OrderItems[0];
-        clientTransaction.IsReadOnly = true;
-        OrderItem orderItem2 = order.OrderItems[0];
-        Assert.AreSame (orderItem, orderItem2);
-      }
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsWhenGetObjectNotLoaded ()
-    {
-      ClientTransactionMock clientTransaction = new ClientTransactionMock ();
-      using (clientTransaction.EnterScope ())
-      {
-        clientTransaction.IsReadOnly = true;
-        Order order = Order.GetObject (DomainObjectIDs.Order1);
-        Assert.Fail ();
-      }
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsWhenRelatedObjectNotLoadedRealSide ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsWhenRelatedObjectNotLoadedVirtualSide ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnNewObject ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnDelete ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnPropertyValueChange ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnRelationChange ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnCommit ()
-    {
-      Assert.Fail ();
-    }
-
-    [Test]
-    [Ignore ("TODO: FS")]
-    public void ReadonlyTransactionThrowsOnRollback ()
-    {
-      Assert.Fail ();
     }
   }
 }

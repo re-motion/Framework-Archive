@@ -76,6 +76,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         listener.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
     }
 
+    public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.RelationReading (domainObject, propertyName, valueAccess);
+    }
+
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
       foreach (IClientTransactionListener listener in _listeners)
@@ -86,12 +92,6 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       foreach (IClientTransactionListener listener in _listeners)
         listener.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
-    }
-
-    public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
-    {
-      foreach (IClientTransactionListener listener in _listeners)
-        listener.RelationReading (domainObject, propertyName, valueAccess);
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)

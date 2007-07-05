@@ -107,10 +107,13 @@
     <Compile Include="Design\DomainObjectsDesignModeHelper.cs" />
     <Compile Include="Design\DesignModeMappingLoaderAttribute.cs" />
     <Compile Include="Design\DesignModeMappingReflector.cs" />
+    <Compile Include="Infrastructure\ClientTransactionReadOnlyException.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />
     <Compile Include="Infrastructure\DataContainerIndirection.cs" />
     <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\LoggingClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\ReadOnlyClientTransactionListener.cs" />
     <Compile Include="Infrastructure\RelatedObjectCollectionPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectTypeInterceptorSelector.cs" />

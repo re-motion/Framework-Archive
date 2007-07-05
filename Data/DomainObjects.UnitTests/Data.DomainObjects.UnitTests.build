@@ -18,6 +18,7 @@
         <exclude name="Properties/AssemblyInfoTemplate.cs" />   
       </sources>
       <references failonempty="true">
+        <include asis="true" name="${build.test.outputdir}/log4net.dll"/>
         <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rhino.Mocks.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>

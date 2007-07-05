@@ -75,6 +75,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <Name>nunit.framework</Name>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
@@ -792,6 +796,7 @@
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
+    <Compile Include="Transaction\ReadOnlyClientTransactionTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">

@@ -28,9 +28,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue);
     void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue);
 
+    void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess);
     void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess);
     void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess);
-    void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess);
     
     void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject);
     void RelationChanged (DomainObject domainObject, string propertyName);

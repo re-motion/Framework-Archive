@@ -19,6 +19,7 @@ using Mocks_Is = Rhino.Mocks.Constraints.Is;
 using Mocks_List = Rhino.Mocks.Constraints.List;
 using Mocks_Property = Rhino.Mocks.Constraints.Property;
 using SecurityContext=Rubicon.Security.SecurityContext;
+using log4net.Filter;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -54,6 +55,15 @@ namespace Rubicon.SecurityManager.UnitTests
      _principal = CreateUser ();
   
       _memoryAppender = new MemoryAppender();
+      
+      LoggerMatchFilter acceptFilter = new LoggerMatchFilter ();
+      acceptFilter.LoggerToMatch = "Rubicon.SecurityManager";
+      acceptFilter.AcceptOnMatch = true;
+      _memoryAppender.AddFilter (acceptFilter);
+
+      DenyAllFilter denyFilter = new DenyAllFilter();
+      _memoryAppender.AddFilter (denyFilter);
+
       BasicConfigurator.Configure(_memoryAppender); 
     }
 

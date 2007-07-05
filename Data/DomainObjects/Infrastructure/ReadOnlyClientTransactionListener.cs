@@ -1,151 +1,154 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// A <see cref="IClientTransactionListener"/> implementation that notifies <see cref="IClientTransactionExtension">IClientTransactionExtensions</see>
-  /// about transaction events.
+  /// An implementation of <see cref="IClientTransactionListener"/> which throws an exception if the <see cref="ClientTransaction"/> is about
+  /// to be modified while in a read-only state.
   /// </summary>
-  /// <remarks>
-  /// The <see cref="ClientTransaction"/> class uses this listener to implement its extension mechanism.
-  /// </remarks>
   [Serializable]
-  public class ExtensionClientTransactionListener : IClientTransactionListener
+  public class ReadOnlyClientTransactionListener : IClientTransactionListener
   {
-    private ClientTransactionExtensionCollection _extensions;
+    private readonly ClientTransaction _clientTransaction;
 
-    public ExtensionClientTransactionListener (ClientTransactionExtensionCollection extensions)
+    public ReadOnlyClientTransactionListener (ClientTransaction clientTransaction)
     {
-      _extensions = extensions;
+      _clientTransaction = clientTransaction;
     }
 
-    public ClientTransactionExtensionCollection Extensions
+    private void EnsureWriteable (string operation)
     {
-      get { return _extensions; }
+      if (_clientTransaction.IsReadOnly)
+      {
+        string message = string.Format (
+            "The operation cannot be executed because the ClientTransaction is read-only. "
+            + "Offending transaction modification: {0}.",
+            operation);
+        throw new ClientTransactionReadOnlyException (message);
+      }
     }
 
     public void NewObjectCreating (Type type)
     {
-      _extensions.NewObjectCreating (type);
+      EnsureWriteable ("NewObjectCreating");
     }
 
     public void ObjectLoading (ObjectID id)
     {
-      _extensions.ObjectLoading (id);
+      EnsureWriteable ("ObjectLoading");
     }
 
     public void ObjectsLoaded (DomainObjectCollection domainObjects)
     {
-      _extensions.ObjectsLoaded (domainObjects);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void ObjectDeleting (DomainObject domainObject)
     {
-      _extensions.ObjectDeleting (domainObject);
+      EnsureWriteable ("ObjectDeleting");
     }
 
     public void ObjectDeleted (DomainObject domainObject)
     {
-      _extensions.ObjectDeleted (domainObject);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
     {
-      _extensions.PropertyValueReading (dataContainer, propertyValue, valueAccess);
     }
 
     public void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
     {
-      _extensions.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
     }
 
     public void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      _extensions.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
+      EnsureWriteable ("PropertyValueChanging");
     }
 
     public void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
     {
-      _extensions.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
     {
-      _extensions.RelationReading (domainObject, propertyName, valueAccess);
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
     {
-      _extensions.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
     }
 
     public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
     {
-      _extensions.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
     }
 
     public void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
     {
-      _extensions.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
+      EnsureWriteable ("RelationChanging");
     }
 
     public void RelationChanged (DomainObject domainObject, string propertyName)
     {
-      _extensions.RelationChanged (domainObject, propertyName);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
     {
-      _extensions.FilterQueryResult (queryResult, query);
     }
 
     public void TransactionCommitting (DomainObjectCollection domainObjects)
     {
-      _extensions.Committing (domainObjects);
+      EnsureWriteable ("TransactionCommitting");
     }
 
     public void TransactionCommitted (DomainObjectCollection domainObjects)
     {
-      _extensions.Committed (domainObjects);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void TransactionRollingBack (DomainObjectCollection domainObjects)
     {
-      _extensions.RollingBack (domainObjects);
+      EnsureWriteable ("TransactionRollingBack");
     }
 
     public void TransactionRolledBack (DomainObjectCollection domainObjects)
     {
-      _extensions.RolledBack (domainObjects);
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapRegistering (RelationEndPoint endPoint)
     {
+      EnsureWriteable ("RelationEndPointMapRegistering");
     }
 
     public void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
     {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs)
     {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void DataContainerMapRegistering (DataContainer container)
     {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
     public void DataContainerMapUnregistering (DataContainer container)
     {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
   }
 }
