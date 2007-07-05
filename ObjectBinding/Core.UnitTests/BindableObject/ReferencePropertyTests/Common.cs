@@ -5,6 +5,7 @@ using Rhino.Mocks;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 using Rubicon.Utilities;
 
@@ -31,7 +32,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
     [Test]
     [ExpectedException (typeof (NotSupportedException),
-        ExpectedMessage = "Create method is not supported by 'Rubicon.ObjectBinding.BindableObject.ReferenceProperty'.")]
+        ExpectedMessage = "Create method is not supported by 'Rubicon.ObjectBinding.BindableObject.Properties.ReferenceProperty'.")]
     public void Create ()
     {
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar");

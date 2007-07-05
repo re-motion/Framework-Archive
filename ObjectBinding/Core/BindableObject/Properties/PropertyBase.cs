@@ -3,9 +3,8 @@ using System.Collections;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public abstract class PropertyBase : IBusinessObjectProperty
   {
     public struct Parameters

@@ -1,8 +1,7 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public abstract class NumericPropertyBase : PropertyBase, IBusinessObjectNumericProperty
   {
     protected NumericPropertyBase (Parameters parameters)

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty
   {
     private readonly Enum _undefinedValue;

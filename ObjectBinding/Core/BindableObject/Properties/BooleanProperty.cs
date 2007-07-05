@@ -1,9 +1,8 @@
 using System;
 using Rubicon.Globalization;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {
     [ResourceIdentifiers]

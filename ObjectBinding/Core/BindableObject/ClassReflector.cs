@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject

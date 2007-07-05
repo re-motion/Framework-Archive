@@ -1,8 +1,7 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public class DateTimeProperty : DateTimePropertyBase
   {
     public DateTimeProperty (Parameters parameters)

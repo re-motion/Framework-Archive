@@ -1,11 +1,10 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
-  public class Int64Property : NumericPropertyBase
+  public class SingleProperty : NumericPropertyBase
   {
-    public Int64Property (Parameters parameters)
+    public SingleProperty (Parameters parameters)
         : base (parameters)
     {
     }
@@ -20,7 +19,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
     public override Type Type
     {
-      get { return typeof (Int64); }
+      get { return typeof (Single); }
     }
   }
 }

@@ -101,22 +101,22 @@
     <Compile Include="BindableObject\BindableObjectClass.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
-    <Compile Include="BindableObject\BooleanProperty.cs" />
+    <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
     <Compile Include="BindableObject\BindableObjectSearchServiceTypeAttribute.cs" />
-    <Compile Include="BindableObject\DateProperty.cs" />
-    <Compile Include="BindableObject\DateTimeProperty.cs" />
-    <Compile Include="BindableObject\DateTimePropertyBase.cs" />
-    <Compile Include="BindableObject\DecimalProperty.cs" />
-    <Compile Include="BindableObject\DoubleProperty.cs" />
+    <Compile Include="BindableObject\Properties\DateProperty.cs" />
+    <Compile Include="BindableObject\Properties\DateTimeProperty.cs" />
+    <Compile Include="BindableObject\Properties\DateTimePropertyBase.cs" />
+    <Compile Include="BindableObject\Properties\DecimalProperty.cs" />
+    <Compile Include="BindableObject\Properties\DoubleProperty.cs" />
     <Compile Include="BindableObject\IBindableObjectSearchService.cs" />
-    <Compile Include="BindableObject\ReferenceProperty.cs" />
-    <Compile Include="BindableObject\SingleProperty.cs" />
-    <Compile Include="BindableObject\Int64Property.cs" />
-    <Compile Include="BindableObject\ByteProperty.cs" />
-    <Compile Include="BindableObject\Int16Property.cs" />
-    <Compile Include="BindableObject\EnumerationProperty.cs" />
-    <Compile Include="BindableObject\Int32Property.cs" />
-    <Compile Include="BindableObject\NumericPropertyBase.cs" />
+    <Compile Include="BindableObject\Properties\ReferenceProperty.cs" />
+    <Compile Include="BindableObject\Properties\SingleProperty.cs" />
+    <Compile Include="BindableObject\Properties\Int64Property.cs" />
+    <Compile Include="BindableObject\Properties\ByteProperty.cs" />
+    <Compile Include="BindableObject\Properties\Int16Property.cs" />
+    <Compile Include="BindableObject\Properties\EnumerationProperty.cs" />
+    <Compile Include="BindableObject\Properties\Int32Property.cs" />
+    <Compile Include="BindableObject\Properties\NumericPropertyBase.cs" />
     <Compile Include="DatePropertyAttribute.cs" />
     <Compile Include="Globalization\BooleanProperty.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -126,12 +126,12 @@
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
-    <Compile Include="BindableObject\NotSupportedProperty.cs" />
-    <Compile Include="BindableObject\PropertyBase.cs" />
+    <Compile Include="BindableObject\Properties\NotSupportedProperty.cs" />
+    <Compile Include="BindableObject\Properties\PropertyBase.cs" />
     <Compile Include="BindableObject\PropertyCollection.cs" />
     <Compile Include="BindableObject\PropertyReflector.cs" />
     <Compile Include="BindableObject\ClassReflector.cs" />
-    <Compile Include="BindableObject\StringProperty.cs" />
+    <Compile Include="BindableObject\Properties\StringProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

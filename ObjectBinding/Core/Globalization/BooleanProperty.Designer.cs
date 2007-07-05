@@ -63,18 +63,18 @@ namespace Rubicon.ObjectBinding.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_BooleanProperty_False {
+        internal static string Rubicon_ObjectBinding_BindableObject_Properties_BooleanProperty_False {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BooleanProperty.False", resourceCulture);
+                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.Properties.BooleanProperty.False", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_BooleanProperty_True {
+        internal static string Rubicon_ObjectBinding_BindableObject_Properties_BooleanProperty_True {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BooleanProperty.True", resourceCulture);
+                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.Properties.BooleanProperty.True", resourceCulture);
             }
         }
     }

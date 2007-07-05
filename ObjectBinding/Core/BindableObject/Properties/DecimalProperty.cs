@@ -1,11 +1,10 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
-  public class Int32Property : NumericPropertyBase
+  public class DecimalProperty : NumericPropertyBase
   {
-    public Int32Property (Parameters parameters)
+    public DecimalProperty (Parameters parameters)
         : base (parameters)
     {
     }
@@ -20,7 +19,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
     public override Type Type
     {
-      get { return typeof (Int32); }
+      get { return typeof (Decimal); }
     }
   }
 }

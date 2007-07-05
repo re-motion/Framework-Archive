@@ -6,6 +6,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Development.UnitTesting;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject

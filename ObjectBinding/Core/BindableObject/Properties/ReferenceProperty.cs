@@ -1,9 +1,8 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
   public class ReferenceProperty : PropertyBase, IBusinessObjectReferenceProperty
   {
     private readonly Type _concreteType;

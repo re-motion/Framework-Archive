@@ -1,11 +1,10 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
-  //TODO: doc
-  public class ByteProperty : NumericPropertyBase
+  public class Int32Property : NumericPropertyBase
   {
-    public ByteProperty (Parameters parameters)
+    public Int32Property (Parameters parameters)
         : base (parameters)
     {
     }
@@ -14,13 +13,13 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// <value> <see langword="true"/> if this property can be assigned a negative value. </value>
     public override bool AllowNegative
     {
-      get { return false; }
+      get { return true; }
     }
 
     /// <summary>Gets the numeric type associated with this <see cref="IBusinessObjectNumericProperty"/>.</summary>
     public override Type Type
     {
-      get { return typeof (Byte); }
+      get { return typeof (Int32); }
     }
   }
 }

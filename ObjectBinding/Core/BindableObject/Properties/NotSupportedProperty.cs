@@ -1,6 +1,6 @@
 using System;
 
-namespace Rubicon.ObjectBinding.BindableObject
+namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
   public sealed class NotSupportedProperty : PropertyBase
   {

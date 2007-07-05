@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
