@@ -33,7 +33,7 @@ namespace Rubicon.SecurityManager.Domain
     }
 
     [StorageClassNone]
-    public new ClientTransaction ClientTransaction
+    public ClientTransaction ClientTransaction
     {
       get { return _clientTransaction; }
     }

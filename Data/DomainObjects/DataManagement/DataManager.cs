@@ -2,6 +2,7 @@ using System;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
@@ -14,10 +15,11 @@ public class DataManager
 
   // member fields
 
-  private ClientTransaction _clientTransaction;
-  private DataContainerMap _dataContainerMap;
-  private RelationEndPointMap _relationEndPointMap;
-  private Set<ObjectID> _discardedObjects;
+  private readonly ClientTransaction _clientTransaction;
+  private readonly IClientTransactionListener _transactionEventSink;
+  private readonly DataContainerMap _dataContainerMap;
+  private readonly RelationEndPointMap _relationEndPointMap;
+  private readonly Set<ObjectID> _discardedObjects;
 
   // construction and disposing
 
@@ -26,6 +28,7 @@ public class DataManager
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
     _clientTransaction = clientTransaction;
+    _transactionEventSink = clientTransaction.TransactionEventSink;
     _dataContainerMap = new DataContainerMap (clientTransaction);
     _relationEndPointMap = new RelationEndPointMap (clientTransaction);
     _discardedObjects = new Set<ObjectID> ();
@@ -171,7 +174,7 @@ public class DataManager
       RelationEndPointCollection allAffectedRelationEndPoints, 
       RelationEndPointCollection allOppositeRelationEndPoints)
   {
-    _clientTransaction.ObjectDeleting (domainObject);
+    _transactionEventSink.ObjectDeleting (domainObject);
     NotifyClientTransactionOfBeginRelationChange (domainObject, allAffectedRelationEndPoints, allOppositeRelationEndPoints);
 
     domainObject.BeginDelete ();
@@ -209,7 +212,7 @@ public class DataManager
   private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)
   {
     NotifyClientTransactionOfEndRelationChange (allOppositeRelationEndPoints);
-    _clientTransaction.ObjectDeleted (domainObject);
+    _transactionEventSink.ObjectDeleted (domainObject);
 
     NotifyOppositeEndPointsOfEndRelationChange (allOppositeRelationEndPoints);
     domainObject.EndDelete ();
@@ -245,7 +248,7 @@ public class DataManager
   public void MarkDiscarded (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    _clientTransaction.DataManagerMarkingObjectDiscarded (id);
+    _transactionEventSink.DataManagerMarkingObjectDiscarded (id);
     _discardedObjects.Add (id);
   }
 

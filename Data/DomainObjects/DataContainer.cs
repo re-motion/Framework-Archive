@@ -407,7 +407,7 @@ public class DataContainer
       throw new ObjectDeletedException (_id);
 
     if (_clientTransaction != null)
-      _clientTransaction.PropertyValueChanging (this, args.PropertyValue, args.OldValue, args.NewValue);
+      _clientTransaction.TransactionEventSink.PropertyValueChanging (this, args.PropertyValue, args.OldValue, args.NewValue);
 
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of DomainObject when changing property values is not organized through events.
@@ -425,19 +425,19 @@ public class DataContainer
     DomainObject.PropertyValueChanged (this, args);
 
     if (_clientTransaction != null)
-      _clientTransaction.PropertyValueChanged (this, args.PropertyValue, args.OldValue, args.NewValue);
+      _clientTransaction.TransactionEventSink.PropertyValueChanged (this, args.PropertyValue, args.OldValue, args.NewValue);
   }
 
   internal void PropertyValueReading (PropertyValue propertyValue, ValueAccess valueAccess)
   {
     if (_clientTransaction != null)
-      _clientTransaction.PropertyValueReading (this, propertyValue, valueAccess);
+      _clientTransaction.TransactionEventSink.PropertyValueReading (this, propertyValue, valueAccess);
   }
 
   internal void PropertyValueRead (PropertyValue propertyValue, object value, ValueAccess valueAccess)
   {
     if (_clientTransaction != null)
-      _clientTransaction.PropertyValueRead (this, propertyValue, value, valueAccess);
+      _clientTransaction.TransactionEventSink.PropertyValueRead (this, propertyValue, value, valueAccess);
   }
 
   private StateType GetStateForPropertyValues ()

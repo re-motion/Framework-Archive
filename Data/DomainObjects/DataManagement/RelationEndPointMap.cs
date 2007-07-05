@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
@@ -13,8 +14,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   // member fields
 
-  private ClientTransaction _clientTransaction;
-  private RelationEndPointCollection _relationEndPoints;
+  private readonly ClientTransaction _clientTransaction;
+  private readonly IClientTransactionListener _transactionEventSink;
+  private readonly RelationEndPointCollection _relationEndPoints;
 
   // construction and disposing
 
@@ -22,7 +24,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+
     _clientTransaction = clientTransaction;
+    _transactionEventSink = clientTransaction.TransactionEventSink;
     _relationEndPoints = new RelationEndPointCollection ();
   }
 
@@ -72,7 +76,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     RelationEndPointID[] relationEndPointIDs = domainObject.GetDataContainer ().RelationEndPointIDs;
     CheckClientTransactionForDeletion (domainObject);
-    _clientTransaction.RelationEndPointMapPerformingDelete (relationEndPointIDs);
+    _transactionEventSink.RelationEndPointMapPerformingDelete (relationEndPointIDs);
 
     foreach (RelationEndPointID endPointID in relationEndPointIDs)
     {
@@ -432,7 +436,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   private void Add (RelationEndPoint endPoint)
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-    _clientTransaction.RelationEndPointMapRegistering (endPoint);
+    _transactionEventSink.RelationEndPointMapRegistering (endPoint);
     if (endPoint.IsNull)
       throw new ArgumentNullException ("endPoint", "A NullRelationEndPoint cannot be added to a RelationEndPointMap.");
 
@@ -442,7 +446,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   private void Remove (RelationEndPointID endPointID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-    _clientTransaction.RelationEndPointMapUnregistering (endPointID);
+    _transactionEventSink.RelationEndPointMapUnregistering (endPointID);
     _relationEndPoints.Remove (endPointID);
   }
 

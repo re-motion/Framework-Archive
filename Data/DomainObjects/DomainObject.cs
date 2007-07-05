@@ -354,7 +354,7 @@ public class DomainObject
   /// which delegates to <see cref="DomainObject.NewObject"/>, passing it the required constructor arguments.</remarks>
   protected DomainObject ()
   {
-    ClientTransactionScope.CurrentTransaction.NewObjectCreating (GetPublicDomainObjectType ());
+    ClientTransactionScope.CurrentTransaction.TransactionEventSink.NewObjectCreating (GetPublicDomainObjectType ());
 
     DataContainer firstDataContainer = ClientTransactionScope.CurrentTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     firstDataContainer.SetDomainObject (this);
@@ -373,7 +373,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
-    clientTransaction.NewObjectCreating (GetPublicDomainObjectType ());
+    clientTransaction.TransactionEventSink.NewObjectCreating (GetPublicDomainObjectType ());
 
     DataContainer firstDataContainer = _initialClientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     firstDataContainer.SetDomainObject (this);

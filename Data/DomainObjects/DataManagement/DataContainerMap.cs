@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
@@ -13,8 +14,9 @@ public class DataContainerMap : IEnumerable
 
   // member fields
 
-  private ClientTransaction _clientTransaction;
-  private DataContainerCollection _dataContainers;
+  private readonly ClientTransaction _clientTransaction;
+  private readonly IClientTransactionListener _transactionEventSink;
+  private readonly DataContainerCollection _dataContainers;
 
   // construction and disposing
 
@@ -23,6 +25,7 @@ public class DataContainerMap : IEnumerable
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
     _clientTransaction = clientTransaction;
+    _transactionEventSink = clientTransaction.TransactionEventSink;
     _dataContainers = new DataContainerCollection ();
   }
 
@@ -58,7 +61,7 @@ public class DataContainerMap : IEnumerable
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    _clientTransaction.DataContainerMapRegistering (dataContainer);
+    _clientTransaction.TransactionEventSink.DataContainerMapRegistering (dataContainer);
     _dataContainers.Add (dataContainer);
   }
 
@@ -74,7 +77,7 @@ public class DataContainerMap : IEnumerable
   private void Remove (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    _clientTransaction.DataContainerMapUnregistering (dataContainer);
+    _clientTransaction.TransactionEventSink.DataContainerMapUnregistering (dataContainer);
 
     _dataContainers.Remove (dataContainer);
   }

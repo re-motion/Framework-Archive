@@ -112,7 +112,7 @@ public abstract class RelationEndPoint : IEndPoint
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    _clientTransaction.RelationChanging (
+    _clientTransaction.TransactionEventSink.RelationChanging (
         GetDomainObject (), 
         _definition.PropertyName, 
         oldEndPoint.GetDomainObject (), 
@@ -121,7 +121,7 @@ public abstract class RelationEndPoint : IEndPoint
 
   public virtual void NotifyClientTransactionOfEndRelationChange ()
   {
-    _clientTransaction.RelationChanged (GetDomainObject (), _definition.PropertyName);
+    _clientTransaction.TransactionEventSink.RelationChanged (GetDomainObject (), _definition.PropertyName);
   }
 
   public void BeginRelationChange (IEndPoint oldEndPoint)

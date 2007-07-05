@@ -90,13 +90,14 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public ClientTransaction ()
   {
-    _isReadOnly = false;
-    _dataManager = new DataManager (this);
-    _applicationData = new Dictionary<Enum, object> ();
     _listeners = new CompoundClientTransactionListener ();
 
     _extensions = new ClientTransactionExtensionCollection ();
     _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
+
+    _isReadOnly = false;
+    _dataManager = new DataManager (this);
+    _applicationData = new Dictionary<Enum, object> ();
   }
 
   // methods and properties
@@ -122,6 +123,19 @@ public class ClientTransaction : ITransaction
   public ClientTransactionExtensionCollection Extensions
   {
     get { return _extensions; }
+  }
+
+  /// <summary>
+  /// Gets the transaction event sink for this transaction.
+  /// </summary>
+  /// <value>The transaction event sink for this transaction.</value>
+  /// <remarks>
+  /// Objects such as <see cref="DataManager"/>, changes to which logically represent changes to the transaction, can use the object returned by
+  /// this property in order to inform the <see cref="ClientTransaction"/> and its listeners of events.
+  /// </remarks>
+  internal IClientTransactionListener TransactionEventSink
+  {
+    get { return _listeners; }
   }
 
   protected internal void AddListener (IClientTransactionListener listener)
@@ -284,9 +298,9 @@ public class ClientTransaction : ITransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+      TransactionEventSink.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
       DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
-      RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
+      TransactionEventSink.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
 
       return relatedObject;
     }
@@ -306,9 +320,9 @@ public class ClientTransaction : ITransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+      TransactionEventSink.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
       DomainObject relatedObject = _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
-      RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Original);
+      TransactionEventSink.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Original);
 
       return relatedObject;
     }
@@ -328,9 +342,9 @@ public class ClientTransaction : ITransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+      TransactionEventSink.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
       DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
-      RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects.Clone (true), ValueAccess.Current);
+      TransactionEventSink.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects.Clone (true), ValueAccess.Current);
 
       return relatedObjects;
     }
@@ -350,9 +364,9 @@ public class ClientTransaction : ITransaction
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
-      RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+      TransactionEventSink.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
       DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
-      RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Original);
+      TransactionEventSink.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Original);
 
       return relatedObjects;
     }
@@ -462,7 +476,7 @@ public class ClientTransaction : ITransaction
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
       DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
-      ObjectLoading (dataContainer.ID);
+      TransactionEventSink.ObjectLoading (dataContainer.ID);
       SetClientTransaction (dataContainer);
 
       _dataManager.RegisterExistingDataContainer (dataContainer);
@@ -503,7 +517,7 @@ public class ClientTransaction : ITransaction
         DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
         if (relatedDataContainer != null)
         {
-          ObjectLoading (relatedDataContainer.ID);
+          TransactionEventSink.ObjectLoading (relatedDataContainer.ID);
           SetClientTransaction (relatedDataContainer);
           _dataManager.RegisterExistingDataContainer (relatedDataContainer);
 
@@ -642,7 +656,7 @@ public class ClientTransaction : ITransaction
   private void NotifyOfLoading (DataContainerCollection loadedDataContainers)
   {
     foreach (DataContainer dataContainer in loadedDataContainers)
-      ObjectLoading (dataContainer.ID);
+      TransactionEventSink.ObjectLoading (dataContainer.ID);
   }
 
   /// <summary>
@@ -672,7 +686,7 @@ public class ClientTransaction : ITransaction
 
       if (args.DomainObjects.Count != 0)
       {
-        ObjectsLoaded (args.DomainObjects);
+        TransactionEventSink.ObjectsLoaded (args.DomainObjects);
 
         if (Loaded != null)
           Loaded (this, args);
@@ -688,7 +702,7 @@ public class ClientTransaction : ITransaction
   {
     using (EnterScope ())
     {
-      TransactionCommitting (args.DomainObjects);
+      TransactionEventSink.TransactionCommitting (args.DomainObjects);
 
       if (Committing != null)
         Committing (this, args);
@@ -707,7 +721,7 @@ public class ClientTransaction : ITransaction
       if (Committed != null)
         Committed (this, args);
 
-      TransactionCommitted (args.DomainObjects);
+      TransactionEventSink.TransactionCommitted (args.DomainObjects);
     }
   }
 
@@ -719,7 +733,7 @@ public class ClientTransaction : ITransaction
   {
     using (EnterScope ())
     {
-      TransactionRollingBack (args.DomainObjects);
+      TransactionEventSink.TransactionRollingBack (args.DomainObjects);
 
       if (RollingBack != null)
         RollingBack (this, args);
@@ -737,7 +751,7 @@ public class ClientTransaction : ITransaction
       if (RolledBack != null)
         RolledBack (this, args);
 
-      TransactionRolledBack (args.DomainObjects);
+      TransactionEventSink.TransactionRolledBack (args.DomainObjects);
     }
   }
 
@@ -943,130 +957,5 @@ public class ClientTransaction : ITransaction
   }
 
   #endregion
-
-  internal void NewObjectCreating (Type type)
-  {
-    _listeners.NewObjectCreating (type);
-  }
-
-  internal void ObjectLoading (ObjectID id)
-  {
-    _listeners.ObjectLoading (id);
-  }
-
-  private void ObjectsLoaded (DomainObjectCollection domainObjects)
-  {
-    _listeners.ObjectsLoaded (domainObjects);
-  }
-
-  internal void ObjectDeleting (DomainObject domainObject)
-  {
-    _listeners.ObjectDeleting (domainObject);
-  }
-
-  internal void ObjectDeleted (DomainObject domainObject)
-  {
-    _listeners.ObjectDeleted (domainObject);
-  }
-
-  internal void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
-  {
-    _listeners.PropertyValueReading (dataContainer, propertyValue, valueAccess);
-  }
-
-  internal void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
-  {
-    _listeners.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
-  }
-
-  internal void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
-  {
-    _listeners.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
-  }
-
-  internal void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
-  {
-    _listeners.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
-  }
-
-  private void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
-  {
-    _listeners.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
-  }
-
-  private void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
-  {
-    _listeners.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
-  }
-
-  private void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
-  {
-    _listeners.RelationReading (domainObject, propertyName, valueAccess);
-  }
-
-  internal void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
-  {
-    _listeners.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
-  }
-
-  internal void RelationChanged (DomainObject domainObject, string propertyName)
-  {
-    _listeners.RelationChanged (domainObject, propertyName);
-  }
-
-  internal void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
-  {
-    _listeners.FilterQueryResult (queryResult, query);
-  }
-
-  private void TransactionCommitting (DomainObjectCollection domainObjects)
-  {
-    _listeners.TransactionCommitting (domainObjects);
-  }
-
-  private void TransactionCommitted (DomainObjectCollection domainObjects)
-  {
-    _listeners.TransactionCommitted (domainObjects);
-  }
-
-  private void TransactionRollingBack (DomainObjectCollection domainObjects)
-  {
-    _listeners.TransactionRollingBack (domainObjects);
-  }
-
-  private void TransactionRolledBack (DomainObjectCollection domainObjects)
-  {
-    _listeners.TransactionRolledBack (domainObjects);
-  }
-
-  internal void RelationEndPointMapRegistering (RelationEndPoint endPoint)
-  {
-    _listeners.RelationEndPointMapRegistering (endPoint);
-  }
-
-  internal void RelationEndPointMapUnregistering (RelationEndPointID endPointID)
-  {
-    _listeners.RelationEndPointMapUnregistering (endPointID);
-  }
-
-  internal void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs)
-  {
-    _listeners.RelationEndPointMapPerformingDelete (endPointIDs);
-  }
-
-  internal void DataManagerMarkingObjectDiscarded (ObjectID id)
-  {
-    _listeners.DataManagerMarkingObjectDiscarded (id);
-  }
-
-  internal void DataContainerMapRegistering (DataContainer container)
-  {
-    _listeners.DataContainerMapRegistering (container);
-  }
-
-  internal void DataContainerMapUnregistering (DataContainer container)
-  {
-    _listeners.DataContainerMapUnregistering (container);
-  }
 }
 }

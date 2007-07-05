@@ -106,7 +106,7 @@ public class QueryManager
       DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
 
       DomainObjectCollection queryResult = _clientTransaction.MergeLoadedDomainObjects (dataContainers, query.CollectionType);
-      _clientTransaction.FilterQueryResult (queryResult, query);
+      _clientTransaction.TransactionEventSink.FilterQueryResult (queryResult, query);
       return queryResult;
 
     }    
