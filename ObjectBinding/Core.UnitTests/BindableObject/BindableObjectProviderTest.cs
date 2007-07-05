@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
@@ -10,42 +11,63 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   [TestFixture]
   public class BindableObjectProviderTest
   {
-    [Test]
-    [Ignore("TODO: test")]
-    public void GetInstance ()
+    private BindableObjectProvider _provider;
+    private MockRepository _mockRepository;
+
+    [SetUp]
+    public void SetUp ()
     {
+      _provider = new BindableObjectProvider ();
+      _mockRepository = new MockRepository();
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    public void GetService ()
+    public void GetInstance ()
     {
+      Assert.That (BindableObjectProvider.Instance, Is.InstanceOfType (typeof (BindableObjectProvider)));
+    }
+
+    [Test]
+    public void GetInstance_SameTwice ()
+    {
+      Assert.That (BindableObjectProvider.Instance, Is.SameAs (BindableObjectProvider.Instance));
+    }
+
+    [Test]
+    public void AddAndGetService ()
+    {
+      IBusinessObjectService expectedService = _mockRepository.CreateMock<IBusinessObjectService>();
+      _mockRepository.ReplayAll();
+
+      Assert.That (_provider.GetService (expectedService.GetType()), Is.Null);
+
+      _provider.AddService (expectedService.GetType(), expectedService);
+      IBusinessObjectService actualService = _provider.GetService (expectedService.GetType());
+
+      _mockRepository.VerifyAll();
+      Assert.That (actualService, Is.SameAs (expectedService));
     }
 
     [Test]
     public void GetBindableObjectClass ()
     {
-      BindableObjectProvider provider = new BindableObjectProvider();
-
       BindableObjectClass outValue;
-      Assert.That (provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleClass), out outValue), Is.False);
+      Assert.That (_provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleClass), out outValue), Is.False);
 
-      BindableObjectClass actual = provider.GetBindableObjectClass (typeof (SimpleClass));
+      BindableObjectClass actual = _provider.GetBindableObjectClass (typeof (SimpleClass));
 
       Assert.That (actual, Is.Not.Null);
       Assert.That (actual.Type, Is.SameAs (typeof (SimpleClass)));
-      Assert.That (actual.BusinessObjectProvider, Is.SameAs (provider));
+      Assert.That (actual.BusinessObjectProvider, Is.SameAs (_provider));
       BindableObjectClass cachedBindableObjectClass;
-      Assert.That (provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleClass), out cachedBindableObjectClass), Is.True);
+      Assert.That (_provider.BusinessObjectClassCache.TryGetValue (typeof (SimpleClass), out cachedBindableObjectClass), Is.True);
       Assert.That (actual, Is.SameAs (cachedBindableObjectClass));
     }
 
     [Test]
     public void GetBindableObjectClass_SameTwice ()
     {
-      BindableObjectProvider provider = new BindableObjectProvider();
-
-      Assert.That (provider.GetBindableObjectClass (typeof (SimpleClass)), Is.SameAs (provider.GetBindableObjectClass (typeof (SimpleClass))));
+      Assert.That (_provider.GetBindableObjectClass (typeof (SimpleClass)), Is.SameAs (_provider.GetBindableObjectClass (typeof (SimpleClass))));
     }
   }
 }

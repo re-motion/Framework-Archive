@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
@@ -11,6 +12,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   {
     private BindableObjectProvider _businessObjectProvider;
     private IBusinessObjectClass _businessObjectClass;
+    private MockRepository _mockRepository;
 
     [SetUp]
     public void SetUp ()
@@ -26,7 +28,25 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       IBusinessObjectReferenceProperty property = CreateProperty ("Scalar");
 
       Assert.That (property.ReferenceClass, Is.SameAs (_businessObjectProvider.GetBindableObjectClass (typeof (SimpleClass))));
-      Assert.That (((IBusinessObjectReferenceProperty)property).ReferenceClass, Is.SameAs (property.ReferenceClass));
+    }
+
+    [Test]
+    [Ignore ("TODO: test")]
+    public void GetReferenceClass_FromBusinessObjectClassService ()
+    {
+      //IBusinessObjectReferenceProperty property = new ReferenceProperty (new PropertyBase.Parameters (
+      //    _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<ClassFromOtherBusinessObjectProvider>), "Scalar"), null, false));
+
+      //IBusinessObjectClassService mockService = _mockRepository.CreateMock<IBusinessObjectClassService>();
+      //IBusinessObjectClass expectedClass = _mockRepository.CreateMock<IBusinessObjectClass>();
+      //Expect.Call ((Type) mockService.GetBusinessObjectClass (typeof (ClassFromOtherBusinessObjectProvider))).Return (expectedClass);
+      //_mockRepository.ReplayAll();
+
+      //_businessObjectProvider.AddService (typeof (IBusinessObjectClassService), mockService);
+      //IBusinessObjectClass actualClass = property.ReferenceClass;
+
+      //_mockRepository.VerifyAll();
+      //Assert.That (actualClass, Is.SameAs (expectedClass));
     }
 
     [Test]
@@ -63,9 +83,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     private ReferenceProperty CreateProperty (string propertyName)
     {
-      return new ReferenceProperty (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), propertyName), null, false));
+      return new ReferenceProperty (new PropertyBase.Parameters (
+          _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), propertyName), null, false));
     }
   }
 }

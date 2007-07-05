@@ -14,16 +14,9 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     /// <summary> Gets the class information for elements of this property. </summary>
     /// <value>The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.</value>
-    public BindableObjectClass ReferenceClass
+    public IBusinessObjectClass ReferenceClass
     {
       get { return BusinessObjectProvider.GetBindableObjectClass (UnderlyingType); }
-    }
-
-    /// <summary> Gets the class information for elements of this property. </summary>
-    /// <value>The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.</value>
-    IBusinessObjectClass IBusinessObjectReferenceProperty.ReferenceClass
-    {
-      get { return ReferenceClass; }
     }
 
     /// <summary> 

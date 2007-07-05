@@ -8,7 +8,7 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    private static BindableObjectProvider s_instance = new BindableObjectProvider();
+    private static readonly BindableObjectProvider s_instance = new BindableObjectProvider();
 
     public static BindableObjectProvider Instance
     {
@@ -16,6 +16,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     private readonly InterlockedCache<Type, BindableObjectClass> _businessObjectClassCache = new InterlockedCache<Type, BindableObjectClass>();
+    private readonly InterlockedCache<Type, IBusinessObjectService> _serviceCache = new InterlockedCache<Type, IBusinessObjectService> ();
 
     public BindableObjectProvider ()
     {
@@ -27,14 +28,9 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
-    /// <remarks>
-    ///   <note type="inotes">
-    ///    If your object model does not support services, this property may always return <see langword="null"/>.
-    ///   </note>
-    /// </remarks>
-    protected override IDictionary ServiceDictionary
+    protected override ICache<Type, IBusinessObjectService> ServiceCache
     {
-      get { throw new NotImplementedException(); }
+      get { return _serviceCache; }
     }
 
     public BindableObjectClass GetBindableObjectClass (Type type)

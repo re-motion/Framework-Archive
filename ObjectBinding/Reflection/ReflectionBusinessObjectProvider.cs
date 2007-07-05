@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Rubicon.Collections;
 using Rubicon.ObjectBinding.Web;
 
 namespace Rubicon.ObjectBinding.Reflection
@@ -7,7 +8,7 @@ namespace Rubicon.ObjectBinding.Reflection
 
 public class ReflectionBusinessObjectProvider: BusinessObjectProvider
 {
-  public static ReflectionBusinessObjectProvider s_instance = new ReflectionBusinessObjectProvider();
+  private readonly static ReflectionBusinessObjectProvider s_instance = new ReflectionBusinessObjectProvider();
 
   public static ReflectionBusinessObjectProvider Instance 
   {
@@ -16,14 +17,14 @@ public class ReflectionBusinessObjectProvider: BusinessObjectProvider
 
   private ReflectionBusinessObjectProvider()
   {
-    _serviceDictionary.Add (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService());
+    _serviceCache.Add (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService ());
   }
 
-  private Hashtable _serviceDictionary = new Hashtable();
+  private readonly InterlockedCache<Type, IBusinessObjectService> _serviceCache = new InterlockedCache<Type, IBusinessObjectService> ();
 
-  protected override IDictionary ServiceDictionary
+  protected override ICache<Type, IBusinessObjectService> ServiceCache
   {
-    get { return _serviceDictionary; }
+    get { return _serviceCache; }
   }
 
 }
