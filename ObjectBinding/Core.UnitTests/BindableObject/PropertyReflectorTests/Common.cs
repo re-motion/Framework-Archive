@@ -132,7 +132,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
-    [Ignore ("TODO: test")]
     public void GetMetadata_WithBusinessObject ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("BusinessObject");

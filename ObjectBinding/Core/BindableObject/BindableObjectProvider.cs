@@ -22,6 +22,14 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
     }
 
+    public BindableObjectClass GetBindableObjectClass (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      ClassReflector classReflector = new ClassReflector (type, this);
+      return classReflector.GetMetadata ();
+    }
+
     public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache
     {
       get { return _businessObjectClassCache; }
@@ -31,14 +39,6 @@ namespace Rubicon.ObjectBinding.BindableObject
     protected override ICache<Type, IBusinessObjectService> ServiceCache
     {
       get { return _serviceCache; }
-    }
-
-    public BindableObjectClass GetBindableObjectClass (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      ClassReflector classReflector = new ClassReflector (type, this);
-      return classReflector.GetMetadata ();
     }
   }
 }

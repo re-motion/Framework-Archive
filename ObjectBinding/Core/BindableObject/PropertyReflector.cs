@@ -56,8 +56,8 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new Int32Property (parameters);
       else if (underlyingType == typeof (Int64))
         return new Int64Property (parameters);
-      else if (IsBusinessObjectType (underlyingType))
-        return new ReferenceProperty (parameters);
+      else if (typeof (IBusinessObject).IsAssignableFrom (GetConcreteType(underlyingType)))
+        return new ReferenceProperty (parameters, GetConcreteType (underlyingType));
       else if (underlyingType == typeof (Single))
         return new SingleProperty (parameters);
       else if (underlyingType == typeof (String))
@@ -66,12 +66,11 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new NotSupportedProperty (parameters);
     }
 
-    private bool IsBusinessObjectType (Type type)
+    private Type GetConcreteType (Type type)
     {
-      if (typeof (IBusinessObject).IsAssignableFrom (type))
-        return true;
-
-      return false;
+      if (MixinConfiguration.ActiveContext.ContainsClassContext (type))
+        return TypeFactory.GetConcreteType(type);
+      return type;
     }
 
     private Type GetUnderlyingType ()

@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding
 {
   /// <summary>The <see langword="abstract"/> default implementation of the <see cref="IBusinessObjectProvider"/> interface.</summary>
-  public abstract class BusinessObjectProvider: IBusinessObjectProvider
+  public abstract class BusinessObjectProvider : IBusinessObjectProvider
   {
     /// <summary> Gets the <see cref="ICache{TKey,TValue}"/> used to store the references to the registered servies. </summary>
     /// <value>An object implementing <see cref="ICache{TKey,TValue}"/>. Must not retun <see langword="null" />.</value>
@@ -17,9 +16,11 @@ namespace Rubicon.ObjectBinding
     /// </remarks>
     protected abstract ICache<Type, IBusinessObjectService> ServiceCache { get; }
 
-    /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
+    /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
     public IBusinessObjectService GetService (Type serviceType)
     {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
+
       ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
       Assertion.Assert (serviceCache != null, "The ServiceCache evaluated and returned null. It should return a null object instead.");
       IBusinessObjectService service;
@@ -28,18 +29,27 @@ namespace Rubicon.ObjectBinding
       return null;
     }
 
+    /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
+    public T GetService<T> () where T: IBusinessObjectService
+    {
+      return (T) GetService (typeof (T));
+    }
+
     /// <summary> Registers a new <see cref="IBusinessObjectService"/> with this <see cref="BusinessObjectProvider"/>. </summary>
-    /// <param name="serviceType"> The type of the service to be registered. </param>
-    /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. </param>
+    /// <param name="serviceType"> The type of the service to be registered. Must not be <see langword="null" />.</param>
+    /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. Must not be <see langword="null" />.</param>
     public void AddService (Type serviceType, IBusinessObjectService service)
     {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNull ("service", service);
+
       ICache<Type, IBusinessObjectService> serviceCache = ServiceCache;
       Assertion.Assert (serviceCache != null, "The ServiceCache evaluated and returned null. It should return a null object instead.");
       serviceCache.Add (serviceType, service);
     }
 
     /// <summary>Returns the <see cref="Char"/> to be used as a serparator when formatting the property path's identifier.</summary>
-    public virtual char GetPropertyPathSeparator()
+    public virtual char GetPropertyPathSeparator ()
     {
       return '.';
     }

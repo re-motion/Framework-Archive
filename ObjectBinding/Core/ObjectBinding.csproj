@@ -121,6 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BooleanProperty.resx</DependentUpon>
     </Compile>
+    <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
     <Compile Include="BindableObject\NotSupportedProperty.cs" />

@@ -1,5 +1,5 @@
 using System;
-using Rubicon.ObjectBinding;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -7,16 +7,23 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class ReferenceProperty : PropertyBase, IBusinessObjectReferenceProperty
   {
-    public ReferenceProperty (Parameters parameters)
+    private readonly Type _concreteType;
+    private readonly DoubleCheckedLockingContainer<IBusinessObjectClass> _referenceClass;
+
+    public ReferenceProperty (Parameters parameters, Type concreteType)
         : base (parameters)
     {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("concreteType", concreteType, typeof (IBusinessObject));
+
+      _concreteType = concreteType;
+      _referenceClass = new DoubleCheckedLockingContainer<IBusinessObjectClass> (delegate { return GetReferenceClass(); });
     }
 
     /// <summary> Gets the class information for elements of this property. </summary>
     /// <value>The <see cref="IBusinessObjectClass"/> of the <see cref="IBusinessObject"/> accessed through this property.</value>
     public IBusinessObjectClass ReferenceClass
     {
-      get { return BusinessObjectProvider.GetBindableObjectClass (UnderlyingType); }
+      get { return _referenceClass.Value; }
     }
 
     /// <summary> 
@@ -39,8 +46,8 @@ namespace Rubicon.ObjectBinding.BindableObject
 
       //if (requiresIdentity && !searchService.SupportsIdentity (this, obj))
       //  throw new NotSupportedException ();
-      
-      throw new NotImplementedException ();
+
+      throw new NotImplementedException();
     }
 
     /// <summary> 
@@ -72,7 +79,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("obj", obj);
 
-      //Type searchServiceType = AttributeUtility.GetCustomAttribute<BindableObjectSearchServiceTypeAttribte> (ReferenceClass.Type, true).Type;
+      //Type searchServiceType = AttributeUtility.GetCustomAttribute<BusinessObjectSearchServiceTypeAttribte> (ReferenceClass.Type, true).Type;
       //IBusinessObjectSearchService searchService = BusinessObjectProvider.GetService (searchServiceType);
       //if (searchService == null)
       //  return requiresIdentity ? new IBusinessObjectWithIdentity[0] : new IBusinessObject[0];
@@ -82,7 +89,7 @@ namespace Rubicon.ObjectBinding.BindableObject
 
       //return searchService.Search (this, obj, searchStatement);
       throw new NotImplementedException();
-   }
+    }
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="IBusinessObjectReferenceProperty.Create"/> may be called to implicitly create a new business object 
@@ -111,6 +118,49 @@ namespace Rubicon.ObjectBinding.BindableObject
     public IBusinessObject Create (IBusinessObject referencingObject)
     {
       throw new NotSupportedException (string.Format ("Create method is not supported by '{0}'.", GetType().FullName));
+    }
+
+    private IBusinessObjectClass GetReferenceClass ()
+    {
+      if (AttributeUtility.IsDefined<IBindableObjectAttribute>(_concreteType, true))
+        return BusinessObjectProvider.GetBindableObjectClass (UnderlyingType);
+
+      return GetReferenceClassFromService();
+    }
+
+    private IBusinessObjectClass GetReferenceClassFromService ()
+    {
+      IBusinessObjectClassService service = GetBusinessObjectClassService();
+      IBusinessObjectClass businessObjectClass = service.GetBusinessObjectClass (UnderlyingType);
+      if (businessObjectClass == null)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "The GetBusinessObjectClass method of '{0}', registered with the '{1}', failed to return an '{2}' for type '{3}'.",
+                service.GetType().FullName,
+                BusinessObjectProvider.GetType().FullName,
+                typeof (IBusinessObjectClass).FullName,
+                UnderlyingType.FullName));
+      }
+
+      return businessObjectClass;
+    }
+
+    private IBusinessObjectClassService GetBusinessObjectClassService ()
+    {
+      IBusinessObjectClassService service = BusinessObjectProvider.GetService<IBusinessObjectClassService>();
+      if (service == null)
+      {
+        throw new InvalidOperationException (
+            string.Format (
+                "The '{0}' type does not use the '{1}' implementation of '{2}' and there is no '{3}' registered with the '{4}'.",
+                UnderlyingType.FullName,
+                typeof (BindableObjectMixin).Namespace,
+                typeof (IBusinessObject).FullName,
+                typeof (IBusinessObjectClassService).FullName,
+                BusinessObjectProvider.GetType().FullName));
+      }
+      return service;
     }
   }
 }

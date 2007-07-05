@@ -36,16 +36,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void AddAndGetService ()
     {
-      IBusinessObjectService expectedService = _mockRepository.CreateMock<IBusinessObjectService>();
-      _mockRepository.ReplayAll();
-
+      IBusinessObjectService expectedService = _mockRepository.Stub<IBusinessObjectService>();
       Assert.That (_provider.GetService (expectedService.GetType()), Is.Null);
 
       _provider.AddService (expectedService.GetType(), expectedService);
-      IBusinessObjectService actualService = _provider.GetService (expectedService.GetType());
 
-      _mockRepository.VerifyAll();
-      Assert.That (actualService, Is.SameAs (expectedService));
+      Assert.That (_provider.GetService (expectedService.GetType()), Is.SameAs (expectedService));
+    }
+
+    [Test]
+    public void GetServiceFromGeneric ()
+    {
+      _provider.AddService (typeof (IBusinessObjectService), _mockRepository.Stub<IBusinessObjectService> ());
+
+      Assert.That (_provider.GetService<IBusinessObjectService>(), Is.SameAs (_provider.GetService (typeof (IBusinessObjectService))));
     }
 
     [Test]

@@ -37,6 +37,8 @@
       <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
@@ -57,6 +59,8 @@
     <Compile Include="BindableObject\TestDomain\EnumWithDescription.cs" />
     <Compile Include="BindableObject\TestDomain\EnumWithResoruces.cs" />
     <Compile Include="BindableObject\TestDomain\EnumWithUndefinedValue.cs" />
+    <Compile Include="BindableObject\TestDomain\OtherBusinessObjectImplementation.cs" />
+    <Compile Include="BindableObject\TestDomain\StubBusinessObjectClassService.cs" />
     <Compile Include="BindableObject\TestDomain\TestEnum.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleValueType.cs" />

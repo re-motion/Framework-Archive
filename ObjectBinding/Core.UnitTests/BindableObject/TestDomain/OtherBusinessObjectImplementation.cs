@@ -1,0 +1,23 @@
+using System;
+
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
+{
+  public abstract class OtherBusinessObjectImplementation : IBusinessObject
+  {
+    public abstract object GetProperty (IBusinessObjectProperty property);
+
+    public abstract object GetProperty (string propertyIdentifier);
+
+    public abstract void SetProperty (IBusinessObjectProperty property, object value);
+
+    public abstract void SetProperty (string propertyIdentifier, object value);
+
+    public abstract string GetPropertyString (IBusinessObjectProperty property);
+
+    public abstract string GetPropertyString (IBusinessObjectProperty property, string format);
+
+    public abstract string GetPropertyString (string propertyIdentifier);
+
+    public abstract IBusinessObjectClass BusinessObjectClass { get; }
+  }
+}

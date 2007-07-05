@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding
   public interface IBusinessObjectProvider
   {
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
-    /// <param name="serviceType"> The type of <see cref="IBusinessObjectService"/> to get from the object model. </param>
+    /// <param name="serviceType">The type of <see cref="IBusinessObjectService"/> to get from the object model. Must not be <see langword="null" />.</param>
     /// <returns> 
     ///   An instance if the <see cref="IBusinessObjectService"/> type or <see langword="null"/> if the sevice could not be found or instantiated.
     ///  </returns>
