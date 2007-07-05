@@ -7,6 +7,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
+  /// <summary>
+  /// Implements a collection of <see cref="IClientTransactionListener"/> objects.
+  /// </summary>
   [Serializable]
   public class CompoundClientTransactionListener : IClientTransactionListener
   {

@@ -6,6 +6,13 @@ using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
+  /// <summary>
+  /// Defines an interface for objects listening for events occuring in the scope of a ClientTransaction.
+  /// </summary>
+  /// <remarks>
+  /// This is similar to <see cref="IClientTransactionExtension"/>, but where <see cref="IClientTransactionExtension"/> is for the public,
+  /// <see cref="IClientTransactionListener"/> is for internal usage (and therefore provides more events).
+  /// </remarks>
   public interface IClientTransactionListener
   {
     void NewObjectCreating (Type type);

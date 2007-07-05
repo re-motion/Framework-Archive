@@ -109,6 +109,7 @@
     <Compile Include="Design\DesignModeMappingReflector.cs" />
     <Compile Include="Infrastructure\CompoundClientTransactionListener.cs" />
     <Compile Include="Infrastructure\DataContainerIndirection.cs" />
+    <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
     <Compile Include="Infrastructure\RelatedObjectCollectionPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\Interception\DomainObjectPropertyInterceptorSelector.cs" />
