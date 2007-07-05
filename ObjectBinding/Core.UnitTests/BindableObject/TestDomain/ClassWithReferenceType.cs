@@ -7,6 +7,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       where T: class
   {
     private T _scalar;
+    private T _readOnlyScalar;
     private T[] _array;
 
     public ClassWithReferenceType ()
@@ -17,6 +18,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     {
       get { return _scalar; }
       set { _scalar = value; }
+    }
+
+    public T ReadOnlyScalar
+    {
+      get { return _readOnlyScalar; }
     }
 
     public T[] Array

@@ -44,6 +44,7 @@
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
+    <Compile Include="BindableObject\PropertyBaseTests\SecurityTest.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\SearchAvailableObjects.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\GetReferenceClass.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\SupportsSearchAvailableObjects.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="BindableObject\TestDomain\EnumWithUndefinedValue.cs" />
     <Compile Include="BindableObject\TestDomain\ISearchServiceOnType.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithOtherBusinessObjectImplementation.cs" />
+    <Compile Include="BindableObject\TestDomain\SecurableClassWithReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\StubBusinessObjectClassService.cs" />
     <Compile Include="BindableObject\TestDomain\TestEnum.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleReferenceType.cs" />
@@ -79,7 +81,7 @@
     </Compile>
     <Compile Include="ListInfoTest.cs" />
     <Compile Include="BindableObject\PropertyReflectorTests\Common.cs" />
-    <Compile Include="BindableObject\PropertyBaseTest.cs" />
+    <Compile Include="BindableObject\PropertyBaseTests\Common.cs" />
     <Compile Include="BindableObject\StubPropertyBase.cs" />
     <Compile Include="BindableObject\TestBase.cs" />
     <Compile Include="BindableObject\ClassReflectorTest.cs" />

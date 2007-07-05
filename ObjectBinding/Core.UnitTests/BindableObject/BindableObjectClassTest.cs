@@ -61,7 +61,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void GetPropertyDefinitions ()
     {
       Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);
-      PropertyBase[] expectedProperties = new PropertyBase[] {CreateProperty (type, "Scalar"), CreateProperty (type, "Array")};
+      PropertyBase[] expectedProperties = new PropertyBase[]
+          {
+              CreateProperty (type, "Scalar"),
+              CreateProperty (type, "ReadOnlyScalar"),
+              CreateProperty (type, "Array")
+          };
 
       ClassReflector classReflector = new ClassReflector (type, _bindableObjectProvider);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();

@@ -1,8 +1,6 @@
 using System;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rhino.Mocks;
-using Rubicon.Development.UnitTesting;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
@@ -65,7 +63,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       return new ReferenceProperty (
           new PropertyBase.Parameters (
               _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), propertyName), null, false),
-          TypeFactory.GetConcreteType(typeof (SimpleClass)));
+          TypeFactory.GetConcreteType (typeof (SimpleClass)));
     }
   }
 }

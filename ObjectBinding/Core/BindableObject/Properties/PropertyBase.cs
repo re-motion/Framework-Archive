@@ -109,7 +109,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The result may depend on the class, the user's authorization and/or the instance value. </remarks>
     public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
     {
-      throw new NotImplementedException();
+      return true;
     }
 
     /// <summary> Indicates whether this property can be modified by the user. </summary>
@@ -118,7 +118,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
     public bool IsReadOnly (IBusinessObject obj)
     {
-      throw new NotImplementedException();
+      return false;
     }
 
     /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>

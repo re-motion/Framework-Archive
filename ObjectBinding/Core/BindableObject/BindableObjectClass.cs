@@ -12,7 +12,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyCollection _properties = new PropertyCollection ();
 
-    protected internal BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
+   public BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
     {
       //TODO: Check for value type
       ArgumentUtility.CheckNotNull ("type", type);
