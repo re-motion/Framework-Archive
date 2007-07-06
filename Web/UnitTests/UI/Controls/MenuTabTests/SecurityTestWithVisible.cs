@@ -23,7 +23,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
       _mockNavigationCommand = _mocks.CreateMock<NavigationCommand> ();
 
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_mockWebSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _mockWebSecurityAdapter);
     }
 
     [Test]

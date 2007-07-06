@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       _mockWebSecurityAdapter = _mocks.CreateMock<IWebSecurityAdapter> ();
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
 
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_mockWebSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _mockWebSecurityAdapter);
     }
 
     [Test]
@@ -55,7 +55,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutWebSeucrityProvider ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), null);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = true;
       _mocks.ReplayAll ();
@@ -69,7 +69,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutWebSeucrityProvider ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), null);
       WebButton button = CreateButtonWithClickEventHandler ();
       button.Visible = false;
       _mocks.ReplayAll ();

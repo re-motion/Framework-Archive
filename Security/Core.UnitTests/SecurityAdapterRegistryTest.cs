@@ -7,28 +7,14 @@ namespace Rubicon.Security.UnitTests
   [TestFixture]
   public class SecurityAdapterRegistryTest
   {
-    // types
-
-    // static members
-
-    // member fields
-
     private SecurityAdapterRegistry _securityAdapterRegistry;
     private MockRepository _mocks;
-
-    // construction and disposing
-
-    public SecurityAdapterRegistryTest ()
-    {
-    }
-
-    // methods and properties
 
     [SetUp]
     public void SetUp ()
     {
       _mocks = new MockRepository ();
-      _securityAdapterRegistry = new SecurityProviderRegistryMock ();
+      _securityAdapterRegistry = new SecurityAdapterRegistryMock ();
     }
 
     [Test]
@@ -43,7 +29,7 @@ namespace Rubicon.Security.UnitTests
       ISecurityAdapter exptectedAdapter = _mocks.CreateMock<ISecurityAdapter> ();
       _mocks.ReplayAll ();
       
-      _securityAdapterRegistry.SetAdapter<ISecurityAdapter> (exptectedAdapter);
+      _securityAdapterRegistry.SetAdapter (typeof (ISecurityAdapter), exptectedAdapter);
 
       Assert.AreSame (exptectedAdapter, _securityAdapterRegistry.GetAdapter<ISecurityAdapter> ());
     }
@@ -60,10 +46,10 @@ namespace Rubicon.Security.UnitTests
       ISecurityAdapter adapter = _mocks.CreateMock<ISecurityAdapter> ();
       _mocks.ReplayAll ();
 
-      _securityAdapterRegistry.SetAdapter<ISecurityAdapter>(adapter);
+      _securityAdapterRegistry.SetAdapter(typeof (ISecurityAdapter), adapter);
       Assert.IsNotNull (_securityAdapterRegistry.GetAdapter<ISecurityAdapter> ());
 
-      _securityAdapterRegistry.SetAdapter<ISecurityAdapter> (null);
+      _securityAdapterRegistry.SetAdapter (typeof (ISecurityAdapter), null);
       Assert.IsNull (_securityAdapterRegistry.GetAdapter<ISecurityAdapter> ());
     }
   }

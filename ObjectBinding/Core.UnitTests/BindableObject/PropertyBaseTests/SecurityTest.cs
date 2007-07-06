@@ -10,7 +10,6 @@ using Rubicon.Security;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
 {
   [TestFixture]
-  [Ignore]
   public class SecurityTest : TestBase
   {
     private MockRepository _mocks;
@@ -29,7 +28,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
       _businessObjectProvider = new BindableObjectProvider();
       _mockObjectSecurityAdapter = _mocks.CreateMock<IObjectSecurityAdapter>();
 
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (_mockObjectSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), _mockObjectSecurityAdapter);
 
       _securableObject = (IBusinessObject) ObjectFactory.Create<SecurableClassWithReferenceType<SimpleReferenceType>>()
                                                .With (_mocks.CreateMock<IObjectSecurityStrategy>());
@@ -37,21 +36,29 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
 
       _nonSecurableObject = (IBusinessObject) ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>().With();
 
-      _securableProperty = CreateProperty ("Scalar");
-      _nonSecurablePropertyReadOnly = CreateProperty ("ReadOnlyScalar");
-      _nonSecurableProperty = CreateProperty ("Scalar");
+      _securableProperty = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (SecurableClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
+      
+      _nonSecurablePropertyReadOnly = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ReadOnlyScalar"), null, false, true));
+      
+      _nonSecurableProperty = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
     }
 
     [Test]
     public void IsAccessibleWithoutObjectSecurityProvider ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
       _mocks.ReplayAll();
 
       bool isAccessible = _securableProperty.IsAccessible (_securableObject.BusinessObjectClass, _securableObject);
@@ -98,7 +105,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     [Test]
     public void IsNotReadOnlyWithoutObjectSecurityProvider ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
       _mocks.ReplayAll();
 
       bool isReadOnly = _securableProperty.IsReadOnly (_securableObject);
@@ -165,13 +172,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
       Expect.Call (
           _mockObjectSecurityAdapter.HasAccessOnSetAccessor (
               (ISecurableObject) _securableObject, ((StubPropertyBase) _securableProperty).PropertyInfo.Name)).Return (returnValue);
-    }
-
-    private StubPropertyBase CreateProperty (string propertyName)
-    {
-      return new StubPropertyBase (
-          new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), propertyName), null, false));
     }
   }
 }

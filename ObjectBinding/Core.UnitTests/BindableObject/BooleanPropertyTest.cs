@@ -56,7 +56,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false));
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false, false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
@@ -66,7 +66,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false));
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false, false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }
@@ -175,7 +175,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private BooleanProperty CreateProperty (string propertyName)
     {
       return new BooleanProperty (
-          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false));
+          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), propertyName), null, false, false));
     }
 
     private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)

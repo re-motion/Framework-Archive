@@ -146,7 +146,7 @@
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityAdapterTest.cs" />
     <Compile Include="SecurityFreeSectionTest.cs" />
-    <Compile Include="SecurityProviderRegistryMock.cs" />
+    <Compile Include="SecurityAdapterRegistryMock.cs" />
     <Compile Include="SecurityAdapterRegistryTest.cs" />
     <Compile Include="SecurityStrategyTests\CachingTest.cs" />
     <Compile Include="SecurityStrategyTests\Test.cs" />

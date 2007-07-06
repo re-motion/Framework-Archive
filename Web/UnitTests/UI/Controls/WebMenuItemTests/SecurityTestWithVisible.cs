@@ -23,7 +23,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebMenuItemTests
       _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
       _mockCommand = _mocks.CreateMock<Command> ();
 
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (_mockWebSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), _mockWebSecurityAdapter);
     }
 
     [Test]

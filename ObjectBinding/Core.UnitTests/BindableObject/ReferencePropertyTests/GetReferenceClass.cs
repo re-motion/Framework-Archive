@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     public void UseBindableObjectProvider ()
     {
       IBusinessObjectReferenceProperty property = new ReferenceProperty (
-          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false),
+          new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false, false),
           TypeFactory.GetConcreteType (typeof (SimpleClass)));
 
       Assert.That (property.ReferenceClass, Is.SameAs (_businessObjectProvider.GetBindableObjectClass (typeof (SimpleClass))));
@@ -83,7 +83,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       return new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<>).MakeGenericType (propertyType), propertyName), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<>).MakeGenericType (propertyType), propertyName), null, false, false),
           propertyType);
     }
   }

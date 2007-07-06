@@ -16,8 +16,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       HttpContextHelper.SetCurrent (null);
       WebConfigurationMock.Current = null;
       Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
-      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), null);
     }
   }
 }

@@ -35,7 +35,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     public PropertyBase GetMetadata ()
     {
       Type underlyingType = GetUnderlyingType();
-      PropertyBase.Parameters parameters = new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired ());
+      PropertyBase.Parameters parameters = new PropertyBase.Parameters (_businessObjectProvider, _propertyInfo, GetListInfo (), GetIsRequired (), GetIsReadOnly());
 
       if (underlyingType == typeof (Boolean))
         return new BooleanProperty (parameters);
@@ -114,6 +114,11 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
         return true;
+      return false;
+    }
+
+    private bool GetIsReadOnly ()
+    {
       return false;
     }
 

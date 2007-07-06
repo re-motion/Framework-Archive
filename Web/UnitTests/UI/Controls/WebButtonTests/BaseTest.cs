@@ -15,8 +15,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       base.TearDown ();
 
       WebConfigurationMock.Current = null;
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (null);
-      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), null);
     }
   }
 }

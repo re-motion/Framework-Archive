@@ -24,7 +24,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     public void Initialize ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, null, true));
+      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, null, true, false));
 
       Assert.That (propertyBase.PropertyInfo, Is.SameAs (propertyInfo));
       Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
       IListInfo expected = new ListInfo (typeof (SimpleReferenceType));
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"), expected, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"), expected, false, false));
 
       Assert.That (property.IsList, Is.True);
       Assert.That (property.ListInfo, Is.SameAs (expected));
@@ -51,7 +51,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
 
       Assert.That (property.IsList, Is.False);
       Dev.Null = property.ListInfo;
@@ -63,7 +63,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
       SimpleReferenceType expected = new SimpleReferenceType();
 
       Assert.That (property.ConvertFromNativePropertyType (expected), Is.SameAs (expected));
@@ -74,7 +74,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"), null, false, false));
       SimpleReferenceType expected = new SimpleReferenceType();
 
       Assert.That (property.ConvertToNativePropertyType (expected), Is.SameAs (expected));

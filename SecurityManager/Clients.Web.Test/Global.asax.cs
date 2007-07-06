@@ -23,9 +23,9 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
 
     protected void Application_Start (object sender, EventArgs e)
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (new ObjectSecurityAdapter ());
-      SecurityAdapterRegistry.Instance.SetAdapter<IWebSecurityAdapter> (new WebSecurityAdapter ());
-      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (new WxeSecurityAdapter ());
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), new ObjectSecurityAdapter ());
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWebSecurityAdapter), new WebSecurityAdapter ());
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), new WxeSecurityAdapter ());
     }
 
     protected void Application_End (object sender, EventArgs e)

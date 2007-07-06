@@ -19,13 +19,13 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityAdapterTests
       _securityAdapter = new WebSecurityAdapter ();
 
       _testHelper = new WebPermissionProviderTestHelper ();
-      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (_testHelper.WxeSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), _testHelper.WxeSecurityAdapter);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      SecurityAdapterRegistry.Instance.SetAdapter<IWxeSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IWxeSecurityAdapter), null);
     }
 
     [Test]

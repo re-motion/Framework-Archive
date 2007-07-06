@@ -44,7 +44,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false, false),
           TypeFactory.GetConcreteType (typeof (ClassWithAllDataTypes)));
     }
 
@@ -54,7 +54,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), "Scalar"), null, false, false),
           typeof (SimpleClass));
     }
 
@@ -62,7 +62,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       return new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), propertyName), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleClass>), propertyName), null, false, false),
           TypeFactory.GetConcreteType (typeof (SimpleClass)));
     }
   }

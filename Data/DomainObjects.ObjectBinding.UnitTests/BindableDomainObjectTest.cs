@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
         _securableOder = new SecurableOrder (_mockObjectSecurityStrategy);
         _securableOder.SetDisplayName ("Value");
       }
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (_mockObjectSecurityAdapter);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), _mockObjectSecurityAdapter);
 
       
       //_securableObject = new SecurableSearchObject (_mocks.CreateMock<IObjectSecurityStrategy> ());
@@ -46,7 +46,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     public override void TearDown ()
     {
       base.TearDown();
-      SecurityAdapterRegistry.Instance.SetAdapter<IObjectSecurityAdapter> (null);
+      SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
     }
 
     [Test]

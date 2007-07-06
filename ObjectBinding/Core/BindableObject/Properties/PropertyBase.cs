@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Rubicon.Security;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject.Properties
@@ -13,8 +14,10 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       public readonly PropertyInfo PropertyInfo;
       public readonly IListInfo ListInfo;
       public readonly bool IsRequired;
+      public readonly bool IsReadOnly;
 
-      public Parameters (BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired)
+      public Parameters (
+          BindableObjectProvider businessObjectProvider, PropertyInfo propertyInfo, IListInfo listInfo, bool isRequired, bool isReadOnly)
       {
         ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
         ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
@@ -23,15 +26,17 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
         PropertyInfo = propertyInfo;
         ListInfo = listInfo;
         IsRequired = isRequired;
+        IsReadOnly = isReadOnly;
       }
     }
-    
+
     private readonly BindableObjectProvider _businessObjectProvider;
     private readonly PropertyInfo _propertyInfo;
     private readonly IListInfo _listInfo;
     private readonly bool _isRequired;
     private readonly Type _underlyingType;
     private readonly bool _isNullable;
+    private readonly bool _isReadOnly;
 
     protected PropertyBase (Parameters parameters)
     {
@@ -39,6 +44,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       _propertyInfo = parameters.PropertyInfo;
       _listInfo = parameters.ListInfo;
       _isRequired = parameters.IsRequired;
+      _isReadOnly = parameters.IsReadOnly;
       _underlyingType = GetUnderlyingType();
       _isNullable = GetNullability();
     }
@@ -109,7 +115,15 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The result may depend on the class, the user's authorization and/or the instance value. </remarks>
     public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
     {
-      return true;
+      ISecurableObject securableObject = obj as ISecurableObject;
+      if (securableObject == null)
+        return true;
+
+      IObjectSecurityAdapter objectSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IObjectSecurityAdapter>();
+      if (objectSecurityAdapter == null)
+        return true;
+
+      return objectSecurityAdapter.HasAccessOnGetAccessor (securableObject, _propertyInfo.Name);
     }
 
     /// <summary> Indicates whether this property can be modified by the user. </summary>
@@ -118,7 +132,18 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The result may depend on the user's authorization and/or the object. </remarks>
     public bool IsReadOnly (IBusinessObject obj)
     {
-      return false;
+      if (_isReadOnly)
+        return true;
+
+      ISecurableObject securableObject = obj as ISecurableObject;
+      if (securableObject == null)
+        return false;
+
+      IObjectSecurityAdapter objectSecurityAdapter = SecurityAdapterRegistry.Instance.GetAdapter<IObjectSecurityAdapter>();
+      if (objectSecurityAdapter == null)
+        return false;
+
+      return !objectSecurityAdapter.HasAccessOnSetAccessor (securableObject, _propertyInfo.Name);
     }
 
     /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
@@ -11,7 +12,7 @@ namespace Rubicon.Security
       get { throw new NotImplementedException ("Use SecurityAdapterRegistry.Instance instead."); }
     }
 
-    [Obsolete ("Use SetAdapter<T>(...) instead. (Version: 1.7.41)", true)]
+    [Obsolete ("Use SetAdapter(...) instead. (Version: 1.7.41)", true)]
     public abstract void SetProvider<T> (T value) where T : class, ISecurityProviderObsolete;
 
     [Obsolete ("Use GetAdapter<T>() instead. (Version: 1.7.41)", true)]
@@ -22,32 +23,25 @@ namespace Rubicon.Security
   /// <remarks>Used by those modules of the framework that do not have binary depedencies to the security module to access security information.</remarks>
   public class SecurityAdapterRegistry
   {
-    // types
-
-    // static members
-
-    private static SecurityAdapterRegistry s_instance = new SecurityAdapterRegistry();
+    private static readonly SecurityAdapterRegistry s_instance = new SecurityAdapterRegistry();
 
     public static SecurityAdapterRegistry Instance
     {
       get { return s_instance; }
     }
 
-    // member fields
-
-    private Dictionary<Type, ISecurityAdapter> _registry = new Dictionary<Type, ISecurityAdapter>();
-
-    // construction and disposing
+    private readonly Dictionary<Type, ISecurityAdapter> _registry = new Dictionary<Type, ISecurityAdapter>();
 
     protected SecurityAdapterRegistry()
     {
     }
 
-    // methods and properties
-
-    public void SetAdapter<T> (T value) where T : class, ISecurityAdapter
+    public void SetAdapter (Type adapterType, ISecurityAdapter value)
     {
-      _registry[typeof (T)] = value;
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("adapterType", adapterType, typeof (ISecurityAdapter));
+      ArgumentUtility.CheckType ("value", value, adapterType);
+
+      _registry[adapterType] = value;
     }
 
     public T GetAdapter<T>() where T : class, ISecurityAdapter

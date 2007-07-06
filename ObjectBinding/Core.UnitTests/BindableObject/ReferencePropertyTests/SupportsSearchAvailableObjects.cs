@@ -107,7 +107,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       return new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), null, false, false),
           TypeFactory.GetConcreteType (propertyType));
     }
 
@@ -115,7 +115,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       return new ReferenceProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), null, false),
+              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), null, false, false),
           propertyType);
     }
   }
