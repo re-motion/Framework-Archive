@@ -1537,6 +1537,14 @@ public class BocReferenceValue:
     get { return s_supportedPropertyInterfaces; }
   }
 
+  public override bool SupportsProperty (IBusinessObjectProperty property)
+  {
+    ArgumentUtility.CheckNotNull ("property", property);
+    if (!base.SupportsProperty (property))
+      return false;
+    return ((IBusinessObjectReferenceProperty) property).ReferenceClass is IBusinessObjectClassWithIdentity;
+  }
+
   /// <summary>
   ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
   ///   <see cref="TargetControl"/>.
