@@ -15,10 +15,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private BindableObjectProvider _businessObjectProvider;
     private MockRepository _mockRepository;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _businessObjectProvider = new BindableObjectProvider();
+      base.SetUp ();
+
+      _businessObjectProvider = new BindableObjectProvider ();
       _mockRepository = new MockRepository();
     }
 

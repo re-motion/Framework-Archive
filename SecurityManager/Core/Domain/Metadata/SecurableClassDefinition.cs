@@ -4,6 +4,7 @@ using System.ComponentModel;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.ObjectBinding;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
 

@@ -21,10 +21,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     private IBusinessObject _securableObject;
     private IBusinessObject _nonSecurableObject;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _mocks = new MockRepository();
+      base.SetUp ();
+      
+      _mocks = new MockRepository ();
       _businessObjectProvider = new BindableObjectProvider();
       _mockObjectSecurityAdapter = _mocks.CreateMock<IObjectSecurityAdapter>();
 

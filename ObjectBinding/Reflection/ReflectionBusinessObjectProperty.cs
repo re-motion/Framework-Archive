@@ -75,7 +75,7 @@ namespace Rubicon.ObjectBinding.Reflection
     protected ReflectionBusinessObjectProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
     {
       _propertyInfo = propertyInfo;
-      _listInfo = isList ? new ListInfo (itemType) : null;
+      _listInfo = isList ? new ListInfo (propertyInfo.PropertyType, itemType) : null;
     }
 
     public bool IsList

@@ -2,7 +2,7 @@ using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  public interface ISearchServiceOnProperty : IBindableObjectSearchService
+  public interface ISearchServiceOnProperty : ISearchAvailableObjectsService
   {
   }
 }

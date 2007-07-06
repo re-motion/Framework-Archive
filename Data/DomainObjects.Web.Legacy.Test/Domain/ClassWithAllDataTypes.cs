@@ -3,6 +3,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.NullableValueTypes;
 
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 
 using Rubicon.Data.DomainObjects;

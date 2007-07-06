@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata

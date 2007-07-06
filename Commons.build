@@ -379,7 +379,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Core" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+  <target name="SecurityManager.Core" depends="Core, ObjectBinding, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
     <property name="project.name" value="SecurityManager.Core" />
     <property name="project.dir" value="SecurityManager/Core" />
     <property name="project.output" value="Rubicon.SecurityManager" />

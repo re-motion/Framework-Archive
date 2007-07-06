@@ -7,15 +7,16 @@ using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
-  public class ClassReflectorTest
+  public class ClassReflectorTest : TestBase
   {
     private BindableObjectProvider _businessObjectProvider;
     private Type _type;
     private ClassReflector _classReflector;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _type = typeof (SimpleClass);
       _businessObjectProvider = new BindableObjectProvider ();
       _classReflector = new ClassReflector (_type, _businessObjectProvider);

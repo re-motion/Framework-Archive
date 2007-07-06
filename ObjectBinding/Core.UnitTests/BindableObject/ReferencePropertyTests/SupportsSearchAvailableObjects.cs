@@ -15,10 +15,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     private BindableObjectProvider _businessObjectProvider;
     private MockRepository _mockRepository;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _businessObjectProvider = new BindableObjectProvider();
+      base.SetUp ();
+
+      _businessObjectProvider = new BindableObjectProvider ();
       _mockRepository = new MockRepository();
     }
 
@@ -82,13 +83,13 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void WithoutSearchServiceAttribute_AndDefaultSearchService ()
     {
-      IBindableObjectSearchService mockService = _mockRepository.CreateMock<IBindableObjectSearchService>();
+      ISearchAvailableObjectsService mockAvailableObjectsService = _mockRepository.CreateMock<ISearchAvailableObjectsService>();
       IBusinessObjectReferenceProperty property = CreatePropertyWithoutMixing ("NoSearchService", typeof (ClassWithOtherBusinessObjectImplementation));
 
-      Expect.Call (mockService.SupportsIdentity (property)).Return (true);
+      Expect.Call (mockAvailableObjectsService.SupportsIdentity (property)).Return (true);
       _mockRepository.ReplayAll();
 
-      _businessObjectProvider.AddService (typeof (IBindableObjectSearchService), mockService);
+      _businessObjectProvider.AddService (typeof (ISearchAvailableObjectsService), mockAvailableObjectsService);
       bool actual = property.SupportsSearchAvailableObjects (true);
 
       _mockRepository.VerifyAll();

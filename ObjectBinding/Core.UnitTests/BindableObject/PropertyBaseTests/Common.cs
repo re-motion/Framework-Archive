@@ -14,9 +14,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
   {
     private BindableObjectProvider _bindableObjectProvider;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
+
       _bindableObjectProvider = new BindableObjectProvider();
     }
 
@@ -24,11 +25,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     public void Initialize ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, null, true, false));
+      PropertyBase propertyBase = new StubPropertyBase (new PropertyBase.Parameters (_bindableObjectProvider, propertyInfo, null, true, true));
 
       Assert.That (propertyBase.PropertyInfo, Is.SameAs (propertyInfo));
       Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
       Assert.That (propertyBase.IsRequired, Is.True);
+      Assert.That (propertyBase.IsReadOnly (null), Is.True);
       Assert.That (propertyBase.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
       Assert.That (((IBusinessObjectProperty) propertyBase).BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
@@ -36,7 +38,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     [Test]
     public void GetListInfo ()
     {
-      IListInfo expected = new ListInfo (typeof (SimpleReferenceType));
+      IListInfo expected = new ListInfo (typeof (SimpleReferenceType[]), typeof (SimpleReferenceType));
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
               _bindableObjectProvider, GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"), expected, false, false));
@@ -83,18 +85,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     [Test]
     [Ignore ("TODO: test")]
     public void GetDisplayName ()
-    {
-    }
-
-    [Test]
-    [Ignore ("TODO: test")]
-    public void IsAccessible ()
-    {
-    }
-
-    [Test]
-    [Ignore ("TODO: test")]
-    public void IsRequired ()
     {
     }
   }

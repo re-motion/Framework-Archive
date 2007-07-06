@@ -8,16 +8,17 @@ using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
-  public class BindableObjectMixinTest
+  public class BindableObjectMixinTest : TestBase
   {
     private SimpleClass _bindableObject;
     private BindableObjectMixin _bindableObjectMixin;
     private IBusinessObject _businessObject;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _bindableObject = ObjectFactory.Create<SimpleClass>().With();
+      base.SetUp ();
+
+      _bindableObject = ObjectFactory.Create<SimpleClass> ().With ();
       _bindableObjectMixin = Mixin.Get<BindableObjectMixin> (_bindableObject);
       _businessObject = _bindableObjectMixin;
     }

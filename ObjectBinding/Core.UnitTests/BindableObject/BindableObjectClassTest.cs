@@ -14,10 +14,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   {
     private BindableObjectProvider _bindableObjectProvider;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _bindableObjectProvider = new BindableObjectProvider();
+      base.SetUp ();
+
+      _bindableObjectProvider = new BindableObjectProvider ();
     }
 
     [Test]
@@ -65,6 +66,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
           {
               CreateProperty (type, "Scalar"),
               CreateProperty (type, "ReadOnlyScalar"),
+              CreateProperty (type, "ReadOnlyAttributeScalar"),
               CreateProperty (type, "Array")
           };
 

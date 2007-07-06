@@ -8,6 +8,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
   {
     private T _scalar;
     private T _readOnlyScalar;
+    private T _notVisibleScalar;
+    private T _readOnlyAttributeScalar;
     private T[] _array;
 
     public ClassWithReferenceType ()
@@ -23,6 +25,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     public T ReadOnlyScalar
     {
       get { return _readOnlyScalar; }
+    }
+
+    [ObjectBinding (Visible = false)]
+    public T NotVisibleScalar
+    {
+      get { return _notVisibleScalar; }
+      set { _notVisibleScalar = value; }
+    }
+ 
+    [ObjectBinding (ReadOnly = true)]
+    public T ReadOnlyAttributeScalar
+    {
+      get { return _readOnlyAttributeScalar; }
+      set { _readOnlyAttributeScalar = value; }
     }
 
     public T[] Array

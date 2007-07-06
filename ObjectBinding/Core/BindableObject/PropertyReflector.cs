@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
@@ -102,10 +103,10 @@ namespace Rubicon.ObjectBinding.BindableObject
       return itemTypeAttribute.ItemType;
     }
 
-    private IListInfo GetListInfo ()
+    private ListInfo GetListInfo ()
     {
-      if (typeof (IList).IsAssignableFrom (_propertyInfo.PropertyType))
-        return new ListInfo (GetItemType());
+      if (IsListProperty ())
+        return new ListInfo (_propertyInfo.PropertyType, GetItemType ());
 
       return null;
     }
@@ -119,12 +120,30 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private bool GetIsReadOnly ()
     {
-      return false;
+      ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute>(_propertyInfo, true);
+      if (attribute != null && attribute.ReadOnly)
+        return true;
+
+      if (ReflectionUtility.CanAscribe (_propertyInfo.PropertyType, typeof (ReadOnlyCollection<>)))
+        return true;
+
+      if (_propertyInfo.CanWrite)
+        return false;
+
+      if (IsListProperty() && !_propertyInfo.PropertyType.IsArray)
+        return false;
+
+      return true;
     }
 
     private int? GetMaxLength ()
     {
       return null;
+    }
+
+    private bool IsListProperty ()
+    {
+      return typeof(IList).IsAssignableFrom (_propertyInfo.PropertyType);
     }
   }
 }

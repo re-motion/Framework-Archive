@@ -21,10 +21,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private MockRepository _mockRepository;
     private IBusinessObject _mockBusinessObject;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _businessObjectProvider = new BindableObjectProvider();
+      base.SetUp ();
+
+      _businessObjectProvider = new BindableObjectProvider ();
 
       _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
       Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;

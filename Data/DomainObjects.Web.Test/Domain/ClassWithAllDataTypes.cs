@@ -2,6 +2,7 @@ using System;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.Globalization;
+using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain

@@ -108,7 +108,7 @@
     <Compile Include="BindableObject\Properties\DateTimePropertyBase.cs" />
     <Compile Include="BindableObject\Properties\DecimalProperty.cs" />
     <Compile Include="BindableObject\Properties\DoubleProperty.cs" />
-    <Compile Include="BindableObject\IBindableObjectSearchService.cs" />
+    <Compile Include="BindableObject\ISearchAvailableObjectsService.cs" />
     <Compile Include="BindableObject\Properties\ReferenceProperty.cs" />
     <Compile Include="BindableObject\Properties\SingleProperty.cs" />
     <Compile Include="BindableObject\Properties\Int64Property.cs" />
@@ -124,6 +124,7 @@
       <DependentUpon>BooleanProperty.resx</DependentUpon>
     </Compile>
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
+    <Compile Include="ObjectBindingAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
     <Compile Include="BindableObject\Properties\NotSupportedProperty.cs" />

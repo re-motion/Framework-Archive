@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
-  public class UndefinedEnumValueAttributeTest
+  public class UndefinedEnumValueAttributeTest : TestBase
   {
     private enum TestEnum
     {

@@ -12,10 +12,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   {
     private BindableObjectProvider _businessObjectProvider;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
-      _businessObjectProvider = new BindableObjectProvider();
+      base.SetUp ();
+
+      _businessObjectProvider = new BindableObjectProvider ();
     }
 
     [Test]

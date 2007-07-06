@@ -40,12 +40,12 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// </remarks>
     public bool SupportsSearchAvailableObjects (bool supportsIdentity)
     {
-      IBindableObjectSearchService searchService = (IBindableObjectSearchService) BusinessObjectProvider.GetService (_searchServiceType);
-      if (searchService == null)
+      ISearchAvailableObjectsService searchAvailableObjectsService = (ISearchAvailableObjectsService) BusinessObjectProvider.GetService (_searchServiceType);
+      if (searchAvailableObjectsService == null)
         return false;
 
       if (supportsIdentity)
-        return searchService.SupportsIdentity (this);
+        return searchAvailableObjectsService.SupportsIdentity (this);
 
       return true;
     }
@@ -84,10 +84,10 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
                 referencingObject.BusinessObjectClass.Identifier));
       }
 
-      IBindableObjectSearchService searchService = (IBindableObjectSearchService) BusinessObjectProvider.GetService (_searchServiceType);
-      Assertion.Assert (searchService != null, "The BusinessObjectProvider did not return a service for '{0}'.", _searchServiceType.FullName);
+      ISearchAvailableObjectsService searchAvailableObjectsService = (ISearchAvailableObjectsService) BusinessObjectProvider.GetService (_searchServiceType);
+      Assertion.Assert (searchAvailableObjectsService != null, "The BusinessObjectProvider did not return a service for '{0}'.", _searchServiceType.FullName);
 
-      return searchService.Search (referencingObject, this, searchStatement);
+      return searchAvailableObjectsService.Search (referencingObject, this, searchStatement);
     }
 
     /// <summary>
@@ -116,10 +116,15 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private IBusinessObjectClass GetReferenceClass ()
     {
-      if (AttributeUtility.IsDefined<IBindableObjectAttribute> (_concreteType, true))
+      if (IsBindableObjectImplementation())
         return BusinessObjectProvider.GetBindableObjectClass (UnderlyingType);
 
       return GetReferenceClassFromService();
+    }
+
+    private bool IsBindableObjectImplementation ()
+    {
+      return AttributeUtility.IsDefined<IBindableObjectAttribute> (_concreteType, true);
     }
 
     private IBusinessObjectClass GetReferenceClassFromService ()
@@ -164,7 +169,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       if (attribute == null)
         attribute = AttributeUtility.GetCustomAttribute<BindableObjectSearchServiceTypeAttribute> (_concreteType, true);
       if (attribute == null)
-        return typeof (IBindableObjectSearchService);
+        return typeof (ISearchAvailableObjectsService);
       return attribute.Type;
     }
   }

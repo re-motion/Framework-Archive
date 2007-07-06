@@ -18,9 +18,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     private CultureInfo _uiCultureBackup;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
+
       _businessObjectProvider = new BindableObjectProvider();
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
       _businessObjectClass = classReflector.GetMetadata();
@@ -56,7 +57,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"), new ListInfo (typeof (bool)), false, false));
+              _businessObjectProvider,
+              GetPropertyInfo (typeof (ClassWithValueType<bool>), "Array"),
+              new ListInfo (typeof (bool[]), typeof (bool)),
+              false,
+              false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.False);
     }
@@ -66,7 +71,11 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       IBusinessObjectBooleanProperty property = new BooleanProperty (
           new PropertyBase.Parameters (
-              _businessObjectProvider, GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"), new ListInfo (typeof (bool?)), false, false));
+              _businessObjectProvider,
+              GetPropertyInfo (typeof (ClassWithValueType<bool>), "NullableArray"),
+              new ListInfo (typeof (bool?[]), typeof (bool?)),
+              false,
+              false));
 
       Assert.That (property.GetDefaultValue (_businessObjectClass), Is.Null);
     }

@@ -1,7 +1,7 @@
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
-  public interface IBindableObjectSearchService : IBusinessObjectService
+  public interface ISearchAvailableObjectsService : IBusinessObjectService
   {
     bool SupportsIdentity (IBusinessObjectReferenceProperty property);
 

@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding
     Type ItemType { get; }
     bool RequiresWriteBack { get; }
     IList CreateList (int count);
-    void InsertItem (object item, int index);
-    void RemoveItem (object item);
+    IList InsertItem (IList list, object item, int index);
+    IList RemoveItem (IList list, object item);
   }
 }

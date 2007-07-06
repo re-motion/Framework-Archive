@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -9,14 +8,15 @@ using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
-  public class BindableObjectProviderTest
+  public class BindableObjectProviderTest : TestBase
   {
     private BindableObjectProvider _provider;
     private MockRepository _mockRepository;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _provider = new BindableObjectProvider ();
       _mockRepository = new MockRepository();
     }

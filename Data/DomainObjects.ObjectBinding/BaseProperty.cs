@@ -39,7 +39,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
       _propertyInfo = propertyInfo;
       _isRequired = isRequired;
       _underlyingType = underlyingType;
-      _listInfo = isList ? new ListInfo (underlyingType) : null;
+      _listInfo = isList ? new ListInfo (propertyInfo.PropertyType, underlyingType) : null;
 
       //TODO: Remove this code once the Data.DomainObjects.ObjectBinding.Legacy assembly has been extracted.
       if (propertyInfo.CanWrite || (IsList && typeof (IList).IsAssignableFrom (propertyInfo.PropertyType)))

@@ -55,9 +55,18 @@ namespace Rubicon.ObjectBinding.BindableObject
       return properties;
     }
 
-    private PropertyInfo[] GetPropertyInfos ()
+    private MemberInfo[] GetPropertyInfos ()
     {
-      return _type.GetProperties (BindingFlags.Instance | BindingFlags.Public);
+      return _type.FindMembers (MemberTypes.Property, BindingFlags.Instance | BindingFlags.Public, PropertyFiler, null);
+    }
+
+    private bool PropertyFiler (MemberInfo memberInfo, object filterCriteria)
+    {
+      ObjectBindingAttribute attribute = AttributeUtility.GetCustomAttribute<ObjectBindingAttribute> (memberInfo, true);
+      if (attribute != null && !attribute.Visible)
+        return false;
+
+      return true;
     }
   }
 }

@@ -6,7 +6,7 @@ namespace Rubicon.ObjectBinding
   ///   The <b>IBusinessObjectReferenceProperty</b> interface is used for accessing references to other 
   ///   <see cref="IBusinessObject"/> instances.
   /// </summary>
-  public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
+  public interface IBusinessObjectReferenceProperty : IBusinessObjectProperty
   {
     /// <summary> Gets the class information for elements of this property. </summary>
     /// <value> 
@@ -54,7 +54,7 @@ namespace Rubicon.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, bool requiresIdentity, string searchStatement); 
+    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, bool requiresIdentity, string searchStatement);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="Create"/> may be called to implicitly create a new business object 
