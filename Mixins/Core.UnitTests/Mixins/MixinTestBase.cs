@@ -29,29 +29,23 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       if (currentConfiguration != null)
         currentConfiguration.Dispose();
 
-      string path;
-      try
+      if (ConcreteTypeBuilder.Current.Scope.HasAssembly)
       {
-        path = Path.Combine (Environment.CurrentDirectory, "CastleDynProxy2.dll");
+        string path;
         try
         {
-          ConcreteTypeBuilder.Current.Scope.SaveAssembly (path);
+          path = ConcreteTypeBuilder.Current.Scope.SaveAssembly ();
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
-          Console.WriteLine (ex.Message);
+          Assert.Fail ("Error when saving assembly: {0}", ex);
           return;
         }
-      }
-      catch (Exception ex)
-      {
-        Assert.Fail ("Error when saving assembly: {0}", ex);
-        return;
+
+        VerifyPEFile (path);
       }
 
       ConcreteTypeBuilder.SetCurrent (null);
-
-      VerifyPEFile (path);
     }
 
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
