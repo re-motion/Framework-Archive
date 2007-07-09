@@ -7,6 +7,7 @@ using Rubicon.Mixins.CodeGeneration;
 using System.Reflection;
 using Rubicon.Development.UnitTesting;
 using System.IO;
+using System.Threading;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -72,6 +73,19 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       ClassOverridingMixinMembers[] array = Serializer.SerializeAndDeserialize (new ClassOverridingMixinMembers[] { c1, c2 });
       Assert.AreSame (Mixin.Get<MixinWithAbstractMembers> (array[0]).GetType (), Mixin.Get<MixinWithAbstractMembers> (array[1]).GetType ());
+    }
+
+    [Test]
+    public void CurrentIsGlobalSingleton ()
+    {
+      ConcreteTypeBuilder newBuilder = new ConcreteTypeBuilder ();
+      Assert.IsFalse (ConcreteTypeBuilder.HasCurrent);
+      Thread setterThread = new Thread ((ThreadStart) delegate { ConcreteTypeBuilder.SetCurrent (newBuilder); });
+      setterThread.Start ();
+      setterThread.Join ();
+
+      Assert.IsTrue (ConcreteTypeBuilder.HasCurrent);
+      Assert.AreSame (newBuilder, ConcreteTypeBuilder.Current);
     }
   }
 }

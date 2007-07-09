@@ -35,6 +35,8 @@
       <HintPath>..\..\prereq\Assemblies\Castle.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
@@ -71,6 +73,8 @@
     <Compile Include="Utilities\DependencySort\IDependencyAnalyzer.cs" />
     <Compile Include="Utilities\Singleton\CallContextSingleton.cs" />
     <Compile Include="Utilities\Singleton\CallContextSingletonBase.cs" />
+    <Compile Include="Utilities\Singleton\ThreadSafeSingletonBase.cs" />
+    <Compile Include="Utilities\Singleton\ThreadSafeSingleton.cs" />
     <Compile Include="Utilities\Singleton\DefaultInstanceCreator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallProxyGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\CastClassExpression.cs" />

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.SampleTypes;
@@ -79,6 +80,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       ClassContext cc = new ClassContext (typeof (BaseType1), typeof (BT3Mixin2));
       BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc);
+    }
+
+    [Test]
+    public void CurrentIsGlobalSingleton ()
+    {
+      BaseClassDefinitionCache newCache = new BaseClassDefinitionCache ();
+      Assert.IsFalse (BaseClassDefinitionCache.HasCurrent);
+      Thread setterThread = new Thread ((ThreadStart) delegate { BaseClassDefinitionCache.SetCurrent (newCache); });
+      setterThread.Start ();
+      setterThread.Join ();
+
+      Assert.IsTrue (BaseClassDefinitionCache.HasCurrent);
+      Assert.AreSame (newCache, BaseClassDefinitionCache.Current);
     }
   }
 }

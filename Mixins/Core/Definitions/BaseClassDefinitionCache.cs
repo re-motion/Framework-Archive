@@ -7,7 +7,7 @@ using Rubicon.Mixins.Validation;
 
 namespace Rubicon.Mixins.Definitions
 {
-  public class BaseClassDefinitionCache : CallContextSingletonBase<BaseClassDefinitionCache, DefaultInstanceCreator<BaseClassDefinitionCache>>
+  public class BaseClassDefinitionCache : ThreadSafeSingletonBase<BaseClassDefinitionCache, DefaultInstanceCreator<BaseClassDefinitionCache>>
   {
     // This doesn't hold any state and can thus safely be used from multiple threads at the same time
     private static BaseClassDefinitionBuilder s_definitionBuilder = new BaseClassDefinitionBuilder();

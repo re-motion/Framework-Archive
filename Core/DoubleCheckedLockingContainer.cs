@@ -22,6 +22,18 @@ namespace Rubicon
       _defaultFactory = defaultFactory;
     }
 
+    /// <summary>
+    /// Gets a value indicating whether this instance has already gotten a value.
+    /// </summary>
+    /// <value>true if this instance has a value; otherwise, false.</value>
+    public bool HasValue
+    {
+      get
+      {
+        return _value != null; // works because _value is volatile
+      }
+    }
+
     /// <summary>Gets or sets the object encapsulated by the <see cref="DoubleCheckedLockingContainer{T}"/>.</summary>
     /// <value>
     /// The object assigned via the set accessor<br />or,<br />
@@ -31,21 +43,23 @@ namespace Rubicon
     {
       get
       {
-        if (_value == null)
+        T localValue = _value;
+        if (localValue == null)
         {
           lock (_sync)
           {
             if (_value == null)
               _value = _defaultFactory();
+            localValue = _value;
           }
         }
-        return _value;
+        return localValue;
       }
       set
       {
         lock (_sync)
         {
-          _value = value ?? _defaultFactory();
+          _value = value;
         }
       }
     }

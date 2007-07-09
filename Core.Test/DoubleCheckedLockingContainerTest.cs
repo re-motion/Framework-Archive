@@ -58,16 +58,49 @@ namespace Rubicon.Core.UnitTests
       IFactory mockFactory = _mocks.CreateMock<IFactory> ();
       DoubleCheckedLockingContainer<SampleClass> container =
           new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create (); });
-      Expect.Call (mockFactory.Create ()).Return (expected);
       _mocks.ReplayAll ();
 
       container.Value = null;
 
       _mocks.VerifyAll ();
+
+      _mocks.BackToRecordAll ();
+      Expect.Call (mockFactory.Create ()).Return (expected);
+
+      _mocks.ReplayAll ();
+
       SampleClass actual = container.Value;
 
       _mocks.VerifyAll ();
       Assert.AreSame (expected, actual);
+    }
+
+    [Test]
+    public void HasValue ()
+    {
+      SampleClass expected = new SampleClass ();
+      IFactory mockFactory = _mocks.CreateMock<IFactory> ();
+      DoubleCheckedLockingContainer<SampleClass> container =
+          new DoubleCheckedLockingContainer<SampleClass> (delegate { return mockFactory.Create (); });
+
+      _mocks.ReplayAll ();
+
+      Assert.IsFalse (container.HasValue);
+
+      _mocks.VerifyAll ();
+
+      _mocks.BackToRecordAll ();
+      Expect.Call (mockFactory.Create ()).Return (expected);
+
+      _mocks.ReplayAll ();
+
+      SampleClass actual = container.Value;
+
+      Assert.IsTrue (container.HasValue);
+      _mocks.VerifyAll ();
+
+      container.Value = null;
+      Assert.IsFalse (container.HasValue);
     }
   }
 }
