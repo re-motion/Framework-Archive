@@ -22,14 +22,14 @@ namespace Rubicon.ObjectBinding.Globalization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class BooleanProperty {
+    internal class BindableObjectGlobalizationService {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal BooleanProperty() {
+        internal BindableObjectGlobalizationService() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.Globalization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.Globalization.BooleanProperty", typeof(BooleanProperty).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.ObjectBinding.Globalization.BindableObjectGlobalizationService", typeof(BindableObjectGlobalizationService).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,18 +63,18 @@ namespace Rubicon.ObjectBinding.Globalization {
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_Properties_BooleanProperty_False {
+        internal static string Rubicon_ObjectBinding_BindableObject_BindableObjectGlobalizationService_False {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.Properties.BooleanProperty.False", resourceCulture);
+                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BindableObjectGlobalizationService.False", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        internal static string Rubicon_ObjectBinding_BindableObject_Properties_BooleanProperty_True {
+        internal static string Rubicon_ObjectBinding_BindableObject_BindableObjectGlobalizationService_True {
             get {
-                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.Properties.BooleanProperty.True", resourceCulture);
+                return ResourceManager.GetString("Rubicon.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True", resourceCulture);
             }
         }
     }

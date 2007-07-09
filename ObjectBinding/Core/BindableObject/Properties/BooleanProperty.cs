@@ -5,18 +5,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
   public class BooleanProperty : PropertyBase, IBusinessObjectBooleanProperty, IBusinessObjectEnumerationProperty
   {
-    [ResourceIdentifiers]
-    [MultiLingualResources ("Rubicon.ObjectBinding.Globalization.BooleanProperty")]
-    private enum ResourceIdentifier
-    {
-      True,
-      False
-    }
-
     private readonly BooleanToEnumPropertyConverter _booleanToEnumPropertyConverter;
-
-    private readonly DoubleCheckedLockingContainer<IResourceManager> _resourceManager = new DoubleCheckedLockingContainer<IResourceManager> (
-        delegate { return MultiLingualResourcesAttribute.GetResourceManager (typeof (ResourceIdentifier), false); });
 
 
     public BooleanProperty (Parameters parameters)
@@ -31,7 +20,10 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     public string GetDisplayName (bool value)
     {
-      return _resourceManager.Value.GetString (value ? ResourceIdentifier.True : ResourceIdentifier.False);
+      IBindableObjectGlobalizationService globalizationService = BusinessObjectProvider.GetService<IBindableObjectGlobalizationService> ();
+      if (globalizationService == null)
+        return value.ToString ();
+      return globalizationService.GetBooleanValueDisplayName (value);
     }
 
     /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>

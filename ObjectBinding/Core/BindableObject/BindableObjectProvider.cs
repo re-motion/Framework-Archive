@@ -8,7 +8,15 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    private static readonly BindableObjectProvider s_instance = new BindableObjectProvider();
+    private static readonly BindableObjectProvider s_instance;
+
+    static BindableObjectProvider ()
+    {
+      BindableObjectProvider provider = new BindableObjectProvider();
+      provider.AddService (typeof (IBindableObjectGlobalizationService), new BindableObjectGlobalizationService());
+
+      s_instance = provider;
+    }
 
     public static BindableObjectProvider Instance
     {
@@ -16,7 +24,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     }
 
     private readonly InterlockedCache<Type, BindableObjectClass> _businessObjectClassCache = new InterlockedCache<Type, BindableObjectClass>();
-    private readonly InterlockedCache<Type, IBusinessObjectService> _serviceCache = new InterlockedCache<Type, IBusinessObjectService> ();
+    private readonly InterlockedCache<Type, IBusinessObjectService> _serviceCache = new InterlockedCache<Type, IBusinessObjectService>();
 
     public BindableObjectProvider ()
     {
@@ -27,7 +35,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       ArgumentUtility.CheckNotNull ("type", type);
 
       ClassReflector classReflector = new ClassReflector (type, this);
-      return classReflector.GetMetadata ();
+      return classReflector.GetMetadata();
     }
 
     public InterlockedCache<Type, BindableObjectClass> BusinessObjectClassCache

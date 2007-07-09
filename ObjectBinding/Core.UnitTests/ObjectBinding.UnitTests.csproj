@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
+    <Compile Include="BindableObject\BindableObjectGlobalizationServiceTest.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
     <Compile Include="BindableObject\PropertyBaseTests\SecurityTest.cs" />

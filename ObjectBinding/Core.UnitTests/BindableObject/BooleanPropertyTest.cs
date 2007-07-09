@@ -1,8 +1,7 @@
 using System;
-using System.Globalization;
-using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
@@ -16,7 +15,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     private BindableObjectProvider _businessObjectProvider;
     private IBusinessObjectClass _businessObjectClass;
 
-    private CultureInfo _uiCultureBackup;
+    private MockRepository _mockRepository;
 
     public override void SetUp ()
     {
@@ -26,14 +25,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithValueType<bool>), _businessObjectProvider);
       _businessObjectClass = classReflector.GetMetadata();
 
-      _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
-      Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-    }
-
-    [TearDown]
-    public void TearDown ()
-    {
-      Thread.CurrentThread.CurrentUICulture = _uiCultureBackup;
+      _mockRepository = new MockRepository();
     }
 
     [Test]
@@ -81,12 +73,28 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetDisplayName_InvariantCulture ()
+    public void GetDisplayName_WithGlobalizationSerivce ()
+    {
+      IBusinessObjectBooleanProperty property = CreateProperty ("Scalar");
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService>();
+      _businessObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
+
+      Expect.Call (mockGlobalizationService.GetBooleanValueDisplayName (true)).Return ("MockTrue");
+      _mockRepository.ReplayAll();
+
+      string actual = property.GetDisplayName (true);
+
+      _mockRepository.VerifyAll();
+      Assert.That (actual, Is.EqualTo ("MockTrue"));
+    }
+
+    [Test]
+    public void GetDisplayName_WithoutGlobalizationSerivce ()
     {
       IBusinessObjectBooleanProperty property = CreateProperty ("Scalar");
 
-      Assert.That (property.GetDisplayName (true), Is.EqualTo ("Yes"));
-      Assert.That (property.GetDisplayName (false), Is.EqualTo ("No"));
+      Assert.That (property.GetDisplayName (true), Is.EqualTo ("True"));
+      Assert.That (property.GetDisplayName (false), Is.EqualTo ("False"));
     }
 
 

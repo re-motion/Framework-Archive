@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       set { _searchServiceOnType = value; }
     }
 
-    [BindableObjectSearchServiceType (typeof (ISearchServiceOnProperty))]
+    [SearchAvailableObjectsServiceType (typeof (ISearchServiceOnProperty))]
     public ClassWithSearchServiceTypeAttribute SearchServiceFromProperty
     {
       get { return _searchServiceOnProperty; }

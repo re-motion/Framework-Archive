@@ -97,7 +97,10 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private string GetDisplayName (Enum value)
     {
-      return EnumDescription.GetDescription (value) ?? value.ToString();
+      IBindableObjectGlobalizationService globalizationService = BusinessObjectProvider.GetService<IBindableObjectGlobalizationService> ();
+      if (globalizationService == null)
+        return value.ToString ();
+      return globalizationService.GetEnumerationValueDisplayName (value);
     }
 
     private bool IsEnabled (Enum value, IBusinessObject businessObject)

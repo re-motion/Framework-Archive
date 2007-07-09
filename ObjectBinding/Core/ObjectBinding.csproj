@@ -99,10 +99,12 @@
   <ItemGroup>
     <Compile Include="BindableObjectAttribute.cs" />
     <Compile Include="BindableObject\BindableObjectClass.cs" />
+    <Compile Include="BindableObject\BindableObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
+    <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
-    <Compile Include="BindableObject\BindableObjectSearchServiceTypeAttribute.cs" />
+    <Compile Include="BindableObject\SearchAvailableObjectsServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\Properties\DateProperty.cs" />
     <Compile Include="BindableObject\Properties\DateTimeProperty.cs" />
     <Compile Include="BindableObject\Properties\DateTimePropertyBase.cs" />
@@ -118,10 +120,10 @@
     <Compile Include="BindableObject\Properties\Int32Property.cs" />
     <Compile Include="BindableObject\Properties\NumericPropertyBase.cs" />
     <Compile Include="DatePropertyAttribute.cs" />
-    <Compile Include="Globalization\BooleanProperty.Designer.cs">
+    <Compile Include="Globalization\BindableObjectGlobalizationService.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BooleanProperty.resx</DependentUpon>
+      <DependentUpon>BindableObjectGlobalizationService.resx</DependentUpon>
     </Compile>
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="ObjectBindingAttribute.cs" />
@@ -178,13 +180,13 @@
     <EmbeddedResource Include="Design\PropertyPickerControl.resx">
       <DependentUpon>PropertyPickerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx">
+    <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.de.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\BooleanProperty.resx">
+    <EmbeddedResource Include="Globalization\BindableObjectGlobalizationService.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>BooleanProperty.Designer.cs</LastGenOutput>
+      <LastGenOutput>BindableObjectGlobalizationService.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Doc\include\NamespaceDoc.xml" />
   </ItemGroup>

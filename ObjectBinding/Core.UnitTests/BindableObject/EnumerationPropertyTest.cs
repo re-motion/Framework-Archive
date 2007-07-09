@@ -1,6 +1,4 @@
 using System;
-using System.Globalization;
-using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -16,8 +14,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
   {
     private BindableObjectProvider _businessObjectProvider;
 
-    private CultureInfo _uiCultureBackup;
-
     private MockRepository _mockRepository;
     private IBusinessObject _mockBusinessObject;
 
@@ -27,17 +23,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
       _businessObjectProvider = new BindableObjectProvider ();
 
-      _uiCultureBackup = Thread.CurrentThread.CurrentUICulture;
-      Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
       _mockRepository = new MockRepository();
       _mockBusinessObject = _mockRepository.CreateMock<IBusinessObject>();
-    }
-
-    [TearDown]
-    public void TearDown ()
-    {
-      Thread.CurrentThread.CurrentUICulture = _uiCultureBackup;
     }
 
     [Test]
@@ -79,40 +66,33 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
               new EnumerationValueInfo (EnumWithUndefinedValue.Value3, "Value3", "Value3", true)
           };
 
-      CheckEnumerationValueInfos (expected, property.GetAllValues());
-    }
-
-
-    [Test]
-    public void GetAllValues_WithInvariantCulture ()
-    {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
-
-      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
-          {
-              new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-              new EnumerationValueInfo (EnumWithResources.Value2, "Value2", "Value 2", true),
-              new EnumerationValueInfo (EnumWithResources.ValueWithoutResource, "ValueWithoutResource", "ValueWithoutResource", true)
-          };
-
-      CheckEnumerationValueInfos (expected, property.GetAllValues());
+      CheckEnumerationValueInfos (expected, property.GetAllValues ());
     }
 
     [Test]
-    public void GetAllValues_WithDescription ()
+    public void GetAllValues_WithGlobalizationSerivce ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
+      _businessObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
 
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
           {
-              new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
-              new EnumerationValueInfo (EnumWithDescription.Value2, "Value2", "Value II", true),
-              new EnumerationValueInfo (EnumWithDescription.ValueWithoutDescription, "ValueWithoutDescription", "ValueWithoutDescription", true)
+              new EnumerationValueInfo (TestEnum.Value1, "Value1", "MockValue1", true),
+              new EnumerationValueInfo (TestEnum.Value2, "Value2", "MockValue2", true),
+              new EnumerationValueInfo (TestEnum.Value3, "Value3", "MockValue3", true)
           };
 
-      CheckEnumerationValueInfos (expected, property.GetAllValues());
-    }
+      Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value1)).Return ("MockValue1");
+      Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value2)).Return ("MockValue2");
+      Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value3)).Return ("MockValue3");
+      _mockRepository.ReplayAll ();
 
+      IEnumerationValueInfo[] actual = property.GetAllValues ();
+
+      _mockRepository.VerifyAll ();
+      CheckEnumerationValueInfos (expected, actual);
+    }
 
     [Test]
     public void GetEnabledValues ()
@@ -190,25 +170,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null);
     }
 
-
     [Test]
-    public void GetValueInfoByValue_WithInvariantCulture ()
+    public void GetValueInfoByValue_WithGlobalizationSerivce ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
+      _businessObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
+      
+      Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value1)).Return ("MockValue1");
+      _mockRepository.ReplayAll ();
 
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-          property.GetValueInfoByValue (EnumWithResources.Value1, null));
-    }
+      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, null);
 
-    [Test]
-    public void GetValueInfoByValue_WithDescription ()
-    {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
-
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
-          property.GetValueInfoByValue (EnumWithDescription.Value1, null));
+      _mockRepository.VerifyAll ();
+      CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "MockValue1", true), actual);
     }
 
 
@@ -247,25 +222,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
       property.GetValueInfoByIdentifier ("Invalid", null);
     }
 
-
     [Test]
-    public void GetValueInfoByIdentifier_WithInvariantCulture ()
+    public void GetValueInfoByIdentifier_WithGlobalizationSerivce ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithResources>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
+      _businessObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
 
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithResources.Value1, "Value1", "Value 1", true),
-          property.GetValueInfoByIdentifier ("Value1", null));
-    }
+      Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value1)).Return ("MockValue1");
+      _mockRepository.ReplayAll ();
 
-    [Test]
-    public void GetValueInfoByIdentifier_WithDescription ()
-    {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithDescription>), "Scalar");
+      IEnumerationValueInfo actual = property.GetValueInfoByIdentifier ("Value1", null);
 
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (EnumWithDescription.Value1, "Value1", "Value I", true),
-          property.GetValueInfoByIdentifier ("Value1", null));
+      _mockRepository.VerifyAll ();
+      CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "MockValue1", true), actual);
     }
 
 
