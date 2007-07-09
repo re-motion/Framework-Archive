@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithValidEnumValue ()
+    public void ValidEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -37,7 +37,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithNull ()
+    public void Null ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -45,7 +45,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithUndefinedEnumValue ()
+    public void UndefinedEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
@@ -54,7 +54,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
 
     [Test]
     [ExpectedException (typeof (ParseException))]
-    public void Test_WithInvalidIdentifier ()
+    public void InvalidIdentifier ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -62,7 +62,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithGlobalizationSerivce ()
+    public void GetDisplayNameFromGlobalizationSerivce ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
       IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService>();

@@ -31,7 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithValidEnumValue ()
+    public void ValidEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -41,7 +41,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithNull ()
+    public void Null ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -49,7 +49,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithUndefinedEnumValue ()
+    public void UndefinedEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
@@ -57,7 +57,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithInvalidEnumValue ()
+    public void InvalidEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -68,7 +68,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
 
     [Test]
     [Ignore ("TODO: test")]
-    public void Test_WithDisabledEnumValue ()
+    public void DisabledEnumValue ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "DisabledFromProperty");
       _mockRepository.ReplayAll ();
@@ -84,7 +84,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
         ExpectedMessage =
         "Object must be the same type as the enum. The type passed in was 'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.EnumWithUndefinedValue'; "
         + "the enum type was 'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.TestEnum'.")]
-    public void Test_WitEnumValueFromOtherType ()
+    public void EnumValueFromOtherType ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -92,7 +92,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithGlobalizationSerivce ()
+    public void GetDisplayNameFromGlobalizationSerivce ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
       IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();

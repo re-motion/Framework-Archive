@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
@@ -23,7 +21,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     {
       ArgumentUtility.CheckNotNull ("expected", expected);
 
-      Assert.That (actual, Is.InstanceOfType (expected.GetType ()));
+      Assert.That (actual, Is.InstanceOfType (expected.GetType()));
       Assert.That (actual.Value, Is.EqualTo (expected.Value));
       Assert.That (actual.Identifier, Is.EqualTo (expected.Identifier));
       Assert.That (actual.IsEnabled, Is.EqualTo (expected.IsEnabled));

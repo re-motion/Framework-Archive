@@ -27,7 +27,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithValidValue ()
+    public void ValidValue ()
     {
       PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -35,7 +35,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithNull ()
+    public void Null ()
     {
       PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -43,7 +43,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithUndefinedValue ()
+    public void UndefinedValue ()
     {
       PropertyBase property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
@@ -51,7 +51,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithInvalidEnumValue ()
+    public void InvalidEnumValue ()
     {
       PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
@@ -59,15 +59,14 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Test_WithEnumValueFromOtherType ()
+    public void EnumValueFromOtherType ()
     {
       PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
       property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1);
       Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1), Is.EqualTo (EnumWithUndefinedValue.Value1));
     }
-
-
+    
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
       return new EnumerationProperty (new PropertyBase.Parameters (_businessObjectProvider, GetPropertyInfo (type, propertyName), null, false, false));
