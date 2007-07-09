@@ -29,12 +29,12 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       if (currentConfiguration != null)
         currentConfiguration.Dispose();
 
-      if (ConcreteTypeBuilder.Current.Scope.HasAssembly)
+      if (ConcreteTypeBuilder.Current.Scope.HasAssemblies)
       {
-        string path;
+        string[] paths;
         try
         {
-          path = ConcreteTypeBuilder.Current.Scope.SaveAssembly ();
+           paths = ConcreteTypeBuilder.Current.Scope.SaveAssemblies ();
         }
         catch (Exception ex)
         {
@@ -42,7 +42,8 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           return;
         }
 
-        VerifyPEFile (path);
+        foreach (string path in paths)
+          VerifyPEFile (path);
       }
 
       ConcreteTypeBuilder.SetCurrent (null);
@@ -50,24 +51,24 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     public Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      using (MixinConfiguration.ScopedExtend(targetType, mixinTypes))
+      using (MixinConfiguration.ScopedExtend (targetType, mixinTypes))
         return TypeFactory.GetConcreteType (targetType);
     }
 
     public InvokeWithWrapper<T> CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      using (MixinConfiguration.ScopedExtend(typeof (T), mixinTypes))
+      using (MixinConfiguration.ScopedExtend (typeof (T), mixinTypes))
         return ObjectFactory.Create<T>();
     }
 
     private void VerifyPEFile (string assemblyPath)
     {
-      Process process = new Process ();
+      Process process = new Process();
 
       string verifierPath = PEVerifyPath;
       if (!File.Exists (verifierPath))
       {
-        Assert.Ignore("Warning: PEVerify could not be found (search path: {0}).", verifierPath);
+        Assert.Ignore ("Warning: PEVerify could not be found (search path: {0}).", verifierPath);
       }
       else
       {
@@ -77,10 +78,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
         process.StartInfo.Arguments = assemblyPath;
-        process.Start ();
-        process.WaitForExit ();
+        process.Start();
+        process.WaitForExit();
 
-        string result = string.Format ("PEVerify returned {0}\n{1}", process.ExitCode, process.StandardOutput.ReadToEnd ());
+        string result = string.Format ("PEVerify returned {0}\n{1}", process.ExitCode, process.StandardOutput.ReadToEnd());
         Console.WriteLine ("PEVerify: " + process.ExitCode);
         if (process.ExitCode != 0)
         {

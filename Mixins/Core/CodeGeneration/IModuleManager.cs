@@ -10,11 +10,17 @@ namespace Rubicon.Mixins.CodeGeneration
     ITypeGenerator CreateTypeGenerator (BaseClassDefinition configuration);
     IMixinTypeGenerator CreateMixinTypeGenerator (MixinDefinition configuration);
 
-    string AssemblyName { get; set; }
-    string ModulePath { get; set; }
+    string SignedAssemblyName { get; set; }
+    string UnsignedAssemblyName { get; set; }
 
-    bool HasAssembly { get; }
-    string SaveAssembly ();
+    string SignedModulePath { get; set; }
+    string UnsignedModulePath { get; set; }
+
+    bool HasAssemblies { get; }
+    bool HasSignedAssembly { get; }
+    bool HasUnsignedAssembly { get; }
+
+    string[] SaveAssemblies ();
 
     void InitializeMixinTarget (IMixinTarget instance);
     void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances);

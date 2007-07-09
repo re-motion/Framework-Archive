@@ -27,25 +27,47 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       return new MixinTypeGenerator (this, configuration);
     }
 
-    public string AssemblyName
+    public string SignedAssemblyName
     {
       get { return _strongAssemblyName;  }
       set
       {
-        if (_scope != null && HasAssembly)
+        if (HasSignedAssembly)
           throw new InvalidOperationException ("The name can only be set before the first type is built.");
         _strongAssemblyName = value;
       }
     }
 
-    public string ModulePath
+    public string UnsignedAssemblyName
+    {
+      get { return _weakAssemblyName; }
+      set
+      {
+        if (HasUnsignedAssembly)
+          throw new InvalidOperationException ("The name can only be set before the first type is built.");
+        _weakAssemblyName = value;
+      }
+    }
+
+    public string SignedModulePath
     {
       get { return _strongModulePath; }
       set
       {
-        if (_scope != null && HasAssembly)
+        if (HasSignedAssembly)
           throw new InvalidOperationException ("The module path can only be set before the first type is built.");
         _strongModulePath = value;
+      }
+    }
+
+    public string UnsignedModulePath
+    {
+      get { return _weakModulePath; }
+      set
+      {
+        if (HasUnsignedAssembly)
+          throw new InvalidOperationException ("The module path can only be set before the first type is built.");
+        _weakModulePath = value;
       }
     }
 
@@ -54,37 +76,45 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get
       {
         if (_scope == null)
-        {
           _scope = new ModuleScope (true, _strongAssemblyName, _strongModulePath, _weakAssemblyName, _weakModulePath);
-        }
         return _scope;
       }
     }
 
-    public bool HasAssembly
+    public bool HasSignedAssembly
     {
-      get
-      {
-        Assertion.Assert (Scope.WeakNamedModule == null, "Because all generated types implement the interface IMixinTarget, which stems from "
-            + " an assembly with a strong name, DynamicProxy will also always generate strongly named assemblies.");
-        return Scope.StrongNamedModule != null;
-      }
+      get { return _scope != null && _scope.StrongNamedModule != null; }
     }
 
-    public string SaveAssembly ()
+    public bool HasUnsignedAssembly
     {
-      Assertion.Assert (Scope.WeakNamedModule == null, "Because all generated types implement the interface IMixinTarget, which stems from "
-          + " an assembly with a strong name, DynamicProxy will also always generate strongly named assemblies.");
+      get { return _scope != null && _scope.WeakNamedModule != null; }
+    }
 
-      try
+    public bool HasAssemblies
+    {
+      get { return HasSignedAssembly || HasUnsignedAssembly; }
+    }
+
+    public string[] SaveAssemblies ()
+    {
+      List<string> paths = new List<string> ();
+
+      if (!HasSignedAssembly && !HasUnsignedAssembly)
+        throw new InvalidOperationException ("No types have been built, so no assembly has been generated.");
+
+      if (HasSignedAssembly)
       {
         Scope.SaveAssembly (true);
-        return Scope.StrongNamedModule.FullyQualifiedName;
+        paths.Add (Scope.StrongNamedModule.FullyQualifiedName);
       }
-      catch (InvalidOperationException ex)
+
+      if (HasUnsignedAssembly)
       {
-        throw new InvalidOperationException ("No types have been built, so no assembly has been generated.", ex);
+        Scope.SaveAssembly (false);
+        paths.Add (Scope.WeakNamedModule.FullyQualifiedName);
       }
+      return paths.ToArray ();
     }
 
     public void InitializeMixinTarget (IMixinTarget instance)
