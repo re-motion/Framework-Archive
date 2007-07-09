@@ -41,7 +41,8 @@ public class Arguments
   public string ClassOutput = string.Empty;
 
   [CommandLineStringArgument ("config", false,
-      Description = "The config file holding the application's configuration.",
+      Description = 
+      "The config file holding the application's configuration. The mapping file's path is resolved up relative to the location of the config file.",
       Placeholder = "app.config")]
   public string ConfigFile = string.Empty;
 
