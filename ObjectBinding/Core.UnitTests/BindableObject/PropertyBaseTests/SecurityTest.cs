@@ -33,7 +33,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
 
       _securableObject = (IBusinessObject) ObjectFactory.Create<SecurableClassWithReferenceType<SimpleReferenceType>>()
                                                .With (_mocks.CreateMock<IObjectSecurityStrategy>());
-      TypeFactory.InitializeMixedInstance (_securableObject);
 
       _nonSecurableObject = (IBusinessObject) ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>().With();
 

@@ -30,50 +30,6 @@ namespace Rubicon.Mixins
   /// <threadsafety static="true" instance="true"/>
   public static class TypeFactory
   {
-    /// <summary>
-    /// Initializes an instance of a newly created mixed type.
-    /// </summary>
-    /// <param name="instance">The instance to be initialized.</param>
-    /// <exception cref="ArgumentTypeException">The instance is not an instance of a mixed type.</exception>
-    /// <exception cref="ArgumentNullException">The <paramref name="instance"/> parameter is <see langword="null"/>.</exception>
-    /// <remarks>
-    /// This is mainly for internal purposes, users should use the <see cref="ObjectFactory"/>
-    /// class to instantiate mixed types. However, if you employ the <see cref="TypeFactory"/> to retrieve a mixed type and later instantiate it,
-    /// instances of this type must be initialized by the <see cref="TypeFactory"/> class before being used.
-    /// </remarks>
-    public static void InitializeMixedInstance (object instance)
-    {
-      IMixinTarget mixinTarget = ArgumentUtility.CheckNotNullAndType<IMixinTarget> ("instance", instance);
-      ConcreteTypeBuilder.Current.Scope.InitializeInstance (mixinTarget);
-    }
-
-    /// <summary>
-    /// Initializes an instance of a newly created mixed type and provides instantiations of some of the mixins the type is configured with.
-    /// </summary>
-    /// <param name="instance">The instance to be initialized.</param>
-    /// <param name="mixinInstances">The mixin instances to be used when initializing the target instance. Each element of this array must be
-    /// of a mixin type as configured in the target's original <see cref="ClassContext"/>.</param>
-    /// <exception cref="ArgumentTypeException">The instance is not an instance of a mixed type.</exception>
-    /// <exception cref="ArgumentNullException">The <paramref name="instance"/> parameter is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException">The <paramref name="mixinInstances"/> parameter contains at least one mixin instance which is not of
-    /// a mixin type as configured in the target's original <see cref="ClassContext"/>.</exception>
-    /// <remarks>
-    /// <para>
-    /// Usually, the mixin types configured in the <see cref="ClassContext"/> of a target class are simply instantiated when the mixed
-    /// instance is initialized. Use this method instead of <see cref="InitializeMixedInstance"/> to supply pre-instantiated mixins instead.
-    /// </para>
-    /// <para>
-    /// This is mainly for internal purposes, users should use the <see cref="ObjectFactory"/>
-    /// class to instantiate mixed types. However, if you employ the <see cref="TypeFactory"/> to retrieve a mixed type and later instantiate it,
-    /// instances of this type must be initialized by the <see cref="TypeFactory"/> class before being used.
-    /// </para>
-    /// </remarks>
-    public static void InitializeMixedInstanceWithMixins (object instance, object[] mixinInstances)
-    {
-      IMixinTarget mixinTarget = ArgumentUtility.CheckNotNullAndType<IMixinTarget> ("instance", instance);
-      ConcreteTypeBuilder.Current.Scope.InitializeInstanceWithMixins (mixinTarget, mixinInstances);
-    }
-
     // Instances of the type returned by this method must be initialized with <see cref="InitializeMixedInstance"/>
     /// <summary>
     /// Retrieves a concrete, instantiable, mixed type for the given <paramref name="targetType"/>.
@@ -98,9 +54,9 @@ namespace Rubicon.Mixins
     /// </para>
     /// <para>
     /// The returned type provides the same constructors as <paramref name="targetType"/> does and can thus be instantiated, e.g. via
-    /// <see cref="Activator.CreateInstance(Type, object[])"/>. However, before using instances of the type, they must be initialized via
-    /// <see cref="InitializeMixedInstance"/>  or <see cref="InitializeMixedInstanceWithMixins"/>. See <see cref="ObjectFactory"/> for a simpler
-    /// way to immediately create instances of mixed types.
+    /// <see cref="Activator.CreateInstance(Type, object[])"/>. When this happens, all the mixins associated with the generated type are also
+    /// instantiated and configured to be used with the target instance. If you need to supply pre-created mixin instances for an object, use
+    /// <see cref="MixedTypeInstantiationScope"/>. See <see cref="ObjectFactory"/> for a simpler way to immediately create instances of mixed types.
     /// </para>
     /// </remarks>
     public static Type GetConcreteType (Type targetType)

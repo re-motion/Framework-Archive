@@ -16,9 +16,7 @@ namespace Rubicon.Mixins.CodeGeneration
     bool HasAssembly { get; }
     string SaveAssembly ();
 
-    void InitializeInstance (IMixinTarget instance);
-    void InitializeInstance (IMixinTarget instance, object[] extensions);
-    void InitializeInstanceWithMixins (IMixinTarget instance, object[] mixinInstances);
-    void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget targetInstance);
+    void InitializeMixinTarget (IMixinTarget instance);
+    void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances);
   }
 }

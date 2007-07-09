@@ -57,6 +57,7 @@
     <Compile Include="Configuration\ValidationSampleTypes\ClassWithPrivateCtor.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithEvent.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinWithPrivateCtorAndVirtualMethod.cs" />
+    <Compile Include="Mixins\MixedTypeInstantiationScopeTests.cs" />
     <Compile Include="Mixins\ModuleManagerTests.cs" />
     <Compile Include="Mixins\ObjectFactoryTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />

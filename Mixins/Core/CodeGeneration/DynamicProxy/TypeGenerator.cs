@@ -19,6 +19,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   internal class TypeGenerator : ITypeGenerator
   {
+    private static readonly MethodInfo s_concreteTypeInitializationMethod =
+        typeof (GeneratedClassInstanceInitializer).GetMethod ("InitializeMixinTarget", new Type[] { typeof (IMixinTarget) });
+
     private ModuleManager _module;
     private BaseClassDefinition _configuration;
     private ExtendedClassEmitter _emitter;
@@ -52,7 +55,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       _firstField = _emitter.InnerEmitter.CreateField ("__first", _baseCallGenerator.TypeBuilder, true);
 
-      _emitter.ReplicateBaseTypeConstructors();
+      Statement initializationStatement = new ExpressionStatement (new MethodInvocationExpression (null,
+          s_concreteTypeInitializationMethod,
+          new CastClassExpression (typeof (IMixinTarget), SelfReference.Self.ToExpression ())));
+
+      _emitter.ReplicateBaseTypeConstructors (initializationStatement);
 
       if (isSerializable)
         ImplementGetObjectData();
@@ -251,15 +258,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       CustomMethodEmitter methodOverride = Emitter.CreateMethodOverrideOrInterfaceImplementation (method.MethodInfo);
       methodOverride.ImplementMethodByDelegation (_firstField, proxyMethod);
       return methodOverride;
-    }
-
-    private void ImplementOverride (PropertyDefinition property)
-    {
-      CustomPropertyEmitter propertyOverride = Emitter.CreatePropertyOverrideOrInterfaceImplementation (property.PropertyInfo);
-      if (property.GetMethod != null)
-        propertyOverride.GetMethod = ImplementOverride (property.GetMethod).InnerEmitter;
-      if (property.SetMethod != null)
-        propertyOverride.SetMethod = ImplementOverride (property.SetMethod).InnerEmitter;
     }
 
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)

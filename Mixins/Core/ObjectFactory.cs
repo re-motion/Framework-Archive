@@ -4,6 +4,7 @@ using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.Definitions.Building;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 using Rubicon.Reflection;
 using System.Reflection;
@@ -130,7 +131,7 @@ namespace Rubicon.Mixins
     /// </remarks>
     public static InvokeWithWrapper<T> CreateWithMixinInstances<T> (params object[] mixinInstances)
     {
-      return CreateInvokeWithWrapper<T> (typeof (T), mixinInstances);
+      return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<T> (typeof (T), mixinInstances);
     }
 
     /// <summary>
@@ -175,87 +176,7 @@ namespace Rubicon.Mixins
     /// </remarks>
     public static InvokeWithWrapper<object> CreateWithMixinInstances (Type baseType, params object[] mixinInstances)
     {
-      return CreateInvokeWithWrapper<object> (baseType, mixinInstances);
+      return MixedTypeInvokeWithCreator.CreateInvokeWithWrapper<object> (baseType, mixinInstances);
     }
-
-    private static InvokeWithWrapper<T> CreateInvokeWithWrapper<T> (Type baseTypeOrInterface, params object[] mixinInstances)
-    {
-      Type typeToBeCreated = GetTypeToBeCreated (baseTypeOrInterface);
-      Type concreteType;
-      try
-      {
-        concreteType = TypeFactory.GetConcreteType (typeToBeCreated);
-      }
-      catch (ArgumentException ex)
-      {
-        throw new ArgumentException ("The given base type is invalid: " + ex.Message, "T");
-      }
-
-      GetDelegateWith<T> constructionDelegateCreator = new CachedGetDelegateWith<T, Type> (
-          concreteType,
-          delegate (Type[] argumentTypes, Type delegateType)
-          {
-            Type[] realArgumentTypes = new Type[argumentTypes.Length - 1];
-            Array.Copy (argumentTypes, 1, realArgumentTypes, 0, realArgumentTypes.Length);
-
-            const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            ConstructorInfo ctor = concreteType.GetConstructor (bindingFlags, null, CallingConventions.Any, realArgumentTypes, null);
-            if (ctor == null)
-            {
-              string message = string.Format ("Type {0} does not contain a constructor with signature ({1}).", typeToBeCreated.FullName,
-                  SeparatedStringBuilder.Build (",", realArgumentTypes, delegate (Type t) { return t.FullName; }));
-              throw new MissingMethodException (message);
-            }
-            return CreateConstructionDelegateWithMixinInstances (ctor, delegateType);
-          });
-      return new InvokeWithWrapper<T> (new InvokeWithBoundFirst<T, object[]> (constructionDelegateCreator, mixinInstances));
-    }
-
-    private static Type GetTypeToBeCreated (Type baseType)
-    {
-      Type targetType;
-      if (baseType.IsInterface)
-      {
-        ClassContext registeredContext = MixinConfiguration.ActiveContext.ResolveInterface (baseType);
-        if (registeredContext == null)
-        {
-          string message = string.Format ("The interface {0} has not been registered in the current configuration, no instances of the "
-                                          + "type can be created.", baseType.FullName);
-          throw new ArgumentException (message);
-        }
-        targetType = registeredContext.Type;
-      }
-      else
-        targetType = baseType;
-      return targetType;
-    }
-
-    private static Delegate CreateConstructionDelegateWithMixinInstances (ConstructorInfo ctor, Type delegateType)
-    {
-      ParameterInfo[] parameters = ctor.GetParameters ();
-      Type[] parameterTypes = new Type[parameters.Length + 1];
-      parameterTypes[0] = typeof (object[]); // mixin instances
-      for (int i = 0; i < parameters.Length; ++i)
-        parameterTypes[i + 1] = parameters[i].ParameterType;
-
-      Type type = ctor.DeclaringType;
-      DynamicMethod method = new DynamicMethod ("ConstructorWrapperWithMixinInstances", type, parameterTypes, type);
-
-      ILGenerator ilgen = method.GetILGenerator();
-      LocalBuilder newInstanceLocal = ilgen.DeclareLocal (type);
-      for (int i = 1; i < parameterTypes.Length; ++i)
-      {
-        ilgen.Emit (OpCodes.Ldarg, i);
-      }
-      ilgen.Emit (OpCodes.Newobj, ctor);
-      ilgen.Emit (OpCodes.Stloc_0);
-      ilgen.Emit (OpCodes.Ldloc_0);
-      ilgen.Emit (OpCodes.Ldarg_0);
-      ilgen.EmitCall (OpCodes.Call, typeof (TypeFactory).GetMethod ("InitializeMixedInstanceWithMixins"), null);
-      ilgen.Emit (OpCodes.Ldloc_0);
-      ilgen.Emit (OpCodes.Ret);
-
-      return method.CreateDelegate (delegateType);
-    }
-  }
+ }
 }

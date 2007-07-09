@@ -159,6 +159,59 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
+    public void GeneratedTypeCanBeInstantiatedViaCtorCall ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      BaseType3 bt3 = (BaseType3) Activator.CreateInstance (generatedType);
+      Assert.IsNotNull (bt3);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).This);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Configuration);
+      Assert.AreSame (bt3, Mixin.Get<BT3Mixin1> (bt3).This);
+      Assert.AreSame (TypeFactory.GetActiveConfiguration(typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
+    }
+
+    [Test]
+    public void CtorsRespectMixedTypeInstantiationScope ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      BT3Mixin1 suppliedMixinInstance = new BT3Mixin1();
+
+      using (new MixedTypeInstantiationScope (suppliedMixinInstance))
+      {
+        BaseType3 bt3 = (BaseType3) Activator.CreateInstance (generatedType);
+        Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
+        Assert.AreSame (suppliedMixinInstance, Mixin.Get<BT3Mixin1> (bt3));
+        Assert.AreSame (bt3, suppliedMixinInstance.This);
+        Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
+        Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        "The supplied mixin of type Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin1 is not valid in the current configuration.",
+        MatchType = MessageMatch.Contains)]
+    public void ThrowsIfWrongMixinInstancesInScope ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
+      BT3Mixin1 suppliedMixinInstance = new BT3Mixin1();
+
+      using (new MixedTypeInstantiationScope (suppliedMixinInstance))
+      {
+        try
+        {
+          Activator.CreateInstance (generatedType);
+        }
+        catch (TargetInvocationException ex)
+        {
+          throw ex.InnerException;
+        }
+      }
+    }
+
+    [Test]
     public void GenericMixinsAreSpecialized ()
     {
       BaseType3 bt3 = CreateMixedObject<BaseType3> (typeof (BT3Mixin3<,>)).With ();

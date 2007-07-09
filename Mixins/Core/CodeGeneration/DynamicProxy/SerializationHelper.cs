@@ -84,9 +84,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         FormatterServices.PopulateObjectMembers (_deserializedObject, baseMembers, _baseMemberValues);
       }
 
-      ConcreteTypeBuilder.Current.Scope.InitializeInstance (_deserializedObject, _extensions);
-      for (int i = 0; i < _extensions.Length; ++i)
-        ConcreteTypeBuilder.Current.Scope.InitializeMixinInstance (_baseClassDefinition.Mixins[i], _extensions[i], _deserializedObject);
+      ConcreteTypeBuilder.Current.Scope.InitializeDeserializedMixinTarget (_deserializedObject, _extensions);
     }
   }
 }

@@ -10,14 +10,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   public static class GeneratedClassInstanceInitializer
   {
-    public static void InitializeInstanceFields (IMixinTarget instance)
-    {
-      InitializeInstanceFieldsWithMixins (instance, null);
-    }
-
-    public static void InitializeInstanceFieldsWithMixins (IMixinTarget mixinTarget, object[] mixinInstances)
+    public static void InitializeMixinTarget (IMixinTarget mixinTarget)
     {
       ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+
+      object[] mixinInstances = MixedTypeInstantiationScope.Current.SuppliedMixinInstances;
       BaseClassDefinition configuration = mixinTarget.Configuration;
 
       InitializeFirstProxy (mixinTarget);
@@ -26,7 +23,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       FillUpExtensionsWithNewMixinInstances (extensions, configuration, mixinTarget);
 
       SetExtensionsField (mixinTarget, extensions);
+      InitializeMixinInstances (extensions, configuration, mixinTarget);
     }
+
+    public static void InitializeDeserializedMixinTarget (IMixinTarget mixinTarget, object[] mixinInstances)
+    {
+      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull ("mixinInstances", mixinInstances);
+
+      BaseClassDefinition configuration = mixinTarget.Configuration;
+
+      InitializeFirstProxy (mixinTarget);
+      SetExtensionsField (mixinTarget, mixinInstances);
+      InitializeMixinInstances (mixinInstances, configuration, mixinTarget);
+    }
+
 
     private static void InitializeFirstProxy (IMixinTarget mixinTarget)
     {
@@ -36,19 +47,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       type.GetField ("__first").SetValue (mixinTarget, firstBaseCallProxy);
     }
 
-    private static void SetExtensionsField (IMixinTarget mixinTarget, object[] extensions)
+    private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
     {
-      Type type = mixinTarget.GetType ();
-      type.GetField ("__extensions").SetValue (mixinTarget, extensions);
-    }
-
-    public static void InitializeInstanceFields (IMixinTarget mixinTarget, object[] extensions)
-    {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      ArgumentUtility.CheckNotNull ("extensions", extensions);
-
-      SetExtensionsField (mixinTarget, extensions);
-      InitializeFirstProxy (mixinTarget);
+      return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth });
     }
 
     private static object[] PrepareExtensionsWithGivenMixinInstances (BaseClassDefinition configuration, object[] mixinInstances)
@@ -82,11 +83,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
     }
 
-    private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
-    {
-      return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth});
-    }
-
     private static object InstantiateMixin (MixinDefinition mixinDefinition, IMixinTarget mixinTargetInstance)
     {
       Type mixinType = mixinDefinition.Type;
@@ -107,16 +103,24 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         throw new MissingMethodException (message, ex);
       }
 
-      InitializeMixinInstance (mixinDefinition, mixinInstance, mixinTargetInstance);
       return mixinInstance;
     }
 
-    public static void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance)
+    private static void SetExtensionsField (IMixinTarget mixinTarget, object[] extensions)
     {
-      ArgumentUtility.CheckNotNull ("mixinDefinition", mixinDefinition);
-      ArgumentUtility.CheckNotNull ("mixinInstance", mixinInstance);
-      ArgumentUtility.CheckNotNull ("mixinTargetInstance", mixinTargetInstance);
+      Type type = mixinTarget.GetType ();
+      type.GetField ("__extensions").SetValue (mixinTarget, extensions);
+    }
 
+    private static void InitializeMixinInstances (object[] mixins, BaseClassDefinition configuration, IMixinTarget mixinTargetInstance)
+    {
+      Assertion.Assert (mixins.Length == configuration.Mixins.Count);
+      for (int i = 0; i < mixins.Length; ++i)
+        InitializeMixinInstance (configuration.Mixins[i], mixins[i], mixinTargetInstance);
+    }
+
+    private static void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget mixinTargetInstance)
+    {
       Type baseCallProxyType = MixinReflector.GetBaseCallProxyType (mixinTargetInstance);
       object baseCallProxyInstance = InstantiateBaseCallProxy (baseCallProxyType, mixinTargetInstance, mixinDefinition.MixinIndex + 1);
       InvokeMixinInitializationMethod (mixinDefinition, mixinInstance, mixinTargetInstance, baseCallProxyInstance);

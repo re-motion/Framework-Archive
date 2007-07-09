@@ -83,28 +83,18 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       }
       catch (InvalidOperationException ex)
       {
-        throw new InvalidOperationException ("No types have been built, so no assembly has been generated.");
+        throw new InvalidOperationException ("No types have been built, so no assembly has been generated.", ex);
       }
     }
 
-    public void InitializeInstance (IMixinTarget instance)
+    public void InitializeMixinTarget (IMixinTarget instance)
     {
-      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance);
+      GeneratedClassInstanceInitializer.InitializeMixinTarget (instance);
     }
 
-    public void InitializeInstance (IMixinTarget instance, object[] extensions)
+    public void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances)
     {
-      GeneratedClassInstanceInitializer.InitializeInstanceFields (instance, extensions);
-    }
-
-    public void InitializeInstanceWithMixins (IMixinTarget instance, object[] mixinInstances)
-    {
-      GeneratedClassInstanceInitializer.InitializeInstanceFieldsWithMixins (instance, mixinInstances);
-    }
-
-    public void InitializeMixinInstance (MixinDefinition mixinDefinition, object mixinInstance, IMixinTarget targetInstance)
-    {
-      GeneratedClassInstanceInitializer.InitializeMixinInstance (mixinDefinition, mixinInstance, targetInstance);
+      GeneratedClassInstanceInitializer.InitializeDeserializedMixinTarget (instance, mixinInstances);
     }
   }
 }

@@ -95,19 +95,19 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       TypeBuilder.SetCustomAttribute (customAttribute);
     }
 
-    public void ReplicateBaseTypeConstructors()
+    public void ReplicateBaseTypeConstructors (params Statement[] postBaseCallInitializationStatements)
     {
       ConstructorInfo[] constructors = BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       foreach (ConstructorInfo constructor in constructors)
       {
         if (constructor.IsPublic | constructor.IsFamily)
         {
-          ReplicateBaseTypeConstructor (constructor);
+          ReplicateBaseTypeConstructor (constructor, postBaseCallInitializationStatements);
         }
       }
     }
 
-    private void ReplicateBaseTypeConstructor (ConstructorInfo constructor)
+    private void ReplicateBaseTypeConstructor (ConstructorInfo constructor, params Statement[] postBaseCallInitializationStatements)
     {
       ArgumentUtility.CheckNotNull ("constructor", constructor);
       ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference (constructor.GetParameters ());
@@ -115,6 +115,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       Expression[] argumentExpressions = ArgumentsUtil.ConvertArgumentReferenceToExpression (arguments);
       newConstructor.CodeBuilder.AddStatement (new ConstructorInvocationStatement (constructor, argumentExpressions));
+
+      foreach (Statement statement in postBaseCallInitializationStatements)
+        newConstructor.CodeBuilder.AddStatement (statement);
 
       newConstructor.CodeBuilder.AddStatement (new ReturnStatement ());
     }
