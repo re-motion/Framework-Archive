@@ -54,6 +54,7 @@
     <Compile Include="BindableObject\EnumerationPropertyTest.cs" />
     <Compile Include="BindableObject\NumericPropertyTest.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithBusinessObjectProperties.cs" />
+    <Compile Include="BindableObject\TestDomain\ClassWithResources.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithSearchServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />
     <Compile Include="BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
@@ -75,6 +76,11 @@
     <Compile Include="BindableObject\TestDomain\SimpleReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleValueType.cs" />
     <Compile Include="BindableObject\UndefinedValueTest.cs" />
+    <Compile Include="Globalization\ClassWithResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassWithResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Globalization\EnumWithResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,8 +121,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Globalization\EnumWithResources.de.resx">
+    <EmbeddedResource Include="Globalization\ClassWithResources.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ClassWithResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\EnumWithResources.resx">
       <SubType>Designer</SubType>

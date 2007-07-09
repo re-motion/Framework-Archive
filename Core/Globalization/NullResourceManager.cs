@@ -3,43 +3,56 @@ using System.Collections.Specialized;
 
 namespace Rubicon.Globalization
 {
-
-/// <summary> A <b>Null Object</b> implementation of <see cref="IResourceManager"/>. </summary>
-/// <remarks> 
-///   Use <see cref="Instance"/> to access the well defined instance of the <see cref="NullResourceManager"/>.
-/// </remarks>
-public sealed class NullResourceManager: IResourceManager
-{
-  public static readonly NullResourceManager Instance = new NullResourceManager();
-
-  private NullResourceManager()
+  /// <summary> A <b>Null Object</b> implementation of <see cref="IResourceManager"/>. </summary>
+  /// <remarks> 
+  ///   Use <see cref="Instance"/> to access the well defined instance of the <see cref="NullResourceManager"/>.
+  /// </remarks>
+  public sealed class NullResourceManager : IResourceManager
   {
-  }
+    public static readonly NullResourceManager Instance = new NullResourceManager();
 
-  NameValueCollection IResourceManager.GetAllStrings()
-  {
-    return new NameValueCollection();
-  }
+    private NullResourceManager ()
+    {
+    }
 
-  NameValueCollection IResourceManager.GetAllStrings (string prefix)
-  {
-    return new NameValueCollection();
-  }
+    NameValueCollection IResourceManager.GetAllStrings ()
+    {
+      return new NameValueCollection();
+    }
 
-  string IResourceManager.GetString (string id)
-  {
-    return id;
-  }
+    NameValueCollection IResourceManager.GetAllStrings (string prefix)
+    {
+      return new NameValueCollection();
+    }
 
-  string IResourceManager.GetString (Enum enumValue)
-  {
-    return ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
-  }
+    string IResourceManager.GetString (string id)
+    {
+      return id;
+    }
 
-  string IResourceManager.Name
-  {
-    get { return "Rubicon.Globalization.NullResourceManager"; }
-  }
-}
+    string IResourceManager.GetString (Enum enumValue)
+    {
+      return ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+    }
 
+    public bool ContainsResource (string id)
+    {
+      return false;
+    }
+
+    public bool ContainsResource (Enum enumValue)
+    {
+      return false;
+    }
+
+    string IResourceManager.Name
+    {
+      get { return "Rubicon.Globalization.NullResourceManager"; }
+    }
+
+    bool INullObject.IsNull
+    {
+      get { return true; }
+    }
+  }
 }

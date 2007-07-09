@@ -97,7 +97,13 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     public string DisplayName
     {
-      get { throw new NotImplementedException(); }
+      get
+      {
+        IBindableObjectGlobalizationService globalizationService = BusinessObjectProvider.GetService<IBindableObjectGlobalizationService> ();
+        if (globalizationService == null)
+          return _propertyInfo.Name;
+        return globalizationService.GetPropertyDisplayName (_propertyInfo);
+      }
     }
 
     /// <summary> Gets a flag indicating whether this property is required. </summary>

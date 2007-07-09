@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 using Rubicon.Development.UnitTesting;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
@@ -13,12 +14,14 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
   public class Common : TestBase
   {
     private BindableObjectProvider _bindableObjectProvider;
+    private MockRepository _mockRepository;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _bindableObjectProvider = new BindableObjectProvider();
+      _mockRepository = new MockRepository();
     }
 
     [Test]
@@ -83,9 +86,32 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     }
 
     [Test]
-    [Ignore ("TODO: test")]
-    public void GetDisplayName ()
+    public void GetDisplayName_WithGlobalizationSerivce ()
     {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleClass), "String");
+      PropertyBase property = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _bindableObjectProvider, propertyInfo, null, false, false));
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
+      _bindableObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
+
+      Expect.Call (mockGlobalizationService.GetPropertyDisplayName (propertyInfo)).Return ("MockString");
+      _mockRepository.ReplayAll ();
+
+      string actual = property.DisplayName;
+
+      _mockRepository.VerifyAll ();
+      Assert.That (actual, Is.EqualTo ("MockString"));
+    }
+
+    [Test]
+    public void GetDisplayName_WithoutGlobalizationSerivce ()
+    {
+      PropertyBase property = new StubPropertyBase (
+          new PropertyBase.Parameters (
+              _bindableObjectProvider, GetPropertyInfo (typeof (SimpleClass), "String"), null, false, false));
+
+      Assert.That (property.DisplayName, Is.EqualTo ("String"));
     }
   }
 }

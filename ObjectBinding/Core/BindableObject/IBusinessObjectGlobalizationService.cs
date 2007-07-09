@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
@@ -7,5 +8,6 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     string GetEnumerationValueDisplayName (Enum value);
     string GetBooleanValueDisplayName (bool value);
+    string GetPropertyDisplayName (PropertyInfo info);
   }
 }

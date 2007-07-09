@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -31,14 +32,14 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetBooleanValueDisplayName_InvariantCulture ()
+    public void GetBooleanValueDisplayName ()
     {
       Assert.That (_globalizationService.GetBooleanValueDisplayName (true), Is.EqualTo ("Yes"));
       Assert.That (_globalizationService.GetBooleanValueDisplayName (false), Is.EqualTo ("No"));
     }
 
     [Test]
-    public void GetEnumerationValueDisplayName_WithInvariantCulture ()
+    public void GetEnumerationValueDisplayName ()
     {
       Assert.That (_globalizationService.GetEnumerationValueDisplayName (EnumWithResources.Value1), Is.EqualTo ("Value 1"));
       Assert.That (_globalizationService.GetEnumerationValueDisplayName (EnumWithResources.Value2), Is.EqualTo ("Value 2"));
@@ -46,13 +47,42 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void GetAllValues_WithDescription ()
+    public void GetEnumerationValueDisplayName_WithDescription ()
     {
       Assert.That (_globalizationService.GetEnumerationValueDisplayName (EnumWithDescription.Value1), Is.EqualTo ("Value I"));
       Assert.That (_globalizationService.GetEnumerationValueDisplayName (EnumWithDescription.Value2), Is.EqualTo ("Value II"));
       Assert.That (
           _globalizationService.GetEnumerationValueDisplayName (EnumWithDescription.ValueWithoutDescription),
           Is.EqualTo ("ValueWithoutDescription"));
+    }
+
+    [Test]
+    public void GetEnumerationValueDisplayName_WithoutResources ()
+    {
+      Assert.That (_globalizationService.GetEnumerationValueDisplayName (TestEnum.Value1), Is.EqualTo ("Value1"));
+      Assert.That (_globalizationService.GetEnumerationValueDisplayName (TestEnum.Value2), Is.EqualTo ("Value2"));
+      Assert.That (_globalizationService.GetEnumerationValueDisplayName (TestEnum.Value3), Is.EqualTo ("Value3"));
+    }
+
+    [Test]
+    public void GetPropertyDisplayName ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithResources), "Value1");
+      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("Value 1"));
+    }
+
+    [Test]
+    public void GetPropertyDisplayName_WithoutMultiLingualResourcesAttribute ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleClass), "String");
+      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("String"));
+    }
+
+    [Test]
+    public void GetPropertyDisplayName_WithoutResourceForProperty ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithResources), "ValueWithoutResource");
+      Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("ValueWithoutResource"));
     }
   }
 }
