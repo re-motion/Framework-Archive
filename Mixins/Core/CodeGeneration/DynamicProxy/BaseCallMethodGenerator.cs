@@ -5,8 +5,6 @@ using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Utilities;
 
-using LoadArrayElementExpression = Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
-
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
   internal class BaseCallMethodGenerator

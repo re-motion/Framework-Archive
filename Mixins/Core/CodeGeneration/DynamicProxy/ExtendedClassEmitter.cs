@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
+using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon;
@@ -168,6 +169,29 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
                     new ReferenceExpression (newMethod.Arguments[1]))));
       }
       newMethod.CodeBuilder.AddStatement (new ReturnStatement());
+    }
+
+    public LocalReference LoadCustomAttribute (AbstractCodeBuilder codeBuilder, Type attributeType, int index)
+    {
+      MethodInfo getCustomAttributesMethod = typeof (Type).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
+      Assertion.Assert (getCustomAttributesMethod != null);
+
+      LocalReference typeLocal = codeBuilder.DeclareLocal (typeof (Type));
+      codeBuilder.AddStatement (new AssignStatement (typeLocal, new TypeTokenExpression (InnerEmitter.TypeBuilder)));
+
+      Expression getAttributesExpression = new CastClassExpression (typeof (MixedTypeAttribute[]),
+        new VirtualMethodInvocationExpression (typeLocal,
+        getCustomAttributesMethod,
+        new TypeTokenExpression (typeof (MixedTypeAttribute)),
+        new ConstReference (false).ToExpression()));
+
+      LocalReference attributesLocal = codeBuilder.DeclareLocal (typeof (MixedTypeAttribute[]));
+      codeBuilder.AddStatement (new AssignStatement (attributesLocal, getAttributesExpression));
+
+      LocalReference singleAttributeLocal = codeBuilder.DeclareLocal (typeof (MixedTypeAttribute));
+      codeBuilder.AddStatement (new AssignStatement (singleAttributeLocal,
+          new LoadArrayElementExpression (new ConstReference (index), attributesLocal, typeof (MixedTypeAttribute))));
+      return singleAttributeLocal;
     }
   }
 }

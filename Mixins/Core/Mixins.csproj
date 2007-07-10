@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
+    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\FieldInfoReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ConditionExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\ExpressionReference.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="CodeGeneration\DynamicProxy\CustomPropertyEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IAttributableEmitter.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ExtendedClassEmitter.cs" />
-    <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\LoadArrayElementExpression.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\ModuleManager.cs" />
     <Compile Include="CodeGeneration\ConcreteTypeBuilder.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\TypeGenerator.cs" />

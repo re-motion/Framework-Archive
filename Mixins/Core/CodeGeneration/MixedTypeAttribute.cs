@@ -9,6 +9,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration
 {
+  [CLSCompliant (false)]
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class MixedTypeAttribute : Attribute
   {

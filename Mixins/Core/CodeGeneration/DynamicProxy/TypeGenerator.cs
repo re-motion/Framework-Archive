@@ -12,7 +12,6 @@ using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
-using LoadArrayElementExpression = Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions.LoadArrayElementExpression;
 using Rubicon.Text;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
@@ -127,24 +126,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private void AddTypeInitializer ()
     {
       ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
-      MethodInfo getCustomAttributesMethod = typeof (Type).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
-      Assertion.Assert (getCustomAttributesMethod != null);
-      
-      LocalReference typeLocal = emitter.CodeBuilder.DeclareLocal (typeof (Type));
-      emitter.CodeBuilder.AddStatement (new AssignStatement (typeLocal, new TypeTokenExpression (_emitter.TypeBuilder)));
 
-      Expression getAttributesExpression = new CastClassExpression (typeof (MixedTypeAttribute[]),
-        new VirtualMethodInvocationExpression (typeLocal,
-        getCustomAttributesMethod,
-        new TypeTokenExpression (typeof (MixedTypeAttribute)),
-        new ConstReference (false).ToExpression()));
-
-      LocalReference attributesLocal = emitter.CodeBuilder.DeclareLocal (typeof (MixedTypeAttribute[]));
-      emitter.CodeBuilder.AddStatement (new AssignStatement (attributesLocal, getAttributesExpression));
-
-      LocalReference firstAttributeLocal = emitter.CodeBuilder.DeclareLocal (typeof (MixedTypeAttribute));
-      emitter.CodeBuilder.AddStatement (new AssignStatement (firstAttributeLocal,
-          new LoadArrayElementExpression (new ConstReference (0), attributesLocal, typeof (MixedTypeAttribute))));
+      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (MixedTypeAttribute), 0);
 
       MethodInfo getBaseClassDefinitionMethod = typeof (MixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
       Assertion.Assert (getBaseClassDefinitionMethod != null);

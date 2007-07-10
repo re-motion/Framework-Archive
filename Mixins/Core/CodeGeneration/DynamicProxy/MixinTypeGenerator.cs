@@ -10,6 +10,7 @@ using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
 using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 using System.Runtime.Serialization;
+using System.Reflection;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
@@ -39,15 +40,47 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces, isSerializable);
       _emitter = new ExtendedClassEmitter (classEmitter);
 
-      _configurationField = _emitter.InnerEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));
+      _configurationField = classEmitter.CreateStaticField ("__configuration", typeof (MixinDefinition));
+
+      AddTypeInitializer ();
 
       _emitter.ReplicateBaseTypeConstructors ();
 
       if (isSerializable)
         ImplementGetObjectData();
 
+      AddMixedTypeAttribute ();
       ReplicateAttributes (_configuration.CustomAttributes, _emitter);
       ImplementOverrides();
+    }
+
+    private void AddTypeInitializer ()
+    {
+      ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
+
+      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (MixedTypeAttribute), 0);
+
+      MethodInfo getBaseClassDefinitionMethod = typeof (MixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
+      Assertion.Assert (getBaseClassDefinitionMethod != null);
+
+      LocalReference baseClassDefinitionLocal = emitter.CodeBuilder.DeclareLocal (typeof (BaseClassDefinition));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (baseClassDefinitionLocal,
+          new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
+
+      MethodInfo getMixinDefinitionMethod = typeof (DefinitionItemCollection<Type, MixinDefinition>).GetMethod ("get_Item", new Type[] { typeof (int) });
+      Assertion.Assert (getMixinDefinitionMethod != null);
+
+      FieldInfoReference mixinsField = new FieldInfoReference (baseClassDefinitionLocal, typeof (BaseClassDefinition).GetField ("Mixins"));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField, 
+          new VirtualMethodInvocationExpression (mixinsField, getMixinDefinitionMethod, new ConstReference (Configuration.MixinIndex).ToExpression ())));
+
+      emitter.CodeBuilder.AddStatement (new ReturnStatement ());
+    }
+
+    private void AddMixedTypeAttribute ()
+    {
+      CustomAttributeBuilder attributeBuilder = MixedTypeAttribute.BuilderFromClassContext (Configuration.BaseClass.ConfigurationContext);
+      Emitter.AddCustomAttribute (attributeBuilder);
     }
 
     private void ImplementOverrides ()
@@ -92,13 +125,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public Type GetBuiltType ()
     {
       Type builtType = Emitter.InnerEmitter.BuildType();
-      InitializeStaticFields (builtType);
       return builtType;
-    }
-
-    private void InitializeStaticFields (Type type)
-    {
-      type.GetField (_configurationField.Reference.Name).SetValue (type, _configuration);
     }
 
     private void ReplicateAttributes (IEnumerable<AttributeDefinition> attributes, IAttributableEmitter target)

@@ -569,5 +569,14 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
       Assert.IsNotNull (generatedType.GetConstructor (BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null));
     }
+
+    [Test]
+    public void GeneratedMixinTypeHasTypeInitializer ()
+    {
+      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With();
+      Type generatedType = ((IMixinTarget) com).Mixins[0].GetType ();
+      Assert.IsNotNull (generatedType.GetConstructor (BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null));
+
+    }
   }
 }
