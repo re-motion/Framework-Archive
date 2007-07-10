@@ -87,5 +87,15 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsTrue (ConcreteTypeBuilder.HasCurrent);
       Assert.AreSame (newBuilder, ConcreteTypeBuilder.Current);
     }
+
+    [Test]
+    public void LockAndAccessScope ()
+    {
+      IModuleManager scope = ConcreteTypeBuilder.Current.Scope;
+      ConcreteTypeBuilder.Current.LockAndAccessScope(delegate (IModuleManager lockedScope)
+      {
+        Assert.AreSame (scope, lockedScope);
+      });
+    }
   }
 }

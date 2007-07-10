@@ -27,8 +27,8 @@ namespace Rubicon.Mixins.Definitions
 
     public BaseClassDefinition GetBaseClassDefinition (ClassContext context)
     {
-      // Always freeze, no matter whether we already have a class context
-      // Freeze needn't be synchronized, as it can't be undone anyway
+      // Always freeze, no matter whether we already have a class definition
+      // Freeze doesn't have to be synchronized, as it can't be undone anyway
       context.Freeze();
 
       // We could simply do the following:
@@ -39,7 +39,9 @@ namespace Rubicon.Mixins.Definitions
 
       BaseClassDefinition definition;
       lock (_syncObject)
+      {
         _cache.TryGetValue (context, out definition);
+      }
 
       if (definition == null)
       {

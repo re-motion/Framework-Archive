@@ -7,6 +7,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
+  // This class is not safe for multi-threaded usage. When using it, ensure that its methods and properties are not used from multiple
+  // threads at the same time.
   public class ModuleManager : IModuleManager
   {
     private string _weakAssemblyName = "Rubicon.Mixins.Generated.Unsigned";
