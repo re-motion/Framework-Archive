@@ -61,6 +61,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       _emitter.ReplicateBaseTypeConstructors (initializationStatement);
 
+      AddTypeInitializer ();
+
       if (isSerializable)
         ImplementGetObjectData();
 
@@ -114,7 +116,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     public Type GetBuiltType ()
     {
       Type builtType = Emitter.InnerEmitter.BuildType();
-      InitializeStaticFields (builtType);
       return builtType;
     }
 
@@ -123,9 +124,34 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       get { return _extensionsField.Reference; }
     }
 
-    private void InitializeStaticFields (Type finishedType)
+    private void AddTypeInitializer ()
     {
-      finishedType.GetField (_configurationField.Reference.Name).SetValue (null, _configuration);
+      ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
+      MethodInfo getCustomAttributesMethod = typeof (Type).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
+      Assertion.Assert (getCustomAttributesMethod != null);
+      
+      LocalReference typeLocal = emitter.CodeBuilder.DeclareLocal (typeof (Type));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (typeLocal, new TypeTokenExpression (_emitter.TypeBuilder)));
+
+      Expression getAttributesExpression = new CastClassExpression (typeof (MixedTypeAttribute[]),
+        new VirtualMethodInvocationExpression (typeLocal,
+        getCustomAttributesMethod,
+        new TypeTokenExpression (typeof (MixedTypeAttribute)),
+        new ConstReference (false).ToExpression()));
+
+      LocalReference attributesLocal = emitter.CodeBuilder.DeclareLocal (typeof (MixedTypeAttribute[]));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (attributesLocal, getAttributesExpression));
+
+      LocalReference firstAttributeLocal = emitter.CodeBuilder.DeclareLocal (typeof (MixedTypeAttribute));
+      emitter.CodeBuilder.AddStatement (new AssignStatement (firstAttributeLocal,
+          new LoadArrayElementExpression (new ConstReference (0), attributesLocal, typeof (MixedTypeAttribute))));
+
+      MethodInfo getBaseClassDefinitionMethod = typeof (MixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
+      Assertion.Assert (getBaseClassDefinitionMethod != null);
+      emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
+          new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
+
+      emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }
 
     private void ImplementGetObjectData ()

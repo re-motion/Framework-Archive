@@ -563,5 +563,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType3)));
     }
 
+    [Test]
+    public void GeneratedTypeHasTypeInitializer ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      Assert.IsNotNull (generatedType.GetConstructor (BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null));
+    }
   }
 }
