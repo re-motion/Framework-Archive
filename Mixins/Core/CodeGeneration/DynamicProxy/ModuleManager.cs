@@ -119,11 +119,6 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       return paths.ToArray ();
     }
 
-    public void InitializeMixinTarget (IMixinTarget instance)
-    {
-      GeneratedClassInstanceInitializer.InitializeMixinTarget (instance);
-    }
-
     public void InitializeDeserializedMixinTarget (IMixinTarget instance, object[] mixinInstances)
     {
       GeneratedClassInstanceInitializer.InitializeDeserializedMixinTarget (instance, mixinInstances);
