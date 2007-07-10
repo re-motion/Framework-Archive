@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rhino.Mocks;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.CodeGeneration;
@@ -96,6 +97,73 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       {
         Assert.AreSame (scope, lockedScope);
       });
+    }
+
+    [Test]
+    public void CanSaveAndResetScope ()
+    {
+      MockRepository repository = new MockRepository();
+      IModuleManager managerMock = repository.CreateMock<IModuleManager>();
+
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      builder.Scope = managerMock;
+
+      string[] paths = new string[] { "Foos", "Bars", "Stripes" };
+
+      using (repository.Ordered ())
+      {
+        Expect.Call (managerMock.HasSignedAssembly).Return (false);
+        Expect.Call (managerMock.HasUnsignedAssembly).Return (true);
+        Expect.Call (managerMock.SaveAssemblies ()).Return (paths);
+      }
+
+      repository.ReplayAll ();
+
+      builder.SaveAndResetDynamicScope ();
+
+      repository.VerifyAll ();
+    }
+
+    [Test]
+    public void HandlesSaveWithoutGeneratedTypesGracefully ()
+    {
+      string[] paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
+      Assert.AreEqual (0, paths.Length);
+    }
+
+    [Test]
+    public void ResetsScopeWhenSaving ()
+    {
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      IModuleManager scopeBefore = builder.Scope;
+      builder.SaveAndResetDynamicScope ();
+      Assert.AreNotSame (scopeBefore, builder.Scope);
+    }
+
+    [Test]
+    public void CanContinueToGenerateTypesAfterSaving ()
+    {
+      ConcreteTypeBuilder builder = new ConcreteTypeBuilder ();
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType1))));
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType2))));
+      builder.SaveAndResetDynamicScope ();
+      Assert.IsNotNull (builder.GetConcreteType (TypeFactory.GetActiveConfiguration (typeof (BaseType3))));
+    }
+
+    [Test]
+    public void SavingGeneratingCachingIntegration ()
+    {
+      Type concreteType1 = TypeFactory.GetConcreteType (typeof (BaseType1));
+      string[] paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
+      Assert.IsNotEmpty (paths);
+      Type concreteType2 = TypeFactory.GetConcreteType (typeof (BaseType2));
+      paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
+      Assert.IsNotEmpty (paths);
+      Type concreteType3 = TypeFactory.GetConcreteType (typeof (BaseType3));
+
+      Assert.AreSame (concreteType1, TypeFactory.GetConcreteType (typeof (BaseType1)));
+      Assert.AreSame (concreteType2, TypeFactory.GetConcreteType (typeof (BaseType2)));
+      Assert.AreSame (concreteType3, TypeFactory.GetConcreteType (typeof (BaseType3)));
     }
   }
 }

@@ -29,22 +29,19 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       if (currentConfiguration != null)
         currentConfiguration.Dispose();
 
-      if (ConcreteTypeBuilder.Current.Scope.HasAssemblies)
+      string[] paths;
+      try
       {
-        string[] paths;
-        try
-        {
-           paths = ConcreteTypeBuilder.Current.Scope.SaveAssemblies ();
-        }
-        catch (Exception ex)
-        {
-          Assert.Fail ("Error when saving assembly: {0}", ex);
-          return;
-        }
-
-        foreach (string path in paths)
-          VerifyPEFile (path);
+         paths = ConcreteTypeBuilder.Current.SaveAndResetDynamicScope ();
       }
+      catch (Exception ex)
+      {
+        Assert.Fail ("Error when saving assemblies: {0}", ex);
+        return;
+      }
+
+      foreach (string path in paths)
+        VerifyPEFile (path);
 
       ConcreteTypeBuilder.SetCurrent (null);
     }

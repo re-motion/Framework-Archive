@@ -104,5 +104,32 @@ namespace Rubicon.Mixins.CodeGeneration
             }
           });
     }
+
+    /// <summary>
+    /// Saves the dynamic <see cref="Scope"/> of this builder to disk and resets it, so that the builder can continue to generate types. Use
+    /// the <see cref="Scope">Scope's</see> properties via <see cref="LockAndAccessScope"/> to configure the name and paths of the modules being
+    /// saved.
+    /// </summary>
+    /// <returns>An array containing the paths of the assembly files saved.</returns>
+    /// <remarks>
+    /// This is similar to directly calling <c>Scope.SaveAssemblies</c>, but in addition resets the <see cref="Scope"/> to a new instance of
+    /// <see cref="IModuleManager"/>. That way, the builder can continue to generate types even when the dynamic assemblies have been saved.
+    /// Note that each time this method is called, only the types generated since the last save operation are persisted. Also, if the scope isn't
+    /// reconfigured to save at different paths, previously saved assemblies might be overwritten.
+    /// </remarks>
+    public string[] SaveAndResetDynamicScope ()
+    {
+      lock (_scopeLockObject)
+      {
+        string[] paths;
+        if (Scope.HasSignedAssembly || Scope.HasUnsignedAssembly)
+          paths = Scope.SaveAssemblies();
+        else
+          paths = new string[0];
+
+        _scope = null;
+        return paths;
+      }
+    }
   }
 }
