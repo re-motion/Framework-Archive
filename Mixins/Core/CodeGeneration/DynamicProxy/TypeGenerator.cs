@@ -68,8 +68,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ImplementIntroducedInterfaces();
       ImplementOverrides();
 
-      ReplicateClassAttributes();
-
+      AddMixedTypeAttribute ();
+      ReplicateClassAttributes ();
       AddDebuggerAttributes();
     }
 
@@ -282,6 +282,12 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
               typeof (DebuggerDisplayAttribute).GetConstructor (new Type[] {typeof (string)}),
               new object[] {debuggerString});
       Emitter.AddCustomAttribute (debuggerAttribute);
+    }
+
+    private void AddMixedTypeAttribute ()
+    {
+      CustomAttributeBuilder attributeBuilder = MixedTypeAttribute.BuilderFromClassContext (Configuration.ConfigurationContext);
+      Emitter.AddCustomAttribute (attributeBuilder);
     }
 
     public MethodInfo GetBaseCallMethodFor (MethodInfo method)

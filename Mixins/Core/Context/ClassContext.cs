@@ -51,7 +51,7 @@ namespace Rubicon.Mixins.Context
     /// <param name="mixinTypes">The mixin types to be associated with this context.</param>
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The <paramref name="mixinTypes"/> parameter contains duplicates.</exception>
-    public ClassContext (Type type, params Type[] mixinTypes)
+    public  ClassContext (Type type, params Type[] mixinTypes)
         : this (type)
     {
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);

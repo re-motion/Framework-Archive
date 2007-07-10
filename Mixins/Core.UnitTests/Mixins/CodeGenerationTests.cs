@@ -1,9 +1,12 @@
 using System;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
 using NUnit.Framework;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
@@ -531,5 +534,34 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         Assert.AreEqual ("BT7Mixin9.Five-BT7Mixin8.Five-BaseType7.Five", bt7.Five ());
       }
     }
+
+    [Test]
+    public void GeneratedTypeHasMixedTypeAttribute ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      Assert.IsTrue (generatedType.IsDefined (typeof (MixedTypeAttribute), false));
+
+      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      Assert.AreEqual (1, attributes.Length);
+    }
+
+    [Test]
+    public void MixedTypeAttributeCanBeUsedToGetClassContext ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      ClassContext context = attributes[0].GetClassContext ();
+      Assert.AreEqual (context, TypeFactory.GetActiveConfiguration (typeof (BaseType3)).ConfigurationContext);
+    }
+
+    [Test]
+    public void MixedTypeAttributeCanBeUsedToGetBaseClassDefinition ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      BaseClassDefinition definition = attributes[0].GetBaseClassDefinition ();
+      Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType3)));
+    }
+
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -6,7 +7,7 @@ namespace Rubicon.Mixins.Utilities
 {
   // TODO: Remove when Rubicon.Collections.MultiDictionary is available
   [Serializable]
-  internal class MultiDictionary<TKey, TValue>
+  internal class MultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, List<TValue>>>
   {
     private Dictionary<TKey, List<TValue>> _innerDictionary;
     private int _count = 0;
@@ -71,6 +72,16 @@ namespace Rubicon.Mixins.Utilities
     public TValue GetFirstValue (TKey key)
     {
       return _innerDictionary[key][0];
+    }
+
+    public IEnumerator<KeyValuePair<TKey, List<TValue>>> GetEnumerator()
+    {
+      return _innerDictionary.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator ()
+    {
+      return GetEnumerator ();
     }
   }
 }
