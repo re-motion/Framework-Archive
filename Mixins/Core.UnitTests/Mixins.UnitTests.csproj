@@ -64,7 +64,9 @@
     <Compile Include="Mixins\ConcreteMixedTypeAttributeTests.cs" />
     <Compile Include="Mixins\ConcreteMixinTypeAttributeTests.cs" />
     <Compile Include="Mixins\MixedTypeInstantiationScopeTests.cs" />
+    <Compile Include="Mixins\MixinTypeCodeGenerationTests.cs" />
     <Compile Include="Mixins\ModuleManagerTests.cs" />
+    <Compile Include="Mixins\NamespaceChangingNameProviderTests.cs" />
     <Compile Include="Mixins\ObjectFactoryTests.cs" />
     <Compile Include="SampleTypes\BaseType7.cs" />
     <Compile Include="SampleTypes\BaseTypeWithDuckBaseMixin.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="SampleTypes\BT7Mixin9.cs" />
     <Compile Include="SampleTypes\BT7Mixin10.cs" />
     <Compile Include="SampleTypes\ClassOverridingSingleMixinMethod.cs" />
+    <Compile Include="SampleTypes\GenericBaseClass.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
@@ -144,7 +147,7 @@
     <Compile Include="Configuration\MixinDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ClassContextTests.cs" />
     <Compile Include="Mixins\CheckPEVerify.cs" />
-    <Compile Include="Mixins\CodeGenerationTests.cs" />
+    <Compile Include="Mixins\MixedTypeCodeGenerationTests.cs" />
     <Compile Include="Mixins\BaseCallProxyCodeGenerationTests.cs" />
     <Compile Include="Mixins\MixinReflectionTests.cs" />
     <Compile Include="Mixins\MixinTestBase.cs" />

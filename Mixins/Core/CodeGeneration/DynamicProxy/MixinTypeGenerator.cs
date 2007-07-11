@@ -19,7 +19,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private ExtendedClassEmitter _emitter;
     private FieldReference _configurationField;
 
-    public MixinTypeGenerator (ModuleManager module, MixinDefinition configuration)
+    public MixinTypeGenerator (ModuleManager module, MixinDefinition configuration, INameProvider nameProvider)
     {
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom(configuration.Type);
 
-      string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
+      string typeName = nameProvider.GetNewTypeName (configuration);
 
       Type[] interfaces = isSerializable ? new Type[] {typeof (ISerializable)} : new Type[0];
 

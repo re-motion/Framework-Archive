@@ -50,7 +50,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
-      ITypeGenerator generator = _moduleManager.CreateTypeGenerator (bt1);
+      ITypeGenerator generator = _moduleManager.CreateTypeGenerator (bt1, GuidNameProvider.Instance);
       Assert.IsNotNull (generator);
       Assert.IsTrue (bt1.Type.IsAssignableFrom (generator.GetBuiltType ()));
     }
@@ -60,7 +60,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
 
-      IMixinTypeGenerator mixinGenerator = _moduleManager.CreateMixinTypeGenerator (bt1.Mixins[0]);
+      IMixinTypeGenerator mixinGenerator = _moduleManager.CreateMixinTypeGenerator (bt1.Mixins[0], GuidNameProvider.Instance);
       Assert.IsNotNull (mixinGenerator);
       Assert.IsTrue (bt1.Mixins[0].Type.IsAssignableFrom (mixinGenerator.GetBuiltType ()));
     }

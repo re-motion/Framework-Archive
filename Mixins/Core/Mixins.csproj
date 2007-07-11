@@ -48,8 +48,11 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IfStatement.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
+    <Compile Include="CodeGeneration\GuidNameProvider.cs" />
+    <Compile Include="CodeGeneration\INameProvider.cs" />
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
     <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
+    <Compile Include="CodeGeneration\NamespaceChangingNameProvider.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="ContainsMixinInfoAttribute.cs" />
     <Compile Include="Context\MixinContext.cs" />

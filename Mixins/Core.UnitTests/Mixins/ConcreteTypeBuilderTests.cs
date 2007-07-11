@@ -316,8 +316,10 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
         using (repository.Ordered ())
         {
-          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerClassDefinition)).Return (realScope.CreateTypeGenerator (innerClassDefinition));
-          Expect.Call (moduleManagerMock.CreateMixinTypeGenerator (innerMixinDefinition)).Return (realScope.CreateMixinTypeGenerator (innerMixinDefinition));
+          Expect.Call (moduleManagerMock.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance))
+              .Return (realScope.CreateTypeGenerator (innerClassDefinition, GuidNameProvider.Instance));
+          Expect.Call (moduleManagerMock.CreateMixinTypeGenerator (innerMixinDefinition, GuidNameProvider.Instance))
+              .Return (realScope.CreateMixinTypeGenerator (innerMixinDefinition, GuidNameProvider.Instance));
         }
 
         repository.ReplayAll ();
@@ -335,7 +337,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         
         repository.VerifyAll ();
       });
-
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using Rhino.Mocks;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Mixins.UnitTests.Mixins.CodeGenSampleTypes;
@@ -11,7 +12,7 @@ using Rubicon.Mixins.Context;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class CodeGenerationTests : MixinTestBase
+  public class MixedTypeCodeGenerationTests : MixinTestBase
   {
     [Test]
     public void GeneratedTypeIsAssignableButDifferent ()
@@ -348,45 +349,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void OverrideMixinMethod ()
-    {
-      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With();
-      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
-      Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedMethod-ClassOverridingMixinMembers.AbstractMethod-25",
-          comAsIAbstractMixin.ImplementedMethod ());
-    }
-
-    [Test]
-    public void OverrideMixinProperty ()
-    {
-      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
-      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
-      Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedProperty-ClassOverridingMixinMembers.AbstractProperty",
-          comAsIAbstractMixin.ImplementedProperty ());
-    }
-
-    [Test]
-    public void OverrideMixinEvent ()
-    {
-      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With ();
-      IMixinWithAbstractMembers comAsIAbstractMixin = com as IMixinWithAbstractMembers;
-      Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("MixinWithAbstractMembers.ImplementedEvent", comAsIAbstractMixin.ImplementedEvent ());
-    }
-
-    [Test]
-    public void DoubleOverride ()
-    {
-      ClassOverridingSingleMixinMethod com = CreateMixedObject<ClassOverridingSingleMixinMethod> (typeof (MixinOverridingClassMethod)).With ();
-      IMixinOverridingClassMethod comAsIAbstractMixin = com as IMixinOverridingClassMethod;
-      Assert.IsNotNull (comAsIAbstractMixin);
-      Assert.AreEqual ("ClassOverridingSingleMixinMethod.AbstractMethod-25", comAsIAbstractMixin.AbstractMethod (25));
-      Assert.AreEqual ("MixinOverridingClassMethod.OverridableMethod-13", com.OverridableMethod (13));
-    }
-
-    [Test]
     public void MixinCanImplementMethodsExplicitly()
     {
       BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithExplicitImplementation)).With();
@@ -564,36 +526,6 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void GeneratedMixinTypeHasMixinTypeAttribute ()
-    {
-      MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
-      Assert.IsNotNull (mixinDefinition);
-
-      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-      Assert.IsTrue (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false));
-
-      ConcreteMixinTypeAttribute[] attributes =
-          (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
-      Assert.AreEqual (1, attributes.Length);
-    }
-
-    [Test]
-    public void MixinTypeAttributeCanBeUsedToGetMixinDefinition ()
-    {
-      MixinDefinition mixinDefinition =
-          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
-      Assert.IsNotNull (mixinDefinition);
-
-      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
-      Assert.IsTrue (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false));
-
-      ConcreteMixinTypeAttribute[] attributes =
-          (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
-      Assert.AreSame (mixinDefinition, attributes[0].GetMixinDefinition ());
-    }
-
-    [Test]
     public void GeneratedTypeHasTypeInitializer ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
@@ -601,12 +533,29 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void GeneratedMixinTypeHasTypeInitializer ()
+    public void DefaultNameProviderIsGuid()
     {
-      ClassOverridingMixinMembers com = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers)).With();
-      Type generatedType = ((IMixinTarget) com).Mixins[0].GetType ();
-      Assert.IsNotNull (generatedType.GetConstructor (BindingFlags.Static | BindingFlags.NonPublic, null, Type.EmptyTypes, null));
+      Assert.AreSame (GuidNameProvider.Instance, ConcreteTypeBuilder.Current.TypeNameProvider);
+    }
 
+    [Test]
+    public void NameProviderIsUsedWhenTypeIsGenerated ()
+    {
+      MockRepository repository = new MockRepository ();
+      INameProvider nameProviderMock = repository.CreateMock<INameProvider> ();
+      ConcreteTypeBuilder.Current.TypeNameProvider = nameProviderMock;
+
+      BaseClassDefinition definition = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
+
+      Expect.Call (nameProviderMock.GetNewTypeName (definition)).Return ("Foo");
+
+      repository.ReplayAll ();
+
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType1));
+
+      Assert.AreEqual ("Foo", generatedType.FullName);
+
+      repository.VerifyAll ();
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private FieldReference _firstField;
     private Dictionary<MethodInfo, MethodInfo> _baseCallMethods = new Dictionary<MethodInfo, MethodInfo>();
 
-    public TypeGenerator (ModuleManager module, BaseClassDefinition configuration)
+    public TypeGenerator (ModuleManager module, BaseClassDefinition configuration, INameProvider nameProvider)
     {
       ArgumentUtility.CheckNotNull ("module", module);
       ArgumentUtility.CheckNotNull ("configuration", configuration);
@@ -41,7 +41,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       bool isSerializable = configuration.Type.IsSerializable || typeof (ISerializable).IsAssignableFrom (configuration.Type);
 
-      string typeName = string.Format ("{0}_Concrete_{1}", configuration.Type.FullName, Guid.NewGuid());
+      string typeName = nameProvider.GetNewTypeName (configuration);
 
       List<Type> interfaces = GetInterfacesToImplement(isSerializable);
       ClassEmitter classEmitter = new ClassEmitter (_module.Scope, typeName, configuration.Type, interfaces.ToArray(), isSerializable);

@@ -19,6 +19,8 @@ namespace Rubicon.Mixins.CodeGeneration
     private InterlockedCache<ClassDefinition, Type> _typeCache = new InterlockedCache<ClassDefinition, Type>();
 
     private object _scopeLockObject = new object ();
+    private INameProvider _typeNameProvider = GuidNameProvider.Instance;
+    private INameProvider _mixinTypeNameProvider = GuidNameProvider.Instance;
 
     /// <summary>
     /// Gets or sets the module scope of this <see cref="ConcreteTypeBuilder"/>. The object returned by this property must not be used by multiple
@@ -62,6 +64,52 @@ namespace Rubicon.Mixins.CodeGeneration
     }
 
     /// <summary>
+    /// Gets or sets the name provider used when generating a concrete mixed type.
+    /// </summary>
+    /// <value>The type name provider for mixed types.</value>
+    public INameProvider TypeNameProvider
+    {
+      get
+      {
+        lock (_scopeLockObject)
+        {
+          return _typeNameProvider;
+        }
+      }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        lock (_scopeLockObject)
+        {
+          _typeNameProvider = value;
+        }
+      }
+    }
+
+    // <summary>
+    /// Gets or sets the name provider used when generating a concrete mixin type.
+    /// </summary>
+    /// <value>The type name provider for mixin types.</value>
+    public INameProvider MixinTypeNameProvider
+    {
+      get
+      {
+        lock (_scopeLockObject)
+        {
+          return _mixinTypeNameProvider;
+        }
+      }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        lock (_scopeLockObject)
+        {
+          _mixinTypeNameProvider = value;
+        }
+      }
+    }
+
+    /// <summary>
     /// Gets the concrete mixed type for the given target class configuration either from the cache or by generating it.
     /// </summary>
     /// <param name="configuration">The configuration object for the target class.</param>
@@ -77,7 +125,7 @@ namespace Rubicon.Mixins.CodeGeneration
           {
             lock (_scopeLockObject)
             {
-              ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration);
+              ITypeGenerator generator = Scope.CreateTypeGenerator ((BaseClassDefinition) classConfiguration, _typeNameProvider);
               Type finishedType = generator.GetBuiltType();
               return finishedType;
             }
@@ -100,7 +148,7 @@ namespace Rubicon.Mixins.CodeGeneration
           {
             lock (_scopeLockObject)
             {
-              IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator ((MixinDefinition) classConfiguration);
+              IMixinTypeGenerator generator = Scope.CreateMixinTypeGenerator ((MixinDefinition) classConfiguration, _mixinTypeNameProvider);
               Type finishedType = generator.GetBuiltType();
               return finishedType;
             }
