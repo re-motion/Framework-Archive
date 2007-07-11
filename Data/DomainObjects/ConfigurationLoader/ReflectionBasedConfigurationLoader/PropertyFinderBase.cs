@@ -35,23 +35,25 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       get { return _includeBaseProperties; }
     }
 
-    public PropertyInfo[] FindPropertyInfos ()
+    public PropertyInfo[] FindPropertyInfos (ReflectionBasedClassDefinition classDefinition)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       List<PropertyInfo> propertyInfos = new List<PropertyInfo>();
 
       if (_includeBaseProperties && _type.BaseType != typeof (DomainObject))
       {
         PropertyFinderBase propertyFinder = (PropertyFinderBase) TypesafeActivator.CreateInstance (GetType()).With (_type.BaseType, true);
-        propertyInfos.AddRange (propertyFinder.FindPropertyInfos());
+        propertyInfos.AddRange (propertyFinder.FindPropertyInfos (classDefinition));
       }
 
-      propertyInfos.AddRange (FindPropertyInfosInternal());
+      propertyInfos.AddRange (FindPropertyInfosInternal (classDefinition));
 
       return propertyInfos.ToArray();
     }
 
-    protected virtual bool FindPropertiesFilter (PropertyInfo propertyInfo)
+    protected virtual bool FindPropertiesFilter (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
       if (!IsOriginalDeclaringType (propertyInfo))
@@ -120,13 +122,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return storageClassAttribute.StorageClass == StorageClass.None;
     }
 
-    private IList<PropertyInfo> FindPropertyInfosInternal ()
+    private IList<PropertyInfo> FindPropertyInfosInternal (ReflectionBasedClassDefinition classDefinition)
     {
       MemberInfo[] memberInfos = _type.FindMembers (
           MemberTypes.Property,
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly,
           FindPropertiesFilter,
-          null);
+          classDefinition);
 
       PropertyInfo[] propertyInfos = Array.ConvertAll<MemberInfo, PropertyInfo> (
           memberInfos,
@@ -137,7 +139,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
     {
-      return FindPropertiesFilter ((PropertyInfo) member);
+      ReflectionBasedClassDefinition classDefinition = 
+          ArgumentUtility.CheckNotNullAndType<ReflectionBasedClassDefinition> ("filterCriteria", filterCriteria);
+      return FindPropertiesFilter (classDefinition, (PropertyInfo) member);
     }
 
     private Set<MethodInfo> GetExplicitInterfaceImplementations (Type type)

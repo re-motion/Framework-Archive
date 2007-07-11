@@ -58,10 +58,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       List<RelationDefinition> relations = new List<RelationDefinition>();
       ReflectionBasedClassDefinition classDefinition = (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (_type);
 
-      foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos())
+      foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos (classDefinition))
       {
-        RelationReflector relationReflector =
-            RelationReflector.CreateRelationReflector (classDefinition, propertyInfo);
+        RelationReflector relationReflector = RelationReflector.CreateRelationReflector (classDefinition, propertyInfo);
         RelationDefinition relationDefinition = relationReflector.GetMetadata (classDefinitions, relationDefinitions);
         if (relationDefinition != null)
           relations.Add (relationDefinition);
@@ -95,7 +94,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
           IsAbstract(),
           GetBaseClassDefinition (classDefinitions));
 
-      CreatePropertyDefinitions (classDefinition, GetPropertyInfos());
+      CreatePropertyDefinitions (classDefinition, GetPropertyInfos (classDefinition));
 
       return classDefinition;
     }
@@ -200,16 +199,16 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classReflector.GetClassDefinition (classDefinitions);
     }
 
-    private PropertyInfo[] GetPropertyInfos ()
+    private PropertyInfo[] GetPropertyInfos (ReflectionBasedClassDefinition classDefinition)
     {
-      PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot());
-      return propertyFinder.FindPropertyInfos();
+      PropertyFinder propertyFinder = new PropertyFinder (_type, IsInheritenceRoot ());
+      return propertyFinder.FindPropertyInfos (classDefinition);
     }
 
-    private PropertyInfo[] GetRelationPropertyInfos ()
+    private PropertyInfo[] GetRelationPropertyInfos (ReflectionBasedClassDefinition classDefinition)
     {
-      RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot());
-      return relationPropertyFinder.FindPropertyInfos();
+      RelationPropertyFinder relationPropertyFinder = new RelationPropertyFinder (_type, IsInheritenceRoot ());
+      return relationPropertyFinder.FindPropertyInfos (classDefinition);
     }
   }
 }

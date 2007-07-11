@@ -8,13 +8,15 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/> for types persisted in an <b>RDBMS</b>.</summary>
   public class RdbmsRelationEndPointReflector : RelationEndPointReflector
   {
-    public RdbmsRelationEndPointReflector (PropertyInfo propertyInfo)
-        : this (propertyInfo, typeof (DBBidirectionalRelationAttribute))
+    public RdbmsRelationEndPointReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
+        : this (classDefinition, propertyInfo, typeof (DBBidirectionalRelationAttribute))
     {
     }
 
-    protected RdbmsRelationEndPointReflector (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
+    protected RdbmsRelationEndPointReflector (
+        ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
         : base (
+            classDefinition,
             propertyInfo,
             ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
                 "bidirectionalRelationAttributeType", bidirectionalRelationAttributeType, typeof (DBBidirectionalRelationAttribute)))
@@ -36,7 +38,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     protected override void ValidatePropertyInfo ()
     {
-      base.ValidatePropertyInfo ();
+      base.ValidatePropertyInfo();
 
       if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType) && ContainsKey())
       {

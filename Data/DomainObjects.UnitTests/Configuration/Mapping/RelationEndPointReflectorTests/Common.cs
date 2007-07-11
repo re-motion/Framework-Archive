@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
 {
@@ -15,14 +16,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     public void CreateRelationEndPointReflector()
     {
       PropertyInfo propertyInfo = typeof (ClassWithOneSideRelationProperties).GetProperty ("NoAttribute");
-      Assert.IsInstanceOfType (typeof (RdbmsRelationEndPointReflector), RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo));
+      Assert.IsInstanceOfType (
+          typeof (RdbmsRelationEndPointReflector), 
+          RelationEndPointReflector.CreateRelationEndPointReflector (
+              CreateReflectionBasedClassDefinition (typeof (ClassWithOneSideRelationProperties)), propertyInfo));
     }
 
     [Test]
     public void IsVirtualEndRelationEndpoint_WithoutAttribute ()
     {
       PropertyInfo propertyInfo = typeof (ClassWithManySideRelationProperties).GetProperty ("NoAttribute");
-      RelationEndPointReflector relationEndPointReflector = new RelationEndPointReflector (propertyInfo);
+      RelationEndPointReflector relationEndPointReflector = 
+          new RelationEndPointReflector (CreateReflectionBasedClassDefinition (typeof (ClassWithManySideRelationProperties)), propertyInfo);
 
       Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
     }
@@ -34,7 +39,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
         "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidUnidirectionalRelation", true, false);
 
       PropertyInfo propertyInfo = type.GetProperty ("LeftSide");
-      RelationEndPointReflector relationEndPointReflector = new RelationEndPointReflector (propertyInfo);
+      RelationEndPointReflector relationEndPointReflector = 
+          new RelationEndPointReflector (CreateReflectionBasedClassDefinition(type), propertyInfo);
 
       Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
     }
@@ -43,58 +49,71 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
         "The 'Rubicon.Data.DomainObjects.MandatoryAttribute' may be only applied to properties assignable to types "
         + "'Rubicon.Data.DomainObjects.DomainObject' or 'Rubicon.Data.DomainObjects.ObjectList`1[T]'.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidProperties, "
         + "property: Int32Property")]
     public void GetMetadata_WithAttributeAppliedToInvalidProperty()
     {
-      PropertyInfo propertyInfo = GetType().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
-      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+      Type type = GetClassWithInvalidProperties();
 
-      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
+      PropertyInfo propertyInfo = type.GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = 
+          new RdbmsRelationEndPointReflector (CreateReflectionBasedClassDefinition (type), propertyInfo);
+
+      relationEndPointReflector.GetMetadata ();
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
         "The 'Rubicon.Data.DomainObjects.StringPropertyAttribute' may be only applied to properties of type 'System.String'.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidProperties, "
         + "property: PropertyWithStringAttribute")]
     public void GetMetadata_WithStringAttributeAppliedToInvalidProperty()
     {
-      PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithStringAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
-      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+      Type type = GetClassWithInvalidProperties ();
+      PropertyInfo propertyInfo = type.GetProperty ("PropertyWithStringAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = 
+          new RdbmsRelationEndPointReflector (CreateReflectionBasedClassDefinition (type), propertyInfo);
 
-      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
+      relationEndPointReflector.GetMetadata ();
     }
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage = 
         "The 'Rubicon.Data.DomainObjects.BinaryPropertyAttribute' may be only applied to properties of type 'System.Byte[]'.\r\n"
-        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests.Common, "
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidProperties, "
         + "property: PropertyWithBinaryAttribute")]
     public void GetMetadata_WithBinaryAttributeAppliedToInvalidProperty()
     {
-      PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithBinaryAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
-      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
+      Type type = GetClassWithInvalidProperties ();
+      PropertyInfo propertyInfo = type.GetProperty ("PropertyWithBinaryAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
+      RdbmsRelationEndPointReflector relationEndPointReflector = 
+          new RdbmsRelationEndPointReflector (CreateReflectionBasedClassDefinition (type), propertyInfo);
 
-      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
+      relationEndPointReflector.GetMetadata ();
     }
 
-    [Mandatory]
-    private int Int32Property
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException),
+        ExpectedMessage =
+        "The classDefinition's class type 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClass' is not assignable "
+        + "to the property's declaring type.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
+        + "property: Int32")]
+    public void Initialize_WithPropertyInfoNotAssignableToTheClassDefinitionsType ()
     {
-      get { throw new NotImplementedException(); }
+      Type classType = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClass", true, false);
+      Type declaringType = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute", true, false);
+      PropertyInfo propertyInfo = declaringType.GetProperty ("Int32");
+
+      new RdbmsRelationEndPointReflector (CreateReflectionBasedClassDefinition (classType), propertyInfo);
     }
 
-    [StringProperty]
-    private ClassWithManySideRelationProperties PropertyWithStringAttribute
+    private Type GetClassWithInvalidProperties ()
     {
-      get { throw new NotImplementedException(); }
-    }
-
-    [BinaryProperty]
-    private ClassWithManySideRelationProperties PropertyWithBinaryAttribute
-    {
-      get { throw new NotImplementedException(); }
+      return TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.ClassWithInvalidProperties", true, false);
     }
 
     private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)

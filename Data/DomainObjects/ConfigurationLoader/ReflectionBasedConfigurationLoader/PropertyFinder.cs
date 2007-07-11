@@ -15,22 +15,23 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    protected override bool FindPropertiesFilter (PropertyInfo propertyInfo)
+    protected override bool FindPropertiesFilter (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      if (!base.FindPropertiesFilter (propertyInfo))
+      if (!base.FindPropertiesFilter (classDefinition, propertyInfo))
         return false;
 
-      if (IsVirtualRelationEndPoint (propertyInfo))
+      if (IsVirtualRelationEndPoint (classDefinition, propertyInfo))
         return false;
 
       return true;
     }
 
-    private bool IsVirtualRelationEndPoint (PropertyInfo propertyInfo)
+    private bool IsVirtualRelationEndPoint (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
-      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (propertyInfo);
+      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (classDefinition, propertyInfo);
       return relationEndPointReflector.IsVirtualEndRelationEndpoint ();
     }
   }

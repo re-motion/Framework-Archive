@@ -16,11 +16,12 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    protected override bool FindPropertiesFilter (PropertyInfo propertyInfo)
+    protected override bool FindPropertiesFilter (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      if (!base.FindPropertiesFilter (propertyInfo))
+      if (!base.FindPropertiesFilter (classDefinition, propertyInfo))
         return false;
 
       return IsRelationEndPoint (propertyInfo);

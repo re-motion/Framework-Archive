@@ -127,6 +127,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithLegacyLoadConstructor.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\GenericClass.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationLeftSideNotInMapping.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidProperties.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\MultiTransactionTest.cs" />

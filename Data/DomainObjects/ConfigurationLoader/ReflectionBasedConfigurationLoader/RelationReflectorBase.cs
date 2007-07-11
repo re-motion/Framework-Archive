@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -8,15 +9,33 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   public abstract class RelationReflectorBase : MemberReflectorBase
   {
     private readonly BidirectionalRelationAttribute _bidirectionalRelationAttribute;
+    private readonly ReflectionBasedClassDefinition _classDefinition;
 
-    protected RelationReflectorBase (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
+    protected RelationReflectorBase (
+        ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
         : base (propertyInfo)
     {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType))
+      {
+        throw new ArgumentTypeException (
+            string.Format (
+                "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
+                classDefinition.ClassType,
+                propertyInfo.DeclaringType,
+                propertyInfo.Name));
+      }
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
           "bidirectionalRelationAttributeType", bidirectionalRelationAttributeType, typeof (BidirectionalRelationAttribute));
 
+      _classDefinition = classDefinition;
       _bidirectionalRelationAttribute =
           (BidirectionalRelationAttribute) AttributeUtility.GetCustomAttribute (PropertyInfo, bidirectionalRelationAttributeType, true);
+    }
+
+    public ReflectionBasedClassDefinition ClassDefinition
+    {
+      get { return _classDefinition; }
     }
 
     public BidirectionalRelationAttribute BidirectionalRelationAttribute

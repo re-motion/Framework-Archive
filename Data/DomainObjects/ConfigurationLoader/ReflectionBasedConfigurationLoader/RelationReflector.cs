@@ -14,8 +14,6 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return new RelationReflector (classDefinition, propertyInfo);
     }
 
-    private readonly ReflectionBasedClassDefinition _classDefinition;
-
     public RelationReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
         : this (classDefinition, propertyInfo, typeof (BidirectionalRelationAttribute))
     {
@@ -25,11 +23,8 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         ReflectionBasedClassDefinition classDefinition,
         PropertyInfo propertyInfo,
         Type bidirectionalRelationAttributeType)
-        : base (propertyInfo, bidirectionalRelationAttributeType)
+        : base (classDefinition, propertyInfo, bidirectionalRelationAttributeType)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      _classDefinition = classDefinition;
     }
 
     public RelationDefinition GetMetadata (ClassDefinitionCollection classDefinitions, RelationDefinitionCollection relationDefinitions)
@@ -38,7 +33,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
 
       ValidatePropertyInfo();
-      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (PropertyInfo);
+      RelationEndPointReflector relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (ClassDefinition, PropertyInfo);
 
       if (relationEndPointReflector.IsVirtualEndRelationEndpoint())
       {
@@ -52,7 +47,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
         RelationDefinition relationDefinition = new RelationDefinition (
             GetRelationID(),
-            relationEndPointReflector.GetMetadata (_classDefinition),
+            relationEndPointReflector.GetMetadata (),
             CreateOppositeEndPointDefinition (classDefinitions));
 
         AddRelationDefinitionToClassDefinitions (relationDefinition);
@@ -71,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
             null,
             PropertyInfo,
             "A bidirectional relation can only have one virtual relation end point.",
-            BidirectionalRelationAttribute.GetType ().FullName);
+            BidirectionalRelationAttribute.GetType().FullName);
       }
     }
 
@@ -107,17 +102,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return CreateOppositeAnonymousRelationEndPointDefinition (classDefinitions);
 
       RelationEndPointReflector oppositeRelationEndPointReflector = CreateOppositeRelationEndPointReflector (classDefinitions);
-
-      ClassDefinition classDefinition;
-      try
-      {
-        classDefinition = classDefinitions.GetMandatory (GetDomainObjectTypeFromRelationProperty (PropertyInfo));
-      }
-      catch (MappingException e)
-      {
-        throw CreateMappingException (null, oppositeRelationEndPointReflector.PropertyInfo, e.Message);
-      }
-      return oppositeRelationEndPointReflector.GetMetadata (classDefinition);
+      return oppositeRelationEndPointReflector.GetMetadata ();
     }
 
     private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (ClassDefinitionCollection classDefinitions)
@@ -136,7 +121,18 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       PropertyInfo oppositePropertyInfo = GetOppositePropertyInfo();
       ValidateOppositePropertyInfo (oppositePropertyInfo, classDefinitions);
-      return RelationEndPointReflector.CreateRelationEndPointReflector (oppositePropertyInfo);
+
+      ReflectionBasedClassDefinition classDefinition;
+      try
+      {
+        classDefinition = (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (GetDomainObjectTypeFromRelationProperty (PropertyInfo));
+      }
+      catch (MappingException e)
+      {
+        throw CreateMappingException (null, oppositePropertyInfo, e.Message);
+      }
+
+      return RelationEndPointReflector.CreateRelationEndPointReflector (classDefinition, oppositePropertyInfo);
     }
 
     private void AddRelationDefinitionToClassDefinitions (RelationDefinition relationDefinition)

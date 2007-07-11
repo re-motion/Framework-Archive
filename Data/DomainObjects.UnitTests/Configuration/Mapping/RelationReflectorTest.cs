@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfiguratio
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -445,6 +446,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _classDefinitions.Add (CreateReflectionBasedClassDefinition (GetClassWithInvalidBidirectionalRelationRightSide ()));
 
       relationReflector.GetMetadata (_classDefinitions, _relationDefinitions);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException),
+        ExpectedMessage =
+        "The classDefinition's class type 'Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClass' is not assignable "
+        + "to the property's declaring type.\r\n"
+        + "Declaring type: Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute, "
+        + "property: Int32")]
+    public void Initialize_WithPropertyInfoNotAssignableToTheClassDefinitionsType ()
+    {
+      Type classType = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.BaseClass", true, false);
+      Type declaringType = TestDomainFactory.ConfigurationMappingTestDomainErrors.GetType (
+          "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors.DerivedClassHavingAnOverriddenPropertyWithMappingAttribute", true, false);
+      PropertyInfo propertyInfo = declaringType.GetProperty ("Int32");
+
+      new RelationReflector (CreateReflectionBasedClassDefinition (classType), propertyInfo);
     }
 
     private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)

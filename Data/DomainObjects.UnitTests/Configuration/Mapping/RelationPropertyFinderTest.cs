@@ -3,6 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
@@ -25,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithMixedProperties), true);
 
       Assert.That (
-          propertyFinder.FindPropertyInfos(),
+          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties))),
           Is.EqualTo (
               new PropertyInfo[]
                   {
@@ -41,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       RelationPropertyFinder propertyFinder = new RelationPropertyFinder (typeof (ClassWithOneSideRelationProperties), true);
 
       Assert.That (
-          propertyFinder.FindPropertyInfos(),
+          propertyFinder.FindPropertyInfos (CreateReflectionBasedClassDefinition (typeof (ClassWithOneSideRelationProperties))),
           Is.EqualTo (
               new PropertyInfo[]
                   {
@@ -63,6 +64,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.That (propertyInfo, Is.Not.Null, "Property '{0}' was not found on type '{1}'.", propertyName, type);
 
       return propertyInfo;
+    }
+
+    private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
+    {
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);
     }
   }
 }

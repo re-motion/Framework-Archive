@@ -8,30 +8,28 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
   /// <summary>Used to create the <see cref="IRelationEndPointDefinition"/> from a <see cref="PropertyInfo"/>.</summary>
   public class RelationEndPointReflector: RelationReflectorBase
   {
-    public static RelationEndPointReflector CreateRelationEndPointReflector (PropertyInfo propertyInfo)
+    public static RelationEndPointReflector CreateRelationEndPointReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
     {
-      return new RdbmsRelationEndPointReflector (propertyInfo);
+      return new RdbmsRelationEndPointReflector (classDefinition, propertyInfo);
     }
 
-    public RelationEndPointReflector (PropertyInfo propertyInfo)
-        : this (propertyInfo, typeof (BidirectionalRelationAttribute))
-    {
-    }
-
-    protected RelationEndPointReflector (PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
-        : base (propertyInfo, bidirectionalRelationAttributeType)
+    public RelationEndPointReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
+      : this (classDefinition, propertyInfo, typeof (BidirectionalRelationAttribute))
     {
     }
 
-    public IRelationEndPointDefinition GetMetadata (ClassDefinition classDefinition)
+    protected RelationEndPointReflector (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo, Type bidirectionalRelationAttributeType)
+      : base (classDefinition, propertyInfo, bidirectionalRelationAttributeType)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    }
 
+    public IRelationEndPointDefinition GetMetadata ()
+    {
       ValidatePropertyInfo();
       if (IsVirtualEndRelationEndpoint())
-        return CreateVirtualRelationEndPointDefinition (classDefinition);
+        return CreateVirtualRelationEndPointDefinition (ClassDefinition);
       else
-        return CreateRelationEndPointDefinition (classDefinition);
+        return CreateRelationEndPointDefinition (ClassDefinition);
     }
 
     public virtual bool IsVirtualEndRelationEndpoint()
