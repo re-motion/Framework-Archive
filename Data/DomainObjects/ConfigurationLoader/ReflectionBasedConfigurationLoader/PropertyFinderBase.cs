@@ -91,7 +91,10 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      return ReflectionUtility.GetOriginalDeclaringType (propertyInfo) == propertyInfo.DeclaringType;
+      Type originalDeclaringType = ReflectionUtility.GetOriginalDeclaringType (propertyInfo);
+      if (originalDeclaringType.IsGenericType && propertyInfo.DeclaringType.IsGenericType)
+        return originalDeclaringType.GetGenericTypeDefinition() == propertyInfo.DeclaringType.GetGenericTypeDefinition();
+      return originalDeclaringType == propertyInfo.DeclaringType;
     }
 
     protected bool IsUnmanagedProperty (PropertyInfo propertyInfo)

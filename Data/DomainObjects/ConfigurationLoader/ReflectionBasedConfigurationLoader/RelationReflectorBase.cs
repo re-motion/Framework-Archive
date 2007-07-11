@@ -16,15 +16,7 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         : base (propertyInfo)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      if (!PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType))
-      {
-        throw new ArgumentTypeException (
-            string.Format (
-                "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
-                classDefinition.ClassType,
-                propertyInfo.DeclaringType,
-                propertyInfo.Name));
-      }
+      CheckClassDefinitionType (classDefinition, propertyInfo);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom (
           "bidirectionalRelationAttributeType", bidirectionalRelationAttributeType, typeof (BidirectionalRelationAttribute));
 
@@ -74,6 +66,31 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
         return ReflectionUtility.GetObjectListTypeParameter (propertyInfo.PropertyType);
       else
         return propertyInfo.PropertyType;
+    }
+
+    private void CheckClassDefinitionType (ReflectionBasedClassDefinition classDefinition, PropertyInfo propertyInfo)
+    {
+      //if (propertyInfo.DeclaringType.IsGenericType && !Utilities.ReflectionUtility.CanAscribe (classDefinition.ClassType, PropertyInfo.DeclaringType))
+      //{
+      //  throw new ArgumentTypeException (
+      //      string.Format (
+      //          "The classDefinition's class type '{0}' cannot be ascribed to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
+      //          classDefinition.ClassType,
+      //          propertyInfo.DeclaringType,
+      //          propertyInfo.Name));
+      //}
+
+      if (
+        //!propertyInfo.DeclaringType.IsGenericType && 
+        !PropertyInfo.DeclaringType.IsAssignableFrom (classDefinition.ClassType))
+      {
+        throw new ArgumentTypeException (
+            string.Format (
+                "The classDefinition's class type '{0}' is not assignable to the property's declaring type.\r\nDeclaring type: {1}, property: {2}",
+                classDefinition.ClassType,
+                propertyInfo.DeclaringType,
+                propertyInfo.Name));
+      }
     }
   }
 }

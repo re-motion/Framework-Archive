@@ -7,8 +7,9 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
 {
+  [Ignore("TODO: test")]
   [TestFixture]
-  public class ManySideRelationProperty : StandardMappingTest
+  public class GenericManySideRelationProperty : StandardMappingTest
   {
     private ReflectionBasedClassDefinition _classDefinition;
 
@@ -17,39 +18,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       base.SetUp();
 
       _classDefinition = new ReflectionBasedClassDefinition (
-          "ClassWithManySideRelationProperties",
-          "ClassWithManySideRelationProperties",
+          "ClosedGenericClassWithManySideRelationProperties",
+          "ClosedGenericClassWithManySideRelationProperties",
           "TestDomain",
-          typeof (ClassWithManySideRelationProperties),
+          typeof (ClosedGenericClassWithManySideRelationProperties),
           false);
-    }
-
-    [Test]
-    public void GetMetadata_ForOptional ()
-    {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("NoAttribute");
-
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
-
-      Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
-      Assert.IsFalse (actual.IsMandatory);
-    }
-
-    [Test]
-    public void GetMetadata_ForMandatory ()
-    {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("NotNullable");
-
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
-
-      Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
-      Assert.IsTrue (actual.IsMandatory);
     }
 
     [Test]
     public void GetMetadata_Unidirectional ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("Unidirectional");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseUnidirectional");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
@@ -57,14 +36,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
       Assert.AreSame (
-          GetPropertyDefinition ("Unidirectional"), relationEndPointDefiniton.PropertyDefinition);
+          GetPropertyDefinition ("BaseUnidirectional"),
+          relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
     [Test]
     public void GetMetadata_BidirectionalOneToOne ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToOne");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToOne");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
@@ -72,14 +52,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
       Assert.AreSame (
-          GetPropertyDefinition ("BidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
+          GetPropertyDefinition ("BaseBidirectionalOneToOne"),
+          relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
     [Test]
     public void GetMetadata_BidirectionalOneToMany ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToMany");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToMany");
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
@@ -87,7 +68,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
       Assert.AreSame (
-          GetPropertyDefinition ("BidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
+          GetPropertyDefinition ("BaseBidirectionalOneToMany"),
+          relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -95,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_Unidirectional ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("Unidirectional");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseUnidirectional");
 
       Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint());
     }
@@ -103,15 +85,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToOne");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToOne");
 
-      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint ());
+      Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint());
     }
 
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
     {
-      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BidirectionalOneToMany");
+      RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector ("BaseBidirectionalOneToMany");
 
       Assert.IsFalse (relationEndPointReflector.IsVirtualEndRelationEndpoint());
     }
@@ -126,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     private PropertyReflector CreatePropertyReflector (string property)
     {
-      Type type = typeof (ClassWithManySideRelationProperties);
+      Type type = typeof (GenericClassWithManySideRelationPropertiesNotInMapping<>);
       PropertyInfo propertyInfo = type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
       return new PropertyReflector (_classDefinition, propertyInfo);
@@ -134,7 +116,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     private PropertyDefinition GetPropertyDefinition (string propertyName)
     {
-      return _classDefinition.MyPropertyDefinitions[string.Format ("{0}.{1}", typeof (ClassWithManySideRelationProperties).FullName, propertyName)];
+      return _classDefinition.MyPropertyDefinitions[
+          string.Format ("{0}.{1}", typeof (GenericClassWithManySideRelationPropertiesNotInMapping<>).FullName, propertyName)];
     }
   }
 }

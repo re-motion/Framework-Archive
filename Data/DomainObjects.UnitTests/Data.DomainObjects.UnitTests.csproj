@@ -117,6 +117,8 @@
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderBaseTest.cs" />
+    <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseManySideRelationProperty.cs" />
+    <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationPropertyFinderTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationRightSide.cs" />
@@ -709,6 +711,10 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithInterface.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithManySideRelationPropertiesNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationPropertiesNotInMapping.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClosedGenericClassWithManySideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassWithManySideRelationPropertiesNotInMapping.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClosedGenericClassWithOneSideRelationProperties.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassWithOneSideRelationPropertiesNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />
