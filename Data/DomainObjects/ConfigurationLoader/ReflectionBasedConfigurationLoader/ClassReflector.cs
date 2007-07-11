@@ -56,10 +56,13 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
 
       List<RelationDefinition> relations = new List<RelationDefinition>();
+      ReflectionBasedClassDefinition classDefinition = (ReflectionBasedClassDefinition) classDefinitions.GetMandatory (_type);
+
       foreach (PropertyInfo propertyInfo in GetRelationPropertyInfos())
       {
-        RelationReflector relationReflector = RelationReflector.CreateRelationReflector (propertyInfo, classDefinitions);
-        RelationDefinition relationDefinition = relationReflector.GetMetadata (relationDefinitions);
+        RelationReflector relationReflector =
+            RelationReflector.CreateRelationReflector (classDefinition, propertyInfo);
+        RelationDefinition relationDefinition = relationReflector.GetMetadata (classDefinitions, relationDefinitions);
         if (relationDefinition != null)
           relations.Add (relationDefinition);
       }

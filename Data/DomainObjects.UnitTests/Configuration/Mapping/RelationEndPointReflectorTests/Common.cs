@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -12,15 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
   [TestFixture]
   public class Common: StandardMappingTest
   {
-    private ClassDefinitionCollection _classDefinitions;
-
-    public override void SetUp()
-    {
-      base.SetUp();
-
-      _classDefinitions = new ClassDefinitionCollection();
-    }
-
     [Test]
     public void CreateRelationEndPointReflector()
     {
@@ -60,7 +50,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       PropertyInfo propertyInfo = GetType().GetProperty ("Int32Property", BindingFlags.Instance | BindingFlags.NonPublic);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      relationEndPointReflector.GetMetadata (_classDefinitions);
+      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
     }
 
     [Test]
@@ -73,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithStringAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      relationEndPointReflector.GetMetadata (_classDefinitions);
+      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
     }
 
     [Test]
@@ -86,7 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       PropertyInfo propertyInfo = GetType().GetProperty ("PropertyWithBinaryAttribute", BindingFlags.Instance | BindingFlags.NonPublic);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyInfo);
 
-      relationEndPointReflector.GetMetadata (_classDefinitions);
+      relationEndPointReflector.GetMetadata (CreateReflectionBasedClassDefinition (typeof (ClassWithMixedProperties)));
     }
 
     [Mandatory]
@@ -105,6 +95,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
     private ClassWithManySideRelationProperties PropertyWithBinaryAttribute
     {
       get { throw new NotImplementedException(); }
+    }
+
+    private ReflectionBasedClassDefinition CreateReflectionBasedClassDefinition (Type type)
+    {
+      return new ReflectionBasedClassDefinition (type.Name, type.Name, "TestDomain", type, false);
     }
   }
 }

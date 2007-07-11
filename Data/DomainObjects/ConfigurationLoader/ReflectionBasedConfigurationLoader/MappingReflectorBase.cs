@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Reflection;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -25,8 +26,9 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
 
     public RelationDefinitionCollection GetRelationDefinitions (ClassDefinitionCollection classDefinitions)
     {
+      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
       RelationDefinitionCollection relationDefinitions = new RelationDefinitionCollection();
-      foreach (ClassReflector classReflector in CreateClassReflectorsForRelations ())
+      foreach (ClassReflector classReflector in CreateClassReflectorsForRelations (classDefinitions))
         classReflector.GetRelationDefinitions (classDefinitions, relationDefinitions);
 
       return relationDefinitions;
@@ -42,11 +44,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
       return classReflectors;
     }
 
-    private List<ClassReflector> CreateClassReflectorsForRelations ()
+    private List<ClassReflector> CreateClassReflectorsForRelations (ClassDefinitionCollection classDefinitions)
     {
       List<ClassReflector> classReflectors = new List<ClassReflector> ();
-      foreach (Type domainObjectClass in GetDomainObjectTypesSorted ())
-        classReflectors.Add (ClassReflector.CreateClassReflector (domainObjectClass));
+      foreach (ReflectionBasedClassDefinition classDefinition in classDefinitions)
+        classReflectors.Add (ClassReflector.CreateClassReflector (classDefinition.ClassType));
 
       return classReflectors;
     }

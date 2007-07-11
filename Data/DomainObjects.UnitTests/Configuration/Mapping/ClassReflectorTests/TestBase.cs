@@ -10,10 +10,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classDefinition,
-              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.Boolean",
-              "Boolean",
-              typeof (bool),
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.BaseString",
+              "BaseString",
+              typeof (string),
               null,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.BaseUnidirectionalOneToOne",
+              "BaseUnidirectionalOneToOneID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithMixedPropertiesNotInMapping.BasePrivateUnidirectionalOneToOne",
+              "BasePrivateUnidirectionalOneToOneID",
+              typeof (ObjectID),
+              true,
               null,
               true));
 

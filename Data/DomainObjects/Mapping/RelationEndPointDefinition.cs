@@ -89,6 +89,8 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
   
   public void SetRelationDefinition (RelationDefinition relationDefinition)
   {
+    ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+
     _relationDefinition = relationDefinition;
   }
 

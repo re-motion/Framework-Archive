@@ -8,6 +8,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
     {
     }
 
-    public abstract bool Boolean { get; set; }
+    public abstract string BaseString { get; set; }
+
+    public abstract ClassWithOneSideRelationProperties BaseUnidirectionalOneToOne { get; set; }
+
+    private ClassWithOneSideRelationProperties BasePrivateUnidirectionalOneToOne
+    {
+      get { throw new NotImplementedException (); }
+      set { throw new NotImplementedException (); }
+    }
   }
 }

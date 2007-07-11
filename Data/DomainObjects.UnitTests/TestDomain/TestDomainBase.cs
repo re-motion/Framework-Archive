@@ -59,8 +59,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       base.Delete();
     }
 
-		[StorageClassNone]
-		public new PropertyIndexer Properties
+    [StorageClassNone]
+    public new PropertyIndexer Properties
 		{
 			get { return base.Properties; }
 		}

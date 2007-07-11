@@ -26,7 +26,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.That (
           propertyFinder.FindPropertyInfos(),
-          Is.EqualTo (new PropertyInfo[] {GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")}));
+          Is.EqualTo (
+              new PropertyInfo[]
+                  {
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne")
+                  }));
     }
 
     [Test]
@@ -39,6 +45,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           Is.EqualTo (
               new PropertyInfo[]
                   {
+                      GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BaseBidirectionalOneToMany"),
+                      GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithOneSideRelationPropertiesNotInMapping), "BasePrivateBidirectionalOneToMany"),
                       GetProperty (typeof (ClassWithOneSideRelationProperties), "NoAttribute"),
                       GetProperty (typeof (ClassWithOneSideRelationProperties), "NotNullable"),
                       GetProperty (typeof (ClassWithOneSideRelationProperties), "BidirectionalOneToOne"),

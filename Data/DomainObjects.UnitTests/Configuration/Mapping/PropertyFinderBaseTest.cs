@@ -39,7 +39,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           Is.EqualTo (
               new PropertyInfo[]
                   {
-                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "Boolean"),
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BaseString"),
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
+                      GetProperty (typeof (ClassWithMixedPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
                       GetProperty (typeof (ClassWithMixedProperties), "Int32"),
                       GetProperty (typeof (ClassWithMixedProperties), "String"),
                       GetProperty (typeof (ClassWithMixedProperties), "UnidirectionalOneToOne"),

@@ -23,21 +23,11 @@ namespace Rubicon.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigur
     {
     }
 
-    public IRelationEndPointDefinition GetMetadata (ClassDefinitionCollection classDefinitions)
+    public IRelationEndPointDefinition GetMetadata (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       ValidatePropertyInfo();
-      ClassDefinition classDefinition;
-      try
-      {
-        classDefinition = classDefinitions.GetMandatory (PropertyInfo.DeclaringType);
-      }
-      catch (MappingException e)
-      {
-        throw CreateMappingException (null, PropertyInfo, e.Message);
-      }
-
       if (IsVirtualEndRelationEndpoint())
         return CreateVirtualRelationEndPointDefinition (classDefinition);
       else

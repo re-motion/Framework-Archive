@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TestDomain.Errors
 {
-  public abstract class ClassWithInvalidBidirectionalRelationLeftSide: DomainObject
+  public abstract class ClassWithInvalidBidirectionalRelationLeftSide : ClassWithInvalidBidirectionalRelationLeftSideNotInMapping
   {
     protected ClassWithInvalidBidirectionalRelationLeftSide ()
     {

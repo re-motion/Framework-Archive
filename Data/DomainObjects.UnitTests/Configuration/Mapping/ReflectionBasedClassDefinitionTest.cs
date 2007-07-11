@@ -453,7 +453,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetDerivedClassesWithInheritance()
     {
-      ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions["Company"];
+      ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Company));
 
       Assert.IsNotNull (companyDefinition.DerivedClasses);
       Assert.AreEqual (2, companyDefinition.DerivedClasses.Count);
@@ -465,7 +465,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsPartOfInheritanceHierarchy()
     {
-      ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions["Company"];
+      ClassDefinition companyDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Company));
 
       Assert.IsTrue (companyDefinition.IsPartOfInheritanceHierarchy);
       Assert.IsTrue (_distributorClass.IsPartOfInheritanceHierarchy);
@@ -475,7 +475,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitions()
     {
-      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Client));
 
       RelationDefinitionCollection clientRelations = clientDefinition.GetRelationDefinitions();
 
@@ -486,7 +486,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsRelationEndPointWithAnonymousRelationEndPointDefinition()
     {
-      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Client));
 
       RelationDefinition parentClient =
           MappingConfiguration.Current.RelationDefinitions["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"];
@@ -499,7 +499,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMyRelationEndPointDefinitions()
     {
-      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+      ClassDefinition clientDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Client));
 
       IRelationEndPointDefinition[] endPointDefinitions = clientDefinition.GetMyRelationEndPointDefinitions();
 
@@ -510,7 +510,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMyRelationEndPointDefinitionsCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetMyRelationEndPointDefinitions();
 
@@ -521,7 +521,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void IsMyRelationEndPoint()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       IRelationEndPointDefinition folderEndPoint =
           folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems");
@@ -535,7 +535,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMyRelationEndPointDefinitionsCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetMyRelationEndPointDefinitions();
 
@@ -546,7 +546,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationEndPointDefinitionsCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       IRelationEndPointDefinition[] endPointDefinitions = fileSystemItemDefinition.GetRelationEndPointDefinitions();
 
@@ -557,7 +557,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationEndPointDefinitionsCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       IRelationEndPointDefinition[] endPointDefinitions = folderDefinition.GetRelationEndPointDefinitions();
 
@@ -569,7 +569,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitionsCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       RelationDefinitionCollection relations = fileSystemItemDefinition.GetRelationDefinitions();
 
@@ -581,7 +581,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitionsCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       RelationDefinitionCollection relations = folderDefinition.GetRelationDefinitions();
 
@@ -593,7 +593,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationEndPointDefinitionCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.IsNotNull (
           fileSystemItemDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
@@ -604,7 +604,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationEndPointDefinitionCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       Assert.IsNotNull (
           folderDefinition.GetRelationEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
@@ -614,7 +614,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitionCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.IsNotNull (
           fileSystemItemDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
@@ -624,7 +624,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetRelationDefinitionCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       Assert.IsNotNull (folderDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
       Assert.IsNotNull (folderDefinition.GetRelationDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.Folder.FileSystemItems"));
@@ -633,8 +633,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetOppositeClassDefinitionCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       Assert.AreSame (
           folderDefinition,
@@ -645,8 +645,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetOppositeClassDefinitionCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.AreSame (
           folderDefinition,
@@ -659,7 +659,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryOppositeEndPointDefinitionCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.IsNotNull (
           fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition (
@@ -669,7 +669,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetOppositeEndPointDefinitionCompositeBaseClass()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.IsNotNull (
           fileSystemItemDefinition.GetOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
@@ -680,7 +680,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryOppositeEndPointDefinitionCompositeDerivedClass()
     {
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       Assert.IsNotNull (
           folderDefinition.GetMandatoryOppositeEndPointDefinition ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.FileSystemItem.ParentFolder"));
@@ -692,7 +692,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
     public void GetMandatoryOppositeEndPointDefinitionWithInvalidPropertyName()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       Assert.IsNotNull (fileSystemItemDefinition.GetMandatoryOppositeEndPointDefinition ("InvalidProperty"));
     }
@@ -700,8 +700,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void GetMandatoryOppositeClassDefinition()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
-      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions["Folder"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
+      ClassDefinition folderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Folder));
 
       Assert.AreSame (
           folderDefinition,
@@ -712,7 +712,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (MappingException), ExpectedMessage = "No relation found for class 'FileSystemItem' and property 'InvalidProperty'.")]
     public void GetMandatoryOppositeClassDefinitionWithInvalidPropertyName()
     {
-      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions["FileSystemItem"];
+      ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (FileSystemItem));
 
       fileSystemItemDefinition.GetMandatoryOppositeClassDefinition ("InvalidProperty");
     }

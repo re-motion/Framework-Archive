@@ -126,6 +126,7 @@
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\Derived1ClassWithStorageGroupAttribute.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithLegacyLoadConstructor.cs" />
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\GenericClass.cs" />
+    <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidBidirectionalRelationLeftSideNotInMapping.cs" />
     <Compile Include="Configuration\StorageProviders\RdbmsProviderDefinitionTest.cs" />
     <Compile Include="Configuration\StorageProviders\TypeProviderTest.cs" />
     <Compile Include="DomainObjects\MultiTransactionTest.cs" />
@@ -705,6 +706,8 @@
     <Compile Include="TestDomain\ReflectionBasedMappingSample\BaseClassWithoutStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClosedGenericClass.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithInterface.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithManySideRelationPropertiesNotInMapping.cs" />
+    <Compile Include="TestDomain\ReflectionBasedMappingSample\ClassWithOneSideRelationPropertiesNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\GenericClassNotInMapping.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithStorageSpecificIdentifierAttribute.cs" />
     <Compile Include="TestDomain\ReflectionBasedMappingSample\DerivedClassWithoutStorageGroupWithMixedProperties.cs" />

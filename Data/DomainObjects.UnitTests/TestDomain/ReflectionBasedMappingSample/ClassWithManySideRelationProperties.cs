@@ -5,7 +5,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMapping
   [DBTable]
   [TestDomain]
   [Instantiable]
-  public abstract class ClassWithManySideRelationProperties : DomainObject
+  public abstract class ClassWithManySideRelationProperties : ClassWithManySideRelationPropertiesNotInMapping
   {
     protected ClassWithManySideRelationProperties ()
     {

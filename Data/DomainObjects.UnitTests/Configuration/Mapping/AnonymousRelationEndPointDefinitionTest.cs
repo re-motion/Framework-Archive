@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       base.SetUp ();
 
-      _clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
+      _clientDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Client));
       _definition = new AnonymousRelationEndPointDefinition (_clientDefinition);
     }
 

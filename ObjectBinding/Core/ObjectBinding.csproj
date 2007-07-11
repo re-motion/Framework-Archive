@@ -126,6 +126,7 @@
       <DependentUpon>BindableObjectGlobalizationService.resx</DependentUpon>
     </Compile>
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
+    <Compile Include="BindableObject\IEnumerationValueFilter.cs" />
     <Compile Include="ObjectBindingAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />

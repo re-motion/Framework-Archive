@@ -34,7 +34,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
     public void GetRelationDefinitions_ForManySide ()
     {
       RelationDefinitionCollection expectedDefinitions = new RelationDefinitionCollection();
-      expectedDefinitions.Add (CreateNoAttributeRelationDefinition());
+      expectedDefinitions.Add (CreateBaseUnidirectionalRelationDefinition());
+      expectedDefinitions.Add (CreateBaseBidirectionalOneToOneRelationDefinition());
+      expectedDefinitions.Add (CreateBaseBidirectionalOneToManyRelationDefinition());
+      expectedDefinitions.Add (CreateBasePrivateUnidirectionalRelationDefinition ());
+      expectedDefinitions.Add (CreateBasePrivateBidirectionalOneToOneRelationDefinition ());
+      expectedDefinitions.Add (CreateBasePrivateBidirectionalOneToManyRelationDefinition ());
+      expectedDefinitions.Add (CreateNoAttributeRelationDefinition ());
       expectedDefinitions.Add (CreateNotNullableRelationDefinition());
       expectedDefinitions.Add (CreateUnidirectionalRelationDefinition());
       expectedDefinitions.Add (CreateBidirectionalOneToOneRelationDefinition());
@@ -61,7 +67,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties'.",
+                                                   "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties'."
+        ,
         MatchType = MessageMatch.Contains)]
     public void GetRelationDefinitions_WithMissingClassDefinition ()
     {
@@ -71,7 +78,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
+                                                   "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'."
+        ,
         MatchType = MessageMatch.Contains)]
     public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForBidirectionalRelation ()
     {
@@ -83,7 +91,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     [Test]
     [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'.",
+                                                   "Mapping does not contain class 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties'."
+        ,
         MatchType = MessageMatch.Contains)]
     public void GetRelationDefinitions_WithMissingOppositeClassDefinitionForUnidirectionalRelation ()
     {
@@ -135,6 +144,66 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
 
     private void CreatePropertyDefinitionsForClassWithManySideRelationProperties (ReflectionBasedClassDefinition classDefinition)
     {
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseUnidirectional",
+              "BaseUnidirectionalID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne",
+              "BaseBidirectionalOneToOneID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany",
+              "BaseBidirectionalOneToManyID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+        new ReflectionBasedPropertyDefinition (
+            classDefinition,
+            "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateUnidirectional",
+            "BasePrivateUnidirectionalID",
+            typeof (ObjectID),
+            true,
+            null,
+            true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToOne",
+              "BasePrivateBidirectionalOneToOneID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
+      classDefinition.MyPropertyDefinitions.Add (
+          new ReflectionBasedPropertyDefinition (
+              classDefinition,
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToMany",
+              "BasePrivateBidirectionalOneToManyID",
+              typeof (ObjectID),
+              true,
+              null,
+              true));
+
       classDefinition.MyPropertyDefinitions.Add (
           new ReflectionBasedPropertyDefinition (
               classDefinition,
@@ -212,6 +281,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               null));
     }
 
+    private RelationDefinition CreateBaseUnidirectionalRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseUnidirectional",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseUnidirectional",
+              false),
+          CreateAnonymousRelationEndPointDefinition());
+    }
+
+    private RelationDefinition CreateBasePrivateUnidirectionalRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateUnidirectional",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateUnidirectional",
+              false),
+          CreateAnonymousRelationEndPointDefinition ());
+    }
+
     private RelationDefinition CreateUnidirectionalRelationDefinition ()
     {
       return new RelationDefinition (
@@ -220,6 +309,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationProperties.Unidirectional",
               false),
           CreateAnonymousRelationEndPointDefinition());
+    }
+
+    private RelationDefinition CreateBaseBidirectionalOneToOneRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne",
+              false),
+          CreateVirtualRelationEndPointDefinitionForManySide (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne",
+              false));
+    }
+
+    private RelationDefinition CreateBasePrivateBidirectionalOneToOneRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToOne",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToOne",
+              false),
+          CreateVirtualRelationEndPointDefinitionForManySide (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToOne",
+              false));
     }
 
     private RelationDefinition CreateBidirectionalOneToOneRelationDefinition ()
@@ -243,6 +356,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.ClassReflec
               false),
           CreateVirtualRelationEndPointDefinitionForOneSide (
               "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationProperties.BidirectionalOneToMany",
+              false,
+              "The Sort Expression"));
+    }
+
+    private RelationDefinition CreateBaseBidirectionalOneToManyRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany",
+              false),
+          CreateVirtualRelationEndPointDefinitionForOneSide (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany",
+              false,
+              "The Sort Expression"));
+    }
+
+    private RelationDefinition CreateBasePrivateBidirectionalOneToManyRelationDefinition ()
+    {
+      return new RelationDefinition (
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToMany",
+          CreateRelationEndPointDefinition (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithManySideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToMany",
+              false),
+          CreateVirtualRelationEndPointDefinitionForOneSide (
+              "Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BasePrivateBidirectionalOneToMany",
               false,
               "The Sort Expression"));
     }

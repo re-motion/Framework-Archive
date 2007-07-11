@@ -11,7 +11,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
   public class ManySideRelationProperty: StandardMappingTest
   {
     private ReflectionBasedClassDefinition _classDefinition;
-    private ClassDefinitionCollection _classDefinitions;
 
     public override void SetUp()
     {
@@ -19,9 +18,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
       _classDefinition = new ReflectionBasedClassDefinition (
           "ClassWithManySideRelationProperties", "ClassWithManySideRelationProperties", "TestDomain", typeof (ClassWithManySideRelationProperties), false);
-
-      _classDefinitions = new ClassDefinitionCollection();
-      _classDefinitions.Add (_classDefinition);
     }
 
     [Test]
@@ -32,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
 
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinitions);
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       Assert.IsFalse (actual.IsMandatory);
@@ -46,7 +42,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
 
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinitions);
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       Assert.IsTrue (actual.IsMandatory);
@@ -60,7 +56,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
 
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinitions);
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
+
+      Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
+      RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
+      Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
+      Assert.AreSame (propertyDefinition, relationEndPointDefiniton.PropertyDefinition);
+      Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
+    }
+
+    [Test]
+    public void GetMetadata_BaseUnidirectional ()
+    {
+      PropertyReflector propertyReflector = CreatePropertyReflector ("BaseUnidirectional");
+      PropertyDefinition propertyDefinition = propertyReflector.GetMetadata ();
+      _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
+
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
@@ -77,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
 
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinitions);
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
@@ -94,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       _classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
       RdbmsRelationEndPointReflector relationEndPointReflector = new RdbmsRelationEndPointReflector (propertyReflector.PropertyInfo);
 
-      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinitions);
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata (_classDefinition);
 
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;

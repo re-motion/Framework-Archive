@@ -144,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithClassDefinition ()
     {
-      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Order));
       PropertyDefinitionCollection collection = new PropertyDefinitionCollection (orderDefinition);
       Assert.AreSame (orderDefinition, collection.ClassDefinition);
     }
