@@ -42,13 +42,28 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private static void InitializeFirstProxy (IMixinTarget mixinTarget)
     {
       Type type = mixinTarget.GetType ();
-      Type baseCallProxyType = type.GetNestedType ("BaseCallProxy");
+      Type baseCallProxyType = FindBaseCallProxyType (type);
+      Assertion.Assert (baseCallProxyType != null);
+
       object firstBaseCallProxy = InstantiateBaseCallProxy (baseCallProxyType, mixinTarget, 0);
       type.GetField ("__first").SetValue (mixinTarget, firstBaseCallProxy);
     }
 
+    private static Type FindBaseCallProxyType (Type type)
+    {
+      Assertion.Assert (type != null);
+      Type baseCallProxyType;
+      do
+      {
+        baseCallProxyType = type.GetNestedType ("BaseCallProxy");
+        type = type.BaseType;
+      } while (baseCallProxyType == null && type != null);
+      return baseCallProxyType;
+    }
+
     private static object InstantiateBaseCallProxy (Type baseCallProxyType, IMixinTarget targetInstance, int depth)
     {
+      Assertion.Assert (baseCallProxyType != null);
       return Activator.CreateInstance (baseCallProxyType, new object[] { targetInstance, depth });
     }
 

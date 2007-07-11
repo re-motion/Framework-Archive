@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Emit;
 using Rhino.Mocks;
 using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Mixins.Definitions;
@@ -174,6 +175,33 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Configuration);
       Assert.AreSame (bt3, Mixin.Get<BT3Mixin1> (bt3).This);
       Assert.AreSame (TypeFactory.GetActiveConfiguration(typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
+    }
+
+    [Test]
+    public void GeneratedTypeCanBeInstantiatedViaCtorCallEvenWhenDerived ()
+    {
+      Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
+
+      AssemblyBuilder builder =
+          AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName ("Foo"), System.Reflection.Emit.AssemblyBuilderAccess.Run);
+      TypeBuilder typeBuilder = builder.DefineDynamicModule("Foo.dll").DefineType ("Derived", TypeAttributes.Public, generatedType);
+      ConstructorBuilder ctor = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.HasThis, Type.EmptyTypes);
+      ILGenerator ilgen = ctor.GetILGenerator();
+      ilgen.Emit (OpCodes.Ldarg_0);
+      ilgen.Emit (OpCodes.Callvirt, generatedType.GetConstructor(Type.EmptyTypes));
+      ilgen.Emit (OpCodes.Ret);
+
+      Type evenDerivedType = typeBuilder.CreateType ();
+
+      BaseType3 bt3 = (BaseType3) Activator.CreateInstance (evenDerivedType);
+      Assert.AreSame (generatedType, bt3.GetType().BaseType);
+      Assert.IsNotNull (bt3);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3));
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).This);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Base);
+      Assert.IsNotNull (Mixin.Get<BT3Mixin1> (bt3).Configuration);
+      Assert.AreSame (bt3, Mixin.Get<BT3Mixin1> (bt3).This);
+      Assert.AreSame (TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)], Mixin.Get<BT3Mixin1> (bt3).Configuration);
     }
 
     [Test]
