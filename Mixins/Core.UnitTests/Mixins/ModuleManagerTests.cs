@@ -243,42 +243,16 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual ("Rubicon.Mixins.Generated.Signed", assemblyName.Name);
     }
 
-    [Serializable]
-    private class CrossApDomainTypeChecker
+    private void CheckForTypeInAssembly (string typeName, AssemblyName assemblyName)
     {
-      public static void CheckForType (string typeName, AssemblyName assemblyToLoad)
+      AppDomainRunner.Run (delegate (object[] args)
       {
-        AppDomain checkDomain = AppDomain.CreateDomain ("Test domain", null, AppDomain.CurrentDomain.SetupInformation);
-        CrossApDomainTypeChecker checker = new CrossApDomainTypeChecker (typeName, assemblyToLoad);
-        Serializer.SerializeAndDeserialize (checker);
+        AssemblyName assemblyToLoad = (AssemblyName) args[0];
+        string typeToFind = (string) args[1];
 
-        try
-        {
-          checkDomain.DoCallBack (checker.PerformCheck);
-        }
-        finally
-        {
-          AppDomain.Unload (checkDomain);
-        }
-      }
-
-      private string _typeNameToFind;
-      private AssemblyName _assemblyToLoad;
-
-      public CrossApDomainTypeChecker (string typeNameToFind, AssemblyName assemblyToLoad)
-      {
-        ArgumentUtility.CheckNotNull ("typeNameToFind", typeNameToFind);
-        ArgumentUtility.CheckNotNull ("assemblyToLoad", assemblyToLoad);
-
-        _typeNameToFind = typeNameToFind;
-        _assemblyToLoad = assemblyToLoad;
-      }
-
-      public void PerformCheck ()
-      {
-        Assembly reloadedAssembly = Assembly.Load (_assemblyToLoad);
-        Assert.IsNotNull (reloadedAssembly.GetType (_typeNameToFind));
-      }
+        Assembly loadedAssembly = Assembly.Load (assemblyToLoad);
+        Assert.IsNotNull (loadedAssembly.GetType (typeToFind));
+      }, assemblyName, typeName);
     }
 
     [Test]
@@ -287,8 +261,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
       _moduleManager.SaveAssemblies ();
 
-      CrossApDomainTypeChecker.CheckForType (concreteType.FullName, AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName));
+      CheckForTypeInAssembly (concreteType.FullName, AssemblyName.GetAssemblyName (c_unsignedAssemblyFileName));
     }
+
 
     [Test]
     public void SavedSignedAssemblyContainsGeneratedType ()
@@ -296,7 +271,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Type concreteType = TypeFactory.GetConcreteType (typeof (List<int>));
       _moduleManager.SaveAssemblies ();
 
-      CrossApDomainTypeChecker.CheckForType (concreteType.FullName, AssemblyName.GetAssemblyName (c_signedAssemblyFileName));
+      CheckForTypeInAssembly (concreteType.FullName, AssemblyName.GetAssemblyName (c_signedAssemblyFileName));
     }
 
     [Test]

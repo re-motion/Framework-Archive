@@ -539,9 +539,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void GeneratedTypeHasMixedTypeAttribute ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
-      Assert.IsTrue (generatedType.IsDefined (typeof (MixedTypeAttribute), false));
+      Assert.IsTrue (generatedType.IsDefined (typeof (ConcreteMixedTypeAttribute), false));
 
-      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
       Assert.AreEqual (1, attributes.Length);
     }
 
@@ -549,7 +549,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void MixedTypeAttributeCanBeUsedToGetClassContext ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
-      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
       ClassContext context = attributes[0].GetClassContext ();
       Assert.AreEqual (context, TypeFactory.GetActiveConfiguration (typeof (BaseType3)).ConfigurationContext);
     }
@@ -558,9 +558,39 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void MixedTypeAttributeCanBeUsedToGetBaseClassDefinition ()
     {
       Type generatedType = TypeFactory.GetConcreteType (typeof (BaseType3));
-      MixedTypeAttribute[] attributes = (MixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (MixedTypeAttribute), false);
+      ConcreteMixedTypeAttribute[] attributes = (ConcreteMixedTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false);
       BaseClassDefinition definition = attributes[0].GetBaseClassDefinition ();
       Assert.AreSame (definition, TypeFactory.GetActiveConfiguration (typeof (BaseType3)));
+    }
+
+    [Test]
+    public void GeneratedMixinTypeHasMixinTypeAttribute ()
+    {
+      MixinDefinition mixinDefinition =
+          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+      Assert.IsNotNull (mixinDefinition);
+
+      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+      Assert.IsTrue (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false));
+
+      ConcreteMixinTypeAttribute[] attributes =
+          (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
+      Assert.AreEqual (1, attributes.Length);
+    }
+
+    [Test]
+    public void MixinTypeAttributeCanBeUsedToGetMixinDefinition ()
+    {
+      MixinDefinition mixinDefinition =
+          TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers)).Mixins[typeof (MixinWithAbstractMembers)];
+      Assert.IsNotNull (mixinDefinition);
+
+      Type generatedType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
+      Assert.IsTrue (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false));
+
+      ConcreteMixinTypeAttribute[] attributes =
+          (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
+      Assert.AreSame (mixinDefinition, attributes[0].GetMixinDefinition ());
     }
 
     [Test]

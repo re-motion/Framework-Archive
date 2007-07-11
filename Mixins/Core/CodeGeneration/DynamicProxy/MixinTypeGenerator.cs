@@ -5,10 +5,8 @@ using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon.Mixins.Definitions;
-using Rubicon.Mixins.Definitions.Building;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Utilities;
-using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 using System.Runtime.Serialization;
 using System.Reflection;
 
@@ -49,7 +47,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       if (isSerializable)
         ImplementGetObjectData();
 
-      AddMixedTypeAttribute ();
+      AddMixinTypeAttribute ();
       ReplicateAttributes (_configuration.CustomAttributes, _emitter);
       ImplementOverrides();
     }
@@ -58,28 +56,21 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
 
-      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (MixedTypeAttribute), 0);
+      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixinTypeAttribute), 0);
 
-      MethodInfo getBaseClassDefinitionMethod = typeof (MixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
-      Assertion.Assert (getBaseClassDefinitionMethod != null);
-
-      LocalReference baseClassDefinitionLocal = emitter.CodeBuilder.DeclareLocal (typeof (BaseClassDefinition));
-      emitter.CodeBuilder.AddStatement (new AssignStatement (baseClassDefinitionLocal,
-          new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
-
-      MethodInfo getMixinDefinitionMethod = typeof (DefinitionItemCollection<Type, MixinDefinition>).GetMethod ("get_Item", new Type[] { typeof (int) });
+      MethodInfo getMixinDefinitionMethod = typeof (ConcreteMixinTypeAttribute).GetMethod ("GetMixinDefinition");
       Assertion.Assert (getMixinDefinitionMethod != null);
 
-      FieldInfoReference mixinsField = new FieldInfoReference (baseClassDefinitionLocal, typeof (BaseClassDefinition).GetField ("Mixins"));
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField, 
-          new VirtualMethodInvocationExpression (mixinsField, getMixinDefinitionMethod, new ConstReference (Configuration.MixinIndex).ToExpression ())));
+          new VirtualMethodInvocationExpression (firstAttributeLocal, getMixinDefinitionMethod)));
 
       emitter.CodeBuilder.AddStatement (new ReturnStatement ());
     }
 
-    private void AddMixedTypeAttribute ()
+    private void AddMixinTypeAttribute ()
     {
-      CustomAttributeBuilder attributeBuilder = MixedTypeAttribute.BuilderFromClassContext (Configuration.BaseClass.ConfigurationContext);
+      CustomAttributeBuilder attributeBuilder = ConcreteMixinTypeAttribute.BuilderFromClassContext (Configuration.MixinIndex,
+          Configuration.BaseClass.ConfigurationContext);
       Emitter.AddCustomAttribute (attributeBuilder);
     }
 

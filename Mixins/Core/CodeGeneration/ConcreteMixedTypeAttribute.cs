@@ -11,12 +11,12 @@ namespace Rubicon.Mixins.CodeGeneration
 {
   [CLSCompliant (false)]
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-  public class MixedTypeAttribute : Attribute
+  public class ConcreteMixedTypeAttribute : Attribute
   {
     private static ConstructorInfo s_attributeCtor =
-        typeof (MixedTypeAttribute).GetConstructor (new Type[] {typeof (Type), typeof (Type[]), typeof (Type[]), typeof (Type[])});
+        typeof (ConcreteMixedTypeAttribute).GetConstructor (new Type[] {typeof (Type), typeof (Type[]), typeof (Type[]), typeof (Type[])});
 
-    public static MixedTypeAttribute FromClassContext (ClassContext context)
+    public static ConcreteMixedTypeAttribute FromClassContext (ClassContext context)
     {
       Type baseType = context.Type;
       List<Type> mixinTypes = new List<Type> (context.MixinCount);
@@ -38,14 +38,14 @@ namespace Rubicon.Mixins.CodeGeneration
         }
       }
 
-      return new MixedTypeAttribute (baseType, mixinTypes.ToArray(), completeInterfaces.ToArray(), explicitDependencyList.ToArray ());
+      return new ConcreteMixedTypeAttribute (baseType, mixinTypes.ToArray(), completeInterfaces.ToArray(), explicitDependencyList.ToArray ());
     }
 
     internal static CustomAttributeBuilder BuilderFromClassContext (ClassContext context)
     {
       Assertion.Assert (s_attributeCtor != null);
 
-      MixedTypeAttribute attribute = FromClassContext (context);
+      ConcreteMixedTypeAttribute attribute = FromClassContext (context);
       CustomAttributeBuilder builder = new CustomAttributeBuilder (s_attributeCtor,
           new object[] { attribute.BaseType, attribute.MixinTypes, attribute.CompleteInterfaces, attribute.ExplicitDependenciesPerMixin });
       return builder;
@@ -56,7 +56,7 @@ namespace Rubicon.Mixins.CodeGeneration
     private readonly Type[] _completeInterfaces;
     private readonly Type[] _explicitDependenciesPerMixin;
 
-    public MixedTypeAttribute (Type baseType, Type[] mixinTypes, Type[] completeInterfaces, Type[] explicitDependenciesPerMixin)
+    public ConcreteMixedTypeAttribute (Type baseType, Type[] mixinTypes, Type[] completeInterfaces, Type[] explicitDependenciesPerMixin)
     {
       ArgumentUtility.CheckNotNull ("baseType", baseType);
       ArgumentUtility.CheckNotNull ("mixinTypes", mixinTypes);
@@ -114,7 +114,7 @@ namespace Rubicon.Mixins.CodeGeneration
     }
   }
 
-  // marker type used in MixedTypeAttribute
+  // marker type used in ConcreteMixedTypeAttribute
   public class NextMixinDependency
   {
   }

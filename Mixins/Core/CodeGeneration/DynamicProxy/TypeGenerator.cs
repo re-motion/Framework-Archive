@@ -127,9 +127,9 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     {
       ConstructorEmitter emitter = _emitter.InnerEmitter.CreateTypeConstructor ();
 
-      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (MixedTypeAttribute), 0);
+      LocalReference firstAttributeLocal = _emitter.LoadCustomAttribute (emitter.CodeBuilder, typeof (ConcreteMixedTypeAttribute), 0);
 
-      MethodInfo getBaseClassDefinitionMethod = typeof (MixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
+      MethodInfo getBaseClassDefinitionMethod = typeof (ConcreteMixedTypeAttribute).GetMethod ("GetBaseClassDefinition");
       Assertion.Assert (getBaseClassDefinitionMethod != null);
       emitter.CodeBuilder.AddStatement (new AssignStatement (_configurationField,
           new VirtualMethodInvocationExpression (firstAttributeLocal, getBaseClassDefinitionMethod)));
@@ -295,7 +295,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private void AddMixedTypeAttribute ()
     {
-      CustomAttributeBuilder attributeBuilder = MixedTypeAttribute.BuilderFromClassContext (Configuration.ConfigurationContext);
+      CustomAttributeBuilder attributeBuilder = ConcreteMixedTypeAttribute.BuilderFromClassContext (Configuration.ConfigurationContext);
       Emitter.AddCustomAttribute (attributeBuilder);
     }
 

@@ -179,18 +179,18 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       LocalReference typeLocal = codeBuilder.DeclareLocal (typeof (Type));
       codeBuilder.AddStatement (new AssignStatement (typeLocal, new TypeTokenExpression (InnerEmitter.TypeBuilder)));
 
-      Expression getAttributesExpression = new CastClassExpression (typeof (MixedTypeAttribute[]),
+      Expression getAttributesExpression = new CastClassExpression (attributeType.MakeArrayType(),
         new VirtualMethodInvocationExpression (typeLocal,
         getCustomAttributesMethod,
-        new TypeTokenExpression (typeof (MixedTypeAttribute)),
+        new TypeTokenExpression (attributeType),
         new ConstReference (false).ToExpression()));
 
-      LocalReference attributesLocal = codeBuilder.DeclareLocal (typeof (MixedTypeAttribute[]));
+      LocalReference attributesLocal = codeBuilder.DeclareLocal (attributeType.MakeArrayType());
       codeBuilder.AddStatement (new AssignStatement (attributesLocal, getAttributesExpression));
 
-      LocalReference singleAttributeLocal = codeBuilder.DeclareLocal (typeof (MixedTypeAttribute));
+      LocalReference singleAttributeLocal = codeBuilder.DeclareLocal (attributeType);
       codeBuilder.AddStatement (new AssignStatement (singleAttributeLocal,
-          new LoadArrayElementExpression (new ConstReference (index), attributesLocal, typeof (MixedTypeAttribute))));
+          new LoadArrayElementExpression (new ConstReference (index), attributesLocal, attributeType)));
       return singleAttributeLocal;
     }
   }

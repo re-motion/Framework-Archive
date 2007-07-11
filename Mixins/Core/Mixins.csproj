@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeGeneration\ConcreteMixinTypeAttribute.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\BaseCallMethodGenerator.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\FieldInfoReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\MixinSerializationHelper.cs" />
@@ -48,7 +49,7 @@
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\IndirectFieldReference.cs" />
     <Compile Include="CodeGeneration\DynamicProxy\DPExtensions\SameConditionExpression.cs" />
     <Compile Include="CodeGeneration\InvokeWithWrapper.cs" />
-    <Compile Include="CodeGeneration\MixedTypeAttribute.cs" />
+    <Compile Include="CodeGeneration\ConcreteMixedTypeAttribute.cs" />
     <Compile Include="CompleteInterfaceAttribute.cs" />
     <Compile Include="ContainsMixinInfoAttribute.cs" />
     <Compile Include="Context\MixinContext.cs" />

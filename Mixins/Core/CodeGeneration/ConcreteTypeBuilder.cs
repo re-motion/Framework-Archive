@@ -1,8 +1,10 @@
 using System;
+using System.Reflection;
 using Rubicon.Mixins.Utilities.Singleton;
 using Rubicon.Mixins.Definitions;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using Rubicon.Mixins.Context;
 
 namespace Rubicon.Mixins.CodeGeneration
 {
@@ -129,6 +131,28 @@ namespace Rubicon.Mixins.CodeGeneration
 
         _scope = null;
         return paths;
+      }
+    }
+
+    /// <summary>
+    /// Loads an assembly with the given name and adds its mixed types to this builder's cache.
+    /// </summary>
+    /// <param name="assembly">The assembly whose public types to load into the cache.</param>
+    public void LoadScopeIntoCache (Assembly assembly)
+    {
+      foreach (Type type in assembly.GetExportedTypes ())
+      {
+        foreach (ConcreteMixedTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false))
+        {
+          BaseClassDefinition baseClassDefinition = typeDescriptor.GetBaseClassDefinition ();
+          _typeCache.GetOrCreateValue (baseClassDefinition, delegate { return type; });
+        }
+
+        foreach (ConcreteMixinTypeAttribute typeDescriptor in type.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false))
+        {
+          MixinDefinition mixinDefinition = typeDescriptor.GetMixinDefinition ();
+          _typeCache.GetOrCreateValue (mixinDefinition, delegate { return type; });
+        }
       }
     }
   }

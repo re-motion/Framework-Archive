@@ -9,9 +9,9 @@ using Rubicon.Mixins.Definitions;
 namespace Rubicon.Mixins.UnitTests.Mixins
 {
   [TestFixture]
-  public class MixedTypeAttributeTests
+  public class ConcreteMixinTypeAttributeTests
   {
-    [MixedType (typeof (MixedTypeAttributeTests),
+    [ConcreteMixinType (3, typeof (ConcreteMixinTypeAttributeTests),
         new Type[] {typeof (string), typeof (object), typeof (int)},
         new Type[] {typeof (int)},
         new Type[] {typeof (object), typeof (double), typeof (bool), typeof (NextMixinDependency), typeof (string), typeof (bool)})]
@@ -22,9 +22,11 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     [Test]
     public void FromAttributeApplication ()
     {
-      MixedTypeAttribute attribute = ((MixedTypeAttribute[]) typeof (TestType).GetCustomAttributes (typeof (MixedTypeAttribute), false))[0];
+      ConcreteMixinTypeAttribute attribute = ((ConcreteMixinTypeAttribute[]) typeof (TestType).GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false))[0];
 
-      Assert.AreEqual (typeof (MixedTypeAttributeTests), attribute.BaseType);
+      Assert.AreEqual (3, attribute.MixinIndex);
+
+      Assert.AreEqual (typeof (ConcreteMixinTypeAttributeTests), attribute.BaseType);
       
       Assert.AreEqual (3, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
@@ -47,8 +49,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     public void FromClassContextSimple ()
     {
       ClassContext simpleContext = new ClassContext (typeof (object), typeof (string));
-      MixedTypeAttribute attribute = MixedTypeAttribute.FromClassContext (simpleContext);
+      ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (7, simpleContext);
 
+      Assert.AreEqual (7, attribute.MixinIndex);
       Assert.AreEqual (typeof (object), attribute.BaseType);
       Assert.AreEqual (1, attribute.MixinTypes.Length);
       Assert.AreEqual (typeof (string), attribute.MixinTypes[0]);
@@ -64,7 +67,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       context.GetOrAddMixinContext (typeof (string)).AddExplicitDependency (typeof (bool));
       context.GetOrAddMixinContext (typeof (double)).AddExplicitDependency (typeof (int));
 
-      MixedTypeAttribute attribute = MixedTypeAttribute.FromClassContext (context);
+      ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (5, context);
+
+      Assert.AreEqual (5, attribute.MixinIndex);
 
       Assert.AreEqual (typeof (int), attribute.BaseType);
       Assert.AreEqual (2, attribute.MixinTypes.Length);
@@ -83,60 +88,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     }
 
     [Test]
-    public void GetClassContextSimple ()
-    {
-      ClassContext simpleContext = new ClassContext (typeof (object), typeof (string));
-      MixedTypeAttribute attribute = MixedTypeAttribute.FromClassContext (simpleContext);
-      ClassContext regeneratedContext = attribute.GetClassContext ();
-
-      Assert.AreEqual (regeneratedContext, simpleContext);
-      Assert.AreNotSame (regeneratedContext, simpleContext);
-    }
-
-    [Test]
-    public void GetClassContextComplex ()
-    {
-      ClassContext context = new ClassContext (typeof (int), typeof (string), typeof (double));
-      context.AddCompleteInterface (typeof (uint));
-      context.GetOrAddMixinContext (typeof (string)).AddExplicitDependency (typeof (bool));
-
-      MixedTypeAttribute attribute = MixedTypeAttribute.FromClassContext (context);
-      ClassContext regeneratedContext = attribute.GetClassContext ();
-
-      Assert.AreEqual (regeneratedContext, context);
-      Assert.AreNotSame (regeneratedContext, context);
-    }
-
-    [Test]
-    public void DependencyParsing ()
-    {
-      MixedTypeAttribute attribute = ((MixedTypeAttribute[]) typeof (TestType).GetCustomAttributes (typeof (MixedTypeAttribute), false))[0];
-
-      ClassContext context = attribute.GetClassContext ();
-
-      Assert.AreEqual (3, context.MixinCount);
-
-      Assert.IsTrue (context.ContainsMixin (typeof (object)));
-      Assert.AreEqual (2, context.GetOrAddMixinContext (typeof (object)).ExplicitDependencyCount);
-      Assert.IsTrue (context.GetOrAddMixinContext (typeof (object)).ContainsExplicitDependency (typeof (double)));
-      Assert.IsTrue (context.GetOrAddMixinContext (typeof (object)).ContainsExplicitDependency (typeof (bool)));
-
-      Assert.IsTrue (context.ContainsMixin (typeof (string)));
-      Assert.AreEqual (1, context.GetOrAddMixinContext (typeof (string)).ExplicitDependencyCount);
-      Assert.IsTrue (context.GetOrAddMixinContext (typeof (string)).ContainsExplicitDependency (typeof (bool)));
-
-      Assert.IsTrue (context.ContainsMixin (typeof (int)));
-      Assert.AreEqual (0, context.GetOrAddMixinContext (typeof (int)).ExplicitDependencyCount);
-    }
-
-    [Test]
-    public void GetBaseClassDefinition ()
+    public void GetMixinDefinition ()
     {
       ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeof (BaseType3));
-      BaseClassDefinition referenceDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (context);
+      MixinDefinition referenceDefinition = BaseClassDefinitionCache.Current.GetBaseClassDefinition (context).Mixins[0];
 
-      MixedTypeAttribute attribute = MixedTypeAttribute.FromClassContext (context);
-      BaseClassDefinition definition = attribute.GetBaseClassDefinition ();
+      ConcreteMixinTypeAttribute attribute = ConcreteMixinTypeAttribute.FromClassContext (0, context);
+      MixinDefinition definition = attribute.GetMixinDefinition ();
       Assert.AreSame (referenceDefinition, definition);
     }
   }
