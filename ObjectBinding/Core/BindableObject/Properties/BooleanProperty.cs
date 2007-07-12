@@ -43,7 +43,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <returns> 
     ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
     /// </returns>
-    public IEnumerationValueInfo[] GetAllValues ()
+    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
     {
       return _booleanToEnumPropertyConverter.GetValues();
     }

@@ -45,13 +45,16 @@
     <Compile Include="BindableObject\BindableObjectGlobalizationServiceTest.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
+    <Compile Include="BindableObject\ConstantEnumerationValueFilterTest.cs" />
+    <Compile Include="BindableObject\DisableEnumValuesAttributeTest.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\ConvertFromNativePropertyType.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\ConvertToNativePropertyType.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\Common.cs" />
+    <Compile Include="BindableObject\EnumerationPropertyTests\GetEnabledValues.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\GetAllValues.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\GetValueInfoByIdentifier.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\GetValueInfoByValue.cs" />
-    <Compile Include="BindableObject\EnumerationPropertyTests\EnumerationTestBase.cs" />
+    <Compile Include="BindableObject\EnumerationTestBase.cs" />
     <Compile Include="BindableObject\PropertyBaseTests\SecurityTest.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\SearchAvailableObjects.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\GetReferenceClass.cs" />
@@ -63,6 +66,7 @@
     <Compile Include="BindableObject\TestDomain\ClassWithResources.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithSearchServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />
+    <Compile Include="BindableObject\TestDomain\ClassWithDisabledEnumValue.cs" />
     <Compile Include="BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
     <Compile Include="BindableObject\TestDomain\EnumWithUndefinedValueFromOtherType.cs" />
     <Compile Include="BindableObject\PropertyReflectorTests\ListProperties.cs" />
@@ -81,7 +85,7 @@
     <Compile Include="BindableObject\TestDomain\TestEnum.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleReferenceType.cs" />
     <Compile Include="BindableObject\TestDomain\SimpleValueType.cs" />
-    <Compile Include="BindableObject\UndefinedValueTest.cs" />
+    <Compile Include="BindableObject\UndefinedEnumValueAttributeTest.cs" />
     <Compile Include="Globalization\ClassWithResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

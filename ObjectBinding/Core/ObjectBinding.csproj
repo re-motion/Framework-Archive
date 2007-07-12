@@ -102,6 +102,7 @@
     <Compile Include="BindableObject\BindableObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
+    <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />
     <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
     <Compile Include="BindableObject\SearchAvailableObjectsServiceTypeAttribute.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="BindableObject\Properties\EnumerationProperty.cs" />
     <Compile Include="BindableObject\Properties\Int32Property.cs" />
     <Compile Include="BindableObject\Properties\NumericPropertyBase.cs" />
+    <Compile Include="DisableEnumValuesAttribute.cs" />
     <Compile Include="DatePropertyAttribute.cs" />
     <Compile Include="Globalization\BindableObjectGlobalizationService.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTests
+namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 {
   public class EnumerationTestBase : TestBase
   {

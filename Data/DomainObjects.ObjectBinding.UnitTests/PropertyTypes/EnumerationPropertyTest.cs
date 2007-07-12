@@ -82,7 +82,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void GetAllValues()
     {
-      IEnumerationValueInfo[] valueInfos = _enumerationProperty.GetAllValues();
+      IEnumerationValueInfo[] valueInfos = _enumerationProperty.GetAllValues (null);
 
       Assert.AreEqual (Enum.GetValues (typeof (TestEnum)).Length, valueInfos.Length);
     }
@@ -90,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void GetAllValuesWithUndefinedAttribute()
     {
-      IEnumerationValueInfo[] valueInfos = _enumerationPropertyWithUndefinedAttribute.GetAllValues();
+      IEnumerationValueInfo[] valueInfos = _enumerationPropertyWithUndefinedAttribute.GetAllValues (null);
 
       Assert.AreEqual (Enum.GetValues (typeof (TestEnumWithUndefinedAttribute)).Length - 1, valueInfos.Length);
       foreach (IEnumerationValueInfo valueInfo in valueInfos)

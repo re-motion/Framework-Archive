@@ -19,10 +19,6 @@ namespace Rubicon.ObjectBinding
     /// Initializes a new instance.
     /// </summary>
     /// <param name="value">The enum value that should be the undefined value. Must not be <see langword="null"/>.</param>
-    // Note: Constructor parameter 'value' should be of type Enum, but in this case the C# compiler raises the following 
-    // error when the attribute is applied to an enum:
-    // "An attribute argument must be a constant expression, typeof expression or array creation expression."
-    // => Use object instead, because this does not produce a compiler error.
     public UndefinedEnumValueAttribute (object value)
     {
       ArgumentUtility.CheckNotNullAndType<Enum> ("value", value);

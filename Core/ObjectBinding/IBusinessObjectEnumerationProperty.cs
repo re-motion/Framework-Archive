@@ -15,10 +15,9 @@ namespace Rubicon.ObjectBinding
   public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
   {
     /// <summary> Returns a list of all the enumeration's values. </summary>
-    /// <returns> 
-    ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
-    /// </returns>
-    IEnumerationValueInfo[] GetAllValues();
+    /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>
+    /// <returns>A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. </returns>
+    IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject);
 
     /// <summary> Returns a list of the enumeration's values that can be used in the current context. </summary>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>

@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       return GetValues (false);
     }
 
-    public virtual IEnumerationValueInfo[] GetAllValues ()
+    public virtual IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
     {
       return GetValues (true);
     }

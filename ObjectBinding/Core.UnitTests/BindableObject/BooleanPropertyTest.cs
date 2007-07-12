@@ -108,7 +108,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
               new BooleanEnumerationValueInfo (false, (IBusinessObjectBooleanProperty) property)
           };
 
-      CheckEnumerationValueInfos (expected, property.GetAllValues());
+      CheckEnumerationValueInfos (expected, property.GetAllValues (null));
     }
 
     [Test]

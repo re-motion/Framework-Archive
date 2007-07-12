@@ -27,21 +27,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void GetEnabledValues ()
-    {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
-      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
-          {
-              new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
-              new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
-              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true)
-          };
-
-      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
-    }
-
-
-    [Test]
     [ExpectedException (typeof (InvalidOperationException),
         ExpectedMessage =
         "The property 'NullableScalar' defined on type 'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.ClassWithValueType`1[Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.EnumWithUndefinedValue]'"

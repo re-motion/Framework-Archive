@@ -237,7 +237,7 @@ namespace Rubicon.ObjectBinding.Reflection
       return _booleanToEnumConverter.GetValues();
     }
 
-    public IEnumerationValueInfo[] GetAllValues()
+    public IEnumerationValueInfo[] GetAllValues(IBusinessObject businessObject)
     {
       return _booleanToEnumConverter.GetValues();
     }
@@ -300,7 +300,7 @@ namespace Rubicon.ObjectBinding.Reflection
       return GetValues (false);
     }
 
-    public IEnumerationValueInfo[] GetAllValues()
+    public IEnumerationValueInfo[] GetAllValues(IBusinessObject businessObject)
     {
       return GetValues (true);
     }
@@ -398,7 +398,7 @@ namespace Rubicon.ObjectBinding.Reflection
       return _valueInfos;
     }
 
-    public IEnumerationValueInfo[] GetAllValues ()
+    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
     {
       return _valueInfos;
     }

@@ -1,16 +1,21 @@
+using Rubicon.Utilities;
+
 namespace Rubicon.ObjectBinding
 {
   /// <summary> Default implementation of the <see cref="IEnumerationValueInfo"/> interface. </summary>
-  public class EnumerationValueInfo: IEnumerationValueInfo
+  public class EnumerationValueInfo : IEnumerationValueInfo
   {
-    private object _value;
-    private string _identifier;
-    private string _displayName;
-    private bool _isEnabled; 
+    private readonly object _value;
+    private readonly string _identifier;
+    private readonly string _displayName;
+    private readonly bool _isEnabled;
 
     /// <summary> Initializes a new instance of the <b>EnumerationValueInfo</b> type. </summary>
     public EnumerationValueInfo (object value, string identifier, string displayName, bool isEnabled)
     {
+      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+
       _value = value;
       _identifier = identifier;
       _displayName = displayName;

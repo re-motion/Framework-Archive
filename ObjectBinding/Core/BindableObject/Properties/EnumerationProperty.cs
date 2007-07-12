@@ -4,9 +4,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject.Properties
 {
+  //TODO: doc
   public class EnumerationProperty : PropertyBase, IBusinessObjectEnumerationProperty
   {
     private readonly Enum _undefinedValue;
+    private IEnumerationValueFilter _enumerationValueFilter;
 
     /// <exception cref="InvalidOperationException">
     /// The enum type has an UndefinedEnumValueAttribute with a value that does not match the enum's type.
@@ -17,14 +19,14 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
         : base (parameters)
     {
       _undefinedValue = GetUndefinedValue();
+      _enumerationValueFilter = GetEnumerationValueFilter();
     }
 
-    // methods and properties
     /// <summary> Returns a list of all the enumeration's values. </summary>
     /// <returns> 
     ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
     /// </returns>
-    public IEnumerationValueInfo[] GetAllValues ()
+    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
     {
       List<IEnumerationValueInfo> valueInfos = new List<IEnumerationValueInfo>();
       foreach (Enum value in Enum.GetValues (UnderlyingType))
@@ -42,7 +44,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
     public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
     {
-      return GetAllValues();
+      return Array.FindAll (GetAllValues (businessObject), delegate (IEnumerationValueInfo current) { return current.IsEnabled; });
     }
 
     /// <overloads> Returns a specific enumeration value. </overloads>
@@ -105,7 +107,13 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private bool IsEnabled (Enum value, IBusinessObject businessObject)
     {
-      return Enum.IsDefined (UnderlyingType, value);
+      if (!Enum.IsDefined (UnderlyingType, value))
+        return false;
+
+      if (_enumerationValueFilter != null)
+        return _enumerationValueFilter.IsEnabled (new EnumerationValueInfo (value, GetIdenfier (value), null, true), businessObject, this);
+
+      return true;
     }
 
     private bool IsUndefinedValue (Enum value)
@@ -141,6 +149,16 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       }
 
       return undefinedEnumValueAttribute.Value;
+    }
+
+    private IEnumerationValueFilter GetEnumerationValueFilter ()
+    {
+      DisableEnumValuesAttribute disableEnumValuesAttribute = AttributeUtility.GetCustomAttribute<DisableEnumValuesAttribute> (PropertyInfo, true);
+
+      if (disableEnumValuesAttribute == null)
+        return null;
+
+      return disableEnumValuesAttribute.GetEnumerationValueFilter();
     }
   }
 }

@@ -2,9 +2,9 @@ using System;
 
 namespace Rubicon.ObjectBinding.BindableObject
 {
+  //TODO: doc
   public interface IEnumerationValueFilter
   {
-    IEnumerationValueInfo[] GetEnabledValues (
-        IEnumerationValueInfo[] values, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property);
+    bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property);
   }
 }
