@@ -12,7 +12,8 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   }
 
   public class MixinRequiringAllMembers
-      : Mixin<IMixinRequiringAllMembersRequirements, IMixinRequiringAllMembersRequirements>
+      : Mixin<IMixinRequiringAllMembersRequirements>
+      //: Mixin<IMixinRequiringAllMembersRequirements, IMixinRequiringAllMembersRequirements>
   {
   }
 }

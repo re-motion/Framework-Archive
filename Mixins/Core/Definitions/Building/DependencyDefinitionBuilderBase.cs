@@ -42,6 +42,10 @@ namespace Rubicon.Mixins.Definitions.Building
       if (requirement == null)
       {
         requirement = CreateRequirement (type, _mixin);
+
+        RequiredMethodDefinitionBuilder requiredMethodBuilder = new RequiredMethodDefinitionBuilder (requirement);
+        requiredMethodBuilder.Apply ();
+
         AddRequirement(requirement, _mixin.BaseClass);
       }
       DependencyDefinitionBase dependency = CreateDependency (requirement, _mixin, aggregator);

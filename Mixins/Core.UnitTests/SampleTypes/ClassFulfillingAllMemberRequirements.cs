@@ -5,7 +5,7 @@ using Rubicon;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  // TODO: [Uses (typeof (MixinRequiringAllMembers))]
+  [Uses (typeof (MixinRequiringAllMembers))]
   public class ClassFulfillingAllMemberRequirements : IMixinRequiringAllMembersRequirements
   {
     public void Method ()

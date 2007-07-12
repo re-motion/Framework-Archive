@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Rubicon.Mixins.Utilities;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using System.Reflection;
 
 namespace Rubicon.Mixins.Definitions
 {
@@ -13,6 +14,9 @@ namespace Rubicon.Mixins.Definitions
   {
     public readonly UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> RequiringDependencies =
         new UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> (delegate (DependencyDefinitionBase d) { return d; });
+
+    public readonly UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> Methods =
+        new UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> (delegate (RequiredMethodDefinition m) { return m.InterfaceMethod; });
 
     private BaseClassDefinition _baseClass;
     private Type _type;

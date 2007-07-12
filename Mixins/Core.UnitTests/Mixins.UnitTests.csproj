@@ -53,7 +53,7 @@
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ExtendsAnalysisTests.cs" />
     <Compile Include="Configuration\MixinDependencySortTests.cs" />
-    <Compile Include="Configuration\RequiredMemberDefinitionBuilderTests.cs" />
+    <Compile Include="Configuration\RequiredMethodDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UsesAnalysisTests.cs" />
     <None Include="Mixins.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />

@@ -25,6 +25,7 @@ namespace Rubicon.Mixins.Validation
     private List<IValidationRule<BaseDependencyDefinition>> _baseDependencyRules = new List<IValidationRule<BaseDependencyDefinition>> ();
     private List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>>();
     private List<IValidationRule<RequiredBaseCallMethodDefinition>> _requiredBaseCallMethodRules = new List<IValidationRule<RequiredBaseCallMethodDefinition>> ();
+    private List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>> ();
 
     public ValidatingVisitor(IValidationLog validationLog)
     {
@@ -90,6 +91,11 @@ namespace Rubicon.Mixins.Validation
     public IList<IValidationRule<RequiredBaseCallMethodDefinition>> RequiredBaseCallMethodRules
     {
       get { return _requiredBaseCallMethodRules; }
+    }
+
+    public IList<IValidationRule<RequiredMethodDefinition>> RequiredMethodRules
+    {
+      get { return _requiredMethodRules; }
     }
 
     public IList<IValidationRule<ThisDependencyDefinition>> ThisDependencyRules
@@ -178,6 +184,12 @@ namespace Rubicon.Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("requiredBaseCallMethod", requiredBaseCallMethod);
       CheckRules (_requiredBaseCallMethodRules, requiredBaseCallMethod);
+    }
+
+    public void Visit (RequiredMethodDefinition requiredMethod)
+    {
+      ArgumentUtility.CheckNotNull ("requiredMethod", requiredMethod);
+      CheckRules (_requiredMethodRules, requiredMethod);
     }
 
     public void Visit (ThisDependencyDefinition dependency)
