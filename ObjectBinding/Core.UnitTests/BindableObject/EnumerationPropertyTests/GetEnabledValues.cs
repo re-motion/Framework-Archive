@@ -1,11 +1,9 @@
 using System;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
-using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTests
 {
@@ -27,7 +25,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
-    public void Enum ()
+    public void DisableFromProperty ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
@@ -42,10 +40,25 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     }
 
     [Test]
+    public void DisableFromObject ()
+    {
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromObject");
+      EnumerationValueInfo[] expected = new EnumerationValueInfo[]
+          {
+              new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
+              new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
+              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true),
+              new EnumerationValueInfo (TestEnum.Value4, "Value4", "Value4", true)
+          };
+
+      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
+    }
+
+    [Test]
     public void GetDisplayNameFromGlobalizationSerivce ()
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
-      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService> ();
+      IBindableObjectGlobalizationService mockGlobalizationService = _mockRepository.CreateMock<IBindableObjectGlobalizationService>();
       _businessObjectProvider.AddService (typeof (IBindableObjectGlobalizationService), mockGlobalizationService);
 
       EnumerationValueInfo[] expected = new EnumerationValueInfo[]
@@ -54,18 +67,18 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
               new EnumerationValueInfo (TestEnum.Value3, "Value3", "MockValue3", true),
               new EnumerationValueInfo (TestEnum.Value4, "Value4", "MockValue4", true),
               new EnumerationValueInfo (TestEnum.Value5, "Value5", "MockValue5", true)
-         };
+          };
 
       Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value1)).Return ("MockValue1");
       Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value2)).Return ("MockValue2");
       Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value3)).Return ("MockValue3");
       Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value4)).Return ("MockValue4");
       Expect.Call (mockGlobalizationService.GetEnumerationValueDisplayName (TestEnum.Value5)).Return ("MockValue5");
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
       IEnumerationValueInfo[] actual = property.GetEnabledValues (null);
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
       CheckEnumerationValueInfos (expected, actual);
     }
 

@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding
 {
   //TODO: doc
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class DisableEnumValuesAttribute : Attribute
   {
     private IEnumerationValueFilter _filter;
@@ -15,7 +15,7 @@ namespace Rubicon.ObjectBinding
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("filterType", filterType, typeof (IEnumerationValueFilter));
 
-      _filter = (IEnumerationValueFilter) TypesafeActivator.CreateInstance (filterType).With ();
+      _filter = (IEnumerationValueFilter) TypesafeActivator.CreateInstance (filterType).With();
     }
 
     public DisableEnumValuesAttribute (params object[] disabledEnumValues)
@@ -35,25 +35,25 @@ namespace Rubicon.ObjectBinding
     public DisableEnumValuesAttribute (object disabledEnumValue1, object disabledEnumValue2)
     {
       Initialize (
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2));
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2));
     }
 
     public DisableEnumValuesAttribute (object disabledEnumValue1, object disabledEnumValue2, object disabledEnumValue3)
     {
       Initialize (
-       ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
-       ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2),
-       ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue3", disabledEnumValue3));
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue3", disabledEnumValue3));
     }
 
     public DisableEnumValuesAttribute (object disabledEnumValue1, object disabledEnumValue2, object disabledEnumValue3, object disabledEnumValue4)
     {
       Initialize (
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2),
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue3", disabledEnumValue3),
-        ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue4", disabledEnumValue4));
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue1", disabledEnumValue1),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue2", disabledEnumValue2),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue3", disabledEnumValue3),
+          ArgumentUtility.CheckNotNullAndType<Enum> ("disabledEnumValue4", disabledEnumValue4));
     }
 
     public DisableEnumValuesAttribute (

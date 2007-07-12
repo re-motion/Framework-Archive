@@ -3,9 +3,11 @@ using System;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
   [BindableObject]
+  [DisableEnumValues (TestEnum.Value5)]
   public class ClassWithDisabledEnumValue
   {
     private TestEnum _disabledFromProperty;
+    private TestEnum _disabledFromObject;
 
     public ClassWithDisabledEnumValue ()
     {
@@ -16,6 +18,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     {
       get { return _disabledFromProperty; }
       set { _disabledFromProperty = value; }
+    }
+
+    public TestEnum DisabledFromObject
+    {
+      get { return _disabledFromObject; }
+      set { _disabledFromObject = value; }
     }
   }
 }

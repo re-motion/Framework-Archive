@@ -156,6 +156,9 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
       DisableEnumValuesAttribute disableEnumValuesAttribute = AttributeUtility.GetCustomAttribute<DisableEnumValuesAttribute> (PropertyInfo, true);
 
       if (disableEnumValuesAttribute == null)
+        disableEnumValuesAttribute = AttributeUtility.GetCustomAttribute<DisableEnumValuesAttribute> (PropertyInfo.DeclaringType, true);
+
+      if (disableEnumValuesAttribute == null)
         return null;
 
       return disableEnumValuesAttribute.GetEnumerationValueFilter();
