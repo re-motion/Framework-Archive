@@ -182,7 +182,6 @@
     <Compile Include="Validation\Rules\DefaultEventRules.cs" />
     <Compile Include="Validation\Rules\DefaultPropertyRules.cs" />
     <Compile Include="Validation\Rules\DefaultBaseDependencyRules.cs" />
-    <Compile Include="Validation\Rules\DefaultDependencyRulesBase.cs" />
     <Compile Include="Validation\Rules\DefaultInterfaceIntroductionRules.cs" />
     <Compile Include="Validation\Rules\DefaultMethodRules.cs" />
     <Compile Include="Validation\Rules\DefaultBaseClassRules.cs" />

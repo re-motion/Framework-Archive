@@ -6,37 +6,36 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{RequiredType.Type}, Depender = {Depender.Type}")]
-  public abstract class DependencyDefinitionBase<TRequirement, TSelf> : IVisitableDefinition
-      where TRequirement : RequirementDefinitionBase<TRequirement, TSelf>
-      where TSelf : DependencyDefinitionBase<TRequirement, TSelf>
+  public abstract class DependencyDefinitionBase : IVisitableDefinition
   {
-    public readonly UniqueDefinitionCollection<Type, TSelf> AggregatedDependencies;
+    public readonly UniqueDefinitionCollection<Type, DependencyDefinitionBase> AggregatedDependencies;
 
-    private TRequirement _requirement; // the required face or base interface
+    private RequirementDefinitionBase _requirement; // the required face or base interface
     private MixinDefinition _depender; // the mixin (directly or indirectly) defining the requirement
-    private TSelf _aggregator; // the outer dependency containing this dependency, if defined indirectly
+    private DependencyDefinitionBase _aggregator; // the outer dependency containing this dependency, if defined indirectly
 
-    public DependencyDefinitionBase (TRequirement requirement, MixinDefinition depender, TSelf aggregator)
+    public DependencyDefinitionBase (RequirementDefinitionBase requirement, MixinDefinition depender, DependencyDefinitionBase aggregator)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
       ArgumentUtility.CheckNotNull ("depender", depender);
+      ArgumentUtility.CheckType ("aggregator", aggregator, this.GetType ());
 
       _requirement = requirement;
       _depender = depender;
       _aggregator = aggregator;
 
-      AggregatedDependencies = new UniqueDefinitionCollection<Type, TSelf> (
-          delegate (TSelf d) { return d.RequiredType.Type; },
-          HasSameDependerAsAggregator);
+      AggregatedDependencies = new UniqueDefinitionCollection<Type, DependencyDefinitionBase> (
+          delegate (DependencyDefinitionBase d) { return d.RequiredType.Type; },
+          HasSameDepender);
     }
 
-    public bool HasSameDependerAsAggregator (TSelf newAggregatedDependency)
+    public bool HasSameDepender (DependencyDefinitionBase dependencyToCheck)
     {
-      ArgumentUtility.CheckNotNull ("newAggregatedDependency", newAggregatedDependency);
-      return newAggregatedDependency.Depender == _depender;
+      ArgumentUtility.CheckNotNull ("dependencyToCheck", dependencyToCheck);
+      return dependencyToCheck.Depender == _depender;
     }
 
-    public TRequirement RequiredType
+    public RequirementDefinitionBase RequiredType
     {
       get { return _requirement; }
     }
@@ -46,7 +45,7 @@ namespace Rubicon.Mixins.Definitions
       get { return _depender; }
     }
 
-    public TSelf Aggregator
+    public DependencyDefinitionBase Aggregator
     {
       get { return _aggregator; }
     }

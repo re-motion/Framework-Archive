@@ -5,31 +5,73 @@ using Rubicon.Mixins.Definitions;
 
 namespace Rubicon.Mixins.Validation.Rules
 {
-  public class DefaultThisDependencyRules : DefaultDependencyRulesBase<ThisDependencyDefinition, RequiredFaceTypeDefinition>
+  public class DefaultThisDependencyRules : RuleSetBase
   {
-    protected override IList<IValidationRule<ThisDependencyDefinition>> GetRules (ValidatingVisitor visitor)
+    public override void Install (ValidatingVisitor visitor)
     {
-      return visitor.ThisDependencyRules;
+      visitor.ThisDependencyRules.Add (new DelegateValidationRule<ThisDependencyDefinition> (DependencyMustBeSatisfied));
+      visitor.ThisDependencyRules.Add (new DelegateValidationRule<ThisDependencyDefinition> (NoCircularDependencies));
+      visitor.ThisDependencyRules.Add (new DelegateValidationRule<ThisDependencyDefinition> (AggregateDependencyMustBeFullyImplemented));
     }
 
-    protected override IEnumerable<ThisDependencyDefinition> GetDependencies (MixinDefinition mixin)
+    private void NoCircularDependencies (DelegateValidationRule<ThisDependencyDefinition>.Args args)
     {
-      return mixin.ThisDependencies;
+      List<MixinDefinition> requiredMixins = new List<MixinDefinition> ();
+      if (CheckNoCircularities (args.Definition, requiredMixins))
+      {
+        args.Log.Succeed (args.Self);
+      }
+      else
+      {
+        args.Log.Fail (args.Self);
+      }
     }
 
-    protected override void NoCircularDependencies (DelegateValidationRule<ThisDependencyDefinition>.Args args)
+    private bool CheckNoCircularities (ThisDependencyDefinition definition, List<MixinDefinition> requiredMixins)
     {
-      NoCircularDependenciesImpl (args);
+      ClassDefinitionBase implementer = definition.GetImplementer ();
+      MixinDefinition implementingMixin = implementer as MixinDefinition;
+      if (implementingMixin == null || implementer == definition.Depender)
+      {
+        return true;
+      }
+      else if (requiredMixins.Contains (implementingMixin))
+      {
+        return false;
+      }
+      else
+      {
+        requiredMixins.Add (implementingMixin);
+        return CheckNoCircularities (implementingMixin, requiredMixins);
+      }
     }
 
-    protected override void DependencyMustBeSatisfied (DelegateValidationRule<ThisDependencyDefinition>.Args args)
+    private bool CheckNoCircularities (MixinDefinition mixin, List<MixinDefinition> requiredMixins)
     {
-      DependencyMustBeSatisfiedImpl (args);
+      foreach (ThisDependencyDefinition dependency in mixin.ThisDependencies)
+      {
+        if (!CheckNoCircularities (dependency, requiredMixins))
+        {
+          return false;
+        }
+      }
+      return true;
     }
 
-    protected override void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<ThisDependencyDefinition>.Args args)
+    private void DependencyMustBeSatisfied (DelegateValidationRule<ThisDependencyDefinition>.Args args)
     {
-      AggregateDependencyMustBeFullyImplementedImpl (args);
+      SingleMust (args.Definition.GetImplementer () != null || args.Definition.IsAggregate, args.Log, args.Self);
+    }
+
+    private void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<ThisDependencyDefinition>.Args args)
+    {
+      if (args.Definition.IsAggregate)
+      {
+        foreach (ThisDependencyDefinition dependency in args.Definition.AggregatedDependencies)
+        {
+          dependency.Accept (args.Validator);
+        }
+      }
     }
   }
 }

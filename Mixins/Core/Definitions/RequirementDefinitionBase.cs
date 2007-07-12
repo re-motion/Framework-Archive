@@ -9,12 +9,10 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
-  public abstract class RequirementDefinitionBase<TSelf, TDependency> : IVisitableDefinition
-      where TDependency : DependencyDefinitionBase<TSelf, TDependency>
-      where TSelf : RequirementDefinitionBase<TSelf, TDependency>
+  public abstract class RequirementDefinitionBase : IVisitableDefinition
   {
-    public readonly UniqueDefinitionCollection<TDependency, TDependency> RequiringDependencies =
-        new UniqueDefinitionCollection<TDependency,TDependency> (delegate (TDependency d) { return d; });
+    public readonly UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> RequiringDependencies =
+        new UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> (delegate (DependencyDefinitionBase d) { return d; });
 
     private BaseClassDefinition _baseClass;
     private Type _type;
@@ -63,7 +61,7 @@ namespace Rubicon.Mixins.Definitions
     public IEnumerable<MixinDefinition> FindRequiringMixins()
     {
       Set<MixinDefinition> mixins = new Set<MixinDefinition>();
-      foreach (TDependency dependency in RequiringDependencies)
+      foreach (DependencyDefinitionBase dependency in RequiringDependencies)
         mixins.Add (dependency.Depender);
       return mixins;
     }

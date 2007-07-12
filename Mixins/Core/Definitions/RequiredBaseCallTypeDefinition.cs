@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
+  public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase
   {
     public readonly UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMethods =
         new UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> (delegate (RequiredBaseCallMethodDefinition m)

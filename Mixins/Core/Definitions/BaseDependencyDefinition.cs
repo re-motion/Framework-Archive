@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  public class BaseDependencyDefinition : DependencyDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
+  public class BaseDependencyDefinition : DependencyDefinitionBase
   {
     public BaseDependencyDefinition (RequiredBaseCallTypeDefinition requiredType, MixinDefinition depender, BaseDependencyDefinition aggregator)
       : base (requiredType, depender, aggregator)
@@ -26,6 +26,11 @@ namespace Rubicon.Mixins.Definitions
         implementer = Depender.BaseClass; // duck interface
       }
       return implementer;
+    }
+
+    public new RequiredBaseCallTypeDefinition RequiredType
+    {
+      get { return (RequiredBaseCallTypeDefinition) base.RequiredType; }
     }
   }
 }

@@ -4,33 +4,25 @@ using Rubicon.Mixins.Definitions;
 
 namespace Rubicon.Mixins.Validation.Rules
 {
-  public class DefaultBaseDependencyRules : DefaultDependencyRulesBase<BaseDependencyDefinition, RequiredBaseCallTypeDefinition>
+  public class DefaultBaseDependencyRules : RuleSetBase
   {
-    protected override IList<IValidationRule<BaseDependencyDefinition>> GetRules (ValidatingVisitor visitor)
+    public override void Install (ValidatingVisitor visitor)
     {
-      return visitor.BaseDependencyRules;
+      // no rules ATM
     }
 
-    protected override IEnumerable<BaseDependencyDefinition> GetDependencies (MixinDefinition mixin)
+    private void NoCircularDependencies (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      return mixin.BaseDependencies;
-    }
-
-    protected override void NoCircularDependencies (DelegateValidationRule<BaseDependencyDefinition>.Args args)
-    {
-      // NoCircularDependenciesImpl (args);
       // Now throws a ConfigurationException if violated
     }
 
-    protected override void DependencyMustBeSatisfied (DelegateValidationRule<BaseDependencyDefinition>.Args args)
+    private void DependencyMustBeSatisfied (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      // DependencyMustBeSatisfiedImpl (args);
       // Now throws a ConfigurationException if violated
     }
 
-    protected override void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<BaseDependencyDefinition>.Args args)
+    private void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      // AggregateDependencyMustBeFullyImplementedImpl (args);
       // Now throws a ConfigurationException if violated
     }
   }

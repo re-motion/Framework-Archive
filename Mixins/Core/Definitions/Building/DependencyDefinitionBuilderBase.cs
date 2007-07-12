@@ -4,9 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public abstract class DependencyDefinitionBuilderBase<TRequirement, TDependency>
-      where TDependency : DependencyDefinitionBase<TRequirement, TDependency>
-      where TRequirement : RequirementDefinitionBase<TRequirement, TDependency>
+  public abstract class DependencyDefinitionBuilderBase
   {
     private readonly MixinDefinition _mixin;
 
@@ -16,11 +14,11 @@ namespace Rubicon.Mixins.Definitions.Building
       _mixin = mixin;
     }
 
-    protected abstract TRequirement GetRequirement (Type type, BaseClassDefinition baseClass);
-    protected abstract TRequirement CreateRequirement (Type type, MixinDefinition mixin);
-    protected abstract void AddRequirement (TRequirement requirement, BaseClassDefinition baseClass);
-    protected abstract TDependency CreateDependency (TRequirement requirement, MixinDefinition mixin, TDependency aggregator);
-    protected abstract void AddDependency (MixinDefinition mixin, TDependency dependency);
+    protected abstract RequirementDefinitionBase GetRequirement (Type type, BaseClassDefinition baseClass);
+    protected abstract RequirementDefinitionBase CreateRequirement (Type type, MixinDefinition mixin);
+    protected abstract void AddRequirement (RequirementDefinitionBase requirement, BaseClassDefinition baseClass);
+    protected abstract DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, MixinDefinition mixin, DependencyDefinitionBase aggregator);
+    protected abstract void AddDependency (MixinDefinition mixin, DependencyDefinitionBase dependency);
 
     public void Apply (IEnumerable<Type> dependencyTypes)
     {
@@ -30,29 +28,29 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         if (!type.Equals (typeof (object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
         {
-          TDependency dependency = BuildDependency (type, null);
+          DependencyDefinitionBase dependency = BuildDependency (type, null);
           AddDependency (_mixin, dependency);
         }
       }
     }
 
-    private TDependency BuildDependency(Type type, TDependency aggregator)
+    private DependencyDefinitionBase BuildDependency(Type type, DependencyDefinitionBase aggregator)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      TRequirement requirement = GetRequirement (type, _mixin.BaseClass);
+      RequirementDefinitionBase requirement = GetRequirement (type, _mixin.BaseClass);
       if (requirement == null)
       {
         requirement = CreateRequirement (type, _mixin);
         AddRequirement(requirement, _mixin.BaseClass);
       }
-      TDependency dependency = CreateDependency (requirement, _mixin, aggregator);
+      DependencyDefinitionBase dependency = CreateDependency (requirement, _mixin, aggregator);
       requirement.RequiringDependencies.Add (dependency);
       CheckForAggregate (dependency);
       return dependency;
     }
 
-    private void CheckForAggregate (TDependency dependency)
+    private void CheckForAggregate (DependencyDefinitionBase dependency)
     {
       ArgumentUtility.CheckNotNull ("dependency", dependency);
 
@@ -60,7 +58,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         foreach (Type type in dependency.RequiredType.Type.GetInterfaces ())
         {
-          TDependency innerDependency = BuildDependency (type, dependency);
+          DependencyDefinitionBase innerDependency = BuildDependency (type, dependency);
           dependency.AggregatedDependencies.Add (innerDependency);
         }
       }

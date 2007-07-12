@@ -3,14 +3,14 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
-  public class BaseDependencyDefinitionBuilder : DependencyDefinitionBuilderBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
+  public class BaseDependencyDefinitionBuilder : DependencyDefinitionBuilderBase
   {
     public BaseDependencyDefinitionBuilder (MixinDefinition mixin)
         : base (mixin)
     {
     }
 
-    protected override RequiredBaseCallTypeDefinition GetRequirement (Type type, BaseClassDefinition baseClass)
+    protected override RequirementDefinitionBase GetRequirement (Type type, BaseClassDefinition baseClass)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
@@ -18,7 +18,7 @@ namespace Rubicon.Mixins.Definitions.Building
       return baseClass.RequiredBaseCallTypes[type];
     }
 
-    protected override RequiredBaseCallTypeDefinition CreateRequirement (Type type, MixinDefinition mixin)
+    protected override RequirementDefinitionBase CreateRequirement (Type type, MixinDefinition mixin)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("mixin", mixin);
@@ -35,29 +35,29 @@ namespace Rubicon.Mixins.Definitions.Building
       return new RequiredBaseCallTypeDefinition (mixin.BaseClass, type);
     }
 
-    protected override void AddRequirement (RequiredBaseCallTypeDefinition requirement, BaseClassDefinition baseClass)
+    protected override void AddRequirement (RequirementDefinitionBase requirement, BaseClassDefinition baseClass)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
       ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
-      baseClass.RequiredBaseCallTypes.Add (requirement);
+      baseClass.RequiredBaseCallTypes.Add ((RequiredBaseCallTypeDefinition) requirement);
     }
 
-    protected override BaseDependencyDefinition CreateDependency (RequiredBaseCallTypeDefinition requirement, MixinDefinition mixin,
-        BaseDependencyDefinition aggregator)
+    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, MixinDefinition mixin,
+        DependencyDefinitionBase aggregator)
     {
       ArgumentUtility.CheckNotNull ("requirement", requirement);
       ArgumentUtility.CheckNotNull ("mixin", mixin);
 
-      return new BaseDependencyDefinition (requirement, mixin, aggregator);
+      return new BaseDependencyDefinition ((RequiredBaseCallTypeDefinition) requirement, mixin, (BaseDependencyDefinition)aggregator);
     }
 
-    protected override void AddDependency (MixinDefinition mixin, BaseDependencyDefinition dependency)
+    protected override void AddDependency (MixinDefinition mixin, DependencyDefinitionBase dependency)
     {
       ArgumentUtility.CheckNotNull ("mixin", mixin);
       ArgumentUtility.CheckNotNull ("dependency", dependency);
       if (!mixin.BaseDependencies.ContainsKey (dependency.RequiredType.Type))
-        mixin.BaseDependencies.Add (dependency);
+        mixin.BaseDependencies.Add ((BaseDependencyDefinition) dependency);
     }
   }
 }

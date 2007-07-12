@@ -4,7 +4,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  public class ThisDependencyDefinition : DependencyDefinitionBase<RequiredFaceTypeDefinition, ThisDependencyDefinition>
+  public class ThisDependencyDefinition : DependencyDefinitionBase
   {
     public ThisDependencyDefinition (RequiredFaceTypeDefinition requiredType, MixinDefinition depender, ThisDependencyDefinition aggregator)
       : base (requiredType, depender, aggregator)
@@ -15,6 +15,11 @@ namespace Rubicon.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
+    }
+
+    public new RequiredFaceTypeDefinition RequiredType
+    {
+      get { return (RequiredFaceTypeDefinition) base.RequiredType; }
     }
   }
 }
