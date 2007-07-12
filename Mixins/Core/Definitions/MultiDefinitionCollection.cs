@@ -8,17 +8,17 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {_items.Count}")]
-  public class MultiDefinitionItemCollection<TKey, TValue> : DefinitionItemCollectionBase<TKey, TValue>
+  public class MultiDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>
       where TValue : IVisitableDefinition
   {
     private MultiDictionary<TKey, TValue> _items = new MultiDictionary<TKey, TValue>();
 
-    public MultiDefinitionItemCollection (KeyMaker keyMaker)
+    public MultiDefinitionCollection (KeyMaker keyMaker)
         : base (keyMaker, null)
     {
     }
 
-    public override bool HasItem (TKey key)
+    public override bool ContainsKey (TKey key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       return _items.ContainsKey (key);

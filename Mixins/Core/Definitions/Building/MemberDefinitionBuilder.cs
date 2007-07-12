@@ -10,12 +10,12 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class MemberDefinitionBuilder
   {
-    private ClassDefinition _classDefinition;
+    private ClassDefinitionBase _classDefinition;
     private Predicate<MethodInfo> _methodFilter;
     private Set<MethodInfo> _specialMethods = new Set<MethodInfo> ();
     private BindingFlags _bindingFlags;
 
-    public MemberDefinitionBuilder (ClassDefinition classDefinition, Predicate<MethodInfo> methodFilter, BindingFlags bindingFlags)
+    public MemberDefinitionBuilder (ClassDefinitionBase classDefinition, Predicate<MethodInfo> methodFilter, BindingFlags bindingFlags)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("methodFilter", methodFilter);
@@ -118,7 +118,7 @@ namespace Rubicon.Mixins.Definitions.Building
         return null;
     }
 
-    public static void InitializeAttributes (ClassDefinition classDefinition)
+    public static void InitializeAttributes (ClassDefinitionBase classDefinition)
     {
       foreach (CustomAttributeData attributeData in CustomAttributeData.GetCustomAttributes(classDefinition.Type))
       {

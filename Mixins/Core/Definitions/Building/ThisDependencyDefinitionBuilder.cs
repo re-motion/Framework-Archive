@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.Definitions.Building
       ArgumentUtility.CheckNotNull ("mixin", mixin);
       ArgumentUtility.CheckNotNull ("dependency", dependency);
 
-      if (!mixin.ThisDependencies.HasItem (dependency.RequiredType.Type))
+      if (!mixin.ThisDependencies.ContainsKey (dependency.RequiredType.Type))
         mixin.ThisDependencies.Add (dependency);
     }
   }

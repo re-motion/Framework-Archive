@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.Definitions.Building
       {
         if (_classDefinition.ImplementedInterfaces.Contains (requiredType) /* || requiredType.Equals (typeof (object))*/)
           ApplyForImplementedInterface (declaringRequirement, requiredType);
-        else if (_classDefinition.IntroducedInterfaces.HasItem (requiredType))
+        else if (_classDefinition.IntroducedInterfaces.ContainsKey (requiredType))
           ApplyForIntroducedInterface (declaringRequirement, requiredType);
         else
           ApplyForDuckInterface (declaringRequirement, requiredType);

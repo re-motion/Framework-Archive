@@ -73,7 +73,7 @@ namespace Rubicon.Mixins.Validation.Rules
     {
       foreach (MixinDefinition mixin in baseClass.Mixins)
       {
-        if (mixin.CustomAttributes.HasItem (attributeDefinition.AttributeType))
+        if (mixin.CustomAttributes.ContainsKey (attributeDefinition.AttributeType))
           return true;
       }
       return false;
@@ -81,18 +81,18 @@ namespace Rubicon.Mixins.Validation.Rules
 
     private bool MixinHasAttributeDuplicates (AttributeDefinition attributeDefinition, MixinDefinition mixin)
     {
-      return mixin.BaseClass.CustomAttributes.HasItem (attributeDefinition.AttributeType);
+      return mixin.BaseClass.CustomAttributes.ContainsKey (attributeDefinition.AttributeType);
     }
 
     private bool MemberHasAttributeDuplicates (AttributeDefinition attributeDefinition, MemberDefinition member)
     {
       foreach (MemberDefinition overrider in member.Overrides)
       {
-        if (overrider.CustomAttributes.HasItem (attributeDefinition.AttributeType))
+        if (overrider.CustomAttributes.ContainsKey (attributeDefinition.AttributeType))
           return true;
       }
       
-      if (member.BaseAsMember != null && member.BaseAsMember.CustomAttributes.HasItem (attributeDefinition.AttributeType))
+      if (member.BaseAsMember != null && member.BaseAsMember.CustomAttributes.ContainsKey (attributeDefinition.AttributeType))
         return true;
 
       return false;

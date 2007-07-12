@@ -11,7 +11,7 @@ namespace Rubicon.Mixins.CodeGeneration
     {
     }
 
-    public string GetNewTypeName (ClassDefinition configuration)
+    public string GetNewTypeName (ClassDefinitionBase configuration)
     {
       string originalNamespace = configuration.Type.Namespace;
       int restStart = originalNamespace.Length > 0 ? originalNamespace.Length + 1 : 0;

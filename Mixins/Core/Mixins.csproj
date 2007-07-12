@@ -127,13 +127,13 @@
     <Compile Include="Definitions\Building\RequiredBaseCallMethodDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
     <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
-    <Compile Include="Definitions\ClassDefinition.cs" />
+    <Compile Include="Definitions\ClassDefinitionBase.cs" />
     <Compile Include="Definitions\BaseDependencyDefinition.cs" />
     <Compile Include="Definitions\EventIntroductionDefinition.cs" />
-    <Compile Include="Definitions\MultiDefinitionItemCollection.cs" />
+    <Compile Include="Definitions\MultiDefinitionCollection.cs" />
     <Compile Include="Utilities\MultiDictionary.cs" />
     <Compile Include="Definitions\PropertyIntroductionDefinition.cs" />
-    <Compile Include="Definitions\DefinitionItemCollectionBase.cs" />
+    <Compile Include="Definitions\DefinitionCollectionBase.cs" />
     <Compile Include="Definitions\IAttributableDefinition.cs" />
     <Compile Include="Definitions\MemberIntroductionDefinition.cs" />
     <Compile Include="Definitions\EventDefinition.cs" />
@@ -145,7 +145,7 @@
     <Compile Include="Utilities\Serialization\ReflectionObjectSerializer.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
     <Compile Include="Definitions\RequiredBaseCallTypeDefinition.cs" />
-    <Compile Include="Definitions\DefinitionItemCollection.cs" />
+    <Compile Include="Definitions\UniqueDefinitionCollection.cs" />
     <Compile Include="Definitions\IDefinitionVisitor.cs" />
     <Compile Include="Definitions\InterfaceIntroductionDefinition.cs" />
     <Compile Include="Definitions\IVisitableDefinition.cs" />

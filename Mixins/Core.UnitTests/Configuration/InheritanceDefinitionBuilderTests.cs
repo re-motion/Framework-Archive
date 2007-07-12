@@ -16,10 +16,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       BaseClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinIntroducingInheritedInterface));
-      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII1)));
-      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII2)));
-      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII3)));
-      Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IMixinIII4)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IMixinIII4)));
     }
 
     [Test]
@@ -28,16 +28,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition bt1 =
           UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinFaceDependingOnInheritedInterface),
           typeof (MixinIntroducingInheritedInterface));
-      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII1)));
-      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII2)));
-      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII3)));
-      Assert.IsTrue (bt1.RequiredFaceTypes.HasItem (typeof (IMixinIII4)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.RequiredFaceTypes.ContainsKey (typeof (IMixinIII4)));
 
       MixinDefinition m1 = bt1.Mixins[typeof (MixinFaceDependingOnInheritedInterface)];
-      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII1)));
-      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII2)));
-      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII3)));
-      Assert.IsTrue (m1.ThisDependencies.HasItem (typeof (IMixinIII4)));
+      Assert.IsTrue (m1.ThisDependencies.ContainsKey (typeof (IMixinIII1)));
+      Assert.IsTrue (m1.ThisDependencies.ContainsKey (typeof (IMixinIII2)));
+      Assert.IsTrue (m1.ThisDependencies.ContainsKey (typeof (IMixinIII3)));
+      Assert.IsTrue (m1.ThisDependencies.ContainsKey (typeof (IMixinIII4)));
     }
 
     [Test]
@@ -48,16 +48,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration
               typeof (BaseType1),
               typeof (MixinBaseDependingOnInheritedInterface),
               typeof (MixinIntroducingInheritedInterface));
-      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII1)));
-      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII2)));
-      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII3)));
-      Assert.IsTrue (bt1.RequiredBaseCallTypes.HasItem (typeof (IMixinIII4)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.ContainsKey (typeof (IMixinIII1)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.ContainsKey (typeof (IMixinIII2)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.ContainsKey (typeof (IMixinIII3)));
+      Assert.IsTrue (bt1.RequiredBaseCallTypes.ContainsKey (typeof (IMixinIII4)));
 
       MixinDefinition m1 = bt1.Mixins[typeof (MixinBaseDependingOnInheritedInterface)];
-      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII1)));
-      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII2)));
-      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII3)));
-      Assert.IsTrue (m1.BaseDependencies.HasItem (typeof (IMixinIII4)));
+      Assert.IsTrue (m1.BaseDependencies.ContainsKey (typeof (IMixinIII1)));
+      Assert.IsTrue (m1.BaseDependencies.ContainsKey (typeof (IMixinIII2)));
+      Assert.IsTrue (m1.BaseDependencies.ContainsKey (typeof (IMixinIII3)));
+      Assert.IsTrue (m1.BaseDependencies.ContainsKey (typeof (IMixinIII4)));
     }
 
 

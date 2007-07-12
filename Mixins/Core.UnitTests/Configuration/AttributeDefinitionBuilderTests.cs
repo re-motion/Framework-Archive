@@ -47,7 +47,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
     private static void CheckAttributes (IAttributableDefinition attributableDefinition)
     {
-      Assert.IsTrue (attributableDefinition.CustomAttributes.HasItem (typeof (TagAttribute)));
+      Assert.IsTrue (attributableDefinition.CustomAttributes.ContainsKey (typeof (TagAttribute)));
       Assert.AreEqual (2, attributableDefinition.CustomAttributes.GetItemCount (typeof (TagAttribute)));
 
       List<AttributeDefinition> attributes = new List<AttributeDefinition> (attributableDefinition.CustomAttributes);
@@ -90,7 +90,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void SerializableAttributeIsIgnored ()
     {
       BaseClassDefinition bt1 = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1));
-      Assert.IsFalse (bt1.CustomAttributes.HasItem (typeof (SerializableAttribute)));
+      Assert.IsFalse (bt1.CustomAttributes.ContainsKey (typeof (SerializableAttribute)));
     }
 
     class InternalStuffAttribute : Attribute { }
@@ -104,7 +104,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend(typeof (ClassWithInternalAttribute)))
       {
         Assert.IsFalse (
-            TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.HasItem (typeof (InternalStuffAttribute)));
+            TypeFactory.GetActiveConfiguration (typeof (ClassWithInternalAttribute)).CustomAttributes.ContainsKey (typeof (InternalStuffAttribute)));
       }
     }
   }

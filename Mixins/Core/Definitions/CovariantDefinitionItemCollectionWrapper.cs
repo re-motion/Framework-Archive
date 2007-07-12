@@ -12,9 +12,9 @@ namespace Rubicon.Mixins.Definitions
       where TValue : class, TValueBase
       where TValueBase : IVisitableDefinition
   {
-    private DefinitionItemCollection<TKey, TValue> _items;
+    private UniqueDefinitionCollection<TKey, TValue> _items;
 
-    public CovariantDefinitionItemCollectionWrapper(DefinitionItemCollection<TKey, TValue> items)
+    public CovariantDefinitionItemCollectionWrapper(UniqueDefinitionCollection<TKey, TValue> items)
     {
       _items = items;
     }
@@ -29,9 +29,9 @@ namespace Rubicon.Mixins.Definitions
       get { return _items.Count; }
     }
 
-    public bool HasItem (TKey key)
+    public bool ContainsKey (TKey key)
     {
-      return _items.HasItem (key);
+      return _items.ContainsKey (key);
     }
 
     public TValueBase this [int index]

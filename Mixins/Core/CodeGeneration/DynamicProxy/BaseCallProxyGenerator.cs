@@ -135,7 +135,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       {
         // a base call for this might already have been implemented as an overriden method, but we explicitly implement the call chains anyway: it's
         // slightly easier and better for performance
-        Assertion.Assert (!_baseClassConfiguration.Methods.HasItem (requiredMethod.InterfaceMethod));
+        Assertion.Assert (!_baseClassConfiguration.Methods.ContainsKey (requiredMethod.InterfaceMethod));
         methodGenerator.AddBaseCallToNextInChain (requiredMethod.ImplementingMethod);
       }
     }

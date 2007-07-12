@@ -7,21 +7,21 @@ using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  public abstract class ClassDefinition : IVisitableDefinition, IAttributableDefinition
+  public abstract class ClassDefinitionBase : IVisitableDefinition, IAttributableDefinition
   {
-    public readonly DefinitionItemCollection<MethodInfo, MethodDefinition> Methods =
-        new DefinitionItemCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
-    public readonly DefinitionItemCollection<PropertyInfo, PropertyDefinition> Properties =
-        new DefinitionItemCollection<PropertyInfo, PropertyDefinition> (delegate (PropertyDefinition p) { return p.PropertyInfo; });
-    public readonly DefinitionItemCollection<EventInfo, EventDefinition> Events =
-        new DefinitionItemCollection<EventInfo, EventDefinition> (delegate (EventDefinition p) { return p.EventInfo; });
+    public readonly UniqueDefinitionCollection<MethodInfo, MethodDefinition> Methods =
+        new UniqueDefinitionCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) { return m.MethodInfo; });
+    public readonly UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> Properties =
+        new UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> (delegate (PropertyDefinition p) { return p.PropertyInfo; });
+    public readonly UniqueDefinitionCollection<EventInfo, EventDefinition> Events =
+        new UniqueDefinitionCollection<EventInfo, EventDefinition> (delegate (EventDefinition p) { return p.EventInfo; });
 
-    private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
-        new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
+    private MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
+        new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
     private Type _type;
 
-    public ClassDefinition (Type type)
+    public ClassDefinitionBase (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       if (type.ContainsGenericParameters)
@@ -73,7 +73,7 @@ namespace Rubicon.Mixins.Definitions
       get { return Type.GetInterfaces(); }
     }
 
-    public MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes
+    public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes
     {
       get { return _customAttributes; }
     }

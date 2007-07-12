@@ -64,7 +64,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void IgnoreForMixinConfiguration()
     {
-      Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.HasItem (typeof (Foo)));
+      Assert.IsFalse (TypeFactory.GetActiveConfiguration (typeof (BaseType1)).Mixins.ContainsKey (typeof (Foo)));
     }
   }
 }

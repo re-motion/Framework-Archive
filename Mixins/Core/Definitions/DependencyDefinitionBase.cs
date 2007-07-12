@@ -10,7 +10,7 @@ namespace Rubicon.Mixins.Definitions
       where TRequirement : RequirementDefinitionBase<TRequirement, TSelf>
       where TSelf : DependencyDefinitionBase<TRequirement, TSelf>
   {
-    public readonly DefinitionItemCollection<Type, TSelf> AggregatedDependencies;
+    public readonly UniqueDefinitionCollection<Type, TSelf> AggregatedDependencies;
 
     private TRequirement _requirement; // the required face or base interface
     private MixinDefinition _depender; // the mixin (directly or indirectly) defining the requirement
@@ -25,7 +25,7 @@ namespace Rubicon.Mixins.Definitions
       _depender = depender;
       _aggregator = aggregator;
 
-      AggregatedDependencies = new DefinitionItemCollection<Type, TSelf> (
+      AggregatedDependencies = new UniqueDefinitionCollection<Type, TSelf> (
           delegate (TSelf d) { return d.RequiredType.Type; },
           HasSameDependerAsAggregator);
     }
@@ -79,11 +79,11 @@ namespace Rubicon.Mixins.Definitions
 
     public abstract void Accept (IDefinitionVisitor visitor);
 
-    public virtual ClassDefinition GetImplementer()
+    public virtual ClassDefinitionBase GetImplementer()
     {
       if (RequiredType.Type.IsAssignableFrom (_depender.BaseClass.Type))
         return _depender.BaseClass;
-      else if (_depender.BaseClass.IntroducedInterfaces.HasItem (RequiredType.Type))
+      else if (_depender.BaseClass.IntroducedInterfaces.ContainsKey (RequiredType.Type))
         return _depender.BaseClass.IntroducedInterfaces[RequiredType.Type].Implementer;
       else
         return null;

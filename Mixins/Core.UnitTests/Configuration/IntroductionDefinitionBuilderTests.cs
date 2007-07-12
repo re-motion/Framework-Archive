@@ -35,11 +35,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
 
-        Assert.IsTrue (mixin1.InterfaceIntroductions.HasItem (typeof (IBT1Mixin1)));
+        Assert.IsTrue (mixin1.InterfaceIntroductions.ContainsKey (typeof (IBT1Mixin1)));
         InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
         Assert.AreSame (mixin1, introducedInterface.Parent);
         Assert.AreSame (mixin1, introducedInterface.Implementer);
-        Assert.IsTrue (baseClass.IntroducedInterfaces.HasItem (typeof (IBT1Mixin1)));
+        Assert.IsTrue (baseClass.IntroducedInterfaces.ContainsKey (typeof (IBT1Mixin1)));
         Assert.AreSame (baseClass.IntroducedInterfaces[typeof (IBT1Mixin1)], introducedInterface);
         Assert.AreSame (baseClass, introducedInterface.BaseClass);
       }
@@ -77,8 +77,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (DerivedIntroducer)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
-        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedBase)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedDerived)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedBase)));
 
         Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedMethods.Count);
         Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedProperties.Count);
@@ -131,8 +131,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (ExplicitDerivedIntroducer)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedDerived)));
-        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IIntroducedBase)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedDerived)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IIntroducedBase)));
 
         Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedMethods.Count);
         Assert.AreEqual (0, bt1.IntroducedInterfaces[typeof (IIntroducedDerived)].IntroducedProperties.Count);
@@ -167,9 +167,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
         InterfaceIntroductionDefinition introducedInterface = mixin1.InterfaceIntroductions[typeof (IBT1Mixin1)];
 
-        Assert.IsTrue (introducedInterface.IntroducedMethods.HasItem (typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")));
-        Assert.IsTrue (introducedInterface.IntroducedProperties.HasItem (typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")));
-        Assert.IsTrue (introducedInterface.IntroducedEvents.HasItem (typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")));
+        Assert.IsTrue (introducedInterface.IntroducedMethods.ContainsKey (typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")));
+        Assert.IsTrue (introducedInterface.IntroducedProperties.ContainsKey (typeof (IBT1Mixin1).GetProperty ("IntroducedProperty")));
+        Assert.IsTrue (introducedInterface.IntroducedEvents.ContainsKey (typeof (IBT1Mixin1).GetEvent ("IntroducedEvent")));
 
         MethodIntroductionDefinition method = introducedInterface.IntroducedMethods[typeof (IBT1Mixin1).GetMethod ("IntroducedMethod")];
         Assert.AreNotEqual (mixin1.Methods[typeof (BT1Mixin1).GetMethod ("IntroducedMethod")], method);
@@ -197,14 +197,14 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend(typeof (BaseType1), typeof (MixinWithExplicitImplementation)))
       {
         BaseClassDefinition bt1 = TypeFactory.GetActiveConfiguration (typeof (BaseType1));
-        Assert.IsTrue (bt1.IntroducedInterfaces.HasItem (typeof (IExplicit)));
+        Assert.IsTrue (bt1.IntroducedInterfaces.ContainsKey (typeof (IExplicit)));
 
         MethodInfo explicitMethod = typeof (MixinWithExplicitImplementation).GetMethod (
             "Rubicon.Mixins.UnitTests.SampleTypes.IExplicit.Explicit", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.IsNotNull (explicitMethod);
 
         MixinDefinition m1 = bt1.Mixins[typeof (MixinWithExplicitImplementation)];
-        Assert.IsTrue (m1.Methods.HasItem (explicitMethod));
+        Assert.IsTrue (m1.Methods.ContainsKey (explicitMethod));
       }
     }
 

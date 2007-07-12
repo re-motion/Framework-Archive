@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
-  public abstract class DefinitionItemCollectionBase<TKey, TValue> : IEnumerable<TValue>
+  public abstract class DefinitionCollectionBase<TKey, TValue> : IEnumerable<TValue>
       where TValue : IVisitableDefinition
   {
     private List<TValue> _orderedItems = new List<TValue> ();
@@ -17,7 +17,7 @@ namespace Rubicon.Mixins.Definitions
 
     private Predicate<TValue> _guardian;
 
-    public DefinitionItemCollectionBase (KeyMaker keyMaker, Predicate<TValue> guardian)
+    public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue> guardian)
     {
       ArgumentUtility.CheckNotNull ("keyMaker", keyMaker);
       _keyMaker = keyMaker;
@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.Definitions
       get { return _orderedItems.Count; }
     }
 
-    public abstract bool HasItem (TKey key);
+    public abstract bool ContainsKey (TKey key);
 
     protected internal void Add (TValue newItem)
     {

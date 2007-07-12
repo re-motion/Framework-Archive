@@ -64,12 +64,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       ClassContext cc = new ClassContext (typeof (BaseType1));
       Assert.IsFalse (cc.IsFrozen);
-      ClassDefinition cd = BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc);
+      ClassDefinitionBase cd = BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc);
       Assert.IsTrue (cc.IsFrozen);
 
       ClassContext cc2 = new ClassContext (typeof (BaseType1));
       Assert.IsFalse (cc2.IsFrozen);
-      ClassDefinition cd2 = BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc2);
+      ClassDefinitionBase cd2 = BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc2);
       Assert.AreSame (cd, cd2);
       Assert.IsTrue (cc2.IsFrozen);
     }

@@ -11,14 +11,14 @@ namespace Rubicon.Mixins.Definitions
   {
     private static SignatureChecker s_signatureChecker = new SignatureChecker();
 
-    public new readonly DefinitionItemCollection<Type, PropertyDefinition> Overrides =
-        new DefinitionItemCollection<Type, PropertyDefinition> (delegate (PropertyDefinition m) { return m.DeclaringClass.Type; });
+    public new readonly UniqueDefinitionCollection<Type, PropertyDefinition> Overrides =
+        new UniqueDefinitionCollection<Type, PropertyDefinition> (delegate (PropertyDefinition m) { return m.DeclaringClass.Type; });
 
     private PropertyDefinition _base;
     private MethodDefinition _getMethod;
     private MethodDefinition _setMethod;
 
-    public PropertyDefinition (PropertyInfo memberInfo, ClassDefinition declaringClass, MethodDefinition getMethod, MethodDefinition setMethod)
+    public PropertyDefinition (PropertyInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition getMethod, MethodDefinition setMethod)
         : base (memberInfo, declaringClass)
     {
       _getMethod = getMethod;

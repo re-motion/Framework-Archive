@@ -22,7 +22,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     public void Apply (Type implementedInterface)
     {
-      if (_mixin.BaseClass.IntroducedInterfaces.HasItem (implementedInterface))
+      if (_mixin.BaseClass.IntroducedInterfaces.ContainsKey (implementedInterface))
       {
         MixinDefinition otherIntroducer = _mixin.BaseClass.IntroducedInterfaces[implementedInterface].Implementer;
         string message = string.Format (

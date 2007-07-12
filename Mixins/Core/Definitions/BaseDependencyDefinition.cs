@@ -17,9 +17,9 @@ namespace Rubicon.Mixins.Definitions
       visitor.Visit (this);
     }
 
-    public override ClassDefinition GetImplementer ()
+    public override ClassDefinitionBase GetImplementer ()
     {
-      ClassDefinition implementer = base.GetImplementer ();
+      ClassDefinitionBase implementer = base.GetImplementer ();
       // check for duck interface
       if (implementer == null && !RequiredType.IsEmptyInterface)
       {

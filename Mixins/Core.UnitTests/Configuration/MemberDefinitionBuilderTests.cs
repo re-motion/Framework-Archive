@@ -23,8 +23,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MethodInfo baseMethod2 = typeof (BaseType1).GetMethod ("VirtualMethod", new Type[] {typeof (string)});
         MethodInfo mixinMethod1 = typeof (BT1Mixin1).GetMethod ("VirtualMethod", new Type[0]);
 
-        Assert.IsTrue (baseClass.Methods.HasItem (baseMethod1));
-        Assert.IsFalse (baseClass.Methods.HasItem (mixinMethod1));
+        Assert.IsTrue (baseClass.Methods.ContainsKey (baseMethod1));
+        Assert.IsFalse (baseClass.Methods.ContainsKey (mixinMethod1));
 
         MemberDefinition member = baseClass.Methods[baseMethod1];
 
@@ -39,13 +39,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreSame (baseClass, member.DeclaringClass);
         Assert.AreSame (baseClass, member.Parent);
 
-        Assert.IsTrue (baseClass.Methods.HasItem (baseMethod2));
+        Assert.IsTrue (baseClass.Methods.ContainsKey (baseMethod2));
         Assert.AreNotSame (member, baseClass.Methods[baseMethod2]);
 
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
 
-        Assert.IsFalse (mixin1.Methods.HasItem (baseMethod1));
-        Assert.IsTrue (mixin1.Methods.HasItem (mixinMethod1));
+        Assert.IsFalse (mixin1.Methods.ContainsKey (baseMethod1));
+        Assert.IsTrue (mixin1.Methods.ContainsKey (mixinMethod1));
         member = mixin1.Methods[mixinMethod1];
 
         Assert.IsTrue (new List<MemberDefinition> (mixin1.GetAllMembers()).Contains (member));
@@ -71,10 +71,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         PropertyInfo indexedProperty2 = typeof (BaseType1).GetProperty ("Item", new Type[] {typeof (string)});
         PropertyInfo mixinProperty = typeof (BT1Mixin1).GetProperty ("VirtualProperty", new Type[0]);
 
-        Assert.IsTrue (baseClass.Properties.HasItem (baseProperty));
-        Assert.IsTrue (baseClass.Properties.HasItem (indexedProperty1));
-        Assert.IsTrue (baseClass.Properties.HasItem (indexedProperty2));
-        Assert.IsFalse (baseClass.Properties.HasItem (mixinProperty));
+        Assert.IsTrue (baseClass.Properties.ContainsKey (baseProperty));
+        Assert.IsTrue (baseClass.Properties.ContainsKey (indexedProperty1));
+        Assert.IsTrue (baseClass.Properties.ContainsKey (indexedProperty2));
+        Assert.IsFalse (baseClass.Properties.ContainsKey (mixinProperty));
 
         PropertyDefinition member = baseClass.Properties[baseProperty];
 
@@ -90,8 +90,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsNotNull (member.GetMethod);
         Assert.IsNotNull (member.SetMethod);
 
-        Assert.IsFalse (baseClass.Methods.HasItem (member.GetMethod.MethodInfo));
-        Assert.IsFalse (baseClass.Methods.HasItem (member.SetMethod.MethodInfo));
+        Assert.IsFalse (baseClass.Methods.ContainsKey (member.GetMethod.MethodInfo));
+        Assert.IsFalse (baseClass.Methods.ContainsKey (member.SetMethod.MethodInfo));
 
         member = baseClass.Properties[indexedProperty1];
         Assert.AreNotSame (member, baseClass.Properties[indexedProperty2]);
@@ -106,8 +106,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
 
-        Assert.IsFalse (mixin1.Properties.HasItem (baseProperty));
-        Assert.IsTrue (mixin1.Properties.HasItem (mixinProperty));
+        Assert.IsFalse (mixin1.Properties.ContainsKey (baseProperty));
+        Assert.IsTrue (mixin1.Properties.ContainsKey (mixinProperty));
 
         member = mixin1.Properties[mixinProperty];
 
@@ -136,9 +136,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         EventInfo baseEvent2 = typeof (BaseType1).GetEvent ("ExplicitEvent");
         EventInfo mixinEvent = typeof (BT1Mixin1).GetEvent ("VirtualEvent");
 
-        Assert.IsTrue (baseClass.Events.HasItem (baseEvent1));
-        Assert.IsTrue (baseClass.Events.HasItem (baseEvent2));
-        Assert.IsFalse (baseClass.Events.HasItem (mixinEvent));
+        Assert.IsTrue (baseClass.Events.ContainsKey (baseEvent1));
+        Assert.IsTrue (baseClass.Events.ContainsKey (baseEvent2));
+        Assert.IsFalse (baseClass.Events.ContainsKey (mixinEvent));
 
         EventDefinition member = baseClass.Events[baseEvent1];
 
@@ -154,8 +154,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsNotNull (member.AddMethod);
         Assert.IsNotNull (member.RemoveMethod);
 
-        Assert.IsFalse (baseClass.Methods.HasItem (member.AddMethod.MethodInfo));
-        Assert.IsFalse (baseClass.Methods.HasItem (member.RemoveMethod.MethodInfo));
+        Assert.IsFalse (baseClass.Methods.ContainsKey (member.AddMethod.MethodInfo));
+        Assert.IsFalse (baseClass.Methods.ContainsKey (member.RemoveMethod.MethodInfo));
 
         member = baseClass.Events[baseEvent2];
         Assert.IsNotNull (member.AddMethod);
@@ -163,8 +163,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         MixinDefinition mixin1 = baseClass.Mixins[typeof (BT1Mixin1)];
 
-        Assert.IsFalse (mixin1.Events.HasItem (baseEvent1));
-        Assert.IsTrue (mixin1.Events.HasItem (mixinEvent));
+        Assert.IsFalse (mixin1.Events.ContainsKey (baseEvent1));
+        Assert.IsTrue (mixin1.Events.ContainsKey (mixinEvent));
 
         member = mixin1.Events[mixinEvent];
 
@@ -263,23 +263,23 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       BaseClassDefinition d = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ExtraExtraDerived));
       BindingFlags bf = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
-      Assert.IsTrue (d.Methods.HasItem (typeof (ExtraExtraDerived).GetMethod ("Method", bf)));
-      Assert.IsTrue (d.Methods.HasItem (typeof (DerivedWithOverrides).GetMethod ("Method", bf)));
-      Assert.IsFalse (d.Methods.HasItem (typeof (ExtraDerived).GetMethod ("Method", bf)));
-      Assert.IsTrue (d.Methods.HasItem (typeof (Derived).GetMethod ("Method", bf)));
-      Assert.IsTrue (d.Methods.HasItem (typeof (Base<int>).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.ContainsKey (typeof (ExtraExtraDerived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.ContainsKey (typeof (DerivedWithOverrides).GetMethod ("Method", bf)));
+      Assert.IsFalse (d.Methods.ContainsKey (typeof (ExtraDerived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.ContainsKey (typeof (Derived).GetMethod ("Method", bf)));
+      Assert.IsTrue (d.Methods.ContainsKey (typeof (Base<int>).GetMethod ("Method", bf)));
 
-      Assert.IsTrue (d.Properties.HasItem (typeof (ExtraExtraDerived).GetProperty ("Property", bf)));
-      Assert.IsTrue (d.Properties.HasItem (typeof (DerivedWithOverrides).GetProperty ("Property", bf)));
-      Assert.IsFalse (d.Properties.HasItem (typeof (ExtraDerived).GetProperty ("Property", bf)));
-      Assert.IsTrue (d.Properties.HasItem (typeof (Derived).GetProperty ("Property", bf)));
-      Assert.IsTrue (d.Properties.HasItem (typeof (Base<int>).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (ExtraExtraDerived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (DerivedWithOverrides).GetProperty ("Property", bf)));
+      Assert.IsFalse (d.Properties.ContainsKey (typeof (ExtraDerived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (Derived).GetProperty ("Property", bf)));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (Base<int>).GetProperty ("Property", bf)));
 
-      Assert.IsTrue (d.Events.HasItem (typeof (ExtraExtraDerived).GetEvent ("Event", bf)));
-      Assert.IsTrue (d.Events.HasItem (typeof (DerivedWithOverrides).GetEvent ("Event", bf)));
-      Assert.IsFalse (d.Events.HasItem (typeof (ExtraDerived).GetEvent ("Event", bf)));
-      Assert.IsTrue (d.Events.HasItem (typeof (Derived).GetEvent ("Event", bf)));
-      Assert.IsTrue (d.Events.HasItem (typeof (Base<int>).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.ContainsKey (typeof (ExtraExtraDerived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.ContainsKey (typeof (DerivedWithOverrides).GetEvent ("Event", bf)));
+      Assert.IsFalse (d.Events.ContainsKey (typeof (ExtraDerived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.ContainsKey (typeof (Derived).GetEvent ("Event", bf)));
+      Assert.IsTrue (d.Events.ContainsKey (typeof (Base<int>).GetEvent ("Event", bf)));
 
       Assert.AreEqual (18, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }
@@ -289,8 +289,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       MixinDefinition d = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin2)).Mixins[typeof (BT3Mixin2)];
 
-      Assert.IsTrue (d.Properties.HasItem (typeof (BT3Mixin2).GetProperty ("This")));
-      Assert.IsTrue (d.Properties.HasItem (typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance)));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (BT3Mixin2).GetProperty ("This")));
+      Assert.IsTrue (d.Properties.ContainsKey (typeof (Mixin<IBaseType32>).GetProperty ("This", BindingFlags.NonPublic | BindingFlags.Instance)));
 
       Assert.AreEqual (10, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }

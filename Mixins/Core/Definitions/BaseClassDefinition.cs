@@ -10,16 +10,16 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{Type}")]
-  public class BaseClassDefinition : ClassDefinition, IVisitableDefinition
+  public class BaseClassDefinition : ClassDefinitionBase, IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<Type, MixinDefinition> Mixins =
-        new DefinitionItemCollection<Type, MixinDefinition> (delegate (MixinDefinition m) { return m.Type; });
-    public readonly DefinitionItemCollection<Type, RequiredFaceTypeDefinition> RequiredFaceTypes =
-        new DefinitionItemCollection<Type, RequiredFaceTypeDefinition> (delegate (RequiredFaceTypeDefinition t) { return t.Type; });
-    public readonly DefinitionItemCollection<Type, RequiredBaseCallTypeDefinition> RequiredBaseCallTypes =
-        new DefinitionItemCollection<Type, RequiredBaseCallTypeDefinition> (delegate (RequiredBaseCallTypeDefinition t) { return t.Type; });
-    public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
-        new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
+    public readonly UniqueDefinitionCollection<Type, MixinDefinition> Mixins =
+        new UniqueDefinitionCollection<Type, MixinDefinition> (delegate (MixinDefinition m) { return m.Type; });
+    public readonly UniqueDefinitionCollection<Type, RequiredFaceTypeDefinition> RequiredFaceTypes =
+        new UniqueDefinitionCollection<Type, RequiredFaceTypeDefinition> (delegate (RequiredFaceTypeDefinition t) { return t.Type; });
+    public readonly UniqueDefinitionCollection<Type, RequiredBaseCallTypeDefinition> RequiredBaseCallTypes =
+        new UniqueDefinitionCollection<Type, RequiredBaseCallTypeDefinition> (delegate (RequiredBaseCallTypeDefinition t) { return t.Type; });
+    public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> IntroducedInterfaces =
+        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
 
     private MixinTypeInstantiator _mixinTypeInstantiator;
     private ClassContext _configurationContext;
@@ -69,7 +69,7 @@ namespace Rubicon.Mixins.Definitions
     public bool HasMixinWithConfiguredType(Type configuredType)
     {
       Type realType = _mixinTypeInstantiator.GetConcreteMixinType (configuredType);
-      return Mixins.HasItem (realType);
+      return Mixins.ContainsKey (realType);
     }
 
     public MixinDefinition GetMixinByConfiguredType(Type configuredType)

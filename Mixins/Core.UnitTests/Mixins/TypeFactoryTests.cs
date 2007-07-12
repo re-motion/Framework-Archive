@@ -62,7 +62,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       BaseClassDefinition def = TypeFactory.GetActiveConfiguration (typeof (GenericTypeWithMixin<int>));
       Assert.AreEqual (typeof (GenericTypeWithMixin<int>), def.Type);
-      Assert.IsTrue (def.Mixins.HasItem (typeof (NullMixin)));
+      Assert.IsTrue (def.Mixins.ContainsKey (typeof (NullMixin)));
     }
 
     [Test]

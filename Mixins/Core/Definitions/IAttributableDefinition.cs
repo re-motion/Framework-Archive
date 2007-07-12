@@ -4,6 +4,6 @@ namespace Rubicon.Mixins.Definitions
 {
   public interface IAttributableDefinition : IVisitableDefinition
   {
-    MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes { get; }
+    MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes { get; }
   }
 }

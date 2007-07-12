@@ -23,8 +23,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsNull (baseClass.Parent);
         Assert.AreEqual ("BaseType1", baseClass.Name);
 
-        Assert.IsTrue (baseClass.Mixins.HasItem (typeof (BT1Mixin1)));
-        Assert.IsTrue (baseClass.Mixins.HasItem (typeof (BT1Mixin2)));
+        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (BT1Mixin1)));
+        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (BT1Mixin2)));
         Assert.AreSame (baseClass, baseClass.Mixins[typeof (BT1Mixin1)].Parent);
       }
     }
@@ -72,7 +72,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MethodDefinition overridingMethod = overrider.Methods[typeof (ClassOverridingMixinMembers).GetMethod ("AbstractMethod")];
         Assert.IsNotNull (overridingMethod);
         Assert.AreSame (method, overridingMethod.Base);
-        Assert.IsTrue (method.Overrides.HasItem (typeof (ClassOverridingMixinMembers)));
+        Assert.IsTrue (method.Overrides.ContainsKey (typeof (ClassOverridingMixinMembers)));
         Assert.AreSame (overridingMethod, method.Overrides[typeof (ClassOverridingMixinMembers)]);
       }
     }
@@ -138,15 +138,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     {
       BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1),
           typeof (MixinIntroducingGenericInterfaceWithTargetAsThisType<>));
-      Assert.IsTrue (def.IntroducedInterfaces.HasItem (typeof (IEquatable<BaseType1>)));
+      Assert.IsTrue (def.IntroducedInterfaces.ContainsKey (typeof (IEquatable<BaseType1>)));
     }
 
     [Test]
     public void ExplicitBaseCallDependenciesCorrectlyCopied ()
     {
       BaseClassDefinition bt3 = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType32)));
-      Assert.IsTrue (bt3.Mixins[typeof (BT3Mixin5)].BaseDependencies.HasItem (typeof (IBaseType32)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBaseType32)));
+      Assert.IsTrue (bt3.Mixins[typeof (BT3Mixin5)].BaseDependencies.ContainsKey (typeof (IBaseType32)));
     }
 
     public class MixinWithDependency : Mixin<object, IMixinTargetWithExplicitDependencies>
@@ -163,8 +163,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void DuplicateExplicitDependenciesDontMatter ()
     {
       BaseClassDefinition mt = TypeFactory.GetActiveConfiguration (typeof (MixinTargetWithExplicitDependencies));
-      Assert.IsTrue (mt.RequiredBaseCallTypes.HasItem (typeof (IMixinTargetWithExplicitDependencies)));
-      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.HasItem (typeof (IMixinTargetWithExplicitDependencies)));
+      Assert.IsTrue (mt.RequiredBaseCallTypes.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
+      Assert.IsTrue (mt.Mixins[typeof (MixinWithDependency)].BaseDependencies.ContainsKey (typeof (IMixinTargetWithExplicitDependencies)));
     }
   }
 }

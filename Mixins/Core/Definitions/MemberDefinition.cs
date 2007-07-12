@@ -11,14 +11,14 @@ namespace Rubicon.Mixins.Definitions
   public abstract class MemberDefinition : IVisitableDefinition, IAttributableDefinition
   {
     private MemberInfo _memberInfo;
-    private ClassDefinition _declaringClass;
+    private ClassDefinitionBase _declaringClass;
 
-    private MultiDefinitionItemCollection<Type, AttributeDefinition> _customAttributes =
-        new MultiDefinitionItemCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
+    private MultiDefinitionCollection<Type, AttributeDefinition> _customAttributes =
+        new MultiDefinitionCollection<Type, AttributeDefinition> (delegate (AttributeDefinition a) { return a.AttributeType; });
 
     private IDefinitionItemCollection<Type, MemberDefinition> _internalOverridesWrapper = null;
 
-    public MemberDefinition (MemberInfo memberInfo, ClassDefinition declaringClass)
+    public MemberDefinition (MemberInfo memberInfo, ClassDefinitionBase declaringClass)
     {
       ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
       ArgumentUtility.CheckNotNull ("declaringClass", declaringClass);
@@ -32,7 +32,7 @@ namespace Rubicon.Mixins.Definitions
       get { return _memberInfo; }
     }
 
-    public ClassDefinition DeclaringClass
+    public ClassDefinitionBase DeclaringClass
     {
       get { return _declaringClass; }
     }
@@ -74,7 +74,7 @@ namespace Rubicon.Mixins.Definitions
       get { return DeclaringClass; }
     }
 
-    public MultiDefinitionItemCollection<Type, AttributeDefinition> CustomAttributes
+    public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes
     {
       get { return _customAttributes; }
     }

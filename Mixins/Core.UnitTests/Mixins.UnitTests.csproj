@@ -53,6 +53,7 @@
     <Compile Include="Configuration\DependencyDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\ExtendsAnalysisTests.cs" />
     <Compile Include="Configuration\MixinDependencySortTests.cs" />
+    <Compile Include="Configuration\RequiredMemberDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UsesAnalysisTests.cs" />
     <None Include="Mixins.UnitTests.build" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
@@ -81,8 +82,10 @@
     <Compile Include="SampleTypes\BT7Mixin8.cs" />
     <Compile Include="SampleTypes\BT7Mixin9.cs" />
     <Compile Include="SampleTypes\BT7Mixin10.cs" />
+    <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirements.cs" />
     <Compile Include="SampleTypes\ClassOverridingSingleMixinMethod.cs" />
     <Compile Include="SampleTypes\GenericBaseClass.cs" />
+    <Compile Include="SampleTypes\MixinRequiringAllMembers.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />

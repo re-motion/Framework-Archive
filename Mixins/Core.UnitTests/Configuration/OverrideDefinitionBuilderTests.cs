@@ -30,7 +30,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         MethodDefinition overridden = baseClass.Methods[baseMethod1];
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin1)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
         MethodDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
         Assert.AreSame (overrider, mixin1.Methods[mixinMethod1]);
@@ -40,7 +40,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         MethodDefinition notOverridden = baseClass.Methods[baseMethod2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin2)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
         overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
         Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
@@ -63,7 +63,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         PropertyDefinition overridden = baseClass.Properties[baseProperty1];
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin1)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
         PropertyDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
@@ -75,7 +75,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         PropertyDefinition notOverridden = baseClass.Properties[baseProperty2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin2)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
         overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
         Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));
@@ -99,7 +99,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         EventDefinition overridden = baseClass.Events[baseEvent1];
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin1)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin1)));
 
         EventDefinition overrider = overridden.Overrides[typeof (BT1Mixin1)];
 
@@ -112,7 +112,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         EventDefinition notOverridden = baseClass.Events[baseEvent2];
         Assert.AreEqual (0, notOverridden.Overrides.Count);
 
-        Assert.IsTrue (overridden.Overrides.HasItem (typeof (BT1Mixin2)));
+        Assert.IsTrue (overridden.Overrides.ContainsKey (typeof (BT1Mixin2)));
         overrider = overridden.Overrides[typeof (BT1Mixin2)];
 
         Assert.IsTrue (new List<MemberDefinition> (mixin2.GetAllOverrides()).Contains (overrider));

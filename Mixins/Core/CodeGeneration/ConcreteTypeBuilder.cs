@@ -16,7 +16,7 @@ namespace Rubicon.Mixins.CodeGeneration
     private IModuleManager _scope;
     // No laziness here - a ModuleBuilder cannot be used by multiple threads at the same time anyway, so using a lazy cache could actually cause
     // errors (depending on how it was implemented)
-    private InterlockedCache<ClassDefinition, Type> _typeCache = new InterlockedCache<ClassDefinition, Type>();
+    private InterlockedCache<ClassDefinitionBase, Type> _typeCache = new InterlockedCache<ClassDefinitionBase, Type>();
 
     private object _scopeLockObject = new object ();
     private INameProvider _typeNameProvider = GuidNameProvider.Instance;
@@ -86,7 +86,7 @@ namespace Rubicon.Mixins.CodeGeneration
       }
     }
 
-    // <summary>
+    /// <summary>
     /// Gets or sets the name provider used when generating a concrete mixin type.
     /// </summary>
     /// <value>The type name provider for mixin types.</value>
@@ -121,7 +121,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
       return _typeCache.GetOrCreateValue (
           configuration,
-          delegate (ClassDefinition classConfiguration)
+          delegate (ClassDefinitionBase classConfiguration)
           {
             lock (_scopeLockObject)
             {
@@ -144,7 +144,7 @@ namespace Rubicon.Mixins.CodeGeneration
 
       return _typeCache.GetOrCreateValue (
           configuration,
-          delegate (ClassDefinition classConfiguration)
+          delegate (ClassDefinitionBase classConfiguration)
           {
             lock (_scopeLockObject)
             {

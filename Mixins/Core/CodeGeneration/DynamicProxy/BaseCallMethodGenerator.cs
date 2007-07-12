@@ -44,7 +44,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       Assertion.Assert (methodDefinitionOnTarget.DeclaringClass == _baseClassConfiguration);
 
       for (int i = potentialDepth; i < _baseClassConfiguration.Mixins.Count; ++i)
-        if (methodDefinitionOnTarget.Overrides.HasItem (_baseClassConfiguration.Mixins[i].Type))
+        if (methodDefinitionOnTarget.Overrides.ContainsKey (_baseClassConfiguration.Mixins[i].Type))
           return methodDefinitionOnTarget.Overrides[_baseClassConfiguration.Mixins[i].Type];
       return methodDefinitionOnTarget;
     }

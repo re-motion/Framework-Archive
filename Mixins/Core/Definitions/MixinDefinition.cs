@@ -8,14 +8,14 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("{Type}, BaseClass = {BaseClass.Type}")]
-  public class MixinDefinition : ClassDefinition, IVisitableDefinition
+  public class MixinDefinition : ClassDefinitionBase, IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
-        new DefinitionItemCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-    public readonly DefinitionItemCollection<Type, ThisDependencyDefinition> ThisDependencies =
-        new DefinitionItemCollection<Type, ThisDependencyDefinition> (delegate (ThisDependencyDefinition d) { return d.RequiredType.Type; });
-    public readonly DefinitionItemCollection<Type, BaseDependencyDefinition> BaseDependencies =
-        new DefinitionItemCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
+    public readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> InterfaceIntroductions =
+        new UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
+    public readonly UniqueDefinitionCollection<Type, ThisDependencyDefinition> ThisDependencies =
+        new UniqueDefinitionCollection<Type, ThisDependencyDefinition> (delegate (ThisDependencyDefinition d) { return d.RequiredType.Type; });
+    public readonly UniqueDefinitionCollection<Type, BaseDependencyDefinition> BaseDependencies =
+        new UniqueDefinitionCollection<Type, BaseDependencyDefinition> (delegate (BaseDependencyDefinition d) { return d.RequiredType.Type; });
 
     private BaseClassDefinition _baseClass;
     private int _mixinIndex;

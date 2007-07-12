@@ -9,8 +9,8 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase<RequiredBaseCallTypeDefinition, BaseDependencyDefinition>
   {
-    public readonly DefinitionItemCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMethods =
-        new DefinitionItemCollection<MemberInfo, RequiredBaseCallMethodDefinition> (delegate (RequiredBaseCallMethodDefinition m)
+    public readonly UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMethods =
+        new UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> (delegate (RequiredBaseCallMethodDefinition m)
         { return m.InterfaceMethod; });
 
     public RequiredBaseCallTypeDefinition (BaseClassDefinition baseClass, Type type)

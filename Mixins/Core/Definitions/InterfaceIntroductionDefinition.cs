@@ -9,12 +9,12 @@ namespace Rubicon.Mixins.Definitions
   [DebuggerDisplay ("{_type.FullName} introduced via {_implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
-    public readonly DefinitionItemCollection<MethodInfo, MethodIntroductionDefinition> IntroducedMethods =
-        new DefinitionItemCollection<MethodInfo, MethodIntroductionDefinition> (delegate (MethodIntroductionDefinition m) { return m.InterfaceMember; });
-    public readonly DefinitionItemCollection<PropertyInfo, PropertyIntroductionDefinition> IntroducedProperties =
-        new DefinitionItemCollection<PropertyInfo, PropertyIntroductionDefinition> (delegate (PropertyIntroductionDefinition m) { return m.InterfaceMember; });
-    public readonly DefinitionItemCollection<EventInfo, EventIntroductionDefinition> IntroducedEvents =
-        new DefinitionItemCollection<EventInfo, EventIntroductionDefinition> (delegate (EventIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition> IntroducedMethods =
+        new UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition> (delegate (MethodIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly UniqueDefinitionCollection<PropertyInfo, PropertyIntroductionDefinition> IntroducedProperties =
+        new UniqueDefinitionCollection<PropertyInfo, PropertyIntroductionDefinition> (delegate (PropertyIntroductionDefinition m) { return m.InterfaceMember; });
+    public readonly UniqueDefinitionCollection<EventInfo, EventIntroductionDefinition> IntroducedEvents =
+        new UniqueDefinitionCollection<EventInfo, EventIntroductionDefinition> (delegate (EventIntroductionDefinition m) { return m.InterfaceMember; });
 
     private Type _type;
     private MixinDefinition _implementer;

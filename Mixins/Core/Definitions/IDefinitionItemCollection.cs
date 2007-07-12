@@ -6,7 +6,7 @@ namespace Rubicon.Mixins.Definitions
   {
     TValue[] ToArray ();
     int Count { get; }
-    bool HasItem (TKey key);
+    bool ContainsKey (TKey key);
     TValue this[int index] { get; }
     TValue this [TKey key] { get; }
   }

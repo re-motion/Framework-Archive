@@ -29,8 +29,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     public void InterfaceMapAdjustedCorrectly ()
     {
       BaseClassDefinition def = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (Derived));
-      Assert.IsFalse (def.Methods.HasItem (typeof (Derived).GetMethod ("Foo")));
-      Assert.IsTrue (def.Methods.HasItem (typeof (Base).GetMethod ("Foo")));
+      Assert.IsFalse (def.Methods.ContainsKey (typeof (Derived).GetMethod ("Foo")));
+      Assert.IsTrue (def.Methods.ContainsKey (typeof (Base).GetMethod ("Foo")));
 
       InterfaceMapping mapping = def.GetAdjustedInterfaceMap(typeof (Interface));
       Assert.AreEqual (def.Methods[typeof (Base).GetMethod ("Foo")].MethodInfo, mapping.TargetMethods[0]);

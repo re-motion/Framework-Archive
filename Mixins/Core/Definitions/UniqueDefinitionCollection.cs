@@ -8,20 +8,20 @@ namespace Rubicon.Mixins.Definitions
 {
   [Serializable]
   [DebuggerDisplay ("Count = {Count}")]
-  public class DefinitionItemCollection<TKey, TValue> : DefinitionItemCollectionBase<TKey, TValue>, IDefinitionItemCollection<TKey, TValue>
+  public class UniqueDefinitionCollection<TKey, TValue> : DefinitionCollectionBase<TKey, TValue>, IDefinitionItemCollection<TKey, TValue>
       where TValue : IVisitableDefinition
   {
     private Dictionary<TKey, TValue> _items = new Dictionary<TKey, TValue> ();
 
-    public DefinitionItemCollection (KeyMaker keyMaker, Predicate<TValue> guardian) : base (keyMaker, guardian)
+    public UniqueDefinitionCollection (KeyMaker keyMaker, Predicate<TValue> guardian) : base (keyMaker, guardian)
     {
     }
 
-    public DefinitionItemCollection (KeyMaker keyMaker) : base (keyMaker, null)
+    public UniqueDefinitionCollection (KeyMaker keyMaker) : base (keyMaker, null)
     {
     }
 
-    public override bool HasItem (TKey key)
+    public override bool ContainsKey (TKey key)
     {
       return _items.ContainsKey (key);
     }
@@ -31,7 +31,7 @@ namespace Rubicon.Mixins.Definitions
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      if (HasItem (key))
+      if (ContainsKey (key))
       {
         string message = string.Format ("Duplicate key {0} for item {1}.", key, value);
         throw new InvalidOperationException (message);
@@ -46,7 +46,7 @@ namespace Rubicon.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return HasItem (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue); }
+      get { return ContainsKey (ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default (TValue); }
     }
   }
 }

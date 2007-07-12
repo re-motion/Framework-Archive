@@ -13,8 +13,8 @@ namespace Rubicon.Mixins.Definitions
       where TDependency : DependencyDefinitionBase<TSelf, TDependency>
       where TSelf : RequirementDefinitionBase<TSelf, TDependency>
   {
-    public readonly DefinitionItemCollection<TDependency, TDependency> RequiringDependencies =
-        new DefinitionItemCollection<TDependency,TDependency> (delegate (TDependency d) { return d; });
+    public readonly UniqueDefinitionCollection<TDependency, TDependency> RequiringDependencies =
+        new UniqueDefinitionCollection<TDependency,TDependency> (delegate (TDependency d) { return d; });
 
     private BaseClassDefinition _baseClass;
     private Type _type;

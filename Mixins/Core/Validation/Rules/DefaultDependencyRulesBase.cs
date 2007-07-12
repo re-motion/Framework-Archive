@@ -54,7 +54,7 @@ namespace Rubicon.Mixins.Validation.Rules
 
     private bool CheckNoCircularities (TDependency definition, List<MixinDefinition> requiredMixins)
     {
-      ClassDefinition implementer = definition.GetImplementer ();
+      ClassDefinitionBase implementer = definition.GetImplementer ();
       MixinDefinition implementingMixin = implementer as MixinDefinition;
       if (implementingMixin == null || implementer == definition.Depender)
       {

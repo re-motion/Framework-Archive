@@ -19,12 +19,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType31)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType32)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType33)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType34)), "indirect dependency via BT3Mixin4");
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType35)), "indirect dependency via BT3Mixin4");
-        Assert.IsFalse (baseClass.RequiredFaceTypes.HasItem (typeof (IBaseType2)));
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType31)));
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType32)));
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType33)));
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType34)), "indirect dependency via BT3Mixin4");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType35)), "indirect dependency via BT3Mixin4");
+        Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType2)));
 
         List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
         Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
@@ -37,7 +37,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsAggregatorInterface);
 
         baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
         requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (ICBaseType3BT3Mixin4)].FindRequiringMixins());
         Assert.Contains (baseClass.Mixins[typeof (BT3Mixin7Face)], requirers);
       }
@@ -50,9 +50,9 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType6));
 
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
-        Assert.IsTrue (baseClass.RequiredFaceTypes.HasItem (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
       }
     }
 
@@ -133,12 +133,12 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       using (MixinConfiguration.ScopedExtend (typeof (BaseTypeWithDuckBaseMixin), typeof (DuckBaseMixin)))
       {
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseTypeWithDuckBaseMixin));
-        Assert.IsTrue (baseClass.Mixins.HasItem (typeof (DuckBaseMixin)));
+        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (DuckBaseMixin)));
         MixinDefinition mixin = baseClass.Mixins[typeof (DuckBaseMixin)];
-        Assert.IsTrue (baseClass.RequiredBaseCallTypes.HasItem (typeof (IDuckBaseRequirements)));
+        Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IDuckBaseRequirements)));
         Assert.IsTrue (new List<MixinDefinition> (baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].FindRequiringMixins()).Contains (mixin));
 
-        Assert.IsTrue (mixin.BaseDependencies.HasItem (typeof (IDuckBaseRequirements)));
+        Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IDuckBaseRequirements)));
         Assert.AreSame (baseClass, mixin.BaseDependencies[typeof (IDuckBaseRequirements)].GetImplementer());
 
         Assert.AreSame (mixin, mixin.BaseDependencies[typeof (IDuckBaseRequirements)].Depender);
@@ -174,25 +174,25 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       {
         MixinDefinition bt3Mixin1 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin1)];
 
-        Assert.IsTrue (bt3Mixin1.ThisDependencies.HasItem (typeof (IBaseType31)));
+        Assert.IsTrue (bt3Mixin1.ThisDependencies.ContainsKey (typeof (IBaseType31)));
         Assert.AreEqual (1, bt3Mixin1.ThisDependencies.Count);
 
-        Assert.IsTrue (bt3Mixin1.BaseDependencies.HasItem (typeof (IBaseType31)));
+        Assert.IsTrue (bt3Mixin1.BaseDependencies.ContainsKey (typeof (IBaseType31)));
         Assert.AreEqual (1, bt3Mixin1.BaseDependencies.Count);
 
         MixinDefinition bt3Mixin2 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin2)];
-        Assert.IsTrue (bt3Mixin2.ThisDependencies.HasItem (typeof (IBaseType32)));
+        Assert.IsTrue (bt3Mixin2.ThisDependencies.ContainsKey (typeof (IBaseType32)));
         Assert.AreEqual (1, bt3Mixin2.ThisDependencies.Count);
 
         Assert.AreEqual (0, bt3Mixin2.BaseDependencies.Count);
 
         MixinDefinition bt3Mixin6 = TypeFactory.GetActiveConfiguration (typeof (BaseType3)).GetMixinByConfiguredType (typeof (BT3Mixin6<,>));
 
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType31)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType32)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType33)));
-        Assert.IsTrue (bt3Mixin6.ThisDependencies.HasItem (typeof (IBT3Mixin4)));
-        Assert.IsFalse (bt3Mixin6.ThisDependencies.HasItem (typeof (IBaseType34)));
+        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType31)));
+        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType32)));
+        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType33)));
+        Assert.IsTrue (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBT3Mixin4)));
+        Assert.IsFalse (bt3Mixin6.ThisDependencies.ContainsKey (typeof (IBaseType34)));
 
         Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBaseType31)].IsAggregate);
         Assert.IsFalse (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].IsAggregate);
@@ -200,7 +200,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreEqual (0, bt3Mixin6.ThisDependencies[typeof (IBaseType31)].AggregatedDependencies.Count);
 
         Assert.IsTrue (
-            bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.HasItem (
+            bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
                 bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)]));
         Assert.IsNull (bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].Aggregator);
 
@@ -213,11 +213,11 @@ namespace Rubicon.Mixins.UnitTests.Configuration
             TypeFactory.GetActiveConfiguration (typeof (BaseType3)).Mixins[typeof (BT3Mixin4)],
             bt3Mixin6.ThisDependencies[typeof (IBT3Mixin4)].GetImplementer());
 
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType34)));
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBT3Mixin4)));
-        Assert.IsFalse (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType31)));
-        Assert.IsFalse (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType32)));
-        Assert.IsTrue (bt3Mixin6.BaseDependencies.HasItem (typeof (IBaseType33)), "indirect dependency");
+        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType34)));
+        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBT3Mixin4)));
+        Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType31)));
+        Assert.IsFalse (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType32)));
+        Assert.IsTrue (bt3Mixin6.BaseDependencies.ContainsKey (typeof (IBaseType33)), "indirect dependency");
 
         Assert.AreEqual (
             TypeFactory.GetActiveConfiguration (typeof (BaseType3)).RequiredBaseCallTypes[typeof (IBaseType34)],
@@ -234,7 +234,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreEqual (0, bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].AggregatedDependencies.Count);
 
         Assert.IsTrue (
-            bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.HasItem (
+            bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].RequiredType.RequiringDependencies.ContainsKey (
                 bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)]));
         Assert.IsNull (bt3Mixin6.BaseDependencies[typeof (IBT3Mixin4)].Aggregator);
       }
@@ -290,10 +290,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (bt3.RequiredFaceTypes[typeof (ICBaseType3)].IsEmptyInterface);
       Assert.IsTrue (bt3.RequiredFaceTypes[typeof (ICBaseType3)].IsAggregatorInterface);
 
-      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
-      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (ICBaseType3)));
-      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (IBaseType31)));
-      Assert.IsTrue (bt3.RequiredFaceTypes.HasItem (typeof (IBT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.ContainsKey (typeof (IBaseType31)));
+      Assert.IsTrue (bt3.RequiredFaceTypes.ContainsKey (typeof (IBT3Mixin4)));
     }
 
     [Test]
@@ -326,10 +326,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.IsTrue (bt3.RequiredBaseCallTypes[typeof (ICBaseType3)].IsEmptyInterface);
       Assert.IsTrue (bt3.RequiredBaseCallTypes[typeof (ICBaseType3)].IsAggregatorInterface);
 
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3BT3Mixin4)));
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (ICBaseType3)));
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBaseType31)));
-      Assert.IsTrue (bt3.RequiredBaseCallTypes.HasItem (typeof (IBT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (ICBaseType3)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBaseType31)));
+      Assert.IsTrue (bt3.RequiredBaseCallTypes.ContainsKey (typeof (IBT3Mixin4)));
     }
 
     public interface IMixinWithEmptyInterface {}
