@@ -7,7 +7,6 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSamp
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEndPointReflectorTests
 {
-  [Ignore("TODO: test")]
   [TestFixture]
   public class GenericManySideRelationProperty : StandardMappingTest
   {
@@ -35,9 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseUnidirectional"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseUnidirectional"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -51,9 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseBidirectionalOneToOne"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseBidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -67,9 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseBidirectionalOneToMany"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseBidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -108,7 +101,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
 
     private PropertyReflector CreatePropertyReflector (string property)
     {
-      Type type = typeof (GenericClassWithManySideRelationPropertiesNotInMapping<>);
+      Type type = typeof (ClosedGenericClassWithManySideRelationProperties);
       PropertyInfo propertyInfo = type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
       return new PropertyReflector (_classDefinition, propertyInfo);

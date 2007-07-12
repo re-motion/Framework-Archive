@@ -34,9 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseUnidirectional"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseUnidirectional"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -50,9 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseBidirectionalOneToOne"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseBidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -66,9 +62,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BaseBidirectionalOneToMany"),
-          relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BaseBidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 

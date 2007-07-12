@@ -114,10 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <TestDomain Include="Configuration\Mapping\TestDomain\Errors\ClassWithInvalidUnidirectionalRelation.cs" />
+    <Compile Include="Configuration\Mapping\ClassReflectorTests\GetRelationDefinitionsForClosedGeneric.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\GetClassDefinitionForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\ClassReflectorTests\TestBaseForHierarchyWithoutStorageGroup.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderBaseTest.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseManySideRelationProperty.cs" />
+    <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\BaseOneSideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationEndPointReflectorTests\GenericManySideRelationProperty.cs" />
     <Compile Include="Configuration\Mapping\RelationPropertyFinderTest.cs" />
     <Compile Include="Configuration\Mapping\PropertyFinderTest.cs" />

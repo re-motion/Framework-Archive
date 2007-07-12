@@ -197,7 +197,11 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
 
-      return GetOriginalDeclaringType (propertyInfo).FullName + "." + propertyInfo.Name;
+      Type originalDeclaringType = GetOriginalDeclaringType (propertyInfo);
+      if (originalDeclaringType.IsGenericType)
+        return originalDeclaringType.GetGenericTypeDefinition().FullName + "." + propertyInfo.Name;
+      else
+        return originalDeclaringType.FullName + "." + propertyInfo.Name;
     }
 
     /// <summary>

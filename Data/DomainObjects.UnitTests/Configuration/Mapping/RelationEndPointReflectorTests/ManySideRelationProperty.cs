@@ -56,8 +56,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("Unidirectional"), relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("Unidirectional"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -71,8 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToOne"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
@@ -86,8 +84,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.RelationEnd
       Assert.IsInstanceOfType (typeof (RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefiniton = (RelationEndPointDefinition) actual;
       Assert.AreSame (_classDefinition, relationEndPointDefiniton.ClassDefinition);
-      Assert.AreSame (
-          GetPropertyDefinition ("BidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
+      Assert.AreSame (GetPropertyDefinition ("BidirectionalOneToMany"), relationEndPointDefiniton.PropertyDefinition);
       Assert.IsNull (relationEndPointDefiniton.RelationDefinition);
     }
 
