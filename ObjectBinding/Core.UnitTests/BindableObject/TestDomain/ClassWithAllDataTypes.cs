@@ -12,6 +12,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     private decimal _decimal;
     private double _double;
     private TestEnum _enum;
+    private Guid _guid;
     private short _int16;
     private int _int32;
     private long _int64;
@@ -66,6 +67,12 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       set { _enum = value; }
     }
 
+    public Guid Guid
+    {
+      get { return _guid; }
+      set { _guid = value; }
+    }
+    
     public short Int16
     {
       get { return _int16; }
@@ -101,5 +108,5 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       get { return _string; }
       set { _string = value; }
     }
-  }
+ }
 }

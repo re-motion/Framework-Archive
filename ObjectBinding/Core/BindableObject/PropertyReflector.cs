@@ -52,6 +52,8 @@ namespace Rubicon.ObjectBinding.BindableObject
         return new DoubleProperty (parameters);
       else if (underlyingType.IsEnum)
         return new EnumerationProperty (parameters);
+      else if (underlyingType == typeof (Guid))
+        return new GuidProperty (parameters);
       else if (underlyingType == typeof (Int16))
         return new Int16Property (parameters);
       else if (underlyingType == typeof (Int32))

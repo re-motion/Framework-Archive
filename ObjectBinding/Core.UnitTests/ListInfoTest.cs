@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain;
 
 namespace Rubicon.ObjectBinding.UnitTests
 {
@@ -37,10 +38,24 @@ namespace Rubicon.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void CreateList ()
+    public void CreateList_ReferenceType ()
     {
-      IListInfo listInfo = new ListInfo (typeof (string[]), typeof (string));
-      Assert.That (listInfo.CreateList (1), Is.EquivalentTo (new string[1]));
+      IListInfo listInfo = new ListInfo (typeof (SimpleReferenceType[]), typeof (SimpleReferenceType));
+      Assert.That (listInfo.CreateList (1), Is.EquivalentTo (new SimpleReferenceType[1]));
+    }
+
+    [Test]
+    public void CreateList_ValueType ()
+    {
+      IListInfo listInfo = new ListInfo (typeof (SimpleValueType[]), typeof (SimpleValueType));
+      Assert.That (listInfo.CreateList (1), Is.EquivalentTo (new SimpleValueType[1]));
+    }
+
+    [Test]
+    public void CreateList_NullableValueType ()
+    {
+      IListInfo listInfo = new ListInfo (typeof (SimpleValueType?[]), typeof (SimpleValueType?));
+      Assert.That (listInfo.CreateList (1), Is.EquivalentTo (new SimpleValueType?[1]));
     }
 
     [Test]

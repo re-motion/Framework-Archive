@@ -105,6 +105,7 @@
     <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />
     <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
+    <Compile Include="BindableObject\Properties\GuidProperty.cs" />
     <Compile Include="BindableObject\SearchAvailableObjectsServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\Properties\DateProperty.cs" />
     <Compile Include="BindableObject\Properties\DateTimeProperty.cs" />

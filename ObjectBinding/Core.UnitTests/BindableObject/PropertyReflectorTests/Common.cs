@@ -95,6 +95,15 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithGuid ()
+    {
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Guid");
+
+      Assert.That (businessObjectProperty, Is.TypeOf (typeof (GuidProperty)));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Guid"));
+    }
+
+    [Test]
     public void GetMetadata_WithEnumBase ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<Enum>), "Scalar");
