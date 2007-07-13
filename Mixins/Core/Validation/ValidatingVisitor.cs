@@ -21,11 +21,10 @@ namespace Rubicon.Mixins.Validation
     private List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>> ();
     private List<IValidationRule<RequiredFaceTypeDefinition>> _requiredFaceTypeRules = new List<IValidationRule<RequiredFaceTypeDefinition>> ();
     private List<IValidationRule<RequiredBaseCallTypeDefinition>> _requiredBaseCallTypeRules = new List<IValidationRule<RequiredBaseCallTypeDefinition>> ();
+    private List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>> ();
     private List<IValidationRule<ThisDependencyDefinition>> _thisDependencyRules = new List<IValidationRule<ThisDependencyDefinition>> ();
     private List<IValidationRule<BaseDependencyDefinition>> _baseDependencyRules = new List<IValidationRule<BaseDependencyDefinition>> ();
     private List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>>();
-    private List<IValidationRule<RequiredBaseCallMethodDefinition>> _requiredBaseCallMethodRules = new List<IValidationRule<RequiredBaseCallMethodDefinition>> ();
-    private List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>> ();
 
     public ValidatingVisitor(IValidationLog validationLog)
     {
@@ -86,11 +85,6 @@ namespace Rubicon.Mixins.Validation
     public IList<IValidationRule<RequiredBaseCallTypeDefinition>> RequiredBaseCallTypeRules
     {
       get { return _requiredBaseCallTypeRules; }
-    }
-
-    public IList<IValidationRule<RequiredBaseCallMethodDefinition>> RequiredBaseCallMethodRules
-    {
-      get { return _requiredBaseCallMethodRules; }
     }
 
     public IList<IValidationRule<RequiredMethodDefinition>> RequiredMethodRules
@@ -178,12 +172,6 @@ namespace Rubicon.Mixins.Validation
     {
       ArgumentUtility.CheckNotNull ("requiredBaseCallType", requiredBaseCallType);
       CheckRules (_requiredBaseCallTypeRules, requiredBaseCallType);
-    }
-
-    public void Visit (RequiredBaseCallMethodDefinition requiredBaseCallMethod)
-    {
-      ArgumentUtility.CheckNotNull ("requiredBaseCallMethod", requiredBaseCallMethod);
-      CheckRules (_requiredBaseCallMethodRules, requiredBaseCallMethod);
     }
 
     public void Visit (RequiredMethodDefinition requiredMethod)

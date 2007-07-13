@@ -9,20 +9,15 @@ namespace Rubicon.Mixins.Definitions
   [Serializable]
   public class RequiredBaseCallTypeDefinition : RequirementDefinitionBase
   {
-    public readonly UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> BaseCallMethods =
-        new UniqueDefinitionCollection<MemberInfo, RequiredBaseCallMethodDefinition> (delegate (RequiredBaseCallMethodDefinition m)
-        { return m.InterfaceMethod; });
-
     public RequiredBaseCallTypeDefinition (BaseClassDefinition baseClass, Type type)
         : base(baseClass, type)
     {
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ConcreteAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);
-      BaseCallMethods.Accept (visitor);
     }
   }
 }

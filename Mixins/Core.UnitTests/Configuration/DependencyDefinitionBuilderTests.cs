@@ -59,17 +59,16 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     [ExpectedException (typeof (ConfigurationException),
         ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - method Foo could not be found on the base class.")]
+        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateThisDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
     }
 
     [Test]
-    [Ignore ("TODO - after removing RequiredBaseCallDependencies")]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
-        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - method Foo could not be found on the base class.")]
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Base applied to class "
+       + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - public or protected method Foo could not be found on the base class.")]
     public void ThrowsIfAggregateBaseDependencyIsNotFullyImplemented ()
     {
       UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
@@ -102,22 +101,22 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
         RequiredBaseCallTypeDefinition req1 = baseClass.RequiredBaseCallTypes[typeof (IBaseType31)];
-        Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.BaseCallMethods.Count);
+        Assert.AreEqual (typeof (IBaseType31).GetMembers().Length, req1.Methods.Count);
 
-        RequiredBaseCallMethodDefinition member1 = req1.BaseCallMethods[typeof (IBaseType31).GetMethod ("IfcMethod")];
+        RequiredMethodDefinition member1 = req1.Methods[typeof (IBaseType31).GetMethod ("IfcMethod")];
         Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBaseType31.IfcMethod", member1.FullName);
-        Assert.AreSame (req1, member1.DeclaringType);
+        Assert.AreSame (req1, member1.DeclaringRequirement);
         Assert.AreSame (req1, member1.Parent);
 
         Assert.AreEqual (typeof (IBaseType31).GetMethod ("IfcMethod"), member1.InterfaceMethod);
         Assert.AreEqual (baseClass.Methods[typeof (BaseType3).GetMethod ("IfcMethod")], member1.ImplementingMethod);
 
         RequiredBaseCallTypeDefinition req2 = baseClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
-        Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.BaseCallMethods.Count);
+        Assert.AreEqual (typeof (IBT3Mixin4).GetMembers().Length, req2.Methods.Count);
 
-        RequiredBaseCallMethodDefinition member2 = req2.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
+        RequiredMethodDefinition member2 = req2.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
         Assert.AreEqual ("Rubicon.Mixins.UnitTests.SampleTypes.IBT3Mixin4.Foo", member2.FullName);
-        Assert.AreSame (req2, member2.DeclaringType);
+        Assert.AreSame (req2, member2.DeclaringRequirement);
         Assert.AreSame (req2, member2.Parent);
 
         Assert.AreEqual (typeof (IBT3Mixin4).GetMethod ("Foo"), member2.InterfaceMethod);
@@ -129,20 +128,60 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
         RequiredBaseCallTypeDefinition req3 = baseClass.RequiredBaseCallTypes[typeof (ICBaseType3BT3Mixin4)];
-        Assert.AreEqual (0, req3.BaseCallMethods.Count);
+        Assert.AreEqual (0, req3.Methods.Count);
 
         req3 = baseClass.RequiredBaseCallTypes[typeof (ICBaseType3)];
-        Assert.AreEqual (0, req3.BaseCallMethods.Count);
+        Assert.AreEqual (0, req3.Methods.Count);
 
         req3 = baseClass.RequiredBaseCallTypes[typeof (IBaseType31)];
-        Assert.AreEqual (1, req3.BaseCallMethods.Count);
+        Assert.AreEqual (1, req3.Methods.Count);
 
         req3 = baseClass.RequiredBaseCallTypes[typeof (IBT3Mixin4)];
-        Assert.AreEqual (1, req3.BaseCallMethods.Count);
+        Assert.AreEqual (1, req3.Methods.Count);
 
-        RequiredBaseCallMethodDefinition member3 = req3.BaseCallMethods[typeof (IBT3Mixin4).GetMethod ("Foo")];
+        RequiredMethodDefinition member3 = req3.Methods[typeof (IBT3Mixin4).GetMethod ("Foo")];
         Assert.IsNotNull (member3);
         Assert.AreEqual (baseClass.Mixins[typeof (BT3Mixin4)].Methods[typeof (BT3Mixin4).GetMethod ("Foo")], member3.ImplementingMethod);
+      }
+    }
+
+    [Test]
+    public void DuckTypingFaceInterface ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (BaseTypeWithDuckFaceMixin), typeof (DuckFaceMixin)))
+      {
+        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseTypeWithDuckFaceMixin));
+        Assert.IsTrue (baseClass.Mixins.ContainsKey (typeof (DuckFaceMixin)));
+        MixinDefinition mixin = baseClass.Mixins[typeof (DuckFaceMixin)];
+        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IDuckFaceRequirements)));
+        Assert.IsTrue (new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IDuckFaceRequirements)].FindRequiringMixins ()).Contains (mixin));
+
+        Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IDuckFaceRequirements)));
+        Assert.AreSame (baseClass, mixin.ThisDependencies[typeof (IDuckFaceRequirements)].GetImplementer ());
+
+        Assert.AreSame (mixin, mixin.ThisDependencies[typeof (IDuckFaceRequirements)].Depender);
+        Assert.IsNull (mixin.ThisDependencies[typeof (IDuckFaceRequirements)].Aggregator);
+        Assert.AreEqual (0, mixin.ThisDependencies[typeof (IDuckFaceRequirements)].AggregatedDependencies.Count);
+
+        Assert.AreSame (baseClass.RequiredFaceTypes[typeof (IDuckFaceRequirements)],
+            mixin.ThisDependencies[typeof (IDuckFaceRequirements)].RequiredType);
+
+        Assert.AreEqual (2, baseClass.RequiredFaceTypes[typeof (IDuckFaceRequirements)].Methods.Count);
+        Assert.AreSame (typeof (IDuckFaceRequirements).GetMethod ("MethodImplementedOnBase"),
+            baseClass.RequiredFaceTypes[typeof (IDuckFaceRequirements)].Methods[0].InterfaceMethod);
+        Assert.AreSame (baseClass.Methods[typeof (BaseTypeWithDuckFaceMixin).GetMethod ("MethodImplementedOnBase")],
+            baseClass.RequiredFaceTypes[typeof (IDuckFaceRequirements)].Methods[0].ImplementingMethod);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException),
+        ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
+    public void ThrowsWhenUnfulfilledDuckFace()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckFaceMixinWithoutOverrides)))
+      {
+        TypeFactory.GetActiveConfiguration (typeof (object));
       }
     }
 
@@ -167,17 +206,17 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.AreSame (baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)],
             mixin.BaseDependencies[typeof (IDuckBaseRequirements)].RequiredType);
 
-        Assert.AreEqual (2, baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods.Count);
+        Assert.AreEqual (2, baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].Methods.Count);
         Assert.AreSame (typeof (IDuckBaseRequirements).GetMethod ("MethodImplementedOnBase"),
-            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].InterfaceMethod);
+            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].Methods[0].InterfaceMethod);
         Assert.AreSame (baseClass.Methods[typeof (BaseTypeWithDuckBaseMixin).GetMethod ("MethodImplementedOnBase")],
-            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].BaseCallMethods[0].ImplementingMethod);
+            baseClass.RequiredBaseCallTypes[typeof (IDuckBaseRequirements)].Methods[0].ImplementingMethod);
       }
     }
 
     [Test]
     [ExpectedException (typeof (ConfigurationException),
-        ExpectedMessage = "is not fulfilled - method MethodImplementedOnBase does not have an equivalent", MatchType = MessageMatch.Regex)]
+        ExpectedMessage = "is not fulfilled - public or protected method MethodImplementedOnBase could not be found", MatchType = MessageMatch.Regex)]
     public void ThrowsWhenUnfulfilledDuckBase ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckBaseMixinWithoutOverrides)))
@@ -260,7 +299,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The base call dependency .* is not fulfilled",
+    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "The dependency .* is not fulfilled",
         MatchType = MessageMatch.Regex)]
     public void ThrowsIfBaseDependencyNotFulfilled ()
     {

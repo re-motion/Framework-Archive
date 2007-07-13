@@ -60,7 +60,14 @@ namespace Rubicon.Mixins.Definitions
       get { return IsEmptyInterface && Type.GetInterfaces().Length != 0; }
     }
 
-    public abstract void Accept (IDefinitionVisitor visitor);
+    public void Accept (IDefinitionVisitor visitor)
+    {
+      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ConcreteAccept (visitor);
+      Methods.Accept (visitor);
+    }
+
+    protected abstract void ConcreteAccept (IDefinitionVisitor visitor);
 
     public IEnumerable<MixinDefinition> FindRequiringMixins()
     {

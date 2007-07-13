@@ -2,7 +2,8 @@ using System;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  [Uses (typeof (MixinRequiringAllMembers))]
+  [Uses (typeof (MixinRequiringAllMembersFace))]
+  [Uses (typeof (MixinRequiringAllMembersBase))]
   public class ClassFulfillingAllMemberRequirementsDuck
   {
     public void Method ()

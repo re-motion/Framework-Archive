@@ -170,11 +170,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
         RequiredBaseCallTypeDefinition bc1 = bt3.RequiredBaseCallTypes[typeof (IBaseType34)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (bc1));
-        RequiredBaseCallMethodDefinition bcm1 = bc1.BaseCallMethods[typeof (IBaseType34).GetMethod ("IfcMethod")];
+        RequiredMethodDefinition bcm1 = bc1.Methods[typeof (IBaseType34).GetMethod ("IfcMethod")];
         Assert.IsTrue (visitedDefinitions.ContainsKey (bcm1));
 
         RequiredFaceTypeDefinition ft1 = bt3.RequiredFaceTypes[typeof (IBaseType32)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (ft1));
+        RequiredMethodDefinition fm1 = ft1.Methods[typeof (IBaseType32).GetMethod ("IfcMethod")];
+        Assert.IsTrue (visitedDefinitions.ContainsKey (fm1));
 
         ThisDependencyDefinition td1 = bt3m1.ThisDependencies[typeof (IBaseType31)];
         Assert.IsTrue (visitedDefinitions.ContainsKey (td1));
@@ -355,20 +357,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
     }
 
-    [Test]
-    public void FailsIfMixinNonPublic ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin2));
-      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5Mixin2)]);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
-    }
 
     [Test]
     public void SucceedsIfDuckThisDependency ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassFulfillingAllMemberRequirementsDuck),
-          typeof (MixinRequiringAllMembers));
+          typeof (MixinRequiringAllMembersFace));
       DefaultValidationLog log = Validator.Validate (definition);
       
       Assert.AreEqual (0, log.GetNumberOfFailures ());
@@ -377,9 +372,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [Ignore ("TODO")]
     public void SucceedsIfDuckBaseDependency ()
     {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassFulfillingAllMemberRequirementsDuck),
+          typeof (MixinRequiringAllMembersBase));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
     }
 
     [Test]
@@ -423,6 +424,35 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void FailsIfRequiredBaseMethodIsExplit ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersBase)))
+      {
+        BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersBase));
+        DefaultValidationLog log = Validator.Validate (definition);
+
+        Assert.IsTrue (
+            HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredBaseCallMethodMustBePublicOrProtected", log));
+      }
+    }
+
+    [Test]
+    public void SucceedsIfRequiredFaceMethodIsExplit ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersFace)))
+      {
+        BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (
+            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersFace));
+        DefaultValidationLog log = Validator.Validate (definition);
+
+        Assert.AreEqual (0, log.GetNumberOfFailures ());
+        Assert.AreEqual (0, log.GetNumberOfWarnings ());
+        Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+      }
+    }
+
+    [Test]
     public void FailsIfImplementingIMixinTarget ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinImplementingIMixinTarget));
@@ -460,6 +490,15 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
       Assert.AreEqual (0, log.GetNumberOfFailures());
       Assert.AreEqual (0, log.GetNumberOfWarnings());
+    }
+
+    [Test]
+    public void FailsIfMixinNonPublic ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType5), typeof (BT5Mixin2));
+      DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5Mixin2)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
     }
 
     [Test]

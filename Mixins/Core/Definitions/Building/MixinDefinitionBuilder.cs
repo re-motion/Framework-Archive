@@ -37,10 +37,7 @@ namespace Rubicon.Mixins.Definitions.Building
       BaseClass.Mixins.Add (mixin);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, delegate (MethodInfo m)
-      {
-        return m.IsPublic || m.IsFamily || (m.IsPrivate && m.IsVirtual);
-      }, bindingFlags);
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder (mixin, IsVisibleToInheritorsOrExplicitInterfaceImpl, bindingFlags);
       membersBuilder.Apply (mixin.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (mixin);
@@ -50,6 +47,11 @@ namespace Rubicon.Mixins.Definitions.Building
       AnalyzeOverrides (mixin);
 
       AnalyzeDependencies(mixin, mixinContext.ExplicitDependencies);
+    }
+
+    private bool IsVisibleToInheritorsOrExplicitInterfaceImpl (MethodInfo method)
+    {
+      return method.IsPublic || method.IsFamily || (method.IsPrivate && method.IsVirtual);
     }
 
     private void AnalyzeInterfaceIntroductions (MixinDefinition mixin)

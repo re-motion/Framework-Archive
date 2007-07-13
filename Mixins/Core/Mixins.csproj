@@ -126,7 +126,6 @@
     <Compile Include="Definitions\Building\InterfaceIntroductionBuilder.cs" />
     <Compile Include="Definitions\Building\MixinDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\OverridesAnalyzer.cs" />
-    <Compile Include="Definitions\Building\RequiredBaseCallMethodDefinitionBuilder.cs" />
     <Compile Include="Definitions\Building\RequirementsAnalyzer.cs" />
     <Compile Include="Definitions\Building\ThisDependencyDefinitionBuilder.cs" />
     <Compile Include="Definitions\ClassDefinitionBase.cs" />
@@ -142,7 +141,6 @@
     <Compile Include="Definitions\MethodIntroductionDefinition.cs" />
     <Compile Include="Definitions\PropertyDefinition.cs" />
     <Compile Include="Definitions\DependencyDefinitionBase.cs" />
-    <Compile Include="Definitions\RequiredBaseCallMethodDefinition.cs" />
     <Compile Include="Definitions\RequirementDefinitionBase.cs" />
     <Compile Include="Utilities\Serialization\ReflectionObjectSerializer.cs" />
     <Compile Include="Definitions\ThisDependencyDefinition.cs" />
@@ -168,6 +166,7 @@
     <Compile Include="Utilities\MethodSignatureEqualityComparer.cs" />
     <Compile Include="Utilities\UncastableEnumerableWrapper.cs" />
     <Compile Include="Validation\ConsoleDumper.cs" />
+    <Compile Include="Validation\Rules\DefaultRequiredMethodRules.cs" />
     <Compile Include="Validation\ValidationException.cs" />
     <Compile Include="Validation\ValidationExceptionResultItem.cs" />
     <Compile Include="Validation\ValidationResultItem.cs" />

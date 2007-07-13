@@ -111,11 +111,11 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
     private void ImplementBaseCallsForRequirements ()
     {
       foreach (RequiredBaseCallTypeDefinition requiredType in _baseClassConfiguration.RequiredBaseCallTypes)
-        foreach (RequiredBaseCallMethodDefinition requiredMethod in requiredType.BaseCallMethods)
+        foreach (RequiredMethodDefinition requiredMethod in requiredType.Methods)
           ImplementBaseCallForRequirement (requiredMethod);
     }
 
-    private void ImplementBaseCallForRequirement (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirement (RequiredMethodDefinition requiredMethod)
     {
       if (requiredMethod.ImplementingMethod.DeclaringClass == _baseClassConfiguration)
         ImplementBaseCallForRequirementOnTarget (requiredMethod);
@@ -125,7 +125,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     // Required base call method implemented by "this" -> either overridden or not
     // If overridden, delegate to next in chain, else simply delegate to "this" field
-    private void ImplementBaseCallForRequirementOnTarget (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirementOnTarget (RequiredMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);
@@ -142,7 +142,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     // Required base call method implemented by extension -> either as an overridde or not
     // If an overridde, delegate to next in chain, else simply delegate to the extension implementing it field
-    private void ImplementBaseCallForRequirementOnMixin (RequiredBaseCallMethodDefinition requiredMethod)
+    private void ImplementBaseCallForRequirementOnMixin (RequiredMethodDefinition requiredMethod)
     {
       CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
       BaseCallMethodGenerator methodGenerator = new BaseCallMethodGenerator (methodImplementation, this);

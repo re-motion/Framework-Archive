@@ -223,7 +223,7 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The supplied mixin of type Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin1 is not valid in the current configuration.",
+        ExpectedMessage = "The supplied mixin of type Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin1 is not valid in the current configuration.",
         MatchType = MessageMatch.Contains)]
     public void ThrowsIfWrongMixinInstancesInScope ()
     {
@@ -591,9 +591,27 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       ClassFulfillingAllMemberRequirementsDuck cfrd = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsDuck> ().With();
       Assert.IsTrue (cfrd is IMixinRequiringAllMembersRequirements);
-      MixinRequiringAllMembers mixin = Mixin.Get<MixinRequiringAllMembers> (cfrd);
+      MixinRequiringAllMembersFace mixin = Mixin.Get<MixinRequiringAllMembersFace> (cfrd);
       Assert.IsNotNull (mixin);
       Assert.AreEqual (42, mixin.PropertyViaThis);
+    }
+
+    [Test]
+    public void RequiredFaceInterfaceViaDuck ()
+    {
+      ClassFulfillingAllMemberRequirementsExplicitly cfamre = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsExplicitly> ().With ();
+      MixinRequiringAllMembersFace mixin = Mixin.Get<MixinRequiringAllMembersFace> (cfamre);
+      Assert.IsNotNull (mixin);
+      Assert.AreEqual (37, mixin.PropertyViaThis);
+    }
+
+    [Test]
+    public void RequiredBaseInterfaceViaDuck ()
+    {
+      ClassFulfillingAllMemberRequirements cfamr = ObjectFactory.Create<ClassFulfillingAllMemberRequirements> ().With ();
+      MixinRequiringAllMembersBase mixin = Mixin.Get<MixinRequiringAllMembersBase> (cfamr);
+      Assert.IsNotNull (mixin);
+      Assert.AreEqual (11, mixin.PropertyViaBase);
     }
 
     [Test]
@@ -606,6 +624,14 @@ namespace Rubicon.Mixins.UnitTests.Mixins
         Assert.AreEqual ("MixinWithCircularThisDependency2.Circular12-MixinWithCircularThisDependency1.Circular1-"
             + "MixinWithCircularThisDependency2.Circular2", c1.Circular12 ());
       }
+    }
+
+    [Test]
+    public void ThisCallToDuckInterface ()
+    {
+      BaseTypeWithDuckFaceMixin duckFace = ObjectFactory.Create<BaseTypeWithDuckFaceMixin> ().With ();
+      Assert.AreEqual ("DuckFaceMixin.CallMethodsOnThis-DuckFaceMixin.MethodImplementedOnBase-BaseTypeWithDuckFaceMixin.ProtectedMethodImplementedOnBase",
+          Mixin.Get<DuckFaceMixin> (duckFace).CallMethodsOnThis());
     }
   }
 }

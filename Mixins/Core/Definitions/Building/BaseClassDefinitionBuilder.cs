@@ -34,7 +34,8 @@ namespace Rubicon.Mixins.Definitions.Building
       BaseClassDefinition classDefinition = new BaseClassDefinition (classContext);
 
       const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritors, bindingFlags);
+      MemberDefinitionBuilder membersBuilder = new MemberDefinitionBuilder(classDefinition, IsVisibleToInheritorsOrExplicitInterfaceImpl,
+          bindingFlags);
       membersBuilder.Apply (classDefinition.Type);
 
       AttributeDefinitionBuilder attributesBuilder = new AttributeDefinitionBuilder (classDefinition);
@@ -113,11 +114,13 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyMethodRequirements (BaseClassDefinition classDefinition)
     {
-      RequiredBaseCallMethodDefinitionBuilder builder = new RequiredBaseCallMethodDefinitionBuilder (classDefinition);
-      foreach (RequiredBaseCallTypeDefinition requirement in classDefinition.RequiredBaseCallTypes)
-        builder.Apply (requirement);
-
       foreach (RequirementDefinitionBase requirement in classDefinition.RequiredFaceTypes)
+      {
+        RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (requirement);
+        methodRequirementBuilder.Apply ();
+      }
+
+      foreach (RequirementDefinitionBase requirement in classDefinition.RequiredBaseCallTypes)
       {
         RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (requirement);
         methodRequirementBuilder.Apply ();
@@ -145,9 +148,9 @@ namespace Rubicon.Mixins.Definitions.Building
       baseMember.AddOverride (overrider);
     }
 
-    private static bool IsVisibleToInheritors (MethodInfo method)
+    private bool IsVisibleToInheritorsOrExplicitInterfaceImpl (MethodInfo method)
     {
-      return method.IsPublic || method.IsFamily;
+      return method.IsPublic || method.IsFamily || (method.IsPrivate && method.IsVirtual);
     }
   }
 }

@@ -61,18 +61,15 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyForImplementedInterface ()
     {
+      Dictionary<MethodInfo, MethodDefinition> allMethods = new Dictionary<MethodInfo, MethodDefinition> ();
+      foreach (MethodDefinition methodDefinition in _declaringRequirement.BaseClass.GetAllMethods())
+        allMethods.Add (methodDefinition.MethodInfo, methodDefinition);
+
       InterfaceMapping interfaceMapping = _declaringRequirement.BaseClass.GetAdjustedInterfaceMap (_declaringRequirement.Type);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];
-        MethodDefinition implementingMethod = _declaringRequirement.BaseClass.Methods[interfaceMapping.TargetMethods[i]];
-        if (implementingMethod == null)
-        {
-          // must be a special method
-          Assertion.Assert (interfaceMethod.IsSpecialName);
-          implementingMethod = FindMethodOnBaseIncludingSpecials (interfaceMethod);
-        }
-        Assertion.Assert (implementingMethod != null);
+        MethodDefinition implementingMethod = allMethods[interfaceMapping.TargetMethods[i]];
 
         AddRequiredMethod (interfaceMethod, implementingMethod);
       }
@@ -83,13 +80,13 @@ namespace Rubicon.Mixins.Definitions.Building
       InterfaceIntroductionDefinition introduction = _declaringRequirement.BaseClass.IntroducedInterfaces[_declaringRequirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
-        AddRequiredMethod (eventIntroduction.InterfaceMember.GetAddMethod (), eventIntroduction.ImplementingMember.AddMethod);
-        AddRequiredMethod (eventIntroduction.InterfaceMember.GetRemoveMethod (), eventIntroduction.ImplementingMember.RemoveMethod);
+        AddRequiredMethod (eventIntroduction.InterfaceMember.GetAddMethod(), eventIntroduction.ImplementingMember.AddMethod);
+        AddRequiredMethod (eventIntroduction.InterfaceMember.GetRemoveMethod(), eventIntroduction.ImplementingMember.RemoveMethod);
       }
       foreach (PropertyIntroductionDefinition propertyIntroduction in introduction.IntroducedProperties)
       {
-        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetGetMethod (), propertyIntroduction.ImplementingMember.GetMethod);
-        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetSetMethod (), propertyIntroduction.ImplementingMember.SetMethod);
+        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetGetMethod(), propertyIntroduction.ImplementingMember.GetMethod);
+        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetSetMethod(), propertyIntroduction.ImplementingMember.SetMethod);
       }
       foreach (MethodIntroductionDefinition methodIntroduction in introduction.IntroducedMethods)
         AddRequiredMethod (methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
@@ -97,7 +94,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyWithDuckTyping ()
     {
-      foreach (MethodInfo interfaceMethod in _declaringRequirement.Type.GetMethods ())
+      foreach (MethodInfo interfaceMethod in _declaringRequirement.Type.GetMethods())
       {
         MethodDefinition implementingMethod = FindMethodOnBaseIncludingSpecials (interfaceMethod);
         AddRequiredMethod (interfaceMethod, implementingMethod);
@@ -123,7 +120,7 @@ namespace Rubicon.Mixins.Definitions.Building
         return FindEvent (_eventAdders[interfaceMethod], _declaringRequirement.BaseClass.Events).AddMethod;
       else if (_eventRemovers.ContainsKey (interfaceMethod))
         return FindEvent (_eventRemovers[interfaceMethod], _declaringRequirement.BaseClass.Events).RemoveMethod;
-      else 
+      else
         return FindMethod (interfaceMethod, _declaringRequirement.BaseClass.Methods);
     }
 
@@ -162,10 +159,17 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private Exception ConstructExceptionOnMemberNotFound (string memberString)
     {
-      string dependenciesString = CollectionStringBuilder.BuildCollectionString (_declaringRequirement.FindRequiringMixins (),
-          ", ", delegate (MixinDefinition m) { return m.FullName; });
-      string message = string.Format ("The dependency {0} (mixins {1} applied to class {2}) is not fulfilled - {3} could not be found on the "
-          + "base class.", _declaringRequirement.Type.Name, dependenciesString, _declaringRequirement.BaseClass.FullName, memberString);
+      string dependenciesString = CollectionStringBuilder.BuildCollectionString (
+          _declaringRequirement.FindRequiringMixins(),
+          ", ",
+          delegate (MixinDefinition m) { return m.FullName; });
+      string message = string.Format (
+          "The dependency {0} (mixins {1} applied to class {2}) is not fulfilled - public or protected {3} could not be "
+          + "found on the base class.",
+          _declaringRequirement.Type.Name,
+          dependenciesString,
+          _declaringRequirement.BaseClass.FullName,
+          memberString);
       throw new ConfigurationException (message);
     }
   }

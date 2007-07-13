@@ -11,7 +11,7 @@ namespace Rubicon.Mixins.Definitions
     {
     }
 
-    public override void Accept (IDefinitionVisitor visitor)
+    protected override void ConcreteAccept (IDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull ("visitor", visitor);
       visitor.Visit (this);

@@ -11,17 +11,12 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     event Func<string> Event;
   }
 
-  public class MixinRequiringAllMembers
-      : Mixin<IMixinRequiringAllMembersRequirements/*, IMixinRequiringAllMembersRequirements*/>
+  public class MixinRequiringAllMembersFace
+      : Mixin<IMixinRequiringAllMembersRequirements>
   {
     public int PropertyViaThis
     {
       get { return This.Property; }
     }
-
-    /*public int PropertyViaBase
-    {
-      get { return Base.Property; }
-    }*/
   }
 }

@@ -5,7 +5,8 @@ using Rubicon;
 
 namespace Rubicon.Mixins.UnitTests.SampleTypes
 {
-  [Uses (typeof (MixinRequiringAllMembers))]
+  [Uses (typeof (MixinRequiringAllMembersFace))]
+  [Uses (typeof (MixinRequiringAllMembersBase))]
   public class ClassFulfillingAllMemberRequirements : IMixinRequiringAllMembersRequirements
   {
     public void Method ()
@@ -15,7 +16,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
     public int Property
     {
-      get { throw new NotImplementedException(); }
+      get { return 11; }
       set { throw new NotImplementedException(); }
     }
 
