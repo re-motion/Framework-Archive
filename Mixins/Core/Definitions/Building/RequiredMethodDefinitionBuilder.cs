@@ -10,121 +10,132 @@ namespace Rubicon.Mixins.Definitions.Building
 {
   public class RequiredMethodDefinitionBuilder
   {
-    private readonly RequirementDefinitionBase _declaringRequirement;
+    private struct SpecialMethods
+    {
+      public Dictionary<MethodInfo, PropertyInfo> PropertyGetters;
+      public Dictionary<MethodInfo, PropertyInfo> PropertySetters;
+      public Dictionary<MethodInfo, EventInfo> EventAdders;
+      public Dictionary<MethodInfo, EventInfo> EventRemovers;
+
+      public SpecialMethods (RequirementDefinitionBase declaringRequirement)
+      {
+        // since clients can only use public members of required types (via This and Base calls), we only need to consider those public members
+        PropertyGetters = new Dictionary<MethodInfo, PropertyInfo> ();
+        PropertySetters = new Dictionary<MethodInfo, PropertyInfo> ();
+        foreach (PropertyInfo property in declaringRequirement.Type.GetProperties ())
+        {
+          MethodInfo getMethod = property.GetGetMethod ();
+          if (getMethod != null)
+            PropertyGetters.Add (getMethod, property);
+          MethodInfo setMethod = property.GetSetMethod ();
+          if (setMethod != null)
+            PropertySetters.Add (setMethod, property);
+        }
+
+        EventAdders = new Dictionary<MethodInfo, EventInfo> ();
+        EventRemovers = new Dictionary<MethodInfo, EventInfo> ();
+        foreach (EventInfo eventInfo in declaringRequirement.Type.GetEvents ())
+        {
+          EventAdders.Add (eventInfo.GetAddMethod (), eventInfo);
+          EventRemovers.Add (eventInfo.GetRemoveMethod (), eventInfo);
+        }
+      }
+
+      public MethodDefinition FindMethodUsingSpecials (RequirementDefinitionBase requirement, MethodInfo interfaceMethod, SpecialMethods specialMethods)
+      {
+        if (specialMethods.PropertyGetters.ContainsKey (interfaceMethod))
+          return FindProperty (requirement, specialMethods.PropertyGetters[interfaceMethod], requirement.BaseClass.Properties).GetMethod;
+        else if (specialMethods.PropertySetters.ContainsKey (interfaceMethod))
+          return FindProperty (requirement, specialMethods.PropertySetters[interfaceMethod], requirement.BaseClass.Properties).SetMethod;
+        else if (specialMethods.EventAdders.ContainsKey (interfaceMethod))
+          return FindEvent (requirement, specialMethods.EventAdders[interfaceMethod], requirement.BaseClass.Events).AddMethod;
+        else if (specialMethods.EventRemovers.ContainsKey (interfaceMethod))
+          return FindEvent (requirement, specialMethods.EventRemovers[interfaceMethod], requirement.BaseClass.Events).RemoveMethod;
+        else
+          return null;
+      }
+    }
     private readonly static MethodNameAndSignatureEqualityComparer s_methodComparer = new MethodNameAndSignatureEqualityComparer ();
     private readonly static PropertyNameAndSignatureEqualityComparer s_propertyComparer = new PropertyNameAndSignatureEqualityComparer ();
     private readonly static EventNameAndSignatureEqualityComparer s_eventComparer = new EventNameAndSignatureEqualityComparer ();
 
-    private Dictionary<MethodInfo, PropertyInfo> _propertyGetters;
-    private Dictionary<MethodInfo, PropertyInfo> _propertySetters;
-    private Dictionary<MethodInfo, EventInfo> _eventAdders;
-    private Dictionary<MethodInfo, EventInfo> _eventRemovers;
+    private readonly BaseClassDefinition _baseClassDefinition;
+    private readonly Dictionary<MethodInfo, MethodDefinition> _baseMethods;
 
-    public RequiredMethodDefinitionBuilder (RequirementDefinitionBase declaringRequirement)
+    public RequiredMethodDefinitionBuilder (BaseClassDefinition baseClassDefinition)
     {
-      _declaringRequirement = declaringRequirement;
+      _baseMethods = new Dictionary<MethodInfo, MethodDefinition> ();
+      foreach (MethodDefinition methodDefinition in baseClassDefinition.GetAllMethods ())
+        _baseMethods.Add (methodDefinition.MethodInfo, methodDefinition);
 
-      // since clients can only use public members of required types (via This and Base calls), we only need to consider those public members
-      _propertyGetters = new Dictionary<MethodInfo, PropertyInfo> ();
-      _propertySetters = new Dictionary<MethodInfo, PropertyInfo> ();
-      foreach (PropertyInfo property in declaringRequirement.Type.GetProperties ())
-      {
-        MethodInfo getMethod = property.GetGetMethod ();
-        if (getMethod != null)
-          _propertyGetters.Add (getMethod, property);
-        MethodInfo setMethod = property.GetSetMethod ();
-        if (setMethod != null)
-          _propertySetters.Add (setMethod, property);
-      }
-
-      _eventAdders = new Dictionary<MethodInfo, EventInfo> ();
-      _eventRemovers = new Dictionary<MethodInfo, EventInfo> ();
-      foreach (EventInfo eventInfo in declaringRequirement.Type.GetEvents ())
-      {
-        _eventAdders.Add (eventInfo.GetAddMethod (), eventInfo);
-        _eventRemovers.Add (eventInfo.GetRemoveMethod (), eventInfo);
-      }
+      _baseClassDefinition = baseClassDefinition;
     }
 
-    public void Apply ()
+    public void Apply (RequirementDefinitionBase requirement)
     {
-      if (_declaringRequirement.IsEmptyInterface)
+      if (requirement.IsEmptyInterface)
         return;
 
-      if (_declaringRequirement.BaseClass.ImplementedInterfaces.Contains (_declaringRequirement.Type))
-        ApplyForImplementedInterface ();
-      else if (_declaringRequirement.BaseClass.IntroducedInterfaces.ContainsKey (_declaringRequirement.Type))
-        ApplyForIntroducedInterface ();
+      if (requirement.BaseClass.ImplementedInterfaces.Contains (requirement.Type))
+        ApplyForImplementedInterface (requirement);
+      else if (requirement.BaseClass.IntroducedInterfaces.ContainsKey (requirement.Type))
+        ApplyForIntroducedInterface (requirement);
       else
-        ApplyWithDuckTyping ();
+        ApplyWithDuckTyping (requirement);
     }
 
-    private void ApplyForImplementedInterface ()
+    private void ApplyForImplementedInterface (RequirementDefinitionBase requirement)
     {
-      Dictionary<MethodInfo, MethodDefinition> allMethods = new Dictionary<MethodInfo, MethodDefinition> ();
-      foreach (MethodDefinition methodDefinition in _declaringRequirement.BaseClass.GetAllMethods())
-        allMethods.Add (methodDefinition.MethodInfo, methodDefinition);
-
-      InterfaceMapping interfaceMapping = _declaringRequirement.BaseClass.GetAdjustedInterfaceMap (_declaringRequirement.Type);
+      InterfaceMapping interfaceMapping = _baseClassDefinition.GetAdjustedInterfaceMap (requirement.Type);
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];
-        MethodDefinition implementingMethod = allMethods[interfaceMapping.TargetMethods[i]];
+        MethodDefinition implementingMethod = _baseMethods[interfaceMapping.TargetMethods[i]];
 
-        AddRequiredMethod (interfaceMethod, implementingMethod);
+        AddRequiredMethod (requirement, interfaceMethod, implementingMethod);
       }
     }
 
-    private void ApplyForIntroducedInterface ()
+    private void ApplyForIntroducedInterface (RequirementDefinitionBase requirement)
     {
-      InterfaceIntroductionDefinition introduction = _declaringRequirement.BaseClass.IntroducedInterfaces[_declaringRequirement.Type];
+      InterfaceIntroductionDefinition introduction = _baseClassDefinition.IntroducedInterfaces[requirement.Type];
       foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
       {
-        AddRequiredMethod (eventIntroduction.InterfaceMember.GetAddMethod(), eventIntroduction.ImplementingMember.AddMethod);
-        AddRequiredMethod (eventIntroduction.InterfaceMember.GetRemoveMethod(), eventIntroduction.ImplementingMember.RemoveMethod);
+        AddRequiredMethod (requirement, eventIntroduction.InterfaceMember.GetAddMethod (), eventIntroduction.ImplementingMember.AddMethod);
+        AddRequiredMethod (requirement, eventIntroduction.InterfaceMember.GetRemoveMethod (), eventIntroduction.ImplementingMember.RemoveMethod);
       }
       foreach (PropertyIntroductionDefinition propertyIntroduction in introduction.IntroducedProperties)
       {
-        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetGetMethod(), propertyIntroduction.ImplementingMember.GetMethod);
-        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetSetMethod(), propertyIntroduction.ImplementingMember.SetMethod);
+        AddRequiredMethod (requirement, propertyIntroduction.InterfaceMember.GetGetMethod (), propertyIntroduction.ImplementingMember.GetMethod);
+        AddRequiredMethod (requirement, propertyIntroduction.InterfaceMember.GetSetMethod (), propertyIntroduction.ImplementingMember.SetMethod);
       }
       foreach (MethodIntroductionDefinition methodIntroduction in introduction.IntroducedMethods)
-        AddRequiredMethod (methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
+        AddRequiredMethod (requirement, methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
     }
 
-    private void ApplyWithDuckTyping ()
+    private void ApplyWithDuckTyping (RequirementDefinitionBase requirement)
     {
-      foreach (MethodInfo interfaceMethod in _declaringRequirement.Type.GetMethods())
+      SpecialMethods specialMethods = new SpecialMethods (requirement);
+
+      foreach (MethodInfo interfaceMethod in requirement.Type.GetMethods())
       {
-        MethodDefinition implementingMethod = FindMethodOnBaseIncludingSpecials (interfaceMethod);
-        AddRequiredMethod (interfaceMethod, implementingMethod);
+        MethodDefinition implementingMethod = specialMethods.FindMethodUsingSpecials (requirement, interfaceMethod, specialMethods);
+        if (implementingMethod == null)
+          implementingMethod = FindMethod (requirement, interfaceMethod, _baseClassDefinition.Methods);
+        AddRequiredMethod (requirement, interfaceMethod, implementingMethod);
       }
     }
 
-    private void AddRequiredMethod (MethodInfo interfaceMethod, MethodDefinition implementingMethod)
+    private void AddRequiredMethod (RequirementDefinitionBase requirement, MethodInfo interfaceMethod, MethodDefinition implementingMethod)
     {
       if (interfaceMethod != null)
       {
         Assertion.Assert (implementingMethod != null);
-        _declaringRequirement.Methods.Add (new RequiredMethodDefinition (_declaringRequirement, interfaceMethod, implementingMethod));
+        requirement.Methods.Add (new RequiredMethodDefinition (requirement, interfaceMethod, implementingMethod));
       }
     }
 
-    private MethodDefinition FindMethodOnBaseIncludingSpecials (MethodInfo interfaceMethod)
-    {
-      if (_propertyGetters.ContainsKey (interfaceMethod))
-        return FindProperty (_propertyGetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).GetMethod;
-      else if (_propertySetters.ContainsKey (interfaceMethod))
-        return FindProperty (_propertySetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).SetMethod;
-      else if (_eventAdders.ContainsKey (interfaceMethod))
-        return FindEvent (_eventAdders[interfaceMethod], _declaringRequirement.BaseClass.Events).AddMethod;
-      else if (_eventRemovers.ContainsKey (interfaceMethod))
-        return FindEvent (_eventRemovers[interfaceMethod], _declaringRequirement.BaseClass.Events).RemoveMethod;
-      else
-        return FindMethod (interfaceMethod, _declaringRequirement.BaseClass.Methods);
-    }
-
-    private MethodDefinition FindMethod (MethodInfo interfaceMethod, UniqueDefinitionCollection<MethodInfo, MethodDefinition> methods)
+    private static MethodDefinition FindMethod (RequirementDefinitionBase requirement, MethodInfo interfaceMethod, UniqueDefinitionCollection<MethodInfo, MethodDefinition> methods)
     {
       foreach (MethodDefinition method in methods)
       {
@@ -132,10 +143,10 @@ namespace Rubicon.Mixins.Definitions.Building
           return method;
       }
 
-      throw ConstructExceptionOnMemberNotFound ("method " + interfaceMethod.Name);
+      throw ConstructExceptionOnMemberNotFound (requirement, "method " + interfaceMethod.Name);
     }
 
-    private PropertyDefinition FindProperty (PropertyInfo interfaceProperty, UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> properties)
+    private static PropertyDefinition FindProperty (RequirementDefinitionBase requirement, PropertyInfo interfaceProperty, UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> properties)
     {
       foreach (PropertyDefinition property in properties)
       {
@@ -143,10 +154,10 @@ namespace Rubicon.Mixins.Definitions.Building
           return property;
       }
 
-      throw ConstructExceptionOnMemberNotFound ("property " + interfaceProperty.Name);
+      throw ConstructExceptionOnMemberNotFound (requirement, "property " + interfaceProperty.Name);
     }
 
-    private EventDefinition FindEvent (EventInfo interfaceEvent, UniqueDefinitionCollection<EventInfo, EventDefinition> events)
+    private static EventDefinition FindEvent (RequirementDefinitionBase requirement, EventInfo interfaceEvent, UniqueDefinitionCollection<EventInfo, EventDefinition> events)
     {
       foreach (EventDefinition eventInfo in events)
       {
@@ -154,21 +165,21 @@ namespace Rubicon.Mixins.Definitions.Building
           return eventInfo;
       }
 
-      throw ConstructExceptionOnMemberNotFound ("event " + interfaceEvent.Name);
+      throw ConstructExceptionOnMemberNotFound (requirement, "event " + interfaceEvent.Name);
     }
 
-    private Exception ConstructExceptionOnMemberNotFound (string memberString)
+    private static Exception ConstructExceptionOnMemberNotFound (RequirementDefinitionBase requirement, string memberString)
     {
       string dependenciesString = CollectionStringBuilder.BuildCollectionString (
-          _declaringRequirement.FindRequiringMixins(),
+          requirement.FindRequiringMixins (),
           ", ",
           delegate (MixinDefinition m) { return m.FullName; });
       string message = string.Format (
           "The dependency {0} (mixins {1} applied to class {2}) is not fulfilled - public or protected {3} could not be "
           + "found on the base class.",
-          _declaringRequirement.Type.Name,
+          requirement.Type.Name,
           dependenciesString,
-          _declaringRequirement.BaseClass.FullName,
+          requirement.BaseClass.FullName,
           memberString);
       throw new ConfigurationException (message);
     }

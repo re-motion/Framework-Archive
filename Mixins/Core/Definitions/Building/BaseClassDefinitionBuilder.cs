@@ -114,17 +114,12 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private void ApplyMethodRequirements (BaseClassDefinition classDefinition)
     {
+      RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (classDefinition);
       foreach (RequirementDefinitionBase requirement in classDefinition.RequiredFaceTypes)
-      {
-        RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (requirement);
-        methodRequirementBuilder.Apply ();
-      }
+        methodRequirementBuilder.Apply (requirement);
 
       foreach (RequirementDefinitionBase requirement in classDefinition.RequiredBaseCallTypes)
-      {
-        RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (requirement);
-        methodRequirementBuilder.Apply ();
-      }
+        methodRequirementBuilder.Apply (requirement);
     }
 
     private void ApplyOverrides (BaseClassDefinition definition)
