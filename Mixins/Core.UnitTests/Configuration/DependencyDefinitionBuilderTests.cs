@@ -36,7 +36,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
         Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsAggregatorInterface);
 
-        baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
+        baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
         requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (ICBaseType3BT3Mixin4)].FindRequiringMixins());
         Assert.Contains (baseClass.Mixins[typeof (BT3Mixin7Face)], requirers);
@@ -54,6 +54,25 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBT6Mixin3)), "This is added because of the CompleteInterfaceAttribute.");
       }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationException),
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
+        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - method Foo could not be found on the base class.")]
+    public void ThrowsIfAggregateThisDependencyIsNotFullyImplemented ()
+    {
+      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
+    }
+
+    [Test]
+    [Ignore ("TODO - after removing RequiredBaseCallDependencies")]
+    [ExpectedException (typeof (ConfigurationException),
+        ExpectedMessage = "The dependency IBT3Mixin4 (mixins Rubicon.Mixins.UnitTests.SampleTypes.BT3Mixin7Face applied to class "
+        + "Rubicon.Mixins.UnitTests.SampleTypes.BaseType3) is not fulfilled - method Foo could not be found on the base class.")]
+    public void ThrowsIfAggregateBaseDependencyIsNotFullyImplemented ()
+    {
+      UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Base));
     }
 
     [Test]
@@ -159,7 +178,7 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     [ExpectedException (typeof (ConfigurationException),
         ExpectedMessage = "is not fulfilled - method MethodImplementedOnBase does not have an equivalent", MatchType = MessageMatch.Regex)]
-    public void ThrowsWhenUnfulfilled ()
+    public void ThrowsWhenUnfulfilledDuckBase ()
     {
       using (MixinConfiguration.ScopedExtend (typeof (object), typeof (DuckBaseMixinWithoutOverrides)))
       {

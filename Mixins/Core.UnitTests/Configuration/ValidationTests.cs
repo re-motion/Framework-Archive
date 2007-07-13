@@ -46,17 +46,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       return false;
     }
 
-    private IEnumerable<IVisitableDefinition> BuildAllBaseDefinitions ()
-    {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly()))
-      {
-        ApplicationContext applicationContext = MixinConfiguration.ActiveContext;
-        BaseClassDefinitionBuilder builder = new BaseClassDefinitionBuilder ();
-        foreach (ClassContext context in applicationContext.ClassContexts)
-          yield return builder.Build (context);
-      }
-    }
-
     [Test]
     public void ValidationVisitsSomething ()
     {
@@ -306,19 +295,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     [Test]
     public void FailsIfRequiredFaceClassNotAvailable ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithClassThisDependency));
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassLookingLikeBaseType3), typeof (MixinWithClassThisDependency));
       DefaultValidationLog log = Validator.Validate (definition.RequiredFaceTypes[typeof (BaseType3)]);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceClassMustBeAssignableFromTargetType", log));
-    }
-
-    [Test]
-    public void FailsIfRequiredFaceInterfaceNotAvailable ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (BT3Mixin2));
-      DefaultValidationLog log = Validator.Validate (definition.RequiredFaceTypes[typeof (IBaseType32)]);
-
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
     }
 
     [Test]
@@ -331,14 +311,48 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsIfThisDependencyNotFulfilled ()
+    public void FailsIfRequiredBaseTypeNotVisible ()
     {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (MixinWithUnsatisfiedThisDependency));
-      DefaultValidationLog log = Validator.Validate (
-          definition.Mixins[typeof (MixinWithUnsatisfiedThisDependency)].
-              ThisDependencies[typeof (IServiceProvider)]);
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType1), typeof (MixinWithInvisibleBaseDependency));
+      DefaultValidationLog log = Validator.Validate (definition);
 
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredBaseCallTypeRules.RequiredBaseCallTypeMustBePublic", log));
+    }
+
+    [Test]
+    public void SucceedsIfEmptyThisDependencyNotFulfilled ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (MixinWithUnsatisfiedEmptyThisDependency));
+      DefaultValidationLog log = Validator.Validate (
+          definition.Mixins[typeof (MixinWithUnsatisfiedEmptyThisDependency)].
+              ThisDependencies[typeof (IEmptyInterface)]);
+
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+    }
+
+    [Test]
+    public void FailsIfEmptyBaseDependencyNotFulfilled ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (MixinWithUnsatisfiedEmptyBaseDependency));
+      DefaultValidationLog log = Validator.Validate (
+          definition.Mixins[typeof (MixinWithUnsatisfiedEmptyBaseDependency)].
+              BaseDependencies[typeof (IEmptyInterface)]);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
+    }
+
+    [Test]
+    public void SucceedsIfCircularThisDependency ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2));
+      DefaultValidationLog log = Validator.Validate (
+          definition.Mixins[typeof (MixinWithCircularThisDependency1)]);
+
+      Assert.AreEqual (0, log.GetNumberOfFailures());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
     }
 
     [Test]
@@ -348,6 +362,24 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       DefaultValidationLog log = Validator.Validate (definition.Mixins[typeof (BT5Mixin2)]);
 
       Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultMixinRules.MixinMustBePublic", log));
+    }
+
+    [Test]
+    public void SucceedsIfDuckThisDependency ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (ClassFulfillingAllMemberRequirementsDuck),
+          typeof (MixinRequiringAllMembers));
+      DefaultValidationLog log = Validator.Validate (definition);
+      
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+    }
+
+    [Test]
+    [Ignore ("TODO")]
+    public void SucceedsIfDuckBaseDependency ()
+    {
     }
 
     [Test]
@@ -361,16 +393,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void FailsIfAggregateThisDependencyIsNotFullyImplemented ()
-    {
-      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin7Face));
-      DefaultValidationLog log = Validator.Validate (definition);
-
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultThisDependencyRules.DependencyMustBeSatisfied", log));
-      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultRequiredFaceTypeRules.FaceInterfaceMustBeIntroducedOrImplemented", log));
-    }
-
-    [Test]
     public void SucceedsIfAggregateBaseDependencyIsFullyImplemented ()
     {
       BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Base));
@@ -378,6 +400,26 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
       Assert.AreEqual (0, log.GetNumberOfFailures());
       Assert.AreEqual (0, log.GetNumberOfWarnings());
+    }
+
+    [Test]
+    public void SucceedsIfEmptyAggregateThisDependencyIsNotAvailable ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (MixinWithUnsatisfiedEmptyAggregateThisDependency));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.AreEqual (0, log.GetNumberOfFailures ());
+      Assert.AreEqual (0, log.GetNumberOfWarnings ());
+      Assert.AreEqual (0, log.GetNumberOfUnexpectedExceptions ());
+    }
+
+    [Test]
+    public void FailsIfEmptyAggregateBaseDependencyIsNotAvailable ()
+    {
+      BaseClassDefinition definition = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (object), typeof (MixinWithUnsatisfiedEmptyAggregateBaseDependency));
+      DefaultValidationLog log = Validator.Validate (definition);
+
+      Assert.IsTrue (HasFailure ("Rubicon.Mixins.Validation.Rules.DefaultBaseDependencyRules.DependencyMustBeSatisfied", log));
     }
 
     [Test]

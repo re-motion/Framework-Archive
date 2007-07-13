@@ -8,22 +8,14 @@ namespace Rubicon.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      // no rules ATM
-    }
-
-    private void NoCircularDependencies (DelegateValidationRule<BaseDependencyDefinition>.Args args)
-    {
-      // Now throws a ConfigurationException if violated
+      visitor.BaseDependencyRules.Add (new DelegateValidationRule<BaseDependencyDefinition> (DependencyMustBeSatisfied));
+      
     }
 
     private void DependencyMustBeSatisfied (DelegateValidationRule<BaseDependencyDefinition>.Args args)
     {
-      // Now throws a ConfigurationException if violated
+      SingleMust (args.Definition.GetImplementer () != null || args.Definition.IsAggregate, args.Log, args.Self);
     }
 
-    private void AggregateDependencyMustBeFullyImplemented (DelegateValidationRule<BaseDependencyDefinition>.Args args)
-    {
-      // Now throws a ConfigurationException if violated
-    }
   }
 }

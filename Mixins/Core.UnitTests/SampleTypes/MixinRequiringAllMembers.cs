@@ -12,8 +12,16 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   }
 
   public class MixinRequiringAllMembers
-      : Mixin<IMixinRequiringAllMembersRequirements>
-      //: Mixin<IMixinRequiringAllMembersRequirements, IMixinRequiringAllMembersRequirements>
+      : Mixin<IMixinRequiringAllMembersRequirements/*, IMixinRequiringAllMembersRequirements*/>
   {
+    public int PropertyViaThis
+    {
+      get { return This.Property; }
+    }
+
+    /*public int PropertyViaBase
+    {
+      get { return Base.Property; }
+    }*/
   }
 }

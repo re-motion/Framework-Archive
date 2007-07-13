@@ -8,6 +8,7 @@ namespace Rubicon.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
+      visitor.RequiredBaseCallTypeRules.Add (new DelegateValidationRule<RequiredBaseCallTypeDefinition> (RequiredBaseCallTypeMustBePublic));
     }
 
     // Now throws ConfigurationException when violated
@@ -16,14 +17,10 @@ namespace Rubicon.Mixins.Validation.Rules
     //  SingleMust (args.Definition.Type.IsInterface, args.Log, args.Self);
     //}
 
-    // Now throws ConfigurationException when violated
-    //private void BaseCallTypeMustBeIntroducedOrImplemented (DelegateValidationRule<RequiredBaseCallTypeDefinition>.Args args)
-    //{
-    //  List<Type> implementedInterfaces = new List<Type>(args.Definition.BaseClass.ImplementedInterfaces);
-    //  List<Type> introducedInterfaces = new List<InterfaceIntroductionDefinition>(args.Definition.BaseClass.IntroducedInterfaces).ConvertAll<Type>
-    //    (delegate (InterfaceIntroductionDefinition i) { return i.Type; });
-    //  SingleMust ((args.Definition.IsAggregatorInterface
-    //      || implementedInterfaces.Contains (args.Definition.Type) || introducedInterfaces.Contains (args.Definition.Type)), args.Log, args.Self);
-    //}
+    private void RequiredBaseCallTypeMustBePublic (DelegateValidationRule<RequiredBaseCallTypeDefinition>.Args args)
+    {
+      SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
+    }
+
   }
 }

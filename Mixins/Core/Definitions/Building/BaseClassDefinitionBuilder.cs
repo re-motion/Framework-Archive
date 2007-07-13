@@ -43,7 +43,7 @@ namespace Rubicon.Mixins.Definitions.Building
       ApplyExplicitFaceInterfaces(classDefinition, classContext);
 
       ApplyMixins (classDefinition, classContext);
-      ApplyBaseCallMethodRequirements (classDefinition);
+      ApplyMethodRequirements (classDefinition);
 
       ApplyOverrides (classDefinition);
       return classDefinition;
@@ -111,11 +111,17 @@ namespace Rubicon.Mixins.Definitions.Building
       return result;
     }
 
-    private void ApplyBaseCallMethodRequirements (BaseClassDefinition classDefinition)
+    private void ApplyMethodRequirements (BaseClassDefinition classDefinition)
     {
       RequiredBaseCallMethodDefinitionBuilder builder = new RequiredBaseCallMethodDefinitionBuilder (classDefinition);
       foreach (RequiredBaseCallTypeDefinition requirement in classDefinition.RequiredBaseCallTypes)
         builder.Apply (requirement);
+
+      foreach (RequirementDefinitionBase requirement in classDefinition.RequiredFaceTypes)
+      {
+        RequiredMethodDefinitionBuilder methodRequirementBuilder = new RequiredMethodDefinitionBuilder (requirement);
+        methodRequirementBuilder.Apply ();
+      }
     }
 
     private void ApplyOverrides (BaseClassDefinition definition)

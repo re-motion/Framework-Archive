@@ -84,8 +84,10 @@ namespace Rubicon.Mixins.Definitions
         return _depender.BaseClass;
       else if (_depender.BaseClass.IntroducedInterfaces.ContainsKey (RequiredType.Type))
         return _depender.BaseClass.IntroducedInterfaces[RequiredType.Type].Implementer;
+      else if (!RequiredType.IsEmptyInterface) // duck interface
+        return _depender.BaseClass; 
       else
-        return null;
+        return null; // empty interface that is neither introduced nor implemented
     }
   }
 }

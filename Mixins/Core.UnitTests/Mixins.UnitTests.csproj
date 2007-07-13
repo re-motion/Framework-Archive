@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ValidationSampleTypes\ClassLookingLikeBaseType3.cs" />
+    <Compile Include="SampleTypes\MixinsWithCircularDependencies.cs" />
+    <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirementsDuck.cs" />
+    <Compile Include="SampleTypes\ClassFulfillingNoMemberRequirements.cs" />
     <Compile Include="Configuration\ApplicationContextBuilderTests.cs" />
     <Compile Include="Configuration\ApplicationContextTests.cs" />
     <Compile Include="Configuration\AttributeDefinitionBuilderTests.cs" />
@@ -85,6 +89,7 @@
     <Compile Include="SampleTypes\ClassFulfillingAllMemberRequirements.cs" />
     <Compile Include="SampleTypes\ClassOverridingSingleMixinMethod.cs" />
     <Compile Include="SampleTypes\GenericBaseClass.cs" />
+    <Compile Include="SampleTypes\MixinFulfillingAllMemberRequirements.cs" />
     <Compile Include="SampleTypes\MixinRequiringAllMembers.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
@@ -98,7 +103,7 @@
     <Compile Include="Configuration\OverrideDefinitionBuilderTests.cs" />
     <Compile Include="Configuration\UnvalidatedDefinitionBuilder.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MixinIntroducingInternalInterface.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinWithInvisibleThisDependency.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinsWithInvisibleDependencies.cs" />
     <Compile Include="SampleTypes\BaseType6.cs" />
     <Compile Include="SampleTypes\BT6Mixin1.cs" />
     <Compile Include="SampleTypes\BT6Mixin2.cs" />
@@ -143,7 +148,7 @@
     <Compile Include="SampleTypes\ClassOverridingMixinMembers.cs" />
     <Compile Include="SampleTypes\ClassOverridingMixinMethodWrongSig.cs" />
     <Compile Include="SampleTypes\MixinWithClassBase.cs" />
-    <Compile Include="Configuration\ValidationSampleTypes\MixinWithUnsatisfiedThisDependency.cs" />
+    <Compile Include="Configuration\ValidationSampleTypes\MixinsWithUnsatisfiedEmptyDependencies.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\MultiAttribute.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\PublicNester.cs" />
     <Compile Include="Configuration\ValidationSampleTypes\ThrowingRuleSet.cs" />

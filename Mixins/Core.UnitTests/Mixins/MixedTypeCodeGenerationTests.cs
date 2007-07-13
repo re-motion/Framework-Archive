@@ -585,5 +585,27 @@ namespace Rubicon.Mixins.UnitTests.Mixins
 
       repository.VerifyAll ();
     }
+
+    [Test]
+    public void GeneratedTypeImplementsRequiredDuckInterfaces ()
+    {
+      ClassFulfillingAllMemberRequirementsDuck cfrd = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsDuck> ().With();
+      Assert.IsTrue (cfrd is IMixinRequiringAllMembersRequirements);
+      MixinRequiringAllMembers mixin = Mixin.Get<MixinRequiringAllMembers> (cfrd);
+      Assert.IsNotNull (mixin);
+      Assert.AreEqual (42, mixin.PropertyViaThis);
+    }
+
+    [Test]
+    public void CircularThisDependenciesWork ()
+    {
+      using (MixinConfiguration.ScopedExtend (typeof (object), typeof (MixinWithCircularThisDependency1), typeof (MixinWithCircularThisDependency2)))
+      {
+        object o = ObjectFactory.Create<object> ().With ();
+        ICircular2 c1 = (ICircular2) o;
+        Assert.AreEqual ("MixinWithCircularThisDependency2.Circular12-MixinWithCircularThisDependency1.Circular1-"
+            + "MixinWithCircularThisDependency2.Circular2", c1.Circular12 ());
+      }
+    }
   }
 }

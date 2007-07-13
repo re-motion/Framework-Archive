@@ -7,4 +7,8 @@ namespace Rubicon.Mixins.UnitTests.Configuration.ValidationSampleTypes
   class MixinWithInvisibleThisDependency : Mixin<IInvisible>
   {
   }
+
+  class MixinWithInvisibleBaseDependency : Mixin<object, IInvisible>
+  {
+  }
 }

@@ -53,8 +53,10 @@ namespace Rubicon.Mixins.Definitions.Building
 
       if (_declaringRequirement.BaseClass.ImplementedInterfaces.Contains (_declaringRequirement.Type))
         ApplyForImplementedInterface ();
+      else if (_declaringRequirement.BaseClass.IntroducedInterfaces.ContainsKey (_declaringRequirement.Type))
+        ApplyForIntroducedInterface ();
       else
-        ; // TODO
+        ApplyWithDuckTyping ();
     }
 
     private void ApplyForImplementedInterface ()
@@ -63,22 +65,77 @@ namespace Rubicon.Mixins.Definitions.Building
       for (int i = 0; i < interfaceMapping.InterfaceMethods.Length; ++i)
       {
         MethodInfo interfaceMethod = interfaceMapping.InterfaceMethods[i];
-        MethodDefinition implementingMethod;
-        if (_propertyGetters.ContainsKey (interfaceMethod))
-          implementingMethod = FindProperty (_propertyGetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).GetMethod;
-        else if (_propertySetters.ContainsKey (interfaceMethod))
-          implementingMethod = FindProperty (_propertySetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).SetMethod;
-        else if (_eventAdders.ContainsKey (interfaceMethod))
-          implementingMethod = FindEvent (_eventAdders[interfaceMethod], _declaringRequirement.BaseClass.Events).AddMethod;
-        else if (_eventRemovers.ContainsKey (interfaceMethod))
-          implementingMethod = FindEvent (_eventRemovers[interfaceMethod], _declaringRequirement.BaseClass.Events).RemoveMethod;
-        else
-          implementingMethod = _declaringRequirement.BaseClass.Methods[interfaceMapping.TargetMethods[i]];
-
+        MethodDefinition implementingMethod = _declaringRequirement.BaseClass.Methods[interfaceMapping.TargetMethods[i]];
+        if (implementingMethod == null)
+        {
+          // must be a special method
+          Assertion.Assert (interfaceMethod.IsSpecialName);
+          implementingMethod = FindMethodOnBaseIncludingSpecials (interfaceMethod);
+        }
         Assertion.Assert (implementingMethod != null);
 
+        AddRequiredMethod (interfaceMethod, implementingMethod);
+      }
+    }
+
+    private void ApplyForIntroducedInterface ()
+    {
+      InterfaceIntroductionDefinition introduction = _declaringRequirement.BaseClass.IntroducedInterfaces[_declaringRequirement.Type];
+      foreach (EventIntroductionDefinition eventIntroduction in introduction.IntroducedEvents)
+      {
+        AddRequiredMethod (eventIntroduction.InterfaceMember.GetAddMethod (), eventIntroduction.ImplementingMember.AddMethod);
+        AddRequiredMethod (eventIntroduction.InterfaceMember.GetRemoveMethod (), eventIntroduction.ImplementingMember.RemoveMethod);
+      }
+      foreach (PropertyIntroductionDefinition propertyIntroduction in introduction.IntroducedProperties)
+      {
+        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetGetMethod (), propertyIntroduction.ImplementingMember.GetMethod);
+        AddRequiredMethod (propertyIntroduction.InterfaceMember.GetSetMethod (), propertyIntroduction.ImplementingMember.SetMethod);
+      }
+      foreach (MethodIntroductionDefinition methodIntroduction in introduction.IntroducedMethods)
+        AddRequiredMethod (methodIntroduction.InterfaceMember, methodIntroduction.ImplementingMember);
+    }
+
+    private void ApplyWithDuckTyping ()
+    {
+      foreach (MethodInfo interfaceMethod in _declaringRequirement.Type.GetMethods ())
+      {
+        MethodDefinition implementingMethod = FindMethodOnBaseIncludingSpecials (interfaceMethod);
+        AddRequiredMethod (interfaceMethod, implementingMethod);
+      }
+    }
+
+    private void AddRequiredMethod (MethodInfo interfaceMethod, MethodDefinition implementingMethod)
+    {
+      if (interfaceMethod != null)
+      {
+        Assertion.Assert (implementingMethod != null);
         _declaringRequirement.Methods.Add (new RequiredMethodDefinition (_declaringRequirement, interfaceMethod, implementingMethod));
       }
+    }
+
+    private MethodDefinition FindMethodOnBaseIncludingSpecials (MethodInfo interfaceMethod)
+    {
+      if (_propertyGetters.ContainsKey (interfaceMethod))
+        return FindProperty (_propertyGetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).GetMethod;
+      else if (_propertySetters.ContainsKey (interfaceMethod))
+        return FindProperty (_propertySetters[interfaceMethod], _declaringRequirement.BaseClass.Properties).SetMethod;
+      else if (_eventAdders.ContainsKey (interfaceMethod))
+        return FindEvent (_eventAdders[interfaceMethod], _declaringRequirement.BaseClass.Events).AddMethod;
+      else if (_eventRemovers.ContainsKey (interfaceMethod))
+        return FindEvent (_eventRemovers[interfaceMethod], _declaringRequirement.BaseClass.Events).RemoveMethod;
+      else 
+        return FindMethod (interfaceMethod, _declaringRequirement.BaseClass.Methods);
+    }
+
+    private MethodDefinition FindMethod (MethodInfo interfaceMethod, UniqueDefinitionCollection<MethodInfo, MethodDefinition> methods)
+    {
+      foreach (MethodDefinition method in methods)
+      {
+        if (s_methodComparer.Equals (method.MethodInfo, interfaceMethod))
+          return method;
+      }
+
+      throw ConstructExceptionOnMemberNotFound ("method " + interfaceMethod.Name);
     }
 
     private PropertyDefinition FindProperty (PropertyInfo interfaceProperty, UniqueDefinitionCollection<PropertyInfo, PropertyDefinition> properties)
@@ -86,11 +143,10 @@ namespace Rubicon.Mixins.Definitions.Building
       foreach (PropertyDefinition property in properties)
       {
         if (s_propertyComparer.Equals (property.PropertyInfo, interfaceProperty))
-        {
           return property;
-        }
       }
-      return null;
+
+      throw ConstructExceptionOnMemberNotFound ("property " + interfaceProperty.Name);
     }
 
     private EventDefinition FindEvent (EventInfo interfaceEvent, UniqueDefinitionCollection<EventInfo, EventDefinition> events)
@@ -98,11 +154,19 @@ namespace Rubicon.Mixins.Definitions.Building
       foreach (EventDefinition eventInfo in events)
       {
         if (s_eventComparer.Equals (eventInfo.EventInfo, interfaceEvent))
-        {
           return eventInfo;
-        }
       }
-      return null;
+
+      throw ConstructExceptionOnMemberNotFound ("event " + interfaceEvent.Name);
+    }
+
+    private Exception ConstructExceptionOnMemberNotFound (string memberString)
+    {
+      string dependenciesString = CollectionStringBuilder.BuildCollectionString (_declaringRequirement.FindRequiringMixins (),
+          ", ", delegate (MixinDefinition m) { return m.FullName; });
+      string message = string.Format ("The dependency {0} (mixins {1} applied to class {2}) is not fulfilled - {3} could not be found on the "
+          + "base class.", _declaringRequirement.Type.Name, dependenciesString, _declaringRequirement.BaseClass.FullName, memberString);
+      throw new ConfigurationException (message);
     }
   }
 }

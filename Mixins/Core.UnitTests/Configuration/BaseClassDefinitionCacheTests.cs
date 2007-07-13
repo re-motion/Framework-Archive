@@ -75,10 +75,10 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ValidationException), ExpectedMessage = "could not be validated", MatchType = MessageMatch.Contains)]
+    [ExpectedException (typeof (ValidationException))]
     public void CacheValidatesWhenGeneratingDefinition()
     {
-      ClassContext cc = new ClassContext (typeof (BaseType1), typeof (BT3Mixin2));
+      ClassContext cc = new ClassContext (typeof (DateTime));
       BaseClassDefinitionCache.Current.GetBaseClassDefinition (cc);
     }
 

@@ -66,7 +66,8 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
         ImplementGetObjectData();
 
       ImplementIMixinTarget();
-      ImplementIntroducedInterfaces();
+      ImplementIntroducedInterfaces ();
+      ImplementRequiredDuckMethods ();
       ImplementOverrides();
 
       AddMixedTypeAttribute ();
@@ -250,6 +251,28 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
       ReplicateAttributes (eventIntro.ImplementingMember.CustomAttributes, eventEmitter);
       return eventEmitter;
+    }
+
+    private void ImplementRequiredDuckMethods ()
+    {
+      foreach (RequiredFaceTypeDefinition faceRequirement in Configuration.RequiredFaceTypes)
+      {
+        if (faceRequirement.Type.IsInterface && !Configuration.ImplementedInterfaces.Contains (faceRequirement.Type)
+            && !Configuration.IntroducedInterfaces.ContainsKey (faceRequirement.Type))
+        {
+          foreach (RequiredMethodDefinition requiredMethod in faceRequirement.Methods)
+            ImplementRequiredDuckMethod (requiredMethod);
+        }
+      }
+    }
+
+    private void ImplementRequiredDuckMethod (RequiredMethodDefinition requiredMethod)
+    {
+      Assertion.Assert (requiredMethod.ImplementingMethod.DeclaringClass == Configuration,
+        "Duck typing is only supported with members from the base type");
+
+      CustomMethodEmitter methodImplementation = _emitter.CreateMethodOverrideOrInterfaceImplementation (requiredMethod.InterfaceMethod);
+      methodImplementation.ImplementMethodByDelegation (SelfReference.Self, requiredMethod.ImplementingMethod.MethodInfo);
     }
 
     private void ImplementOverrides ()
