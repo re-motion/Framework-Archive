@@ -149,3 +149,4 @@ namespace Rubicon.Mixins.Definitions.Building
     }
   }
 }
+
