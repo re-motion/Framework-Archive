@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
       if (definition.QueryType != QueryType.Collection)
         throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", queryID), "queryID");
 
-      ClientTransaction clientTransaction = GetClientTransaction (businessObject);
+      ClientTransaction clientTransaction = ClientTransactionScope.CurrentTransaction;
 
       DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (new Query (definition));
       IBusinessObjectWithIdentity[] availableObjects = new IBusinessObjectWithIdentity[result.Count];
@@ -56,15 +56,6 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
     public IBusinessObject Create (IBusinessObject referencingObject)
     {
       throw new NotSupportedException ("Create method is not supported by Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.ReferenceProperty.");
-    }
-
-    private ClientTransaction GetClientTransaction (IBusinessObject businessObject)
-    {
-      DomainObject domainObject = businessObject as DomainObject;
-      if (domainObject != null)
-        return domainObject.InitialClientTransaction;
-      else
-        return ClientTransactionScope.CurrentTransaction;
     }
   }
 }

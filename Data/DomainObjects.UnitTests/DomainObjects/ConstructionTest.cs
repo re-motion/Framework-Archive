@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class ConstructionTest : StandardMappingTest
+  public class ConstructionTest : ClientTransactionBaseTest
   {
     [DBTable]
     public class DomainObjectWithSpecialConstructor : DomainObject
@@ -46,7 +46,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsNull (d2.S);
       Assert.AreSame (obj, d2.O);
     }
-
-
   }
 }

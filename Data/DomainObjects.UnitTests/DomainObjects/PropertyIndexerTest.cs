@@ -10,7 +10,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
   [TestFixture]
-  public class PropertyIndexerTest
+  public class PropertyIndexerTest : ClientTransactionBaseTest
   {
     [Test]
     public void WorksForExistingProperty()

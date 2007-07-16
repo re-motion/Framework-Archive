@@ -18,6 +18,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     // member fields
 
     private DomainObjectClass _domainObjectClass;
+    private ClientTransactionScope _transactionScope;
 
     // construction and disposing
 
@@ -30,7 +31,14 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
+      _transactionScope = new ClientTransactionScope ();
       _domainObjectClass = new DomainObjectClass (typeof (Order));
+    }
+
+    public override void TearDown ()
+    {
+      _transactionScope.Leave ();
+      base.TearDown ();
     }
 
     [Test]

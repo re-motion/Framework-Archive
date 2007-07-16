@@ -367,5 +367,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsTrue (order2.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       }
     }
+
+    [Test]
+    public void ResetScope ()
+    {
+      using (ClientTransactionScope scope = new ClientTransactionScope ())
+      {
+        Assert.IsNotNull (ClientTransactionScope.ActiveScope);
+        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
+        ClientTransactionScope.ResetActiveScope ();
+        Assert.IsNull (ClientTransactionScope.ActiveScope);
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+      }
+    }
   }
 }

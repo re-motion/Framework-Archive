@@ -62,7 +62,8 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <param name="transaction">The new transaction.</param>
   protected override void SetCurrentTransaction (ClientTransaction transaction)
   {
-    new ClientTransactionScope (transaction);
+    ClientTransactionScope.ResetActiveScope (); // throw away current scope (to avoid memory leaks)
+    new ClientTransactionScope (transaction); // set new scope
   }
 
   /// <summary>

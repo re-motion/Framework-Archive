@@ -4,18 +4,20 @@ using System.Runtime.Remoting.Messaging;
 namespace Rubicon.Data.DomainObjects
 {
   /// <summary>
-  /// Manages a thread's <see cref="CurrentTransaction"/> and provides a mechanism for temporarily setting it to a given
-  /// <see cref="ClientTransaction"/> instance in a scoped way. Optionally, the scope can also automatically rollback a transaction at the end
+  /// Manages a thread's <see cref="CurrentTransaction"/> in a scoped way. Optionally, it can also automatically roll back a transaction at the end
   /// of the scope.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// The constructor of this class temporarily sets <see cref="CurrentTransaction"/> to the given transaction intance, remembering
-  /// its previous value. The <see cref="Leave"/> method resets <see cref="CurrentTransaction"/> to the remembered value (executing the scope's
-  /// <see cref="AutoRollbackBehavior"/> as applicable). Employ a <c>using</c> block to set a new <see cref="CurrentTransaction"/> for the current
-  /// thread and to restore the previous transaction (and execute the <see cref="AutoRollbackBehavior"/>) in a scoped way. If
-  /// <see cref="Leave"/> is not called, the previous transaction is not automatically restored and the <see cref="AutoRollbackBehavior"/> is not
-  /// executed, but other than that no resource leaks or problems are to be expected.
+  /// The constructor of this class sets the <see cref="ClientTransactionScope.ActiveScope"/> property to the newly creates intance, storing its
+  /// previous value. The <see cref="Leave"/> method resets <see cref="ClientTransactionScope.ActiveScope"/> to that value (executing the scope's
+  /// <see cref="AutoRollbackBehavior"/> as applicable). Employ a <c>using</c> block to associate a new <see cref="ClientTransaction"/> with the
+  /// current thread and to restore the previous transaction (and execute the <see cref="AutoRollbackBehavior"/>) in a scoped way.
+  /// </para>
+  /// <para>
+  /// If <see cref="Leave"/> is not called (and the scope is not disposed of), the previous scope (and thus the previous transaction) is not
+  /// automatically restored and the <see cref="AutoRollbackBehavior"/> is not executed; also, the chain of stored previously active transactions
+  /// will become a memory leak unless <see cref="ResetActiveScope"/> is used.
   /// </para>
   /// </remarks>
   public class ClientTransactionScope : IDisposable
@@ -29,39 +31,45 @@ namespace Rubicon.Data.DomainObjects
     /// </remarks>
     public static bool HasCurrentTransaction
     {
-      get { return GetCurrentTransactionInternal () != null; }
+      get { return ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.ScopedTransaction != null; }
     }
 
     /// <summary>
-    /// Gets the default <b>ClientTransaction</b> of the current thread. 
+    /// Gets the <see cref="ClientTransaction"/> associated with the current thread. 
     /// </summary>
-    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, a new <see cref="ClientTransaction"/> is
-    /// created.</remarks>
+    /// <exception cref="InvalidOperationException"><see cref="CurrentTransaction"/> is being used, but no <see cref="ClientTransaction"/> has been
+    /// associated with the current thread.</exception>
+    /// <remarks>If there is no <see cref="ClientTransaction"/> associated with the current thread, this method throws an exception. It
+    /// <b>does not</b> automatically initialize a new transaction. Use a <see cref="ClientTransactionScope"/> to set the current thread's current
+    /// transaction.</remarks>
     public static ClientTransaction CurrentTransaction
     {
       get
       {
         if (!HasCurrentTransaction)
-          SetCurrentTransaction (new ClientTransaction ());
-
-        return GetCurrentTransactionInternal ();
+          throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
+        else
+          return ActiveScope.ScopedTransaction;
       }
     }
 
+    /// <summary>
+    /// Retrieves the active <see cref="ClientTransactionScope"/> for the current thread.
+    /// </summary>
+    /// <value>The current thread's active scope, or <see langword="null"/> if no scope is currently active.</value>
     public static ClientTransactionScope ActiveScope
     {
       get { return (ClientTransactionScope) CallContext.GetData (c_callContextScopeKey);}
     }
 
-    private static ClientTransaction GetCurrentTransactionInternal ()
+    /// <summary>
+    /// Resets the active scope to <see langword="null"/>, causing the previously active scopes to be removed even if they haven't been left.
+    /// </summary>
+    /// <remarks>This method can be used to implement a custom scoping mechanism, as it circumvents the need of calling a scope's <see cref="Leave"/>
+    /// method to avoid memory leaks. It should only be used in very special scenarios, however.</remarks>
+    public static void ResetActiveScope ()
     {
-      // TODO: change to use ActiveScope.ScopedTransaction when automatic transaction initialization is turned off
-      return (ClientTransaction) CallContext.GetData (c_callContextKey);
-    }
-
-    private static void SetCurrentTransaction (ClientTransaction clientTransaction)
-    {
-      CallContext.SetData (c_callContextKey, clientTransaction);
+      SetActiveScope (null);
     }
 
     private static void SetActiveScope (ClientTransactionScope scope)
@@ -69,60 +77,82 @@ namespace Rubicon.Data.DomainObjects
       CallContext.SetData (c_callContextScopeKey, scope);
     }
 
-    private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.CurrentTransaction";
     private const string c_callContextScopeKey = "Rubicon.Data.DomainObjects.ClientTransactionScope.ActiveScope";
 
     private ClientTransactionScope _previousScope;
-    private ClientTransaction _previousTransaction;
     private ClientTransaction _scopedTransaction;
     private bool _hasBeenLeft = false;
     private bool _autoEnlistDomainObjects = false;
     private AutoRollbackBehavior _autoRollbackBehavior;
 
     /// <summary>
-    /// Creates a new <see cref="ClientTransaction"/> and assigns it to the <see cref="CurrentTransaction"/> property.
+    /// Creates a new <see cref="ClientTransaction"/> and associates it with the current thread.
     /// </summary>
-    /// <remarks>By default, any changes made to the scope's transaction which are not committed are automatically rolled back at the end of the
-    /// scope. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    /// <remarks>
+    /// <para>
+    /// By default, any changes made to the scope's transaction which have not been committed are automatically rolled back when the scope is left
+    /// or disposed. See also <see cref="AutoRollbackBehavior"/>.
+    /// </para>
+    /// <para>
+    /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+    /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+    /// </para>
+    /// </remarks>
     public ClientTransactionScope ()
       : this (AutoRollbackBehavior.Rollback)
     {
     }
 
     /// <summary>
-    /// Creates a new <see cref="ClientTransaction"/> and assigns it to the <see cref="CurrentTransaction"/> property.
+    /// Creates a new <see cref="ClientTransaction"/> and associates it with the current thread, specifying the scope's automatic rollback behavior.
     /// </summary>
-    /// <param name="autoRollbackBehavior">Specifies the automatic rollback behavior to be exhibited by this scope.</param>
+    /// <param name="autoRollbackBehavior">The automatic rollback behavior to be exhibited by this scope.</param>
+    /// <remarks>
+    /// <para>
+    /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+    /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+    /// </para>
+    /// </remarks>
     public ClientTransactionScope (AutoRollbackBehavior autoRollbackBehavior)
       : this (new ClientTransaction (), autoRollbackBehavior)
     {
     }
 
     /// <summary>
-    /// Temporarily sets <see cref="CurrentTransaction"/>.
+    /// Associates a <see cref="ClientTransaction"/> with the current thread.
     /// </summary>
-    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
-    /// <remarks>By default, no changes made within the scope are automatically rolled back. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object used as the current transaction until the scope is left.</param>
+    /// <remarks>
+    /// <para>
+    /// By default, no changes made within the scope are automatically rolled back. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    /// </para>
+    /// <para>
+    /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+    /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+    /// </para>
+    /// </remarks>
     public ClientTransactionScope (ClientTransaction scopedCurrentTransaction)
         : this (scopedCurrentTransaction, AutoRollbackBehavior.None)
     {
     }
 
     /// <summary>
-    /// Temporarily sets <see cref="CurrentTransaction"/>.
+    /// Associates a <see cref="ClientTransaction"/> with the current thread, specifying the scope's automatic rollback behavior.
     /// </summary>
-    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object temporarily used as the current transaction.</param>
-    /// <param name="autoRollbackBehavior">Specifies the automatic rollback behavior to be exhibited by this scope.</param>
+    /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object used as the current transaction until the scope is left.</param>
+    /// <param name="autoRollbackBehavior">The automatic rollback behavior to be exhibited by this scope.</param>
+    /// <remarks>
+    /// <para>
+    /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's
+    /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
+    /// </para>
+    /// </remarks>
     public ClientTransactionScope (ClientTransaction scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior)
     {
       _autoRollbackBehavior = autoRollbackBehavior;
 
       _previousScope = ClientTransactionScope.ActiveScope;
 
-      if (ClientTransactionScope.HasCurrentTransaction)
-        _previousTransaction = ClientTransactionScope.CurrentTransaction;
-
-      ClientTransactionScope.SetCurrentTransaction (scopedCurrentTransaction);
       ClientTransactionScope.SetActiveScope (this);
       _scopedTransaction = scopedCurrentTransaction;
     }
@@ -170,7 +200,6 @@ namespace Rubicon.Data.DomainObjects
         throw new InvalidOperationException ("The ClientTransactionScope has already been left.");
 
       ExecuteAutoRollbackBehavior ();
-      ClientTransactionScope.SetCurrentTransaction (_previousTransaction);
       ClientTransactionScope.SetActiveScope (_previousScope);
       _hasBeenLeft = true;
     }

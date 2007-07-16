@@ -32,10 +32,13 @@ namespace Rubicon.Data.DomainObjects.PerformanceTests
       _clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID ("File", Guid.NewGuid());
 
-      Client.NewObject();
-      File.NewObject();
-      Company.NewObject();
-      Person.NewObject();
+      using (new ClientTransactionScope ())
+      {
+        Client.NewObject();
+        File.NewObject();
+        Company.NewObject();
+        Person.NewObject();
+      }
     }
 
     [Test]

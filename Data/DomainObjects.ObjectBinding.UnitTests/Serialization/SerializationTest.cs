@@ -16,10 +16,23 @@ public class SerializationTest : DatabaseTest
 
   // member fields
 
+  private ClientTransactionScope _transactionScope;
+
   // construction and disposing
 
   public SerializationTest ()
   {
+  }
+
+  public override void SetUp ()
+  {
+    base.SetUp ();
+    _transactionScope = new ClientTransactionScope ();
+  }
+
+  public override void TearDown ()
+  {
+    _transactionScope.Leave ();
   }
 
   // methods and properties

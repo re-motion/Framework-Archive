@@ -15,6 +15,7 @@ public class ReferencePropertyTest : DatabaseTest
 	{
 	}
 
+  private ClientTransactionScope _transactionScope;
   private ClientTransaction _clientTransaction;
   private Order _order;
   private OrderTicket _orderTicket;
@@ -25,31 +26,52 @@ public class ReferencePropertyTest : DatabaseTest
   {
     base.SetUp ();
 
-    _clientTransaction = new ClientTransaction ();
-    using (new ClientTransactionScope (_clientTransaction))
-    {
-      _order = new Order();
-      _orderTicket = new OrderTicket (_order);
-    }
+    _transactionScope = new ClientTransactionScope ();
+    _clientTransaction = _transactionScope.ScopedTransaction;
+
+    _order = new Order();
+    _orderTicket = new OrderTicket (_order);
     _orderTicketBusinessObjectClass = new DomainObjectClass (MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (OrderTicket)));
+  }
+
+  public override void TearDown ()
+  {
+    _transactionScope.Leave ();
+    base.TearDown ();
   }
 
   [Test]
   public void SearchAvailableObjectsWithDomainObject ()
   {
-    ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty (), true, null, false);
+    ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty(), true, null, false);
 
     IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (_orderTicket, true, "AllOrders");
-    
+
     Assert.IsNotNull (businessObjects);
     Assert.IsTrue (businessObjects.Length > 0);
-    
+
     Order order = (Order) businessObjects[0];
     Assert.AreSame (_orderTicket.InitialClientTransaction, order.InitialClientTransaction);
-    Assert.AreNotSame (ClientTransactionScope.CurrentTransaction, order.InitialClientTransaction);
-    Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
     Assert.IsTrue (order.CanBeUsedInTransaction (_clientTransaction));
-    
+  }
+
+  [Test]
+  public void SearchAvailableObjectsUsesCurrentTransaction ()
+  {
+    using (new ClientTransactionScope ())
+    {
+      ReferenceProperty referenceProperty = new ReferenceProperty (_orderTicketBusinessObjectClass, GetOrderProperty(), true, null, false);
+
+      IBusinessObject[] businessObjects = referenceProperty.SearchAvailableObjects (_orderTicket, true, "AllOrders");
+
+      Assert.IsNotNull (businessObjects);
+      Assert.IsTrue (businessObjects.Length > 0);
+
+      Order order = (Order) businessObjects[0];
+      Assert.AreNotSame (_orderTicket.InitialClientTransaction, order.InitialClientTransaction);
+      Assert.AreSame (ClientTransactionScope.CurrentTransaction, order.InitialClientTransaction);
+      Assert.IsFalse (order.CanBeUsedInTransaction (_clientTransaction));
+    }
   }
 
   [Test]

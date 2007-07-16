@@ -550,11 +550,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void AutoInitializationOfCurrent ()
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "No ClientTransaction has been associated with the current thread.")]
+    public void NoAutoInitializationOfCurrent ()
     {
       using (new ClientTransactionScope (null))
       {
-        Assert.IsNotNull (ClientTransactionScope.CurrentTransaction);
+        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
+        ClientTransaction transaction = ClientTransactionScope.CurrentTransaction;
       }
     }
 
@@ -565,12 +567,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void HasCurrentFalse ()
+    public void HasCurrentFalseViaNullTransaction ()
     {
       using (new ClientTransactionScope (null))
       {
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       }
+    }
+
+    [Test]
+    public void HasCurrentFalseViaNullScope ()
+    {
+      ClientTransactionScope.ResetActiveScope ();
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
