@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.Security;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject
@@ -11,6 +12,13 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public virtual void SetUp ()
     {
       SecurityAdapterRegistry.Instance.SetAdapter (typeof (IObjectSecurityAdapter), null);
+      BindableObjectProvider.SetCurrent (null);
+    }
+
+    [TearDown]
+    public virtual void TearDown ()
+    {
+      BindableObjectProvider.SetCurrent (null);      
     }
 
     protected PropertyInfo GetPropertyInfo (Type type, string propertyName)

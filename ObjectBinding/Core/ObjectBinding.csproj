@@ -99,6 +99,9 @@
   <ItemGroup>
     <Compile Include="BindableObjectAttribute.cs" />
     <Compile Include="BindableObject\BindableObjectClass.cs" />
+    <Compile Include="BindableObject\BindableObjectDataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="BindableObject\BindableObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
@@ -121,6 +124,15 @@
     <Compile Include="BindableObject\Properties\EnumerationProperty.cs" />
     <Compile Include="BindableObject\Properties\Int32Property.cs" />
     <Compile Include="BindableObject\Properties\NumericPropertyBase.cs" />
+    <Compile Include="BusinessObjectReferenceDataSourceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataSourceMode.cs" />
+    <Compile Include="Design\BindableObjectTypePickerEditor.cs" />
+    <Compile Include="Design\DropDownEditorBase.cs" />
+    <Compile Include="Design\EditorControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DisableEnumValuesAttribute.cs" />
     <Compile Include="DatePropertyAttribute.cs" />
     <Compile Include="Globalization\BindableObjectGlobalizationService.Designer.cs">
@@ -130,6 +142,8 @@
     </Compile>
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="BindableObject\IEnumerationValueFilter.cs" />
+    <Compile Include="IBusinessObjectDataSource.cs" />
+    <Compile Include="IBusinessObjectReferenceDataSource.cs" />
     <Compile Include="ObjectBindingAttribute.cs" />
     <Compile Include="ItemTypeAttribute.cs" />
     <Compile Include="ListInfo.cs" />
@@ -158,7 +172,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Design\PropertyPathPickerEditor.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Design\PropertyPickerControl.cs">
       <SubType>UserControl</SubType>

@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       base.SetUp ();
 
-      _type = typeof (SimpleClass);
+      _type = typeof (SimpleBusinessObjectClass);
       _businessObjectProvider = new BindableObjectProvider ();
       _classReflector = new ClassReflector (_type, _businessObjectProvider);
     }
@@ -34,7 +34,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       BindableObjectClass bindableObjectClass = _classReflector.GetMetadata ();
 
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleClass)));
+      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (bindableObjectClass.GetPropertyDefinitions()[0].Identifier, Is.EqualTo ("String"));
       Assert.That (bindableObjectClass.GetPropertyDefinitions ()[0].BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }

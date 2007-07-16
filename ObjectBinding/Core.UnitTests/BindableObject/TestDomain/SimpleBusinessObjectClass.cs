@@ -3,11 +3,11 @@ using System;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
   [BindableObject]
-  public class SimpleClass
+  public class SimpleBusinessObjectClass
   {
     private string _string;
 
-    public SimpleClass ()
+    public SimpleBusinessObjectClass ()
     {
     }
 

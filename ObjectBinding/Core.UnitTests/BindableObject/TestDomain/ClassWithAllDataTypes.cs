@@ -16,7 +16,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
     private short _int16;
     private int _int32;
     private long _int64;
-    private SimpleClass _businessObject;
+    private SimpleBusinessObjectClass _businessObject;
     private float _single;
     private string _string;
 
@@ -91,7 +91,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
       set { _int64 = value; }
     }
 
-    public SimpleClass BusinessObject
+    public SimpleBusinessObjectClass BusinessObject
     {
       get { return _businessObject; }
       set { _businessObject = value; }

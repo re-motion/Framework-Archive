@@ -2,7 +2,7 @@ using System;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  public class SimpleReferenceType
+  public sealed class SimpleReferenceType
   {
   }
 }

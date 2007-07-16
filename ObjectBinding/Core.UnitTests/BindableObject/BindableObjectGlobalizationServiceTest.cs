@@ -74,7 +74,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetPropertyDisplayName_WithoutMultiLingualResourcesAttribute ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleClass), "String");
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       Assert.That (_globalizationService.GetPropertyDisplayName (propertyInfo), Is.EqualTo ("String"));
     }
 

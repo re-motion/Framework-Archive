@@ -88,7 +88,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleClass), "String");
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
               _bindableObjectProvider, propertyInfo, null, false, false));
@@ -109,7 +109,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyBaseTests
     {
       PropertyBase property = new StubPropertyBase (
           new PropertyBase.Parameters (
-              _bindableObjectProvider, GetPropertyInfo (typeof (SimpleClass), "String"), null, false, false));
+              _bindableObjectProvider, GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), null, false, false));
 
       Assert.That (property.DisplayName, Is.EqualTo ("String"));
     }

@@ -8,19 +8,25 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectProvider : BusinessObjectProvider
   {
-    private static readonly BindableObjectProvider s_instance;
+    private static readonly DoubleCheckedLockingContainer<BindableObjectProvider> s_current =
+        new DoubleCheckedLockingContainer<BindableObjectProvider> (CreateBindableObjectProvider);
 
-    static BindableObjectProvider ()
+    public static BindableObjectProvider Current
+    {
+      get { return s_current.Value; }
+    }
+
+    public static void SetCurrent (BindableObjectProvider provider)
+    {
+      s_current.Value = provider;
+    }
+
+    private static BindableObjectProvider CreateBindableObjectProvider ()
     {
       BindableObjectProvider provider = new BindableObjectProvider();
       provider.AddService (typeof (IBindableObjectGlobalizationService), new BindableObjectGlobalizationService());
 
-      s_instance = provider;
-    }
-
-    public static BindableObjectProvider Instance
-    {
-      get { return s_instance; }
+      return provider;
     }
 
     private readonly InterlockedCache<Type, BindableObjectClass> _businessObjectClassCache = new InterlockedCache<Type, BindableObjectClass>();

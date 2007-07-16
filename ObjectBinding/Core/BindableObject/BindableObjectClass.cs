@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -10,12 +11,13 @@ namespace Rubicon.ObjectBinding.BindableObject
   {
     private readonly Type _type;
     private readonly BindableObjectProvider _businessObjectProvider;
-    private readonly PropertyCollection _properties = new PropertyCollection ();
+    private readonly PropertyCollection _properties = new PropertyCollection();
 
-   public BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
+    public BindableObjectClass (Type type, BindableObjectProvider businessObjectProvider)
     {
       //TODO: Check for value type
       ArgumentUtility.CheckNotNull ("type", type);
+      CheckTypeForBindableObjectMixin (type);
       ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
 
       _type = type;
@@ -101,6 +103,21 @@ namespace Rubicon.ObjectBinding.BindableObject
 
       foreach (PropertyBase property in properties)
         _properties.Add (property);
+    }
+
+    private void CheckTypeForBindableObjectMixin (Type type)
+    {
+      if (!MixinConfiguration.ActiveContext.ContainsClassContext (type.IsGenericType ? type.GetGenericTypeDefinition() : type)
+          || !TypeFactory.GetActiveConfiguration (type).Mixins.ContainsKey (typeof (BindableObjectMixin)))
+      {
+        throw new ArgumentException (
+            string.Format (
+                "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
+                type.FullName,
+                typeof (IBusinessObject).FullName,
+                typeof (BindableObjectMixin).FullName),
+            "type");
+      }
     }
   }
 }

@@ -16,29 +16,48 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _bindableObjectProvider = new BindableObjectProvider ();
+      _bindableObjectProvider = new BindableObjectProvider();
     }
 
     [Test]
     public void Initialize ()
     {
-      ClassReflector classReflector = new ClassReflector (typeof (SimpleClass), _bindableObjectProvider);
-      BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (SimpleBusinessObjectClass), _bindableObjectProvider);
 
-      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleClass)));
+      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (
           bindableObjectClass.Identifier,
-          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.SimpleClass, Rubicon.ObjectBinding.UnitTests"));
+          Is.EqualTo ("Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.SimpleBusinessObjectClass, Rubicon.ObjectBinding.UnitTests"));
       Assert.That (bindableObjectClass.RequiresWriteBack, Is.False);
       Assert.That (bindableObjectClass.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
     }
 
     [Test]
+    public void Initialize_WithGeneric ()
+    {
+      BindableObjectClass bindableObjectClass = new BindableObjectClass (typeof (ClassWithReferenceType<SimpleReferenceType>), _bindableObjectProvider);
+
+      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ClassWithReferenceType<SimpleReferenceType>)));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        ExpectedMessage =
+        "Type 'Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain.SimpleReferenceType' does not implement the "
+        + "'Rubicon.ObjectBinding.IBusinessObject' interface via the 'Rubicon.ObjectBinding.BindableObject.BindableObjectMixin'.\r\n"
+        + "Parameter name: type")]
+    public void Initialize_WithTypeNotUsingBindableObjectMixin ()
+    {
+      new BindableObjectClass (typeof (SimpleReferenceType), _bindableObjectProvider);
+    }
+
+    [Test]
     public void GetPropertyDefinition ()
     {
-      PropertyReflector propertyReflector = new PropertyReflector (GetPropertyInfo (typeof (SimpleClass), "String"), _bindableObjectProvider);
+      PropertyReflector propertyReflector =
+          new PropertyReflector (GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"), _bindableObjectProvider);
       ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
       BindableObjectClass bindableObjectClass = classReflector.GetMetadata();
 
