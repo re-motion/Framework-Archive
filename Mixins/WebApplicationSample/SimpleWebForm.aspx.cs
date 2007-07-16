@@ -34,11 +34,6 @@ namespace WebApplicationSample
       placeholder.Controls.Add (loadedControl);
     }
 
-    public override void RenderControl (HtmlTextWriter writer)
-    {
-      base.RenderControl (writer);
-    }
-
     public virtual string GetGreetings ()
     {
       return "Hi from SimpleWebForm!";

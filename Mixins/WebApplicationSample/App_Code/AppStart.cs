@@ -23,6 +23,7 @@ namespace WebApplicationSample.App_Code
   {
     public static void AppInitialize ()
     {
+      Trace.WriteLine ("Entering AppInitialize", "INFO");
       Dictionary<string, Type> baseNameToConcreteTypeMap = PrepareMixinAssembly ();
       HostingEnvironment.RegisterVirtualPathProvider (new MixinAwareVirtualPathProvider (baseNameToConcreteTypeMap));
     }
@@ -81,6 +82,9 @@ namespace WebApplicationSample.App_Code
           Type mixedType = ConcreteTypeBuilder.Current.GetConcreteType (baseClassDefinition);
           baseNameToConcreteTypeMap.Add (baseClassDefinition.FullName, mixedType);
 
+          Trace.WriteLine (string.Format ("{0} -> {1} ({2} mixins)", baseClassDefinition.FullName, mixedType.FullName,
+              baseClassDefinition.Mixins.Count), "INFO");
+
           foreach (MixinDefinition mixinDefinition in baseClassDefinition.Mixins)
           {
             if (mixinDefinition.HasOverriddenMembers ())
@@ -88,6 +92,8 @@ namespace WebApplicationSample.App_Code
               // prepare type for mixin with overridden members
               Type mixinType = ConcreteTypeBuilder.Current.GetConcreteMixinType (mixinDefinition);
               baseNameToConcreteTypeMap.Add (mixinDefinition.FullName, mixinType);
+
+              Trace.WriteLine (string.Format ("{0} -> {1}", mixinDefinition.FullName, mixinType.FullName));
             }
           }
         }

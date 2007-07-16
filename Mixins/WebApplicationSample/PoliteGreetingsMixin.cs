@@ -21,7 +21,7 @@ namespace WebApplicationSample
     [Override]
     public virtual string GetGreetings ()
     {
-      return "My good, dear old friend. I feel most honoured by your visit. Let me show you something: " + Base.GetGreetings ();
+      return "This is the mixin - base text: " + Base.GetGreetings ();
     }
   }
 }
