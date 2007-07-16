@@ -211,25 +211,52 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
-    public void OverridingInheritedClassMethod ()
+    public void OverridingProtectedInheritedClassMethod ()
     {
       BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("InheritedMethod")];
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInheritedMethod",
+          BindingFlags.NonPublic | BindingFlags.Instance)];
       Assert.IsNotNull (inheritedMethod);
       Assert.AreEqual (1, inheritedMethod.Overrides.Count);
       Assert.AreSame (
-          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("InheritedMethod")],
+          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInheritedMethod")],
           inheritedMethod.Overrides[0]);
     }
 
     [Test]
-    public void OverridingInheritedMixinMethod ()
+    public void OverridingPublicInheritedClassMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("PublicInheritedMethod")];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.AreEqual (1, inheritedMethod.Overrides.Count);
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("PublicInheritedMethod")],
+          inheritedMethod.Overrides[0]);
+    }
+
+    [Test]
+    public void OverridingProtectedInheritedMixinMethod ()
     {
       BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
-      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("InheritedMethod")];
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInheritedMethod")];
       Assert.IsNotNull (inheritedMethod);
       Assert.IsNotNull (inheritedMethod.Base);
-      Assert.AreSame (baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[typeof (BaseMixinWithInheritedMethod).GetMethod ("InheritedMethod")],
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
+              typeof (BaseMixinWithInheritedMethod).GetMethod ("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)],
+          inheritedMethod.Base);
+    }
+
+    [Test]
+    public void OverridingPublicInheritedMixinMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("PublicInheritedMethod")];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.IsNotNull (inheritedMethod.Base);
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[typeof (BaseMixinWithInheritedMethod).GetMethod ("PublicInheritedMethod")],
           inheritedMethod.Base);
     }
   }

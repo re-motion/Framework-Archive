@@ -6,26 +6,42 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   {
     public interface IBaseMethods
     {
-      string InheritedMethod ();
+      string ProtectedInheritedMethod ();
+      string PublicInheritedMethod ();
     }
 
     [Override]
-    public string InheritedMethod ()
+    public string ProtectedInheritedMethod ()
     {
-      return "MixinOverridingInheritedMethod.InheritedMethod-" + Base.InheritedMethod ();
+      return "MixinOverridingInheritedMethod.ProtectedInheritedMethod-" + Base.ProtectedInheritedMethod ();
+    }
+
+    [Override]
+    public string PublicInheritedMethod ()
+    {
+      return "MixinOverridingInheritedMethod.PublicInheritedMethod-" + Base.PublicInheritedMethod ();
     }
   }
 
   public class BaseClassWithInheritedMethod
   {
-    public virtual string InheritedMethod ()
+    protected virtual string ProtectedInheritedMethod ()
     {
-      return "BaseClassWithInheritedMethod.InheritedMethod";
+      return "BaseClassWithInheritedMethod.ProtectedInheritedMethod";
+    }
+
+    public virtual string PublicInheritedMethod ()
+    {
+      return "BaseClassWithInheritedMethod.PublicInheritedMethod";
     }
   }
 
   [Uses (typeof (MixinOverridingInheritedMethod))]
   public class ClassWithInheritedMethod : BaseClassWithInheritedMethod
   {
+    public string InvokeInheritedMethods ()
+    {
+      return ProtectedInheritedMethod ()+ "-" + PublicInheritedMethod();
+    }
   }
 }
