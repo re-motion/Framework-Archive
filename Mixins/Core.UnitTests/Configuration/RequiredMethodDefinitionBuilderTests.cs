@@ -298,5 +298,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         CheckRequiredMethods (requirement, definition, typeof (IMixinRequiringAllMembersRequirements).FullName + ".");
       }
     }
+
+    [Test]
+    public void NoRequiredMethodsWhenFaceRequirementIsClass ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithStaticMethod));
+      RequiredFaceTypeDefinition requirement = baseClass.RequiredFaceTypes[typeof (ClassWithStaticMethod)];
+      Assert.AreEqual (0, requirement.Methods.Count);
+    }
   }
 }
