@@ -21,8 +21,8 @@ namespace Rubicon.ObjectBinding.Design
     private System.Windows.Forms.CheckBox ClassFilterCheck;
     private System.Windows.Forms.TreeView PathTree;
 
-    public PropertyPathPickerControl (IBusinessObjectClassSource classSource, IWindowsFormsEditorService editorService)
-      :base (editorService)
+    public PropertyPathPickerControl (IBusinessObjectClassSource classSource, IServiceProvider provider, IWindowsFormsEditorService editorService)
+      : base (provider, editorService)
     {
       ArgumentUtility.CheckNotNull ("classSource", classSource);
 

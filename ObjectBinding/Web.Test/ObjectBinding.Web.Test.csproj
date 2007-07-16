@@ -132,6 +132,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindableObjectTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>BindableObjectTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BindableObjectTest.aspx.designer.cs">
+      <DependentUpon>BindableObjectTest.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -357,6 +364,7 @@
       <DependentUpon>WebUserControl1.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="BindableObjectTest.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
     </Content>

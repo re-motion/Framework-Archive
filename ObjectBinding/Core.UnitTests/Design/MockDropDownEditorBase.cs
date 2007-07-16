@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Design
   {
     public abstract EditorControlBase NewCreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService);
 
-    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService)
+    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IServiceProvider provider, IWindowsFormsEditorService editorService)
     {
       return NewCreateEditorControl (context, editorService);
     }

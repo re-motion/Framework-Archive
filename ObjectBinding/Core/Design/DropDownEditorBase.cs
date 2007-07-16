@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding.Design
     {
     }
 
-    protected abstract EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService);
+    protected abstract EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IServiceProvider provider, IWindowsFormsEditorService editorService);
 
     public override object EditValue (ITypeDescriptorContext context, IServiceProvider provider, object value)
     {
@@ -21,8 +21,7 @@ namespace Rubicon.ObjectBinding.Design
 
         if (editorService != null)
         {
-          EditorControlBase control = CreateEditorControl (context, editorService);
-
+          EditorControlBase control = CreateEditorControl (context, provider, editorService);
           control.Value = (string) value;
           editorService.DropDownControl (control);
           value = control.Value;

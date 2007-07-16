@@ -19,8 +19,8 @@ namespace Rubicon.ObjectBinding.Design
     /// </summary>
     private System.ComponentModel.Container components = null;
 
-    public PropertyPickerControl (IBusinessObjectBoundControl control, IWindowsFormsEditorService editorService)
-        : base (editorService)
+    public PropertyPickerControl (IBusinessObjectBoundControl control, IServiceProvider provider, IWindowsFormsEditorService editorService)
+      : base (provider, editorService)
     {
       ArgumentUtility.CheckNotNull ("control", control);
 

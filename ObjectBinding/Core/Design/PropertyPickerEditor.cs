@@ -10,16 +10,17 @@ namespace Rubicon.ObjectBinding.Design
   /// </summary>
   public class PropertyPickerEditor : DropDownEditorBase
   {
-    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService)
+    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IServiceProvider provider, IWindowsFormsEditorService editorService)
     {
       ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("provider", provider);
       ArgumentUtility.CheckNotNull ("editorService", editorService);
 
       IBusinessObjectBoundControl control = context.Instance as IBusinessObjectBoundControl;
       if (control == null)
         throw new InvalidOperationException ("Cannot use PropertyPickerEditor for objects other than IBusinessObjectBoundControl.");
 
-      return new PropertyPickerControl (control, editorService);
+      return new PropertyPickerControl (control, provider, editorService);
     }
   }
 }

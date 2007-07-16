@@ -128,11 +128,22 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSourceMode.cs" />
-    <Compile Include="Design\BindableObjectTypePickerEditor.cs" />
+    <Compile Include="Design\BindableObjectTypePickerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\BindableObjectTypePickerControl.Designer.cs">
+      <DependentUpon>BindableObjectTypePickerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Design\BindableObjectTypePickerEditor.cs">
+    </Compile>
+    <Compile Include="Design\ConcreteEditorControlBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Design\DropDownEditorBase.cs" />
     <Compile Include="Design\EditorControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Design\EditorControlBaseClassProvider.cs" />
     <Compile Include="DisableEnumValuesAttribute.cs" />
     <Compile Include="DatePropertyAttribute.cs" />
     <Compile Include="Globalization\BindableObjectGlobalizationService.Designer.cs">
@@ -191,6 +202,10 @@
     <Compile Include="UndefinedEnumValueAttribute.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.build" />
+    <EmbeddedResource Include="Design\BindableObjectTypePickerControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BindableObjectTypePickerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Design\PropertyPathPickerControl.resx">
       <DependentUpon>PropertyPathPickerControl.cs</DependentUpon>
     </EmbeddedResource>

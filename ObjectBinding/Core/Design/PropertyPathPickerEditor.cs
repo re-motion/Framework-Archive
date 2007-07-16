@@ -11,16 +11,17 @@ namespace Rubicon.ObjectBinding.Design
   /// </summary>
   public class PropertyPathPickerEditor : DropDownEditorBase
   {
-    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IWindowsFormsEditorService editorService)
+    protected override EditorControlBase CreateEditorControl (ITypeDescriptorContext context, IServiceProvider provider, IWindowsFormsEditorService editorService)
     {
       ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("provider", provider);
       ArgumentUtility.CheckNotNull ("editorService", editorService);
 
       IBusinessObjectClassSource propertySource = context.Instance as IBusinessObjectClassSource;
       if (propertySource == null)
         throw new InvalidOperationException ("Cannot use PropertyPathPickerEditor for objects other than IBusinessObjectClassSource.");
 
-      return new PropertyPathPickerControl (propertySource, editorService);
+      return new PropertyPathPickerControl (propertySource, provider, editorService);
     }
   }
 }

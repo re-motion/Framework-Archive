@@ -28,7 +28,7 @@ namespace Rubicon.ObjectBinding.UnitTests.Design
       _mockServiceProvider = _mockRepository.CreateMock<IServiceProvider>();
       _mockWindowsFormsEditorService = _mockRepository.CreateMock<IWindowsFormsEditorService>();
       _mockDropDownEditorBase = _mockRepository.PartialMock<MockDropDownEditorBase>();
-      _mockEditorControlBase = _mockRepository.PartialMock<EditorControlBase> (_mockWindowsFormsEditorService);
+      _mockEditorControlBase = _mockRepository.PartialMock<EditorControlBase> (_mockServiceProvider, _mockWindowsFormsEditorService);
     }
 
     [Test]

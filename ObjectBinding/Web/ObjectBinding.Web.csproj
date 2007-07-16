@@ -115,6 +115,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\Controls\BindableObjectDataSourceControl.cs">
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -287,6 +289,7 @@
     <Compile Include="UI\Design\ComponentBindingExpressionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Design\BindableObjectDataSourceDesigner.cs" />
     <Compile Include="UI\Design\PropertyPathBindingCollectionEditor.cs">
       <SubType>Code</SubType>
     </Compile>
