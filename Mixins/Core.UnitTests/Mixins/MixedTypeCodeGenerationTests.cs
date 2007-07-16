@@ -650,5 +650,13 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual ("ClassImplementingIndirectRequirements.Method1-ClassImplementingIndirectRequirements.BaseMethod1-"
           + "ClassImplementingIndirectRequirements.Method3", mixin.GetStuffViaThis ());
     }
+
+    [Test]
+    public void MixinOverridingInheritedClassMethod ()
+    {
+      ClassWithInheritedMethod cwim = ObjectFactory.Create<ClassWithInheritedMethod> ().With ();
+      Assert.AreEqual ("MixinOverridingInheritedMethod.InheritedMethod-BaseClassWithInheritedMethod.InheritedMethod",
+          cwim.InheritedMethod ());
+    }
   }
 }

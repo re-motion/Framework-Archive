@@ -13,33 +13,41 @@ namespace Rubicon.Mixins.UnitTests.Configuration
   public class DependencyDefinitionBuilderTests
   {
     [Test]
-    [Ignore ("Needs fix")]
     public void FaceInterfaces ()
     {
-      using (MixinConfiguration.ScopedExtend(Assembly.GetExecutingAssembly ()))
-      {
-        BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
 
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType31)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType32)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType33)));
-        Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType2)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType31)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType32)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType33)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType2)));
 
-        List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
-        Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
-        Assert.Contains (baseClass.Mixins[typeof (BT3Mixin4)], requirers, "indirect dependency");
-        Assert.Contains (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin6<,>)), requirers);
-        Assert.Contains (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)), requirers);
-        Assert.AreEqual (4, requirers.Count);
+      List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
+      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin1)], requirers);
+      Assert.Contains (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin6<,>)), requirers);
+      Assert.AreEqual (2, requirers.Count);
 
-        Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
-        Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsAggregatorInterface);
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsEmptyInterface);
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IBaseType31)].IsAggregatorInterface);
 
-        baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
-        requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (ICBaseType3BT3Mixin4)].FindRequiringMixins());
-        Assert.Contains (baseClass.Mixins[typeof (BT3Mixin7Face)], requirers);
-      }
+      baseClass = UnvalidatedDefinitionBuilder.BuildUnvalidatedDefinition (typeof (BaseType3), typeof (BT3Mixin4), typeof (BT3Mixin7Face));
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ICBaseType3BT3Mixin4)));
+      requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (ICBaseType3BT3Mixin4)].FindRequiringMixins());
+      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin7Face)], requirers);
+
+      requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (BaseType3)].FindRequiringMixins ());
+      Assert.Contains (baseClass.Mixins[typeof (BT3Mixin4)], requirers);
+      Assert.AreEqual (1, requirers.Count);
+    }
+
+    [Test]
+    public void FaceInterfacesWithOpenGenericTypes ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (BaseType3));
+
+      Assert.IsFalse (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)).ThisDependencies.ContainsKey (typeof (IBaseType31)));
+      Assert.IsFalse (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)).ThisDependencies.ContainsKey (typeof (IBaseType33)));
+      Assert.IsTrue (baseClass.GetMixinByConfiguredType (typeof (BT3Mixin3<,>)).ThisDependencies.ContainsKey (typeof (BaseType3)));
     }
 
     [Test]

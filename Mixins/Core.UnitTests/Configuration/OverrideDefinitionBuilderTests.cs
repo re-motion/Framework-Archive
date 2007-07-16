@@ -209,5 +209,28 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         TypeFactory.GetActiveConfiguration (typeof (ClassOverridingMixinMembers));
       }
     }
+
+    [Test]
+    public void OverridingInheritedClassMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("InheritedMethod")];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.AreEqual (1, inheritedMethod.Overrides.Count);
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("InheritedMethod")],
+          inheritedMethod.Overrides[0]);
+    }
+
+    [Test]
+    public void OverridingInheritedMixinMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("InheritedMethod")];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.IsNotNull (inheritedMethod.Base);
+      Assert.AreSame (baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[typeof (BaseMixinWithInheritedMethod).GetMethod ("InheritedMethod")],
+          inheritedMethod.Base);
+    }
   }
 }
