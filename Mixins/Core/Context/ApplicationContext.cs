@@ -175,7 +175,7 @@ namespace Rubicon.Mixins.Context
           {
             string message = string.Format ("The ApplicationContext contains a ClassContext for the generic type {0}, of which it cannot make a "
                 + "closed type. Because closed types are needed for validation, the ApplicationContext cannot be validated as a whole. The "
-                + "configuration might still be correct, but validation is deferred to TypeFactory.GetActiveConfiguration.", classContext.Type);
+                + "configuration might still be correct, but validation must be deferred to TypeFactory.GetActiveConfiguration.", classContext.Type);
             throw new NotSupportedException (message, ex);
           }
         }
