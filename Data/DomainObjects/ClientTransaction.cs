@@ -76,13 +76,15 @@ public class ClientTransaction : ITransaction
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event ClientTransactionEventHandler RolledBack;
 
-  private bool _isReadOnly;
-  private DataManager _dataManager;
+  private readonly ClientTransaction _parentTransaction;
+  private readonly DataManager _dataManager;
   private QueryManager _queryManager;
-  private Dictionary<Enum, object> _applicationData;
-  private CompoundClientTransactionListener _listeners;
-  private ClientTransactionExtensionCollection _extensions;
+  private readonly Dictionary<Enum, object> _applicationData;
+  private readonly CompoundClientTransactionListener _listeners;
+  private readonly ClientTransactionExtensionCollection _extensions;
 
+  private bool _isReadOnly;
+  
   // construction and disposing
 
   /// <summary>
@@ -102,12 +104,40 @@ public class ClientTransaction : ITransaction
     _applicationData = new Dictionary<Enum, object> ();
   }
 
+  /// <summary>
+  /// Initializes a new subtransaction.
+  /// </summary>
+  public ClientTransaction (ClientTransaction parentTransaction) : this ()
+  {
+    ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
+
+    _parentTransaction = parentTransaction;
+    parentTransaction.IsReadOnly = true;
+  }
+
   // methods and properties
 
+  /// <summary>
+  /// Indicates whether this transaction is set read-only.
+  /// </summary>
+  /// <value>True if this instance is set read-only; otherwise, false.</value>
+  /// <remarks>Transactions are set read-only while there exist open subtransactions for them. A read-only transaction can only be used for
+  /// operations that do not cause any change of transaction state. Most reading operations that do not require objects to be loaded
+  /// from the data store are safe to be used on read-only transactions, but any method that would cause a state change will throw an exception.
+  /// </remarks>
   public bool IsReadOnly
   {
     get { return _isReadOnly; }
     internal protected set { _isReadOnly = value; }
+  }
+
+  /// <summary>
+  /// Gets the parent transaction for this <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <value>The parent transaction.</value>
+  public ClientTransaction ParentTransaction
+  {
+    get { return _parentTransaction; }
   }
 
   /// <summary>
