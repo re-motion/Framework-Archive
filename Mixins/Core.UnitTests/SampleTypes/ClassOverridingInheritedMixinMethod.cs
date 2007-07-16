@@ -12,6 +12,12 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     }
 
     [Override]
+    public string ProtectedInternalInheritedMethod ()
+    {
+      return "ClassOverridingInheritedMixinMethod.ProtectedInternalInheritedMethod";
+    }
+
+    [Override]
     public string PublicInheritedMethod ()
     {
       return "ClassOverridingInheritedMixinMethod.PublicInheritedMethod";
@@ -25,6 +31,11 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
       return "BaseMixinWithInheritedMethod.ProtectedInheritedMethod";
     }
 
+    protected internal virtual string ProtectedInternalInheritedMethod ()
+    {
+      return "BaseMixinWithInheritedMethod.ProtectedInternalInheritedMethod";
+    }
+
     public virtual string PublicInheritedMethod ()
     {
       return "BaseMixinWithInheritedMethod.PublicInheritedMethod";
@@ -35,7 +46,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   {
     public string InvokeInheritedMethods ()
     {
-      return ProtectedInheritedMethod () + "-" + PublicInheritedMethod();
+      return ProtectedInheritedMethod () + "-" + ProtectedInternalInheritedMethod() + "-" + PublicInheritedMethod();
     }
   }
 }

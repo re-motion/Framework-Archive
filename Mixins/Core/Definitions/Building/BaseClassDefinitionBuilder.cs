@@ -7,6 +7,7 @@ using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Utilities.DependencySort;
 using Rubicon.Collections;
 using Rubicon.Utilities;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.Definitions.Building
 {
@@ -145,7 +146,7 @@ namespace Rubicon.Mixins.Definitions.Building
 
     private bool IsVisibleToInheritorsOrExplicitInterfaceImpl (MethodInfo method)
     {
-      return method.IsPublic || method.IsFamily || (method.IsPrivate && method.IsVirtual);
+      return ReflectionUtility.IsPublicOrProtectedOrExplicit (method);
     }
   }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 
 namespace Rubicon.Mixins.Validation.Rules
@@ -28,7 +29,7 @@ namespace Rubicon.Mixins.Validation.Rules
     {
       ConstructorInfo defaultCtor = args.Definition.Type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null, Type.EmptyTypes, null);
-      SingleMust (!args.Definition.HasOverriddenMembers() || (defaultCtor != null && (defaultCtor.IsPublic || defaultCtor.IsFamily)),
+      SingleMust (!args.Definition.HasOverriddenMembers() || (defaultCtor != null && ReflectionUtility.IsPublicOrProtected (defaultCtor)),
           args.Log, args.Self);
     }
   }

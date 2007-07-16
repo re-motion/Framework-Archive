@@ -121,7 +121,9 @@ namespace Rubicon.Mixins.UnitTests.Mixins
     {
       ClassOverridingInheritedMixinMethod coimm = ObjectFactory.Create<ClassOverridingInheritedMixinMethod> ().With ();
       MixinWithInheritedMethod mixin = Mixin.Get<MixinWithInheritedMethod> (coimm);
-      Assert.AreEqual ("ClassOverridingInheritedMixinMethod.ProtectedInheritedMethod-ClassOverridingInheritedMixinMethod.PublicInheritedMethod",
+      Assert.AreEqual ("ClassOverridingInheritedMixinMethod.ProtectedInheritedMethod-"
+          + "ClassOverridingInheritedMixinMethod.ProtectedInternalInheritedMethod-"
+          + "ClassOverridingInheritedMixinMethod.PublicInheritedMethod",
           mixin.InvokeInheritedMethods ());
     }
   }

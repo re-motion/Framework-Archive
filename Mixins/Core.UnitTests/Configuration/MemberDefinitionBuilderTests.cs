@@ -294,5 +294,13 @@ namespace Rubicon.Mixins.UnitTests.Configuration
 
       Assert.AreEqual (10, new List<MemberDefinition> (d.GetAllMembers ()).Count);
     }
+
+    [Test]
+    public void ProtectedInternalMembers ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      Assert.IsTrue (baseClass.Methods.ContainsKey (typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
+          BindingFlags.Instance | BindingFlags.NonPublic)));
+    }
   }
 }

@@ -7,6 +7,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     public interface IBaseMethods
     {
       string ProtectedInheritedMethod ();
+      string ProtectedInternalInheritedMethod ();
       string PublicInheritedMethod ();
     }
 
@@ -14,6 +15,12 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
     public string ProtectedInheritedMethod ()
     {
       return "MixinOverridingInheritedMethod.ProtectedInheritedMethod-" + Base.ProtectedInheritedMethod ();
+    }
+
+    [Override]
+    public string ProtectedInternalInheritedMethod ()
+    {
+      return "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-" + Base.ProtectedInternalInheritedMethod ();
     }
 
     [Override]
@@ -25,6 +32,11 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
 
   public class BaseClassWithInheritedMethod
   {
+    protected internal virtual string ProtectedInternalInheritedMethod ()
+    {
+      return "BaseClassWithInheritedMethod.ProtectedInternalInheritedMethod";
+    }
+
     protected virtual string ProtectedInheritedMethod ()
     {
       return "BaseClassWithInheritedMethod.ProtectedInheritedMethod";
@@ -41,7 +53,7 @@ namespace Rubicon.Mixins.UnitTests.SampleTypes
   {
     public string InvokeInheritedMethods ()
     {
-      return ProtectedInheritedMethod ()+ "-" + PublicInheritedMethod();
+      return ProtectedInheritedMethod ()+ "-" + ProtectedInternalInheritedMethod() + "-" +  PublicInheritedMethod();
     }
   }
 }

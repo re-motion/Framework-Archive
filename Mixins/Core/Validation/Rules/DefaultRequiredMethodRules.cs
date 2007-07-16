@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 
 namespace Rubicon.Mixins.Validation.Rules
@@ -15,7 +16,7 @@ namespace Rubicon.Mixins.Validation.Rules
     private void RequiredBaseCallMethodMustBePublicOrProtected (DelegateValidationRule<RequiredMethodDefinition>.Args args)
     {
       SingleMust (!(args.Definition.DeclaringRequirement is RequiredBaseCallTypeDefinition)
-          || args.Definition.ImplementingMethod.MethodInfo.IsPublic || args.Definition.ImplementingMethod.MethodInfo.IsFamily, args.Log, args.Self);
+          || ReflectionUtility.IsPublicOrProtected (args.Definition.ImplementingMethod.MethodInfo), args.Log, args.Self);
     }
   }
 }

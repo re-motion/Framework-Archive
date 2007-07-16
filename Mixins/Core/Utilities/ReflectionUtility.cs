@@ -16,6 +16,18 @@ namespace Rubicon.Mixins.Utilities
       return typeToCheck.Equals (expectedType) || (typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition().Equals (expectedType));
     }
 
+    public static bool IsPublicOrProtected (MethodBase methodToCheck)
+    {
+      ArgumentUtility.CheckNotNull ("methodToCheck", methodToCheck);
+      return methodToCheck.IsPublic || methodToCheck.IsFamily || methodToCheck.IsFamilyOrAssembly;
+    }
+
+    public static bool IsPublicOrProtectedOrExplicit (MethodBase methodToCheck)
+    {
+      ArgumentUtility.CheckNotNull ("methodToCheck", methodToCheck);
+      return IsPublicOrProtected (methodToCheck) || (methodToCheck.IsPrivate && methodToCheck.IsVirtual);
+    }
+
     public static bool IsNewSlotMember (MemberInfo member)
     {
       ArgumentUtility.CheckNotNull ("member", member);

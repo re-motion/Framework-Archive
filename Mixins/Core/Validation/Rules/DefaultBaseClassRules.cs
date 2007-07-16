@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Mixins.Definitions;
+using Rubicon.Mixins.Utilities;
 using Rubicon.Mixins.Validation;
 using System.Reflection;
 
@@ -33,7 +34,8 @@ namespace Rubicon.Mixins.Validation.Rules
     private void BaseClassMustHavePublicOrProtectedCtor (DelegateValidationRule<BaseClassDefinition>.Args args)
     {
       ConstructorInfo[] ctors = args.Definition.Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-      ConstructorInfo[] publicOrProtectedCtors = Array.FindAll (ctors, delegate (ConstructorInfo ctor) { return ctor.IsPublic || ctor.IsFamily; });
+      ConstructorInfo[] publicOrProtectedCtors = Array.FindAll (ctors,
+          delegate (ConstructorInfo ctor) { return ReflectionUtility.IsPublicOrProtected (ctor); });
       SingleMust (publicOrProtectedCtors.Length > 0, args.Log, args.Self);
     }
   }

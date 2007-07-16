@@ -4,6 +4,7 @@ using Rubicon.Mixins.Utilities;
 using NUnit.Framework;
 using Rubicon;
 using Rubicon.Collections;
+using System.Reflection;
 
 namespace Rubicon.Mixins.UnitTests.Utilities
 {
@@ -179,6 +180,46 @@ namespace Rubicon.Mixins.UnitTests.Utilities
       Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<>)));
       Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
       Assert.IsFalse (ReflectionUtility.IsSameOrSubclassIgnoreGenerics (typeof (object), typeof (GenericSub<string>)));
+    }
+
+    interface IInterface
+    {
+      void Explicit ();
+    }
+
+    class ClassWithAllVisibilityMethods : IInterface
+    {
+      public void Public () { }
+      protected void Protected () { }
+      protected internal void ProtectedInternal () { }
+      internal void Internal () { }
+      private void Private () { }
+
+      void IInterface.Explicit () { }
+    }
+
+    [Test]
+    public void IsPublicOrProtected ()
+    {
+      BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Public", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Protected", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtected (typeof (ClassWithAllVisibilityMethods).GetMethod ("Rubicon.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
+    }
+
+    [Test]
+    public void IsPublicOrProtectedOrExplicitInterface ()
+    {
+      BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Public", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Protected", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("ProtectedInternal", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Internal", bf)));
+      Assert.IsFalse (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Private", bf)));
+      Assert.IsTrue (ReflectionUtility.IsPublicOrProtectedOrExplicit (typeof (ClassWithAllVisibilityMethods).GetMethod ("Rubicon.Mixins.UnitTests.Utilities.ReflectionUtilityTests.IInterface.Explicit", bf)));
     }
   }
 }

@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
-using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 using Rubicon;
 using Rubicon.Utilities;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
@@ -101,7 +99,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
       ConstructorInfo[] constructors = BaseType.GetConstructors (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       foreach (ConstructorInfo constructor in constructors)
       {
-        if (constructor.IsPublic | constructor.IsFamily)
+        if (ReflectionUtility.IsPublicOrProtected (constructor))
         {
           ReplicateBaseTypeConstructor (constructor, postBaseCallInitializationStatements);
         }
@@ -145,7 +143,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
             CallingConventions.Any,
             new Type[] {typeof (SerializationInfo), typeof (StreamingContext)},
             null);
-        if (baseConstructor == null || (!baseConstructor.IsPublic && !baseConstructor.IsFamily))
+        if (baseConstructor == null || !ReflectionUtility.IsPublicOrProtected (baseConstructor))
         {
           string message = string.Format (
               "No public or protected deserialization constructor in type {0} - this is not supported.",
@@ -155,7 +153,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
         MethodInfo baseGetObjectDataMethod =
             BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (baseGetObjectDataMethod == null || (!baseGetObjectDataMethod.IsPublic && !baseGetObjectDataMethod.IsFamily))
+        if (baseGetObjectDataMethod == null || !ReflectionUtility.IsPublicOrProtected (baseGetObjectDataMethod))
         {
           string message = string.Format ("No public or protected GetObjectData in {0} - this is not supported.", BaseType.FullName);
           throw new NotSupportedException (message);

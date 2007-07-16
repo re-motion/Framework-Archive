@@ -224,6 +224,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
     }
 
     [Test]
+    public void OverridingProtectedInternalInheritedClassMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (BaseClassWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod",
+          BindingFlags.NonPublic | BindingFlags.Instance)];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.AreEqual (1, inheritedMethod.Overrides.Count);
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinOverridingInheritedMethod)].Methods[typeof (MixinOverridingInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod")],
+          inheritedMethod.Overrides[0]);
+    }
+
+    [Test]
     public void OverridingPublicInheritedClassMethod ()
     {
       BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassWithInheritedMethod));
@@ -245,6 +258,19 @@ namespace Rubicon.Mixins.UnitTests.Configuration
       Assert.AreSame (
           baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
               typeof (BaseMixinWithInheritedMethod).GetMethod ("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)],
+          inheritedMethod.Base);
+    }
+
+    [Test]
+    public void OverridingProtectedInternelInheritedMixinMethod ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassOverridingInheritedMixinMethod));
+      MethodDefinition inheritedMethod = baseClass.Methods[typeof (ClassOverridingInheritedMixinMethod).GetMethod ("ProtectedInternalInheritedMethod")];
+      Assert.IsNotNull (inheritedMethod);
+      Assert.IsNotNull (inheritedMethod.Base);
+      Assert.AreSame (
+          baseClass.Mixins[typeof (MixinWithInheritedMethod)].Methods[
+              typeof (BaseMixinWithInheritedMethod).GetMethod ("ProtectedInternalInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)],
           inheritedMethod.Base);
     }
 

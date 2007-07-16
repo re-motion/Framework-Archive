@@ -13,6 +13,7 @@ using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Rubicon.Mixins.CodeGeneration.DynamicProxy.DPExtensions;
 
 using Rubicon.Text;
+using ReflectionUtility=Rubicon.Mixins.Utilities.ReflectionUtility;
 
 namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 {
@@ -340,7 +341,7 @@ namespace Rubicon.Mixins.CodeGeneration.DynamicProxy
 
     private MethodInfo ImplementBaseCallMethod (MethodInfo method)
     {
-      Assertion.Assert (method.IsPublic || method.IsFamily);
+      Assertion.Assert (ReflectionUtility.IsPublicOrProtected (method));
 
       MethodAttributes attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
       CustomMethodEmitter baseCallMethod = new CustomMethodEmitter (Emitter.InnerEmitter, "__base__" + method.Name, attributes);
