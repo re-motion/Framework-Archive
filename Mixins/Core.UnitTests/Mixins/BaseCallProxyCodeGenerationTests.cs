@@ -164,5 +164,15 @@ namespace Rubicon.Mixins.UnitTests.Mixins
           + "DuckBaseMixin.ProtectedMethodImplementedOnBase-BaseTypeWithDuckBaseMixin.ProtectedMethodImplementedOnBase",
           duckBase.MethodImplementedOnBase ());
     }
+
+    [Test]
+    public void BaseCallsToIndirectlyRequiredInterfaces ()
+    {
+      ClassImplementingIndirectRequirements ciir = ObjectFactory.Create<ClassImplementingIndirectRequirements> ().With ();
+      MixinWithIndirectRequirements mixin = Mixin.Get<MixinWithIndirectRequirements> (ciir);
+      Assert.AreEqual ("ClassImplementingIndirectRequirements.Method1-ClassImplementingIndirectRequirements.BaseMethod1-"
+          + "ClassImplementingIndirectRequirements.Method3", mixin.GetStuffViaBase ());
+    }
+
   }
 }

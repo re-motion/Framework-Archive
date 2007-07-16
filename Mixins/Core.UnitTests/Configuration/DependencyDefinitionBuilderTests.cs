@@ -22,8 +22,6 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType31)));
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType32)));
         Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType33)));
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType34)), "indirect dependency via BT3Mixin4");
-        Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType35)), "indirect dependency via BT3Mixin4");
         Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IBaseType2)));
 
         List<MixinDefinition> requirers = new List<MixinDefinition> (baseClass.RequiredFaceTypes[typeof (IBaseType31)].FindRequiringMixins());
@@ -408,6 +406,91 @@ namespace Rubicon.Mixins.UnitTests.Configuration
         Assert.IsFalse (requirement.IsAggregatorInterface);
         Assert.AreSame (m1, dependency.GetImplementer());
       }
+    }
+
+    [Test]
+    public void IndirectThisDependencies ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingIndirectRequirements));
+      MixinDefinition mixin = baseClass.Mixins[typeof (MixinWithIndirectRequirements)];
+      Assert.IsNotNull (mixin);
+
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectThisAggregator)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes[typeof (IIndirectThisAggregator)].IsAggregatorInterface);
+      
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirement1)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IIndirectRequirement1)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirementBase1)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IIndirectRequirementBase1)].IsAggregatorInterface);
+
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirement2)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes[typeof (IIndirectRequirement2)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirementBase2)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IIndirectRequirementBase2)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredFaceTypes[typeof (IIndirectRequirementBase2)].IsEmptyInterface);
+
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirement3)));
+      Assert.IsTrue (baseClass.RequiredFaceTypes[typeof (IIndirectRequirement3)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (IIndirectRequirementBase3)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IIndirectRequirementBase3)].IsAggregatorInterface);
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (IIndirectRequirementBase3)].IsEmptyInterface);
+
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectThisAggregator)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirement1)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirement2)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirement3)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirementBase1)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirementBase2)));
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (IIndirectRequirementBase3)));
+    }
+
+    [Test]
+    public void IndirectBaseDependencies ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingIndirectRequirements));
+      MixinDefinition mixin = baseClass.Mixins[typeof (MixinWithIndirectRequirements)];
+      Assert.IsNotNull (mixin);
+
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectBaseAggregator)));
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes[typeof (IIndirectBaseAggregator)].IsAggregatorInterface);
+
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirement1)));
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes[typeof (IIndirectRequirement1)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirementBase1)));
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes[typeof (IIndirectRequirementBase1)].IsAggregatorInterface);
+
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirement2)));
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirementBase2)));
+
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirement3)));
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes[typeof (IIndirectRequirement3)].IsAggregatorInterface);
+      Assert.IsTrue (baseClass.RequiredBaseCallTypes.ContainsKey (typeof (IIndirectRequirementBase3)));
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes[typeof (IIndirectRequirementBase3)].IsAggregatorInterface);
+      Assert.IsFalse (baseClass.RequiredBaseCallTypes[typeof (IIndirectRequirementBase3)].IsEmptyInterface);
+
+      Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IIndirectBaseAggregator)));
+      Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirement1)));
+      Assert.IsFalse (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirement2)));
+      Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirement3)));
+      Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirementBase1)));
+      Assert.IsFalse (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirementBase2)));
+      Assert.IsTrue (mixin.BaseDependencies.ContainsKey (typeof (IIndirectRequirementBase3)));
+    }
+
+    [Test]
+    public void NoIndirectDependenciesForClassFaces ()
+    {
+      BaseClassDefinition baseClass = TypeFactory.GetActiveConfiguration (typeof (ClassImplementingInternalInterface));
+      MixinDefinition mixin = baseClass.Mixins[typeof (MixinWithClassFaceImplementingInternalInterface)];
+      Assert.IsNotNull (mixin);
+      Assert.IsTrue (baseClass.RequiredFaceTypes.ContainsKey (typeof (ClassImplementingInternalInterface)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes[typeof (ClassImplementingInternalInterface)].IsAggregatorInterface);
+      Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IInternalInterface1)));
+      Assert.IsFalse (baseClass.RequiredFaceTypes.ContainsKey (typeof (IInternalInterface2)));
+
+      Assert.IsTrue (mixin.ThisDependencies.ContainsKey (typeof (ClassImplementingInternalInterface)));
+      Assert.IsFalse (mixin.ThisDependencies.ContainsKey (typeof (IInternalInterface1)));
+      Assert.IsFalse (mixin.ThisDependencies.ContainsKey (typeof (IInternalInterface2)));
     }
   }
 }

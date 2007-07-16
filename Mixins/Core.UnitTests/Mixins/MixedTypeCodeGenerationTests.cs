@@ -633,5 +633,22 @@ namespace Rubicon.Mixins.UnitTests.Mixins
       Assert.AreEqual ("DuckFaceMixin.CallMethodsOnThis-DuckFaceMixin.MethodImplementedOnBase-BaseTypeWithDuckFaceMixin.ProtectedMethodImplementedOnBase",
           Mixin.Get<DuckFaceMixin> (duckFace).CallMethodsOnThis());
     }
+
+    [Test]
+    public void ThisCallToClassImplementingInternalInterface ()
+    {
+      ClassImplementingInternalInterface ciii = ObjectFactory.Create<ClassImplementingInternalInterface> ().With();
+      MixinWithClassFaceImplementingInternalInterface mixin = Mixin.Get<MixinWithClassFaceImplementingInternalInterface> (ciii);
+      Assert.AreEqual ("ClassImplementingInternalInterface.Foo", mixin.GetStringViaThis ());
+    }
+
+    [Test]
+    public void ThisCallsToIndirectlyRequiredInterfaces ()
+    {
+      ClassImplementingIndirectRequirements ciir = ObjectFactory.Create<ClassImplementingIndirectRequirements> ().With ();
+      MixinWithIndirectRequirements mixin = Mixin.Get<MixinWithIndirectRequirements> (ciir);
+      Assert.AreEqual ("ClassImplementingIndirectRequirements.Method1-ClassImplementingIndirectRequirements.BaseMethod1-"
+          + "ClassImplementingIndirectRequirements.Method3", mixin.GetStuffViaThis ());
+    }
   }
 }

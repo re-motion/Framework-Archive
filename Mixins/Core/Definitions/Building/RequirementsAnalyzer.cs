@@ -96,8 +96,12 @@ namespace Rubicon.Mixins.Definitions.Building
       Debug.Assert (!requiredType.IsGenericParameter);
       if (!requirements.ContainsKey (requiredType))
         requirements.Add (requiredType, requiredType);
-      foreach (Type inheritedInterface in requiredType.GetInterfaces())
-        AnalyzeRequirementForType (inheritedInterface, requirements);
+
+      if (requiredType.IsInterface) // if this is an interface, add all inherited interfaces as requirements as well
+      {
+        foreach (Type inheritedInterface in requiredType.GetInterfaces())
+          AnalyzeRequirementForType (inheritedInterface, requirements);
+      }
     }
   }
 }

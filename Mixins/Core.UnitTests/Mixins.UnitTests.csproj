@@ -95,6 +95,8 @@
     <Compile Include="SampleTypes\GenericBaseClass.cs" />
     <Compile Include="SampleTypes\MixinFulfillingAllMemberRequirements.cs" />
     <Compile Include="SampleTypes\MixinRequiringAllMembersFace.cs" />
+    <Compile Include="SampleTypes\MixinWithClassFaceImplementingInternalInterface.cs" />
+    <Compile Include="SampleTypes\MixinWithIndirectRequirements.cs" />
     <Compile Include="SampleTypes\MixinWithSingleAbstractMethod.cs" />
     <Compile Include="SampleTypes\DuckBaseMixin.cs" />
     <Compile Include="Utilities\DependencySortTest.cs" />
