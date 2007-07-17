@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Rubicon.ObjectBinding.Design;
+using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -49,7 +49,7 @@ namespace Rubicon.ObjectBinding.BindableObject
       
       if (IsDesignMode)
       {
-        BindableObjectProvider designModeProvider = new BindableObjectProvider();
+        BindableObjectProvider designModeProvider = BindableObjectProvider.CreateDesignModeBindableObjectProvider();
         return designModeProvider.GetBindableObjectClass (Type);
       }
 

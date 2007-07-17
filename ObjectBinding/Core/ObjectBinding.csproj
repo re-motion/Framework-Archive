@@ -106,6 +106,7 @@
     <Compile Include="BindableObject\BindableObjectMixin.cs" />
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />
+    <Compile Include="BindableObject\DesignModeBindableObjectProvider.cs" />
     <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />
     <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
     <Compile Include="BindableObject\Properties\GuidProperty.cs" />
@@ -128,14 +129,16 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataSourceMode.cs" />
-    <Compile Include="Design\BindableObjectTypePickerControl.cs">
+    <Compile Include="Design\BindableObject\BindableObjectTypeFinder.cs" />
+    <Compile Include="Design\BindableObject\BindableObjectTypePickerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Design\BindableObjectTypePickerControl.Designer.cs">
+    <Compile Include="Design\BindableObject\BindableObjectTypePickerControl.Designer.cs">
       <DependentUpon>BindableObjectTypePickerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Design\BindableObjectTypePickerEditor.cs">
+    <Compile Include="Design\BindableObject\BindableObjectTypePickerEditor.cs">
     </Compile>
+    <Compile Include="Design\BindableObject\TypeTreeViewController.cs" />
     <Compile Include="Design\ConcreteEditorControlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -202,7 +205,7 @@
     <Compile Include="UndefinedEnumValueAttribute.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.build" />
-    <EmbeddedResource Include="Design\BindableObjectTypePickerControl.resx">
+    <EmbeddedResource Include="Design\BindableObject\BindableObjectTypePickerControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BindableObjectTypePickerControl.cs</DependentUpon>
     </EmbeddedResource>

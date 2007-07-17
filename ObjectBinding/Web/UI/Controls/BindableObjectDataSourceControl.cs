@@ -3,8 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
 using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.ObjectBinding.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
@@ -31,6 +30,12 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
     protected override IBusinessObjectDataSource GetDataSource ()
     {
       return _dataSource;
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+      _dataSource.Site = Site;
     }
   }
 }

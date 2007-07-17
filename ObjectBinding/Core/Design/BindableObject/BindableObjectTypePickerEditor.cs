@@ -3,9 +3,8 @@ using System.ComponentModel;
 using System.Windows.Forms.Design;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Design
+namespace Rubicon.ObjectBinding.Design.BindableObject
 {
-  //TODO: doc
   public class BindableObjectTypePickerEditor : DropDownEditorBase
   {
     public BindableObjectTypePickerEditor ()
