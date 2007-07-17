@@ -174,7 +174,7 @@ public class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/>.
+  /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
   /// <remarks>
   /// <para>
@@ -183,6 +183,9 @@ public class ClientTransaction : ITransaction
   /// </para>
   /// <para>
   ///   The order of the extensions in this collection is the order in which they are notified.
+  /// </para>
+  /// <para>
+  /// Note that the collection of extensions is the same for a parent transactions and all of its (direct and indirect) substransactions.
   /// </para>
   /// </remarks>
   public ClientTransactionExtensionCollection Extensions
@@ -847,9 +850,17 @@ public class ClientTransaction : ITransaction
 
   /// <summary>
   /// Gets a <see cref="System.Collections.Generic.Dictionary {TKey, TValue}"/> to store application specific objects 
-  /// within the <see cref="ClientTransaction"/> which have the same lifetime.<br/>
-  /// To store and access values create project specific <see cref="System.Enum"/>(s) which ensure namespace separation of keys in the dictionary.
+  /// within the <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
+  /// <remarks>
+  /// <para>
+  /// To store and access values create project specific <see cref="System.Enum"/>(s) which ensure namespace separation of keys in the dictionary.
+  /// </para>
+  /// <para>
+  /// Note that the application data collection is not managed in a transactional way. Also, it is the same for a parent transactions and all of
+  /// its (direct and indirect) substransactions.
+  /// </para>
+  /// </remarks>
   public Dictionary<Enum, object> ApplicationData
   {
     get { return _applicationData; }
