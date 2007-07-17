@@ -50,6 +50,8 @@
     <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilterTest.cs" />
+    <Compile Include="BindableObject\Design\SearchFieldControllerTest.cs" />
+    <Compile Include="BindableObject\Design\TypeTreeViewControllerTest.cs" />
     <Compile Include="BindableObject\GuidPropertyTest.cs" />
     <Compile Include="BindableObject\DisableEnumValuesAttributeTest.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\ConvertFromNativePropertyType.cs" />

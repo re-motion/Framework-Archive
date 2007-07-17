@@ -1,23 +1,32 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Design.BindableObject
 {
-  public class TypeTreeViewController
+  public class TypeTreeViewController : ControllserBase
   {
+    public enum TreeViewIcons
+    {
+      [EnumDescription ("VSObject_Assembly.bmp")]
+      Assembly,
+      [EnumDescription ("VSObject_Namespace.bmp")]
+      Namespace,
+      [EnumDescription ("VSObject_Class.bmp")]
+      Class = 2
+    }
+
     private readonly List<Type> _types;
     private readonly TreeView _treeView;
 
     public TypeTreeViewController (List<Type> types, TreeView treeView)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("types", types);
-      ArgumentUtility.CheckNotNull ("treeView", treeView);
-
       _types = types;
       _treeView = treeView;
+      _treeView.ImageList = CreateImageList (TreeViewIcons.Assembly, TreeViewIcons.Namespace, TreeViewIcons.Class);
     }
 
     public List<Type> Types
@@ -68,6 +77,8 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         assemblyNode.Name = assemblyName.FullName;
         assemblyNode.Text = assemblyName.Name;
         assemblyNode.ToolTipText = assemblyName.FullName;
+        assemblyNode.ImageKey = TreeViewIcons.Assembly.ToString ();
+        assemblyNode.SelectedImageKey = TreeViewIcons.Assembly.ToString ();
 
         assemblyNodes.Add (assemblyNode);
       }
@@ -83,6 +94,9 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         namespaceNode = new TreeNode();
         namespaceNode.Name = type.Namespace;
         namespaceNode.Text = type.Namespace;
+        namespaceNode.ImageKey = TreeViewIcons.Namespace.ToString();
+        namespaceNode.SelectedImageKey = TreeViewIcons.Namespace.ToString ();
+
 
         namespaceNodes.Add (namespaceNode);
       }
@@ -99,6 +113,8 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
         typeNode.Name = TypeUtility.GetPartialAssemblyQualifiedName (type);
         typeNode.Text = type.Name;
         typeNode.Tag = type;
+        typeNode.ImageKey = TreeViewIcons.Class.ToString ();
+        typeNode.SelectedImageKey = TreeViewIcons.Class.ToString ();
 
         typeNodes.Add (typeNode);
       }

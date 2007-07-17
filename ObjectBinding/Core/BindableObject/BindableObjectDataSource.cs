@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using Rubicon.ObjectBinding.Design.BindableObject;
 using Rubicon.Utilities;
@@ -39,14 +40,23 @@ namespace Rubicon.ObjectBinding.BindableObject
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     public Type Type
     {
-      get { return string.IsNullOrEmpty (_typeName) ? null : TypeUtility.GetType (_typeName, true, false); }
+      get
+      {
+        if (string.IsNullOrEmpty (_typeName))
+          return null;
+
+        if (IsDesignMode)
+          return GetDesignModeType();
+
+        return TypeUtility.GetType (_typeName, true, false);
+      }
     }
 
     private IBusinessObjectClass GetBusinessObjectClass ()
     {
       if (Type == null)
         return null;
-      
+
       if (IsDesignMode)
       {
         BindableObjectProvider designModeProvider = BindableObjectProvider.CreateDesignModeBindableObjectProvider();
@@ -59,6 +69,16 @@ namespace Rubicon.ObjectBinding.BindableObject
     private bool IsDesignMode
     {
       get { return Site != null && Site.DesignMode; }
+    }
+
+    private Type GetDesignModeType ()
+    {
+      IDesignerHost designerHost = (IDesignerHost) Site.GetService (typeof (IDesignerHost));
+      Assertion.Assert (designerHost != null, "No IDesignerHost found.");
+      Type type = designerHost.GetType (TypeUtility.ParseAbbreviatedTypeName (_typeName));
+      if (type == null)
+        throw new TypeLoadException (string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (_typeName)));
+      return type;
     }
   }
 }

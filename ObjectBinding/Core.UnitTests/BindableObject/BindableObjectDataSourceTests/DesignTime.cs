@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -16,6 +17,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     private BindableObjectProvider _provider;
     private MockRepository _mockRepository;
     private ISite _stubSite;
+    private IDesignerHost _mockDesignerHost;
 
     [SetUp]
     public override void SetUp ()
@@ -29,6 +31,9 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
       SetupResult.For (_stubSite.DesignMode).Return (true);
       _dataSource.Site = _stubSite;
 
+      _mockDesignerHost = _mockRepository.CreateMock<IDesignerHost>();
+      SetupResult.For (_stubSite.GetService(typeof (IDesignerHost))).Return (_mockDesignerHost);
+
       _provider = new BindableObjectProvider();
       BindableObjectProvider.SetCurrent (_provider);
     }
@@ -36,23 +41,25 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     [Test]
     public void GetType_WithValidTypeName ()
     {
+      Expect.Call (_mockDesignerHost.GetType ("Assembly.TheTypeName, Assembly")).Return (typeof (SimpleBusinessObjectClass));
       _mockRepository.ReplayAll();
 
       Assert.That (_dataSource.Type, Is.Null);
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
+      _dataSource.TypeName = "Assembly::TheTypeName";
       Assert.That (_dataSource.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
 
       _mockRepository.VerifyAll();
     }
 
     [Test]
-    [ExpectedException (typeof (TypeLoadException))]
+    [ExpectedException (typeof (TypeLoadException), ExpectedMessage = "Could not load type 'Assembly.Invalid, Assembly'.")]
     public void GetType_WithInvalidValidTypeName ()
     {
+      Expect.Call (_mockDesignerHost.GetType ("Assembly.Invalid, Assembly")).Return (null);
       _mockRepository.ReplayAll ();
 
-      _dataSource.TypeName = "Invalid";
-      Dev.Null = _dataSource.Type;
+      _dataSource.TypeName = "Assembly::Invalid";
+      Assert.That (_dataSource.Type, Is.Null);
 
       _mockRepository.VerifyAll ();
     }
@@ -60,9 +67,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     [Test]
     public void GetBusinessObjectClass_WithValidType ()
     {
+      Expect.Call (_mockDesignerHost.GetType ("Assembly.TheTypeName, Assembly")).Return (typeof (SimpleBusinessObjectClass)).Repeat.AtLeastOnce ();
       _mockRepository.ReplayAll ();
 
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
+      _dataSource.TypeName = "Assembly::TheTypeName";
 
       IBusinessObjectClass actual = _dataSource.BusinessObjectClass;
       Assert.That (actual, Is.Not.Null);
@@ -74,9 +82,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     [Test]
     public void GetBusinessObjectClass_NotSameTwice ()
     {
+      SetupResult.For (_mockDesignerHost.GetType ("Assembly.TheTypeName, Assembly")).Return (typeof (SimpleBusinessObjectClass));
       _mockRepository.ReplayAll ();
 
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleBusinessObjectClass";
+      _dataSource.TypeName = "Assembly::TheTypeName";
 
       IBusinessObjectClass actual = _dataSource.BusinessObjectClass;
       Assert.That (actual, Is.Not.Null);
@@ -93,9 +102,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
         + "Parameter name: type")]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
+      Expect.Call (_mockDesignerHost.GetType ("Assembly.TheTypeName, Assembly")).Return (typeof (SimpleReferenceType)).Repeat.AtLeastOnce ();
       _mockRepository.ReplayAll ();
 
-      _dataSource.TypeName = "Rubicon.ObjectBinding.UnitTests::BindableObject.TestDomain.SimpleReferenceType";
+      _dataSource.TypeName = "Assembly::TheTypeName";
       Dev.Null = _dataSource.BusinessObjectClass;
 
       _mockRepository.VerifyAll ();

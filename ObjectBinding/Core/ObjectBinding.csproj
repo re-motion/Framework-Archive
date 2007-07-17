@@ -138,6 +138,8 @@
     </Compile>
     <Compile Include="Design\BindableObject\BindableObjectTypePickerEditor.cs">
     </Compile>
+    <Compile Include="Design\BindableObject\ControllserBase.cs" />
+    <Compile Include="Design\BindableObject\SearchFieldController.cs" />
     <Compile Include="Design\BindableObject\TypeTreeViewController.cs" />
     <Compile Include="Design\ConcreteEditorControlBase.cs">
       <SubType>UserControl</SubType>
@@ -223,6 +225,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BindableObjectGlobalizationService.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Design\BindableObject\VSObject_Assembly.bmp" />
+    <EmbeddedResource Include="Design\BindableObject\VSObject_Class.bmp" />
+    <EmbeddedResource Include="Design\BindableObject\VSObject_Namespace.bmp" />
+    <EmbeddedResource Include="Design\BindableObject\VS_Search.bmp" />
     <Content Include="Doc\include\NamespaceDoc.xml" />
   </ItemGroup>
   <ItemGroup>

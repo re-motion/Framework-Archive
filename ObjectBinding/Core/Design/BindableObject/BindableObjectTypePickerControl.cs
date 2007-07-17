@@ -11,6 +11,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
 
     private string _value;
     private TypeTreeViewController _typeTreeViewController;
+    private SearchFieldController _searchFieldController;
 
     public BindableObjectTypePickerControl (IServiceProvider provider, IWindowsFormsEditorService editorService)
         : base (provider, editorService)
@@ -33,6 +34,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     {
       IncludeGacCheckBox.Checked = s_isGacIncluded;
       PopulateTypeTreeView();
+      _searchFieldController = new SearchFieldController (SearchField, SearchButton);
     }
 
     private void IncludeGacCheckBox_CheckedChanged (object sender, System.EventArgs e)

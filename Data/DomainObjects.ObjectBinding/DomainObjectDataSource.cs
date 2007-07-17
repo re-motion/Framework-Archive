@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 using Rubicon.ObjectBinding;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -33,6 +35,14 @@ public class DomainObjectDataSource : BusinessObjectDataSource
     {
       if (_typeName == null || _typeName.Length == 0)
         return null;
+
+      if (Site != null && Site.DesignMode)
+      {
+        IDesignerHost designerHost = (IDesignerHost) Site.GetService (typeof (IDesignerHost));
+        Assertion.Assert (designerHost != null, "No IDesignerHost found.");
+        return designerHost.GetType (_typeName);
+      }
+
       return System.Type.GetType (_typeName); 
     }
   }
