@@ -176,7 +176,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public void RegisterObjectEndPoint (RelationEndPointID endPointID, ObjectID oppositeObjectID)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-    Add (new ObjectEndPoint (_clientTransaction, endPointID, oppositeObjectID));
+    ObjectEndPoint objectEndPoint = new ObjectEndPoint (_clientTransaction, endPointID, oppositeObjectID);
+    objectEndPoint.RegisterWithMap (this);
+    Add (objectEndPoint);
   }
 
   public void RegisterCollectionEndPoint (RelationEndPointID endPointID, DomainObjectCollection domainObjects)
@@ -185,7 +187,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
     CollectionEndPoint collectionEndPoint = new CollectionEndPoint (_clientTransaction, endPointID, domainObjects);
-    collectionEndPoint.ChangeDelegate = this;
+    collectionEndPoint.RegisterWithMap (this);
     Add (collectionEndPoint);
   }
 
@@ -662,6 +664,26 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   public void CopyFrom (RelationEndPointMap source)
   {
+    ArgumentUtility.CheckNotNull ("source", source);
+
+    if (source == this)
+      throw new ArgumentException ("Source cannot be the destination RelationEndPointMap instance.", "source");
+
+    _transactionEventSink.RelationEndPointMapCopyingFrom (source);
+    source._transactionEventSink.RelationEndPointMapCopyingTo (this);
+
+    int startingPosition = _relationEndPoints.Count;
+
+    for (int i = 0; i < source._relationEndPoints.Count; ++i)
+    {
+      RelationEndPoint newEndPoint = source._relationEndPoints[i].Clone ();
+      newEndPoint.SetClientTransaction (_clientTransaction);
+
+      newEndPoint.RegisterWithMap (this);
+
+      int position = _relationEndPoints.Add (newEndPoint);
+      Assertion.Assert (position == i + startingPosition);
+    }
   }
 }
 }

@@ -123,6 +123,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       s_log.Info ("RelationEndPointMapPerformingDelete");
     }
 
+    public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
+    {
+      s_log.Info ("RelationEndPointMapCopyingFrom");
+    }
+
+    public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
+    {
+      s_log.Info ("RelationEndPointMapCopyingTo");
+    }
+
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
       s_log.Info ("DataManagerMarkingObjectDiscarded");

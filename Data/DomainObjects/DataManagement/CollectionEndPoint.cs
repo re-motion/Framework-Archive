@@ -11,6 +11,13 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   // static members and constants
 
+  private static DomainObjectCollection CloneDomainObjectCollection (DomainObjectCollection domainObjects, bool makeReadOnly)
+  {
+    ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+
+    return domainObjects.Clone (true);
+  }
+
   // member fields
 
   private ICollectionEndPointChangeDelegate _changeDelegate = null;
@@ -75,13 +82,23 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public CollectionEndPoint (
       ClientTransaction clientTransaction,
+      RelationEndPointID id,
+      DomainObjectCollection oppositeDomainObjects)
+    : this (clientTransaction, id, oppositeDomainObjects, CloneDomainObjectCollection (oppositeDomainObjects, true))
+  {
+  }
+
+  private CollectionEndPoint (
+      ClientTransaction clientTransaction,
       RelationEndPointID id, 
-      DomainObjectCollection oppositeDomainObjects) 
+      DomainObjectCollection oppositeDomainObjects,
+      DomainObjectCollection originalOppositeDomainObjects) 
       : base (clientTransaction, id)
   {
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
+    ArgumentUtility.CheckNotNull ("originalOppositeDomainObjects", originalOppositeDomainObjects);
 
-    _originalOppositeDomainObjects = oppositeDomainObjects.Clone (true);
+    _originalOppositeDomainObjects = originalOppositeDomainObjects;
     _oppositeDomainObjects = oppositeDomainObjects;
     _oppositeDomainObjects.ChangeDelegate = this;
   }
@@ -91,6 +108,22 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   }
 
   // methods and properties
+
+  public override RelationEndPoint Clone ()
+  {
+    DomainObjectCollection clonedOppositeDomainObjects = OppositeDomainObjects.Clone ();
+    DomainObjectCollection clonedOriginalOppositeDomainObjects = OriginalOppositeDomainObjects.Clone ();
+    
+    CollectionEndPoint clone = new CollectionEndPoint (ClientTransaction, ID, clonedOppositeDomainObjects, clonedOriginalOppositeDomainObjects);
+    clone.ChangeDelegate = ChangeDelegate;
+
+    return clone;
+  }
+
+  internal override void RegisterWithMap (RelationEndPointMap map)
+  {
+    ChangeDelegate = map;
+  }
 
   public override void Commit ()
   {
@@ -199,6 +232,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public ICollectionEndPointChangeDelegate ChangeDelegate
   {
+    get { return _changeDelegate; }
     set { _changeDelegate = value; }
   }
 

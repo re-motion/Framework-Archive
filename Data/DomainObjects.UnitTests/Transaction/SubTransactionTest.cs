@@ -128,6 +128,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (subTransaction.EnterScope ())
       {
         order.OrderNumber = 5;
+        order.OrderTicket = OrderTicket.NewObject ();
       }
     }
 
@@ -139,6 +140,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (subTransaction.EnterScope ())
       {
         ++order.OrderNumber;
+        OrderTicket oldTicket = order.OrderTicket;
+        order.OrderTicket = OrderTicket.NewObject ();
       }
     }
 

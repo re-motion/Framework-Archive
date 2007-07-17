@@ -233,6 +233,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       ArgumentUtility.CheckNotNull ("expected", expected);
       ArgumentUtility.CheckNotNull ("actual", actual);
+
+      Assert.AreNotSame (expected, actual);
       
       Assert.AreEqual (expected.ID, actual.ID);
       Assert.AreSame (expected.ClassDefinition, actual.ClassDefinition);

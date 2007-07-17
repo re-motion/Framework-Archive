@@ -160,12 +160,14 @@ public class DataContainerMap : IEnumerable
     _transactionEventSink.DataContainerMapCopyingFrom (source);
     source._transactionEventSink.DataContainerMapCopyingTo (this);
 
+    int startingPosition = _dataContainers.Count;
+
     for (int i = 0; i < source._dataContainers.Count; ++i)
     {
       DataContainer newContainer = source._dataContainers[i].Clone ();
       newContainer.SetClientTransaction (_clientTransaction);
       int position = _dataContainers.Add (newContainer);
-      Assertion.Assert (position == i);
+      Assertion.Assert (position == i + startingPosition);
     }
   }
 

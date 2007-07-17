@@ -136,6 +136,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
+    public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
+    {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
+    }
+
+    public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
+    {
+    }
+
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
       Assertion.Assert (!_clientTransaction.IsReadOnly);

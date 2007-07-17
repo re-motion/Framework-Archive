@@ -93,6 +93,8 @@ public abstract class RelationEndPoint : IEndPoint
 
   // abstract methods and properties
 
+  public abstract RelationEndPoint Clone ();
+  internal abstract void RegisterWithMap (RelationEndPointMap map);
   public abstract bool HasChanged { get; } 
   public abstract void Commit ();
   public abstract void Rollback ();
@@ -195,6 +197,13 @@ public abstract class RelationEndPoint : IEndPoint
   public ClientTransaction ClientTransaction
   {
     get { return _clientTransaction; }
+  }
+
+  internal void SetClientTransaction (ClientTransaction clientTransaction)
+  {
+    ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+
+    _clientTransaction = clientTransaction;
   }
 
   protected MandatoryRelationNotSetException CreateMandatoryRelationNotSetException (

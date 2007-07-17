@@ -154,6 +154,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         listener.RelationEndPointMapPerformingDelete (endPointIDs);
     }
 
+    public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.RelationEndPointMapCopyingFrom (source);
+    }
+
+    public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.RelationEndPointMapCopyingTo (source);
+    }
+
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
       foreach (IClientTransactionListener listener in _listeners)

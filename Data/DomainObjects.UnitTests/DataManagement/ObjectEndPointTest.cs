@@ -2,6 +2,8 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -149,6 +151,75 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNotNull (_endPoint.ID);
       Assert.AreEqual ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _endPoint.ID.PropertyName);
       Assert.AreEqual (DomainObjectIDs.OrderItem1, _endPoint.ID.ObjectID);
+    }
+
+    private void CheckIfRelationEndPointsAreEqual (ObjectEndPoint expected, ObjectEndPoint actual)
+    {
+      ArgumentUtility.CheckNotNull ("expected", expected);
+      ArgumentUtility.CheckNotNull ("actual", actual);
+
+      Assert.AreNotSame (expected, actual);
+
+      Assert.AreSame (expected.ClientTransaction, actual.ClientTransaction);
+      Assert.AreSame (expected.Definition, actual.Definition);
+      Assert.AreEqual (expected.HasChanged, actual.HasChanged);
+      Assert.AreEqual (expected.ID, actual.ID);
+      Assert.AreEqual (expected.ObjectID, actual.ObjectID);
+      Assert.AreEqual (expected.OppositeObjectID, actual.OppositeObjectID);
+      Assert.AreEqual (expected.OriginalOppositeObjectID, actual.OriginalOppositeObjectID);
+    }
+
+    [Test]
+    public void CloneUnchanged ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      RelationEndPointID id = new RelationEndPointID (order.ID, typeof (Order) + ".Official");
+
+      ObjectEndPoint endPoint = (ObjectEndPoint) ClientTransactionMock.DataManager.RelationEndPointMap[id];
+      Assert.IsNotNull (endPoint);
+
+      Assert.AreSame (ClientTransactionMock, endPoint.ClientTransaction);
+      Assert.IsNotNull (endPoint.Definition);
+      Assert.IsFalse (endPoint.HasChanged);
+      Assert.AreEqual (id, endPoint.ID);
+      Assert.AreEqual (order.ID, endPoint.ObjectID);
+      Assert.AreEqual (order.Official.ID, endPoint.OppositeObjectID);
+      Assert.AreEqual (endPoint.OppositeObjectID, endPoint.OriginalOppositeObjectID);
+      Assert.AreEqual (order.Official.ID, endPoint.OriginalOppositeObjectID);
+
+      ObjectEndPoint clone = (ObjectEndPoint) endPoint.Clone ();
+
+      Assert.IsNotNull (endPoint);
+
+      CheckIfRelationEndPointsAreEqual (endPoint, clone);
+    }
+
+    [Test]
+    public void CloneChanged ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      Employee originalEmployee = computer.Employee;
+      computer.Employee = Employee.NewObject ();
+
+      RelationEndPointID id = new RelationEndPointID (computer.ID, typeof (Computer) + ".Employee");
+
+      ObjectEndPoint endPoint = (ObjectEndPoint) ClientTransactionMock.DataManager.RelationEndPointMap[id];
+      Assert.IsNotNull (endPoint);
+
+      Assert.AreSame (ClientTransactionMock, endPoint.ClientTransaction);
+      Assert.IsNotNull (endPoint.Definition);
+      Assert.IsTrue (endPoint.HasChanged);
+      Assert.AreEqual (id, endPoint.ID);
+      Assert.AreEqual (computer.ID, endPoint.ObjectID);
+      Assert.AreEqual (computer.Employee.ID, endPoint.OppositeObjectID);
+      Assert.AreNotEqual (endPoint.OppositeObjectID, endPoint.OriginalOppositeObjectID);
+      Assert.AreEqual (originalEmployee.ID, endPoint.OriginalOppositeObjectID);
+
+      ObjectEndPoint clone = (ObjectEndPoint) endPoint.Clone ();
+
+      Assert.IsNotNull (endPoint);
+
+      CheckIfRelationEndPointsAreEqual (endPoint, clone);
     }
   }
 }

@@ -136,6 +136,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
     }
 
+    public void RelationEndPointMapCopyingFrom (RelationEndPointMap source)
+    {
+    }
+
+    public void RelationEndPointMapCopyingTo (RelationEndPointMap source)
+    {
+    }
+
     public void DataManagerMarkingObjectDiscarded (ObjectID id)
     {
     }

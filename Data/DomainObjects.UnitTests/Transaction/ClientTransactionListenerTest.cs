@@ -335,6 +335,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           _listener.DataManagerCopyingTo (managerTwo);
           _listener.DataContainerMapCopyingFrom (managerOne.DataContainerMap);
           _listener.DataContainerMapCopyingTo (managerTwo.DataContainerMap);
+          _listener.RelationEndPointMapCopyingFrom (managerOne.RelationEndPointMap);
+          _listener.RelationEndPointMapCopyingTo (managerTwo.RelationEndPointMap);
         },
         delegate
         {

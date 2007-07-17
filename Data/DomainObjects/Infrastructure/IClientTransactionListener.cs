@@ -45,6 +45,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     void RelationEndPointMapRegistering (RelationEndPoint endPoint);
     void RelationEndPointMapUnregistering (RelationEndPointID endPointID);
     void RelationEndPointMapPerformingDelete (RelationEndPointID[] endPointIDs);
+    void RelationEndPointMapCopyingFrom (RelationEndPointMap source);
+    void RelationEndPointMapCopyingTo (RelationEndPointMap source);
 
     void DataManagerMarkingObjectDiscarded (ObjectID id);
     void DataManagerCopyingFrom (DataManager source);

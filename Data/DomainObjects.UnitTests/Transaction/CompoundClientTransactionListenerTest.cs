@@ -160,6 +160,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       CheckNotification (
           typeof (IClientTransactionListener).GetMethod ("RelationEndPointMapPerformingDelete"),
           new object[] {new RelationEndPointID[0]});
+      CheckNotification (
+          typeof (IClientTransactionListener).GetMethod ("RelationEndPointMapCopyingFrom"),
+          new object[] { ClientTransactionMock.DataManager.RelationEndPointMap });
+      CheckNotification (
+          typeof (IClientTransactionListener).GetMethod ("RelationEndPointMapCopyingTo"),
+          new object[] { ClientTransactionMock.DataManager.RelationEndPointMap });
 
       CheckNotification (
           typeof (IClientTransactionListener).GetMethod ("DataManagerMarkingObjectDiscarded"),

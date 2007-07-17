@@ -381,7 +381,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [Ignore ("TODO: FS - SubTransactions")]
     public void CopyFromNonEmpty ()
     {
       ClientTransactionMock nonEmptyTransaction = new ClientTransactionMock ();
@@ -389,6 +388,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         OrderItem item = order.OrderItems[0];
+        Official official = order.Official;
         nonEmptyTransaction.DataManager.MarkDiscarded (DomainObjectIDs.Order2);
       }
 

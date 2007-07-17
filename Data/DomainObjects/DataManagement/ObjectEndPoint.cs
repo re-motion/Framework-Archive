@@ -73,10 +73,19 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
       ClientTransaction clientTransaction, 
       RelationEndPointID id, 
       ObjectID oppositeObjectID) 
-      : base (clientTransaction, id)
+    : this (clientTransaction, id, oppositeObjectID, oppositeObjectID)
+  {
+  }
+
+  private ObjectEndPoint (
+      ClientTransaction clientTransaction,
+      RelationEndPointID id,
+      ObjectID oppositeObjectID,
+      ObjectID originalOppositeObjectID) 
+    : base (clientTransaction, id)
   {
     _oppositeObjectID = oppositeObjectID;
-    _originalOppositeObjectID = oppositeObjectID;
+    _originalOppositeObjectID = originalOppositeObjectID;
   }
 
   protected ObjectEndPoint (IRelationEndPointDefinition definition) : base (definition)
@@ -84,6 +93,17 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
   }
 
   // methods and properties
+
+  public override RelationEndPoint Clone ()
+  {
+    ObjectEndPoint clone = new ObjectEndPoint (ClientTransaction, ID, OppositeObjectID, OriginalOppositeObjectID);
+    return clone;
+  }
+
+  internal override void RegisterWithMap (RelationEndPointMap map)
+  {
+    // nothing to do here
+  }
 
   public override void Commit ()
   {
