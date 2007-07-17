@@ -17,6 +17,7 @@ public class DataManager
 
   private readonly ClientTransaction _clientTransaction;
   private readonly IClientTransactionListener _transactionEventSink;
+
   private readonly DataContainerMap _dataContainerMap;
   private readonly RelationEndPointMap _relationEndPointMap;
   private readonly Set<ObjectID> _discardedObjects;
@@ -256,6 +257,26 @@ public class DataManager
   {
     ArgumentUtility.CheckNotNull ("id", id);
     return _discardedObjects.Contains (id);
+  }
+
+  public int DiscardedObjectCount
+  {
+    get { return _discardedObjects.Count; }
+  }
+
+  public void CopyFrom (DataManager source)
+  {
+    ArgumentUtility.CheckNotNull ("source", source);
+
+    if (source == this)
+      throw new ArgumentException ("Source cannot be the destination DataManager instance.", "source");
+
+    _transactionEventSink.DataManagerCopyingFrom (source);
+    source._transactionEventSink.DataManagerCopyingTo (this);
+
+    _discardedObjects.AddRange (source._discardedObjects);
+    DataContainerMap.CopyFrom (source.DataContainerMap);
+    RelationEndPointMap.CopyFrom (source.RelationEndPointMap);
   }
 }
 }

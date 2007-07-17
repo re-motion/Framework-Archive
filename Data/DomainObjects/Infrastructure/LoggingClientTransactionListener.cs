@@ -128,6 +128,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       s_log.Info ("DataManagerMarkingObjectDiscarded");
     }
 
+    public void DataManagerCopyingFrom (DataManager source)
+    {
+      s_log.Info ("DataManagerCopyingFrom");
+    }
+
+    public void DataManagerCopyingTo (DataManager destination)
+    {
+      s_log.Info ("DataManagerCopyingTo");
+    }
+
     public void DataContainerMapRegistering (DataContainer container)
     {
       s_log.Info ("DataContainerMapRegistering");
@@ -136,6 +146,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void DataContainerMapUnregistering (DataContainer container)
     {
       s_log.Info ("DataContainerMapUnregistering");
+    }
+
+    public void DataContainerMapCopyingFrom (DataContainerMap source)
+    {
+      s_log.Info ("DataContainerMapCopyingFrom");
+    }
+
+    public void DataContainerMapCopyingTo (DataContainerMap destination)
+    {
+      s_log.Info ("DataContainerMapCopyingTo");
     }
   }
 }

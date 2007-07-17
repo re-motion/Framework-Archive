@@ -66,13 +66,19 @@ public class PropertyValue
   /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <paramref name="definition"/>.</exception>
   public PropertyValue (PropertyDefinition definition, object value)
+      : this (definition, value, value)
+  {
+  }
+
+  internal PropertyValue (PropertyDefinition definition, object value, object originalValue)
   {
     ArgumentUtility.CheckNotNull ("definition", definition);
     CheckValue (value, definition);
+    CheckValue (originalValue, definition);
 
     _definition = definition;
     _value = value;
-    _originalValue = value;
+    _originalValue = originalValue;
     _accessObservers = new ArrayList ();
   }
 

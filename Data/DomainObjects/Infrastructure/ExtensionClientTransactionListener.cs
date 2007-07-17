@@ -140,11 +140,27 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
     }
 
+    public void DataManagerCopyingFrom (DataManager source)
+    {
+    }
+
+    public void DataManagerCopyingTo (DataManager destination)
+    {
+    }
+
     public void DataContainerMapRegistering (DataContainer container)
     {
     }
 
     public void DataContainerMapUnregistering (DataContainer container)
+    {
+    }
+
+    public void DataContainerMapCopyingFrom (DataContainerMap source)
+    {
+    }
+
+    public void DataContainerMapCopyingTo (DataContainerMap destination)
     {
     }
   }

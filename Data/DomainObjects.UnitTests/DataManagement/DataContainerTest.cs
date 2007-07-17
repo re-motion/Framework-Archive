@@ -1,9 +1,11 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -26,10 +28,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", idValue));
       _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);
 
-      ClientTransactionMock currentTransaction = new ClientTransactionMock ();
-      currentTransaction.SetClientTransaction (_existingDataContainer);
-      currentTransaction.SetClientTransaction (_newDataContainer);
-      currentTransaction.EnterScope ();
+      ClientTransactionMock.SetClientTransaction (_existingDataContainer);
+      ClientTransactionMock.SetClientTransaction (_newDataContainer);
 
       _nameDefinition = new ReflectionBasedPropertyDefinition (orderClass, "Name", "Name", typeof (string), 100);
       _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
@@ -227,6 +227,127 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       dataContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"] = null;
       Assert.IsNull (dataContainer.GetValue ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NullableBinaryProperty"));
+    }
+
+    private void CheckIfDataContainersAreEqual (DataContainer expected, DataContainer actual)
+    {
+      ArgumentUtility.CheckNotNull ("expected", expected);
+      ArgumentUtility.CheckNotNull ("actual", actual);
+      
+      Assert.AreEqual (expected.ID, actual.ID);
+      Assert.AreSame (expected.ClassDefinition, actual.ClassDefinition);
+      Assert.AreSame (expected.ClientTransaction, actual.ClientTransaction);
+      Assert.AreSame (expected.DomainObject, actual.DomainObject);
+      Assert.AreSame (expected.DomainObjectType, actual.DomainObjectType);
+      Assert.AreEqual (expected.IsDiscarded, actual.IsDiscarded);
+      Assert.AreEqual (expected.PropertyValues.Count, actual.PropertyValues.Count);
+
+      for (int i = 0; i < actual.PropertyValues.Count; ++i)
+      {
+        Assert.AreSame (expected.PropertyValues[i].Definition, actual.PropertyValues[i].Definition);
+        Assert.AreEqual (expected.PropertyValues[i].HasChanged, actual.PropertyValues[i].HasChanged);
+        Assert.AreEqual (expected.PropertyValues[i].IsDiscarded, actual.PropertyValues[i].IsDiscarded);
+        Assert.AreEqual (expected.PropertyValues[i].OriginalValue, actual.PropertyValues[i].OriginalValue);
+        Assert.AreEqual (expected.PropertyValues[i].Value, actual.PropertyValues[i].Value);
+      }
+      
+      Assert.AreEqual (expected.State, actual.State);
+      Assert.AreSame (expected.Timestamp, actual.Timestamp);
+    }
+
+    [Test]
+    public void CloneLoadedUnchanged ()
+    {
+      DataContainer original = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
+      Assert.IsNotNull (original);
+      Assert.AreEqual (DomainObjectIDs.Order1, original.ID);
+      Assert.IsNotNull (original.ClassDefinition);
+      Assert.AreSame (ClientTransactionMock, original.ClientTransaction);
+      Assert.AreSame (Order.GetObject (DomainObjectIDs.Order1), original.DomainObject);
+      Assert.AreSame (typeof (Order), original.DomainObjectType);
+      Assert.IsFalse (original.IsDiscarded);
+      Assert.AreEqual (4, original.PropertyValues.Count);
+      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.AreEqual (StateType.Unchanged, original.State);
+      Assert.IsNotNull (original.Timestamp);
+
+      DataContainer clone = original.Clone ();
+
+      Assert.IsNotNull (clone);
+      CheckIfDataContainersAreEqual (original, clone);
+    }
+
+    [Test]
+    public void CloneLoadedChanged ()
+    {
+      DataContainer original = Order.GetObject (DomainObjectIDs.Order1).InternalDataContainer;
+      original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value = 75;
+
+      Assert.IsNotNull (original);
+      Assert.AreEqual (DomainObjectIDs.Order1, original.ID);
+      Assert.IsNotNull (original.ClassDefinition);
+      Assert.AreSame (ClientTransactionMock, original.ClientTransaction);
+      Assert.AreSame (Order.GetObject (DomainObjectIDs.Order1), original.DomainObject);
+      Assert.AreSame (typeof (Order), original.DomainObjectType);
+      Assert.IsFalse (original.IsDiscarded);
+      Assert.AreEqual (4, original.PropertyValues.Count);
+      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsTrue (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (1, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (75, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.AreEqual (StateType.Changed, original.State);
+      Assert.IsNotNull (original.Timestamp);
+
+      DataContainer clone = original.Clone ();
+
+      Assert.IsNotNull (clone);
+      CheckIfDataContainersAreEqual (original, clone);
+    }
+
+    [Test]
+    public void CloneNew ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer original = order.InternalDataContainer;
+
+      Assert.IsNotNull (original);
+      Assert.AreEqual (order.ID, original.ID);
+      Assert.IsNotNull (original.ClassDefinition);
+      Assert.AreSame (ClientTransactionMock, original.ClientTransaction);
+      Assert.AreSame (order, original.DomainObject);
+      Assert.AreSame (typeof (Order), original.DomainObjectType);
+      Assert.IsFalse (original.IsDiscarded);
+      Assert.AreEqual (4, original.PropertyValues.Count);
+      Assert.IsNotNull (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Definition);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].HasChanged);
+      Assert.IsFalse (original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].IsDiscarded);
+      Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].OriginalValue);
+      Assert.AreEqual (0, original.PropertyValues["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].Value);
+      Assert.AreEqual (StateType.New, original.State);
+      Assert.IsNull (original.Timestamp);
+
+      DataContainer clone = original.Clone ();
+
+      Assert.IsNotNull (clone);
+      CheckIfDataContainersAreEqual (original, clone);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDiscardedException), ExpectedMessage = "Object 'Order.*' is already discarded.", MatchType = MessageMatch.Regex)]
+    public void CloneDeleted ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer original = order.InternalDataContainer;
+      order.Delete ();
+
+      Assert.IsTrue (original.IsDiscarded);
+
+      original.Clone ();
     }
   }
 }

@@ -133,5 +133,59 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       return order.InternalDataContainer;
     }
+
+    [Test]
+    public void CopyFromEmpty ()
+    {
+      ClientTransactionMock sourceTransaction = new ClientTransactionMock ();
+      ClientTransactionMock destinationTransaction = new ClientTransactionMock ();
+
+      DataContainerMap sourceMap = sourceTransaction.DataManager.DataContainerMap;
+      DataContainerMap destinationMap = destinationTransaction.DataManager.DataContainerMap;
+
+      destinationMap.CopyFrom (sourceMap);
+
+      Assert.AreEqual (0, destinationMap.Count);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Source cannot be the destination DataContainerMap instance.",
+        MatchType = MessageMatch.Contains)]
+    public void CannotCopyFromSelf ()
+    {
+      _map.CopyFrom (_map);
+    }
+
+    [Test]
+    public void CopyFromNonEmpty ()
+    {
+      ClientTransactionMock sourceTransaction = new ClientTransactionMock ();
+      ClientTransactionMock destinationTransaction = new ClientTransactionMock ();
+
+      DataContainerMap sourceMap = sourceTransaction.DataManager.DataContainerMap;
+      DataContainerMap destinationMap = destinationTransaction.DataManager.DataContainerMap;
+
+      Order newOrder;
+
+      using (sourceTransaction.EnterScope ())
+      {
+        newOrder = Order.NewObject ();
+      }
+
+      Assert.AreNotEqual (0, sourceMap.Count);
+      Assert.IsNotNull (sourceMap[newOrder.ID]);
+
+      Assert.AreEqual (0, destinationMap.Count);
+      Assert.IsNull (destinationMap[newOrder.ID]);
+
+      destinationMap.CopyFrom (sourceMap);
+
+      Assert.AreNotEqual (0, destinationMap.Count);
+      Assert.AreEqual (sourceMap.Count, destinationMap.Count);
+      Assert.IsNotNull (destinationMap[newOrder.ID]);
+      
+      Assert.AreNotSame (sourceMap[newOrder.ID], destinationMap[newOrder.ID]);
+      Assert.AreSame (destinationTransaction, destinationMap[newOrder.ID].ClientTransaction);
+    }
   }
 }

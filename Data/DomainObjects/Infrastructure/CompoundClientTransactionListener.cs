@@ -160,6 +160,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         listener.DataManagerMarkingObjectDiscarded (id);
     }
 
+    public void DataManagerCopyingFrom (DataManager source)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.DataManagerCopyingFrom (source);
+    }
+
+    public void DataManagerCopyingTo (DataManager destination)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.DataManagerCopyingTo (destination);
+    }
+
     public void DataContainerMapRegistering (DataContainer container)
     {
       foreach (IClientTransactionListener listener in _listeners)
@@ -170,6 +182,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       foreach (IClientTransactionListener listener in _listeners)
         listener.DataContainerMapUnregistering (container);
+    }
+
+    public void DataContainerMapCopyingFrom (DataContainerMap source)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.DataContainerMapCopyingFrom (source);
+    }
+
+    public void DataContainerMapCopyingTo (DataContainerMap destination)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.DataContainerMapCopyingTo (destination);
     }
   }
 }

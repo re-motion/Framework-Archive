@@ -659,5 +659,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   }
 
   #endregion
+
+  public void CopyFrom (RelationEndPointMap source)
+  {
+  }
 }
 }

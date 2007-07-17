@@ -141,6 +141,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Assertion.Assert (!_clientTransaction.IsReadOnly);
     }
 
+    public void DataManagerCopyingFrom (DataManager source)
+    {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
+    }
+
+    public void DataManagerCopyingTo (DataManager destination)
+    {
+    }
+
     public void DataContainerMapRegistering (DataContainer container)
     {
       Assertion.Assert (!_clientTransaction.IsReadOnly);
@@ -149,6 +158,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public void DataContainerMapUnregistering (DataContainer container)
     {
       Assertion.Assert (!_clientTransaction.IsReadOnly);
+    }
+
+    public void DataContainerMapCopyingFrom (DataContainerMap source)
+    {
+      Assertion.Assert (!_clientTransaction.IsReadOnly);
+    }
+
+    public void DataContainerMapCopyingTo (DataContainerMap destination)
+    {
     }
   }
 }

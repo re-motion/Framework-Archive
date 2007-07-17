@@ -93,15 +93,20 @@ public class DataContainer
   {
   }
 
-  private DataContainer (ObjectID id, object timestamp)
+  private DataContainer (ObjectID id, object timestamp) : this (id, timestamp, new PropertyValueCollection ())
+  {
+  }
+
+  private DataContainer (ObjectID id, object timestamp, PropertyValueCollection propertyValues)
   {
     ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("propertyValues", propertyValues);
 
     _id = id;
     _classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (id.ClassID);
     _timestamp = timestamp;
 
-    _propertyValues = new PropertyValueCollection ();
+    _propertyValues = propertyValues;
     _propertyValues.RegisterForChangeNotification (this);
   }
 
@@ -465,6 +470,31 @@ public class DataContainer
   {
     if (_isDiscarded)
       throw new ObjectDiscardedException (_id);
+  }
+
+  /// <summary>
+  /// Creates a copy of this data container and its state.
+  /// </summary>
+  /// <returns>A copy of this data container.</returns>
+  public DataContainer Clone ()
+  {
+    CheckDiscarded();
+
+    PropertyValueCollection clonedPropertyValues = new PropertyValueCollection ();
+    for (int i = 0; i < _propertyValues.Count; ++i)
+    {
+      int position =
+          clonedPropertyValues.Add (new PropertyValue (_propertyValues[i].Definition, _propertyValues[i].Value, _propertyValues[i].OriginalValue));
+      Assertion.Assert (position == i);
+    }
+
+    DataContainer clone = new DataContainer (_id, _timestamp, clonedPropertyValues);
+
+    clone._clientTransaction = _clientTransaction;
+    clone._domainObject = _domainObject;
+    clone._state = _state;
+
+    return clone;
   }
 }
 }

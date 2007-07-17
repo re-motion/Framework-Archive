@@ -61,7 +61,7 @@ public class DataContainerMap : IEnumerable
   public void Register (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    _clientTransaction.TransactionEventSink.DataContainerMapRegistering (dataContainer);
+    _transactionEventSink.DataContainerMapRegistering (dataContainer);
     _dataContainers.Add (dataContainer);
   }
 
@@ -77,7 +77,7 @@ public class DataContainerMap : IEnumerable
   private void Remove (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    _clientTransaction.TransactionEventSink.DataContainerMapUnregistering (dataContainer);
+    _transactionEventSink.DataContainerMapUnregistering (dataContainer);
 
     _dataContainers.Remove (dataContainer);
   }
@@ -148,6 +148,25 @@ public class DataContainerMap : IEnumerable
   private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
   {
     return new ClientTransactionsDifferException (string.Format (message, args));
+  }
+
+  public void CopyFrom (DataContainerMap source)
+  {
+    ArgumentUtility.CheckNotNull ("source", source);
+
+    if (source == this)
+      throw new ArgumentException ("Source cannot be the destination DataContainerMap instance.");
+
+    _transactionEventSink.DataContainerMapCopyingFrom (source);
+    source._transactionEventSink.DataContainerMapCopyingTo (this);
+
+    for (int i = 0; i < source._dataContainers.Count; ++i)
+    {
+      DataContainer newContainer = source._dataContainers[i].Clone ();
+      newContainer.SetClientTransaction (_clientTransaction);
+      int position = _dataContainers.Add (newContainer);
+      Assertion.Assert (position == i);
+    }
   }
 
   #region IEnumerable Members

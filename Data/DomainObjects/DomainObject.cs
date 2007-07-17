@@ -556,6 +556,8 @@ public class DomainObject
     ArgumentUtility.CheckNotNull ("transaction", transaction);
     if (_enlistedTransactions.Contains (transaction))
       return true;
+    else if (transaction.ParentTransaction != null && CanBeUsedInTransaction (transaction.ParentTransaction))
+      return true;
     else if (ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects)
     {
       EnlistInTransaction (transaction);

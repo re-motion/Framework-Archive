@@ -92,27 +92,43 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public ClientTransaction ()
   {
-    _listeners = new CompoundClientTransactionListener ();
-
     _extensions = new ClientTransactionExtensionCollection ();
+
+    _listeners = new CompoundClientTransactionListener ();
     _listeners.AddListener (new LoggingClientTransactionListener ());
     _listeners.AddListener (new ReadOnlyClientTransactionListener (this));
     _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
 
+    _applicationData = new Dictionary<Enum, object> ();
+
     _isReadOnly = false;
     _dataManager = new DataManager (this);
-    _applicationData = new Dictionary<Enum, object> ();
   }
 
   /// <summary>
   /// Initializes a new subtransaction.
   /// </summary>
-  public ClientTransaction (ClientTransaction parentTransaction) : this ()
+  public ClientTransaction (ClientTransaction parentTransaction)
   {
     ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
 
     _parentTransaction = parentTransaction;
     parentTransaction.IsReadOnly = true;
+
+    _extensions = _parentTransaction._extensions;
+
+    // same _extensions, but new _listeners - especially the ReadOnlyClientTransactionListener cannot be the same as that of the parent transaction
+    _listeners = new CompoundClientTransactionListener ();
+    _listeners.AddListener (new LoggingClientTransactionListener ());
+    _listeners.AddListener (new ReadOnlyClientTransactionListener (this));
+    _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
+
+    _applicationData = _parentTransaction._applicationData;
+
+     _isReadOnly = false;
+    
+    _dataManager = new DataManager (this);
+    _dataManager.CopyFrom (_parentTransaction._dataManager);
   }
 
   // methods and properties
@@ -138,6 +154,23 @@ public class ClientTransaction : ITransaction
   public ClientTransaction ParentTransaction
   {
     get { return _parentTransaction; }
+  }
+
+  /// <summary>
+  /// Gets the root transaction of this <see cref="ClientTransaction"/>, i.e. the top-level parent transaction in a row of subtransactions.
+  /// </summary>
+  /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
+  /// <remarks>When a transaction is not a subtransaction, this property returns the transaction itself. If it is the subtransaction of a parent
+  /// transaction, it returns the parent's root transaction. </remarks>
+  public ClientTransaction RootTransaction
+  {
+    get
+    {
+      if (ParentTransaction != null)
+        return ParentTransaction.RootTransaction;
+      else
+        return this;
+    }
   }
 
   /// <summary>

@@ -317,5 +317,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
         });
     }
+
+    [Test]
+    public void DataManagerCopyingFromDataManagerCopyingTo ()
+    {
+      ClientTransactionMock transactionOne = new ClientTransactionMock ();
+      ClientTransactionMock transactionTwo = new ClientTransactionMock ();
+      DataManager managerOne = transactionOne.DataManager;
+      DataManager managerTwo = transactionTwo.DataManager;
+
+      transactionOne.AddListener (_listener);
+      transactionTwo.AddListener (_listener);
+
+      Expect (delegate
+        {
+          _listener.DataManagerCopyingFrom (managerOne);
+          _listener.DataManagerCopyingTo (managerTwo);
+          _listener.DataContainerMapCopyingFrom (managerOne.DataContainerMap);
+          _listener.DataContainerMapCopyingTo (managerTwo.DataContainerMap);
+        },
+        delegate
+        {
+          managerTwo.CopyFrom (managerOne);
+        });
+    }
   }
 }

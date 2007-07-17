@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -321,8 +322,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       Assert.IsFalse (_dataManager.IsDiscarded (orderItem1.ID));
+      Assert.AreEqual (0, _dataManager.DiscardedObjectCount);
       _dataManager.MarkDiscarded (orderItem1.ID);
       Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
+      Assert.AreEqual (1, _dataManager.DiscardedObjectCount);
     }
 
     [Test]
@@ -356,6 +359,50 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
         Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
       }
+    }
+
+    [Test]
+    public void CopyFromEmpty ()
+    {
+      ClientTransactionMock emptyTransaction = new ClientTransactionMock ();
+      _dataManager.CopyFrom (emptyTransaction.DataManager);
+
+      Assert.AreEqual (0, _dataManager.DataContainerMap.Count);
+      Assert.AreEqual (0, _dataManager.RelationEndPointMap.Count);
+      Assert.AreEqual (0, _dataManager.DiscardedObjectCount);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Source cannot be the destination DataManager instance.",
+        MatchType = MessageMatch.Contains)]
+    public void CannotCopyFromSelf ()
+    {
+      _dataManager.CopyFrom (_dataManager);
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - SubTransactions")]
+    public void CopyFromNonEmpty ()
+    {
+      ClientTransactionMock nonEmptyTransaction = new ClientTransactionMock ();
+      using (nonEmptyTransaction .EnterScope ())
+      {
+        Order order = Order.GetObject (DomainObjectIDs.Order1);
+        OrderItem item = order.OrderItems[0];
+        nonEmptyTransaction.DataManager.MarkDiscarded (DomainObjectIDs.Order2);
+      }
+
+      Assert.IsTrue (nonEmptyTransaction.DataManager.IsDiscarded (DomainObjectIDs.Order2));
+      Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.DiscardedObjectCount);
+      Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.DataContainerMap.Count);
+      Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.RelationEndPointMap.Count);
+
+      _dataManager.CopyFrom (nonEmptyTransaction.DataManager);
+
+      Assert.IsTrue (_dataManager.IsDiscarded (DomainObjectIDs.Order2));
+      Assert.AreEqual (nonEmptyTransaction.DataManager.DiscardedObjectCount, _dataManager.DiscardedObjectCount);
+      Assert.AreEqual (nonEmptyTransaction.DataManager.DataContainerMap.Count, _dataManager.DataContainerMap.Count);
+      Assert.AreEqual (nonEmptyTransaction.DataManager.RelationEndPointMap.Count, _dataManager.RelationEndPointMap.Count);
     }
   }
 }
