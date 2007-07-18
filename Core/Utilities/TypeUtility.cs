@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Text.RegularExpressions;
 using R = System.Text.RegularExpressions;
 
@@ -125,6 +127,19 @@ namespace Rubicon.Utilities
       ArgumentUtility.CheckNotNull ("type", type);
 
       return type.FullName + ", " + type.Assembly.GetName().Name;
+    }
+
+    public static Type GetDesignModeType (string abbreviatedTypeName, ISite site, bool throwOnError)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
+      ArgumentUtility.CheckNotNull ("site", site);
+
+      IDesignerHost designerHost = (IDesignerHost) site.GetService (typeof (IDesignerHost));
+      Assertion.Assert (designerHost != null, "No IDesignerHost found.");
+      Type type = designerHost.GetType (TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName));
+      if (type == null && throwOnError)
+        throw new TypeLoadException (string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName)));
+      return type;
     }
   }
 }

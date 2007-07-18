@@ -46,7 +46,7 @@ namespace Rubicon.ObjectBinding.BindableObject
           return null;
 
         if (IsDesignMode)
-          return GetDesignModeType();
+          return TypeUtility.GetDesignModeType (_typeName, Site, true);
 
         return TypeUtility.GetType (_typeName, true, false);
       }
@@ -69,16 +69,6 @@ namespace Rubicon.ObjectBinding.BindableObject
     private bool IsDesignMode
     {
       get { return Site != null && Site.DesignMode; }
-    }
-
-    private Type GetDesignModeType ()
-    {
-      IDesignerHost designerHost = (IDesignerHost) Site.GetService (typeof (IDesignerHost));
-      Assertion.Assert (designerHost != null, "No IDesignerHost found.");
-      Type type = designerHost.GetType (TypeUtility.ParseAbbreviatedTypeName (_typeName));
-      if (type == null)
-        throw new TypeLoadException (string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (_typeName)));
-      return type;
     }
   }
 }
