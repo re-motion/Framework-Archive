@@ -212,10 +212,11 @@ public class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction and enters it.
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior and enters it.
   /// </summary>
   /// <returns>A new <see cref="ClientTransactionScope"/> fot rhis transaction.</returns>
-  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this)</c>.</remarks>
+  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this)</c>. The created scope will not
+  /// perform any automatic rollbacks.</remarks>
   public ClientTransactionScope EnterScope ()
   {
     return new ClientTransactionScope (this);
