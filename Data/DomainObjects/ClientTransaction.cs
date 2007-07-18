@@ -91,14 +91,6 @@ public abstract class ClientTransaction : ITransaction
   
   // construction and disposing
 
-  /// <summary>
-  /// Initializes a new instance of the <b>ClientTransaction</b> class.
-  /// </summary>
-  protected ClientTransaction ()
-    : this (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection ())
-  {
-  }
-
   protected ClientTransaction (Dictionary<Enum, object> applicationData, ClientTransactionExtensionCollection extensions)
   {
     ArgumentUtility.CheckNotNull ("applicationData", applicationData);

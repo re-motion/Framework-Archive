@@ -808,6 +808,7 @@
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
+    <Compile Include="Transaction\InvalidatedSubTransactionListenerTest.cs" />
     <Compile Include="Transaction\ReadOnlyClientTransactionTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />

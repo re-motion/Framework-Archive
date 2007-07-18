@@ -112,6 +112,7 @@
     <Compile Include="Infrastructure\DataContainerIndirection.cs" />
     <Compile Include="Infrastructure\ExtensionClientTransactionListener.cs" />
     <Compile Include="Infrastructure\IClientTransactionListener.cs" />
+    <Compile Include="Infrastructure\InvalidatedSubTransactionListener.cs" />
     <Compile Include="Infrastructure\LoggingClientTransactionListener.cs" />
     <Compile Include="Infrastructure\ReadOnlyClientTransactionListener.cs" />
     <Compile Include="Infrastructure\RelatedObjectCollectionPropertyAccessorStrategy.cs" />

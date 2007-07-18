@@ -7,19 +7,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class SubTransactionCommitRollbackTest : ClientTransactionBaseTest
   {
+    private ClientTransaction _subTransaction;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      _subTransaction = ClientTransactionMock.CreateSubTransaction ();
+    }
+
     [Test]
-    [Ignore ("TODO: FS - Subtransactions")]
+    public void ReturnToParentTransactionReturnsTrue ()
+    {
+      Assert.AreEqual (true, _subTransaction.ReturnToParentTransaction ());
+    }
+
+    [Test]
+    public void ReturnToParentTransactionMakesParentWriteable ()
+    {
+      Assert.IsTrue (_subTransaction.ParentTransaction.IsReadOnly);
+      _subTransaction.ReturnToParentTransaction ();
+      Assert.IsFalse (_subTransaction.ParentTransaction.IsReadOnly);
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The subtransaction can no longer be used because control has "
+        + "returned to its parent transaction.")]
     public void ReturnToParentTransactionRendersSubTransactionUnusable ()
     {
-      Assert.Fail ();
+      _subTransaction.ReturnToParentTransaction ();
+      using (_subTransaction.EnterScope ())
+      {
+        Order.NewObject ();
+      }
     }
 
     [Test]
     public void SubTransactionCanContinueToBeUsedAfterRollback ()
     {
-      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
-      subTransaction.Rollback ();
-      using (subTransaction.EnterScope ())
+      _subTransaction.Rollback ();
+      using (_subTransaction.EnterScope ())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (order);
@@ -29,9 +55,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void SubTransactionCanContinueToBeUsedAfterCommit ()
     {
-      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
-      subTransaction.Commit ();
-      using (subTransaction.EnterScope ())
+      _subTransaction.Commit ();
+      using (_subTransaction.EnterScope ())
       {
         Order order = Order.NewObject ();
         Assert.IsNotNull (order);

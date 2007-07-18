@@ -40,7 +40,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     public override bool ReturnToParentTransaction ()
     {
-      throw new NotImplementedException();
+      ParentTransaction.IsReadOnly = false;
+      AddListener (new InvalidatedSubTransactionListener ());
+      return true;
     }
   }
 }
