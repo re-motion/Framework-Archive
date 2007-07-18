@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindAll ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       DomainObjectCollection tenants = Tenant.FindAll (transaction);
 

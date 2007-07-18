@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
 
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       OrderItem orderItem3;
 
       using (new ClientTransactionScope ())

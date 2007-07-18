@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateOrganizationalStructureWithTwoTenants();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       DomainObjectCollection groupTypes = GroupType.FindAll (transaction);
 

@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public override void SetUp ()
     {
       base.SetUp ();
-      _transaction = new ClientTransaction ();
+      _transaction = ClientTransaction.NewTransaction();
       _transaction.EnterScope ();
     }
 

@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       base.SetUp ();
       _factory = new OrganizationalStructureFactory ();
-      _transaction = new ClientTransaction ();
+      _transaction = ClientTransaction.NewTransaction();
       _transaction.EnterScope ();
     }
 

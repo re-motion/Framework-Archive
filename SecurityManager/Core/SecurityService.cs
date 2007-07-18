@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager
 
     public AccessType[] GetAccess (SecurityContext context, IPrincipal user)
     {
-      return GetAccess (new ClientTransaction(), context, user);
+      return GetAccess (ClientTransaction.NewTransaction(), context, user);
     }
 
     public AccessType[] GetAccess (ClientTransaction transaction, SecurityContext context, IPrincipal user)
@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager
 
     public int GetRevision()
     {
-      return Revision.GetRevision (new ClientTransaction());
+      return Revision.GetRevision (ClientTransaction.NewTransaction());
     }
 
     private AccessType ConvertToAccessType (AccessTypeDefinition accessTypeDefinition)

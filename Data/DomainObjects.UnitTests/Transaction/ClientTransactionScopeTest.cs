@@ -29,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScopeSetsAndResetsCurrentTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       Assert.AreNotSame (clientTransaction, ClientTransactionScope.CurrentTransaction);
       using (new ClientTransactionScope (clientTransaction))
       {
@@ -41,7 +41,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScopeSetsNullTransaction ()
     {
-      using (new ClientTransactionScope (new ClientTransaction ()))
+      using (new ClientTransactionScope (ClientTransaction.NewTransaction()))
       {
         Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
         using (new ClientTransactionScope (null))
@@ -67,8 +67,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void NestedScopes ()
     {
-      ClientTransaction clientTransaction1 = new ClientTransaction ();
-      ClientTransaction clientTransaction2 = new ClientTransaction ();
+      ClientTransaction clientTransaction1 = ClientTransaction.NewTransaction();
+      ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction();
       ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
       ClientTransaction original = ClientTransactionScope.CurrentTransaction;
       
@@ -99,7 +99,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (new ClientTransactionScope (null))
       {
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
-        using (new ClientTransactionScope (new ClientTransaction()))
+        using (new ClientTransactionScope (ClientTransaction.NewTransaction()))
         {
           Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
         }
@@ -122,8 +122,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ScopeHasTransactionProperty ()
     {
-      ClientTransaction outerTransaction = new ClientTransaction ();
-      ClientTransaction innerTransaction = new ClientTransaction ();
+      ClientTransaction outerTransaction = ClientTransaction.NewTransaction();
+      ClientTransaction innerTransaction = ClientTransaction.NewTransaction();
       using (ClientTransactionScope outer = new ClientTransactionScope (outerTransaction))
       {
         using (ClientTransactionScope inner = new ClientTransactionScope (innerTransaction))
@@ -144,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (AutoRollbackBehavior.None, scope.AutoRollbackBehavior);
       }
 
-      using (ClientTransactionScope scope = new ClientTransactionScope (new ClientTransaction()))
+      using (ClientTransactionScope scope = new ClientTransactionScope (ClientTransaction.NewTransaction()))
       {
         Assert.AreEqual (AutoRollbackBehavior.None, scope.AutoRollbackBehavior);
       }
@@ -154,7 +154,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (AutoRollbackBehavior.None, scope.AutoRollbackBehavior);
       }
 
-      using (ClientTransactionScope scope = new ClientTransactionScope (new ClientTransaction(), AutoRollbackBehavior.Rollback))
+      using (ClientTransactionScope scope = new ClientTransactionScope (ClientTransaction.NewTransaction(), AutoRollbackBehavior.Rollback))
       {
         Assert.AreEqual (AutoRollbackBehavior.Rollback, scope.AutoRollbackBehavior);
       }
@@ -279,7 +279,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitAndRollbackOnScope ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       TransactionEventCounter eventCounter = new TransactionEventCounter (transaction);
       using (ClientTransactionScope scope = new ClientTransactionScope (transaction))
       {
@@ -346,7 +346,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order order2 = Order.GetObject (new DomainObjectIDs ().Order2);
       
       Assert.IsTrue (order1.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
 
       using (ClientTransactionScope scope = clientTransaction.EnterScope())
       {

@@ -306,7 +306,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
 
       Assert.AreNotEqual (DateTime.MinValue, acl.ChangedAt);
@@ -315,7 +315,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Touch_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
 
       DateTime creationDate = acl.ChangedAt;
@@ -329,7 +329,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlList acl = AccessControlList.NewObject (_testHelper.Transaction);
 
       acl.Index = 1;

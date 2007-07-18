@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects
     /// </para>
     /// </remarks>
     public ClientTransactionScope (AutoRollbackBehavior autoRollbackBehavior)
-      : this (new ClientTransaction (), autoRollbackBehavior)
+      : this (ClientTransaction.NewTransaction(), autoRollbackBehavior)
     {
     }
 

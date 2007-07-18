@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       base.SetUp ();
 
-      _transaction = new ClientTransaction ();
+      _transaction = ClientTransaction.NewTransaction();
       _transaction.EnterScope ();
       _importer = new CultureImporter (_transaction);
     }

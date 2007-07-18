@@ -191,7 +191,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ClientTransactionSerializationTest ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
 
       ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (clientTransaction);
 

@@ -478,7 +478,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetObjectByNewIndependentTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       using (new ClientTransactionScope (clientTransaction))
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -491,7 +491,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       using (new ClientTransactionScope (clientTransaction))
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -508,8 +508,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitIndependentTransactions ()
     {
-      ClientTransaction clientTransaction1 = new ClientTransaction ();
-      ClientTransaction clientTransaction2 = new ClientTransaction ();
+      ClientTransaction clientTransaction1 = ClientTransaction.NewTransaction();
+      ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction();
 
       Order order1;
       using (clientTransaction1.EnterScope())
@@ -528,7 +528,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       clientTransaction1.Commit ();
       clientTransaction2.Commit ();
 
-      ClientTransaction clientTransaction3 = new ClientTransaction ();
+      ClientTransaction clientTransaction3 = ClientTransaction.NewTransaction();
       using (clientTransaction3.EnterScope ())
       {
         Order changedOrder1 = Order.GetObject (DomainObjectIDs.Order1);
@@ -689,6 +689,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsFalse (clientTransaction.IsReadOnly);
       clientTransaction.IsReadOnly = true;
       Assert.IsTrue (clientTransaction.IsReadOnly);
+    }
+
+    [Test]
+    public void ReturnToParentTransactionReturnsFalse ()
+    {
+      Assert.IsFalse (ClientTransactionMock.ReturnToParentTransaction ());
     }
   }
 }

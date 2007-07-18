@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
       {
         using (new SecurityFreeSection())
         {
-          ClientTransaction clientTransaction = new ClientTransaction();
+          ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
           DomainObjectCollection users =
               SecurityManagerUser.FindByTenantID (ObjectID.Parse ("Tenant|00000001-0000-0000-0000-000000000001|System.Guid"), clientTransaction);
           users.Combine (
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
       if (StringUtility.IsNullOrEmpty (UsersField.BusinessObjectID))
         ApplicationInstance.SetCurrentUser (null, true);
       else
-        ApplicationInstance.SetCurrentUser (SecurityManagerUser.GetObject (ObjectID.Parse (UsersField.BusinessObjectID), new ClientTransaction ()), true);
+        ApplicationInstance.SetCurrentUser (SecurityManagerUser.GetObject (ObjectID.Parse (UsersField.BusinessObjectID), ClientTransaction.NewTransaction()), true);
     }
   }
 }

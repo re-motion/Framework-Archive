@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = Order.NewObject ();
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
-      Assert.IsFalse (order.CanBeUsedInTransaction (new ClientTransaction()));
+      Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransaction.NewTransaction()));
     }
 
     [Test]
@@ -137,7 +137,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void LoadedObjectCanBeEnlistedInTransaction ()
     {
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
@@ -152,7 +152,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
           MatchType = MessageMatch.Regex)]
     public void NewObjectCannotBeEnlistedInTransaction ()
     {
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.NewObject ();
       order.EnlistInTransaction (newTransaction);
     }
@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     public void NewObjectCanBeEnlistedInTransactionWhenCommitted ()
     {
       SetDatabaseModifyable ();
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.NewObject ();
       order.OrderNumber = 5;
       order.DeliveryDate = DateTime.Now;
@@ -185,7 +185,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void EnlistedObjectCanBeUsedInTwoTransactions ()
     {
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.EnlistInTransaction (newTransaction);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
@@ -220,7 +220,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      order.EnlistInTransaction (new ClientTransaction ());
+      order.EnlistInTransaction (ClientTransaction.NewTransaction());
     }
 
     [Test]
@@ -231,7 +231,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       Assert.AreEqual (StateType.Deleted, order.State);
       
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       order.EnlistInTransaction (newTransaction);
       using (newTransaction.EnterScope ())
       {
@@ -244,8 +244,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       SetDatabaseModifyable ();
 
-      ClientTransaction newTransaction1 = new ClientTransaction ();
-      ClientTransaction newTransaction2 = new ClientTransaction ();
+      ClientTransaction newTransaction1 = ClientTransaction.NewTransaction();
+      ClientTransaction newTransaction2 = ClientTransaction.NewTransaction();
       
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       order.EnlistInTransaction (newTransaction1);

@@ -103,7 +103,7 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       RememberCurrentClientTransaction ();
-      SetInt32Property (5, new ClientTransaction ());
+      SetInt32Property (5, ClientTransaction.NewTransaction());
 
       ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
@@ -111,7 +111,7 @@ public class WxeTestPage : WxePage
     {
       CheckCurrentClientTransactionRestored ();
 
-      if (GetInt32Property (new ClientTransaction()) != 10)
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not properly commit or set the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = true) executed successfully.");
@@ -123,7 +123,7 @@ public class WxeTestPage : WxePage
     if (!IsReturningPostBack)
     {
       RememberCurrentClientTransaction ();
-      SetInt32Property (5, new ClientTransaction ());
+      SetInt32Property (5, ClientTransaction.NewTransaction());
 
       ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
@@ -131,7 +131,7 @@ public class WxeTestPage : WxePage
     {
       CheckCurrentClientTransactionRestored ();
 
-      if (GetInt32Property (new ClientTransaction ()) != 5)
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did set and commit the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = false) executed successfully.");
@@ -142,7 +142,7 @@ public class WxeTestPage : WxePage
   {
     if (!IsReturningPostBack)
     {
-      SetInt32Property (5, new ClientTransaction ());
+      SetInt32Property (5, ClientTransaction.NewTransaction());
 
       new ClientTransactionScope (null);
 
@@ -157,7 +157,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not set property value.");
 
-      if (GetInt32Property (new ClientTransaction ()) != 5)
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = true) executed successfully.");
@@ -168,7 +168,7 @@ public class WxeTestPage : WxePage
   {
     if (!IsReturningPostBack)
     {
-      SetInt32Property (5, new ClientTransaction ());
+      SetInt32Property (5, ClientTransaction.NewTransaction());
 
       new ClientTransactionScope (null);
 
@@ -183,7 +183,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
 
-      if (GetInt32Property (new ClientTransaction ()) != 5)
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
       ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");

@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
     {
       base.SetUp ();
       
-      _transaction = new ClientTransaction ();
+      _transaction = ClientTransaction.NewTransaction();
     }
 
     [Test]

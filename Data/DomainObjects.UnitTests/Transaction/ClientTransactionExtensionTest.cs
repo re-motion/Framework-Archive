@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ObjectLoading ()
     {
-      ClientTransaction newTransaction = new ClientTransaction();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       newTransaction.Extensions.Add ("Name", _extension);
       _mockRepository.BackToRecordAll ();
       using (newTransaction.EnterScope())
@@ -133,7 +133,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     private void TestObjectLoadingWithRelatedObjects (Proc accessCode, ObjectID expectedMainObjectID, bool expectCollection, bool expectLoadedEvent,
         ObjectID[] expectedRelatedIDs)
     {
-      ClientTransaction newTransaction = new ClientTransaction ();
+      ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       newTransaction.Extensions.Add ("Name", _extension);
       _mockRepository.BackToRecordAll ();
       using (newTransaction.EnterScope ())

@@ -1,8 +1,7 @@
 using System;
-using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects
+namespace Rubicon.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// Represents a transaction that is part of a bigger parent transaction. Any changes made within this subtransaction are not visible in
@@ -39,6 +38,9 @@ namespace Rubicon.Data.DomainObjects
       get { return ParentTransaction.RootTransaction; }
     }
 
-
+    public override bool ReturnToParentTransaction ()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

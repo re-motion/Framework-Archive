@@ -178,7 +178,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       SecurableClassDefinition invoiceClass = testHelper.CreateInvoiceClassDefinition ();
       testHelper.Transaction.Commit ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         invoiceClass = DomainObject.LoadIntoTransaction (invoiceClass, ClientTransactionScope.CurrentTransaction);
@@ -200,7 +200,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       SecurableClassDefinition invoiceClass = testHelper.CreateInvoiceClassDefinition ();
       testHelper.Transaction.Commit ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         SecurableClassDefinition foundClass = SecurableClassDefinition.FindByName ("Invce", transaction);
@@ -215,7 +215,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
 
       Assert.AreEqual (0, result.Count);

@@ -120,6 +120,7 @@
     <Compile Include="Infrastructure\IPropertyAccessorStrategy.cs" />
     <Compile Include="Infrastructure\PropertyIndexer.cs" />
     <Compile Include="Infrastructure\RelatedObjectPropertyAccessorStrategy.cs" />
+    <Compile Include="Infrastructure\RootClientTransaction.cs" />
     <Compile Include="Infrastructure\ValuePropertyAccessorStrategy.cs" />
     <Compile Include="Mapping\ReflectionBasedClassDefinition.cs" />
     <Compile Include="Mapping\ReflectionBasedPropertyDefinition.cs" />
@@ -482,7 +483,7 @@
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SubClientTransaction.cs" />
+    <Compile Include="Infrastructure\SubClientTransaction.cs" />
     <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

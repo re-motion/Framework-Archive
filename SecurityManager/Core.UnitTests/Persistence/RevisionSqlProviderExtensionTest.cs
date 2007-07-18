@@ -20,7 +20,7 @@ namespace Rubicon.SecurityManager.UnitTests.Persistence
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateEmptyDomain ();
       
-      _clientTransaction = new ClientTransaction();
+      _clientTransaction = ClientTransaction.NewTransaction();
       _factory = new OrganizationalStructureFactory ();
     }
 

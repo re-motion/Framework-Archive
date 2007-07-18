@@ -84,7 +84,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.TableInheritance
     [Test]
     public void ManyToOneRelationToConcreteSingle ()
     {
-      using (new ClientTransactionScope (new ClientTransaction ()))
+      using (new ClientTransactionScope (ClientTransaction.NewTransaction()))
       {
         Order order = Order.GetObject (DomainObjectIDs.Order);
         Assert.AreEqual (DomainObjectIDs.Customer, order.Customer.ID);

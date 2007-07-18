@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI
       if (ClientTransactionScope.HasCurrentTransaction)
         _clientTransaction = ClientTransactionScope.CurrentTransaction;
       else
-        _clientTransaction = new ClientTransaction ();
+        _clientTransaction = ClientTransaction.NewTransaction();
     }
 
     protected override void OnLoad (EventArgs e)

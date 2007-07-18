@@ -8,6 +8,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   public class SubTransactionCommitRollbackTest : ClientTransactionBaseTest
   {
     [Test]
+    [Ignore ("TODO: FS - Subtransactions")]
+    public void ReturnToParentTransactionRendersSubTransactionUnusable ()
+    {
+      Assert.Fail ();
+    }
+
+    [Test]
     public void SubTransactionCanContinueToBeUsedAfterRollback ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();

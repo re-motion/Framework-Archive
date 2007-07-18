@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope ())
       {
@@ -117,7 +117,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition[] CreateSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition[] CreateSecurableClassDefinitions (int classDefinitionCount)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -147,7 +147,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateSecurableClassDefinitionWithStates ()
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -165,7 +165,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (int accessTypes)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -180,7 +180,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessControlLists (int accessControlLists)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -205,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public AccessControlList CreateAccessControlListWithAccessControlEntries (int accessControlEntries)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -226,7 +226,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public AccessControlList CreateAccessControlListWithStateCombinations (int stateCombinations)
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -252,7 +252,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public void CreateAdministratorAbstractRole ()
     {
       CreateEmptyDomain ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {
@@ -268,7 +268,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     {
       CreateEmptyDomain ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
 
       using (transaction.EnterScope())
       {

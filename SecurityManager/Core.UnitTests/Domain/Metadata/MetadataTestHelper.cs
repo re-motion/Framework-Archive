@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public MetadataTestHelper ()
     {
-      _transaction = new ClientTransaction ();
+      _transaction = ClientTransaction.NewTransaction();
     }
 
     public ClientTransaction Transaction

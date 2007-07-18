@@ -129,7 +129,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       StatePropertyDefinition expectdPropertyDefinition = _testHelper.CreateConfidentialityProperty (0);
       _testHelper.Transaction.Commit ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         expectdPropertyDefinition = DomainObject.LoadIntoTransaction (expectdPropertyDefinition, transaction);

@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       StateCombination stateCombination = StateCombination.NewObject (_testHelper.Transaction);
 
       stateCombination.Index = 1;

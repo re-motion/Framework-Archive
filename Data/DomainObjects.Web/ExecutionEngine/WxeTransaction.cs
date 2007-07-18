@@ -73,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
   protected override ClientTransaction CreateRootTransaction ()
   {
-    return new ClientTransaction ();
+    return ClientTransaction.NewTransaction();
   }
 }
 }

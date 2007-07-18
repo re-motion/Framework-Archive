@@ -38,11 +38,16 @@ namespace Rubicon.Data.DomainObjects
 /// </para>
 /// </remarks>
 [Serializable]
-public class ClientTransaction : ITransaction
+public abstract class ClientTransaction : ITransaction
 {
   // types
 
   // static members and constants
+
+  public static ClientTransaction NewTransaction ()
+  {
+    return new RootClientTransaction ();
+  }
 
   // member fields
 
@@ -89,7 +94,7 @@ public class ClientTransaction : ITransaction
   /// <summary>
   /// Initializes a new instance of the <b>ClientTransaction</b> class.
   /// </summary>
-  public ClientTransaction ()
+  protected ClientTransaction ()
     : this (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection ())
   {
   }
@@ -113,6 +118,29 @@ public class ClientTransaction : ITransaction
 
   }
 
+  // abstract methods and properties
+
+  /// <summary>
+  /// Gets the parent transaction for this <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <value>The parent transaction.</value>
+  public abstract ClientTransaction ParentTransaction { get; }
+
+  /// <summary>
+  /// Gets the root transaction of this <see cref="ClientTransaction"/>, i.e. the top-level parent transaction in a row of subtransactions.
+  /// </summary>
+  /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
+  /// <remarks>When this transaction is an instance of <see cref="RootClientTransaction"/>, this property returns the transaction itself. If it
+  /// is an instance of <see cref="SubClientTransaction"/>, it returns the parent's root transaction. </remarks>
+  public abstract ClientTransaction RootTransaction { get; }
+
+  /// <summary>
+  /// Returns control to the parent transaction and renders this transaction unusable, if a parent transaction exists. If this transaction doesn't
+  /// have a parent transaction, this method does nothing.
+  /// </summary>
+  /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
+  public abstract bool ReturnToParentTransaction ();
+
   // methods and properties
 
   /// <summary>
@@ -127,26 +155,6 @@ public class ClientTransaction : ITransaction
   {
     get { return _isReadOnly; }
     internal protected set { _isReadOnly = value; }
-  }
-
-  /// <summary>
-  /// Gets the parent transaction for this <see cref="ClientTransaction"/>.
-  /// </summary>
-  /// <value>The parent transaction.</value>
-  public virtual ClientTransaction ParentTransaction
-  {
-    get { return null; }
-  }
-
-  /// <summary>
-  /// Gets the root transaction of this <see cref="ClientTransaction"/>, i.e. the top-level parent transaction in a row of subtransactions.
-  /// </summary>
-  /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
-  /// <remarks>When a transaction is not a subtransaction, this property returns the transaction itself. If it is the subtransaction of a parent
-  /// transaction, it returns the parent's root transaction. </remarks>
-  public virtual ClientTransaction RootTransaction
-  {
-    get { return this; }
   }
 
   /// <summary>

@@ -87,7 +87,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       ExpectSecurityProviderGetAccessForGroup ("UID: testOwningGroup", "UID: testTenant", principal);
       ExpectSecurityProviderGetAccessForGroup ("UID: testGroup", "UID: testTenant", principal);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);
@@ -113,7 +113,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);
@@ -155,7 +155,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principal, SecurityManagerAccessTypes.AssignRole);
       SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principal);
 
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);
@@ -181,7 +181,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);
@@ -205,7 +205,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       SecurityConfiguration.Current.SecurityProvider = new NullSecurityProvider ();
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         Role role = Role.NewObject (transaction);

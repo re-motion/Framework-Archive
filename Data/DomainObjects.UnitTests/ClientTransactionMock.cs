@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
   [Serializable]
-  public class ClientTransactionMock : ClientTransaction
+  public class ClientTransactionMock : RootClientTransaction
   {
     // types
 

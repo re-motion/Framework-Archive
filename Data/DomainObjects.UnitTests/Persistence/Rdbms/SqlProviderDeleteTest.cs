@@ -76,8 +76,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ConcurrencyViolationException))]
     public void ConcurrentDeleteWithForeignKey ()
     {
-      ClientTransaction clientTransaction1 = new ClientTransaction ();
-      ClientTransaction clientTransaction2 = new ClientTransaction ();
+      ClientTransaction clientTransaction1 = ClientTransaction.NewTransaction();
+      ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction();
 
       OrderTicket changedOrderTicket;
       DataContainer changedDataContainer;
@@ -106,8 +106,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (ConcurrencyViolationException))]
     public void ConcurrentDeleteWithoutForeignKey ()
     {
-      ClientTransaction clientTransaction1 = new ClientTransaction ();
-      ClientTransaction clientTransaction2 = new ClientTransaction ();
+      ClientTransaction clientTransaction1 = ClientTransaction.NewTransaction();
+      ClientTransaction clientTransaction2 = ClientTransaction.NewTransaction();
 
       DataContainer changedDataContainer;
       ClassWithAllDataTypes changedObject;

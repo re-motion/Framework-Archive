@@ -308,7 +308,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
        MatchType = MessageMatch.Regex)]
     public void DeleteWithOtherClientTransaction ()
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       Order order1;
       using (new ClientTransactionScope ())
       {

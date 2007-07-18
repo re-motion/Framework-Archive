@@ -118,7 +118,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (10);
 
-      ClientTransaction transaction = new ClientTransaction();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         AccessControlEntry ace = AccessControlEntry.GetObject (aceID, transaction);
@@ -132,7 +132,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void GetChangedAt_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       Assert.AreNotEqual (DateTime.MinValue, ace.ChangedAt);
@@ -141,7 +141,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void Touch_AfterCreation ()
     {
-      ClientTransaction transaction = new ClientTransaction();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       DateTime creationDate = ace.ChangedAt;
@@ -155,7 +155,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
     [Test]
     public void SetAndGet_Index ()
     {
-      ClientTransaction transaction = new ClientTransaction();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       AccessControlEntry ace = AccessControlEntry.NewObject (_testHelper.Transaction);
 
       ace.Index = 1;
@@ -185,7 +185,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEn
       aceExpected.Tenant = TenantSelection.SpecificTenant;
       aceExpected.SpecificTenant = _testHelper.CreateTenant ("TestTenant");
       _testHelper.Transaction.Commit ();
-      ClientTransaction clientTransaction = new ClientTransaction ();
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
       AccessControlEntry aceActual = AccessControlEntry.GetObject (aceID, clientTransaction);
       using (clientTransaction.EnterScope())
       {

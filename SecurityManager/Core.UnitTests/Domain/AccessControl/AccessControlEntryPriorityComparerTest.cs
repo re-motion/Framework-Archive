@@ -11,7 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_Equals ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope ())
       {
         AccessControlEntry leftAce = AccessControlEntry.NewObject (transaction);
@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsLessThanRight ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope ())
       {
         AccessControlEntry leftAce = AccessControlEntry.NewObject (transaction);
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsGreaterThanRight ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope ())
       {
         AccessControlEntry leftAce = AccessControlEntry.NewObject (transaction);
@@ -60,7 +60,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsLessThanRightAndRightIsCalculated ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         AccessControlEntry leftAce = AccessControlEntry.NewObject (transaction);
@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_RightIsNull ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         AccessControlEntry leftAce = AccessControlEntry.NewObject (transaction);
@@ -91,7 +91,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Compare_LeftIsNull ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
+      ClientTransaction transaction = ClientTransaction.NewTransaction();
       using (transaction.EnterScope())
       {
         AccessControlEntry leftAce = null;

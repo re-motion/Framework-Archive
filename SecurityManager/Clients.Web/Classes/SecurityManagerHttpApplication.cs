@@ -136,7 +136,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
     {
       if (HasSessionState)
       {
-        ClientTransaction clientTransaction = new ClientTransaction ();
+        ClientTransaction clientTransaction = ClientTransaction.NewTransaction();
         
         SecurityManagerUser user = LoadUserFromSession (clientTransaction);
         if (user == null && Context.User.Identity.IsAuthenticated)

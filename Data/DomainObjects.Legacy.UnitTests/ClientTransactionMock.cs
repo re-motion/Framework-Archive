@@ -1,10 +1,11 @@
 using System;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
 {
   [Serializable]
-  public class ClientTransactionMock : ClientTransaction
+  public class ClientTransactionMock : RootClientTransaction
   {
     // types
 
