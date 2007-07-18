@@ -15,6 +15,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   /// </remarks>
   public interface IClientTransactionListener
   {
+    void SubTransactionCreating (ClientTransaction subTransaction);
+
     void NewObjectCreating (Type type);
     
     void ObjectLoading (ObjectID id);

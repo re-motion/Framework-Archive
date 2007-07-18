@@ -32,6 +32,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
+    public void SubTransactionCreating (ClientTransaction subTransaction)
+    {
+      EnsureWriteable ("SubTransactionCreating");
+    }
+
     public void NewObjectCreating (Type type)
     {
       EnsureWriteable ("NewObjectCreating");

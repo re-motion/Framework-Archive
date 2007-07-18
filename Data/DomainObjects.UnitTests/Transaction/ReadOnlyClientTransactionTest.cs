@@ -398,5 +398,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       ClientTransactionMock.QueryManager.GetCollection (query);
     }
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionReadOnlyException), ExpectedMessage = "The operation cannot be executed because the "
+        + "ClientTransaction is read-only. Offending transaction modification: SubTransactionCreating.")]
+    public void ThrowsOnCreateSubTransaction ()
+    {
+      ClientTransactionMock.IsReadOnly = true;
+      new ClientTransaction (ClientTransactionMock);
+    }
   }
 }

@@ -29,6 +29,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return _extensions; }
     }
 
+    public void SubTransactionCreating (ClientTransaction subTransaction)
+    {
+    }
+
     public void NewObjectCreating (Type type)
     {
       _extensions.NewObjectCreating (type);

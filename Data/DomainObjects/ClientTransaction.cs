@@ -113,6 +113,7 @@ public class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
 
     _parentTransaction = parentTransaction;
+    parentTransaction.TransactionEventSink.SubTransactionCreating (this);
     parentTransaction.IsReadOnly = true;
 
     _extensions = _parentTransaction._extensions;

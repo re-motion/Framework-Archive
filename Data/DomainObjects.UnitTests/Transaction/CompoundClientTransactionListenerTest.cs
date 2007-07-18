@@ -62,6 +62,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       Order order = Order.NewObject();
       Order order2 = Order.NewObject();
+      
+      CheckNotification (typeof (IClientTransactionListener).GetMethod ("SubTransactionCreating"), new object[] { ClientTransactionMock });
+
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("NewObjectCreating"), new object[] {typeof (string)});
 
       CheckNotification (typeof (IClientTransactionListener).GetMethod ("ObjectLoading"), new object[] {order.ID});

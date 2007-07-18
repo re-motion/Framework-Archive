@@ -343,5 +343,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
           managerTwo.CopyFrom (managerOne);
         });
     }
+
+    [Test]
+    public void SubTransactionCreating ()
+    {
+      Expect(delegate
+      {
+        _listener.SubTransactionCreating (null);
+        LastCall.Constraints (Mock_Is.NotNull() && Mock_Is.NotSame (ClientTransactionMock)
+            && Mock_Property.Value ("ParentTransaction", ClientTransactionMock));
+
+        _listener.DataManagerCopyingTo (null);
+        LastCall.IgnoreArguments ();
+        _listener.DataContainerMapCopyingTo (null);
+        LastCall.IgnoreArguments ();
+        _listener.RelationEndPointMapCopyingTo (null);
+        LastCall.IgnoreArguments ();
+      },
+      delegate
+      {
+        new ClientTransaction (ClientTransactionMock);
+      });
+    }
   }
 }

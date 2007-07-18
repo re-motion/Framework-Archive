@@ -13,6 +13,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   {
     private static ILog s_log = LogManager.GetLogger (typeof (LoggingClientTransactionListener));
 
+    public void SubTransactionCreating (ClientTransaction subTransaction)
+    {
+      s_log.Info ("SubTransactionCreating");
+    }
+
     public void NewObjectCreating (Type type)
     {
       s_log.Info ("NewObjectCreating");

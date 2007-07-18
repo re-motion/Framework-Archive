@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.Infrastructure;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -47,6 +48,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction subTransaction2 = new ClientTransaction (subTransaction);
       Assert.IsTrue (subTransaction.IsReadOnly);
       Assert.IsFalse (subTransaction2.IsReadOnly);
+    }
+
+
+    [Test]
+    [ExpectedException (typeof (ClientTransactionReadOnlyException), ExpectedMessage = "The operation cannot be executed because the "
+        + "ClientTransaction is read-only. Offending transaction modification: SubTransactionCreating.")]
+    public void NoTwoSubTransactionsAtSameTime ()
+    {
+      ClientTransaction subTransaction1 = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction2 = new ClientTransaction (ClientTransactionMock);
     }
 
     [Test]
