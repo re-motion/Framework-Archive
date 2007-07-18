@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Infrastructure;
 
@@ -50,6 +52,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.IsFalse (subTransaction2.IsReadOnly);
     }
 
+    [Test]
+    public void SubTransactionHasSameExtensions ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Assert.AreSame (ClientTransactionMock.Extensions, subTransaction.Extensions);
+    }
+
+    [Test]
+    public void SubTransactionHasSameApplicationData ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Assert.AreSame (ClientTransactionMock.ApplicationData, subTransaction.ApplicationData);
+    }
 
     [Test]
     [ExpectedException (typeof (ClientTransactionReadOnlyException), ExpectedMessage = "The operation cannot be executed because the "
@@ -153,6 +168,145 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         ++order.OrderNumber;
         OrderTicket oldTicket = order.OrderTicket;
         order.OrderTicket = OrderTicket.NewObject ();
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Subtransactions")]
+    public void ObjectsAvailableInParentAppearUnchangedInSubTransaction ()
+    {
+      Computer unchangedLoadedComputer = Computer.GetObject (DomainObjectIDs.Computer1);
+      
+      Order newOrder = Order.NewObject ();
+      
+      Order changedLoadedOrder = Order.GetObject (DomainObjectIDs.Order2);
+      changedLoadedOrder.OrderNumber = 7;
+
+      Order relationChangedLoadedOrder = Order.GetObject (DomainObjectIDs.Order4);
+      relationChangedLoadedOrder.OrderItems.Add (OrderItem.NewObject ());
+
+      Order indirectlyChangedLoadedOrder = Order.GetObject (DomainObjectIDs.Order3);
+      indirectlyChangedLoadedOrder.OrderItems[0].Product = "Weetabix";
+
+      Assert.AreEqual (StateType.New, newOrder.State);
+      Assert.AreEqual (StateType.Changed, changedLoadedOrder.State);
+      Assert.AreEqual (StateType.Changed, relationChangedLoadedOrder.State);
+      Assert.AreEqual (StateType.Unchanged, indirectlyChangedLoadedOrder.State);
+      Assert.AreEqual (StateType.Unchanged, unchangedLoadedComputer.State);
+
+      Assert.AreNotEqual (changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int> (),
+            changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
+
+      Assert.AreNotSame (changedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetValue<ObjectList<OrderItem>> ()[0],
+          relationChangedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ()[0]);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreEqual (StateType.Unchanged, newOrder.State);
+        Assert.AreEqual (StateType.Unchanged, changedLoadedOrder.State);
+        Assert.AreEqual (StateType.Unchanged, relationChangedLoadedOrder.State);
+        Assert.AreEqual (StateType.Unchanged, indirectlyChangedLoadedOrder.State);
+        Assert.AreEqual (StateType.Unchanged, unchangedLoadedComputer.State);
+
+        Assert.AreEqual (changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int> (),
+            changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
+
+        Assert.AreSame (changedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetValue<ObjectList<OrderItem>> ()[0],
+            relationChangedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ()[0]);
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Subtransactions -TBD")]
+    public void ObjectsDeletedInParentAppearDiscardedInSubTransaction ()
+    {
+      Order deletedLoadedOrder = Order.GetObject (DomainObjectIDs.Order1);
+      deletedLoadedOrder.Delete ();
+
+      Order deletedNewOrder = Order.NewObject ();
+      deletedNewOrder.Delete ();
+      Assert.AreEqual (StateType.Deleted, deletedLoadedOrder.State);
+      Assert.IsTrue (deletedNewOrder.IsDiscarded);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.IsTrue (deletedLoadedOrder.IsDiscarded);
+        Assert.IsTrue (deletedNewOrder.IsDiscarded);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException))]
+    public void UnidirectionalDeleteInRootTransactionCausesThrowOnAccess ()
+    {
+      Client client = Client.GetObject (DomainObjectIDs.Client1);
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      Assert.AreSame (client, location.Client);
+      client.Delete ();
+      Client clientAfterDelete = location.Client;
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Subtransactions - TBD")]
+    public void IndirectAccessToDeletedObjectInSubTransactionThrows ()
+    {
+      Client client = Client.GetObject (DomainObjectIDs.Client1);
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      Assert.AreSame (client, location.Client);
+
+      client.Delete ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope())
+      {
+        Client clientAfterDelete = location.Client;
+        Assert.Fail ("TODO");
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectNotFoundException))]
+    public void NewUnidirectionalDeleteInRootTransactionCausesThrowOnAccess ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      location.Client = Client.NewObject ();
+      location.Client.Delete ();
+
+      Client clientAfterDelete = location.Client;
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Subtransactions - TBD")]
+    public void IndirectAccessToDeletedNewObjectInSubTransactionThrows ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      location.Client = Client.NewObject ();
+      location.Client.Delete ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Client clientAfterDelete = location.Client;
+        Assert.Fail ("TODO");
+      }
+    }
+
+
+    [Test]
+    [Ignore ("TODO: FS - Subtransactions")]
+    public void StateChangesInsideSubTransaction ()
+    {
+      Order newOrder = Order.NewObject ();
+
+      Assert.AreEqual (StateType.New, newOrder.State);
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreEqual (StateType.Unchanged, newOrder.State);
+
+        newOrder.OrderNumber = 7;
+
+        Assert.AreEqual (StateType.Changed, newOrder.State);
+        Assert.AreNotEqual (newOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int>(),
+            newOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
       }
     }
 
