@@ -125,17 +125,21 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     private void TrySelect (TreeNode node, string selectedValue)
     {
       if (node.Name.Equals (selectedValue, StringComparison.CurrentCultureIgnoreCase))
+      {
         _treeView.SelectedNode = node;
+        node.EnsureVisible();
+      }
     }
 
     private void ExpandTypeTreeView ()
-    {
-      if (_treeView.Nodes.Count < 3)
+    {      
+      if (_treeView.Nodes.Count < 4)
       {
+        bool expandAll = _treeView.GetNodeCount (true) < 21;
         foreach (TreeNode assemblyNode in _treeView.Nodes)
         {
           assemblyNode.Expand();
-          if (assemblyNode.Nodes.Count < 3)
+          if (expandAll || assemblyNode.Nodes.Count == 1)
             assemblyNode.ExpandAll();
         }
       }
