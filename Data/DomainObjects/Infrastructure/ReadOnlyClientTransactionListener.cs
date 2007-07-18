@@ -32,9 +32,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void SubTransactionCreating (ClientTransaction subTransaction)
+    public void SubTransactionCreating ()
     {
       EnsureWriteable ("SubTransactionCreating");
+    }
+
+    public void SubTransactionCreated (ClientTransaction subTransaction)
+    {
+      Assertion.Assert (_clientTransaction.IsReadOnly); // after a subtransaction has been created, the parent must be read-only
     }
 
     public void NewObjectCreating (Type type)

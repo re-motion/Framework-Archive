@@ -76,7 +76,6 @@ public class ClientTransaction : ITransaction
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event ClientTransactionEventHandler RolledBack;
 
-  private readonly ClientTransaction _parentTransaction;
   private readonly DataManager _dataManager;
   private QueryManager _queryManager;
   private readonly Dictionary<Enum, object> _applicationData;
@@ -91,45 +90,27 @@ public class ClientTransaction : ITransaction
   /// Initializes a new instance of the <b>ClientTransaction</b> class.
   /// </summary>
   public ClientTransaction ()
+    : this (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection ())
   {
-    _extensions = new ClientTransactionExtensionCollection ();
-
-    _listeners = new CompoundClientTransactionListener ();
-    _listeners.AddListener (new LoggingClientTransactionListener ());
-    _listeners.AddListener (new ReadOnlyClientTransactionListener (this));
-    _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
-
-    _applicationData = new Dictionary<Enum, object> ();
-
-    _isReadOnly = false;
-    _dataManager = new DataManager (this);
   }
 
-  /// <summary>
-  /// Initializes a new subtransaction.
-  /// </summary>
-  public ClientTransaction (ClientTransaction parentTransaction)
+  protected ClientTransaction (Dictionary<Enum, object> applicationData, ClientTransactionExtensionCollection extensions)
   {
-    ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
+    ArgumentUtility.CheckNotNull ("applicationData", applicationData);
+    ArgumentUtility.CheckNotNull ("extensions", extensions);
 
-    _parentTransaction = parentTransaction;
-    parentTransaction.TransactionEventSink.SubTransactionCreating (this);
-    parentTransaction.IsReadOnly = true;
-
-    _extensions = _parentTransaction._extensions;
-
-    // same _extensions, but new _listeners - especially the ReadOnlyClientTransactionListener cannot be the same as that of the parent transaction
+    _isReadOnly = false;
+    _extensions = extensions;
+   
     _listeners = new CompoundClientTransactionListener ();
+
     _listeners.AddListener (new LoggingClientTransactionListener ());
     _listeners.AddListener (new ReadOnlyClientTransactionListener (this));
     _listeners.AddListener (new ExtensionClientTransactionListener (_extensions));
 
-    _applicationData = _parentTransaction._applicationData;
-
-     _isReadOnly = false;
-    
+    _applicationData = applicationData;
     _dataManager = new DataManager (this);
-    _dataManager.CopyFrom (_parentTransaction._dataManager);
+
   }
 
   // methods and properties
@@ -152,9 +133,9 @@ public class ClientTransaction : ITransaction
   /// Gets the parent transaction for this <see cref="ClientTransaction"/>.
   /// </summary>
   /// <value>The parent transaction.</value>
-  public ClientTransaction ParentTransaction
+  public virtual ClientTransaction ParentTransaction
   {
-    get { return _parentTransaction; }
+    get { return null; }
   }
 
   /// <summary>
@@ -163,15 +144,9 @@ public class ClientTransaction : ITransaction
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
   /// <remarks>When a transaction is not a subtransaction, this property returns the transaction itself. If it is the subtransaction of a parent
   /// transaction, it returns the parent's root transaction. </remarks>
-  public ClientTransaction RootTransaction
+  public virtual ClientTransaction RootTransaction
   {
-    get
-    {
-      if (ParentTransaction != null)
-        return ParentTransaction.RootTransaction;
-      else
-        return this;
-    }
+    get { return this; }
   }
 
   /// <summary>
@@ -221,6 +196,15 @@ public class ClientTransaction : ITransaction
   public ClientTransactionScope EnterScope ()
   {
     return new ClientTransactionScope (this);
+  }
+
+  /// <summary>
+  /// Initializes a new subtransaction with this <see cref="ClientTransaction"/> as its <see cref="ParentTransaction"/>.
+  /// </summary>
+  public ClientTransaction CreateSubTransaction ()
+  {
+    ClientTransaction subTransaction = new SubClientTransaction (this);
+    return subTransaction;
   }
 
   /// <summary>

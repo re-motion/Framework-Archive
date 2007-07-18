@@ -22,10 +22,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       _listeners.Add (listener);
     }
 
-    public void SubTransactionCreating (ClientTransaction subTransaction)
+    public void SubTransactionCreating ()
     {
       foreach (IClientTransactionListener listener in _listeners)
-        listener.SubTransactionCreating (subTransaction);
+        listener.SubTransactionCreating ();
+    }
+
+    public void SubTransactionCreated (ClientTransaction subTransaction)
+    {
+      foreach (IClientTransactionListener listener in _listeners)
+        listener.SubTransactionCreated (subTransaction);
     }
 
     public void NewObjectCreating (Type type)

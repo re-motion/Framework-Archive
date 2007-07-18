@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CreateSubTransaction ()
     {
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       Assert.AreSame (ClientTransactionMock, subTransaction.ParentTransaction);
       Assert.AreSame (ClientTransactionMock, subTransaction.RootTransaction);
     }
@@ -31,8 +31,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CreateSubTransactionInSubTransaction ()
     {
-      ClientTransaction subTransaction1 = new ClientTransaction (ClientTransactionMock);
-      ClientTransaction subTransaction2 = new ClientTransaction (subTransaction1);
+      ClientTransaction subTransaction1 = ClientTransactionMock.CreateSubTransaction();
+      ClientTransaction subTransaction2 = subTransaction1.CreateSubTransaction();
       Assert.AreSame (subTransaction1, subTransaction2.ParentTransaction);
       Assert.AreSame (ClientTransactionMock, subTransaction2.RootTransaction);
     }
@@ -41,11 +41,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CreatingSubTransactionSetsParentReadonly ()
     {
       Assert.IsFalse (ClientTransactionMock.IsReadOnly);
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       Assert.IsTrue (ClientTransactionMock.IsReadOnly);
       Assert.IsFalse (subTransaction.IsReadOnly);
 
-      ClientTransaction subTransaction2 = new ClientTransaction (subTransaction);
+      ClientTransaction subTransaction2 = subTransaction.CreateSubTransaction();
       Assert.IsTrue (subTransaction.IsReadOnly);
       Assert.IsFalse (subTransaction2.IsReadOnly);
     }
@@ -56,14 +56,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         + "ClientTransaction is read-only. Offending transaction modification: SubTransactionCreating.")]
     public void NoTwoSubTransactionsAtSameTime ()
     {
-      ClientTransaction subTransaction1 = new ClientTransaction (ClientTransactionMock);
-      ClientTransaction subTransaction2 = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction1 = ClientTransactionMock.CreateSubTransaction();
+      ClientTransaction subTransaction2 = ClientTransactionMock.CreateSubTransaction();
     }
 
     [Test]
     public void SubTransactionCanBeUsedToCreateAndLoadNewObjects ()
     {
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope())
       {
         Assert.AreSame (subTransaction, ClientTransactionScope.CurrentTransaction);
@@ -93,7 +93,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void DomainObjectsCreatedInParentCanBeUsedInSubTransactions ()
     {
       Order order = Order.NewObject ();
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
     }
@@ -101,7 +101,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void DomainObjectsCreatedInSubTransactionCannotBeUsedInParent ()
     {
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         Order order = Order.NewObject();
@@ -114,7 +114,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void DomainObjectsLoadedInParentCanBeUsedInSubTransactions ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
     }
@@ -122,7 +122,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void DomainObjectsLoadedInSubTransactionCannotBeUsedInParent ()
     {
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -135,7 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanAccessObjectNewedInParent ()
     {
       Order order = Order.NewObject ();
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         order.OrderNumber = 5;
@@ -147,7 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanAccessObjectLoadedInParent ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      ClientTransaction subTransaction = new ClientTransaction (ClientTransactionMock);
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         ++order.OrderNumber;
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order loadedChangedOrder = Order.GetObject (DomainObjectIDs.Order2);
       loadedChangedOrder.OrderNumber = 13;
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
       {
         Assert.AreSame (loadedUnchangedOrder, Order.GetObject (DomainObjectIDs.Order1));
         Assert.AreSame (loadedChangedOrder, Order.GetObject (DomainObjectIDs.Order2));
@@ -192,7 +192,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order loadedChangedOrder = Order.GetObject (DomainObjectIDs.Order2);
       loadedChangedOrder.OrderNumber = 13;
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
       {
         newChangedOrder.OrderNumber = 17;
         loadedChangedOrder.OrderNumber = 4;
@@ -229,7 +229,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       newItem3.Product = "FooBar, the energy bar with the extra Foo";
       newOrder.OrderItems.Add (newItem3);
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         Assert.AreSame (loadedOrder, Order.GetObject (DomainObjectIDs.Order1));
         Assert.AreNotSame (loadedItems, loadedOrder.OrderItems);
@@ -264,7 +264,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Order newOrder = Order.NewObject ();
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
       {
         loadedOrder.OrderItems.Clear ();
         newOrder.OrderItems.Add (OrderItem.NewObject ());
@@ -294,7 +294,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Employee newEmployee = Employee.NewObject ();
       newEmployee.Computer = newComputer;
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
       {
         Assert.AreSame (loadedComputer, Computer.GetObject (DomainObjectIDs.Computer1));
         Assert.AreSame (loadedEmployee, Employee.GetObject (DomainObjectIDs.Employee1));
@@ -317,7 +317,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Employee newEmployee = Employee.NewObject ();
       newEmployee.Computer = newComputer;
 
-      using (new ClientTransaction (ClientTransactionMock).EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
       {
         loadedComputer.Employee = Employee.NewObject ();
         loadedEmployee.Computer = Computer.NewObject ();

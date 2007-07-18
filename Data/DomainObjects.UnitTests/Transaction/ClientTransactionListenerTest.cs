@@ -345,13 +345,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void SubTransactionCreating ()
+    public void SubTransactionCreatingSubTransactionCreated ()
     {
       Expect(delegate
       {
-        _listener.SubTransactionCreating (null);
-        LastCall.Constraints (Mock_Is.NotNull() && Mock_Is.NotSame (ClientTransactionMock)
-            && Mock_Property.Value ("ParentTransaction", ClientTransactionMock));
+        _listener.SubTransactionCreating ();
 
         _listener.DataManagerCopyingTo (null);
         LastCall.IgnoreArguments ();
@@ -359,10 +357,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.IgnoreArguments ();
         _listener.RelationEndPointMapCopyingTo (null);
         LastCall.IgnoreArguments ();
+
+        _listener.SubTransactionCreated (null);
+        LastCall.Constraints (Mock_Is.NotNull () && Mock_Is.NotSame (ClientTransactionMock)
+          && Mock_Property.Value ("ParentTransaction", ClientTransactionMock));
       },
       delegate
       {
-        new ClientTransaction (ClientTransactionMock);
+        ClientTransactionMock.CreateSubTransaction();
       });
     }
   }

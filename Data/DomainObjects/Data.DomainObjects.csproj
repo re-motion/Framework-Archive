@@ -482,6 +482,7 @@
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SubClientTransaction.cs" />
     <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>

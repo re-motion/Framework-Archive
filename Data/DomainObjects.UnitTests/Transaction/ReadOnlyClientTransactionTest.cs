@@ -405,7 +405,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ThrowsOnCreateSubTransaction ()
     {
       ClientTransactionMock.IsReadOnly = true;
-      new ClientTransaction (ClientTransactionMock);
+      ClientTransactionMock.CreateSubTransaction();
     }
   }
 }
