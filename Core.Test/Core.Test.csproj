@@ -198,12 +198,6 @@
     <Compile Include="NullableValueTypes\SerializationTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\BusinessObjectPropertyPathTestHelper.cs" />
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\CascadedPropertyPathTest.cs" />
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\CascadedListPropertyPathTest.cs" />
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
     <Compile Include="Reflection\AssemblyFinderTest.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\MarkedExeAssembly\AssemblyInfo.cs" />
     <TestAssembly Include="Reflection\TestAssemblies\UnmarkedAssembly\AssemblyInfo.cs" />

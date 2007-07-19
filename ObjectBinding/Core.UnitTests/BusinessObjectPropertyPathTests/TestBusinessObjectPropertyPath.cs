@@ -1,7 +1,7 @@
 using System;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
+namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectPropertyPathTests
 {
   public class TestBusinessObjectPropertyPath : BusinessObjectPropertyPath
   {

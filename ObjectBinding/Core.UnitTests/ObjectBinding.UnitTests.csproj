@@ -94,6 +94,12 @@
     <Compile Include="BindableObject\TestDomain\SimpleValueType.cs" />
     <Compile Include="BindableObject\UndefinedEnumValueAttributeTest.cs" />
     <Compile Include="BusinessObjectDataSourceTest.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\BusinessObjectPropertyPathTestHelper.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\CascadedListPropertyPathTest.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\CascadedPropertyPathTest.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
+    <Compile Include="BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
     <Compile Include="Design\DropDownEditorBaseTest.cs">
     </Compile>
     <Compile Include="Design\MockDropDownEditorBase.cs" />

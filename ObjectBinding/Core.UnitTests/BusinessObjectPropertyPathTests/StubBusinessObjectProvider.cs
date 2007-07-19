@@ -2,7 +2,7 @@ using System;
 using Rubicon.Collections;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
+namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectPropertyPathTests
 {
   public class StubBusinessObjectProvider : BusinessObjectProvider
   {

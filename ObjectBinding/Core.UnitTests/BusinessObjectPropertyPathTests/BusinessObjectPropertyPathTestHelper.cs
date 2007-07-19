@@ -2,7 +2,7 @@ using System;
 using Rhino.Mocks;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
+namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectPropertyPathTests
 {
   public class BusinessObjectPropertyPathTestHelper
   {

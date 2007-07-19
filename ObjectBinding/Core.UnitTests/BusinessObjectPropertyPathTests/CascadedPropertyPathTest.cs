@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.ObjectBinding;
 
-namespace Rubicon.Core.UnitTests.ObjectBidning.BusinessObjectPropertyPathTests
+namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectPropertyPathTests
 {
   [TestFixture]
   public class CascadedPropertyPathTest
