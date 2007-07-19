@@ -74,6 +74,7 @@ namespace Rubicon.Utilities
       if (File.Exists (destinationFileName))
         File.Delete (destinationFileName);
       File.Copy (assemblyLocation, destinationFileName);
+      File.SetAttributes (destinationFileName, FileAttributes.Normal);
 
       return destinationFileName;
     }
