@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
@@ -25,6 +26,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       _parentTransaction = parentTransaction;
 
       DataManager.CopyFrom (_parentTransaction.DataManager);
+      // commit the data manager to the data we got from the parent transaction, this will set all DomainObject states as needed (mostly
+      // StateType.Unchanged, unless the object deleted, in which case it will be discarded), and set the original values to the current values
+      DataManager.Commit ();
+
       parentTransaction.TransactionEventSink.SubTransactionCreated (this);
     }
 
@@ -43,6 +48,17 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ParentTransaction.IsReadOnly = false;
       AddListener (new InvalidatedSubTransactionListener ());
       return true;
+    }
+
+    protected override DataContainer LoadDataContainer (ObjectID id)
+    {
+      if (DataManager.IsDiscarded (id))
+      {
+        // Trying to load a data container for a discarded object. To mimic the behavior of RootClientTransaction, we will throw an
+        // ObjectNotFoundException here.
+        throw new ObjectNotFoundException (id);
+      }
+      return base.LoadDataContainer (id);
     }
   }
 }

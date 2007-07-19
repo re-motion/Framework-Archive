@@ -1,5 +1,7 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -159,6 +161,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       location3.Delete ();
 
       ClientTransactionMock.Commit ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException),
+        ExpectedMessage = "Object 'Client|1627ade8-125f-4819-8e33-ce567c42b00c|System.Guid' is already deleted.")]
+    public void IndirectAccessToDeletedLoadedThrows ()
+    {
+      _location.Client.Delete ();
+      Client client = _location.Client;
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectNotFoundException),
+        ExpectedMessage = "Object 'Client|.*|System.Guid' could not be found.", MatchType = MessageMatch.Regex)]
+    public void IndirectAccessToDeletedNewThrows ()
+    {
+      _location.Client = Client.NewObject ();
+      _location.Client.Delete ();
+      Client client = _location.Client;
+    }
+
+    [Test]
+    [Ignore ("TODO: Discuss whether to implement consistency checks in OPF.")]
+    public void DeleteClientAndCommit ()
+    {
+      _location.Client.Delete ();
+      ClientTransactionMock.Commit ();
+      Assert.IsNull (_location.Client);
+    }
+
+    [Test]
+    public void ResettingDeletedLoadedWorks ()
+    {
+      _location.Client.Delete ();
+      Client newClient = Client.NewObject ();
+      _location.Client = newClient;
+      Assert.AreSame (newClient, _location.Client);
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Unidirectional Relations")]
+    public void ResettingDeletedNewWorks ()
+    {
+      _location.Client = Client.NewObject ();
+      _location.Client.Delete ();
+      Client newClient = Client.NewObject ();
+      _location.Client = newClient;
+      Assert.AreSame (newClient, _location.Client);
+    }
+
+    [Test]
+    public void StateRemainsUnchangedWhenDeletingRelatedObject ()
+    {
+      Assert.AreEqual (StateType.Unchanged, _location.State);
+      _location.Client.Delete ();
+      Assert.AreEqual (StateType.Unchanged, _location.State);
     }
 
     [Test]

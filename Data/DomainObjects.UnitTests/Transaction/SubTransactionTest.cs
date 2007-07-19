@@ -172,70 +172,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions")]
-    public void ObjectsAvailableInParentAppearUnchangedInSubTransaction ()
-    {
-      Computer unchangedLoadedComputer = Computer.GetObject (DomainObjectIDs.Computer1);
-      
-      Order newOrder = Order.NewObject ();
-      
-      Order changedLoadedOrder = Order.GetObject (DomainObjectIDs.Order2);
-      changedLoadedOrder.OrderNumber = 7;
-
-      Order relationChangedLoadedOrder = Order.GetObject (DomainObjectIDs.Order4);
-      relationChangedLoadedOrder.OrderItems.Add (OrderItem.NewObject ());
-
-      Order indirectlyChangedLoadedOrder = Order.GetObject (DomainObjectIDs.Order3);
-      indirectlyChangedLoadedOrder.OrderItems[0].Product = "Weetabix";
-
-      Assert.AreEqual (StateType.New, newOrder.State);
-      Assert.AreEqual (StateType.Changed, changedLoadedOrder.State);
-      Assert.AreEqual (StateType.Changed, relationChangedLoadedOrder.State);
-      Assert.AreEqual (StateType.Unchanged, indirectlyChangedLoadedOrder.State);
-      Assert.AreEqual (StateType.Unchanged, unchangedLoadedComputer.State);
-
-      Assert.AreNotEqual (changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int> (),
-            changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
-
-      Assert.AreNotSame (changedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetValue<ObjectList<OrderItem>> ()[0],
-          relationChangedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ()[0]);
-
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
-      {
-        Assert.AreEqual (StateType.Unchanged, newOrder.State);
-        Assert.AreEqual (StateType.Unchanged, changedLoadedOrder.State);
-        Assert.AreEqual (StateType.Unchanged, relationChangedLoadedOrder.State);
-        Assert.AreEqual (StateType.Unchanged, indirectlyChangedLoadedOrder.State);
-        Assert.AreEqual (StateType.Unchanged, unchangedLoadedComputer.State);
-
-        Assert.AreEqual (changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetValue<int> (),
-            changedLoadedOrder.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
-
-        Assert.AreSame (changedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetValue<ObjectList<OrderItem>> ()[0],
-            relationChangedLoadedOrder.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ()[0]);
-      }
-    }
-
-    [Test]
-    [Ignore ("TODO: FS - Subtransactions -TBD")]
-    public void ObjectsDeletedInParentAppearDiscardedInSubTransaction ()
-    {
-      Order deletedLoadedOrder = Order.GetObject (DomainObjectIDs.Order1);
-      deletedLoadedOrder.Delete ();
-
-      Order deletedNewOrder = Order.NewObject ();
-      deletedNewOrder.Delete ();
-      Assert.AreEqual (StateType.Deleted, deletedLoadedOrder.State);
-      Assert.IsTrue (deletedNewOrder.IsDiscarded);
-
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
-      {
-        Assert.IsTrue (deletedLoadedOrder.IsDiscarded);
-        Assert.IsTrue (deletedNewOrder.IsDiscarded);
-      }
-    }
-
-    [Test]
     [ExpectedException (typeof (ObjectDeletedException))]
     public void UnidirectionalDeleteInRootTransactionCausesThrowOnAccess ()
     {
@@ -247,7 +183,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions - TBD")]
+    [ExpectedException (typeof (ObjectNotFoundException))]
     public void IndirectAccessToDeletedObjectInSubTransactionThrows ()
     {
       Client client = Client.GetObject (DomainObjectIDs.Client1);
@@ -259,7 +195,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (ClientTransactionMock.CreateSubTransaction ().EnterScope())
       {
         Client clientAfterDelete = location.Client;
-        Assert.Fail ("TODO");
       }
     }
 
@@ -275,7 +210,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions - TBD")]
+    [ExpectedException (typeof (ObjectNotFoundException))]
     public void IndirectAccessToDeletedNewObjectInSubTransactionThrows ()
     {
       Location location = Location.GetObject (DomainObjectIDs.Location1);
@@ -285,13 +220,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
       {
         Client clientAfterDelete = location.Client;
-        Assert.Fail ("TODO");
       }
     }
 
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions")]
     public void StateChangesInsideSubTransaction ()
     {
       Order newOrder = Order.NewObject ();

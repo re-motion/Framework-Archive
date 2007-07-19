@@ -91,7 +91,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions")]
     public void RollbackResetsPropertyValuesToThoseOfParentTransaction ()
     {
       _subTransaction.ReturnToParentTransaction ();
@@ -115,8 +114,58 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Subtransactions")]
     public void RollbackResetsRelatedObjectsToThoseOfParentTransaction ()
+    {
+      _subTransaction.ReturnToParentTransaction ();
+
+      Order newOrder = Order.NewObject ();
+      OrderItem orderItem = OrderItem.NewObject ();
+      newOrder.OrderItems.Add (orderItem);
+      Assert.AreEqual (1, newOrder.OrderItems.Count);
+      Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        newOrder.OrderItems.Clear ();
+        newOrder.OrderItems.Add (OrderItem.NewObject ());
+        newOrder.OrderItems.Add (OrderItem.NewObject ());
+        Assert.AreEqual (2, newOrder.OrderItems.Count);
+        Assert.IsFalse (newOrder.OrderItems.ContainsObject (orderItem));
+
+        ClientTransactionScope.CurrentTransaction.Rollback ();
+
+        Assert.AreEqual (1, newOrder.OrderItems.Count);
+        Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
+      }
+    }
+
+    [Test]
+    public void RollbackResetsRelatedObjectToThatOfParentTransaction ()
+    {
+      _subTransaction.ReturnToParentTransaction ();
+
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      Employee employee = computer.Employee;
+      Location location = Location.NewObject ();
+      Client client = Client.NewObject ();
+      location.Client = client;
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        computer.Employee = Employee.NewObject ();
+        location.Client = null;
+        Assert.IsNull (employee.Computer);
+
+        ClientTransactionScope.CurrentTransaction.Rollback ();
+
+        Assert.AreSame (employee, computer.Employee);
+        Assert.AreSame (computer, employee.Computer);
+        Assert.AreSame (client, location.Client);
+      }
+    }
+
+    [Ignore ("TODO: FS - ClientTransactions")]
+    public void Commit ()
     {
       Assert.Fail ();
     }

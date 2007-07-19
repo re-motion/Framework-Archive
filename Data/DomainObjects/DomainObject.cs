@@ -439,10 +439,7 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public ObjectID ID
   {
-    get 
-    {
-      return _id;
-    }
+    get { return _id; }
   }
 
   /// <summary>

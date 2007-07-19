@@ -124,7 +124,7 @@ namespace Rubicon.Data.DomainObjects
     /// <param name="scopedCurrentTransaction">The <see cref="ClientTransaction"/> object used as the current transaction until the scope is left.</param>
     /// <remarks>
     /// <para>
-    /// By default, no changes made within the scope are automatically rolled back. See also <see cref="AutoRollbackBehavior"/>.</remarks>
+    /// By default, no changes made within the scope are automatically rolled back. See also <see cref="AutoRollbackBehavior"/>.
     /// </para>
     /// <para>
     /// The <see cref="ClientTransactionScope"/> constructor stores the previous <see cref="ClientTransactionScope.ActiveScope"/>. When this scope's

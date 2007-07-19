@@ -198,6 +198,8 @@ public class DataContainer
   {
     get 
     {
+      Assertion.Assert (!IsDiscarded || _domainObject != null);
+
       CheckDiscarded ();
 
       if (_domainObject == null)

@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
@@ -95,7 +96,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
-  public DomainObject GetRelatedObject (RelationEndPointID endPointID)
+  public DomainObject GetRelatedObject (RelationEndPointID endPointID, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
     CheckCardinality (endPointID, CardinalityType.One, "GetRelatedObject", "endPointID");
@@ -109,7 +110,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       return null;
     }
 
-    return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, false);
+    return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, includeDeleted);
   }
 
   public DomainObject GetOriginalRelatedObject (RelationEndPointID endPointID)
@@ -307,7 +308,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   private void SetRelatedObjectForUnidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
   {
     AnonymousEndPoint newRelatedEndPoint = GetAnonymousEndPoint (newRelatedObject, endPoint.RelationDefinition);
-    AnonymousEndPoint oldRelatedEndPoint = GetAnonymousEndPoint (GetRelatedObject (endPoint.ID), endPoint.RelationDefinition);
+    DomainObject oldRelatedObject = GetRelatedObject (endPoint.ID, true);
+    AnonymousEndPoint oldRelatedEndPoint = GetAnonymousEndPoint (oldRelatedObject, endPoint.RelationDefinition);
  
     if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
       return;
@@ -323,8 +325,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   private void SetRelatedObjectForBidirectionalRelation (RelationEndPoint endPoint, DomainObject newRelatedObject)
   {
+    DomainObject oldRelatedObject = GetRelatedObject (endPoint.ID, false);
+
     RelationEndPoint newRelatedEndPoint = GetRelationEndPoint (newRelatedObject, endPoint.OppositeEndPointDefinition);
-    RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (GetRelatedObject (endPoint.ID), newRelatedEndPoint.Definition);
+    RelationEndPoint oldRelatedEndPoint = GetRelationEndPoint (oldRelatedObject, newRelatedEndPoint.Definition);
 
     if (object.ReferenceEquals (newRelatedEndPoint.GetDomainObject (), oldRelatedEndPoint.GetDomainObject ()))
       return;
@@ -357,8 +361,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     if (!newRelatedEndPoint.IsNull)
     {
-      oldRelatedEndPointOfNewRelatedEndPoint = (ObjectEndPoint) GetRelationEndPoint (
-          GetRelatedObject (newRelatedEndPoint.ID), endPoint.Definition);
+      DomainObject oldRelatedObject = GetRelatedObject (newRelatedEndPoint.ID, false);
+      oldRelatedEndPointOfNewRelatedEndPoint = (ObjectEndPoint) GetRelationEndPoint (oldRelatedObject, endPoint.Definition);
     }
 
     endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedEndPoint, newRelatedEndPoint);
@@ -407,7 +411,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   private AnonymousEndPoint GetAnonymousEndPoint (DomainObject domainObject, RelationDefinition relationDefinition)
   {
     if (domainObject != null)
-      return new AnonymousEndPoint (domainObject, relationDefinition);
+      return new AnonymousEndPoint (_clientTransaction, domainObject.ID, relationDefinition);
     else
       return new NullAnonymousEndPoint (relationDefinition);
   }
@@ -566,8 +570,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
 
-    CollectionEndPoint oldRelatedOfAddingEndPoint = (CollectionEndPoint) GetRelationEndPoint (
-        GetRelatedObject (addingEndPoint.ID), endPoint.Definition);
+    CollectionEndPoint oldRelatedOfAddingEndPoint = (CollectionEndPoint) GetRelationEndPoint (GetRelatedObject (addingEndPoint.ID, false),
+        endPoint.Definition);
 
     RelationEndPoint oldRelatedNullEndPoint = RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition);
 
@@ -606,9 +610,9 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     ObjectEndPoint oldEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         endPoint.OppositeDomainObjects[index], endPoint.OppositeEndPointDefinition);
-    
+
     CollectionEndPoint oldEndPointOfNewEndPoint = (CollectionEndPoint) GetRelationEndPoint (
-        GetRelatedObject (newEndPoint.ID), newEndPoint.OppositeEndPointDefinition);
+        GetRelatedObject (newEndPoint.ID, false), newEndPoint.OppositeEndPointDefinition);
 
     oldEndPoint.NotifyClientTransactionOfBeginRelationChange (endPoint);
     newEndPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPointOfNewEndPoint, endPoint);

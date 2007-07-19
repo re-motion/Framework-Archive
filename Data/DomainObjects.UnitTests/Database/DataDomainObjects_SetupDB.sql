@@ -137,6 +137,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInhe
   DROP TABLE [TableInheritance_Client]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_TableWithUnidirectionalRelation') 
+  DROP TABLE [TableInheritance_TableWithUnidirectionalRelation]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns') 
   DROP TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
 GO
@@ -554,6 +558,18 @@ CREATE TABLE [TableInheritance_Client] (
   [Name] varchar (100) NOT NULL,
   
   CONSTRAINT [PK_TableInheritance_Client] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_TableWithUnidirectionalRelation] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [DomainBaseID] uniqueidentifier NULL,
+  [DomainBaseIDClassID] varchar (100) NULL,
+
+  CONSTRAINT [PK_TableInheritance_TableWithUnidirectionalRelation] PRIMARY KEY CLUSTERED ([ID])
 ) 
 GO
 

@@ -19,16 +19,6 @@ public class AnonymousEndPoint : IEndPoint
 
   // construction and disposing
 
-  public AnonymousEndPoint (DomainObject domainObject, RelationDefinition relationDefinition)
-      : this (domainObject.GetDataContainer().ClientTransaction, domainObject.ID, relationDefinition)
-  {
-  }
-
-  public AnonymousEndPoint (DataContainer dataContainer, RelationDefinition relationDefinition) 
-      : this (dataContainer.ClientTransaction, dataContainer.ID, relationDefinition)
-  {
-  }
-
   public AnonymousEndPoint (ClientTransaction clientTransaction, ObjectID objectID, RelationDefinition relationDefinition)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);

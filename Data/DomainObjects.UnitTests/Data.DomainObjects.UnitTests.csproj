@@ -612,6 +612,7 @@
     <Compile Include="TableInheritance\TestDomain\Client.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableInheritance\TestDomain\ClassWithUnidirectionalRelation.cs" />
     <Compile Include="TableInheritance\TestDomain\Customer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -652,6 +653,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableInheritance\TestDomain\TableInheritanceTestDomainAttribute.cs" />
+    <Compile Include="TableInheritance\UnidirectionalRelationTest.cs" />
     <Compile Include="TableInheritance\UnionSelectCommandBuilderTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -813,6 +815,7 @@
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitRollbackTest.cs" />
+    <Compile Include="Transaction\SubTransactionStateTransitionTests.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>

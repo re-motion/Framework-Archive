@@ -29,10 +29,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase.Client", DomainObjectIDs.Client);
 
       Assert.IsNotNull (loadedDataContainers);
-      Assert.AreEqual (3, loadedDataContainers.Count);
+      Assert.AreEqual (4, loadedDataContainers.Count);
       Assert.AreEqual (DomainObjectIDs.OrganizationalUnit, loadedDataContainers[0].ID);
       Assert.AreEqual (DomainObjectIDs.Person, loadedDataContainers[1].ID);
-      Assert.AreEqual (DomainObjectIDs.Customer, loadedDataContainers[2].ID);
+      Assert.AreEqual (DomainObjectIDs.PersonForUnidirectionalRelationTest, loadedDataContainers[2].ID);
+      Assert.AreEqual (DomainObjectIDs.Customer, loadedDataContainers[3].ID);
     }
 
     [Test]

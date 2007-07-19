@@ -8,6 +8,7 @@ delete from [TableInheritance_Person]
 delete from [TableInheritance_Region]
 delete from [TableInheritance_OrganizationalUnit]
 delete from [TableInheritance_Client]
+delete from [TableInheritance_TableWithUnidirectionalRelation]
 delete from [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
 delete from [TableInheritance_File]
 delete from [TableInheritance_Folder]
@@ -19,6 +20,9 @@ insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-A
 -- Note: This client has an OrganizationalUnit assigned with an invalid ClassID:
 insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{58535280-84EC-41d9-9F8F-BCAC64BB3709}', 'TI_Client', 'ClientWithOrganizationalUnitWithInvalidClassID')
 
+-- ClassWithUnidirectionalRelation
+insert into [TableInheritance_TableWithUnidirectionalRelation] (ID, ClassID, [DomainBaseID], [DomainBaseIDClassID])
+    values ('{7E7E4002-19BF-4e8b-9525-4634A8D0FCB5}', 'TI_ClassWithUnidirectionalRelation', '{084010C4-82E5-4b0d-AE9F-A953303C03A4}', 'TI_Person')
 
 -- OrganizationalUnit
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
@@ -45,6 +49,10 @@ insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [Cr
 -- Note: This person has an OrganizationalUnit with the same ID. It needs at least one HistoryEntry.
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo])
     values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'TI_Person', null, 'UnitTests','2006/1/4', '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9', null)
+    
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [Photo])
+    values ('{084010C4-82E5-4b0d-AE9F-A953303C03A4}', 'TI_Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/3', 'Max',
+    'PersonForUnidirectionalRelationTest', '1980/6/9', null)
 
 
 -- Customer

@@ -353,7 +353,7 @@ public abstract class ClientTransaction : ITransaction
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
       TransactionEventSink.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
-      DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
+      DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID, false);
       TransactionEventSink.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
 
       return relatedObject;
@@ -523,7 +523,7 @@ public abstract class ClientTransaction : ITransaction
     }
   }
 
-  private DataContainer LoadDataContainer (ObjectID id)
+  protected virtual DataContainer LoadDataContainer (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 

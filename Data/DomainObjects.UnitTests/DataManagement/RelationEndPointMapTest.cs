@@ -44,6 +44,44 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void GetRelatedObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      DomainObject orderTicket = _map.GetRelatedObject (endPointID, false);
+
+      Assert.IsNotNull (orderTicket);
+      Assert.AreEqual (DomainObjectIDs.OrderTicket1, orderTicket.ID);
+      Assert.AreSame (OrderTicket.GetObject (DomainObjectIDs.OrderTicket1), orderTicket);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ObjectDeletedException))]
+    public void GetRelatedObjectIncludeDeletedFalse ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+
+      location.Client.Delete ();
+
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      _map.GetRelatedObject (endPointID, false);
+    }
+
+    [Test]
+    public void GetRelatedObjectIncludeDeletedTrue ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+
+      location.Client.Delete ();
+
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      DomainObject client = _map.GetRelatedObject (endPointID, true);
+      Assert.IsNotNull (client);
+      Assert.AreEqual (DomainObjectIDs.Client1, client.ID);
+      Assert.AreEqual (StateType.Deleted, client.State);
+    }
+
+    [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -60,7 +98,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       RelationEndPointID endPointID = new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
       DomainObject originalOrderTicket = _map.GetOriginalRelatedObject (endPointID);
-      DomainObject orderTicket = _map.GetRelatedObject (endPointID);
+      DomainObject orderTicket = _map.GetRelatedObject (endPointID, false);
 
       Assert.IsTrue (ReferenceEquals (originalOrderTicket, orderTicket));
     }
@@ -71,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void GetRelatedObjectWithEndPointIDOfWrongCardinality ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      _map.GetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"));
+      _map.GetRelatedObject (new RelationEndPointID (order.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), false);
     }
 
     [Test]

@@ -35,10 +35,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DataContainerCollection dataContainers = _loader.LoadDataContainers ();
 
       Assert.IsNotNull (dataContainers);
-      Assert.AreEqual (3, dataContainers.Count);
+      Assert.AreEqual (4, dataContainers.Count);
       Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.Customer));
       Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.Person));
       Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.OrganizationalUnit));
+      Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.PersonForUnidirectionalRelationTest));
     }
 
     [Test]
@@ -47,10 +48,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       DataContainerCollection dataContainers = _loader.LoadDataContainers ();
 
       Assert.IsNotNull (dataContainers);
-      Assert.AreEqual (3, dataContainers.Count);
+      Assert.AreEqual (4, dataContainers.Count);
       Assert.AreEqual (DomainObjectIDs.OrganizationalUnit, dataContainers[0].ID);
       Assert.AreEqual (DomainObjectIDs.Person, dataContainers[1].ID);
-      Assert.AreEqual (DomainObjectIDs.Customer, dataContainers[2].ID);
+      Assert.AreEqual (DomainObjectIDs.PersonForUnidirectionalRelationTest, dataContainers[2].ID);
+      Assert.AreEqual (DomainObjectIDs.Customer, dataContainers[3].ID);
     }
 
     [Test]

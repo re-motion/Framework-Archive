@@ -398,6 +398,57 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void RelationChangesWithUnidirectionalRelationshipWhenResettingDeletedLoaded ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      Client deletedClient = location.Client;
+      deletedClient.Delete ();
+
+      Client newClient = Client.NewObject ();
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (location, typeof (Location) + ".Client", deletedClient, newClient);
+        _extension.RelationChanged (location, typeof (Location) + ".Client");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      location.Client = newClient;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Unidirectional Relations")]
+    public void RelationChangesWithUnidirectionalRelationshipWhenResettingNewLoaded ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      location.Client = Client.NewObject ();
+
+      Client deletedClient = location.Client;
+      location.Client.Delete ();
+
+      Client newClient = Client.NewObject ();
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (location, typeof (Location) + ".Client", deletedClient, newClient);
+        _extension.RelationChanged (location, typeof (Location) + ".Client");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      location.Client = newClient;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
     public void ObjectDeleteTwice ()
     {
       Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);

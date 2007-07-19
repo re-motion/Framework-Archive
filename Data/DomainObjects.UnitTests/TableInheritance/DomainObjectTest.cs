@@ -21,10 +21,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       DomainObjectCollection assignedObjects = client.AssignedObjects;
 
-      Assert.AreEqual (3, assignedObjects.Count);
+      Assert.AreEqual (4, assignedObjects.Count);
       Assert.AreEqual (DomainObjectIDs.OrganizationalUnit, assignedObjects[0].ID);
       Assert.AreEqual (DomainObjectIDs.Person, assignedObjects[1].ID);
-      Assert.AreEqual (DomainObjectIDs.Customer, assignedObjects[2].ID);
+      Assert.AreEqual (DomainObjectIDs.PersonForUnidirectionalRelationTest, assignedObjects[2].ID);
+      Assert.AreEqual (DomainObjectIDs.Customer, assignedObjects[3].ID);
     }
 
     [Test]

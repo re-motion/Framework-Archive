@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void InitializeWithDomainObject ()
     {
-      AnonymousEndPoint endPoint = new AnonymousEndPoint (_client, _clientToLocationDefinition);
+      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client.ID, _clientToLocationDefinition);
 
       Assert.IsNotNull (endPoint as INullObject);
       Assert.IsNotNull (endPoint as IEndPoint);
@@ -40,22 +40,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreSame (_clientToLocationDefinition, endPoint.RelationDefinition);
       Assert.AreSame (_clientEndPointDefinition, endPoint.Definition);
       Assert.IsNotNull (endPoint.Definition as AnonymousRelationEndPointDefinition);
-    }
-
-    [Test]
-    public void InitializeWithDataContainer ()
-    {
-			AnonymousEndPoint endPoint = new AnonymousEndPoint (_client.InternalDataContainer, _clientToLocationDefinition);
-
-			Assert.AreSame (_client.InternalDataContainer, endPoint.GetDataContainer ());
-    }
-
-    [Test]
-    public void InitializeWithObjectID ()
-    {
-      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client.ID, _clientToLocationDefinition);
-
-      Assert.AreSame (_client.ID, endPoint.ObjectID);
     }
 
     [Test]
