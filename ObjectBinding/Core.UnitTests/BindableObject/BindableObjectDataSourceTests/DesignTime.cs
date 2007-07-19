@@ -52,7 +52,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourc
     }
 
     [Test]
-    [ExpectedException (typeof (TypeLoadException), ExpectedMessage = "Could not load type 'Assembly.Invalid, Assembly'.")]
     public void GetType_WithInvalidValidTypeName ()
     {
       Expect.Call (_mockDesignerHost.GetType ("Assembly.Invalid, Assembly")).Return (null);

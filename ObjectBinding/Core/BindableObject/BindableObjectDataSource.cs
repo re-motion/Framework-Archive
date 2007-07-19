@@ -46,7 +46,7 @@ namespace Rubicon.ObjectBinding.BindableObject
           return null;
 
         if (IsDesignMode)
-          return TypeUtility.GetDesignModeType (_typeName, Site, true);
+          return TypeUtility.GetDesignModeType (_typeName, Site, false);
 
         return TypeUtility.GetType (_typeName, true, false);
       }

@@ -3,22 +3,14 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
-using System.Web.UI.Design;
-using Rubicon.ObjectBinding.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Design
 {
-  public class BindableObjectDataSourceDesigner: BocDataSourceDesigner
+  public class BindableObjectDataSourceDesigner : BocDataSourceDesigner
   {
-    public override string GetDesignTimeHtml()
+    public override string GetDesignTimeHtml ()
     {
-      BindableObjectDataSourceControl dataSourceControl = (BindableObjectDataSourceControl) Component;
-
-      //Exception designTimeException = dataSourceControl.GetDesignTimeException();
-      //if (designTimeException != null)
-      //  return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException);
       return CreatePlaceHolderDesignTimeHtml();
     }
 
@@ -35,18 +27,27 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
       if (propDesc.DisplayName == "TypeName")
       {
         string value = propDesc.GetValue (Component) as string;
-        if (string.IsNullOrEmpty (value))
-          return;
-        if (TypeUtility.GetDesignModeType (value, Component.Site, false) != null)
-          return;
-
-        Image image = new Bitmap (9, 9);
-        using (Graphics g = Graphics.FromImage (image))
+        if (!IsValidTypeName (value))
         {
-          g.FillEllipse (Brushes.Red, 0, 0, 9, 9);
+          Image image = new Bitmap (8, 8);
+          using (Graphics g = Graphics.FromImage (image))
+          {
+            g.FillEllipse (Brushes.Red, 0, 0, 8, 8);
+          }
+          valueUIItemList.Add (
+              new PropertyValueUIItem (
+                  image, delegate { }, string.Format ("Could not load type '{0}'.", TypeUtility.ParseAbbreviatedTypeName (value))));
         }
-        valueUIItemList.Add (new PropertyValueUIItem (image, delegate { }, "Error"));
       }
+    }
+
+    private bool IsValidTypeName (string value)
+    {
+      if (string.IsNullOrEmpty (value))
+        return true;
+      if (TypeUtility.GetDesignModeType (value, Component.Site, false) != null)
+        return false;
+      return true;
     }
   }
 }
