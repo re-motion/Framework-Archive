@@ -422,7 +422,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Unidirectional Relations")]
     public void RelationChangesWithUnidirectionalRelationshipWhenResettingNewLoaded ()
     {
       Location location = Location.GetObject (DomainObjectIDs.Location1);

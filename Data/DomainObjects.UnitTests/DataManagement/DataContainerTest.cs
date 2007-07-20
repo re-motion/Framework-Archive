@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
@@ -350,6 +351,37 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsTrue (original.IsDiscarded);
 
       original.Clone ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A DataContainer cannot be discarded while it doesn't have an "
+        + "associated DomainObject.")]
+    public void DiscardWithoutDomainObjectThrows ()
+    {
+      DataContainer dataContainerWithoutDomainObject = DataContainer.CreateNew (DomainObjectIDs.Order1);
+      ClientTransactionMock.SetClientTransaction (dataContainerWithoutDomainObject);
+      PrivateInvoke.InvokeNonPublicMethod (dataContainerWithoutDomainObject, "Delete");
+      Assert.Fail ("Expected exception");
+    }
+
+    [Test]
+    public void GetIDEvenPossibleWhenDiscarded ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer dataContainer = order.InternalDataContainer;
+      order.Delete ();
+      Assert.IsTrue (dataContainer.IsDiscarded);
+      Assert.AreEqual (order.ID, dataContainer.ID);
+    }
+
+    [Test]
+    public void GetDomainObjectEvenPossibleWhenDiscarded ()
+    {
+      Order order = Order.NewObject ();
+      DataContainer dataContainer = order.InternalDataContainer;
+      order.Delete ();
+      Assert.IsTrue (dataContainer.IsDiscarded);
+      Assert.AreSame (order, dataContainer.DomainObject);
     }
   }
 }

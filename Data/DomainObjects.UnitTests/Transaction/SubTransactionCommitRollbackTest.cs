@@ -186,6 +186,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreSame (client, location.Client);
     }
 
+    [Test]
     [Ignore ("TODO: FS - ClientTransactions")]
     public void Commit ()
     {

@@ -1007,7 +1007,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: Fix this bug")]
     public void ClearWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
@@ -1023,7 +1022,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: Fix this bug")]
     public void RemoveWithDiscardedObject ()
     {
       DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();

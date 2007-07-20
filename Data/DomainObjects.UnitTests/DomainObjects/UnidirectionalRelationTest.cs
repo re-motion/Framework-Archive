@@ -201,7 +201,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [Ignore ("TODO: FS - Unidirectional Relations")]
     public void ResettingDeletedNewWorks ()
     {
       _location.Client = Client.NewObject ();

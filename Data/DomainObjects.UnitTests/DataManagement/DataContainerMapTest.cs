@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -69,7 +70,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       order.Delete ();
       _map.Commit ();
 
-      ObjectID id = _existingOrder.ID;
+      Dev.Null = _existingOrder.Timestamp;
     }
 
     [Test]
@@ -106,7 +107,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       _map.Rollback ();
 
-      ObjectID id = _newOrder.ID;
+      Dev.Null = _newOrder.Timestamp;
     }
     
     [Test]

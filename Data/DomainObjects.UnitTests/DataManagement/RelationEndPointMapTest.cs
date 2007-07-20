@@ -82,6 +82,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void GetRelatedObjectWithDiscarded ()
+    {
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      Client newClient = Client.NewObject ();
+      location.Client = newClient;
+      location.Client.Delete ();
+
+      RelationEndPointID endPointID = new RelationEndPointID (location.ID, "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Location.Client");
+      DomainObject client = _map.GetRelatedObject (endPointID, true);
+      Assert.IsNotNull (client);
+      Assert.AreSame (newClient, client);
+      Assert.IsTrue (client.IsDiscarded);
+    }
+
+    [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);

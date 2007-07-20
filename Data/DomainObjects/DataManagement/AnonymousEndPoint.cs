@@ -15,20 +15,22 @@ public class AnonymousEndPoint : IEndPoint
   private RelationDefinition _relationDefinition;
   private AnonymousRelationEndPointDefinition _definition;
   private ClientTransaction _clientTransaction;
-  private ObjectID _objectID;
+  private DomainObject _domainObject;
 
   // construction and disposing
 
-  public AnonymousEndPoint (ClientTransaction clientTransaction, ObjectID objectID, RelationDefinition relationDefinition)
+  // This end point stores a DomainObject rather than an ObjectID in order to support AnonymousEndPoints storing discarded objects (which can
+  // happen with unidirectional relations.)
+  public AnonymousEndPoint (ClientTransaction clientTransaction, DomainObject domainObject, RelationDefinition relationDefinition)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
+    ArgumentUtility.CheckNotNull ("domainObjace", domainObject);
     ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
 
     _definition = GetAnonymousRelationEndPointDefinition (relationDefinition);
     _relationDefinition = relationDefinition;
     _clientTransaction = clientTransaction;
-    _objectID = objectID;
+    _domainObject = domainObject;
   }
 
   protected AnonymousEndPoint (RelationDefinition relationDefinition)
@@ -61,7 +63,7 @@ public class AnonymousEndPoint : IEndPoint
 
   public virtual DomainObject GetDomainObject ()
   {
-    return _clientTransaction.GetObject (ObjectID, true); 
+    return _domainObject;
   }
 
   public virtual DataContainer GetDataContainer ()
@@ -72,7 +74,7 @@ public class AnonymousEndPoint : IEndPoint
 
   public virtual ObjectID ObjectID
   {
-    get { return _objectID; }
+    get { return _domainObject.ID; }
   }
 
   public RelationDefinition RelationDefinition

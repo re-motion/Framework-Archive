@@ -198,12 +198,11 @@ public class DataContainer
   {
     get 
     {
-      Assertion.Assert (!IsDiscarded || _domainObject != null);
-
-      CheckDiscarded ();
-
       if (_domainObject == null)
+      {
+        Assertion.Assert (!IsDiscarded, "DataContainers cannot be discarded when they don't have a DomainObject referende");
         _domainObject = DomainObject.CreateWithDataContainer (this);
+      }
 
       return _domainObject; 
     }
@@ -212,14 +211,12 @@ public class DataContainer
   /// <summary>
   /// Gets the <see cref="ObjectID"/> of the <see cref="DataContainer"/>.
   /// </summary>
-  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <remarks>
+  /// This property can also be used when the object is already discarded.
+  /// </remarks>
   public ObjectID ID
   {
-    get 
-    { 
-      CheckDiscarded ();
-      return _id; 
-    }
+    get { return _id; }
   }
 
   /// <summary>
@@ -460,7 +457,10 @@ public class DataContainer
 
   private void Discard ()
   {
-    _clientTransaction.DataManager.MarkDiscarded (ID);
+    if (_domainObject == null)
+      throw new InvalidOperationException ("A DataContainer cannot be discarded while it doesn't have an associated DomainObject.");
+
+    _clientTransaction.DataManager.MarkDiscarded (this);
 
     _propertyValues.Discard ();
     _clientTransaction = null;

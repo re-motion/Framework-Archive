@@ -323,9 +323,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
       Assert.IsFalse (_dataManager.IsDiscarded (orderItem1.ID));
       Assert.AreEqual (0, _dataManager.DiscardedObjectCount);
-      _dataManager.MarkDiscarded (orderItem1.ID);
+      _dataManager.MarkDiscarded (orderItem1.InternalDataContainer);
       Assert.IsTrue (_dataManager.IsDiscarded (orderItem1.ID));
       Assert.AreEqual (1, _dataManager.DiscardedObjectCount);
+    }
+
+    [Test]
+    public void GetDiscardedDataContainer ()
+    {
+      OrderItem orderItem1 = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+      DataContainer dataContainer = orderItem1.InternalDataContainer;
+      _dataManager.MarkDiscarded (dataContainer);
+      Assert.AreSame (dataContainer, _dataManager.GetDiscardedDataContainer (orderItem1.ID));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has "
+        + "not been discarded.\r\nParameter name: id")]
+    public void GetDiscardedDataContainerThrowsWhenNotDiscarded ()
+    {
+      _dataManager.GetDiscardedDataContainer (DomainObjectIDs.Order1);
     }
 
     [Test]
@@ -389,10 +406,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         OrderItem item = order.OrderItems[0];
         Official official = order.Official;
-        nonEmptyTransaction.DataManager.MarkDiscarded (DomainObjectIDs.Order2);
+        nonEmptyTransaction.DataManager.MarkDiscarded (Order.GetObject (DomainObjectIDs.Order2).InternalDataContainer);
       }
 
       Assert.IsTrue (nonEmptyTransaction.DataManager.IsDiscarded (DomainObjectIDs.Order2));
+      DataContainer oldDiscardedDataContainer = nonEmptyTransaction.DataManager.GetDiscardedDataContainer (DomainObjectIDs.Order2);
+      Assert.IsNotNull (oldDiscardedDataContainer);
+
       Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.DiscardedObjectCount);
       Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.DataContainerMap.Count);
       Assert.AreNotEqual (0, nonEmptyTransaction.DataManager.RelationEndPointMap.Count);
@@ -400,9 +420,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _dataManager.CopyFrom (nonEmptyTransaction.DataManager);
 
       Assert.IsTrue (_dataManager.IsDiscarded (DomainObjectIDs.Order2));
+      DataContainer newDiscardedDataContainer = _dataManager.GetDiscardedDataContainer (DomainObjectIDs.Order2);
+      Assert.IsNotNull (newDiscardedDataContainer);
+      Assert.AreNotSame (oldDiscardedDataContainer, newDiscardedDataContainer);
+      Assert.AreEqual (oldDiscardedDataContainer.ID, newDiscardedDataContainer.ID);
+      Assert.AreSame (oldDiscardedDataContainer.DomainObject, newDiscardedDataContainer.DomainObject);
+
       Assert.AreEqual (nonEmptyTransaction.DataManager.DiscardedObjectCount, _dataManager.DiscardedObjectCount);
       Assert.AreEqual (nonEmptyTransaction.DataManager.DataContainerMap.Count, _dataManager.DataContainerMap.Count);
       Assert.AreEqual (nonEmptyTransaction.DataManager.RelationEndPointMap.Count, _dataManager.RelationEndPointMap.Count);
+
+
     }
   }
 }

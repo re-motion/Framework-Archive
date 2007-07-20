@@ -232,6 +232,49 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
     }
 
+    [Test]
+    public void ResettingDeletedNewUnidirectionalInRootTransactionWorks ()
+    {
+      Location location = Location.NewObject ();
+      location.Client = Client.NewObject ();
+      location.Client.Delete ();
+      location.Client = Client.NewObject ();
+    }
+
+    [Test]
+    public void ResettingDeletedNewUnidirectionalInSubTransactionWorks ()
+    {
+      Location location = Location.NewObject ();
+      location.Client = Client.NewObject ();
+      location.Client.Delete ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        location.Client = Client.NewObject ();
+      }
+    }
+
+    [Test]
+    public void ResettingDeletedLoadedUnidirectionalInRootTransactionWorks ()
+    {
+      Location location = Location.NewObject ();
+      location.Client = Client.GetObject (DomainObjectIDs.Client1);
+      location.Client.Delete ();
+      location.Client = Client.NewObject ();
+    }
+
+    [Test]
+    public void ResettingDeletedLoadedUnidirectionalInSubTransactionWorks ()
+    {
+      Location location = Location.NewObject ();
+      location.Client = Client.GetObject (DomainObjectIDs.Client1);
+      location.Client.Delete ();
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        location.Client = Client.NewObject();
+      }
+    }
 
     [Test]
     public void StateChangesInsideSubTransaction ()

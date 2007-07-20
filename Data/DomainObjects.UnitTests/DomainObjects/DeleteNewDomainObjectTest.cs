@@ -160,19 +160,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDiscardedException))]
     public void DataContainerDomainObject ()
     {
       _newOrder.Delete ();
-      DomainObject domainObject = _newOrderContainer.DomainObject;
+      Assert.AreSame (_newOrder, _newOrderContainer.DomainObject);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDiscardedException))]
     public void DataContainerID ()
     {
       _newOrder.Delete ();
-      ObjectID id = _newOrderContainer.ID;
+      Assert.AreSame (_newOrder.ID, _newOrderContainer.ID);
     }
 
     [Test]

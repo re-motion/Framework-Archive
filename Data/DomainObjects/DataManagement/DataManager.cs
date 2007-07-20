@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
@@ -20,7 +21,7 @@ public class DataManager
 
   private readonly DataContainerMap _dataContainerMap;
   private readonly RelationEndPointMap _relationEndPointMap;
-  private readonly Set<ObjectID> _discardedObjects;
+  private readonly Dictionary<ObjectID, DataContainer> _discardedDataContainers;
 
   // construction and disposing
 
@@ -32,7 +33,7 @@ public class DataManager
     _transactionEventSink = clientTransaction.TransactionEventSink;
     _dataContainerMap = new DataContainerMap (clientTransaction);
     _relationEndPointMap = new RelationEndPointMap (clientTransaction);
-    _discardedObjects = new Set<ObjectID> ();
+    _discardedDataContainers = new Dictionary<ObjectID, DataContainer> ();
   }
 
   // methods and properties
@@ -246,22 +247,34 @@ public class DataManager
     return new ClientTransactionsDifferException (string.Format (message, args));
   }
 
-  public void MarkDiscarded (ObjectID id)
+  public void MarkDiscarded (DataContainer discardedDataContainer)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
-    _transactionEventSink.DataManagerMarkingObjectDiscarded (id);
-    _discardedObjects.Add (id);
+    ArgumentUtility.CheckNotNull ("discardedDataContainer", discardedDataContainer);
+    
+    _transactionEventSink.DataManagerMarkingObjectDiscarded (discardedDataContainer.ID);
+    _discardedDataContainers.Add (discardedDataContainer.ID, discardedDataContainer);
   }
 
   public bool IsDiscarded (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    return _discardedObjects.Contains (id);
+    return _discardedDataContainers.ContainsKey (id);
+  }
+
+  public DataContainer GetDiscardedDataContainer (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    DataContainer discardedDataContainer;
+    if (!_discardedDataContainers.TryGetValue (id, out discardedDataContainer))
+      throw new ArgumentException (string.Format ("The object '{0}' has not been discarded.", id), "id");
+    else
+      return discardedDataContainer;
   }
 
   public int DiscardedObjectCount
   {
-    get { return _discardedObjects.Count; }
+    get { return _discardedDataContainers.Count; }
   }
 
   public void CopyFrom (DataManager source)
@@ -274,9 +287,27 @@ public class DataManager
     _transactionEventSink.DataManagerCopyingFrom (source);
     source._transactionEventSink.DataManagerCopyingTo (this);
 
-    _discardedObjects.AddRange (source._discardedObjects);
+    CopyDiscardedDataContainersFrom (source);
     DataContainerMap.CopyFrom (source.DataContainerMap);
     RelationEndPointMap.CopyFrom (source.RelationEndPointMap);
+  }
+
+  private void CopyDiscardedDataContainersFrom (DataManager source)
+  {
+    foreach (KeyValuePair<ObjectID, DataContainer> discardedItem in source._discardedDataContainers)
+    {
+      ObjectID discardedObjectID = discardedItem.Key;
+      DataContainer discardedDataContainer = discardedItem.Value;
+      DataContainer newDiscardedContainer = DataContainer.CreateNew (discardedObjectID);
+
+      newDiscardedContainer.SetClientTransaction (_clientTransaction);
+      newDiscardedContainer.SetDomainObject (discardedDataContainer.DomainObject);
+      newDiscardedContainer.Delete ();
+
+      Assertion.Assert (IsDiscarded (newDiscardedContainer.ID),
+          "newDiscardedContainer.Delete must have inserted the DataContainer into the list of discarded objects");
+      Assertion.Assert (GetDiscardedDataContainer (newDiscardedContainer.ID) == newDiscardedContainer);
+    }
   }
 }
 }

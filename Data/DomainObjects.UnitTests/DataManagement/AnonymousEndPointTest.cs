@@ -27,7 +27,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void InitializeWithDomainObject ()
     {
-      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client.ID, _clientToLocationDefinition);
+      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, _client, _clientToLocationDefinition);
 
       Assert.IsNotNull (endPoint as INullObject);
       Assert.IsNotNull (endPoint as IEndPoint);
@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     public void InitializeWithInvalidRelationDefinition ()
     {
       RelationDefinition invalidRelationDefinition = MappingConfiguration.Current.RelationDefinitions.GetMandatory ("Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
-      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, DomainObjectIDs.Order1, invalidRelationDefinition);
+      AnonymousEndPoint endPoint = new AnonymousEndPoint (ClientTransactionMock, Order.GetObject (DomainObjectIDs.Order1), invalidRelationDefinition);
     }
   }
 }
