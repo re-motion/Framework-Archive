@@ -118,6 +118,7 @@
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="ObjectBinding\BusinessObjectProvider.cs" />
+    <Compile Include="ObjectBinding\BusinessObjectStringFormatterService.cs" />
     <Compile Include="ObjectBinding\EnumerationValueInfo.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectBooleanProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectClassService.cs" />

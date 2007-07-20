@@ -100,6 +100,13 @@
     <Compile Include="BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
     <Compile Include="BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
     <Compile Include="BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithNotSupportedProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithStringProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithDateTimeProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithNumericProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithReferenceProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithBooleanProperty.cs" />
+    <Compile Include="BusinessObjectStringFormatterServiceTests\GetPropertyString_WithEnumerationProperty.cs" />
     <Compile Include="Design\DropDownEditorBaseTest.cs">
     </Compile>
     <Compile Include="Design\MockDropDownEditorBase.cs" />

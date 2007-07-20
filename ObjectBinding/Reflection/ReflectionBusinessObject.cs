@@ -58,13 +58,13 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public virtual string DisplayName 
+  public override string DisplayName 
   { 
     get { return GetType().FullName; }
   }
 
   [EditorBrowsable (EditorBrowsableState.Never)]
-  string IBusinessObjectWithIdentity.DisplayNameSafe
+  string IBusinessObject.DisplayNameSafe
   {
     get { return DisplayName; }
   }
@@ -78,6 +78,11 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
   public void SaveObject()
   {
     ReflectionBusinessObjectStorage.SaveObject (this);
+  }
+
+  protected override BusinessObjectStringFormatterService StringFormatterService
+  {
+    get { return new BusinessObjectStringFormatterService(); }
   }
 }
 

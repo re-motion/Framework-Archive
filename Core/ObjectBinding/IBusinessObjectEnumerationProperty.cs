@@ -29,13 +29,19 @@ namespace Rubicon.ObjectBinding
     /// <summary> Returns a specific enumeration value. </summary>
     /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
-    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
+    /// <returns> 
+    /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/> or <see langword="null"/> if the 
+    /// <paramref name="value"/> represents <see langword="null"/>. 
+    /// </returns>
     IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject);
 
     /// <summary> Returns a specific enumeration value. </summary>
     /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
-    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
+    /// <returns> 
+    /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/> or <see langword="null"/> if the 
+    /// <paramref name="identifier"/> represents <see langword="null"/>. 
+    /// </returns>
     IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject);
   }
 }

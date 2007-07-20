@@ -287,10 +287,6 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
     _objectReflector.SetProperty (property, value);
   }
 
-  #endregion
-
-  #region IBusinessObjectWithIdentity Members
-
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
   /// </summary>
@@ -305,18 +301,14 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   ///   Gets the value of <see cref="DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
   ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
   /// </summary>
-  string IBusinessObjectWithIdentity.DisplayNameSafe
+  string IBusinessObject.DisplayNameSafe
   {
-    get
-    {
-      IBusinessObjectClass businessObjectClass = ((IBusinessObject) this).BusinessObjectClass;
-      IBusinessObjectProperty displayNameProperty = businessObjectClass.GetPropertyDefinition ("DisplayName");
-      if (displayNameProperty.IsAccessible (businessObjectClass, this))
-        return DisplayName;
-
-      return businessObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ();
-    }
+    get { return _objectReflector.DisplayNameSafe; }
   }
+
+  #endregion
+
+  #region IBusinessObjectWithIdentity Members
 
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.

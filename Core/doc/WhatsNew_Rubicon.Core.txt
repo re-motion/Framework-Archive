@@ -1,3 +1,11 @@
+1.7.46
+======
+- Diverse Refacotrings in the BusinessObject Interfaces.
+  * IBusinessObjectIntegerProperty und IBusinessObjectDoubleProperty sind auf IBusinessObjectNumericProperty zusammen geführt.
+  * IBusinessObjectDateProperty und IBusinessObjectDateTimeProperty sind auf IBusinessObjectDateTimeProperty zusammen geführt.
+  * IBusinessObjectWithIdentity.DisplayName und DisplayNameSafe sind auf IBusinessObject verschoben worden.
+  * Der Property Value von IBusinessObjectNumericProperty und IBusinessObjectDateTimeProperty muss IFormattable unterstützen.
+
 1.7.43
 ======
 - Neue Klasse Rubicon.Reflection.InheritanceHierarchyFilter 

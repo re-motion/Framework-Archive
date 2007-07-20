@@ -18,6 +18,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 
     public abstract string GetPropertyString (string propertyIdentifier);
 
+    public abstract string DisplayName { get; }
+
+    public abstract string DisplayNameSafe { get; }
+
     public abstract IBusinessObjectClass BusinessObjectClass { get; }
   }
 }

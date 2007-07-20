@@ -3,6 +3,12 @@ using System;
 namespace Rubicon.ObjectBinding
 {
   /// <summary> The <b>IBusinessObjectDateTimeProperty</b> interface is used for accessing <see cref="DateTime"/> values. </summary>
+  /// <remarks>
+  /// <note type="inotes">
+  /// The objects returned for this property must implement the <see cref="IFormattable"/> interface in order to be displayed by the 
+  /// <see cref="IBusinessObject.GetPropertyString"/> methods.
+  /// </note>
+  /// </remarks>
   public interface IBusinessObjectDateTimeProperty : IBusinessObjectProperty
   {
     DateTimeType Type { get; }

@@ -136,5 +136,23 @@ public class BusinessObjectReflector
     object internalValue = reflectionProperty.ToInternalType (value);
     propertyInfo.SetValue (_bindableObject, internalValue, new object[0]);
   }
+
+  /// <summary>
+  ///   Gets the value of <see cref="IBusinessObject.DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
+  ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
+  /// </summary>
+  public string DisplayNameSafe
+  {
+    get
+    {
+      IBusinessObjectClass businessObjectClass = _bindableObject.BusinessObjectClass;
+      IBusinessObjectProperty displayNameProperty = businessObjectClass.GetPropertyDefinition ("DisplayName");
+      if (displayNameProperty.IsAccessible (businessObjectClass, _bindableObject))
+        return _bindableObject.DisplayName;
+
+      return businessObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ();
+    }
+  }
+
 }
 }

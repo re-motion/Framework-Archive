@@ -98,5 +98,17 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     public void SerializeAndDeserialize ()
     {
     }
+
+    [Test]
+    [Ignore ("TODO: test")]
+    public void GetDisplayName ()
+    {
+    }
+
+    [Test]
+    [Ignore ("TODO: test")]
+    public void GetDisplayNameSafe ()
+    {
+    }
   }
 }

@@ -118,6 +118,23 @@ public abstract class BindableSearchObject : IBusinessObject, IDeserializationCa
   }
 
   /// <summary>
+  /// Gets the value returned by <see cref="object.ToString"/>.
+  /// </summary>
+  string IBusinessObject.DisplayName
+  {
+    get { return ToString (); }
+  }
+
+  /// <summary>
+  ///   Gets the value of <see cref="IBusinessObject.DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
+  ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
+  /// </summary>
+  string IBusinessObject.DisplayNameSafe
+  {
+    get { return _objectReflector.DisplayNameSafe; }
+  }
+
+  /// <summary>
   /// Gets a <see cref="DomainObjectClass"/> representing the <see cref="BindableDomainObject"/>.
   /// </summary>
   // TODO Doc: exceptions

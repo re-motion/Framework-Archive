@@ -3,11 +3,11 @@ using System;
 namespace Rubicon.ObjectBinding
 {
   /// <summary> 
-  ///   The <b>IBusinessObject</b> interface provides functionality to get and set the state of a business object.
+  ///   The <see cref="IBusinessObject"/> interface provides functionality to get and set the state of a business object.
   /// </summary>
   /// <remarks>
   ///   <para>
-  ///     An <b>IBusinessObject</b> knows its <see cref="IBusinessObjectClass"/> through the 
+  ///     An <see cref="IBusinessObject"/> knows its <see cref="IBusinessObjectClass"/> through the 
   ///     <see cref="BusinessObjectClass"/> property.
   ///   </para><para>
   ///     Its state can be accessed through a number of get and set methods as well as indexers.
@@ -113,6 +113,14 @@ namespace Rubicon.ObjectBinding
     ///   Thrown if the <paramref name="propertyIdentifier"/> is not part of this business object's class. 
     /// </exception>
     string GetPropertyString (string propertyIdentifier);
+
+    /// <summary> Gets the human readable representation of this <see cref="IBusinessObject"/>. </summary>
+    /// <value> A <see cref="string"/> identifying this object to the user. </value>
+    string DisplayName { get; }
+
+    /// <summary> Gets the human readable representation of this <see cref="IBusinessObjectWithIdentity"/> in an exception-safe manner. </summary>
+    /// <remarks> Accessing this property must not fail during normal operations. </remarks>
+    string DisplayNameSafe { get; }
 
     /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>
     /// <value> An <see cref="IBusinessObjectClass"/> instance acting as the business object's type. </value>

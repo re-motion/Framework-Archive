@@ -1,5 +1,6 @@
 using System;
 using Rubicon.Mixins;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -156,6 +157,30 @@ namespace Rubicon.ObjectBinding.BindableObject
     IBusinessObjectClass IBusinessObject.BusinessObjectClass
     {
       get { return BusinessObjectClass; }
+    }
+
+    /// <summary> Gets the human readable representation of this <see cref="IBusinessObject"/>. </summary>
+    /// <value> The default implementation returns the <see cref="BusinessObjectClass"/>'s <see cref="IBusinessObjectClass.Identifier"/>. </value>
+    public virtual string DisplayName
+    {
+      get { return _bindableObjectClass.Identifier; }
+    }
+
+    /// <summary>
+    ///   Gets the value of <see cref="DisplayName"/> if it is accessible and otherwise falls back to the <see cref="string"/> returned by
+    ///   <see cref="IBusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder"/>.
+    /// </summary>
+    public string DisplayNameSafe
+    {
+      get
+      {
+        throw new NotImplementedException();
+        IBusinessObjectProperty displayNameProperty = _bindableObjectClass.GetPropertyDefinition ("DisplayName");
+        if (displayNameProperty.IsAccessible (_bindableObjectClass, this))
+          return DisplayName;
+
+        return _bindableObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ();
+      }
     }
 
     protected override void OnInitialized ()

@@ -51,7 +51,10 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     /// <summary> Returns a specific enumeration value. </summary>
     /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
-    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
+    /// <returns> 
+    /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/> or <see langword="null"/> if the 
+    /// <paramref name="value"/> represents <see langword="null"/>. 
+    /// </returns>
     public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
     {
       if (value == null)
@@ -65,11 +68,17 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
     }
 
     /// <summary> Returns a specific enumeration value. </summary>
-    /// <param name="identifier"> The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
+    /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
-    /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
+    /// <returns> 
+    /// The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/> or <see langword="null"/> if the 
+    /// <paramref name="identifier"/> represents <see langword="null"/>. 
+    /// </returns>
     public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
     {
+      if (StringUtility.IsNullOrEmpty (identifier))
+        return null;
+
       return GetValueInfoByValue (StringUtility.Parse (UnderlyingType, identifier, null), businessObject);
     }
 

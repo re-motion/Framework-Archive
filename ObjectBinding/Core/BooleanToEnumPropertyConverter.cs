@@ -79,7 +79,7 @@ namespace Rubicon.ObjectBinding
     ///   Returns an <see cref="IEnumerationValueInfo"/> matching the <c>True</c> or <c>False</c> strings or 
     ///   <see langword="null"/> for an empty or null string.
     /// </summary>
-    /// <param name="identifier"> Can be <c>True</c>, <c>False</c>, or an empty or null string. </param>
+    /// <param name="identifier"> Can be <see langword="true"/>, <see langword="false"/>, or an empty string or <see langword="null"/>. </param>
     /// <returns> An <see cref="IEnumerationValueInfo"/> or <see langword="null"/>. </returns>
     public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
     {
