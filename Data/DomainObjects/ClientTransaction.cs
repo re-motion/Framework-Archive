@@ -188,12 +188,26 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with an automatic ReturnToParent rollback behavior and enters it.
+  /// </summary>
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with an automatic ReturnToParent behavior.</returns>
+  /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this, AutomaticRollbackBehavior.ReturnToParent)</c>.
+  /// The created scope will not perform any automatic rollback, but it will return control to the parent transaction at its end if this transaction
+  /// is a subtransaction.</remarks>
+  public virtual ClientTransactionScope EnterScope ()
+  {
+    ClientTransactionScope scope = EnterSideEffectFreeScope ();
+    scope.AutoRollbackBehavior = AutoRollbackBehavior.ReturnToParent;
+    return scope;
+  }
+
+  /// <summary>
   /// Creates a new <see cref="ClientTransactionScope"/> for this transaction with no automatic rollback behavior and enters it.
   /// </summary>
-  /// <returns>A new <see cref="ClientTransactionScope"/> fot rhis transaction.</returns>
+  /// <returns>A new <see cref="ClientTransactionScope"/> for this transaction with no rollback behavior.</returns>
   /// <remarks>This method exists for convenience and is equivalent to <c>new ClientTransactionScope (this)</c>. The created scope will not
-  /// perform any automatic rollbacks.</remarks>
-  public ClientTransactionScope EnterScope ()
+  /// perform any automatic rollback behavior.</remarks>
+  public virtual ClientTransactionScope EnterSideEffectFreeScope ()
   {
     return new ClientTransactionScope (this);
   }
@@ -213,11 +227,8 @@ public abstract class ClientTransaction : ITransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    using (EnterScope ())
-    {
-      DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
-      return changedDomainObjects.Count > 0;
-    }
+    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects();
+    return changedDomainObjects.Count > 0;
   }
 
   /// <summary>
@@ -227,7 +238,7 @@ public abstract class ClientTransaction : ITransaction
   /// <exception cref="Persistence.StorageProviderException">An error occurred while committing the changes to the datasource.</exception>
   public virtual void Commit ()
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       BeginCommit();
       DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.New});
@@ -251,7 +262,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       BeginRollback();
       DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.Deleted});
@@ -275,10 +286,7 @@ public abstract class ClientTransaction : ITransaction
   /// </exception>
   protected internal virtual DomainObject GetObject (ObjectID id)
   {
-    using (EnterScope ())
-    {
-      return GetObject (id, false);
-    }
+    return GetObject (id, false);
   }
 
   /// <summary>
@@ -297,16 +305,13 @@ public abstract class ClientTransaction : ITransaction
   protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    using (EnterScope ())
-    {
-      return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
-    }
+    return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
 
@@ -331,7 +336,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       return _dataManager.RelationEndPointMap.HasRelationChanged (domainObject.GetDataContainer());
     }
@@ -348,7 +353,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
 
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -370,7 +375,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -392,7 +397,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -414,7 +419,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
 
@@ -443,7 +448,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       _dataManager.RelationEndPointMap.SetRelatedObject (relationEndPointID, newRelatedObject);
     }
@@ -460,7 +465,7 @@ public abstract class ClientTransaction : ITransaction
   protected internal virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       _dataManager.Delete (domainObject);
     }
@@ -483,7 +488,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadObject (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DataContainer dataContainer = LoadDataContainer (id);
 
@@ -511,7 +516,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DataContainer LoadDataContainerForExistingObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DataContainer dataContainer = LoadDataContainer (domainObject.ID);
       dataContainer.SetDomainObject (domainObject);
@@ -562,7 +567,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
@@ -602,7 +607,7 @@ public abstract class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       using (PersistenceManager persistenceManager = new PersistenceManager())
       {
@@ -625,14 +630,11 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterScope ())
-    {
-      return MergeLoadedDomainObjects (
-          dataContainers,
-          relationEndPointID.Definition.PropertyType,
-          relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
-          relationEndPointID);
-    }
+    return MergeLoadedDomainObjects (
+        dataContainers,
+        relationEndPointID.Definition.PropertyType,
+        relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType,
+        relationEndPointID);
   }
 
   /// <summary>
@@ -648,10 +650,7 @@ public abstract class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-    using (EnterScope ())
-    {
-      return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
-    }
+    return MergeLoadedDomainObjects (dataContainers, collectionType, null, null);
   }
 
   /// <summary>
@@ -672,7 +671,7 @@ public abstract class ClientTransaction : ITransaction
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
     ArgumentUtility.CheckNotNull ("collectionType", collectionType);
 
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       DataContainerCollection newLoadedDataContainers = _dataManager.DataContainerMap.GetNotRegisteredDataContainers (dataContainers);
       NotifyOfLoading (newLoadedDataContainers);
@@ -700,11 +699,8 @@ public abstract class ClientTransaction : ITransaction
   protected void SetClientTransaction (DataContainerCollection dataContainers)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
-    using (EnterScope ())
-    {
-      foreach (DataContainer dataContainer in dataContainers)
-        SetClientTransaction (dataContainer);
-    }
+    foreach (DataContainer dataContainer in dataContainers)
+      SetClientTransaction (dataContainer);
   }
 
   private void NotifyOfLoading (DataContainerCollection loadedDataContainers)
@@ -721,10 +717,7 @@ public abstract class ClientTransaction : ITransaction
   protected void SetClientTransaction (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-    using (EnterScope ())
-    {
-      dataContainer.SetClientTransaction (this);
-    }
+    dataContainer.SetClientTransaction (this);
   }
 
   /// <summary>
@@ -733,7 +726,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       foreach (DomainObject loadedDomainObject in args.DomainObjects)
         loadedDomainObject.EndObjectLoading();
@@ -754,7 +747,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       TransactionEventSink.TransactionCommitting (args.DomainObjects);
 
@@ -770,7 +763,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       if (Committed != null)
         Committed (this, args);
@@ -785,7 +778,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       TransactionEventSink.TransactionRollingBack (args.DomainObjects);
 
@@ -800,7 +793,7 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    using (EnterScope ())
+    using (EnterSideEffectFreeScope ())
     {
       if (RolledBack != null)
         RolledBack (this, args);
@@ -824,13 +817,10 @@ public abstract class ClientTransaction : ITransaction
   {
     get 
     {
-      using (EnterScope ())
-      {
-        if (_queryManager == null)
-          _queryManager = new QueryManager (this);
+      if (_queryManager == null)
+        _queryManager = new QueryManager (this);
 
-        return _queryManager;
-      }
+      return _queryManager;
     }
   }
 

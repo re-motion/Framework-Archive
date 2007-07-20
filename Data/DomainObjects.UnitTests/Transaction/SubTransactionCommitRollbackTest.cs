@@ -108,9 +108,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
+        Assert.AreEqual (StateType.Unchanged, loadedOrder.State);
+        Assert.AreEqual (StateType.Unchanged, newOrder.State);
+
         Assert.AreEqual (5, loadedOrder.OrderNumber);
         Assert.AreEqual (7, newOrder.OrderNumber);
       }
+
+      Assert.AreEqual (5, loadedOrder.OrderNumber);
+      Assert.AreEqual (7, newOrder.OrderNumber);
     }
 
     [Test]
@@ -121,6 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order newOrder = Order.NewObject ();
       OrderItem orderItem = OrderItem.NewObject ();
       newOrder.OrderItems.Add (orderItem);
+
       Assert.AreEqual (1, newOrder.OrderItems.Count);
       Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
 
@@ -129,14 +136,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         newOrder.OrderItems.Clear ();
         newOrder.OrderItems.Add (OrderItem.NewObject ());
         newOrder.OrderItems.Add (OrderItem.NewObject ());
+
         Assert.AreEqual (2, newOrder.OrderItems.Count);
         Assert.IsFalse (newOrder.OrderItems.ContainsObject (orderItem));
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
+        Assert.AreEqual (StateType.Unchanged, newOrder.State);
+
         Assert.AreEqual (1, newOrder.OrderItems.Count);
         Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
       }
+
+      Assert.AreEqual (1, newOrder.OrderItems.Count);
+      Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
     }
 
     [Test]
@@ -158,10 +171,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         ClientTransactionScope.CurrentTransaction.Rollback ();
 
+        Assert.AreEqual (StateType.Unchanged, computer.State);
+        Assert.AreEqual (StateType.Unchanged, employee.State);
+        Assert.AreEqual (StateType.Unchanged, location.State);
+        Assert.AreEqual (StateType.Unchanged, client.State);
+
         Assert.AreSame (employee, computer.Employee);
         Assert.AreSame (computer, employee.Computer);
         Assert.AreSame (client, location.Client);
       }
+
+      Assert.AreSame (employee, computer.Employee);
+      Assert.AreSame (computer, employee.Computer);
+      Assert.AreSame (client, location.Client);
     }
 
     [Ignore ("TODO: FS - ClientTransactions")]

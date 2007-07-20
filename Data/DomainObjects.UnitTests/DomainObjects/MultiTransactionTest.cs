@@ -271,5 +271,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.OrderNumber = oldOrderNumber;
       ClientTransactionScope.CurrentTransaction.Commit ();
     }
+
+    [Test]
+    public void GetObjectAfterEnlistingReturnsEnlistedObject ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (new ClientTransactionScope ())
+      {
+        order.EnlistInTransaction (ClientTransactionScope.CurrentTransaction);
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.AreSame (order, Order.GetObject (order.ID));
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A domain object instance for object "
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in the given transaction.")]
+    public void EnlistingAlthoughObjectHasAlreadyBeenLoadedThrows ()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (new ClientTransactionScope ())
+      {
+        Assert.AreNotSame (order, Order.GetObject (order.ID));
+        order.EnlistInTransaction (ClientTransactionScope.CurrentTransaction);
+      }
+    }
   }
 }

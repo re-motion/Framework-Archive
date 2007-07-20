@@ -10,13 +10,18 @@ namespace Rubicon.Data.DomainObjects
   public enum AutoRollbackBehavior
   {
     /// <summary>
+    /// Indicates that <see cref="ClientTransactionScope"/> should not perform any automatic operation.
+    /// </summary>
+    None,
+    /// <summary>
     /// Indicates that <see cref="ClientTransactionScope"/> should automatically call <see cref="ClientTransaction.Rollback"/> at its end when
     /// its transaction holds uncommitted changed.
     /// </summary>
     Rollback,
     /// <summary>
-    /// Indicates that <see cref="ClientTransactionScope"/> should not call <see cref="ClientTransaction.Rollback"/> automatically.
+    /// Indicates that <see cref="ClientTransactionScope"/> should automatically call <see cref="ClientTransaction.ReturnToParentTransaction"/> at
+    /// its end.
     /// </summary>
-    None
+    ReturnToParent
   }
 }

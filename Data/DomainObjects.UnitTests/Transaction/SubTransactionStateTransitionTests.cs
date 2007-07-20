@@ -135,6 +135,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
+      Assert.AreEqual (StateType.Unchanged, obj.State);
     }
 
     [Test]
@@ -147,6 +148,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (obj.OrderNumber,
             obj.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> ());
       }
+      Assert.AreEqual (StateType.Changed, obj.State);
     }
 
     [Test]
@@ -159,6 +161,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (obj.OrderItems.Count,
            obj.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ().Count);
       }
+      Assert.AreEqual (StateType.Changed, obj.State);
     }
 
     [Test]
@@ -171,6 +174,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (obj.Employee,
             obj.Properties[typeof (Computer) + ".Employee"].GetOriginalValue<Employee> ());
       }
+      Assert.AreEqual (StateType.Changed, obj.State);
     }
 
     [Test]
@@ -183,6 +187,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (obj.Computer,
             obj.Properties[typeof (Employee) + ".Computer"].GetOriginalValue<Computer> ());
       }
+      Assert.AreEqual (StateType.Changed, obj.State);
     }
 
     [Test]
@@ -193,6 +198,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
+      Assert.AreEqual (StateType.New, obj.State);
     }
 
     [Test]
@@ -203,6 +209,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
+      Assert.AreEqual (StateType.New, obj.State);
     }
 
     [Test]
@@ -213,6 +220,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.IsTrue (obj.IsDiscarded);
       }
+      Assert.AreEqual (StateType.Deleted, obj.State);
     }
 
     [Test]
@@ -240,6 +248,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (StateType.Unchanged, obj.State);
         Assert.IsTrue (deleted.IsDiscarded);
       }
+      Assert.AreEqual (StateType.Unchanged, obj.State);
+      Assert.AreEqual (StateType.Deleted, deleted.State);
     }
 
     [Test]
@@ -262,6 +272,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
       }
+      Assert.AreEqual (StateType.Changed, obj.State);
     }
 
     [Test]
@@ -284,6 +295,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.IsTrue (obj.IsDiscarded);
       }
+      Assert.IsTrue (obj.IsDiscarded);
     }
   }
 }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
@@ -379,6 +381,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsNull (ClientTransactionScope.ActiveScope);
         Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
       }
+    }
+
+    [Test]
+    public void AutoReturnToParentBehavior ()
+    {
+      MockRepository mockRepository = new MockRepository();
+
+      ClientTransaction subTransaction =
+          mockRepository.CreateMock<ClientTransaction> (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection());
+
+      Expect.Call (subTransaction.ReturnToParentTransaction ()).Return (true);
+
+      mockRepository.ReplayAll ();
+
+      using (new ClientTransactionScope (subTransaction, AutoRollbackBehavior.ReturnToParent))
+      {
+      }
+
+      mockRepository.VerifyAll ();
     }
   }
 }

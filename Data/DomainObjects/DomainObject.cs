@@ -515,12 +515,19 @@ public class DomainObject
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   internal DataContainer GetDataContainer()
   {
-    CheckIfObjectIsDiscarded ();
     CheckIfRightTransaction ();
 
-    DataContainer dataContainer = ClientTransactionScope.CurrentTransaction.DataManager.DataContainerMap[ID];
+    return GetDataContainerForTransaction (ClientTransactionScope.CurrentTransaction);
+  }
+
+  internal DataContainer GetDataContainerForTransaction (ClientTransaction transaction)
+  {
+    if (transaction.DataManager.IsDiscarded (ID))
+      throw new ObjectDiscardedException (ID);
+
+    DataContainer dataContainer = transaction.DataManager.DataContainerMap[ID];
     if (dataContainer == null)
-      dataContainer = ClientTransactionScope.CurrentTransaction.LoadDataContainerForExistingObject (this);
+      dataContainer = transaction.LoadDataContainerForExistingObject (this);
     Assertion.Assert (dataContainer != null);
 
     return dataContainer;
@@ -595,9 +602,10 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
 
+    DataContainer dataContainer;
     try
     {
-      transaction.GetObject (ID);
+      dataContainer = GetDataContainerForTransaction (transaction);
     }
     catch (ObjectNotFoundException ex)
     {
@@ -605,6 +613,14 @@ public class DomainObject
           + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", ID);
       throw new ArgumentException (message, "transaction", ex);
     }
+
+    if (dataContainer.DomainObject != this)
+    {
+      string message = string.Format ("A domain object instance for object '{0}' already exists in the given transaction.",
+          ID);
+      throw new InvalidOperationException (message);
+    }
+
     _enlistedTransactions.Add (transaction);
   }
 

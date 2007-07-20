@@ -53,6 +53,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void EnterScopeEnablesReturnToParentBehavior ()
+    {
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        Assert.AreEqual (AutoRollbackBehavior.ReturnToParent, ClientTransactionScope.ActiveScope.AutoRollbackBehavior);
+      }
+    }
+
+    [Test]
     public void SubTransactionHasSameExtensions ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();

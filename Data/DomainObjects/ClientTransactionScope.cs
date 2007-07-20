@@ -211,8 +211,10 @@ namespace Rubicon.Data.DomainObjects
 
     private void ExecuteAutoRollbackBehavior ()
     {
-      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
+      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged ())
         Rollback ();
+      else if (AutoRollbackBehavior == AutoRollbackBehavior.ReturnToParent)
+        ReturnToParent ();
     }
 
     /// <summary>
@@ -233,6 +235,12 @@ namespace Rubicon.Data.DomainObjects
     {
       if (ScopedTransaction != null)
         ScopedTransaction.Rollback ();
+    }
+
+    private void ReturnToParent ()
+    {
+      if (ScopedTransaction != null)
+        ScopedTransaction.ReturnToParentTransaction ();
     }
   }
 }
