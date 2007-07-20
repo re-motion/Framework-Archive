@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Infrastructure;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -94,7 +95,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Order order = Order.NewObject ();
         Assert.AreSame (subTransaction, order.InitialClientTransaction);
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
-        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionMock));
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
 
         order.OrderNumber = 4711;
         Assert.AreEqual (4711, order.OrderNumber);
@@ -107,7 +108,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.IsNotNull (ceo);
         Assert.AreSame (subTransaction, ceo.InitialClientTransaction);
         Assert.IsTrue (ceo.CanBeUsedInTransaction (subTransaction));
-        Assert.IsFalse (ceo.CanBeUsedInTransaction (ClientTransactionMock));
+        Assert.IsTrue (ceo.CanBeUsedInTransaction (ClientTransactionMock));
 
         Assert.AreSame (ceo.Company, Company.GetObject (DomainObjectIDs.Company1));
       }
@@ -123,14 +124,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void DomainObjectsCreatedInSubTransactionCannotBeUsedInParent ()
+    public void DomainObjectsCreatedInSubTransactionCanBeUsedInParent ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         Order order = Order.NewObject();
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
-        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionMock));
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       }
     }
 
@@ -144,14 +145,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void DomainObjectsLoadedInSubTransactionCannotBeUsedInParent ()
+    public void DomainObjectsLoadedInSubTransactionCanBeUsedInParent ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction();
       using (subTransaction.EnterScope ())
       {
         Order order = Order.GetObject (DomainObjectIDs.Order1);
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
-        Assert.IsFalse (order.CanBeUsedInTransaction (ClientTransactionMock));
+        Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
       }
     }
 
@@ -168,6 +169,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    [ExpectedException (typeof (ObjectNotFoundException))]
+    public void ParentCannotAccessObjectNewedInSubTransaction ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Order order;
+      using (subTransaction.EnterScope ())
+      {
+        order = Order.NewObject ();
+      }
+      Dev.Null = order.OrderNumber;
+    }
+
+    [Test]
     public void SubTransactionCanAccessObjectLoadedInParent ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
@@ -178,6 +192,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         OrderTicket oldTicket = order.OrderTicket;
         order.OrderTicket = OrderTicket.NewObject ();
       }
+    }
+
+    [Test]
+    public void ParentCanAccessObjectLoadedInSubTransaction ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Order order;
+      using (subTransaction.EnterScope ())
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
+      }
+      Assert.AreEqual (1, order.OrderNumber);
     }
 
     [Test]

@@ -419,7 +419,7 @@ public class DomainObject
 
     _id = dataContainer.ID;
     _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (_initialClientTransaction);
+    _enlistedTransactions.Add (_initialClientTransaction.RootTransaction);
   }
 
   /// <summary>
@@ -558,9 +558,7 @@ public class DomainObject
   public bool CanBeUsedInTransaction (ClientTransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
-    if (_enlistedTransactions.Contains (transaction))
-      return true;
-    else if (transaction.ParentTransaction != null && CanBeUsedInTransaction (transaction.ParentTransaction))
+    if (_enlistedTransactions.Contains (transaction.RootTransaction))
       return true;
     else if (ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects)
     {
@@ -621,7 +619,7 @@ public class DomainObject
       throw new InvalidOperationException (message);
     }
 
-    _enlistedTransactions.Add (transaction);
+    _enlistedTransactions.Add (transaction.RootTransaction);
   }
 
   #endregion

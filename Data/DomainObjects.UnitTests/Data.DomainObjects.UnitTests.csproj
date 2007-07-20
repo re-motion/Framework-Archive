@@ -810,12 +810,16 @@
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
     <Compile Include="Transaction\ClientTransactionScopeTest.cs" />
     <Compile Include="Transaction\CompoundClientTransactionListenerTest.cs" />
+    <Compile Include="Transaction\ClientTransactionStateTransitionBaseTest.cs" />
+    <Compile Include="Transaction\SubTransactionCommitDataTest.cs" />
+    <Compile Include="Transaction\SubTransactionCommitStateTransitionTest.cs" />
     <Compile Include="Transaction\InvalidatedSubTransactionListenerTest.cs" />
     <Compile Include="Transaction\ReadOnlyClientTransactionTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
     <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="Transaction\SubTransactionCommitRollbackTest.cs" />
-    <Compile Include="Transaction\SubTransactionStateTransitionTests.cs" />
+    <Compile Include="Transaction\SubTransactionCreationStateTransitionTest.cs" />
+    <Compile Include="Transaction\SubTransactionRollbackDataTest.cs" />
     <Compile Include="Transaction\SubTransactionTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>

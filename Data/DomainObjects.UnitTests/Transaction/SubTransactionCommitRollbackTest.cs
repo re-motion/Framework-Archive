@@ -89,108 +89,40 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreNotEqual (5, order.OrderNumber);
       }
     }
-
+      
     [Test]
-    public void RollbackResetsPropertyValuesToThoseOfParentTransaction ()
+    [Ignore ("TODO: FS - SubTransactions Commit")]
+    public void CommitPropagatesNewObjectsToParentTransaction ()
     {
-      _subTransaction.ReturnToParentTransaction ();
-
-      Order loadedOrder = Order.GetObject (DomainObjectIDs.Order1);
-      Order newOrder = Order.NewObject ();
-
-      loadedOrder.OrderNumber = 5;
-      newOrder.OrderNumber = 7;
-
-      using (ClientTransactionMock.CreateSubTransaction().EnterScope ())
+      Order order;
+      using (_subTransaction.EnterScope ())
       {
-        loadedOrder.OrderNumber = 13;
-        newOrder.OrderNumber = 47;
-
-        ClientTransactionScope.CurrentTransaction.Rollback ();
-
-        Assert.AreEqual (StateType.Unchanged, loadedOrder.State);
-        Assert.AreEqual (StateType.Unchanged, newOrder.State);
-
-        Assert.AreEqual (5, loadedOrder.OrderNumber);
-        Assert.AreEqual (7, newOrder.OrderNumber);
+        order = Order.NewObject ();
+        order.OrderNumber = 7;
+        _subTransaction.Commit ();
+        Assert.AreEqual (7, order.OrderNumber);
       }
-
-      Assert.AreEqual (5, loadedOrder.OrderNumber);
-      Assert.AreEqual (7, newOrder.OrderNumber);
+      Assert.IsNotNull (order);
+      Assert.AreEqual (7, order.OrderNumber);
     }
 
     [Test]
-    public void RollbackResetsRelatedObjectsToThoseOfParentTransaction ()
+    [Ignore ("TODO: FS - SubTransactions Commit")]
+    public void CommitPropagatesChangedObjectsToParentTransaction ()
     {
-      _subTransaction.ReturnToParentTransaction ();
-
-      Order newOrder = Order.NewObject ();
-      OrderItem orderItem = OrderItem.NewObject ();
-      newOrder.OrderItems.Add (orderItem);
-
-      Assert.AreEqual (1, newOrder.OrderItems.Count);
-      Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
-
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      Order order;
+      using (_subTransaction.EnterScope ())
       {
-        newOrder.OrderItems.Clear ();
-        newOrder.OrderItems.Add (OrderItem.NewObject ());
-        newOrder.OrderItems.Add (OrderItem.NewObject ());
+        order = Order.GetObject (DomainObjectIDs.Order1);
+        order.OrderNumber = 5;
 
-        Assert.AreEqual (2, newOrder.OrderItems.Count);
-        Assert.IsFalse (newOrder.OrderItems.ContainsObject (orderItem));
+        _subTransaction.Commit ();
 
-        ClientTransactionScope.CurrentTransaction.Rollback ();
-
-        Assert.AreEqual (StateType.Unchanged, newOrder.State);
-
-        Assert.AreEqual (1, newOrder.OrderItems.Count);
-        Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
+        Assert.AreEqual (5, order.OrderNumber);
       }
 
-      Assert.AreEqual (1, newOrder.OrderItems.Count);
-      Assert.IsTrue (newOrder.OrderItems.ContainsObject (orderItem));
-    }
-
-    [Test]
-    public void RollbackResetsRelatedObjectToThatOfParentTransaction ()
-    {
-      _subTransaction.ReturnToParentTransaction ();
-
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
-      Employee employee = computer.Employee;
-      Location location = Location.NewObject ();
-      Client client = Client.NewObject ();
-      location.Client = client;
-
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
-      {
-        computer.Employee = Employee.NewObject ();
-        location.Client = null;
-        Assert.IsNull (employee.Computer);
-
-        ClientTransactionScope.CurrentTransaction.Rollback ();
-
-        Assert.AreEqual (StateType.Unchanged, computer.State);
-        Assert.AreEqual (StateType.Unchanged, employee.State);
-        Assert.AreEqual (StateType.Unchanged, location.State);
-        Assert.AreEqual (StateType.Unchanged, client.State);
-
-        Assert.AreSame (employee, computer.Employee);
-        Assert.AreSame (computer, employee.Computer);
-        Assert.AreSame (client, location.Client);
-      }
-
-      Assert.AreSame (employee, computer.Employee);
-      Assert.AreSame (computer, employee.Computer);
-      Assert.AreSame (client, location.Client);
-    }
-
-    [Test]
-    [Ignore ("TODO: FS - ClientTransactions")]
-    public void Commit ()
-    {
-      Assert.Fail ();
+      Assert.IsNotNull (order);
+      Assert.AreEqual (5, order.OrderNumber);
     }
   }
 }
