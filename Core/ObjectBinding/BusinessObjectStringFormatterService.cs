@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Text;
+using Rubicon.Collections;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding
@@ -16,7 +17,9 @@ namespace Rubicon.ObjectBinding
     /// <param name="property"> 
     ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
     /// </param>
-    /// <param name="format"> The format string passed to the value's <b>ToString</b> method. </param>
+    /// <param name="format">
+    /// The format string passed to the value's <see cref="IFormattable.ToString(string,IFormatProvider)"/> method.
+    /// </param>
     /// <returns> 
     ///   The string representation of the property value for the <paramref name="property"/> parameter.  
     /// <list type="table">
@@ -25,88 +28,47 @@ namespace Rubicon.ObjectBinding
     ///     <description> Return Value </description>
     ///   </listheader>
     ///   <item>
-    ///     <term> The value is an empty list or <see langword="null"/> </term>
-    ///     <description> <see cref="String.Empty"/> is returned. </description>
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectBooleanProperty"/> interface.</term>
+    ///     <description><see cref="IBusinessObjectBooleanProperty.GetDisplayName"/> is evaluated for the value and the resulting string is returned.</description>
     ///   </item>
     ///   <item>
-    ///     <term> 
-    ///       The value is a list and the first list item implements the <see cref="IBusinessObjectWithIdentity"/> 
-    ///       interface. 
-    ///     </term>
-    ///     <description> 
-    ///       The first item's <see cref="IBusinessObjectWithIdentity.DisplayName"/> is returned. If there is more than 
-    ///       one item in the list, the total number of list items is appended to the returned string. 
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectDateTimeProperty"/> interface.</term>
+    ///     <description>
+    ///       The value is cast to <see cref="IFormattable"/> and the <see cref="IFormattable.ToString(string,IFormatProvider)"/> method is invoked,
+    ///       passing the <paramref name="format"/> string.
     ///     </description>
     ///   </item>
     ///   <item>
-    ///     <term> The value is a scalar and implements the <see cref="IBusinessObjectWithIdentity"/> interface. </term>
-    ///     <description> The value's <see cref="IBusinessObjectWithIdentity.DisplayName"/> is returned.  </description>
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectEnumerationProperty"/> interface.</term>
+    ///     <description>The value's <see cref="IEnumerationValueInfo.DisplayName"/> is returned.</description>
     ///   </item>
     ///   <item>
-    ///     <term> 
-    ///       The value is a list and the <paramref name="property"/> parameter implements the 
-    ///       <see cref="IBusinessObjectBooleanProperty"/> interface. 
-    ///     </term>
-    ///     <description> 
-    ///       <see cref="IBusinessObjectBooleanProperty.GetDisplayName"/> is evaluated for the first item and the 
-    ///       resulting string is returned. If there is more than one item in the list, the total number of list items 
-    ///       is appended to the returned string. 
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectNumericProperty"/> interface.</term>
+    ///     <description>
+    ///       The value is cast to <see cref="IFormattable"/> and the <see cref="IFormattable.ToString(string,IFormatProvider)"/> method is invoked,
+    ///       passing the <paramref name="format"/> string.
     ///     </description>
     ///   </item>
     ///   <item>
-    ///     <term> 
-    ///       The value is a scalar and the <paramref name="property"/> parameter implements the
-    ///       <see cref="IBusinessObjectBooleanProperty"/> interface. 
-    ///     </term>
-    ///     <description> 
-    ///       <see cref="IBusinessObjectBooleanProperty.GetDisplayName"/> is evaluated for the value and the resulting 
-    ///       string is returned.
-    ///     </description>
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectReferenceProperty"/> interface.</term>
+    ///     <description> The value's <see cref="IBusinessObject.DisplayName"/> is returned.  </description>
     ///   </item>
     ///   <item>
-    ///     <term> 
-    ///       The value is a list and the <paramref name="property"/> parameter implements the 
-    ///       <see cref="IBusinessObjectEnumerationProperty"/> interface.
-    ///     </term>
-    ///     <description> 
-    ///       The first item's <see cref="IEnumerationValueInfo.DisplayName"/> is returned. If there is more than one 
-    ///       item in the list, the total number of list items is appended to the returned string. 
-    ///     </description>
+    ///     <term>The <paramref name="property"/> parameter implements the <see cref="IBusinessObjectStringProperty"/> interface.</term>
+    ///     <description>The value is cast to a string and returned.</description>
     ///   </item>
     ///   <item>
-    ///     <term> 
-    ///       The value is a scalar and the <paramref name="property"/> parameter implements the 
-    ///       <see cref="IBusinessObjectEnumerationProperty"/> interface. 
-    ///     </term>
-    ///     <description> The value's <see cref="IEnumerationValueInfo.DisplayName"/> is returned. </description>
-    ///   </item>
-    ///   <item>
-    ///     <term> 
-    ///       The value is a list, the first item implements the <see cref="IFormattable"/> interface,
-    ///       and a format string is provided using the <paramref name="format"/> parameter. 
-    ///     </term>
-    ///     <description> 
-    ///       The first item is formatted using the format string and is then returned. If there is more than one item in 
-    ///       the list, the total number of list items is appended to the returned string. 
-    ///     </description>
-    ///   </item>
-    ///   <item>
-    ///     <term> 
-    ///       The value is a scalar, implements the <see cref="IFormattable"/> interface, 
-    ///       and a format string is provided using the <paramref name="format"/> parameter. 
-    ///     </term>
-    ///     <description> The value is formatted using the format string and is then returned. </description>
+    ///     <term>The value is <see langword="null"/>.</term>
+    ///     <description>An empty string is returned.</description>
     ///   </item>
     ///   <item>
     ///     <term> The value is a list. </term>
     ///     <description> 
-    ///       The first item's <b>ToString</b> method is executed and the resulting string is returned. If there is more 
-    ///       than one item in the list, the total number of list items is appended to the returned string. 
+    ///       The <paramref name="format"/> string is parsed to check whether it begins with <c>lines=&lt;n&gt;</c>, where <c>n</c> is the number of
+    ///       items to render or <c>all</c> to render all items in the list. The value is then cast to <see cref="IList"/> and each item is processed
+    ///       according to the <paramref name="property"/>'s formatting logic. The resulting strings are concatenated and the total number of lines is 
+    ///       appended, if not all items are shown.
     ///     </description>
-    ///   </item>
-    ///   <item>
-    ///     <term> The value is a scalar. </term>
-    ///     <description> The value's <b>ToString</b> method is executed and the resulting string is returned.  </description>
     ///   </item>
     /// </list>
     /// </returns>
@@ -118,51 +80,73 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string format)
     {
-      int count = 0;
-
       if (property.IsList)
       {
-        // parse "lines=<n>" from format string, where n = no. of lines (integer > 0) or "all" (-1 internally)
-        int lines = 1;
-        if (format != null && format.StartsWith ("lines="))
-        {
-          string strLines = format.Substring ("lines=".Length);
-          if (strLines == "all")
-          {
-            lines = -1;
-          }
-          else if (strLines.Length > 0)
-          {
-            double dblLines;
-            if (double.TryParse (strLines, NumberStyles.Integer, CultureInfo.InvariantCulture, out dblLines) && dblLines > 0)
-              lines = (int) dblLines;
-          }
-        }
-
-        IList list = (IList) businessObject.GetProperty (property);
-        if (list == null)
-          return string.Empty;
-
-        count = list.Count;
-        StringBuilder sb = new StringBuilder (count*40);
-        for (int i = 0;
-             i < count && (lines == -1 || i < lines);
-             ++i)
-        {
-          if (i > 0)
-            sb.Append ("\r\n");
-          sb.Append (GetStringValue (businessObject, list[i], property, format));
-        }
-
-        if (lines != -1 && count > lines)
-          sb.Append (" ... [" + count.ToString() + "]");
-
-        return sb.ToString();
+        Tuple<int, string> result = GetLineCountAndFormatString (format);
+        return GetStringValues (businessObject, property, result.B, result.A);
       }
       else
       {
         return GetStringValue (businessObject, businessObject.GetProperty (property), property, format);
       }
+    }
+
+    private string GetStringValues (IBusinessObject businessObject, IBusinessObjectProperty property, string format, int lines)
+    {
+      IList list = (IList) businessObject.GetProperty (property);
+      if (list == null)
+        return string.Empty;
+
+      int count = list.Count;
+      StringBuilder sb = new StringBuilder (count*40);
+      for (int i = 0;
+           i < count && (lines == -1 || i < lines);
+           ++i)
+      {
+        if (i > 0)
+          sb.AppendLine ();
+        sb.Append (GetStringValue (businessObject, list[i], property, format));
+      }
+
+      if (lines != -1 && count > lines)
+        sb.Append (" ... [" + count + "]");
+
+      return sb.ToString();
+    }
+
+    private Tuple<int, string> GetLineCountAndFormatString (string format)
+    {
+      Tuple<string, string> formatStrings = GetFormatStrings (format);
+      return new Tuple<int, string> (ParseLineCount(formatStrings.A), formatStrings.B);
+    }
+
+    private Tuple<string, string> GetFormatStrings (string format)
+    {
+      if (format == null)
+        return new Tuple<string, string> (null, null);
+
+      const string lineCountPrefix = "lines=";
+      if (format.StartsWith (lineCountPrefix))
+      {
+        string[] formatStrings = format.Split (new char[] {'|'}, 2);
+        return new Tuple<string, string> (
+            formatStrings[0].Substring (lineCountPrefix.Length), 
+            (formatStrings.Length == 2) ? formatStrings[1] : null);
+      }
+
+      return new Tuple<string, string> (null, format);
+    }
+
+    private int ParseLineCount (string linesString)
+    {
+      if (linesString == "all")
+        return -1;
+
+      int lines;
+      if (int.TryParse (linesString, NumberStyles.Integer, CultureInfo.InvariantCulture, out lines))
+        return lines;
+
+      return 1;
     }
 
     private string GetStringValue (IBusinessObject businessObject, object value, IBusinessObjectProperty property, string format)

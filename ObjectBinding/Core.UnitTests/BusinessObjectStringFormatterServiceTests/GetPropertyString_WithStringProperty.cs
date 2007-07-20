@@ -36,6 +36,19 @@ namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTe
     }
 
     [Test]
+    public void List_WithValue ()
+    {
+      Expect.Call (_mockProperty.IsList).Return (true);
+      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (new string[] { "First String", "Second String" });
+      _mockRepository.ReplayAll ();
+
+      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+
+      _mockRepository.VerifyAll ();
+      Assert.That (actual, Is.EqualTo ("First String ... [2]"));
+    }
+
+    [Test]
     public void Scalar_WithNull ()
     {
       Expect.Call (_mockProperty.IsList).Return (false);
