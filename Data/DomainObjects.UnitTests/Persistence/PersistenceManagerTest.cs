@@ -289,7 +289,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       dataContainers.Add (officialContainer);
 
       orderContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"] = 42;
-      officialContainer["Name"] = "Zaphod"; //Stub implementation
+      officialContainer[typeof (Official).FullName + ".Name"] = "Zaphod"; //Stub implementation
 
       _persistenceManager.Save (dataContainers);
     }

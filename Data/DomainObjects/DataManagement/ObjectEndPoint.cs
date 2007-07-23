@@ -96,8 +96,19 @@ public class ObjectEndPoint : RelationEndPoint, INullObject
 
   public override RelationEndPoint Clone ()
   {
-    ObjectEndPoint clone = new ObjectEndPoint (ClientTransaction, ID, OppositeObjectID, OriginalOppositeObjectID);
+    ObjectEndPoint clone = new ObjectEndPoint (ClientTransaction, ID, null);
+    clone.AssumeSameState (this);
     return clone;
+  }
+
+  internal override void AssumeSameState (RelationEndPoint source)
+  {
+    Assertion.Assert (Definition == source.Definition);
+
+    ObjectEndPoint sourceObjectEndPoint = (ObjectEndPoint)source;
+
+    _oppositeObjectID = sourceObjectEndPoint._oppositeObjectID;
+    _originalOppositeObjectID = sourceObjectEndPoint._originalOppositeObjectID;
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)

@@ -33,20 +33,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public Order GetDeleted ()
     {
       Order deleted = Order.GetObject (DomainObjectIDs.Order4);
-      deleted.Delete ();
+      FullyDeleteOrder (deleted);
       return deleted;
     }
 
-    public Order GetNewChanged ()
+    public ClassWithAllDataTypes GetNewChanged ()
     {
-      Order newChanged = Order.NewObject ();
-      newChanged.OrderNumber = 13;
+      ClassWithAllDataTypes newChanged = ClassWithAllDataTypes.NewObject ();
+      newChanged.Int32Property = 13;
       return newChanged;
     }
 
-    public Order GetNewUnchanged ()
+    public ClassWithAllDataTypes GetNewUnchanged ()
     {
-      return Order.NewObject ();
+      return ClassWithAllDataTypes.NewObject ();
     }
 
     public Employee GetChangedThroughRelatedObjectVirtualSide ()
@@ -90,8 +90,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order changedThroughRelatedObjects = GetChangedThroughRelatedObjects();
       Computer changedThroughRelatedObjectRealSide = GetChangedThroughRelatedObjectRealSide();
       Employee changedThroughRelatedObjectVirtualSide = GetChangedThroughRelatedObjectVirtualSide();
-      Order newUnchanged = GetNewUnchanged();
-      Order newChanged = GetNewChanged();
+      ClassWithAllDataTypes newUnchanged = GetNewUnchanged();
+      ClassWithAllDataTypes newChanged = GetNewChanged ();
       Order deleted = GetDeleted();
       Location unidirectionalWithDeleted = GetUnidirectionalWithDeleted ();
       Location unidirectionalWithDeletedNew = GetUnidirectionalWithDeletedNew ();
@@ -124,6 +124,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreEqual (StateType.Changed, unidirectionalWithDeletedNew.State);
 
       Assert.IsTrue (discarded.IsDiscarded);
+    }
+
+    protected void FullyDeleteOrder (Order order)
+    {
+      for (int i = order.OrderItems.Count - 1; i >= 0; --i)
+        order.OrderItems[i].Delete ();
+      order.OrderTicket.Delete ();
+      order.Delete ();
     }
   }
 }

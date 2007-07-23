@@ -437,5 +437,14 @@ public class PropertyValue
     if (_isDiscarded)
       throw new ObjectDiscardedException ();
   }
+
+  internal void AssumeSameState (PropertyValue source)
+  {
+    Assertion.Assert (_definition == source._definition);
+
+    _value = source._value;
+    _originalValue = source._originalValue;
+    _isDiscarded = source._isDiscarded;
+  }
 }
 }

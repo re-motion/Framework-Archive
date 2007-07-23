@@ -89,25 +89,57 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreNotEqual (5, order.OrderNumber);
       }
     }
-      
+
     [Test]
-    [Ignore ("TODO: FS - SubTransactions Commit")]
-    public void CommitPropagatesNewObjectsToParentTransaction ()
+    public void SubRollbackDoesNotRollbackParent ()
     {
-      Order order;
+      _subTransaction.ReturnToParentTransaction ();
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      Assert.AreEqual (1, order.OrderNumber);
+      order.OrderNumber = 3;
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.OrderNumber = 5;
+        ClientTransactionScope.CurrentTransaction.Rollback ();
+        Assert.AreEqual (3, order.OrderNumber);
+      }
+      Assert.AreEqual (3, order.OrderNumber);
+      ClientTransactionMock.Rollback ();
+      Assert.AreEqual (1, order.OrderNumber);
+    }
+
+
+    [Test]
+    public void ParentTransactionStillReadOnlyAfterCommit ()
+    {
       using (_subTransaction.EnterScope ())
       {
-        order = Order.NewObject ();
-        order.OrderNumber = 7;
+        Assert.IsTrue (ClientTransactionMock.IsReadOnly);
+        ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+        Assert.AreNotEqual (7, classWithAllDataTypes.Int32Property);
+        classWithAllDataTypes.Int32Property = 7;
         _subTransaction.Commit ();
-        Assert.AreEqual (7, order.OrderNumber);
+        Assert.IsTrue (ClientTransactionMock.IsReadOnly);
       }
-      Assert.IsNotNull (order);
-      Assert.AreEqual (7, order.OrderNumber);
+    }
+    
+    [Test]
+    public void CommitPropagatesNewObjectsToParentTransaction ()
+    {
+      ClassWithAllDataTypes classWithAllDataTypes;
+      using (_subTransaction.EnterScope ())
+      {
+        classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
+        Assert.AreNotEqual (7, classWithAllDataTypes.Int32Property);
+        classWithAllDataTypes.Int32Property = 7;
+        _subTransaction.Commit ();
+        Assert.AreEqual (7, classWithAllDataTypes.Int32Property);
+      }
+      Assert.IsNotNull (classWithAllDataTypes);
+      Assert.AreEqual (7, classWithAllDataTypes.Int32Property);
     }
 
     [Test]
-    [Ignore ("TODO: FS - SubTransactions Commit")]
     public void CommitPropagatesChangedObjectsToParentTransaction ()
     {
       Order order;
@@ -123,6 +155,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       Assert.IsNotNull (order);
       Assert.AreEqual (5, order.OrderNumber);
+    }
+
+    [Test]
+    public void SubCommitDoesNotCommitParent ()
+    {
+      _subTransaction.ReturnToParentTransaction ();
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order.OrderNumber = 5;
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+      Assert.AreEqual (5, order.OrderNumber);
+      ClientTransactionMock.Rollback ();
+      Assert.AreEqual (1, order.OrderNumber);
     }
   }
 }

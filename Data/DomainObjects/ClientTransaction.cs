@@ -133,6 +133,12 @@ public abstract class ClientTransaction : ITransaction
   /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
   public abstract bool ReturnToParentTransaction ();
 
+  /// <summary>
+  /// Persists changed data in the couse of a <see cref="Commit"/> operation.
+  /// </summary>
+  /// <param name="changedDataContainers">The data containers for any object that was changed in this transaction.</param>
+  protected abstract void PersistData (DataContainerCollection changedDataContainers);
+
   // methods and properties
 
   /// <summary>
@@ -244,13 +250,7 @@ public abstract class ClientTransaction : ITransaction
       DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] {StateType.Changed, StateType.New});
 
       DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit();
-      if (changedDataContainers.Count > 0)
-      {
-        using (PersistenceManager persistenceManager = new PersistenceManager())
-        {
-          persistenceManager.Save (changedDataContainers);
-        }
-      }
+      PersistData (changedDataContainers);
 
       _dataManager.Commit();
       EndCommit (changedButNotDeletedDomainObjects);

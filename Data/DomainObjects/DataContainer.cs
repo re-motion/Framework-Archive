@@ -23,7 +23,8 @@ public class DataContainer
   // static members and constants
 
   /// <summary>
-  /// Creates a <see cref="DataContainer"/> for a new <see cref="Rubicon.Data.DomainObjects.DomainObject"/>.
+  /// Creates an empty <see cref="DataContainer"/> for a new <see cref="Rubicon.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+  /// contains a new <see cref="PropertyValue"/> object for every <see cref="PropertyDefinition"/> in the respective <see cref="ClassDefinition"/>.
   /// </summary>
   /// <remarks>
   /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.New"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
@@ -45,7 +46,8 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Creates a <see cref="DataContainer"/> for an existing <see cref="Rubicon.Data.DomainObjects.DomainObject"/>.
+  /// Creates an empty <see cref="DataContainer"/> for an existing <see cref="Rubicon.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+  /// does not contain any <see cref="PropertyValue"/> objects.
   /// </summary>
   /// <remarks>
   /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.Unchanged"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
@@ -482,21 +484,29 @@ public class DataContainer
   {
     CheckDiscarded();
 
-    PropertyValueCollection clonedPropertyValues = new PropertyValueCollection ();
-    for (int i = 0; i < _propertyValues.Count; ++i)
-    {
-      int position =
-          clonedPropertyValues.Add (new PropertyValue (_propertyValues[i].Definition, _propertyValues[i].Value, _propertyValues[i].OriginalValue));
-      Assertion.Assert (position == i);
-    }
-
-    DataContainer clone = new DataContainer (_id, _timestamp, clonedPropertyValues);
-
+    DataContainer clone = CreateNew (_id);
     clone._clientTransaction = _clientTransaction;
-    clone._domainObject = _domainObject;
-    clone._state = _state;
-
+    clone.AssumeSameState (this, true);
     return clone;
+  }
+
+  internal void AssumeSameState (DataContainer sourceContainer, bool overwriteStateType)
+  {
+    Assertion.Assert (sourceContainer.ClassDefinition == ClassDefinition);
+
+    if (overwriteStateType)
+      _state = sourceContainer._state;
+    _timestamp = sourceContainer._timestamp;
+    _isDiscarded = sourceContainer._isDiscarded;
+    
+    Assertion.Assert (_domainObject == null || sourceContainer._domainObject == null || _domainObject == sourceContainer._domainObject,
+        "State should only be copied between DataContainers referring to the same DomainObjects");
+    _domainObject = sourceContainer._domainObject;
+   
+    _relationEndPointIDs = null;
+
+    for (int i = 0; i < _propertyValues.Count; ++i)
+      _propertyValues[i].AssumeSameState (sourceContainer._propertyValues[i]);
   }
 }
 }

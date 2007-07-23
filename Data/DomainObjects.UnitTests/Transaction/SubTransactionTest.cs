@@ -207,6 +207,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    [Ignore ("TODO: FS - Important test for keeping the one DomainObject per transaction invariant")]
+    public void ParentCanReloadObjectLoadedInSubTransactionAndGetTheSameReference ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Order order;
+      using (subTransaction.EnterScope ())
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
+      }
+      Assert.AreSame (order, Order.GetObject (DomainObjectIDs.Order1));
+    }
+
+    [Test]
     [ExpectedException (typeof (ObjectDeletedException))]
     public void UnidirectionalDeleteInRootTransactionCausesThrowOnAccess ()
     {

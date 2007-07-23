@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Data.DomainObjects.Persistence;
 
 namespace Rubicon.Data.DomainObjects.Infrastructure
 {
@@ -30,6 +31,19 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public override bool ReturnToParentTransaction ()
     {
       return false;
+    }
+
+    protected override void PersistData (Rubicon.Data.DomainObjects.DataManagement.DataContainerCollection changedDataContainers)
+    {
+      {
+        if (changedDataContainers.Count > 0)
+        {
+          using (PersistenceManager persistenceManager = new PersistenceManager())
+          {
+            persistenceManager.Save (changedDataContainers);
+          }
+        }
+      }
     }
   }
 }

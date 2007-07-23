@@ -3,11 +3,12 @@ using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
+using System.Collections;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
 [Serializable]
-public class RelationEndPointMap : ICollectionEndPointChangeDelegate
+public class RelationEndPointMap : ICollectionEndPointChangeDelegate, IEnumerable
 {
   // types
 
@@ -701,6 +702,11 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
       int position = _relationEndPoints.Add (newEndPoint);
       Assertion.Assert (position == i + startingPosition);
     }
+  }
+
+  public IEnumerator GetEnumerator ()
+  {
+    return _relationEndPoints.GetEnumerator ();
   }
 }
 }

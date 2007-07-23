@@ -3,11 +3,11 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
   [TestFixture]
-  [Ignore ("TODO: FS - SubTransactions Commit")]
   public class SubTransactionCommitStateTransitionTest : ClientTransactionStateTransitionBaseTest
   {
     [Test]
@@ -38,13 +38,35 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootChangedSubDeleted ()
     {
       Order obj = GetChangedThroughPropertyValue ();
       Assert.AreEqual (StateType.Changed, obj.State);
       using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
       {
-        obj.Delete ();
+        for (int i = obj.OrderItems.Count - 1; i >= 0; --i)
+          obj.OrderItems[i].Delete();
+        obj.OrderTicket.Delete ();
+        obj.Delete();
+        Assert.AreEqual (StateType.Deleted, obj.State);
+        ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.IsTrue (obj.IsDiscarded);
+      }
+      Assert.AreEqual (StateType.Deleted, obj.State);
+    }
+
+    [Test]
+    public void CommitRootChangedSubDeletedTemp ()
+    {
+      Order obj = GetChangedThroughPropertyValue ();
+      foreach (OrderItem item in obj.OrderItems)
+        Dev.Null = item;
+      Dev.Null = obj.OrderTicket;
+      Assert.AreEqual (StateType.Changed, obj.State);
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        FullyDeleteOrder(obj);
         Assert.AreEqual (StateType.Deleted, obj.State);
         ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.IsTrue (obj.IsDiscarded);
@@ -55,13 +77,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootUnchangedSubChanged ()
     {
-      Order obj = GetUnchanged ();
+      Order obj = GetUnchanged();
       Assert.AreEqual (StateType.Unchanged, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         ++obj.OrderNumber;
         Assert.AreEqual (StateType.Changed, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Changed, obj.State);
     }
@@ -69,26 +91,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootUnchangedSubUnchanged ()
     {
-      Order obj = GetUnchanged ();
+      Order obj = GetUnchanged();
       Assert.AreEqual (StateType.Unchanged, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Unchanged, obj.State);
     }
 
     [Test]
+    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootUnchangedSubDeleted ()
     {
-      Order obj = GetUnchanged ();
+      Order obj = GetUnchanged();
       Assert.AreEqual (StateType.Unchanged, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        obj.Delete();
+        FullyDeleteOrder (obj);
         Assert.AreEqual (StateType.Deleted, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Deleted, obj.State);
     }
@@ -96,13 +119,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootNewSubChanged ()
     {
-      Order obj = GetNewUnchanged ();
+      ClassWithAllDataTypes obj = GetNewUnchanged();
       Assert.AreEqual (StateType.New, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        ++obj.OrderNumber;
+        ++obj.Int32Property;
         Assert.AreEqual (StateType.Changed, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.New, obj.State);
     }
@@ -110,26 +133,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootNewSubUnchanged ()
     {
-      Order obj = GetNewUnchanged ();
+      ClassWithAllDataTypes obj = GetNewUnchanged ();
       Assert.AreEqual (StateType.New, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         Assert.AreEqual (StateType.Unchanged, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.New, obj.State);
     }
 
     [Test]
-    public void CommitRootNewSubDeleted()
+    public void CommitRootNewSubDeleted ()
     {
-      Order obj = GetNewUnchanged ();
+      ClassWithAllDataTypes obj = GetNewUnchanged ();
       Assert.AreEqual (StateType.New, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         obj.Delete();
         Assert.AreEqual (StateType.Deleted, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.IsTrue (obj.IsDiscarded);
     }
@@ -137,12 +160,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootDeletedSubDiscarded ()
     {
-      Order obj = GetDeleted ();
+      Order obj = GetDeleted();
       Assert.AreEqual (StateType.Deleted, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         Assert.IsTrue (obj.IsDiscarded);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Deleted, obj.State);
     }
@@ -150,11 +173,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootDiscardedSubDiscarded ()
     {
-      Order obj = GetDiscarded ();
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      Order obj = GetDiscarded();
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         Assert.IsTrue (obj.IsDiscarded);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.IsTrue (obj.IsDiscarded);
     }
@@ -163,11 +186,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitRootUnknownSubChanged ()
     {
       Order obj;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        obj = GetChangedThroughPropertyValue ();
+        obj = GetChangedThroughPropertyValue();
         Assert.AreEqual (StateType.Changed, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Changed, obj.State);
     }
@@ -176,11 +199,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitRootUnknownSubUnchanged ()
     {
       Order obj;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
         obj = GetUnchanged();
         Assert.AreEqual (StateType.Unchanged, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.IsNull (ClientTransactionMock.DataManager.DataContainerMap[obj.ID]);
     }
@@ -188,25 +211,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void CommitRootUnknownSubNew ()
     {
-      Order obj;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      ClassWithAllDataTypes obj;
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        obj = GetNewUnchanged ();
+        obj = GetNewUnchanged();
         Assert.AreEqual (StateType.New, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.New, obj.State);
     }
 
     [Test]
+    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootUnknownSubDeleted ()
     {
       Order obj;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        obj = GetDeleted ();
+        obj = GetDeleted();
         Assert.AreEqual (StateType.Deleted, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.AreEqual (StateType.Deleted, obj.State);
     }
@@ -215,11 +239,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void CommitRootUnknownSubDiscarded ()
     {
       Order obj;
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      using (ClientTransactionMock.CreateSubTransaction().EnterScope())
       {
-        obj = GetDiscarded ();
+        obj = GetDiscarded();
         Assert.IsTrue (obj.IsDiscarded);
-        ClientTransactionScope.CurrentTransaction.Commit ();
+        ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.IsNull (ClientTransactionMock.DataManager.DataContainerMap[obj.ID]);
     }

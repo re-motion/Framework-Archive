@@ -11,11 +11,14 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   // static members and constants
 
+  // only used for cloning, never returned to the outside
+  private static readonly DomainObjectCollection s_emptyCollectionForCloning = new DomainObjectCollection ();
+
   private static DomainObjectCollection CloneDomainObjectCollection (DomainObjectCollection domainObjects, bool makeReadOnly)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
 
-    return domainObjects.Clone (true);
+    return domainObjects.Clone (makeReadOnly);
   }
 
   // member fields
@@ -111,13 +114,22 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   public override RelationEndPoint Clone ()
   {
-    DomainObjectCollection clonedOppositeDomainObjects = OppositeDomainObjects.Clone ();
-    DomainObjectCollection clonedOriginalOppositeDomainObjects = OriginalOppositeDomainObjects.Clone ();
-    
-    CollectionEndPoint clone = new CollectionEndPoint (ClientTransaction, ID, clonedOppositeDomainObjects, clonedOriginalOppositeDomainObjects);
+    CollectionEndPoint clone = new CollectionEndPoint (ClientTransaction, ID, s_emptyCollectionForCloning);
+    clone.AssumeSameState (this);
     clone.ChangeDelegate = ChangeDelegate;
 
     return clone;
+  }
+
+  internal override void AssumeSameState (RelationEndPoint source)
+  {
+    Assertion.Assert (Definition == source.Definition);
+
+    CollectionEndPoint sourceCollectionEndPoint = (CollectionEndPoint) source;
+
+    _oppositeDomainObjects = sourceCollectionEndPoint._oppositeDomainObjects.Clone();
+    _oppositeDomainObjects.ChangeDelegate = this;
+    _originalOppositeDomainObjects = sourceCollectionEndPoint._originalOppositeDomainObjects.Clone();
   }
 
   internal override void RegisterWithMap (RelationEndPointMap map)
