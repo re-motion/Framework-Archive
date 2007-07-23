@@ -580,7 +580,7 @@ public abstract class ClientTransaction : ITransaction
           SetClientTransaction (relatedDataContainer);
           _dataManager.RegisterExistingDataContainer (relatedDataContainer);
 
-          DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {relatedDataContainer.DomainObject}, true);
+          DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { relatedDataContainer.DomainObject }, true);
           OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
           return relatedDataContainer.DomainObject;

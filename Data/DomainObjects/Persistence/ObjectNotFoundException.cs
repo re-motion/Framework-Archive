@@ -24,7 +24,7 @@ public class ObjectNotFoundException : StorageProviderException
   public ObjectNotFoundException (string message) : base (message) 
   {
   }
-  
+
   public ObjectNotFoundException (string message, Exception inner) : base (message, inner) 
   {
   }
@@ -34,11 +34,20 @@ public class ObjectNotFoundException : StorageProviderException
     _id = (ObjectID) info.GetValue ("ID", typeof (ObjectID));
   }
 
-  public ObjectNotFoundException (ObjectID id) : this (string.Format ("Object '{0}' could not be found.", id), id)
+  public ObjectNotFoundException (ObjectID id, Exception inner) : this (string.Format ("Object '{0}' could not be found.", id), id, inner)
   {
   }
 
-  public ObjectNotFoundException (string message, ObjectID id) : base (message) 
+  public ObjectNotFoundException (ObjectID id) : this (id, null)
+  {
+  }
+
+  public ObjectNotFoundException (string message, ObjectID id) : this (message, id, null) 
+  {
+  }
+
+  public ObjectNotFoundException (string message, ObjectID id, Exception inner)
+    : base (message, inner)
   {
     ArgumentUtility.CheckNotNull ("id", id);
 

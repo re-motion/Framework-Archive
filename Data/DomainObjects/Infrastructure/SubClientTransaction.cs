@@ -60,7 +60,89 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         // ObjectNotFoundException here.
         throw new ObjectNotFoundException (id);
       }
-      return base.LoadDataContainer (id);
+      else
+        return base.LoadDataContainer (id);
+    }
+
+    protected internal override DomainObject LoadObject (ObjectID id)
+    {
+      // need to temporarily release the write lock on the parent transaction for this
+      Assertion.Assert (ParentTransaction.IsReadOnly);
+      ParentTransaction.IsReadOnly = false;
+
+      DomainObject parentObject;
+      try
+      {
+        parentObject = ParentTransaction.GetObject (id);
+      }
+      catch (ObjectDeletedException ex)
+      {
+        // propagate this to an ObjectNotFoundException, subtransactions cannot find objects that were deleted in the parent transactions
+        throw new ObjectNotFoundException (id, ex);
+      }
+      finally
+      {
+        ParentTransaction.IsReadOnly = true;
+      }
+      DataContainer loadedDataContainer = base.LoadDataContainerForExistingObject (parentObject); // this also registers the DataContainer
+      Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
+      return parentObject;
+    }
+
+    protected internal override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
+    {
+      // need to temporarily release the write lock on the parent transaction for this
+      Assertion.Assert (ParentTransaction.IsReadOnly);
+      ParentTransaction.IsReadOnly = false;
+      DomainObject parentObject;
+      try
+      {
+        parentObject = ParentTransaction.GetRelatedObject (relationEndPointID);
+      }
+      finally
+      {
+        ParentTransaction.IsReadOnly = true;
+      }
+
+      if (parentObject != null)
+      {
+        DataContainer loadedDataContainer = parentObject.GetDataContainerForTransaction (this);
+        Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
+      }
+      else
+        DataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
+
+      return parentObject;
+    }
+
+    protected internal override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
+    {
+      // need to temporarily release the write lock on the parent transaction for this
+      Assertion.Assert (ParentTransaction.IsReadOnly);
+      ParentTransaction.IsReadOnly = false;
+      DomainObjectCollection parentObjects;
+      try
+      {
+        parentObjects = ParentTransaction.GetRelatedObjects (relationEndPointID);
+      }
+      finally
+      {
+        ParentTransaction.IsReadOnly = true;
+      }
+
+      DataContainerCollection loadedDataContainers = new DataContainerCollection ();
+      foreach (DomainObject parentObject in parentObjects)
+      {
+        DataContainer loadedDataContainer = parentObject.GetDataContainerForTransaction (this);
+        Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
+        loadedDataContainers.Add (loadedDataContainer);
+      }
+
+      DomainObjectCollection domainObjects = DomainObjectCollection.Create (relationEndPointID.Definition.PropertyType,
+          loadedDataContainers, relationEndPointID.OppositeEndPointDefinition.ClassDefinition.ClassType);
+
+      DataManager.RelationEndPointMap.RegisterCollectionEndPoint (relationEndPointID, domainObjects);
+      return domainObjects;
     }
 
     protected override void PersistData (DataContainerCollection changedDataContainers)

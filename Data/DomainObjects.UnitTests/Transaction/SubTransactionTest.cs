@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -93,7 +94,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       {
         Assert.AreSame (subTransaction, ClientTransactionScope.CurrentTransaction);
         Order order = Order.NewObject ();
-        Assert.AreSame (subTransaction, order.InitialClientTransaction);
         Assert.IsTrue (order.CanBeUsedInTransaction (subTransaction));
         Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionMock));
 
@@ -106,7 +106,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         Ceo ceo = Ceo.GetObject (DomainObjectIDs.Ceo1);
         Assert.IsNotNull (ceo);
-        Assert.AreSame (subTransaction, ceo.InitialClientTransaction);
         Assert.IsTrue (ceo.CanBeUsedInTransaction (subTransaction));
         Assert.IsTrue (ceo.CanBeUsedInTransaction (ClientTransactionMock));
 
@@ -207,7 +206,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - Important test for keeping the one DomainObject per transaction invariant")]
     public void ParentCanReloadObjectLoadedInSubTransactionAndGetTheSameReference ()
     {
       ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
@@ -217,6 +215,57 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         order = Order.GetObject (DomainObjectIDs.Order1);
       }
       Assert.AreSame (order, Order.GetObject (DomainObjectIDs.Order1));
+    }
+
+    [Test]
+    public void ParentCanReloadRelatedObjectLoadedInSubTransactionAndGetTheSameReference ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Order order;
+      OrderTicket orderTicket;
+      using (subTransaction.EnterScope ())
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
+        orderTicket = order.OrderTicket;
+      }
+      Assert.AreSame (order, Order.GetObject (DomainObjectIDs.Order1));
+      Assert.AreSame (orderTicket, OrderTicket.GetObject (DomainObjectIDs.OrderTicket1));
+    }
+
+    [Test]
+    public void ParentCanReloadNullRelatedObjectLoadedInSubTransaction ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Computer computer;
+      Employee employee;
+      using (subTransaction.EnterScope ())
+      {
+        computer = Computer.GetObject (DomainObjectIDs.Computer4);
+        Assert.IsNull (computer.Employee);
+        employee = Employee.GetObject (DomainObjectIDs.Employee1);
+        Assert.IsNull (employee.Computer);
+      }
+      Assert.IsNull (Computer.GetObject (DomainObjectIDs.Computer4).Employee);
+      Assert.IsNull (computer.Employee);
+      Assert.IsNull (Employee.GetObject (DomainObjectIDs.Employee1).Computer);
+      Assert.IsNull (employee.Computer);
+    }
+
+    [Test]
+    public void ParentCanReloadRelatedObjectCollectionLoadedInSubTransactionAndGetTheSameReference ()
+    {
+      ClientTransaction subTransaction = ClientTransactionMock.CreateSubTransaction ();
+      Order order;
+      Set<OrderItem> orderItems = new Set<OrderItem> ();
+      using (subTransaction.EnterScope ())
+      {
+        order = Order.GetObject (DomainObjectIDs.Order1);
+        orderItems.Add (order.OrderItems[0]);
+        orderItems.Add (order.OrderItems[1]);
+      }
+      Assert.AreSame (order, Order.GetObject (DomainObjectIDs.Order1));
+      Assert.IsTrue (orderItems.Contains (OrderItem.GetObject (DomainObjectIDs.OrderItem1)));
+      Assert.IsTrue (orderItems.Contains (OrderItem.GetObject (DomainObjectIDs.OrderItem1)));
     }
 
     [Test]

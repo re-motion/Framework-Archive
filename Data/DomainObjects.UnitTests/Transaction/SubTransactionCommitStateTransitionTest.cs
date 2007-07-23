@@ -38,37 +38,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootChangedSubDeleted ()
     {
       Order obj = GetChangedThroughPropertyValue ();
       Assert.AreEqual (StateType.Changed, obj.State);
       using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
       {
-        for (int i = obj.OrderItems.Count - 1; i >= 0; --i)
-          obj.OrderItems[i].Delete();
-        obj.OrderTicket.Delete ();
-        obj.Delete();
+        FullyDeleteOrder (obj);
         Assert.AreEqual (StateType.Deleted, obj.State);
         ClientTransactionScope.CurrentTransaction.Commit();
-        Assert.IsTrue (obj.IsDiscarded);
-      }
-      Assert.AreEqual (StateType.Deleted, obj.State);
-    }
-
-    [Test]
-    public void CommitRootChangedSubDeletedTemp ()
-    {
-      Order obj = GetChangedThroughPropertyValue ();
-      foreach (OrderItem item in obj.OrderItems)
-        Dev.Null = item;
-      Dev.Null = obj.OrderTicket;
-      Assert.AreEqual (StateType.Changed, obj.State);
-      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
-      {
-        FullyDeleteOrder(obj);
-        Assert.AreEqual (StateType.Deleted, obj.State);
-        ClientTransactionScope.CurrentTransaction.Commit ();
         Assert.IsTrue (obj.IsDiscarded);
       }
       Assert.AreEqual (StateType.Deleted, obj.State);
@@ -102,7 +80,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootUnchangedSubDeleted ()
     {
       Order obj = GetUnchanged();
@@ -205,7 +182,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreEqual (StateType.Unchanged, obj.State);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
-      Assert.IsNull (ClientTransactionMock.DataManager.DataContainerMap[obj.ID]);
+      Assert.IsNotNull (ClientTransactionMock.DataManager.DataContainerMap[obj.ID]);
+      Assert.AreEqual (StateType.Unchanged, obj.State);
     }
 
     [Test]
@@ -222,7 +200,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [Ignore ("TODO: FS - after repairing reference identity invariant")]
     public void CommitRootUnknownSubDeleted ()
     {
       Order obj;
