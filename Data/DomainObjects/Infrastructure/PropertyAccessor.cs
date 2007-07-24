@@ -249,22 +249,22 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       }
     }
 
-		/// <summary>
-		/// Gets a value indicating whether the property's value is <see langword="null"/>.
-		/// </summary>
-		/// <value>True if this instance is null; otherwise, false.</value>
-		/// <remarks>This can be used to efficiently check whether a related object property has a value without actually loading the related
-		/// object.</remarks>
-  	public bool IsNull
-  	{
-			get
-			{
-				DomainObject.CheckIfObjectIsDiscarded ();
-				return _strategy.IsNull (this);
-			}
-  	}
+    /// <summary>
+    /// Gets a value indicating whether the property's value is <see langword="null"/>.
+    /// </summary>
+    /// <value>True if this instance is null; otherwise, false.</value>
+    /// <remarks>This can be used to efficiently check whether a related object property has a value without actually loading the related
+    /// object.</remarks>
+    public bool IsNull
+    {
+      get
+      {
+        DomainObject.CheckIfObjectIsDiscarded ();
+        return _strategy.IsNull (this);
+      }
+    }
 
-  	/// <summary>
+    /// <summary>
     /// Gets the property's value.
     /// </summary>
     /// <typeparam name="T">
@@ -311,19 +311,34 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       if (!PropertyType.Equals (typeof (T)))
         throw new InvalidTypeException (PropertyIdentifier, typeof (T), PropertyType);
 
-      SetValueWithoutTypeCheck (value);
+      SetValueWithoutTypeCheck ((object) value);
     }
 
-    internal object GetValueWithoutTypeCheck ()
+    /// <summary>
+    /// Sets the property's value without performing an exact type check on the given value. The value must still be asssignable to
+    /// <see cref="PropertyType"/>, though.
+    /// </summary>
+    /// <param name="value">The value to be set.</param>
+    /// <exception cref="InvalidTypeException">
+    /// The given <paramref name="value"/> is not assignable to the property because of its type.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public void SetValueWithoutTypeCheck (object value)
+    {
+      _domainObject.CheckIfObjectIsDiscarded ();
+      _strategy.SetValueWithoutTypeCheck (this, value);
+    }
+
+    /// <summary>
+    /// Gets the property's value without performing a type check.
+    /// </summary>
+    /// <returns>The value of the encapsulated property.</returns>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public object GetValueWithoutTypeCheck ()
     {
       _domainObject.CheckIfObjectIsDiscarded();
       return _strategy.GetValueWithoutTypeCheck (this);
-    }
-
-    internal void SetValueWithoutTypeCheck (object value)
-    {
-      _domainObject.CheckIfObjectIsDiscarded();
-      _strategy.SetValueWithoutTypeCheck (this, value);
     }
 
     /// <summary>

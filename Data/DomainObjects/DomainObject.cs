@@ -805,7 +805,7 @@ public class DomainObject
   protected internal void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    Properties[propertyName].SetValueWithoutTypeCheck (newRelatedObject);
+    Properties[propertyName].SetValueWithoutTypeCheck ((object) newRelatedObject);
   }
 
   #endregion
