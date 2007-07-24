@@ -139,6 +139,48 @@ public abstract class ClientTransaction : ITransaction
   /// <param name="changedDataContainers">The data containers for any object that was changed in this transaction.</param>
   protected abstract void PersistData (DataContainerCollection changedDataContainers);
 
+  /// <summary>
+  /// Loads a data container from the underlying storage or the <see cref="ParentTransaction"/>.
+  /// </summary>
+  /// <param name="id">The id of the <see cref="DataContainer"/> to load.</param>
+  /// <returns>A <see cref="DataContainer"/> with the given <paramref name="id"/>.</returns>
+  protected abstract DataContainer LoadDataContainer (ObjectID id);
+
+  /// <summary>
+  /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
+  /// </summary>
+  /// <remarks>
+  /// This method raises the <see cref="Loaded"/> event.
+  /// </remarks>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="ObjectEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <returns>The related <see cref="DomainObject"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
+  /// <exception cref="System.InvalidCastException"><paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="DataManagement.ObjectDeletedException"><paramref name="includeDeleted"/> is false and the DomainObject with <paramref name="id"/> has been deleted.</exception>
+  /// <exception cref="Persistence.PersistenceException">
+  ///   The related object could not be loaded, but is mandatory.<br /> -or- <br />
+  ///   The relation refers to non-existing object.<br /> -or- <br />
+  ///   <paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.
+  /// </exception>
+  /// <exception cref="Persistence.StorageProviderException">
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
+  ///   An error occurred while accessing the datasource.
+  /// </exception>
+  internal protected abstract DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID);
+
+  /// <summary>
+  /// Loads all related <see cref="DomainObject"/>s of a given <see cref="DataManagement.RelationEndPointID"/>. 
+  /// </summary>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Persistence.PersistenceException">
+  ///   <paramref name="relationEndPointID"/> does not refer to one-to-many relation.<br /> -or- <br />
+  ///   The StorageProvider for the related objects could not be initialized.
+  /// </exception>
+  internal protected abstract DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID);  
+
   // methods and properties
 
   /// <summary>
@@ -167,7 +209,7 @@ public abstract class ClientTransaction : ITransaction
   ///   The order of the extensions in this collection is the order in which they are notified.
   /// </para>
   /// <para>
-  /// Note that the collection of extensions is the same for a parent transactions and all of its (direct and indirect) substransactions.
+  /// The collection of extensions is the same for a parent transactions and all of its (direct and indirect) substransactions.
   /// </para>
   /// </remarks>
   public ClientTransactionExtensionCollection Extensions
@@ -308,6 +350,7 @@ public abstract class ClientTransaction : ITransaction
     return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
+  // TODO: move usage of PersistenceManager into RootTransaction
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -315,14 +358,16 @@ public abstract class ClientTransaction : ITransaction
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
 
+      DataContainer newDataContainer;
       using (PersistenceManager persistenceManager = new PersistenceManager())
       {
-        DataContainer newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition);
-        SetClientTransaction (newDataContainer);
-        _dataManager.RegisterNewDataContainer (newDataContainer);
-
-        return newDataContainer;
+        newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition);
       }
+
+      SetClientTransaction (newDataContainer);
+      _dataManager.RegisterNewDataContainer (newDataContainer);
+
+      return newDataContainer;
     }
   }
 
@@ -525,95 +570,6 @@ public abstract class ClientTransaction : ITransaction
       OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
       return dataContainer;
-    }
-  }
-
-  protected virtual DataContainer LoadDataContainer (ObjectID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    using (PersistenceManager persistenceManager = new PersistenceManager ())
-    {
-      DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
-      TransactionEventSink.ObjectLoading (dataContainer.ID);
-      SetClientTransaction (dataContainer);
-
-      _dataManager.RegisterExistingDataContainer (dataContainer);
-      return dataContainer;
-    }
-  }
-
-  /// <summary>
-  /// Loads the related <see cref="DomainObject"/> of a given <see cref="DataManagement.RelationEndPointID"/>.
-  /// </summary>
-  /// <remarks>
-  /// This method raises the <see cref="Loaded"/> event.
-  /// </remarks>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="ObjectEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>The related <see cref="DomainObject"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.InvalidCastException"><paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  /// <exception cref="DataManagement.ObjectDeletedException"><paramref name="includeDeleted"/> is false and the DomainObject with <paramref name="id"/> has been deleted.</exception>
-  /// <exception cref="Persistence.PersistenceException">
-  ///   The related object could not be loaded, but is mandatory.<br /> -or- <br />
-  ///   The relation refers to non-existing object.<br /> -or- <br />
-  ///   <paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.
-  /// </exception>
-  /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
-  ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
-  ///   An error occurred while accessing the datasource.
-  /// </exception>
-  internal protected virtual DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
-  {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
-    {
-      DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
-
-      using (PersistenceManager persistenceManager = new PersistenceManager())
-      {
-        DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
-        if (relatedDataContainer != null)
-        {
-          TransactionEventSink.ObjectLoading (relatedDataContainer.ID);
-          SetClientTransaction (relatedDataContainer);
-          _dataManager.RegisterExistingDataContainer (relatedDataContainer);
-
-          DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { relatedDataContainer.DomainObject }, true);
-          OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
-
-          return relatedDataContainer.DomainObject;
-        }
-        else
-        {
-          _dataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
-          return null;
-        }
-      }
-    }
-  }
-
-  /// <summary>
-  /// Loads all related <see cref="DomainObject"/>s of a given <see cref="DataManagement.RelationEndPointID"/>. 
-  /// </summary>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="Persistence.PersistenceException">
-  ///   <paramref name="relationEndPointID"/> does not refer to one-to-many relation.<br /> -or- <br />
-  ///   The StorageProvider for the related objects could not be initialized.
-  /// </exception>
-  internal protected virtual DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
-  {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    using (EnterSideEffectFreeScope ())
-    {
-      using (PersistenceManager persistenceManager = new PersistenceManager())
-      {
-        DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
-        return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);
-      }
     }
   }
 

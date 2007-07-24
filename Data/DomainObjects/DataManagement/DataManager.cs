@@ -92,6 +92,15 @@ public class DataManager
     return domainObjects;
   }
 
+  public IEnumerable<RelationEndPoint> GetChangedRelationEndPoints ()
+  {
+    foreach (RelationEndPoint endPoint in _relationEndPointMap)
+    {
+      if (endPoint.HasChanged)
+        yield return endPoint;
+    }
+  }
+
   private bool ContainsState (StateType[] states, StateType state)
   {
     return (Array.IndexOf (states, state) >= 0);

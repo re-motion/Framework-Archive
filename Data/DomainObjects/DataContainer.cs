@@ -398,6 +398,7 @@ public class DataContainer
   internal void SetDomainObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    Assertion.Assert (_domainObject == null || _domainObject == domainObject, "a DataContainer can only be associated with one DomainObject");
     
     _domainObject = domainObject;
   }

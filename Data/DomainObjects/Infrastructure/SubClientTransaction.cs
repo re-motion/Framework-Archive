@@ -15,6 +15,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class SubClientTransaction : ClientTransaction
   {
+    private struct TransactionUnlocker : IDisposable
+    {
+      public static IDisposable MakeWriteable (ClientTransaction transaction)
+      {
+        return new TransactionUnlocker (transaction);
+      }
+
+      private ClientTransaction _transaction;
+
+      private TransactionUnlocker (ClientTransaction transaction)
+      {
+        Assertion.Assert (transaction.IsReadOnly);
+        transaction.IsReadOnly = false;
+        _transaction = transaction;
+      }
+
+      public void Dispose ()
+      {
+        if (_transaction != null)
+        {
+          Assertion.Assert (!_transaction.IsReadOnly);
+          _transaction.IsReadOnly = true;
+          _transaction = null;
+        }
+      }
+    }
+
     private readonly ClientTransaction _parentTransaction;
 
     public SubClientTransaction (ClientTransaction parentTransaction)
@@ -61,47 +88,33 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         throw new ObjectNotFoundException (id);
       }
       else
-        return base.LoadDataContainer (id);
-    }
+      {
+        TransactionEventSink.ObjectLoading (id);
 
-    protected internal override DomainObject LoadObject (ObjectID id)
-    {
-      // need to temporarily release the write lock on the parent transaction for this
-      Assertion.Assert (ParentTransaction.IsReadOnly);
-      ParentTransaction.IsReadOnly = false;
+        using (TransactionUnlocker.MakeWriteable (ParentTransaction))
+        {
+          DomainObject parentObject = ParentTransaction.GetObject (id);
+          DataContainer parentDataContainer = parentObject.GetDataContainerForTransaction (ParentTransaction);
 
-      DomainObject parentObject;
-      try
-      {
-        parentObject = ParentTransaction.GetObject (id);
+          DataContainer thisDataContainer = parentDataContainer.Clone ();
+          thisDataContainer.Commit (); // for the new DataContainer, the current parent DC state becomes the Unchanged state
+
+          thisDataContainer.SetClientTransaction (this);
+          thisDataContainer.SetDomainObject (parentObject);
+
+          DataManager.RegisterExistingDataContainer (thisDataContainer);
+
+          return thisDataContainer;
+        }
       }
-      catch (ObjectDeletedException ex)
-      {
-        // propagate this to an ObjectNotFoundException, subtransactions cannot find objects that were deleted in the parent transactions
-        throw new ObjectNotFoundException (id, ex);
-      }
-      finally
-      {
-        ParentTransaction.IsReadOnly = true;
-      }
-      DataContainer loadedDataContainer = base.LoadDataContainerForExistingObject (parentObject); // this also registers the DataContainer
-      Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
-      return parentObject;
     }
 
     protected internal override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
     {
-      // need to temporarily release the write lock on the parent transaction for this
-      Assertion.Assert (ParentTransaction.IsReadOnly);
-      ParentTransaction.IsReadOnly = false;
       DomainObject parentObject;
-      try
+      using (TransactionUnlocker.MakeWriteable (ParentTransaction))
       {
         parentObject = ParentTransaction.GetRelatedObject (relationEndPointID);
-      }
-      finally
-      {
-        ParentTransaction.IsReadOnly = true;
       }
 
       if (parentObject != null)
@@ -117,17 +130,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     protected internal override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      // need to temporarily release the write lock on the parent transaction for this
-      Assertion.Assert (ParentTransaction.IsReadOnly);
-      ParentTransaction.IsReadOnly = false;
       DomainObjectCollection parentObjects;
-      try
+      using (TransactionUnlocker.MakeWriteable (ParentTransaction))
       {
         parentObjects = ParentTransaction.GetRelatedObjects (relationEndPointID);
-      }
-      finally
-      {
-        ParentTransaction.IsReadOnly = true;
       }
 
       DataContainerCollection loadedDataContainers = new DataContainerCollection ();
@@ -147,68 +153,36 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     protected override void PersistData (DataContainerCollection changedDataContainers)
     {
-      // need to temporarily release read-only lock from parent transaction
-      Assertion.Assert (ParentTransaction.IsReadOnly);
-      ParentTransaction.IsReadOnly = false;
-
-      try
+      using (TransactionUnlocker.MakeWriteable (ParentTransaction))
       {
         PersistDataContainers (changedDataContainers);
-        PersistRelationEndPoints (GetChangedRelationEndPoints ());
-      }
-      finally
-      {
-        ParentTransaction.IsReadOnly = true;
-      }
-    }
-
-    // TODO: move to DataManager
-    private IEnumerable<RelationEndPoint> GetChangedRelationEndPoints ()
-    {
-      foreach (RelationEndPoint endPoint in DataManager.RelationEndPointMap)
-      {
-        if (endPoint.HasChanged)
-          yield return endPoint;
+        PersistRelationEndPoints (DataManager.GetChangedRelationEndPoints ());
       }
     }
 
     private void PersistDataContainers (DataContainerCollection changedDataContainers)
     {
+
       foreach (DataContainer dataContainer in changedDataContainers)
       {
-        if (dataContainer.IsDiscarded)
-          PersistDiscardedDataContainer (dataContainer);
-        else
+        Assertion.Assert (!dataContainer.IsDiscarded);
+        Assertion.Assert (dataContainer.State != StateType.Unchanged, "changedDataContainers cannot contain an unchanged container");
+        Assertion.Assert (dataContainer.State == StateType.New || dataContainer.State == StateType.Changed
+            || dataContainer.State == StateType.Deleted, "Invalid dataContainer.State: " + dataContainer.State);
+        
+        switch (dataContainer.State)
         {
-          switch (dataContainer.State)
-          {
-            case StateType.New:
-              PersistNewDataContainer (dataContainer);
-              break;
-            case StateType.Changed:
-              PersistChangedDataContainer (dataContainer);
-              break;
-            case StateType.Deleted:
-              PersistDeletedDataContainer (dataContainer);
-              break;
-            case StateType.Unchanged:
-              PersistUnchangedDataContainer (dataContainer);
-              break;
-            default:
-              Assertion.Assert (false, "Invalid dataContainer.State: " + dataContainer.State);
-              break;
-          }
+          case StateType.New:
+            PersistNewDataContainer (dataContainer);
+            break;
+          case StateType.Changed:
+            PersistChangedDataContainer (dataContainer);
+            break;
+          case StateType.Deleted:
+            PersistDeletedDataContainer (dataContainer);
+            break;
         }
       }
-    }
-
-    private void PersistDiscardedDataContainer (DataContainer dataContainer)
-    {
-      DataContainer parentDataContainer = GetParentDataContainerWithoutLoading (dataContainer.ID);
-      Assertion.Assert (parentDataContainer == null || parentDataContainer.IsDiscarded || parentDataContainer.State == StateType.Deleted);
-      Assertion.Assert (parentDataContainer == null || parentDataContainer.DomainObject == dataContainer.DomainObject);
-
-      // nothing to do here
     }
 
     private void PersistNewDataContainer (DataContainer dataContainer)
@@ -224,7 +198,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private void PersistChangedDataContainer (DataContainer dataContainer)
     {
-      DataContainer parentDataContainer = GetParentDataContainerWithLoading (dataContainer.DomainObject);
+      DataContainer parentDataContainer = GetParentDataContainerWithoutLoading (dataContainer.ID);
+      Assertion.Assert (parentDataContainer != null, "a changed DataContainer must have been loaded through ParentTransaction, so the "
+          + "ParentTransaction must know it");
       Assertion.Assert (!parentDataContainer.IsDiscarded);
       Assertion.Assert (parentDataContainer.State != StateType.Deleted);
       Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject);
@@ -238,14 +214,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     private void PersistDeletedDataContainer (DataContainer dataContainer)
     {
       DataContainer parentDataContainer = GetParentDataContainerWithoutLoading (dataContainer.ID);
-      if (parentDataContainer == null)
-      {
-        // unknown in parent transaction
-        parentDataContainer = CreateParentDataContainer (dataContainer);
-        parentDataContainer.Rollback (); // reset data (State is now Unchanged rather than Deleted)
-        Assertion.Assert (parentDataContainer.State == StateType.Unchanged);
-        ParentTransaction.DataManager.RegisterExistingDataContainer (parentDataContainer);
-      }
+      Assertion.Assert (parentDataContainer != null, "a deleted DataContainer must have been loaded through ParentTransaction, so the "
+          + "ParentTransaction must know it");
 
       Assertion.Assert (!parentDataContainer.IsDiscarded && parentDataContainer.State != StateType.Deleted);
       Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject);
@@ -253,33 +223,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ParentTransaction.Delete (parentDataContainer.DomainObject);
     }
 
-    private void PersistUnchangedDataContainer (DataContainer dataContainer)
-    {
-      DataContainer parentDataContainer = GetParentDataContainerWithoutLoading (dataContainer.ID);
-      Assertion.Assert (parentDataContainer == null || (!parentDataContainer.IsDiscarded && parentDataContainer.State != StateType.Deleted));
-      Assertion.Assert (parentDataContainer == null || parentDataContainer.DomainObject == dataContainer.DomainObject);
-      
-      // Nothing to be done here
-    }
-
     private DataContainer GetParentDataContainerWithoutLoading (ObjectID id)
     {
-      if (ParentTransaction.DataManager.IsDiscarded (id))
-        return ParentTransaction.DataManager.GetDiscardedDataContainer (id);
-      else
-        return ParentTransaction.DataManager.DataContainerMap[id];
-    }
-
-    private DataContainer GetParentDataContainerWithLoading (DomainObject domainObject)
-    {
-      DataContainer alreadyLoadedDataContainer = GetParentDataContainerWithoutLoading (domainObject.ID);
-      if (alreadyLoadedDataContainer != null)
-      {
-        Assertion.Assert (alreadyLoadedDataContainer.DomainObject == domainObject);
-        return alreadyLoadedDataContainer;
-      }
-      else
-        return ParentTransaction.LoadDataContainerForExistingObject (domainObject);
+      Assertion.Assert (!ParentTransaction.DataManager.IsDiscarded (id), "this method is not called in situations where the ID could be discarded");
+      return ParentTransaction.DataManager.DataContainerMap[id];
     }
 
     private DataContainer CreateParentDataContainer (DataContainer dataContainer)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -164,6 +165,53 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       DomainObjectCollection changedObjects = _dataManager.GetChangedDomainObjects ();
       Assert.AreEqual (4, changedObjects.Count);
+    }
+
+    [Test]
+    public void GetChangedRelationEndPoints ()
+    {
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+      OrderItem orderItem1 = order1.OrderItems[0];
+      OrderTicket orderTicket = order1.OrderTicket;
+
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      Employee employee = computer.Employee;
+
+      Location location = Location.GetObject (DomainObjectIDs.Location1);
+      Client client = location.Client;
+
+      Assert.IsEmpty (new List<RelationEndPoint> (_dataManager.GetChangedRelationEndPoints ()));
+
+      orderItem1.Order = null; // 2 endpoints
+      orderTicket.Order = null; // 2 endpoints
+
+      computer.Employee = Employee.NewObject (); // 3 endpoints
+      employee.Computer = null; // (1 endpoint)
+
+      location.Client = Client.NewObject (); // 1 endpoint
+
+      List<RelationEndPoint> changedEndPoints = new List<RelationEndPoint> (_dataManager.GetChangedRelationEndPoints ());
+
+      Assert.AreEqual (8, changedEndPoints.Count);
+
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (order1.ID, typeof (Order) + ".OrderItems")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (orderItem1.ID, typeof (OrderItem) + ".Order")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (orderTicket.ID, typeof (OrderTicket) + ".Order")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (order1.ID, typeof (Order) + ".OrderTicket")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (computer.ID, typeof (Computer) + ".Employee")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (computer.Employee.ID, typeof (Employee) + ".Computer")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (employee.ID, typeof (Employee) + ".Computer")],
+          changedEndPoints);
+      Assert.Contains (_dataManager.RelationEndPointMap[new RelationEndPointID (location.ID, typeof (Location) + ".Client")],
+          changedEndPoints);
     }
 
     [Test]
