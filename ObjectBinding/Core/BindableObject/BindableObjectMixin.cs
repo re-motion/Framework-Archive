@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
@@ -6,8 +7,10 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.BindableObject
 {
   //TODO: doc
+  [Serializable]
   public class BindableObjectMixin : Mixin<object>, IBusinessObject
   {
+    [NonSerialized]
     private BindableObjectClass _bindableObjectClass;
 
     public BindableObjectMixin ()
@@ -175,6 +178,17 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       base.OnInitialized();
 
+      InitializeBindableObjectClass();
+    }
+
+    [OnDeserialized]
+    private void OnDeserialization (StreamingContext context)
+    {
+      InitializeBindableObjectClass();
+    }
+
+    private void InitializeBindableObjectClass ()
+    {
       _bindableObjectClass = BindableObjectProvider.Current.GetBindableObjectClass (Configuration.BaseClass.Type);
     }
   }

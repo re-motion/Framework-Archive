@@ -3,6 +3,7 @@ using System;
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
   [BindableObject]
+  [Serializable]
   public class SimpleBusinessObjectClass
   {
     private string _string;
