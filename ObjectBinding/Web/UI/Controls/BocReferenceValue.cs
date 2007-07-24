@@ -936,7 +936,7 @@ public class BocReferenceValue:
   /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    if (!interim && IsDirty)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {

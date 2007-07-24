@@ -427,7 +427,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    if (!interim && IsDirty)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {

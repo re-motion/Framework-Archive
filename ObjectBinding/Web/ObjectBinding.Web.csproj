@@ -219,16 +219,22 @@
     <Compile Include="UI\Controls\BusinessObjectControlItemCollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\BusinessObjectDataSourceControl.cs" />
     <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControl.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\BocLiteral.cs" />
+    <Compile Include="UI\Controls\BusinessObjectReferenceSearchDataSourceControl.cs" />
     <Compile Include="UI\Controls\DataEditControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UI\Controls\IBusinessObjectBoundEditableWebControl.cs" />
+    <Compile Include="UI\Controls\IBusinessObjectBoundWebControl.cs" />
     <Compile Include="UI\Controls\IBusinessObjectDataSourceControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\IDataEditControl.cs" />
+    <Compile Include="UI\Controls\IExtendedBusinessObjectBoundWebControl.cs" />
     <Compile Include="UI\Controls\Infrastructure\BocList\EditableRow.cs">
       <SubType>Code</SubType>
     </Compile>

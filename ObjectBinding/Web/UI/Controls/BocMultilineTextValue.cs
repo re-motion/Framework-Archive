@@ -390,7 +390,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
   /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    if (!interim && IsDirty)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {

@@ -3300,7 +3300,8 @@ public class BocList:
           EndListEditMode (true);
       }
 
-      DataSource.BusinessObject.SetProperty (Property, Value);
+      if (IsDirty)
+        DataSource.BusinessObject.SetProperty (Property, Value);
       
       if (! interim)
         IsDirty = false;

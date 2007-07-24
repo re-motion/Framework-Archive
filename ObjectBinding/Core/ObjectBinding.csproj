@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="BindableObject\IEnumerationValueFilter.cs" />
+    <Compile Include="IBusinessObjectBoundEditableControl.cs" />
     <Compile Include="IBusinessObjectDataSource.cs" />
     <Compile Include="IBusinessObjectReferenceDataSource.cs" />
     <Compile Include="ObjectBindingAttribute.cs" />

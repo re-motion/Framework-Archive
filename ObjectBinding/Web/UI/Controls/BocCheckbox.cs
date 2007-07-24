@@ -447,7 +447,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    if (!interim && IsDirty)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {

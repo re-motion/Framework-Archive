@@ -591,7 +591,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
-    if (! interim)
+    if (!interim && IsDirty)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
