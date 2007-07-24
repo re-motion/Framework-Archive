@@ -70,20 +70,6 @@ namespace Rubicon.ObjectBinding
     /// </exception>
     void SetProperty (string propertyIdentifier, object value);
 
-    /// <overloads> Gets the string representation of the value accessed through the specified property.  </overloads>
-    /// <summary> 
-    ///   Gets the string representation of the value accessed through the specified 
-    ///   <see cref="IBusinessObjectProperty"/>.
-    /// </summary>
-    /// <param name="property"> 
-    ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
-    /// </param>
-    /// <returns> The string representation of the property value for the <paramref name="property"/> parameter. </returns>
-    /// <exception cref="Exception"> 
-    ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
-    /// </exception>
-    string GetPropertyString (IBusinessObjectProperty property);
-
     /// <summary> 
     ///   Gets the formatted string representation of the value accessed through the specified 
     ///   <see cref="IBusinessObjectProperty"/>.

@@ -7,7 +7,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding
 {
-  public class BusinessObjectStringFormatterService
+  //TODO: doc
+  public class BusinessObjectStringFormatterService : IBusinessObjectStringFormatterService
   {
     /// <summary> 
     ///   Gets the string representation of the value accessed through the specified <see cref="IBusinessObjectProperty"/> 
@@ -154,24 +155,22 @@ namespace Rubicon.ObjectBinding
       if (property is IBusinessObjectBooleanProperty)
         return GetStringValueForBooleanProperty (value, (IBusinessObjectBooleanProperty) property);
       if (property is IBusinessObjectDateTimeProperty)
-        return GetStringValueForDateTimeProperty (value, (IBusinessObjectDateTimeProperty) property, format);
+        return GetStringValueForDateTimeProperty (value, format);
       if (property is IBusinessObjectEnumerationProperty)
         return GetStringValueForEnumerationProperty (value, (IBusinessObjectEnumerationProperty) property, businessObject);
       if (property is IBusinessObjectNumericProperty)
-        return GetStringValueForNumericProperty (value, (IBusinessObjectNumericProperty) property, format);
+        return GetStringValueForNumericProperty (value, format);
       if (property is IBusinessObjectReferenceProperty)
-        return GetStringValueForReferenceProperty (value, (IBusinessObjectReferenceProperty) property);
+        return GetStringValueForReferenceProperty (value);
       if (property is IBusinessObjectStringProperty)
-        return GetStringValueForStringProperty (value, (IBusinessObjectStringProperty) property);
+        return GetStringValueForStringProperty (value);
 
       return (value != null) ? value.ToString() : string.Empty;
     }
 
-    private string GetStringValueForDateTimeProperty (object value, IBusinessObjectDateTimeProperty property, string format)
+    private string GetStringValueForDateTimeProperty (object value, string format)
     {
-      if (value == null)
-        return string.Empty;
-      return ((IFormattable) value).ToString (format, null);
+      return GetStringValueForFormattableValue ((IFormattable) value, format);
     }
 
     private string GetStringValueForBooleanProperty (object value, IBusinessObjectBooleanProperty property)
@@ -190,23 +189,28 @@ namespace Rubicon.ObjectBinding
       return enumValueInfo.DisplayName;
     }
 
-    private string GetStringValueForNumericProperty (object value, IBusinessObjectNumericProperty property, string format)
+    private string GetStringValueForNumericProperty (object value, string format)
     {
-      if (value == null)
-        return string.Empty;
-      return ((IFormattable) value).ToString (format, null);
+      return GetStringValueForFormattableValue ((IFormattable) value, format);
     }
 
-    private string GetStringValueForReferenceProperty (object value, IBusinessObjectReferenceProperty property)
+    private string GetStringValueForReferenceProperty (object value)
     {
       if (value == null)
         return string.Empty;
       return ((IBusinessObject) value).DisplayName;
     }
 
-    private string GetStringValueForStringProperty (object value, IBusinessObjectStringProperty property)
+    private string GetStringValueForStringProperty (object value)
     {
       return StringUtility.NullToEmpty ((string) value);
+    }
+
+    private string GetStringValueForFormattableValue (IFormattable value, string format)
+    {
+      if (value == null)
+        return string.Empty;
+      return value.ToString (format, null);
     }
   }
 }

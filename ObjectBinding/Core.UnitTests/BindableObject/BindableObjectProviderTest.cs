@@ -63,6 +63,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
+    public void GetDefaultServices ()
+    {
+      IBusinessObjectProvider currentProvider = BindableObjectProvider.Current;
+
+      Assert.That (
+        currentProvider.GetService (typeof (IBusinessObjectStringFormatterService)), 
+        Is.InstanceOfType (typeof (BusinessObjectStringFormatterService)));
+
+      Assert.That (
+        currentProvider.GetService (typeof (IBindableObjectGlobalizationService)),
+        Is.InstanceOfType (typeof (BindableObjectGlobalizationService)));
+    }
+
+    [Test]
     public void GetBindableObjectClass ()
     {
       BindableObjectClass outValue;

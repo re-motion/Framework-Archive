@@ -109,6 +109,6 @@ namespace Rubicon.ObjectBinding
     }
 
     /// <summary>Gets the <see cref="BusinessObjectStringFormatterService"/> used to convert the property values to strings.</summary>
-    protected abstract BusinessObjectStringFormatterService StringFormatterService { get; }
+    protected abstract IBusinessObjectStringFormatterService StringFormatterService { get; }
   }
 }

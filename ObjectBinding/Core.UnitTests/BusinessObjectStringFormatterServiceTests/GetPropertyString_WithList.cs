@@ -44,6 +44,20 @@ namespace Rubicon.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTe
     }
 
     [Test]
+    public void List_WithoutLineCountHavingFormatString ()
+    {
+      Expect.Call (_mockProperty.IsList).Return (true);
+      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
+      Expect.Call (_mockValues[0].ToString ("TheFormatString", null)).Return ("First");
+      _mockRepository.ReplayAll ();
+
+      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "TheFormatString");
+
+      _mockRepository.VerifyAll ();
+      Assert.That (actual, Is.EqualTo ("First ... [3]"));
+    }
+
+    [Test]
     public void List_WithLineCountBelowListLength ()
     {
       Expect.Call (_mockProperty.IsList).Return (true);

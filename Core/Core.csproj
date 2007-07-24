@@ -127,6 +127,7 @@
     <Compile Include="ObjectBinding\IBusinessObjectEnumerationProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectNumericProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectReferenceProperty.cs" />
+    <Compile Include="ObjectBinding\IBusinessObjectStringFormatterService.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectStringProperty.cs" />
     <Compile Include="ObjectBinding\IBusinessObjectWithIdentity.cs" />
     <Compile Include="ObjectBinding\IEnumerationValueInfo.cs" />

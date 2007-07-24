@@ -30,6 +30,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       BindableObjectProvider provider = new BindableObjectProvider();
       provider.AddService (typeof (IBindableObjectGlobalizationService), new BindableObjectGlobalizationService());
+      provider.AddService (typeof (IBusinessObjectStringFormatterService), new BusinessObjectStringFormatterService());
 
       return provider;
     }

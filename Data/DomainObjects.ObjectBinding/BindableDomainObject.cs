@@ -207,18 +207,7 @@ public abstract class BindableDomainObject: DomainObject, IBusinessObjectWithIde
   // TODO Doc: Exceptions
   string IBusinessObject.GetPropertyString (string property)
   {
-    return ((IBusinessObject) this).GetPropertyString (GetBusinessObjectProperty (property));
-  }
-
-  /// <summary>
-  /// Gets the string representation of the value of the specified <paramref name="property"/>.
-  /// </summary>
-  /// <param name="property">The requested property.</param>
-  /// <returns>A string representing the value of the given <paramref name="property"/></returns>
-  // TODO Doc: Exceptions
-  string IBusinessObject.GetPropertyString (IBusinessObjectProperty property)
-  {
-    return ((IBusinessObject) this).GetPropertyString (property, null);
+    return ((IBusinessObject) this).GetPropertyString (GetBusinessObjectProperty (property), null);
   }
 
   /// <summary>

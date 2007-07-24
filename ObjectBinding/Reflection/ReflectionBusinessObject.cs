@@ -80,7 +80,7 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
     ReflectionBusinessObjectStorage.SaveObject (this);
   }
 
-  protected override BusinessObjectStringFormatterService StringFormatterService
+  protected override IBusinessObjectStringFormatterService StringFormatterService
   {
     get { return new BusinessObjectStringFormatterService(); }
   }

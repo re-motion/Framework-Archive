@@ -41,7 +41,15 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTest
     {
       IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
+      Assert.That (property.GetValueInfoByIdentifier (null, null), Is.Null);
+    }
+
+    [Test]
+    public void Empty ()
+    {
+      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+
+      Assert.That (property.GetValueInfoByIdentifier (string.Empty, null), Is.Null);
     }
 
     [Test]

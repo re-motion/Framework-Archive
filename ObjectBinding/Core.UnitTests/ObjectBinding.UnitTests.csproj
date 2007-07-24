@@ -47,7 +47,12 @@
     <Compile Include="BindableObject\BindableObjectDataSourceTests\DesignTime.cs" />
     <Compile Include="BindableObject\BindableObjectDataSourceTests\RunTime.cs" />
     <Compile Include="BindableObject\BindableObjectGlobalizationServiceTest.cs" />
-    <Compile Include="BindableObject\BindableObjectMixinTest.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\Common.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\GetDisplayName.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\GetBusinessObjectClass.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\SetProperty.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\GetProperty.cs" />
+    <Compile Include="BindableObject\BindableObjectMixinTests\GetPropertyString.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilterTest.cs" />
     <Compile Include="BindableObject\Design\SearchFieldControllerTest.cs" />

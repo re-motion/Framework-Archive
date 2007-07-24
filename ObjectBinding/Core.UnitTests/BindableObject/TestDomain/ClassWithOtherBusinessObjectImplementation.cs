@@ -12,8 +12,6 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 
     public abstract void SetProperty (string propertyIdentifier, object value);
 
-    public abstract string GetPropertyString (IBusinessObjectProperty property);
-
     public abstract string GetPropertyString (IBusinessObjectProperty property, string format);
 
     public abstract string GetPropertyString (string propertyIdentifier);

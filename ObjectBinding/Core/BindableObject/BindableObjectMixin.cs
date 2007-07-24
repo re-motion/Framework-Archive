@@ -1,6 +1,5 @@
 using System;
 using Rubicon.Mixins;
-using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -92,23 +91,6 @@ namespace Rubicon.ObjectBinding.BindableObject
       SetProperty (_bindableObjectClass.GetPropertyDefinition (propertyIdentifier), value);
     }
 
-    /// <overloads> Gets the string representation of the value accessed through the specified property.  </overloads>
-    /// <summary> 
-    ///   Gets the string representation of the value accessed through the specified 
-    ///   <see cref="IBusinessObjectProperty"/>.
-    /// </summary>
-    /// <param name="property"> 
-    ///   The <see cref="IBusinessObjectProperty"/> used to access the value. Must not be <see langword="null"/>.
-    /// </param>
-    /// <returns> The string representation of the property value for the <paramref name="property"/> parameter. </returns>
-    /// <exception cref="Exception"> 
-    ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
-    /// </exception>
-    public string GetPropertyString (IBusinessObjectProperty property)
-    {
-      throw new NotImplementedException();
-    }
-
     /// <summary> 
     ///   Gets the formatted string representation of the value accessed through the specified 
     ///   <see cref="IBusinessObjectProperty"/>.
@@ -123,7 +105,10 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </exception>
     public string GetPropertyString (IBusinessObjectProperty property, string format)
     {
-      throw new NotImplementedException();
+      IBusinessObjectStringFormatterService stringFormatterService =
+          (IBusinessObjectStringFormatterService)
+          BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectStringFormatterService));
+      return stringFormatterService.GetPropertyString ((IBusinessObject) This, property, format);
     }
 
     /// <summary> 
@@ -142,7 +127,8 @@ namespace Rubicon.ObjectBinding.BindableObject
     /// </exception>
     public string GetPropertyString (string propertyIdentifier)
     {
-      throw new NotImplementedException();
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      return GetPropertyString (_bindableObjectClass.GetPropertyDefinition (propertyIdentifier), null);
     }
 
     /// <summary> Gets the <see cref="BindableObjectClass"/> of this business object. </summary>
@@ -179,7 +165,7 @@ namespace Rubicon.ObjectBinding.BindableObject
         if (displayNameProperty.IsAccessible (_bindableObjectClass, this))
           return DisplayName;
 
-        return _bindableObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder ();
+        return _bindableObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();
       }
     }
 

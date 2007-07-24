@@ -40,11 +40,6 @@ public class BusinessObjectWithIdentity : IBusinessObjectWithIdentity
     return null;
   }
 
-  public string GetPropertyString (IBusinessObjectProperty property)
-  {
-    return null;
-  }
-
   public object GetProperty(string propertyIdentifier)
   {
     return null;
