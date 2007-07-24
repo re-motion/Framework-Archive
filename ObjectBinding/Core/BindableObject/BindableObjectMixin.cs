@@ -160,9 +160,11 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       get
       {
-        throw new NotImplementedException();
+        if (!_bindableObjectClass.HasPropertyDefinition ("DisplayName"))
+          return DisplayName;
+
         IBusinessObjectProperty displayNameProperty = _bindableObjectClass.GetPropertyDefinition ("DisplayName");
-        if (displayNameProperty.IsAccessible (_bindableObjectClass, this))
+        if (displayNameProperty.IsAccessible (_bindableObjectClass, (IBusinessObject) This))
           return DisplayName;
 
         return _bindableObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();

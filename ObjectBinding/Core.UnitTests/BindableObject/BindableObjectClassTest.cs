@@ -78,6 +78,16 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
+    public void HasPropertyDefinition ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithAllDataTypes), _bindableObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      Assert.That (bindableObjectClass.HasPropertyDefinition ("String"), Is.True);
+      Assert.That(bindableObjectClass.HasPropertyDefinition ("Invalid"), Is.False);
+    }
+
+    [Test]
     public void GetPropertyDefinitions ()
     {
       Type type = typeof (ClassWithReferenceType<SimpleReferenceType>);

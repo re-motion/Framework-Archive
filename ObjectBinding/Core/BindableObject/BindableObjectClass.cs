@@ -38,13 +38,21 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
 
-      if (!_properties.Contains (propertyIdentifier))
+      if (!HasPropertyDefinition (propertyIdentifier))
       {
         throw new KeyNotFoundException (
             string.Format ("The property '{0}' was not found on business object class '{1}'.", propertyIdentifier, Identifier));
       }
 
       return _properties[propertyIdentifier];
+    }
+
+    //TODO: doc
+    public bool HasPropertyDefinition (string propertyIdentifier)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+
+      return _properties.Contains (propertyIdentifier);
     }
 
     /// <summary> 

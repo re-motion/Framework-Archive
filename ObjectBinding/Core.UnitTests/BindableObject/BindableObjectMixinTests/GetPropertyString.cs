@@ -31,6 +31,8 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTest
       _property = _businessObject.BusinessObjectClass.GetPropertyDefinition ("String");
       Assert.That (
           _property, Is.Not.Null, "Property 'String' was not found on BusinessObjectClass '{0}'", _businessObject.BusinessObjectClass.Identifier);
+
+      BindableObjectProvider.SetCurrent (new BindableObjectProvider());
     }
 
     [Test]
@@ -39,10 +41,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTest
       Expect.Call (_mockStringFormatterService.GetPropertyString (_businessObject, _property, "TheFormatString")).Return ("TheStringValue");
       _mockRepository.ReplayAll();
 
-      string actualValue = _businessObject.GetPropertyString (_property, "TheFormatString");
+      string actual = _businessObject.GetPropertyString (_property, "TheFormatString");
       
       _mockRepository.VerifyAll();
-      Assert.That (actualValue, Is.EqualTo ("TheStringValue"));
+      Assert.That (actual, Is.EqualTo ("TheStringValue"));
     }
 
     [Test]
@@ -51,10 +53,10 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTest
       Expect.Call (_mockStringFormatterService.GetPropertyString (_businessObject, _property, null)).Return ("TheStringValue");
       _mockRepository.ReplayAll ();
 
-      string actualValue = _businessObject.GetPropertyString ("String");
+      string actual = _businessObject.GetPropertyString ("String");
 
       _mockRepository.VerifyAll ();
-      Assert.That (actualValue, Is.EqualTo ("TheStringValue"));
+      Assert.That (actual, Is.EqualTo ("TheStringValue"));
     }
   }
 }
