@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void CreateNewDataContainer ()
     {
       ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      DataContainer newContainer = Provider.CreateNewDataContainer (orderClass);
+      DataContainer newContainer = DataContainer.CreateNew (Provider.CreateNewObjectID (orderClass));
 
       Assert.IsNotNull (newContainer, "New DataContainer is null.");
       Assert.IsNotNull (newContainer.ID, "ObjectID of new DataContainer.");
@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void CreateClassWithAllDataTypes ()
     {
       ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
-      DataContainer newContainer = Provider.CreateNewDataContainer (classDefinition);
+      DataContainer newContainer = DataContainer.CreateNew (Provider.CreateNewObjectID (classDefinition));
 
       Assert.AreEqual (false, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"]);
       Assert.AreEqual ((byte)0, newContainer["Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"]);
@@ -87,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ClassDefinitionOfOtherStorageProvider ()
     {
       ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (Official)];
-      Provider.CreateNewDataContainer (classDefinition);
+      Provider.CreateNewObjectID (classDefinition);
     }
   }
 }

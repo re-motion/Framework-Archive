@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
@@ -79,6 +80,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return true;
     }
 
+    protected internal override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+      return ParentTransaction.CreateNewObjectID (classDefinition);
+    }
+
     protected override DataContainer LoadDataContainer (ObjectID id)
     {
       if (DataManager.IsDiscarded (id))
@@ -120,7 +128,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       if (parentObject != null)
       {
         DataContainer loadedDataContainer = parentObject.GetDataContainerForTransaction (this);
-        Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
+        Assertion.Assert (parentObject == loadedDataContainer.DomainObject, "invariant");
       }
       else
         DataManager.RelationEndPointMap.RegisterObjectEndPoint (relationEndPointID, null);
@@ -140,7 +148,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       foreach (DomainObject parentObject in parentObjects)
       {
         DataContainer loadedDataContainer = parentObject.GetDataContainerForTransaction (this);
-        Assertion.Assert (parentObject == loadedDataContainer.DomainObject);
+        Assertion.Assert (parentObject == loadedDataContainer.DomainObject, "invariant");
         loadedDataContainers.Add (loadedDataContainer);
       }
 
@@ -162,10 +170,10 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
     private void PersistDataContainers (DataContainerCollection changedDataContainers)
     {
-
       foreach (DataContainer dataContainer in changedDataContainers)
       {
-        Assertion.Assert (!dataContainer.IsDiscarded);
+        Assertion.Assert (!dataContainer.IsDiscarded, "changedDataContainers cannot contain discarded DataContainers, because its items come"
+            + "from DataManager.DataContainerMap, which does not contain discarded objects");
         Assertion.Assert (dataContainer.State != StateType.Unchanged, "changedDataContainers cannot contain an unchanged container");
         Assertion.Assert (dataContainer.State == StateType.New || dataContainer.State == StateType.Changed
             || dataContainer.State == StateType.Deleted, "Invalid dataContainer.State: " + dataContainer.State);
@@ -193,7 +201,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       parentDataContainer = CreateParentDataContainer (dataContainer);
       ParentTransaction.DataManager.RegisterNewDataContainer (parentDataContainer);
 
-      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject);
+      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
     }
 
     private void PersistChangedDataContainer (DataContainer dataContainer)
@@ -201,12 +209,13 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       DataContainer parentDataContainer = GetParentDataContainerWithoutLoading (dataContainer.ID);
       Assertion.Assert (parentDataContainer != null, "a changed DataContainer must have been loaded through ParentTransaction, so the "
           + "ParentTransaction must know it");
-      Assertion.Assert (!parentDataContainer.IsDiscarded);
-      Assertion.Assert (parentDataContainer.State != StateType.Deleted);
-      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject);
+      Assertion.Assert (!parentDataContainer.IsDiscarded, "a changed DataContainer cannot be discarded in the ParentTransaction");
+      Assertion.Assert (parentDataContainer.State != StateType.Deleted, "a changed DataContainer cannot be deleted in the ParentTransaction");
+      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       StateType previousState = parentDataContainer.State;
       parentDataContainer.AssumeSameState (dataContainer, false);
+      
       Assertion.Assert ((previousState == StateType.New && parentDataContainer.State == StateType.New)
           || (previousState != StateType.New && parentDataContainer.State == StateType.Changed));
     }
@@ -217,8 +226,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       Assertion.Assert (parentDataContainer != null, "a deleted DataContainer must have been loaded through ParentTransaction, so the "
           + "ParentTransaction must know it");
 
-      Assertion.Assert (!parentDataContainer.IsDiscarded && parentDataContainer.State != StateType.Deleted);
-      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject);
+      Assertion.Assert (!parentDataContainer.IsDiscarded && parentDataContainer.State != StateType.Deleted, "deleted DataContainers cannot "
+          + "be discarded or deleted in the ParentTransaction");
+      Assertion.Assert (parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       ParentTransaction.Delete (parentDataContainer.DomainObject);
     }
@@ -244,15 +254,14 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
 
         RelationEndPoint parentEndPoint = ParentTransaction.DataManager.RelationEndPointMap[endPoint.ID];
         if (parentEndPoint == null)
-          Assertion.Assert (DataManager.DataContainerMap[endPoint.ObjectID].State == StateType.Deleted);
+          Assertion.Assert (DataManager.DataContainerMap[endPoint.ObjectID].State == StateType.Deleted
+              && ParentTransaction.DataManager.IsDiscarded (endPoint.ObjectID),
+              "Because the DataContainers are processed before the RelationEndPoints, the RelationEndPointMaps of ParentTransaction and this now "
+              + "contain end points for the same end point IDs. The only scenario in which the ParentTransaction doesn't know an end point known "
+              + "to the child transaction is when the object was of state New in the ParentTransaction and its DataContainer was just discarded.");
         else
-          PersistChangedRelationEndPoint (endPoint, parentEndPoint);
+          parentEndPoint.AssumeSameState (endPoint);
       }
-    }
-
-    private void PersistChangedRelationEndPoint (RelationEndPoint endPoint, RelationEndPoint parentEndPoint)
-    {
-      parentEndPoint.AssumeSameState (endPoint);
     }
   }
 }

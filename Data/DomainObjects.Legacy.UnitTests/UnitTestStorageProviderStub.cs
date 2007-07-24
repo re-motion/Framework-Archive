@@ -68,7 +68,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests
     {
     }
 
-    public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       return null;
     }

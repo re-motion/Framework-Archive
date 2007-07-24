@@ -37,7 +37,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
 
       DataContainerCollection collection = new DataContainerCollection ();
       if (query.ID == "GetSecurableObjects")
-        collection.Add (CreateNewDataContainer (MappingConfiguration.Current.ClassDefinitions[typeof (SecurableObject)]));
+        collection.Add (DataContainer.CreateNew (CreateNewObjectID  (MappingConfiguration.Current.ClassDefinitions[typeof (SecurableObject)])));
 
       return collection;
     }
@@ -72,15 +72,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      CheckClassDefinition (classDefinition, "classDefinition");
-      
-      return DataContainer.CreateNew (CreateNewObjectID (classDefinition));
-    }
-
-    private ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed ();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

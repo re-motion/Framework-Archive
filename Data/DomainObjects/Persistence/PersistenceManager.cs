@@ -43,13 +43,13 @@ namespace Rubicon.Data.DomainObjects.Persistence
 
     // methods and properties
 
-    public DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed ();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       StorageProvider provider = _storageProviderManager.GetMandatory (classDefinition.StorageProviderID);
-      return provider.CreateNewDataContainer (classDefinition);
+      return provider.CreateNewObjectID (classDefinition);
     }
 
     public void Save (DataContainerCollection dataContainers)

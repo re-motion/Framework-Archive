@@ -87,7 +87,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainerByNonOptionalNullID ()
     {
       ClassDefinition classWithValidRelations = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("ClassWithValidRelations");
-      DataContainer dataContainer = _persistenceManager.CreateNewDataContainer (classWithValidRelations);
+      DataContainer dataContainer = CreateDataContainer (classWithValidRelations);
 
       try
       {
@@ -108,11 +108,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
       }
     }
 
+    private DataContainer CreateDataContainer (ClassDefinition classDefinition)
+    {
+      return DataContainer.CreateNew (_persistenceManager.CreateNewObjectID (classDefinition));
+    }
+
     [Test]
     public void LoadRelatedDataContainerByNonOptionalNullIDWithInheritance ()
     {
       ClassDefinition distributorClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Distributor");
-      DataContainer dataContainer = _persistenceManager.CreateNewDataContainer (distributorClass);
+      DataContainer dataContainer = CreateDataContainer (distributorClass);
 
       try
       {
@@ -295,10 +300,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
+    public void CreateNewObjectID ()
+    {
+      ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+      ObjectID id1 = _persistenceManager.CreateNewObjectID (orderClass);
+      Assert.IsNotNull (id1);
+      ObjectID id2 = _persistenceManager.CreateNewObjectID (orderClass);
+      Assert.IsNotNull (id2);
+      Assert.AreNotEqual (id1, id2);
+    }
+
+    [Test]
     public void CreateNewDataContainer ()
     {
       ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      DataContainer container = _persistenceManager.CreateNewDataContainer (orderClass);
+      DataContainer container = CreateDataContainer (orderClass);
 
       Assert.IsNotNull (container);
       Assert.AreEqual (StateType.New, container.State);

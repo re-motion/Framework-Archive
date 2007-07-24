@@ -209,5 +209,53 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreSame (newClient1, location1.Client);
       Assert.AreSame (newClient2, location2.Client);
     }
+
+    [Test]
+    public void EndPointsAreCorrectFromBothSidesForCompletelyNewObjectGraphs ()
+    {
+      Order order;
+      OrderItem newOrderItem;
+      OrderTicket newOrderTicket;
+      Official newOfficial;
+      Customer newCustomer;
+      Ceo newCeo;
+
+      using (ClientTransactionMock.CreateSubTransaction ().EnterScope ())
+      {
+        order = Order.NewObject ();
+        
+        newOrderTicket = OrderTicket.NewObject ();
+        order.OrderTicket = newOrderTicket;
+        
+        newOrderItem = OrderItem.NewObject ();
+        order.OrderItems.Add (newOrderItem);
+        
+        newOfficial = Official.NewObject ();
+        order.Official = newOfficial;
+        
+        newCustomer = Customer.NewObject ();
+        order.Customer = newCustomer;
+
+        newCeo = Ceo.NewObject ();
+        newCustomer.Ceo = newCeo;
+
+        ClientTransactionScope.CurrentTransaction.Commit ();
+      }
+
+      Assert.AreSame (order, newOrderTicket.Order);
+      Assert.AreSame (newOrderTicket, order.OrderTicket);
+
+      Assert.AreSame (newOrderItem, order.OrderItems[0]);
+      Assert.AreSame (order, newOrderItem.Order);
+
+      Assert.AreSame (order, order.Official.Orders[0]);
+      Assert.AreSame (newOfficial, order.Official);
+
+      Assert.AreSame (order, order.Customer.Orders[0]);
+      Assert.AreSame (newCustomer, order.Customer);
+
+      Assert.AreSame (newCeo, newCustomer.Ceo);
+      Assert.AreSame (newCustomer, newCeo.Company);
+    }
   }
 }

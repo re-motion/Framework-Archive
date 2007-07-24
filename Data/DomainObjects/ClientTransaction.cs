@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
@@ -140,6 +138,13 @@ public abstract class ClientTransaction : ITransaction
   protected abstract void PersistData (DataContainerCollection changedDataContainers);
 
   /// <summary>
+  /// Creates a new <see cref="ObjectID"/> for the given class definition.
+  /// </summary>
+  /// <param name="classDefinition">The class definition to create a new <see cref="ObjectID"/> for.</param>
+  /// <returns></returns>
+  protected internal abstract ObjectID CreateNewObjectID (ClassDefinition classDefinition);
+
+  /// <summary>
   /// Loads a data container from the underlying storage or the <see cref="ParentTransaction"/>.
   /// </summary>
   /// <param name="id">The id of the <see cref="DataContainer"/> to load.</param>
@@ -152,18 +157,20 @@ public abstract class ClientTransaction : ITransaction
   /// <remarks>
   /// This method raises the <see cref="Loaded"/> event.
   /// </remarks>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="ObjectEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> of the end point that should be evaluated.
+  /// <paramref name="relationEndPointID"/> must refer to an <see cref="ObjectEndPoint"/>. Must not be <see langword="null"/>.</param>
   /// <returns>The related <see cref="DomainObject"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.InvalidCastException"><paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/></exception>
-  /// <exception cref="DataManagement.ObjectDeletedException"><paramref name="includeDeleted"/> is false and the DomainObject with <paramref name="id"/> has been deleted.</exception>
+  /// <exception cref="System.InvalidCastException"><paramref name="relationEndPointID"/> does not refer to an 
+  /// <see cref="DataManagement.ObjectEndPoint"/></exception>
+  /// <exception cref="DataManagement.ObjectDeletedException">The related <see cref="DomainObject"/> has been deleted.</exception>
   /// <exception cref="Persistence.PersistenceException">
   ///   The related object could not be loaded, but is mandatory.<br /> -or- <br />
   ///   The relation refers to non-existing object.<br /> -or- <br />
   ///   <paramref name="relationEndPointID"/> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.
   /// </exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
+  ///   The Mapping does not contain a class definition for the given <paramref name="relationEndPointID"/>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
@@ -172,7 +179,8 @@ public abstract class ClientTransaction : ITransaction
   /// <summary>
   /// Loads all related <see cref="DomainObject"/>s of a given <see cref="DataManagement.RelationEndPointID"/>. 
   /// </summary>
-  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <paramref name="relationEndPoint"/> must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> of the end point that should be evaluated.
+  /// <paramref name="relationEndPointID"/> must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing all related <see cref="DomainObject"/>s.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.PersistenceException">
@@ -350,7 +358,6 @@ public abstract class ClientTransaction : ITransaction
     return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
-  // TODO: move usage of PersistenceManager into RootTransaction
   internal DataContainer CreateNewDataContainer (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -358,11 +365,8 @@ public abstract class ClientTransaction : ITransaction
     {
       ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
 
-      DataContainer newDataContainer;
-      using (PersistenceManager persistenceManager = new PersistenceManager())
-      {
-        newDataContainer = persistenceManager.CreateNewDataContainer (classDefinition);
-      }
+      ObjectID newObjectID = CreateNewObjectID(classDefinition);
+      DataContainer newDataContainer = DataContainer.CreateNew (newObjectID);
 
       SetClientTransaction (newDataContainer);
       _dataManager.RegisterNewDataContainer (newDataContainer);

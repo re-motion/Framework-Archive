@@ -14,6 +14,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     // member fields
 
+    private int _lastID = 0;
+
     // construction and disposing
 
     public UnitTestStorageProviderStub (UnitTestStorageProviderStubDefinition definition)
@@ -75,9 +77,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
     }
 
-    public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      return null;
+      return new ObjectID (classDefinition, _lastID++);
     }
 
     public new object GetFieldValue (DataContainer dataContainer, string propertyName, ValueAccess valueAccess)

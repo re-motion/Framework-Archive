@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
@@ -46,6 +47,18 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
           persistenceManager.Save (changedDataContainers);
         }
       }
+    }
+
+    protected internal override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    {
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+      ObjectID newObjectID;
+      using (PersistenceManager persistenceManager = new PersistenceManager ())
+      {
+        newObjectID = persistenceManager.CreateNewObjectID (classDefinition);
+      }
+      return newObjectID;
     }
 
     protected override DataContainer LoadDataContainer (ObjectID id)

@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     private DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
     {
-      DataContainer dataContainer = Provider.CreateNewDataContainer (classDefinition);
+      DataContainer dataContainer = DataContainer.CreateNew (Provider.CreateNewObjectID (classDefinition));
       ClientTransactionMock.SetClientTransaction (dataContainer);
       return dataContainer;
     }

@@ -57,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests
       throw new NotSupportedException ("The method or operation is not supported.");
     }
 
-    public override DataContainer CreateNewDataContainer (Rubicon.Data.DomainObjects.Mapping.ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (Rubicon.Data.DomainObjects.Mapping.ClassDefinition classDefinition)
     {
       throw new NotSupportedException ("The method or operation is not supported.");
     }

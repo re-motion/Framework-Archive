@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
     public void CreateNewDataContainer ()
     {
       ClassDefinition orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
-      DataContainer newContainer = Provider.CreateNewDataContainer (orderClass);
+      DataContainer newContainer = DataContainer.CreateNew (Provider.CreateNewObjectID (orderClass));
 
       Assert.IsNotNull (newContainer, "New DataContainer is null.");
       Assert.IsNotNull (newContainer.ID, "ObjectID of new DataContainer.");
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.Persistence.Rdbms
     public void CreateClassWithAllDataTypes ()
     {
       ClassDefinition classDefinition = TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)];
-      DataContainer newContainer = Provider.CreateNewDataContainer (classDefinition);
+      DataContainer newContainer = DataContainer.CreateNew (Provider.CreateNewObjectID (classDefinition));
 
       Assert.AreEqual (false, newContainer["BooleanProperty"]);
       Assert.AreEqual (byte.MinValue, newContainer["ByteProperty"]);

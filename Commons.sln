@@ -279,11 +279,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build\Commons.include.build = build\Commons.include.build
 		build\properties.include.build = build\properties.include.build
 	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{B0AA271A-E94B-4328-85AD-7B873447F36F}"
 	ProjectSection(WebsiteProperties) = preProject
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8373F6F2-B707-4D06-8ECF-7411813CECD5}"
@@ -298,6 +304,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", 
 		..\prereq\Assemblies\nunit.framework.xml = ..\prereq\Assemblies\nunit.framework.xml
 		..\prereq\Assemblies\Rhino.Mocks.dll = ..\prereq\Assemblies\Rhino.Mocks.dll
 		..\prereq\Assemblies\Rhino.Mocks.xml = ..\prereq\Assemblies\Rhino.Mocks.xml
+	EndProjectSection
+	ProjectSection(FolderStartupServices) = postProject
+		{B4F97281-0DBD-4835-9ED8-7DFB966E87FF} = {B4F97281-0DBD-4835-9ED8-7DFB966E87FF}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.UnitTests", "Mixins\Core.UnitTests\Mixins.UnitTests.csproj", "{DFAEF7A9-2127-41D7-8D5B-BC71724EB8AB}"
@@ -324,7 +333,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.UnitTests", "Secur
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.CodeGenerator.UnitTests", "Data\DomainObjects.Legacy.CodeGenerator.UnitTests\Data.DomainObjects.Legacy.CodeGenerator.UnitTests.csproj", "{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TextTemplating) = postSolution
+		TextTemplating = 1
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -522,6 +540,10 @@ Global
 		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF86BF16-81EF-4F51-B2B1-DB3C7C1E4CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

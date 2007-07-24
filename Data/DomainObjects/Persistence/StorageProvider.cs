@@ -60,7 +60,7 @@ public abstract class StorageProvider : IDisposable
   public abstract void BeginTransaction ();
   public abstract void Commit ();
   public abstract void Rollback ();
-  public abstract DataContainer CreateNewDataContainer (ClassDefinition classDefinition);
+  public abstract ObjectID CreateNewObjectID (ClassDefinition classDefinition);
   public abstract DataContainerCollection ExecuteCollectionQuery (IQuery query);
   public abstract object ExecuteScalarQuery (IQuery query);
 

@@ -287,15 +287,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      CheckClassDefinition (classDefinition, "classDefinition");
-
-      return DataContainer.CreateNew (CreateNewObjectID (classDefinition));
-    }
-
     public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
     {
       CheckDisposed();
@@ -345,7 +336,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    protected virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
