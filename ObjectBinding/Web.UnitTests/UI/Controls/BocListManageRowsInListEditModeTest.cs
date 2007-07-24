@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UnitTests.Domain;
@@ -8,43 +9,38 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocListManageRowsTest: BocTest
+public class BocListManageRowsInListEditModeTest: BocTest
 {
   private BocListMock _bocList;
 
-  private TypeWithString[] _values;
-  private TypeWithString[] _newValues;
+  private IBusinessObject[] _values;
+  private IBusinessObject[] _newValues;
 
-  private ReflectionBusinessObjectClass _typeWithStringClass;
+  private BindableObjectClass _typeWithStringClass;
 
   private BusinessObjectPropertyPath _typeWithStringFirstValuePath;
   private BusinessObjectPropertyPath _typeWithStringSecondValuePath;
 
   private BocSimpleColumnDefinition _typeWithStringFirstValueSimpleColumn;
   private BocSimpleColumnDefinition _typeWithStringSecondValueSimpleColumn;
-
-  public BocListManageRowsTest()
-  {
-  }
-
   
   [SetUp]
   public override void SetUp()
   {
     base.SetUp();
   
-    _values = new TypeWithString[5];
-    _values[0] = new TypeWithString ("0", "A");
-    _values[1] = new TypeWithString ("1", "A");
-    _values[2] = new TypeWithString ("2", "B");
-    _values[3] = new TypeWithString ("3", "B");
-    _values[4] = new TypeWithString ("4", "C");
+    _values = new IBusinessObject[5];
+    _values[0] = (IBusinessObject) TypeWithString.Create("0", "A");
+    _values[1] = (IBusinessObject) TypeWithString.Create("1", "A");
+    _values[2] = (IBusinessObject) TypeWithString.Create("2", "B");
+    _values[3] = (IBusinessObject) TypeWithString.Create("3", "B");
+    _values[4] = (IBusinessObject) TypeWithString.Create("4", "C");
 
-    _newValues = new TypeWithString[2];
-    _newValues[0] = new TypeWithString ("5", "C");
-    _newValues[1] = new TypeWithString ("6", "D");
+    _newValues = new IBusinessObject[2];
+    _newValues[0] = (IBusinessObject) TypeWithString.Create("5", "C");
+    _newValues[1] = (IBusinessObject) TypeWithString.Create("6", "D");
 
-    _typeWithStringClass = new ReflectionBusinessObjectClass (typeof (TypeWithString));
+    _typeWithStringClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithString));
 
     _typeWithStringFirstValuePath = BusinessObjectPropertyPath.Parse (_typeWithStringClass, "FirstValue");
     _typeWithStringSecondValuePath = BusinessObjectPropertyPath.Parse (_typeWithStringClass, "SecondValue");

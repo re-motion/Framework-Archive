@@ -476,6 +476,7 @@
   <target name="ObjectBinding.Web.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
+    <call target="Mixins" cascade="false"/>
     <call target="ObjectBinding" cascade="false"/>
     <call target="ObjectBinding.Reflection" cascade="false"/>
     <call target="Web" cascade="false"/>

@@ -26,7 +26,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   // member fields
 
   private DropDownMenu _dropDownMenu;
-  private IBusinessObjectWithIdentity _value;
+  private IBusinessObject _value;
   private bool _enableIcon = true;
   private string[] _hiddenMenuItems;
 
@@ -172,46 +172,46 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   {
     if (DataSource != null && DataSource.BusinessObject != null)
     {
-      IBusinessObjectWithIdentity value;
+      IBusinessObject value;
       if (Property == null)
-        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject;
+        value = DataSource.BusinessObject;
       else
-        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObject) DataSource.BusinessObject.GetProperty (Property);
       LoadValueInternal (value, interim);
     }
   }
   
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> 
-  ///   The object implementing <see cref="IBusinessObjectWithIdentity"/> to load, or <see langword="null"/>. 
+  ///   The object implementing <see cref="IBusinessObject"/> to load, or <see langword="null"/>. 
   /// </param>
   /// <include file='doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadUnboundValue/*' />
-  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+  public void LoadUnboundValue (IBusinessObject value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+  protected virtual void LoadValueInternal (IBusinessObject value, bool interim)
   {
     Value = value;
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <value> An object implementing <see cref="IBusinessObjectWithIdentity"/>. </value>
+  /// <value> An object implementing <see cref="IBusinessObject"/>. </value>
   [Browsable (false)]
-  public new IBusinessObjectWithIdentity Value
+  public new IBusinessObject Value
   {
     get { return _value; }
     set { _value = value; }
   }
 
   /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
-  /// <value> The value must be of type <see cref="IList"/> or <see cref="IBusinessObjectWithIdentity"/>. </value>
+  /// <value> The value must be of type <see cref="IList"/> or <see cref="IBusinessObject"/>. </value>
   protected override object ValueImplementation
   {
     get { return Value; }
-    set { Value = (IBusinessObjectWithIdentity) value; }
+    set { Value = (IBusinessObject) value; }
   }
 
   /// <summary>
@@ -220,8 +220,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// </summary>
   /// <value> 
   ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the bound 
-  ///   <see cref="IBusinessObjectWithIdentity"/>'s <see cref="IBusinessObjectClass"/>. If no property is assigned, 
-  ///   the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s <see cref="IBusinessObjectWithIdentity"/> 
+  ///   <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>. If no property is assigned, 
+  ///   the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s <see cref="IBusinessObject"/> 
   ///   itself will be used as the control's value.
   /// </value>
   [Browsable (false)]

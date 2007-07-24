@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UnitTests.Domain;
@@ -10,13 +11,13 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 [TestFixture]
 public class BocListRowsCompareReferenceValuesTest : BaseBocListRowCompareValuesTest
 {
-  private TypeWithReference _valueAA;
-  private TypeWithReference _valueAB;
-  private TypeWithReference _valueBA;
+  private IBusinessObject _valueAA;
+  private IBusinessObject _valueAB;
+  private IBusinessObject _valueBA;
 
-  private TypeWithReference _valueNullA;
-  private TypeWithReference _valueNullB;
-  private TypeWithReference _valueBNull;
+  private IBusinessObject _valueNullA;
+  private IBusinessObject _valueNullB;
+  private IBusinessObject _valueBNull;
 
   private ReflectionBusinessObjectClass _class;
 
@@ -35,31 +36,16 @@ public class BocListRowsCompareReferenceValuesTest : BaseBocListRowCompareValues
   [SetUp]
   public virtual void SetUp()
   {
-    _valueAA = new TypeWithReference();
-    _valueAA.FirstValue = new TypeWithReference ("A");
-    _valueAA.SecondValue = new TypeWithReference("A");
+    _valueAA = (IBusinessObject) TypeWithReference.Create(TypeWithReference.Create("A"), TypeWithReference.Create("A"));
+    _valueAB = (IBusinessObject) TypeWithReference.Create(TypeWithReference.Create("A"), TypeWithReference.Create("B"));
+    _valueBA = (IBusinessObject) TypeWithReference.Create(TypeWithReference.Create("B"), TypeWithReference.Create("A"));
 
-    _valueAB = new TypeWithReference();
-    _valueAB.FirstValue = new TypeWithReference ("A");
-    _valueAB.SecondValue = new TypeWithReference("B");
-
-    _valueBA = new TypeWithReference();
-    _valueBA.FirstValue = new TypeWithReference ("B");
-    _valueBA.SecondValue = new TypeWithReference("A");
-
-    _valueNullA = new TypeWithReference();
-    _valueNullA.FirstValue = null;
-    _valueNullA.SecondValue = new TypeWithReference("A");
-
-    _valueNullB = new TypeWithReference();
-    _valueNullB.FirstValue = null;
-    _valueNullB.SecondValue = new TypeWithReference("B");
-
-    _valueBNull = new TypeWithReference();
-    _valueBNull.FirstValue = new TypeWithReference ("B");
-    _valueBNull.SecondValue = null;
+    _valueNullA = (IBusinessObject) TypeWithReference.Create(null, TypeWithReference.Create("A"));
+    _valueNullB = (IBusinessObject) TypeWithReference.Create(null, TypeWithReference.Create("B"));
+    _valueBNull = (IBusinessObject) TypeWithReference.Create(TypeWithReference.Create("B"), null);
 
 
+    //_class = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithReference));
     _class = new ReflectionBusinessObjectClass (typeof (TypeWithReference));
 
     
@@ -100,35 +86,35 @@ public class BocListRowsCompareReferenceValuesTest : BaseBocListRowCompareValues
 
 
   [Test]
-  public void CompareRowsWithSimpleColumns()
+  public void CompareRowsWithSimpleColumns ()
   {
     CompareEqualValuesAscending (_firstValueSimpleColumn, _valueAA, _valueAB);
     CompareEqualValuesAscending (_firstValueSimpleColumn, _valueNullA, _valueNullB);
-    
+
     CompareEqualValuesDescending (_firstValueSimpleColumn, _valueAA, _valueAB);
     CompareEqualValuesDescending (_firstValueSimpleColumn, _valueNullA, _valueNullB);
 
     CompareAscendingValuesAscending (_firstValueSimpleColumn, _valueAA, _valueBA);
     CompareAscendingValuesAscending (_firstValueSimpleColumn, _valueNullA, _valueAA);
-    
+
     CompareAscendingValuesDescending (_firstValueSimpleColumn, _valueAA, _valueBA);
     CompareAscendingValuesDescending (_firstValueSimpleColumn, _valueNullA, _valueAA);
   }
 
   [Test]
-  public void CompareRowsWithCompoundColumns()
+  public void CompareRowsWithCompoundColumns ()
   {
     CompareEqualValuesAscending (_firstValueFirstValueCompoundColumn, _valueAA, _valueAB);
     CompareEqualValuesAscending (_firstValueFirstValueCompoundColumn, _valueNullA, _valueNullB);
-    
+
     CompareEqualValuesDescending (_firstValueFirstValueCompoundColumn, _valueAA, _valueAB);
     CompareEqualValuesDescending (_firstValueFirstValueCompoundColumn, _valueNullA, _valueNullB);
-    
+
     CompareAscendingValuesAscending (_firstValueSecondValueCompoundColumn, _valueAA, _valueBA);
     CompareAscendingValuesAscending (_firstValueSecondValueCompoundColumn, _valueAA, _valueAB);
     CompareAscendingValuesAscending (_firstValueSecondValueCompoundColumn, _valueNullA, _valueBNull);
     CompareAscendingValuesAscending (_firstValueSecondValueCompoundColumn, _valueNullA, _valueNullB);
-    
+
     CompareAscendingValuesDescending (_firstValueSecondValueCompoundColumn, _valueAA, _valueBA);
     CompareAscendingValuesDescending (_firstValueSecondValueCompoundColumn, _valueAA, _valueAB);
     CompareAscendingValuesDescending (_firstValueSecondValueCompoundColumn, _valueNullA, _valueBNull);
@@ -137,17 +123,17 @@ public class BocListRowsCompareReferenceValuesTest : BaseBocListRowCompareValues
 
 
   [Test]
-  public void CompareRowsWithCustomColumns()
+  public void CompareRowsWithCustomColumns ()
   {
     CompareEqualValuesAscending (_firstValueCustomColumn, _valueAA, _valueAB);
     CompareEqualValuesAscending (_firstValueCustomColumn, _valueNullA, _valueNullB);
-    
+
     CompareEqualValuesDescending (_firstValueCustomColumn, _valueAA, _valueAB);
     CompareEqualValuesDescending (_firstValueCustomColumn, _valueNullA, _valueNullB);
-    
+
     CompareAscendingValuesAscending (_firstValueCustomColumn, _valueAA, _valueBA);
     CompareAscendingValuesAscending (_firstValueCustomColumn, _valueNullA, _valueBA);
-    
+
     CompareAscendingValuesDescending (_firstValueCustomColumn, _valueAA, _valueBA);
     CompareAscendingValuesDescending (_firstValueCustomColumn, _valueNullA, _valueBA);
   }

@@ -1,25 +1,33 @@
 using System;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.Mixins;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 {
-
-public class TypeWithEnum: ReflectionBusinessObject
-{
-  private TestEnum _enumValue;
-
-  public TestEnum EnumValue
+  [BindableObject]
+  public class TypeWithEnum
   {
-    get { return _enumValue; }
-    set { _enumValue = value; }
+    public static TypeWithEnum Create ()
+    {
+      return ObjectFactory.Create<TypeWithEnum> ().With ();
+    }
+
+    private TestEnum _enumValue;
+
+    protected TypeWithEnum ()
+    {
+    }
+
+    public TestEnum EnumValue
+    {
+      get { return _enumValue; }
+      set { _enumValue = value; }
+    }
   }
-}
 
-public enum TestEnum
-{
-  First,
-  Second,
-  Third
-}
-
+  public enum TestEnum
+  {
+    First,
+    Second,
+    Third
+  }
 }

@@ -29,13 +29,13 @@ public class BocTreeViewTest: BocTest
     _bocTreeView.ID = "BocTreeView";
     NamingContainer.Controls.Add (_bocTreeView);
 
-    _businessObject = new TypeWithReference();
-    
-    _propertyReferenceValue = (IBusinessObjectReferenceProperty) _businessObject.GetBusinessObjectProperty ("ReferenceValue");
-    _propertyReferenceList = (IBusinessObjectReferenceProperty) _businessObject.GetBusinessObjectProperty ("ReferenceList");
+    _businessObject = TypeWithReference.Create();
+
+    _propertyReferenceValue = (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
+    _propertyReferenceList = (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceList");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 
@@ -76,7 +76,7 @@ public class BocTreeViewTest: BocTest
   [Test]
   public void SetValueToList()
   {
-    IBusinessObject[] list = new IBusinessObject[] {new TypeWithString()};
+    TypeWithReference[] list = new TypeWithReference[] { TypeWithReference.Create () };
     _bocTreeView.Value = list;
     Assert.AreEqual (list, _bocTreeView.Value);
   }
@@ -118,7 +118,7 @@ public class BocTreeViewTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimTrueWithList()
   {
-    TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
+    TypeWithReference[] value = new TypeWithReference[] {TypeWithReference.Create(), TypeWithReference.Create()};
     _bocTreeView.Value = null;
 
     _bocTreeView.LoadUnboundValue (value, true);
@@ -138,7 +138,7 @@ public class BocTreeViewTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithList()
   {
-    TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
+    TypeWithReference[] value = new TypeWithReference[] {TypeWithReference.Create(), TypeWithReference.Create()};
     _bocTreeView.Value = null;
 
     _bocTreeView.LoadUnboundValue (value, false);

@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
@@ -23,9 +24,9 @@ public class EditableRowTest : BocTest
   private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
   private EditableRow _editableRow;
 
-  private TypeWithAllDataTypes _value01;
+  private IBusinessObject _value01;
 
-  private ReflectionBusinessObjectClass _typeWithAllDataTypesClass;
+  private BindableObjectClass _typeWithAllDataTypesClass;
 
   private BusinessObjectPropertyPath _typeWithAllDataTypesStringValuePath;
   private BusinessObjectPropertyPath _typeWithAllDataTypesInt32ValuePath;
@@ -59,11 +60,9 @@ public class EditableRowTest : BocTest
     _editableRow.ID = "Row";
     NamingContainer.Controls.Add (_editableRow);
 
-    _value01 = new TypeWithAllDataTypes();
-    _value01.StringValue = "A";
-    _value01.Int32Value = 1;
+    _value01 = (IBusinessObject) TypeWithAllDataTypes.Create ("A", 1);
 
-    _typeWithAllDataTypesClass = new ReflectionBusinessObjectClass (typeof (TypeWithAllDataTypes));
+    _typeWithAllDataTypesClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithAllDataTypes));
 
     _typeWithAllDataTypesStringValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "StringValue");
     _typeWithAllDataTypesInt32ValuePath = BusinessObjectPropertyPath.Parse (_typeWithAllDataTypesClass, "Int32Value");
@@ -366,8 +365,8 @@ public class EditableRowTest : BocTest
 
     dataSource.SaveValues (false);
 
-    Assert.AreEqual ("New Value A", _value01.StringValue);
-    Assert.AreEqual (100, _value01.Int32Value);
+    Assert.AreEqual ("New Value A", ((TypeWithAllDataTypes)_value01).StringValue);
+    Assert.AreEqual (100, ((TypeWithAllDataTypes) _value01).Int32Value);
   }
 
 

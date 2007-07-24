@@ -508,6 +508,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     return nodesViewState;
   }
 
+  public override bool SupportsProperty (IBusinessObjectProperty property)
+  {
+    ArgumentUtility.CheckNotNull ("property", property);
+    if (!base.SupportsProperty (property))
+      return false;
+    return ((IBusinessObjectReferenceProperty) property).ReferenceClass is IBusinessObjectClassWithIdentity;
+  }
+
   /// <summary> The <see cref="BocTreeView"/> supports only list properties. </summary>
   /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="true"/>. </returns>
   /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
@@ -515,7 +523,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     return isList;
   }
-
 
   /// <summary>
   ///   The <see cref="BocTreeView"/> supports properties of types <see cref="IBusinessObjectReferenceProperty"/>.

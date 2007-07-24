@@ -28,13 +28,13 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
       _bocCheckBox.ID = "BocCheckBox";
       NamingContainer.Controls.Add (_bocCheckBox);
 
-      _businessObject = new TypeWithBoolean();
+      _businessObject = TypeWithBoolean.Create();
 
-      _propertyBooleanValue = (IBusinessObjectBooleanProperty) _businessObject.GetBusinessObjectProperty ("BooleanValue");
-      _propertyNaBooleanValue = (IBusinessObjectBooleanProperty) _businessObject.GetBusinessObjectProperty ("NullableBooleanValue");
+      _propertyBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("BooleanValue");
+      _propertyNaBooleanValue = (IBusinessObjectBooleanProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableBooleanValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = _businessObject;
+      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
     }
 
 

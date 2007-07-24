@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using NUnit.Framework;
 using Rubicon.NullableValueTypes;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
@@ -27,10 +28,10 @@ public class EditModeControllerTestBase : BocTest
   private EditModeController _controller;
   private ControlInvoker _controllerInvoker;
 
-  private TypeWithAllDataTypes[] _values;
-  private TypeWithAllDataTypes[] _newValues;
+  private IBusinessObject[] _values;
+  private IBusinessObject[] _newValues;
 
-  private ReflectionBusinessObjectClass _class;
+  private BindableObjectClass _class;
 
   private BusinessObjectPropertyPath _stringValuePath;
   private BusinessObjectPropertyPath _int32ValuePath;
@@ -55,18 +56,18 @@ public class EditModeControllerTestBase : BocTest
 
     _actualEvents = new StringCollection();
 
-    _values = new TypeWithAllDataTypes[5];
-    _values[0] = new TypeWithAllDataTypes ("A", 1);
-    _values[1] = new TypeWithAllDataTypes ("B", 2);
-    _values[2] = new TypeWithAllDataTypes ("C", 3);
-    _values[3] = new TypeWithAllDataTypes ("D", 4);
-    _values[4] = new TypeWithAllDataTypes ("E", 5);
+    _values = new IBusinessObject[5];
+    _values[0] = (IBusinessObject) TypeWithAllDataTypes.Create ("A", 1);
+    _values[1] = (IBusinessObject) TypeWithAllDataTypes.Create ("B", 2);
+    _values[2] = (IBusinessObject) TypeWithAllDataTypes.Create ("C", 3);
+    _values[3] = (IBusinessObject) TypeWithAllDataTypes.Create ("D", 4);
+    _values[4] = (IBusinessObject) TypeWithAllDataTypes.Create ("E", 5);
 
-    _newValues = new TypeWithAllDataTypes[2];
-    _newValues[0] = new TypeWithAllDataTypes ("F", 6);
-    _newValues[1] = new TypeWithAllDataTypes ("G", 7);
+    _newValues = new IBusinessObject[2];
+    _newValues[0] = (IBusinessObject) TypeWithAllDataTypes.Create ("F", 6);
+    _newValues[1] = (IBusinessObject) TypeWithAllDataTypes.Create ("G", 7);
 
-    _class = new ReflectionBusinessObjectClass (typeof (TypeWithAllDataTypes));
+    _class = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithAllDataTypes));
 
     _stringValuePath = BusinessObjectPropertyPath.Parse (_class, "StringValue");
     _int32ValuePath = BusinessObjectPropertyPath.Parse (_class, "Int32Value");
@@ -120,12 +121,12 @@ public class EditModeControllerTestBase : BocTest
     get { return _controllerInvoker; }
   }
 
-  protected TypeWithAllDataTypes[] Values
+  protected IBusinessObject[] Values
   {
     get { return _values; }
   }
 
-  protected TypeWithAllDataTypes[] NewValues
+  protected IBusinessObject[] NewValues
   {
     get { return _newValues; }
   }
@@ -148,12 +149,12 @@ public class EditModeControllerTestBase : BocTest
     int32ValueField.Text = int32Value;
   }
 
-  protected void CheckValues (TypeWithAllDataTypes value, string stringValue, int int32Value)
+  protected void CheckValues (IBusinessObject value, string stringValue, int int32Value)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
+    TypeWithAllDataTypes typeWithAllDataTypes = ArgumentUtility.CheckNotNullAndType<TypeWithAllDataTypes> ("value", value);
 
-    Assert.AreEqual (stringValue, value.StringValue);
-    Assert.AreEqual (int32Value, value.Int32Value);
+    Assert.AreEqual (stringValue, typeWithAllDataTypes.StringValue);
+    Assert.AreEqual (int32Value, typeWithAllDataTypes.Int32Value);
   }
 
   protected void CheckEvents (StringCollection expected, StringCollection actual)

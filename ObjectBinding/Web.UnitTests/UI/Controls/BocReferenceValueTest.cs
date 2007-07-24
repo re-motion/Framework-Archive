@@ -33,12 +33,12 @@ public class BocReferenceValueTest: BocTest
     _bocReferenceValue.InternalValue = Guid.Empty.ToString();
     NamingContainer.Controls.Add (_bocReferenceValue);
  
-    _businessObject = new TypeWithReference();
-    
-    _propertyReferenceValue = (IBusinessObjectReferenceProperty) _businessObject.GetBusinessObjectProperty ("ReferenceValue");
+    _businessObject = TypeWithReference.Create();
+
+    _propertyReferenceValue = (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 
@@ -217,7 +217,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void SetValueToObject()
   {
-    TypeWithReference referencedObject = new TypeWithReference();
+    IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
     _bocReferenceValue.IsDirty = false;
     _bocReferenceValue.Value = referencedObject;
     Assert.AreEqual (referencedObject, _bocReferenceValue.Value);
@@ -237,7 +237,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void LoadValueAndInterimTrue()
   {
-    _businessObject.ReferenceValue = new TypeWithReference();
+    _businessObject.ReferenceValue = TypeWithReference.Create();
     _bocReferenceValue.DataSource = _dataSource;
     _bocReferenceValue.Property = _propertyReferenceValue;
     _bocReferenceValue.Value = null;
@@ -251,7 +251,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void LoadValueAndInterimFalseWithObject()
   {
-    _businessObject.ReferenceValue = new TypeWithReference();
+    _businessObject.ReferenceValue = TypeWithReference.Create();
     _bocReferenceValue.DataSource = _dataSource;
     _bocReferenceValue.Property = _propertyReferenceValue;
     _bocReferenceValue.Value = null;
@@ -268,7 +268,7 @@ public class BocReferenceValueTest: BocTest
     _businessObject.ReferenceValue = null;
     _bocReferenceValue.DataSource = _dataSource;
     _bocReferenceValue.Property = _propertyReferenceValue;
-    _bocReferenceValue.Value = new TypeWithReference();
+    _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
     _bocReferenceValue.IsDirty = true;
 
     _bocReferenceValue.LoadValue (false);
@@ -279,7 +279,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimTrue()
   {
-    TypeWithReference value = new TypeWithReference();
+    IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
     _bocReferenceValue.Property = _propertyReferenceValue;
     _bocReferenceValue.Value = null;
     _bocReferenceValue.IsDirty = true;
@@ -292,7 +292,7 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithObject()
   {
-    TypeWithReference value = new TypeWithReference();
+    IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
     _bocReferenceValue.Property = _propertyReferenceValue;
     _bocReferenceValue.Value = null;
     _bocReferenceValue.IsDirty = true;
@@ -305,9 +305,9 @@ public class BocReferenceValueTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithNull()
   {
-    TypeWithReference value = null;
+    IBusinessObjectWithIdentity value = null;
     _bocReferenceValue.Property = _propertyReferenceValue;
-    _bocReferenceValue.Value = new TypeWithReference();
+    _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
     _bocReferenceValue.IsDirty = true;
 
     _bocReferenceValue.LoadUnboundValue (value, false);

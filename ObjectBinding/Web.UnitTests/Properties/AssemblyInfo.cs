@@ -1,4 +1,6 @@
 using System.Reflection;
+using Rubicon.Mixins;
+
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -55,3 +57,5 @@ using System.Reflection;
 //[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
 [assembly: AssemblyKeyName("")]
 #pragma warning restore 1699
+
+[assembly:ContainsMixinInfo]

@@ -28,12 +28,12 @@ public class BocTextValueTest: BocTest
     _bocTextValue.ID = "BocTextValue";
     NamingContainer.Controls.Add (_bocTextValue);
 
-    _businessObject = new TypeWithString();
-    
-    _propertyStringValue = (IBusinessObjectStringProperty) _businessObject.GetBusinessObjectProperty ("StringValue");
+    _businessObject = TypeWithString.Create();
+
+    _propertyStringValue = (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("StringValue");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 

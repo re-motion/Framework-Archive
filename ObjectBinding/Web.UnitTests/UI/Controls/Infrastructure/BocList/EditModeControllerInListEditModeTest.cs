@@ -13,21 +13,6 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 [TestFixture]
 public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 {
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public EditModeControllerInListEditModeTest ()
-  {
-  }
-
-
-  // methods and properties
-
   [Test]
   public void SwitchListIntoEditMode ()
   {

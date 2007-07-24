@@ -1,25 +1,33 @@
 using System;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.Mixins;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 {
-
-public class TypeWithBoolean: ReflectionBusinessObject
-{
-  private bool _booleanValue;
-  private bool? _nullableBooleanValue;
-
-  public bool BooleanValue
+  [BindableObject]
+  public class TypeWithBoolean
   {
-    get { return _booleanValue; }
-    set { _booleanValue = value; }
-  }
+    public static TypeWithBoolean Create ()
+    {
+      return ObjectFactory.Create<TypeWithBoolean> ().With ();
+    }
 
-  public bool? NullableBooleanValue
-  {
-    get { return _nullableBooleanValue; }
-    set { _nullableBooleanValue = value; }
-  }
-}
+    private bool _booleanValue;
+    private bool? _nullableBooleanValue;
 
+    protected TypeWithBoolean ()
+    {
+    }
+
+    public bool BooleanValue
+    {
+      get { return _booleanValue; }
+      set { _booleanValue = value; }
+    }
+
+    public bool? NullableBooleanValue
+    {
+      get { return _nullableBooleanValue; }
+      set { _nullableBooleanValue = value; }
+    }
+  }
 }

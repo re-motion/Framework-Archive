@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
@@ -17,7 +18,7 @@ public class EditableRowControlFactoryTest
 
   // member fields
 
-  private ReflectionBusinessObjectClass _stringValueClass;
+  private BindableObjectClass _stringValueClass;
   private BusinessObjectPropertyPath _stringValuePropertyPath;
   private BocSimpleColumnDefinition _stringValueColumn;
 
@@ -34,7 +35,7 @@ public class EditableRowControlFactoryTest
   [SetUp] 
   public virtual void SetUp()
   {
-    _stringValueClass = new ReflectionBusinessObjectClass (typeof (TypeWithString));
+    _stringValueClass = BindableObjectProvider.Current.GetBindableObjectClass (typeof (TypeWithString));
 
     _stringValuePropertyPath = BusinessObjectPropertyPath.Parse (_stringValueClass, "FirstValue");
 

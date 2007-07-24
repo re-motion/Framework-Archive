@@ -28,12 +28,12 @@ public class BocMultilineTextValueTest: BocTest
     _bocMultilineTextValue.ID = "BocMultilineTextValue";
     NamingContainer.Controls.Add (_bocMultilineTextValue);
 
-    _businessObject = new TypeWithString();
-    
-    _propertyStringArray = (IBusinessObjectStringProperty) _businessObject.GetBusinessObjectProperty ("StringArray");
+    _businessObject = TypeWithString.Create();
+
+    _propertyStringArray = (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("StringArray");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 

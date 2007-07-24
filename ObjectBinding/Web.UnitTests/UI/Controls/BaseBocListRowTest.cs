@@ -8,8 +8,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 
 public abstract class BaseBocListRowCompareValuesTest
 {
-  protected void CompareEqualValuesAscending (
-      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  protected void CompareEqualValuesAscending (BocColumnDefinition column, IBusinessObject left, IBusinessObject right)
   {
     BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
     sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Ascending);
@@ -27,8 +26,7 @@ public abstract class BaseBocListRowCompareValuesTest
     Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
   }
 
-  protected void CompareEqualValuesDescending (
-      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  protected void CompareEqualValuesDescending (BocColumnDefinition column, IBusinessObject left, IBusinessObject right)
   {
     BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
     sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Descending);
@@ -46,8 +44,7 @@ public abstract class BaseBocListRowCompareValuesTest
     Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
   }
 
-  protected void CompareAscendingValuesAscending (
-      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  protected void CompareAscendingValuesAscending (BocColumnDefinition column, IBusinessObject left, IBusinessObject right)
   {
     BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
     sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Ascending);
@@ -65,8 +62,7 @@ public abstract class BaseBocListRowCompareValuesTest
     Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
   }
 
-  protected void CompareAscendingValuesDescending (
-      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  protected void CompareAscendingValuesDescending (BocColumnDefinition column, IBusinessObject left, IBusinessObject right)
   {
     BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
     sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Descending);

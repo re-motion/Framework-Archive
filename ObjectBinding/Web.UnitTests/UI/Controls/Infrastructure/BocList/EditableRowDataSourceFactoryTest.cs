@@ -15,7 +15,7 @@ public class EditableRowDataSourceFactoryTest
 
   // member fields
 
-  private TypeWithString _value;
+  private IBusinessObject _value;
   private EditableRowDataSourceFactory _factory;
 
   // construction and disposing
@@ -29,7 +29,7 @@ public class EditableRowDataSourceFactoryTest
   [SetUp] 
   public virtual void SetUp()
   {
-    _value = new TypeWithString ();
+    _value = (IBusinessObject) TypeWithString.Create();
 
     _factory = new EditableRowDataSourceFactory ();
   }

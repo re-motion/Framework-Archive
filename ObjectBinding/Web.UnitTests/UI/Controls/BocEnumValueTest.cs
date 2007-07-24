@@ -29,12 +29,12 @@ public class BocEnumValueTest: BocTest
     _bocEnumValue.ID = "BocEnumValue";
     NamingContainer.Controls.Add (_bocEnumValue);
 
-    _businessObject = new TypeWithEnum();
-    
-    _propertyEnumValue = (IBusinessObjectEnumerationProperty) _businessObject.GetBusinessObjectProperty ("EnumValue");
+    _businessObject = TypeWithEnum.Create();
+
+    _propertyEnumValue = (IBusinessObjectEnumerationProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("EnumValue");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 

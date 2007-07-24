@@ -1,49 +1,58 @@
 using System;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.Mixins;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.Domain
 {
-
-public class TypeWithString: ReflectionBusinessObject
-{
-  private string _stringValue;
-  private string[] _stringArray;
-  private string _firstValue;
-  private string _secondValue;
-
-  public TypeWithString ()
+  [BindableObject]
+  public class TypeWithString
   {
-  }
+    public static TypeWithString Create ()
+    {
+      return ObjectFactory.Create<TypeWithString> ().With ();
+    }
 
-  public TypeWithString (string firstValue, string secondValue)
-  {
-    _firstValue = firstValue;
-    _secondValue = secondValue;
-  }
+    public static TypeWithString Create (string firstValue, string secondValue)
+    {
+      return ObjectFactory.Create<TypeWithString> ().With (firstValue, secondValue);
+    }
 
-  public string StringValue
-  {
-    get { return _stringValue; }
-    set { _stringValue = value; }
-  }
+    private string _stringValue;
+    private string[] _stringArray;
+    private string _firstValue;
+    private string _secondValue;
 
-  public string[] StringArray
-  {
-    get { return _stringArray; }
-    set { _stringArray = value; }
-  }
+    protected TypeWithString ()
+    {
+    }
 
-  public string FirstValue
-  {
-    get { return _firstValue; }
-    set { _firstValue = value; }
-  }
+    protected TypeWithString (string firstValue, string secondValue)
+    {
+      _firstValue = firstValue;
+      _secondValue = secondValue;
+    }
 
-  public string SecondValue
-  {
-    get { return _secondValue; }
-    set { _secondValue = value; }
-  }
-}
+    public string StringValue
+    {
+      get { return _stringValue; }
+      set { _stringValue = value; }
+    }
 
+    public string[] StringArray
+    {
+      get { return _stringArray; }
+      set { _stringArray = value; }
+    }
+
+    public string FirstValue
+    {
+      get { return _firstValue; }
+      set { _firstValue = value; }
+    }
+
+    public string SecondValue
+    {
+      get { return _secondValue; }
+      set { _secondValue = value; }
+    }
+  }
 }

@@ -27,12 +27,13 @@ public class BocDropDownMenuTest: BocTest
     _bocDropDownMenu.ID = "BocDropDownMenu";
     NamingContainer.Controls.Add (_bocDropDownMenu);
  
-    _businessObject = new TypeWithReference();
+    _businessObject = TypeWithReference.Create();
     
-    _propertyReferenceValue = (IBusinessObjectReferenceProperty) _businessObject.GetBusinessObjectProperty ("ReferenceValue");
+    _propertyReferenceValue = 
+        (IBusinessObjectReferenceProperty) ((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
     
     _dataSource = new BusinessObjectReferenceDataSource();
-    _dataSource.BusinessObject = _businessObject;
+    _dataSource.BusinessObject = (IBusinessObject) _businessObject;
   }
 
 
@@ -73,7 +74,7 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void SetValueToObject()
   {
-    TypeWithReference referencedObject = new TypeWithReference();
+    IBusinessObject referencedObject = (IBusinessObject) TypeWithReference.Create();
     _bocDropDownMenu.Value = referencedObject;
     Assert.AreEqual (referencedObject, _bocDropDownMenu.Value);
   }
@@ -89,7 +90,7 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadValueAndInterimTrueWithObject()
   {
-    _businessObject.ReferenceValue = new TypeWithReference();
+    _businessObject.ReferenceValue = TypeWithReference.Create();
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Property = _propertyReferenceValue;
     _bocDropDownMenu.Value = null;
@@ -114,7 +115,7 @@ public class BocDropDownMenuTest: BocTest
     _businessObject.ReferenceValue = null;
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Property = _propertyReferenceValue;
-    _bocDropDownMenu.Value = new TypeWithReference();
+    _bocDropDownMenu.Value = (IBusinessObject)TypeWithReference.Create();
 
     _bocDropDownMenu.LoadValue (true);
     Assert.AreEqual (_businessObject.ReferenceValue, _bocDropDownMenu.Value);
@@ -123,7 +124,7 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadValueAndInterimFalseWithObject()
   {
-    _businessObject.ReferenceValue = new TypeWithReference();
+    _businessObject.ReferenceValue = TypeWithReference.Create();
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Property = _propertyReferenceValue;
     _bocDropDownMenu.Value = null;
@@ -149,7 +150,7 @@ public class BocDropDownMenuTest: BocTest
     _businessObject.ReferenceValue = null;
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Property = _propertyReferenceValue;
-    _bocDropDownMenu.Value = new TypeWithReference();
+    _bocDropDownMenu.Value = (IBusinessObject) TypeWithReference.Create();
 
     _bocDropDownMenu.LoadValue (false);
     Assert.AreEqual (_businessObject.ReferenceValue, _bocDropDownMenu.Value);
@@ -158,7 +159,7 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimTrueWithObject()
   {
-    TypeWithReference value = new TypeWithReference();
+    IBusinessObject value = (IBusinessObject) TypeWithReference.Create();
     _bocDropDownMenu.Value = null;
 
     _bocDropDownMenu.LoadUnboundValue (value, true);
@@ -168,8 +169,8 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimTrueWithNull()
   {
-    TypeWithReference value = null;
-    _bocDropDownMenu.Value = new TypeWithReference();
+    IBusinessObject value = null;
+    _bocDropDownMenu.Value = (IBusinessObject) TypeWithReference.Create();
 
     _bocDropDownMenu.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocDropDownMenu.Value);
@@ -178,7 +179,7 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithObject()
   {
-    TypeWithReference value = new TypeWithReference();
+    IBusinessObject value = (IBusinessObject) TypeWithReference.Create();
     _bocDropDownMenu.Value = null;
 
     _bocDropDownMenu.LoadUnboundValue (value, false);
@@ -188,8 +189,8 @@ public class BocDropDownMenuTest: BocTest
   [Test]
   public void LoadUnboundValueAndInterimFalseWithNull()
   {
-    TypeWithReference value = null;
-    _bocDropDownMenu.Value = new TypeWithReference();
+    IBusinessObject value = null;
+    _bocDropDownMenu.Value = (IBusinessObject) TypeWithReference.Create();
 
     _bocDropDownMenu.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocDropDownMenu.Value);

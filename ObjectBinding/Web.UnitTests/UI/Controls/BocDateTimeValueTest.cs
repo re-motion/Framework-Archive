@@ -29,13 +29,13 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
       _bocDateTimeValue.ID = "BocDateTimeValue";
       NamingContainer.Controls.Add (_bocDateTimeValue);
 
-      _businessObject = new TypeWithDateTime();
+      _businessObject = TypeWithDateTime.Create();
 
-      _propertyDateTimeValue = (IBusinessObjectDateTimeProperty) _businessObject.GetBusinessObjectProperty ("DateTimeValue");
-      _propertyNaDateTimeValue = (IBusinessObjectDateTimeProperty) _businessObject.GetBusinessObjectProperty ("NullableDateTimeValue");
+      _propertyDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("DateTimeValue");
+      _propertyNaDateTimeValue = (IBusinessObjectDateTimeProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("NullableDateTimeValue");
 
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = _businessObject;
+      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
     }
 
 
