@@ -759,7 +759,11 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   public string Text
   {
     get { return StringUtility.NullToEmpty (_text); }
-    set { _text = value; }
+    set
+    {
+      IsDirty = true;
+      _text = value;
+    }
   }
 
   /// <summary> Gets or sets the <see cref="BocTextValueType"/> assigned from an external source. </summary>

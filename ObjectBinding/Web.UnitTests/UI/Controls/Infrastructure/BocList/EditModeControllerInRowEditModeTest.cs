@@ -12,20 +12,6 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 [TestFixture]
 public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 {
-  // types
-
-  // static members and constants
-
-  // member fields
-
-
-  // construction and disposing
-
-  public EditModeControllerInRowEditModeTest ()
-  {
-  }
-
-
   [Test]
   public void GetFactoriesFromOwnerControl ()
   {
@@ -39,9 +25,6 @@ public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
     Assert.AreSame (Controller.OwnerControl.EditModeDataSourceFactory, row.DataSourceFactory);
     Assert.AreSame (Controller.OwnerControl.EditModeControlFactory, row.ControlFactory);
   }
-
-
-  // methods and properties
 
   [Test]
   public void SwitchRowIntoEditMode ()
