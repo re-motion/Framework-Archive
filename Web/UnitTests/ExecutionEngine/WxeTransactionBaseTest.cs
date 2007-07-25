@@ -37,10 +37,10 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _rootWxeTransaction.TransactionRollingBack += delegate { _events += " rollingBack"; };
       _rootWxeTransaction.TransactionRolledBack += delegate { _events += " rolledBack"; };
 
-      _parentWxeTransaction = new WxeTransactionMock (null, true, false);
+      _parentWxeTransaction = new WxeTransactionMock (null, true, false); // this simulates Execute
       _parentTransaction = new TestTransaction ();
       _parentTransaction.CanCreateChild = true;
-      _parentWxeTransaction.Transaction = _parentTransaction;
+      _parentWxeTransaction.Transaction = _parentTransaction; // should actually include a call to SetCurrentTransaction
       _childWxeTransaction = new WxeTransactionMock (null, true, false);
       _parentWxeTransaction.Add (_childWxeTransaction);
 

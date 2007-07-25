@@ -3,6 +3,7 @@ using System.Web.UI.WebControls;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
 using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
+using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Controls;
 
@@ -61,140 +62,127 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     private void WxeTransactedFunctionCreateNewButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      // TODO: cheange to Remember/CheckActiveClientTransactionScope
+      using (new ClientTransactionScope ())
       {
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new CreateRootTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
-      }
-      else
-      {
-        CheckCurrentClientTransactionRestored();
+        new CreateRootTestTransactedFunction (ClientTransactionScope.CurrentTransaction).Execute();
 
-        ShowResultText ("Test WxeTransactedFunction (CreateNew) executed successfully.");
+        CheckCurrentClientTransactionRestored();
       }
+
+      ShowResultText ("Test WxeTransactedFunction (CreateNew) executed successfully.");
     }
 
     private void WxeTransactedFunctionNoneButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      using (new ClientTransactionScope ())
       {
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new CreateNoneTestTransactedFunction (ClientTransactionScope.CurrentTransaction));
-      }
-      else
-      {
+        new CreateNoneTestTransactedFunction (ClientTransactionScope.CurrentTransaction).Execute();
         CheckCurrentClientTransactionRestored();
-
-        ShowResultText ("Test WxeTransactedFunction (None) executed successfully.");
       }
+      ShowResultText ("Test WxeTransactedFunction (None) executed successfully.");
     }
 
     private void WxeTransactedFunctionCreateNewAutoCommitButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      using (new ClientTransactionScope())
       {
         RememberCurrentClientTransaction();
         SetInt32Property (5, ClientTransaction.NewTransaction());
 
-        ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
-      }
-      else
-      {
+        new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
         CheckCurrentClientTransactionRestored();
 
         if (GetInt32Property (ClientTransaction.NewTransaction()) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not properly commit or set the property value.");
+      }
 
         ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = true) executed successfully.");
-      }
     }
 
     private void WxeTransactedFunctionCreateNewNoAutoCommitButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      using (new ClientTransactionScope ())
       {
         RememberCurrentClientTransaction();
         SetInt32Property (5, ClientTransaction.NewTransaction());
 
-        ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
-      }
-      else
-      {
+        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
+
         CheckCurrentClientTransactionRestored();
 
         if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did set and commit the property value.");
-
-        ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = false) executed successfully.");
       }
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = false) executed successfully.");
     }
 
     private void WxeTransactedFunctionNoneAutoCommitButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      SetInt32Property (5, ClientTransaction.NewTransaction());
+      using (new ClientTransactionScope ())
       {
-        SetInt32Property (5, ClientTransaction.NewTransaction());
-        new ClientTransactionScope (null);
-        
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
-      }
-      else
-      {
+        new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
+
         CheckCurrentClientTransactionRestored();
 
         if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set property value.");
-
-        if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
-          throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
-
-        ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = true) executed successfully.");
       }
+
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
+        throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
+
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = true) executed successfully.");
     }
 
     private void WxeTransactedFunctionNoneNoAutoCommitButton_Click (object sender, EventArgs e)
     {
-      if (!IsReturningPostBack)
+      SetInt32Property (5, ClientTransaction.NewTransaction());
+      using (new ClientTransactionScope ())
       {
-        SetInt32Property (5, ClientTransaction.NewTransaction());
-        new ClientTransactionScope (null);
-        
         RememberCurrentClientTransaction();
 
-        ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
-      }
-      else
-      {
+        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1).Execute ();
+
         CheckCurrentClientTransactionRestored();
 
         if (GetInt32Property (ClientTransactionScope.CurrentTransaction) != 10)
           throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
-
-        if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
-          throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
-
-        ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");
       }
+
+      if (GetInt32Property (ClientTransaction.NewTransaction()) != 5)
+        throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
+
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");
     }
 
     private void SetInt32Property (int value, ClientTransaction clientTransaction)
     {
-      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
+      using (clientTransaction.EnterScope ())
+      {
+        ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
 
-      objectWithAllDataTypes.Int32Property = value;
+        objectWithAllDataTypes.Int32Property = value;
 
-      clientTransaction.Commit();
+        clientTransaction.Commit();
+      }
     }
 
     private int GetInt32Property (ClientTransaction clientTransaction)
     {
-      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
+      using (clientTransaction.EnterScope ())
+      {
+        ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
 
-      return objectWithAllDataTypes.Int32Property;
+        return objectWithAllDataTypes.Int32Property;
+      }
     }
 
     private void RememberCurrentClientTransaction()

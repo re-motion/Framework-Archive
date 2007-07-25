@@ -37,6 +37,5 @@ public class CreateNoneTestTransactedFunction : WxeTransactedFunction
     if (ClientTransactionScope.CurrentTransaction != PreviousClientTransaction)
       throw new TestFailureException ("The WxeTransactedFunction of the parent function was not properly used.");
   }
-
 }
 }

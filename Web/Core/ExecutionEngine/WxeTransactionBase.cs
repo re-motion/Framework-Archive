@@ -72,6 +72,8 @@ namespace Rubicon.Web.ExecutionEngine
     /// </remarks>
     protected abstract void SetCurrentTransaction (TTransaction transaction);
 
+    // TODO: Add ResetCurrentTransaction (TTransaction oldTransaction), which is called once for every SetCurrentTransaction
+
     /// <summary> Creates a new transaction. </summary>
     /// <returns> A new instance of type <typeparamref name="TTransaction"/>. </returns>
     /// <exception cref="InvalidOperationException"> Thrown if <see langword="null"/> where to be returned as the child transaction. </exception>
