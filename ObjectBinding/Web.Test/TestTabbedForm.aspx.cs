@@ -188,7 +188,7 @@ public class TestTabbedForm : TestWxeBasePage
 		
     base.OnInit(e);
 
-    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.True;
+    this.EnableAbort = true;
     this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
 	}
 	#region Web Form Designer generated code

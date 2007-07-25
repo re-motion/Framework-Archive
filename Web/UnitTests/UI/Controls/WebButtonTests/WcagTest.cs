@@ -53,19 +53,6 @@ public class WcagTest : BaseTest
     Assert.AreEqual ("UseLegacyButton", WcagHelperMock.Property);
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsUndefined()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    _webButton.UseLegacyButton = null;
-    _webButton.EvaluateWaiConformity();
-
-    Assert.IsTrue (WcagHelperMock.HasError);
-    Assert.AreEqual (1, WcagHelperMock.Priority);
-    Assert.AreSame (_webButton, WcagHelperMock.Control);
-    Assert.AreEqual ("UseLegacyButton", WcagHelperMock.Property);
-  }
-
 
   [Test]
   public void IsLegacyButtonEnabledWithWcagOverride()

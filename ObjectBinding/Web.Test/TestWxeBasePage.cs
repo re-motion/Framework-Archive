@@ -49,7 +49,7 @@ public class TestWxeBasePage:
     }
 
     ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
-    EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
+    EnableAbort = false;
     base.OnInit (e);
     RegisterEventHandlers();
   }

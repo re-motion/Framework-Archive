@@ -48,8 +48,8 @@ public class IndividualControlTestForm : TestBasePage
 
     base.OnInit (e);
     
-    this.EnableAbort = NaBooleanEnum.False;
-    this.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
+    this.EnableAbort = false;
+    this.EnableOutOfSequencePostBacks = true;
     this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }
 

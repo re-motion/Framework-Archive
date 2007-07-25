@@ -95,7 +95,7 @@ public class DesignTestBooleanValueForm : DesignTestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
+    this.EnableAbort = false;
     this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
     this.Load += new System.EventHandler(this.Page_Load);
 
