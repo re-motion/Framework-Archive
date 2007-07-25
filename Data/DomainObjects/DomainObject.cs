@@ -340,7 +340,6 @@ public class DomainObject
   public event EventHandler Deleted;
 
   private ObjectID _id;
-  private Set<ClientTransaction> _enlistedTransactions;
 
   // construction and disposing
 
@@ -415,8 +414,20 @@ public class DomainObject
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     _id = dataContainer.ID;
-    _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (dataContainer.ClientTransaction.RootTransaction);
+    dataContainer.ClientTransaction.EnlistNewlyCreatedDomainObject (this);
+  }
+
+  /// <summary>
+  /// GetType might return a <see cref="Type"/> object for a generated class, which is usually not what is expected.
+  /// <see cref="DomainObject.GetPublicDomainObjectType"/> can be used to get the Type object of the original underlying domain object type. If
+  /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
+  /// </summary>
+  [Obsolete ("GetType might return a Type object for a generated class., which is usually not what is expected. "
+    + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
+   + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
+  public new Type GetType ()
+  {
+    throw new InvalidOperationException ("DomainObject.GetType should not be used.");
   }
 
   /// <summary>
@@ -427,7 +438,7 @@ public class DomainObject
   /// as if it was of the type returned by this method and ignore its actual type.</remarks>
   public virtual Type GetPublicDomainObjectType ()
   {
-    return this.GetType ();
+    return base.GetType ();
   }
 
   /// <summary>
@@ -537,15 +548,16 @@ public class DomainObject
   /// <returns>
   /// True if this instance can be used in the specified transaction; otherwise, false.
   /// </returns>
-  /// <remarks>If this method returns false, <see cref="EnlistInTransaction"/> can be used to enlist this instance in another transaction.</remarks>
+  /// <remarks>If this method returns false, <see cref="ClientTransaction.EnlistDomainObject"/> can be used to enlist this instance in another
+  /// transaction.</remarks>
   public bool CanBeUsedInTransaction (ClientTransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
-    if (_enlistedTransactions.Contains (transaction.RootTransaction))
+    if (transaction.IsEnlisted (this))
       return true;
     else if (ClientTransactionScope.ActiveScope != null && ClientTransactionScope.ActiveScope.AutoEnlistDomainObjects)
     {
-      EnlistInTransaction (transaction);
+      transaction.EnlistDomainObject (this);
       return true;
     }
     else
@@ -561,48 +573,6 @@ public class DomainObject
           + "in the current transaction.", ID);
       throw new ClientTransactionsDifferException (message);
     }
-  }
-
-  /// <summary>
-  /// Allows this domain object to be used in the context a given transaction without needing to explicitly reload it there.
-  /// </summary>
-  /// <param name="transaction">The transaction this domain object should be used in.</param>
-  /// <remarks>
-  /// <para>
-  /// Unlike <see cref="DomainObject.LoadIntoTransaction"/>, this method does not create a new <see cref="DomainObject"/> reference, but instead
-  /// marks this <see cref="DomainObject"/> for use in the given transaction. After this, the same object reference can be used in both the
-  /// transaction it was originally created in and the transactions it has been enlisted in.
-  /// </para>
-  /// <para>
-  /// Using a <see cref="DomainObject"/> in two different transactions at the same time will result in its <see cref="Properties"/> differing
-  /// depending on which transaction is currently active. For example, if a property is changed (and even committed) in transaction A and the object
-  /// has been enlisted in transaction B before transaction's A commit, transaction B will never see the changes committed by transaction A.
-  /// </para>
-  /// </remarks>
-  public void EnlistInTransaction (ClientTransaction transaction)
-  {
-    ArgumentUtility.CheckNotNull ("transaction", transaction);
-
-    DataContainer dataContainer;
-    try
-    {
-      dataContainer = GetDataContainerForTransaction (transaction);
-    }
-    catch (ObjectNotFoundException ex)
-    {
-      string message = string.Format ("The domain object '{0}' cannot be enlisted in the given transaction because it does not exist in that "
-          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", ID);
-      throw new ArgumentException (message, "transaction", ex);
-    }
-
-    if (dataContainer.DomainObject != this)
-    {
-      string message = string.Format ("A domain object instance for object '{0}' already exists in the given transaction.",
-          ID);
-      throw new InvalidOperationException (message);
-    }
-
-    _enlistedTransactions.Add (transaction.RootTransaction);
   }
 
   #endregion

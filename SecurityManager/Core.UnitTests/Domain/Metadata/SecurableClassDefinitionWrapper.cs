@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       ArgumentUtility.CheckNotNull ("securableClassDefinition", securableClassDefinition);
 
       _securableClassDefinition = securableClassDefinition;
-      _accessTypeReferencesPropertyInfo = _securableClassDefinition.GetType ().GetProperty (
+      _accessTypeReferencesPropertyInfo = ((object)_securableClassDefinition).GetType ().GetProperty (
           "AccessTypeReferences",
           BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     }

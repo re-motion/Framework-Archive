@@ -80,6 +80,16 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return true;
     }
 
+    protected internal override void DoEnlistDomainObject (DomainObject domainObject)
+    {
+      ParentTransaction.DoEnlistDomainObject (domainObject);
+    }
+
+    protected internal override bool IsEnlisted (DomainObject domainObject)
+    {
+      return ParentTransaction.IsEnlisted (domainObject);
+    }
+
     protected internal override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

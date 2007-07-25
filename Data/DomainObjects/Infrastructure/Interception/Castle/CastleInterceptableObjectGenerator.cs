@@ -110,14 +110,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure.Interception.Castle
     {
       ArgumentUtility.CheckNotNull ("instance", instance);
 
-      if (!WasCreatedByGenerator (instance.GetType ()))
+      Type instanceType = ((object)instance).GetType ();
+      if (!WasCreatedByGenerator (instanceType))
       {
         string message = string.Format ("Type {0} is not an interceptable type created by this kind of generator.",
-          instance.GetType ().FullName);
+          instanceType.FullName);
         throw new ArgumentException (message);
       }
 
-      FieldInfo field = instance.GetType().GetField ("__interceptors");
+      FieldInfo field = instanceType.GetField ("__interceptors");
       Assertion.Assert (field != null, "DynamicProxy 2 __interceptors field must exist");
       field.SetValue (instance, CreateInterceptorArray());
     }

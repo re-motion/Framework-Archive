@@ -104,7 +104,7 @@ public class ReferencePropertyTest : DatabaseTest
 
   private PropertyInfo GetOrderProperty ()
   {
-    Type orderTicketType = _orderTicket.GetType ();
+    Type orderTicketType = ((object)_orderTicket).GetType ();
     return orderTicketType.GetProperty ("Order");
   }
 }

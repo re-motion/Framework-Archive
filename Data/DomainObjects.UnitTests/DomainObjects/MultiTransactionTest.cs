@@ -142,19 +142,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
       Assert.IsFalse (order.CanBeUsedInTransaction (newTransaction));
 
-      order.EnlistInTransaction (newTransaction);
+      newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted in the given transaction because it "
-          + "does not exist in that transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted because it does not exist in this "
+          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
           MatchType = MessageMatch.Regex)]
     public void NewObjectCannotBeEnlistedInTransaction ()
     {
       ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.NewObject ();
-      order.EnlistInTransaction (newTransaction);
+      newTransaction.EnlistDomainObject (order);
     }
 
     [Test]
@@ -171,7 +171,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      order.EnlistInTransaction (newTransaction);
+      newTransaction.EnlistDomainObject (order);
       using (newTransaction.EnterScope ())
       {
         Assert.AreEqual (5, order.OrderNumber);
@@ -187,7 +187,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       ClientTransaction newTransaction = ClientTransaction.NewTransaction();
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      order.EnlistInTransaction (newTransaction);
+      newTransaction.EnlistDomainObject (order);
       Assert.IsTrue (order.CanBeUsedInTransaction (newTransaction));
       Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
 
@@ -206,8 +206,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted in the given transaction because it "
-          + "does not exist in that transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object '.*' cannot be enlisted because it does not exist in this "
+          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.",
           MatchType = MessageMatch.Regex)]
     public void DeletedObjectCannotBeEnlistedInTransaction ()
     {
@@ -220,7 +220,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       order.Delete ();
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      order.EnlistInTransaction (ClientTransaction.NewTransaction());
+      ClientTransaction.NewTransaction().EnlistDomainObject (order);
     }
 
     [Test]
@@ -232,7 +232,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (StateType.Deleted, order.State);
       
       ClientTransaction newTransaction = ClientTransaction.NewTransaction();
-      order.EnlistInTransaction (newTransaction);
+      newTransaction.EnlistDomainObject (order);
       using (newTransaction.EnterScope ())
       {
         Assert.AreNotEqual (StateType.Deleted, order.State);
@@ -248,13 +248,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ClientTransaction newTransaction2 = ClientTransaction.NewTransaction();
       
       Order order = Order.GetObject (DomainObjectIDs.Order1);
-      order.EnlistInTransaction (newTransaction1);
+      newTransaction1.EnlistDomainObject (order);
 
       int oldOrderNumber = order.OrderNumber;
       order.OrderNumber = 5;
       ClientTransactionScope.CurrentTransaction.Commit ();
 
-      order.EnlistInTransaction (newTransaction2);
+      newTransaction2.EnlistDomainObject (order);
 
       using (newTransaction1.EnterScope ())
       {
@@ -278,7 +278,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       using (new ClientTransactionScope ())
       {
-        order.EnlistInTransaction (ClientTransactionScope.CurrentTransaction);
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
         Assert.IsTrue (order.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         Assert.AreSame (order, Order.GetObject (order.ID));
       }
@@ -286,14 +286,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "A domain object instance for object "
-        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in the given transaction.")]
+        + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' already exists in this transaction.")]
     public void EnlistingAlthoughObjectHasAlreadyBeenLoadedThrows ()
     {
       Order order = Order.GetObject (DomainObjectIDs.Order1);
       using (new ClientTransactionScope ())
       {
         Assert.AreNotSame (order, Order.GetObject (order.ID));
-        order.EnlistInTransaction (ClientTransactionScope.CurrentTransaction);
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
       }
     }
   }

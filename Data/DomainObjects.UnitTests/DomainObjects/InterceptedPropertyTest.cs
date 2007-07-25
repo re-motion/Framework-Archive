@@ -189,7 +189,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.NewObject ();
       Assert.IsTrue (classWithAllDataTypes is ClassWithAllDataTypes);
-      Assert.IsFalse (classWithAllDataTypes.GetType ().Equals (typeof (ClassWithAllDataTypes)));
+      Assert.IsFalse (((object)classWithAllDataTypes).GetType ().Equals (typeof (ClassWithAllDataTypes)));
     }
 
     private bool ShouldUseFactoryForInstantiation (Type type)

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Infrastructure;
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
@@ -80,11 +82,11 @@ public abstract class ClientTransaction : ITransaction
   public event ClientTransactionEventHandler RolledBack;
 
   private readonly DataManager _dataManager;
-  private QueryManager _queryManager;
   private readonly Dictionary<Enum, object> _applicationData;
   private readonly CompoundClientTransactionListener _listeners;
   private readonly ClientTransactionExtensionCollection _extensions;
 
+  private QueryManager _queryManager;
   private bool _isReadOnly;
   
   // construction and disposing
@@ -105,7 +107,6 @@ public abstract class ClientTransaction : ITransaction
 
     _applicationData = applicationData;
     _dataManager = new DataManager (this);
-
   }
 
   // abstract methods and properties
@@ -130,6 +131,9 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
   public abstract bool ReturnToParentTransaction ();
+
+  protected internal abstract void DoEnlistDomainObject (DomainObject domainObject);
+  protected internal abstract bool IsEnlisted (DomainObject domainObject);
 
   /// <summary>
   /// Persists changed data in the couse of a <see cref="Commit"/> operation.
@@ -266,6 +270,63 @@ public abstract class ClientTransaction : ITransaction
   public virtual ClientTransactionScope EnterSideEffectFreeScope ()
   {
     return new ClientTransactionScope (this);
+  }
+
+  /// <summary>
+  /// Allows the given <see cref="DomainObject"/> to be used in the context of this transaction without needing to explicitly reload it there.
+  /// The <see cref="DomainObject"/> must be loadable into this transaction (i.e. it must be present in the underlying data store or the
+  /// ParentTransaction).
+  /// </summary>
+  /// <param name="domainObject">The object to be enlisted in this transaction.</param>
+  /// <remarks>
+  /// <para>
+  /// Unlike <see cref="DomainObject.LoadIntoTransaction{T}"/>, this method does not create a new <see cref="DomainObject"/> reference, but instead
+  /// marks the given <see cref="DomainObject"/> for use in this transaction. After this, the same object reference can be used in both the
+  /// transaction it was originally created in and the transactions it has been enlisted in.
+  /// </para>
+  /// <para>
+  /// Using a <see cref="DomainObject"/> in two different transactions at the same time will result in its <see cref="DomainObject.Properties"/>
+  /// differing depending on which transaction is currently active.
+  /// For example, if a property is changed (and even committed) in transaction A and the object
+  /// has been enlisted in transaction B before transaction's A commit, transaction B will never see the changes committed by transaction A.
+  /// </para>
+  /// <para>
+  /// If a certain <see cref="ObjectID"/> has already been associated with a certain <see cref="DomainObject"/> in this transaction, it is not
+  /// possible to register another <see cref="DomainObject"/> reference with the same <see cref="DomainObject.ID"/>.
+  /// </para>
+  /// </remarks>
+  /// <exception cref="ObjectNotFoundException">The domain object cannot be enlisted because it does not exist in the context of this
+  /// transaction. Maybe it was newly created and has not yet been committed, or it was deleted.</exception>
+  /// <exception cref="InvalidOperationException">The domain object cannot be enlisted, because another <see cref="DomainObject"/> with the same
+  /// <see cref="ObjectID"/> has already been associated with this transaction.</exception>
+  public void EnlistDomainObject (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    DataContainer dataContainer;
+    try
+    {
+      dataContainer = domainObject.GetDataContainerForTransaction (this);
+    }
+    catch (ObjectNotFoundException ex)
+    {
+      string message = string.Format ("The domain object '{0}' cannot be enlisted because it does not exist in this "
+          + "transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", domainObject.ID);
+      throw new ArgumentException (message, "domainObject", ex);
+    }
+
+    DoEnlistDomainObject (domainObject);
+
+    Assertion.Assert (dataContainer.DomainObject == domainObject, "DoEnlistDomainObject should throw an exception if this isn't the case");
+  }
+
+  /// <summary>
+  /// Enlists a newly created <see cref="DomainObject"/> for use in this transaction.
+  /// </summary>
+  /// <param name="domainObject">The newly created <see cref="DomainObject"/> to be enlisted in this transaction.</param>
+  internal void EnlistNewlyCreatedDomainObject (DomainObject domainObject)
+  {
+    DoEnlistDomainObject (domainObject);
   }
 
   /// <summary>

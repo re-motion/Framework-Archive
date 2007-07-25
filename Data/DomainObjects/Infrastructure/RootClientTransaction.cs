@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Rubicon.Collections;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
@@ -13,12 +14,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransaction : ClientTransaction
   {
+    private readonly Dictionary<ObjectID, DomainObject> _enlistedObjects;
+
     /// <summary>
     /// Initializes a new instance of the <b>RootClientTransaction</b> class.
     /// </summary>
     public RootClientTransaction ()
       : base (new Dictionary<Enum, object>(), new ClientTransactionExtensionCollection ())
     {
+      _enlistedObjects = new Dictionary<ObjectID, DomainObject>();
     }
 
     public override ClientTransaction ParentTransaction
@@ -34,6 +38,35 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     public override bool ReturnToParentTransaction ()
     {
       return false;
+    }
+
+    
+    protected internal override void DoEnlistDomainObject (DomainObject domainObject)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+      DomainObject alreadyEnlistedObject = GetEnlistedOrNull (domainObject.ID);
+      if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
+      {
+        string message = string.Format ("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
+        throw new InvalidOperationException (message);
+      }
+
+      _enlistedObjects.Add (domainObject.ID, domainObject);
+    }
+
+    protected internal override bool IsEnlisted (DomainObject domainObject)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+      return GetEnlistedOrNull (domainObject.ID) == domainObject;
+    }
+
+    private DomainObject GetEnlistedOrNull (ObjectID objectID)
+    {
+      DomainObject domainObject;
+      _enlistedObjects.TryGetValue (objectID, out domainObject);
+      return domainObject;
     }
 
     protected override void PersistData (DataContainerCollection changedDataContainers)

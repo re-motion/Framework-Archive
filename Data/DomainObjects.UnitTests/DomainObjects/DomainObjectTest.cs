@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Development.UnitTesting;
+using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -14,6 +15,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       base.TestFixtureSetUp ();
       SetDatabaseModifyable ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "DomainObject.GetType should not be used.")]
+    public void GetTypeThrows ()
+    {
+      try
+      {
+        Order order = Order.NewObject ();
+        typeof (DomainObject).GetMethod ("GetType", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Invoke (
+            order, new object[0]);
+      }
+      catch (TargetInvocationException ex)
+      {
+        throw ex.InnerException;
+      }
     }
 
     [Test]
