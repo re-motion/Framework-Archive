@@ -8,7 +8,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI;
@@ -22,7 +22,7 @@ namespace OBWTest
 /// </summary>
 public class RepeaterTest : SmartPage
 {
-  protected ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected OBRTest.ObjectBoundRepeater Repeater2;
   protected OBRTest.ObjectBoundRepeater Repeater3;
@@ -33,7 +33,7 @@ public class RepeaterTest : SmartPage
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
 
-    CurrentObject.BusinessObject = person;
+    CurrentObject.BusinessObject = (IBusinessObject) person;
     CurrentObject.LoadValues (IsPostBack);
 	}
 

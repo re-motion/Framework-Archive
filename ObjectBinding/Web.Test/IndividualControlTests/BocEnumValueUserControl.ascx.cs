@@ -19,7 +19,7 @@ public class BocEnumValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
@@ -54,7 +54,6 @@ public class BocEnumValueUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyGenderTestSetNewItemButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   
-  private ReflectionBusinessObjectInstanceEnumerationProperty _instanceEnumProperty;
   private string _instanceEnum;
 
   public string InstanceEnum
@@ -88,22 +87,14 @@ public class BocEnumValueUserControl : BaseUserControl
 
     GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
 
-    UnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) person.GetBusinessObjectProperty("MarriageStatus");
+    UnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    UnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) person.GetBusinessObjectProperty("MarriageStatus");
+    UnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     UnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) person.GetBusinessObjectProperty("MarriageStatus");
+    DisabledUnboundMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) person.GetBusinessObjectProperty("MarriageStatus");
+    DisabledUnboundReadOnlyMarriageStatusField.Property = (Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-
-    _instanceEnumProperty = new ReflectionBusinessObjectInstanceEnumerationProperty (
-        this.GetType().GetProperty("InstanceEnum"), 
-        this.GetType(), 
-        false, 
-        false, 
-        "A", "B");
-    InstanceEnumField.Property = _instanceEnumProperty;
 
     if (!IsPostBack)
     {

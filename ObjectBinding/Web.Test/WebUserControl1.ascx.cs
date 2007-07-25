@@ -1,3 +1,5 @@
+using Rubicon.ObjectBinding.Web.UI.Controls;
+
 namespace OBWTest
 {
 	using System;
@@ -17,8 +19,8 @@ namespace OBWTest
 	{
     protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
     protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-    protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource CurrentObject;
-    protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
 		private void Page_Load(object sender, System.EventArgs e)
 		{
@@ -49,7 +51,7 @@ namespace OBWTest
 		/// </summary>
 		private void InitializeComponent()
 		{
-      this.CurrentObject = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
+      this.CurrentObject = new BindableObjectDataSourceControl();
       // 
       // CurrentObject
       // 

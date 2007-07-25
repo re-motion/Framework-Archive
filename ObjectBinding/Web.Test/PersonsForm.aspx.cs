@@ -24,7 +24,7 @@ public class PersonsForm : SingleBocTestWxeBasePage
 {
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList PersonList;
   protected System.Web.UI.WebControls.Button PostBackButton;
@@ -43,7 +43,7 @@ public class PersonsForm : SingleBocTestWxeBasePage
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 	}
 
 	#region Web Form Designer generated code

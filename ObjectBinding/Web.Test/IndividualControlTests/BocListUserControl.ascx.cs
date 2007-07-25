@@ -28,13 +28,13 @@ public class BocListUserControl : BaseUserControl
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
   protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl EmptyDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected OBRTest.TestBocListValidator EmptyListValidator;
   protected OBRTest.TestBocList Testboclist1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -309,7 +309,7 @@ public class BocListUserControl : BaseUserControl
   private void AddAndEditButton_Click(object sender, System.EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
-    ChildrenList.AddAndEditRow (person);
+    ChildrenList.AddAndEditRow ((IBusinessObject) person);
   }
 
   private void ChildrenListEndEditModeButton_Click(object sender, System.EventArgs e)

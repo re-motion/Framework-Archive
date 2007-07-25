@@ -17,9 +17,9 @@ public class ClientFormWxeFunction: WxeFunction
   }
 
   // parameters
-  public ReflectionBusinessObject Object 
+  public BindableXmlObject Object 
   {
-    get { return (ReflectionBusinessObject) Variables["Object"]; }
+    get { return (BindableXmlObject) Variables["Object"]; }
     set { Variables["Object"] = value; }
   }
 

@@ -43,7 +43,7 @@ public class BocBooleanValueUserControl : BaseUserControl
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundDeceasedField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DisabledUnboundReadOnlyDeceasedField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -67,13 +67,13 @@ public class BocBooleanValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) person.GetBusinessObjectProperty("Deceased");
+    UnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) person.GetBusinessObjectProperty("Deceased");
+    UnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) person.GetBusinessObjectProperty("Deceased");
+    DisabledUnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) person.GetBusinessObjectProperty("Deceased");
+    DisabledUnboundReadOnlyDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Deceased");
     DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
 
     if (!IsPostBack)

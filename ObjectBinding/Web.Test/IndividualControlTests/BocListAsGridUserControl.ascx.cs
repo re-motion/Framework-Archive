@@ -24,7 +24,7 @@ public class BocListAsGridUserControl : BaseUserControl
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
   protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl EmptyDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected OBRTest.TestBocListValidator EmptyListValidator;
   protected OBRTest.TestBocList Testboclist1;
@@ -37,7 +37,7 @@ public class BocListAsGridUserControl : BaseUserControl
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NumberOfNewRowsField;
   protected Rubicon.Web.UI.Controls.WebButton RemoveRows;
   protected Rubicon.Web.UI.Controls.WebButton CancelEditModeButton;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -206,7 +206,7 @@ public class BocListAsGridUserControl : BaseUserControl
   private void AddRowButton_Click(object sender, System.EventArgs e)
   {
     Person person = Person.CreateObject (Guid.NewGuid());
-    ChildrenList.AddRow (person);
+    ChildrenList.AddRow ((IBusinessObject) person);
   }
 
   private void AddRowsButton_Click(object sender, System.EventArgs e)
@@ -219,8 +219,8 @@ public class BocListAsGridUserControl : BaseUserControl
     Person[] persons = new Person[count];
     for (int i = 0; i < count; i++)
       persons[i] = Person.CreateObject (Guid.NewGuid());
-    
-    ChildrenList.AddRows (persons);
+
+    ChildrenList.AddRows ((IBusinessObjectWithIdentity[]) ArrayUtility.Convert (persons, typeof (IBusinessObjectWithIdentity)));
   }
 
   private void RemoveRows_Click(object sender, System.EventArgs e)

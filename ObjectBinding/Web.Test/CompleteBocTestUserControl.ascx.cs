@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Collections.Specialized;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
@@ -25,7 +26,7 @@ public class CompleteBocUserControl :
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
@@ -60,12 +61,13 @@ public class CompleteBocUserControl :
       partner = person.Partner;
     }
 
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.LoadValues (IsPostBack);
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
       ReferenceField.SetBusinessObjectList (objects);
     }
 
@@ -80,13 +82,13 @@ public class CompleteBocUserControl :
 		base.OnInit(e);
 
       if (!IsPostBack)
-    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+    XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
 
     BocTextValue incomeField = new BocTextValue();
     incomeField.ID = "IncomeField";
-    incomeField.DataSourceControl = ReflectionBusinessObjectDataSourceControl.ID;
+    incomeField.DataSourceControl = CurrentObject.ID;
     incomeField.PropertyIdentifier = "Income";
     incomeField.Visible = false;
     //  A new row
@@ -155,8 +157,8 @@ public class CompleteBocUserControl :
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      ReflectionBusinessObjectDataSourceControl.SaveValues (false);
-      Person person = (Person) ReflectionBusinessObjectDataSourceControl.BusinessObject;
+      CurrentObject.SaveValues (false);
+      Person person = (Person) CurrentObject.BusinessObject;
       person.SaveObject();
     }
   }

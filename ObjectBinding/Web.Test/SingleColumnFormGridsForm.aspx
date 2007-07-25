@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="SingleColumnFormGridsForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.SingleColumnFormGridsForm" %><!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >

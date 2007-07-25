@@ -51,7 +51,7 @@ public class BocTextValueUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNullButton;
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyFirstNameTestSetNewValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -95,13 +95,13 @@ public class BocTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("FirstName");
+    UnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     //UnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    UnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("FirstName");
+    UnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     UnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("FirstName");
+    DisabledUnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
-    DisabledUnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("FirstName");
+    DisabledUnboundReadOnlyFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("FirstName");
     DisabledUnboundReadOnlyFirstNameField.LoadUnboundValue (person.FirstName, IsPostBack);
 
     if (!IsPostBack)

@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Web.UI.WebControls;
 
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.Configuration;
 
@@ -20,8 +22,8 @@ namespace OBWTest.UI
 		{
       Type itemType = typeof (WcagConfiguration);
       PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
-			ReflectionBusinessObjectEnumerationProperty property = 
-          new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, false);
+			EnumerationProperty property = 
+          new EnumerationProperty(new PropertyBase.Parameters(BindableObjectProvider.Current, propertyInfo, null, false, false));
 
       WaiConformanceLevelField.Property = property;
       WaiConformanceLevelField.LoadUnboundValue (WebConfiguration.Current.Wcag.ConformanceLevel, IsPostBack);

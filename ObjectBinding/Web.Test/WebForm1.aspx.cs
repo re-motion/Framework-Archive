@@ -8,7 +8,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-
+using Rubicon.ObjectBinding;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
@@ -37,14 +37,14 @@ public class WebForm1 : System.Web.UI.Page
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PartnerFirstNameField;
   protected System.Web.UI.WebControls.Label Label2;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObjectDataSource;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObjectDataSource;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel2;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    ReflectionBusinessObjectStorage.Reset();
-    Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
+    XmlReflectionBusinessObjectStorageProvider.Current.Reset ();
+    Guid personID = new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
     Person person = Person.GetObject (personID);
     Person partner;
     if (person == null)
@@ -68,7 +68,7 @@ public class WebForm1 : System.Web.UI.Page
       partner = person.Partner;
     }
 
-		CurrentObjectDataSource.BusinessObject = person;
+    CurrentObjectDataSource.BusinessObject = (IBusinessObject) person;
 
     this.DataBind();
     CurrentObjectDataSource.LoadValues (IsPostBack);

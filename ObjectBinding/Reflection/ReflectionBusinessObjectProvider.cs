@@ -3,7 +3,7 @@ using System.Collections;
 using Rubicon.Collections;
 using Rubicon.ObjectBinding.Web;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectProvider: BusinessObjectProvider

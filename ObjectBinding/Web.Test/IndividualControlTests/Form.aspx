@@ -1,7 +1,7 @@
 <%@ Page language="c#" Codebehind="Form.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.IndividualControlTests.IndividualControlTestForm" %>
 <%@ Register TagPrefix="obwt" TagName="NavigationTabs" Src="../UI/NavigationTabs.ascx" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
 <html>
   <head>
@@ -25,7 +25,7 @@
 <div><asp:placeholder id="UserControlPlaceHolder" runat="server"/></div>
 <div><asp:literal id="Stack" runat="server"/></div>
 <div 
-style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls"><obr:reflectionbusinessobjectdatasourcecontrol 
+style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls"><rubicon:BindableObjectDataSourceControl 
 id=CurrentObject runat="server" 
 typename="OBRTest.Person, OBRTest"/></div>
 </form>

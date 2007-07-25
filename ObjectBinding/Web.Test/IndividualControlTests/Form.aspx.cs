@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.NullableValueTypes;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
@@ -24,7 +25,7 @@ public class IndividualControlTestForm : TestBasePage
   protected System.Web.UI.WebControls.PlaceHolder UserControlPlaceHolder;
   protected Rubicon.Web.UI.Controls.WebButton SaveButton;
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected System.Web.UI.WebControls.Literal Stack;
 
   private IDataEditControl _dataEditControl;
@@ -131,8 +132,8 @@ public class IndividualControlTestForm : TestBasePage
 
   private void PopulateDataSources()
   {
-    CurrentObject.BusinessObject = CurrentFunction.Person;
-    _dataEditControl.BusinessObject = CurrentFunction.Person;
+    CurrentObject.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+    _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
   }
 
   private void LoadValues (bool interim)

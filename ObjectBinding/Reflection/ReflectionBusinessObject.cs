@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Xml.Serialization;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Reflection.Legacy
 {
 
 /// <summary>

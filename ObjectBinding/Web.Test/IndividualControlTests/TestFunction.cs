@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Utilities;
 
 using Rubicon.ObjectBinding;
@@ -54,7 +55,7 @@ public class TestFunction: WxeFunction
 
   private void Step2()
   {
-    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+    XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
@@ -133,7 +134,7 @@ public class TestFunction: WxeFunction
       foreach (Job job in _person.Jobs)
         job.SaveObject();
     }
-    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+    XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 }
 

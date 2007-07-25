@@ -8,6 +8,8 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using OBRTest;
@@ -19,7 +21,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected System.Web.UI.WebControls.Label TreeViewLabel;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
   protected OBRTest.PersonTreeView PersonTreeView;
   protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
@@ -32,7 +34,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
 
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
+    CurrentObject.BusinessObject = (IBusinessObject) person;
     
 
     this.DataBind();
@@ -40,9 +42,9 @@ public class SingleTestTreeView : SingleBocTestBasePage
     if (person.Children == null)
     {
       person.Children = null;
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
     }
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.LoadValues (IsPostBack);
     BocTreeNode node = PersonTreeView.SelectedNode;
   }
 

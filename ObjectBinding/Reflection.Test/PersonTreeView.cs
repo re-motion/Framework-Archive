@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
+using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
@@ -24,15 +25,13 @@ public class PersonTreeView: BocTreeView
       nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo (
           "Children", 
           "ToolTip: Children", 
-          new IconInfo(null, Unit.Empty, Unit.Empty), 
-          new ReflectionBusinessObjectReferenceProperty (
-              typeof (Person).GetProperty ("Children"), typeof (Person), true));
+          new IconInfo(null, Unit.Empty, Unit.Empty),
+          (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Children"));
       nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo (
           "Jobs", 
           "ToolTip: Jobs",
-          new IconInfo(null, Unit.Empty, Unit.Empty), 
-          new ReflectionBusinessObjectReferenceProperty (
-              typeof (Person).GetProperty ("Jobs"), typeof (Job), true));
+          new IconInfo(null, Unit.Empty, Unit.Empty),
+          (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Jobs"));
     }
     else
     {

@@ -32,7 +32,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
@@ -53,12 +53,13 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     if (person != null)
       partner = person.Partner;
 
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.BusinessObject = (IBusinessObjectWithIdentity) person;
+    CurrentObject.LoadValues (IsPostBack);
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
       PartnerField.SetBusinessObjectList (objects);
     }
 	}
@@ -72,7 +73,7 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
 
     InitalizePartnerFieldMenuItems();
     InitalizeJobListMenuItems();
@@ -232,13 +233,13 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      ReflectionBusinessObjectDataSourceControl.SaveValues (false);
-      Person person = (Person) ReflectionBusinessObjectDataSourceControl.BusinessObject;
+      CurrentObject.SaveValues (false);
+      Person person = (Person) CurrentObject.BusinessObject;
       person.SaveObject();
       if (person.Partner != null)
         person.Partner.SaveObject();
     }
-    Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+    XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
   private void PartnerField_SelectionChanged(object sender, System.EventArgs e)

@@ -1,7 +1,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="PersonsForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.PersonsForm" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -19,7 +19,7 @@
           <td colSpan=2>Persons</td></tr>
         <tr>
           <td></td>
-          <td><obc:BocList id="PersonList" runat="server" PropertyIdentifier="" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAllProperties="True" >
+          <td><obc:BocList id="PersonList" runat="server" PropertyIdentifier="" DataSourceControl="CurrentObject" ShowAllProperties="True" >
 <fixedcolumns>
 <obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
 <persistedcommand>
@@ -29,7 +29,7 @@
 </FixedColumns></obc:BocList></td></tr>
           </table>
       <p><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol></p></form>
+      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="OBRTest.Person, OBRTest" /></p></form>
 
   </body>
 </html>

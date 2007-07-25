@@ -26,7 +26,7 @@ namespace OBWTest.Design
 {
 public class DesignTestDateTimeValueForm : DesignTestWxeBasePage
 {
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeVale1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeVale2;
@@ -88,8 +88,8 @@ public class DesignTestDateTimeValueForm : DesignTestWxeBasePage
     Person person = Person.GetObject (personID);
     Person partner = person.Partner;
     
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.LoadValues (IsPostBack);
   }
 
 	override protected void OnInit(EventArgs e)
@@ -101,7 +101,7 @@ public class DesignTestDateTimeValueForm : DesignTestWxeBasePage
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
 	#region Web Form Designer generated code

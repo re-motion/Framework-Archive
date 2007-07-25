@@ -9,8 +9,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.Reflection;
 using OBRTest;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -21,17 +23,17 @@ public class WebForm2: System.Web.UI.Page
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
   protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl reflectionBusinessObjectDataSource1;
 
 	private void Page_Load (object sender, System.EventArgs e)
 	{
-    Person p = new Person();
+    Person p = Person.CreateObject();
     p.FirstName = "Hugo";
     p.LastName = "Meier";
     p.DateOfBirth = new DateTime (1959, 4, 15);
     p.Height = 179;
 
-		reflectionBusinessObjectDataSource1.BusinessObject = p;
+    reflectionBusinessObjectDataSource1.BusinessObject = (IBusinessObject) p;
 
     this.DataBind();
     reflectionBusinessObjectDataSource1.LoadValues (false);
@@ -54,7 +56,7 @@ public class WebForm2: System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.reflectionBusinessObjectDataSource1 = new Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource();
+    this.reflectionBusinessObjectDataSource1 = new BindableObjectDataSourceControl();
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
     // 
     // reflectionBusinessObjectDataSource1

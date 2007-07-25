@@ -26,7 +26,7 @@ namespace OBWTest.Design
 {
 public class DesignTestEnumValueForm : DesignTestWxeBasePage
 {
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue Bocenumvalue1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue Bocenumvalue2;
@@ -105,9 +105,9 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
     Person partner = person.Partner;
-    
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+
+    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.LoadValues (IsPostBack);
   }
 
 	override protected void OnInit(EventArgs e)
@@ -119,7 +119,7 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
 	#region Web Form Designer generated code

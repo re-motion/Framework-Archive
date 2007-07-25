@@ -1,4 +1,3 @@
-<%@ Register TagPrefix="cc1" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <%@ Page language="c#" Codebehind="TestUserControlBinding.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestUserControlBinding" %>
 <%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
@@ -17,7 +16,7 @@
     <form id="Form1" method="post" runat="server">
       <div visible="false" runat="server" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; FONT-SIZE: x-small; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: Verdana, Arial, Sans-Serif; BACKGROUND-COLOR: #ffffe0">
         <rubicon:FormGridManager id="FormGridManager" runat="server"></rubicon:FormGridManager>
-        <cc1:ReflectionBusinessObjectDataSourceControl id="DataSource" runat="server" TypeName="OBWTest.Person"></cc1:ReflectionBusinessObjectDataSourceControl>
+        <rubicon:BindableObjectDataSourceControl id="DataSource" runat="server" TypeName="OBWTest.Person" />
       </div>
       <TABLE id="NameFormGrid" runat="server" style="WIDTH: 100%">
         <TR>

@@ -19,7 +19,7 @@ public class TestTabbedPersonJobsUserControl :
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
 
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = 
@@ -34,7 +34,7 @@ public class TestTabbedPersonJobsUserControl :
 
   public override IBusinessObjectDataSourceControl DataSource
   {
-    get { return ReflectionBusinessObjectDataSourceControl; }
+    get { return CurrentObject; }
   }
 
   public virtual StringCollection GetHiddenRows (HtmlTable table)
@@ -169,7 +169,7 @@ public class TestTabbedPersonJobsUserControl :
 
     BocTextValue incomeField = new BocTextValue();
     incomeField.ID = "IncomeField";
-    incomeField.DataSource = ReflectionBusinessObjectDataSourceControl;
+    incomeField.DataSource = CurrentObject;
     incomeField.PropertyIdentifier = "Income";
     _incomeField = incomeField;
 

@@ -1,7 +1,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="DesignTestMultilineTextValueForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.Design.DesignTestMultilineTextValueForm" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -18,11 +18,11 @@
   <tr>
     <td colSpan=2>Edit Mode</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue1 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue1 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="CurrentObject">
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue36 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue36 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <commonstyle width="100%">
 </CommonStyle>
 
@@ -30,15 +30,15 @@
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue37 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue37 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle width="100%">
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">textbox 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue2 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue2 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="CurrentObject"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue38 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue38 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <commonstyle width="50%">
 </CommonStyle>
 
@@ -46,15 +46,15 @@
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue39 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue39 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle width="50%">
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">textbox 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue3 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="300px"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue3 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="300px"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue40 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue40 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <commonstyle width="300px">
 </CommonStyle>
 
@@ -62,15 +62,15 @@
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue41 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue41 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle width="300px">
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">textbox 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue4 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="150px"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue4 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="150px"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue42 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue42 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <commonstyle width="150px">
 </CommonStyle>
 
@@ -78,21 +78,21 @@
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue43 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue43 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject">
 <textboxstyle width="150px">
 </TextBoxStyle></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">textbox 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue17 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%">
-    </obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue18 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue17 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%">
+    </obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue18 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">2x 33%</td></tr>
   <tr>
     <td colSpan=2>Read-Only Mode</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue5 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue5 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="CurrentObject" readonly="True"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue44 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue44 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <commonstyle width="100%">
 </CommonStyle>
 
@@ -101,7 +101,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue45 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue45 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 
@@ -110,10 +110,10 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">label 100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue6 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue6 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="CurrentObject" readonly="True"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue46 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue46 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <commonstyle width="50%">
 </CommonStyle>
 
@@ -122,7 +122,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue47 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue47 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 
@@ -131,13 +131,13 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">label 50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue7 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="300px" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue7 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="300px" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue48 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue48 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <commonstyle width="300px">
 </CommonStyle>
 
@@ -146,7 +146,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue49 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue49 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 
@@ -155,13 +155,13 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">label 300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue51 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="150px" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue51 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="150px" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">width 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue50 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue50 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <commonstyle width="150px">
 </CommonStyle>
 
@@ -170,7 +170,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">common 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue52 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue52 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" readonly="True">
 <textboxstyle>
 </TextBoxStyle>
 
@@ -179,13 +179,13 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">label 150px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue8 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" readonly="True">
-    </obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue19 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" readonly="True"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue8 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" readonly="True">
+    </obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue19 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" readonly="True"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">2x 33%</td></tr>
   <tr>
     <td colSpan=2>Edit Mode right</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue9 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue9 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="CurrentObject" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -197,7 +197,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue10 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue10 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="CurrentObject" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -209,7 +209,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue11 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="300px" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue11 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="300px" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -221,7 +221,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue12 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="150px" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue12 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="150px" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -234,7 +234,7 @@
     <td width="50%" class="cell">
       <p>150px</p></td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue22 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue22 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -243,7 +243,7 @@
 
 <labelstyle cssclass="label">
 </LabelStyle>
-</obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue23 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" cssclass="BocMultilineTextValue right">
+</obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue23 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -258,7 +258,7 @@
   <tr>
     <td colSpan=2>Read-Only Mode right</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue13 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue13 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="CurrentObject" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -267,7 +267,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue14 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue14 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="CurrentObject" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -276,7 +276,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue15 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="300px" readonly="True" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue15 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="300px" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -285,7 +285,7 @@
 </obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue16 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="150px" readonly="True" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue16 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="150px" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -295,13 +295,13 @@
     <td width="50%" class="cell">
       <p>150px</p></td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue20 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" readonly="True" cssclass="BocMultilineTextValue right">
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue20 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
 <textboxstyle>
 </TextBoxStyle>
-</obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue21 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" readonly="True" cssclass="BocMultilineTextValue right">
+</obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue21 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" readonly="True" cssclass="BocMultilineTextValue right">
 <commonstyle cssclass="common">
 </CommonStyle>
 
@@ -313,26 +313,26 @@
   <tr>
     <td colSpan=2>Edit Mode block</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue24 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue24 runat="server" propertyidentifier="CV" width="100%" datasourcecontrol="CurrentObject" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue25 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue25 runat="server" propertyidentifier="CV" width="50%" datasourcecontrol="CurrentObject" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue26 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="300px" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue26 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="300px" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">300px</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue27 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="150px" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue27 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="150px" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">
       <p>150px</p></td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue28 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue29 runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="33%" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
+    <td width="50%" class="cell"><obc:bocmultilinetextvalue id=BocMultilineTextValue28 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue><obc:bocmultilinetextvalue id=BocMultilineTextValue29 runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" Width="33%" cssclass="BocMultilineTextValue block"></obc:bocmultilinetextvalue></td>
     <td width="50%" class="cell">
       <p>2x 33%</p></td></tr>
   <tr>
     <td colSpan=2>Read-Only Mode block</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue30" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" width="100%" propertyidentifier="CV" readonly="True" cssclass="BocMultilineTextValue block">
+    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue30" runat="server" datasourcecontrol="CurrentObject" width="100%" propertyidentifier="CV" readonly="True" cssclass="BocMultilineTextValue block">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -344,7 +344,7 @@
 </obc:BocMultilineTextValue></td>
     <td width="50%" class="cell">100%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue31" cssclass="BocMultilineTextValue block" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="CV" width="50%" readonly="True">
+    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue31" cssclass="BocMultilineTextValue block" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="CV" width="50%" readonly="True">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -356,7 +356,7 @@
 </obc:BocMultilineTextValue></td>
     <td width="50%" class="cell">50%</td></tr>
   <tr>
-    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue32" cssclass="BocMultilineTextValue block" runat="server" Width="300px" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" propertyidentifier="CV">
+    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue32" cssclass="BocMultilineTextValue block" runat="server" Width="300px" datasourcecontrol="CurrentObject" readonly="True" propertyidentifier="CV">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -369,7 +369,7 @@
     <td width="50%" class="cell">300px</td>
   </tr>
   <tr>
-    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue33" cssclass="BocMultilineTextValue block" runat="server" Width="150px" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" propertyidentifier="CV">
+    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue33" cssclass="BocMultilineTextValue block" runat="server" Width="150px" datasourcecontrol="CurrentObject" readonly="True" propertyidentifier="CV">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -383,7 +383,7 @@
       <p>150px</p></td>
   </tr>  
   <tr>
-    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue34" cssclass="BocMultilineTextValue block" runat="server" Width="33%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" propertyidentifier="CV">
+    <td width="50%" class="cell"><obc:BocMultilineTextValue id="BocMultilineTextValue34" cssclass="BocMultilineTextValue block" runat="server" Width="33%" datasourcecontrol="CurrentObject" readonly="True" propertyidentifier="CV">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -392,7 +392,7 @@
 
 <labelstyle cssclass="label">
 </LabelStyle></obc:BocMultilineTextValue>
-<obc:BocMultilineTextValue id="BocMultilineTextValue35" cssclass="BocMultilineTextValue block" runat="server" Width="33%" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" readonly="True" propertyidentifier="CV">
+<obc:BocMultilineTextValue id="BocMultilineTextValue35" cssclass="BocMultilineTextValue block" runat="server" Width="33%" datasourcecontrol="CurrentObject" readonly="True" propertyidentifier="CV">
 <commonstyle cssclass="label">
 </CommonStyle>
 
@@ -403,6 +403,6 @@
 </LabelStyle></obc:BocMultilineTextValue></td>
     <td width="50%" class="cell">
       <p>2x 33%</p></td>
-  </tr></table><obr:ReflectionBusinessObjectDataSourceControl id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:ReflectionBusinessObjectDataSourceControl></form>
+  </tr></table><obr:CurrentObject id="CurrentObject" runat="server" typename="OBRTest.Person, OBRTest"></obr:CurrentObject></form>
   </body>
 </html>

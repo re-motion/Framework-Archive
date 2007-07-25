@@ -1,7 +1,7 @@
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="PersonDetailsForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.PersonDetailsForm" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -19,22 +19,22 @@
           <td colSpan=2>Persondetails</td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="100%" required="True">
+          <td><obc:boctextvalue id="LastNameField" runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
 </TextBoxStyle></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" Width="100%" required="True">
+          <td><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" Width="100%" required="True">
 <textboxstyle textmode="SingleLine">
 </TextBoxStyle></obc:boctextvalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:bocenumvalue id="GenderField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Gender" width="100%">
+          <td><obc:bocenumvalue id="GenderField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Gender" width="100%">
 <listcontrolstyle radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
 </ListControlStyle></obc:bocenumvalue></td></tr>
         <tr>
           <td style="HEIGHT: 14px"></td>
-          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="Partner" width="100%">
+          <td style="HEIGHT: 14px"><obc:bocreferencevalue id="PartnerField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%">
 
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
@@ -50,22 +50,22 @@
 </obc:BocTextValue></td></tr>
         <tr>
           <td></td>
-          <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" propertyidentifier="DateOfBirth" width="100%"></obc:bocdatetimevalue></td></tr>
+          <td><obc:bocdatetimevalue id="BirthdayField" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="DateOfBirth" width="100%"></obc:bocdatetimevalue></td></tr>
         <tr>
           <td></td>
-          <td><obc:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" width="100%"></obc:BocBooleanValue></td></tr>
+          <td><obc:BocBooleanValue id="DeceasedField" runat="server" propertyidentifier="Deceased" datasourcecontrol="CurrentObject" width="100%"></obc:BocBooleanValue></td></tr>
         <tr>
           <td></td>
-          <td><obc:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" width="100%">
+          <td><obc:BocMultilineTextValue id="CVField" runat="server" propertyidentifier="CV" datasourcecontrol="CurrentObject" width="100%">
 <textboxstyle textmode="MultiLine">
 </TextBoxStyle></obc:BocMultilineTextValue></td></tr>
         <tr>
           <td style="HEIGHT: 17px"></td>
-          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="ReflectionBusinessObjectDataSourceControl" ShowAvailableViewsList="false" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
+          <td style="HEIGHT: 17px"><obc:BocList id="JobList" runat="server" PropertyIdentifier="Jobs" DataSourceControl="CurrentObject" ShowAvailableViewsList="false" ShowAllProperties="True" EnableSelection="True" showemptylistmenu="False">
 </obc:BocList></td></tr>
           </table>
       <p><asp:button id=SaveButton runat="server" Width="80px" Text="Save"></asp:button><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><obr:reflectionbusinessobjectdatasourcecontrol id="ReflectionBusinessObjectDataSourceControl" runat="server" typename="OBRTest.Person, OBRTest"></obr:reflectionbusinessobjectdatasourcecontrol><obc:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="ReflectionBusinessObjectDataSourceControl"></obc:BusinessObjectReferenceDataSourceControl></p></form>
+      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="OBRTest.Person, OBRTest" /><obc:BusinessObjectReferenceDataSourceControl id="PartnerDataSource" runat="server" PropertyIdentifier="Partner" DataSourceControl="CurrentObject"></obc:BusinessObjectReferenceDataSourceControl></p></form>
 
   </body>
 </html>

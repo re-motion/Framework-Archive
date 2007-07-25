@@ -111,6 +111,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindableXmlObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -138,6 +139,7 @@
     <Compile Include="ReflectionBusinessObjectWebUIService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XmlReflectionBusinessObjectStorageProvider.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs" />
     <None Include="ObjectBinding.Reflection.build" />
   </ItemGroup>

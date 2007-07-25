@@ -123,7 +123,7 @@ public class TestTabbedForm : TestWxeBasePage
   private void DataEditControl_Load (object sender, EventArgs e)
   {
     IDataEditControl dataEditControl = (IDataEditControl) sender;
-    dataEditControl.BusinessObject = Function.Object;
+    dataEditControl.BusinessObject = (IBusinessObject) Function.Object;
     dataEditControl.LoadValues (IsPostBackAfterEnsure (dataEditControl.ID));
     dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
   }

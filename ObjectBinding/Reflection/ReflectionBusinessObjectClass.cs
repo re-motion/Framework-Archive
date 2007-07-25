@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectClass: IBusinessObjectClassWithIdentity

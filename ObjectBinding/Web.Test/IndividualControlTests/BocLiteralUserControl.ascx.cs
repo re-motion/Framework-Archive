@@ -36,7 +36,7 @@ namespace OBWTest.IndividualControlTests
 
       Person person = (Person) CurrentObject.BusinessObject;
 
-      UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty ("CVString");
+      UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVString");
       UnboundCVField.LoadUnboundValue (person.CVString, IsPostBack);
     }
 

@@ -82,7 +82,7 @@ public class ClientForm : TestWxeBasePage
     IDataEditControl dataEditControl = control as IDataEditControl;
     if (dataEditControl != null)
     {
-      dataEditControl.BusinessObject = Function.Object;
+      dataEditControl.BusinessObject = (IBusinessObject) Function.Object;
       dataEditControl.LoadValues (IsPostBack);
       dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
       return dataEditControl;

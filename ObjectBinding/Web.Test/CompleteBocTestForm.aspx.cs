@@ -31,7 +31,7 @@ namespace OBWTest
 
     protected System.Web.UI.WebControls.Button PostBackButton;
     protected System.Web.UI.WebControls.Button SaveButton;
-    protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
     protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
     protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
     protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
@@ -68,13 +68,14 @@ namespace OBWTest
       partner = person.Partner;
     }
 
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
+    CurrentObject.BusinessObject = (IBusinessObject)person;
     
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.LoadValues (IsPostBack);
     
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
       ReferenceField.SetBusinessObjectList (objects);
     }
 	}
@@ -88,13 +89,13 @@ namespace OBWTest
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
 
     BocTextValue incomeField = new BocTextValue();
     incomeField.ID = "IncomeField";
-    incomeField.DataSourceControl = ReflectionBusinessObjectDataSourceControl.ID;
+    incomeField.DataSourceControl = CurrentObject.ID;
     incomeField.PropertyIdentifier = "Income";
 
     //  A new row
@@ -177,8 +178,8 @@ namespace OBWTest
     bool isValid = FormGridManager.Validate();
     if (isValid)
     {
-      ReflectionBusinessObjectDataSourceControl.SaveValues (false);
-      Person person = (Person) ReflectionBusinessObjectDataSourceControl.BusinessObject;
+      CurrentObject.SaveValues (false);
+      Person person = (Person) CurrentObject.BusinessObject;
       person.SaveObject();
     }
   }

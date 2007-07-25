@@ -16,7 +16,7 @@ public class TestTabbedPersonDetailsUserControl :
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
@@ -30,7 +30,7 @@ public class TestTabbedPersonDetailsUserControl :
 
   public override IBusinessObjectDataSourceControl DataSource
   {
-    get { return ReflectionBusinessObjectDataSourceControl; }
+    get { return CurrentObject; }
   }
 
   public virtual StringCollection GetHiddenRows (HtmlTable table)

@@ -1,0 +1,197 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Xml.Serialization;
+using Rubicon.Mixins;
+using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.Reflection;
+using Rubicon.Utilities;
+
+namespace Rubicon.ObjectBinding.Reflection
+{
+  public class XmlReflectionBusinessObjectStorageProvider : IGetObjectService
+  {
+    private static readonly DoubleCheckedLockingContainer<XmlReflectionBusinessObjectStorageProvider> s_current
+        = new DoubleCheckedLockingContainer<XmlReflectionBusinessObjectStorageProvider> (delegate { return null; });
+
+    public static XmlReflectionBusinessObjectStorageProvider Current
+    {
+      get { return s_current.Value; }
+    }
+
+    public static void SetCurrent (XmlReflectionBusinessObjectStorageProvider provider)
+    {
+      ArgumentUtility.CheckNotNull ("provider", provider);
+      s_current.Value = provider;
+    }
+
+    private readonly string _rootPath;
+    private Hashtable _identityMap = new Hashtable();
+
+    public XmlReflectionBusinessObjectStorageProvider (string rootPath)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("rootPath", rootPath);
+
+      _rootPath = rootPath;
+    }
+
+    public void Reset ()
+    {
+      _identityMap = new Hashtable();
+    }
+
+    public string RootPath
+    {
+      get { return _rootPath; }
+    }
+
+    public BindableXmlObject GetObject (Type type, Guid id)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      if (id == Guid.Empty)
+        return null;
+
+      BindableXmlObject obj = GetFromIdentityMap (id);
+      if (obj != null)
+        return obj;
+
+      XmlSerializer serializer = new XmlSerializer (GetConcreteType (type), GetAttributeOverrides(type));
+
+      string typeDir = Path.Combine (_rootPath, type.FullName);
+      string fileName = Path.Combine (typeDir, id.ToString());
+      if (!File.Exists (fileName))
+        return null;
+
+      using (FileStream stream = new FileStream (fileName, FileMode.Open, FileAccess.Read))
+      {
+        obj = (BindableXmlObject) serializer.Deserialize (stream);
+        obj._id = id;
+        AddToIdentityMap (obj);
+        return obj;
+      }
+    }
+
+    public BindableXmlObject[] GetObjects (Type type)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      
+      ArrayList objects = new ArrayList ();
+
+      string typeDir = Path.Combine (_rootPath, type.FullName);
+      string[] filenames = Directory.GetFiles (typeDir);
+
+      foreach (string filename in filenames)
+      {
+        Guid id;
+        try
+        {
+          id = new Guid (new FileInfo (filename).Name);
+        }
+        catch (FormatException)
+        {
+          continue;
+        }
+
+        BindableXmlObject obj = GetObject (type, id);
+        if (obj != null)
+          objects.Add (obj);
+      }
+
+      return (BindableXmlObject[]) objects.ToArray (typeof (BindableXmlObject));
+    }
+
+    public void SaveObject (BindableXmlObject obj)
+    {
+      ArgumentUtility.CheckNotNull ("obj", obj);
+
+      XmlSerializer serializer = new XmlSerializer (obj.GetType());
+
+      Type targetType = GetTargetType (obj);
+      string typeDir = Path.Combine (_rootPath, targetType.FullName);
+      if (!Directory.Exists (typeDir))
+        Directory.CreateDirectory (typeDir);
+
+      string fileName = Path.Combine (typeDir, obj.ID.ToString());
+
+      using (FileStream stream = new FileStream (fileName, FileMode.Create, FileAccess.Write))
+      {
+        serializer.Serialize (stream, obj);
+      }
+    }
+
+    public T CreateObject<T> () where T : BindableXmlObject
+    {
+      return (T) CreateObject (typeof (T), Guid.NewGuid ());
+    }
+
+    public T CreateObject<T> (Guid id) where T : BindableXmlObject
+    {
+      return (T) CreateObject (typeof (T), id);
+    }
+
+    public BindableXmlObject CreateObject (Type concreteType)
+    {
+      return CreateObject (concreteType, Guid.NewGuid());
+    }
+
+    protected BindableXmlObject CreateObject (Type type, Guid id)
+    {
+      BindableXmlObject obj = (BindableXmlObject) ObjectFactory.Create (type).With();
+      obj._id = id;
+      AddToIdentityMap (obj);
+      return obj;
+    }
+
+    private void AddToIdentityMap (BindableXmlObject obj)
+    {
+      if (_identityMap.ContainsKey (obj.ID))
+        return;
+
+      WeakReference reference = new WeakReference (obj, false);
+      _identityMap.Add (obj.ID, reference);
+    }
+
+    private BindableXmlObject GetFromIdentityMap (Guid id)
+    {
+      WeakReference reference = (WeakReference) _identityMap[id];
+      if (reference == null)
+        return null;
+      return (BindableXmlObject) reference.Target;
+    }
+
+    private Type GetConcreteType (Type targetType)
+    {
+      return TypeFactory.GetConcreteType (targetType);
+    }
+
+    private Type GetTargetType (BindableXmlObject obj)
+    {
+      return ((BindableObjectClass) ((IBusinessObject) obj).BusinessObjectClass).Type;
+    }
+
+    private XmlAttributeOverrides GetAttributeOverrides (Type targetType)
+    {
+      XmlAttributeOverrides attributeOverrides = new XmlAttributeOverrides();
+      Type concreteType = GetConcreteType (targetType);
+      foreach (PropertyInfo propertyInfo in targetType.GetProperties (BindingFlags.Instance | BindingFlags.Public))
+      {
+        XmlAttributes attributes = new XmlAttributes();
+        foreach (XmlElementAttribute attribute in AttributeUtility.GetCustomAttributes<XmlElementAttribute> (propertyInfo, true))
+          attributes.XmlElements.Add (attribute);
+        attributeOverrides.Add (concreteType, attributes);
+      }
+
+      return attributeOverrides;
+    }
+
+    IBusinessObjectWithIdentity IGetObjectService.GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
+    {
+      ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
+      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+
+      return (IBusinessObjectWithIdentity) GetObject (classWithIdentity.Type, new Guid (uniqueIdentifier));
+    }
+  }
+}

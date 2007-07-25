@@ -46,7 +46,7 @@ public class BocReferenceValueUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Label PartnerCommandClickLabel;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -155,20 +155,21 @@ public class BocReferenceValueUserControl : BaseUserControl
 
     if (! IsPostBack)
     {
-      IBusinessObjectWithIdentity[] objects = ReflectionBusinessObjectStorage.GetObjects (person.GetType());
+      IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
+          XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)), typeof (IBusinessObjectWithIdentity));
       PartnerField.SetBusinessObjectList (objects);
       UnboundPartnerField.SetBusinessObjectList (objects);
       DisabledUnboundPartnerField.SetBusinessObjectList (objects);
     }
 
-    UnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) person.GetBusinessObjectProperty("Partner");
+    UnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
     //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    UnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) person.GetBusinessObjectProperty("Partner");
-    UnboundReadOnlyPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    DisabledUnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) person.GetBusinessObjectProperty("Partner");
-    DisabledUnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    DisabledUnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) person.GetBusinessObjectProperty("Partner");
-    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
+    UnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
+    DisabledUnboundPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
+    DisabledUnboundReadOnlyPartnerField.Property = (Rubicon.ObjectBinding.IBusinessObjectReferenceProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Partner");
+    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
   
     if (!IsPostBack)
     {
@@ -210,7 +211,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    PartnerField.Value = person;
+    PartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
   private void ReadOnlyPartnerTestSetNullButton_Click(object sender, System.EventArgs e)
@@ -224,7 +225,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    ReadOnlyPartnerField.Value = person;
+    ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
   }
 
   private void PartnerField_CommandClick(object sender, BocCommandClickEventArgs e)

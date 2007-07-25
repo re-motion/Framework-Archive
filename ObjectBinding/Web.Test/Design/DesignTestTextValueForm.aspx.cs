@@ -26,7 +26,7 @@ namespace OBWTest.Design
 {
 public class DesignTestTextValueForm : DesignTestWxeBasePage
 {
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue Boctextvalue36;
@@ -88,8 +88,8 @@ public class DesignTestTextValueForm : DesignTestWxeBasePage
     Person person = Person.GetObject (personID);
     Person partner = person.Partner;
     
-    ReflectionBusinessObjectDataSourceControl.BusinessObject = person;
-    ReflectionBusinessObjectDataSourceControl.LoadValues (IsPostBack);
+    CurrentObject.BusinessObject = (IBusinessObject) person;
+    CurrentObject.LoadValues (IsPostBack);
   }
 
 	override protected void OnInit(EventArgs e)
@@ -101,7 +101,7 @@ public class DesignTestTextValueForm : DesignTestWxeBasePage
 		base.OnInit(e);
 
     if (!IsPostBack)
-      Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectStorage.Reset();
+      XmlReflectionBusinessObjectStorageProvider.Current.Reset();
   }
 
 	#region Web Form Designer generated code

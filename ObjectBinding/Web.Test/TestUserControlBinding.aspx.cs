@@ -17,7 +17,7 @@ namespace OBWTest
 	public class TestUserControlBinding : System.Web.UI.Page
 	{
     protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-    protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl DataSource;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl DataSource;
     protected System.Web.UI.HtmlControls.HtmlTable NameFormGrid;
     protected System.Web.UI.WebControls.Label Label1;
     protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;

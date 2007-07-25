@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
+using Rubicon.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectStorage
@@ -110,7 +112,9 @@ public class ReflectionBusinessObjectStorage
 
   public static ReflectionBusinessObject CreateObject (Type concreteType, Guid id)
   {
-    ReflectionBusinessObject obj = (ReflectionBusinessObject) Activator.CreateInstance (concreteType);
+
+    ReflectionBusinessObject obj = 
+        (ReflectionBusinessObject) TypesafeActivator.CreateInstance (concreteType, BindingFlags.NonPublic | BindingFlags.Instance).With ();
     obj._id = id;
     AddToIdentityMap (obj);
     return obj;

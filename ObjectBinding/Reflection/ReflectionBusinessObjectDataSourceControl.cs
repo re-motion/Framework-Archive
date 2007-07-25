@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Reflection.Legacy
 {
 
 public class ReflectionBusinessObjectDataSourceControl: BusinessObjectDataSourceControl

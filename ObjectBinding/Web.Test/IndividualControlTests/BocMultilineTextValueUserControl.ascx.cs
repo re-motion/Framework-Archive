@@ -43,7 +43,7 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyCVTestSetNullButton;
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyCVTestSetNewValueButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
@@ -67,13 +67,13 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 
     Person person = (Person) CurrentObject.BusinessObject;
 
-    UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("CV");
+    UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    UnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("CV");
+    UnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     UnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("CV");
+    DisabledUnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("CV");
+    DisabledUnboundReadOnlyCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     DisabledUnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
     
     if (!IsPostBack)
