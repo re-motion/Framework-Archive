@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 
@@ -22,13 +21,13 @@ public class WxePageTest: WxeTest
   {
     WxePage page = new WxePage();
     
-    page.EnableAbort = NaBooleanEnum.Undefined;
+    page.EnableAbort = null;
     Assert.IsTrue (((IWxePage)page).IsAbortEnabled, "Abort disabled with EnableAbort=Undefined.");
     
-    page.EnableAbort = NaBooleanEnum.True;
+    page.EnableAbort = true;
     Assert.IsTrue (((IWxePage)page).IsAbortEnabled, "Abort disabled with EnableAbort=True.");
     
-    page.EnableAbort = NaBooleanEnum.False;
+    page.EnableAbort = false;
     Assert.IsFalse (((IWxePage)page).IsAbortEnabled, "Abort enabled with EnableAbort=False.");
   }
 
@@ -37,7 +36,7 @@ public class WxePageTest: WxeTest
   public void TestIsAbortConfimationEnabledWithAbortEnabledAndPageNotDirty()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.True;
+    page.EnableAbort = true;
     page.IsDirty = false;
 
     page.ShowAbortConfirmation = ShowAbortConfirmation.Always;
@@ -54,7 +53,7 @@ public class WxePageTest: WxeTest
   public void TestIsAbortConfimationEnabledWithAbortEnabledTrueAndPageDirty()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.True;
+    page.EnableAbort = true;
     page.IsDirty = true;
 
     page.ShowAbortConfirmation = ShowAbortConfirmation.Always;
@@ -71,7 +70,7 @@ public class WxePageTest: WxeTest
   public void TestIsAbortConfimationEnabledWithAbortDisabledFalseAndPageNotDirty()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.False;
+    page.EnableAbort = false;
     page.IsDirty = false;
 
     page.ShowAbortConfirmation = ShowAbortConfirmation.Always;
@@ -88,7 +87,7 @@ public class WxePageTest: WxeTest
   public void TestIsAbortConfimationEnabledWithAbortDisabledFalseAndPageDirty()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.False;
+    page.EnableAbort = false;
     page.IsDirty = true;
 
     page.ShowAbortConfirmation = ShowAbortConfirmation.Always;
@@ -106,15 +105,15 @@ public class WxePageTest: WxeTest
   public void TestAreOutOfSequencePostBacksEnabledWithAbortEnabled()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.True;
+    page.EnableAbort = true;
 
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.Undefined;
+    page.EnableOutOfSequencePostBacks = null;
     Assert.IsFalse (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks enabled with EnableOutOfSequencePostBacks=Undefined.");
     
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
+    page.EnableOutOfSequencePostBacks = true;
     Assert.IsFalse (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks enabled with EnableOutOfSequencePostBacks=True.");
     
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.False;
+    page.EnableOutOfSequencePostBacks = false;
     Assert.IsFalse (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks enabled with EnableOutOfSequencePostBacks=False.");
   }
 
@@ -122,15 +121,15 @@ public class WxePageTest: WxeTest
   public void TestAreOutOfSequencePostBacksEnabledWithAbortDisabled()
   {
     WxePage page = new WxePage();
-    page.EnableAbort = NaBooleanEnum.False;
+    page.EnableAbort = false;
 
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.Undefined;
+    page.EnableOutOfSequencePostBacks = null;
     Assert.IsFalse (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks enabled with EnableOutOfSequencePostBacks=Undefined.");
     
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
+    page.EnableOutOfSequencePostBacks = true;
     Assert.IsTrue (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks disabled with EnableOutOfSequencePostBacks=True.");
     
-    page.EnableOutOfSequencePostBacks = NaBooleanEnum.False;
+    page.EnableOutOfSequencePostBacks = false;
     Assert.IsFalse (((IWxePage)page).AreOutOfSequencePostBacksEnabled, "Out-of-sequence postbacks enabled with EnableOutOfSequencePostBacks=False.");
   }
 }

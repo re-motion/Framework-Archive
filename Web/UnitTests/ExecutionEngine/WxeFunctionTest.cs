@@ -2,7 +2,6 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -21,7 +20,7 @@ public class WxeFunctionTest: WxeTest
   public void SerializeParameters()
   {
     TestFunctionWithSerializableParameters function = 
-        new TestFunctionWithSerializableParameters ("Hello World", NaInt32.Null, 1);
+        new TestFunctionWithSerializableParameters ("Hello World", null, 1);
     NameValueCollection parameters = function.SerializeParametersForQueryString();
     Assert.AreEqual (3, parameters.Count);
     Assert.AreEqual ("Hello World", parameters["StringValue"]);
@@ -34,7 +33,7 @@ public class WxeFunctionTest: WxeTest
   {
     TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ();
     function.Variables["StringValue"] = "Hello World";
-    function.Variables["NaInt32Value"] = new NaInt32 (1);
+    function.Variables["NaInt32Value"] = 1;
     function.Variables["Int32Value"] = null;
 
     NameValueCollection parameters = function.SerializeParametersForQueryString();
@@ -54,7 +53,7 @@ public class WxeFunctionTest: WxeTest
     function.InitializeParameters (context.Request.Params);
 
     Assert.AreEqual ("", function.StringValue);
-    Assert.AreEqual (new NaInt32 (2), function.NaInt32Value);
+    Assert.AreEqual (2, function.NaInt32Value);
     Assert.AreEqual (1, function.IntValue);
   }
 
@@ -68,7 +67,7 @@ public class WxeFunctionTest: WxeTest
     function.InitializeParameters (context.Request.Params);
 
     Assert.AreEqual ("Hello World", function.StringValue);
-    Assert.AreEqual (NaInt32.Null, function.NaInt32Value);
+    Assert.AreEqual (null, function.NaInt32Value);
     Assert.AreEqual (1, function.IntValue);
   }
 
@@ -95,7 +94,7 @@ public class WxeFunctionTest: WxeTest
     function.InitializeParameters (parameters);
 
     Assert.AreEqual ("Hello World", function.StringValue);
-    Assert.AreEqual (NaInt32.Null, function.NaInt32Value);
+    Assert.AreEqual (null, function.NaInt32Value);
     Assert.AreEqual (1, function.IntValue);
   }
 }

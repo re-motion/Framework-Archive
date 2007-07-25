@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Threading;
 using System.Web;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UnitTests.AspNetFramework;
@@ -192,7 +191,7 @@ public class WxeHandlerTest: WxeTest
   {
     NameValueCollection queryString = new NameValueCollection();
     queryString.Set (WxeHandler.Parameters.ReturnUrl, _returnUrl);
-    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
+    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
     HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);

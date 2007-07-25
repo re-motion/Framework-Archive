@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI.WebControls;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
@@ -13,7 +12,7 @@ namespace Rubicon.Web.UI.Controls
 public class NumericValidator : BaseValidator
 {
   private NumericValidationDataType _dataType = NumericValidationDataType.Integer;
-  private NaBoolean _allowNegative = NaBoolean.Null;
+  private bool _allowNegative = true;
   private NumberStyles _numberStyle = NumberStyles.None;
 
   // static members and constants
@@ -78,7 +77,7 @@ public class NumericValidator : BaseValidator
       return false;
     }
 
-    if (_allowNegative.IsFalse && parsedValue < 0)
+    if (!_allowNegative && parsedValue < 0)
       return false;
 
     return true;
@@ -104,7 +103,7 @@ public class NumericValidator : BaseValidator
       return false;
     }
 
-    if (_allowNegative.IsFalse && parsedValue < 0d)
+    if (!_allowNegative && parsedValue < 0d)
       return false;
 
     return true;
@@ -130,7 +129,7 @@ public class NumericValidator : BaseValidator
       return false;
     }
 
-    if (_allowNegative.IsFalse && parsedValue < 0m)
+    if (!_allowNegative && parsedValue < 0m)
       return false;
 
     return true;
@@ -148,12 +147,13 @@ public class NumericValidator : BaseValidator
   }
 
   /// <summary> Gets or sets a value that determines whether negative values are allowed. </summary>
-  ///   <see langword="NaBoolean.True"/> to allow negative values. 
-  ///   Defaults to <see cref="NaBoolean.Null"/>, which is interpreted as <see langword="true"/>.
+  /// <value>
+  /// <see langword="true"/> to allow negative values. Defaults to <see lagnword="true"/>.
+  /// </value>
   [Category ("Behavior")]
-  [Description ("A value that determines whether negative values are allowed. Undefined is interpreted as true.")]
+  [Description ("A value that determines whether negative values are allowed.")]
   [DefaultValue (true)]
-  public NaBoolean AllowNegative
+  public bool AllowNegative
   {
     get { return _allowNegative; }
     set { _allowNegative = value; }

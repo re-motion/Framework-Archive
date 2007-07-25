@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UI.Controls;
 
@@ -272,9 +271,9 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   private PostLoadInvoker _postLoadInvoker;
   private bool _isDirty = false;
   private ShowAbortConfirmation _showAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
-  private NaBooleanEnum _enableStatusIsSubmittingMessage;
-  private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
+  private bool? _enableStatusIsSubmittingMessage;
+  private bool? _enableSmartScrolling;
+  private bool? _enableSmartFocusing;
 
   public SmartPage()
   {
@@ -431,8 +430,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   ///   request.
   /// </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to enable the status messages. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to enable the status messages. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsStatusIsSubmittingMessageEnabled"/> to evaluate this property.
@@ -440,8 +438,8 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   [Description("The flag that determines whether to display a status message when the user attempts to start a "
              + "second request. Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableStatusIsSubmittingMessage
+  [DefaultValue (null)]
+  public virtual bool? EnableStatusIsSubmittingMessage
   {
     get { return _enableStatusIsSubmittingMessage; }
     set { _enableStatusIsSubmittingMessage = value; }
@@ -453,7 +451,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   protected virtual bool IsStatusIsSubmittingMessageEnabled
   {
-    get { return _enableStatusIsSubmittingMessage != NaBooleanEnum.False; }
+    get { return _enableStatusIsSubmittingMessage != false; }
   }
 
   /// <summary> Gets the value returned by <see cref="IsStatusIsSubmittingMessageEnabled"/>. </summary>
@@ -465,16 +463,15 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to use smart scrolling. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to use smart scrolling. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsSmartScrollingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableSmartScrolling
+  [DefaultValue (null)]
+  public virtual bool? EnableSmartScrolling
   {
     get { return _enableSmartScrolling; }
     set { _enableSmartScrolling = value; }
@@ -482,7 +479,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartScrolling"/> property. </summary>
   /// <value> 
-  ///   <see langword="false"/> if <see cref="EnableSmartScrolling"/> is <see cref="NaBooleanEnum.False"/>
+  ///   <see langword="false"/> if <see cref="EnableSmartScrolling"/> is <see langword="false"/>
   ///   or the <see cref="SmartNavigationConfiguration.EnableScrolling"/> configuration setting is 
   ///   <see langword="false"/>.
   /// </value>
@@ -492,7 +489,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
         return false;
-      return _enableSmartScrolling != NaBooleanEnum.False; 
+      return _enableSmartScrolling != false; 
     }
   }
 
@@ -505,16 +502,16 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets or sets the flag that determines whether to use smart navigation. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to use smart navigation. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to use smart navigation. 
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsSmartFocusingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableSmartFocusing
+  [DefaultValue (null)]
+  public virtual bool? EnableSmartFocusing
   {
     get { return _enableSmartFocusing; }
     set { _enableSmartFocusing = value; }
@@ -522,7 +519,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
   /// <value> 
-  ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see cref="NaBooleanEnum.False"/>
+  ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see langword="false"/>
   ///   or the <see cref="SmartNavigationConfiguration.EnableFocusing"/> configuration setting is 
   ///   <see langword="false"/>.
   /// </value>
@@ -532,7 +529,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
         return false;
-      return _enableSmartFocusing != NaBooleanEnum.False; 
+      return _enableSmartFocusing != false; 
     }
   }
 

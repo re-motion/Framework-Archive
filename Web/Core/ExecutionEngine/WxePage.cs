@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.Collections;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.UI;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -26,8 +25,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
-  void ExecuteFunction (
-      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+  void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
 
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
@@ -56,8 +54,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   void ExecuteFunctionNoRepost (
-      WxeFunction function, Control sender, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+      WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
   
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
@@ -151,8 +148,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///   specified window or frame through javascript window.open(...).
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  void ExecuteFunctionExternal (
-      WxeFunction function, string target, string features, Control sender, bool returningPostback);
+  void ExecuteFunctionExternal (WxeFunction function, string target, string features, Control sender, bool returningPostback);
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
@@ -178,8 +174,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionExternal (
-      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
-      bool createPermaUrl, bool useParentPermaUrl);
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl);
   
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
@@ -642,9 +637,9 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   private WxePageInfo _wxePageInfo;
   private bool disposed;
-  private NaBooleanEnum _enableOutOfSequencePostBacks = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
+  private bool? _enableOutOfSequencePostBacks;
+  private bool? _enableAbort;
+  private bool? _enableStatusMessages;
 
   public WxePage ()
   {
@@ -783,16 +778,15 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to abort the session. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to abort the session. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableAbort
+  [DefaultValue (null)]
+  public virtual bool? EnableAbort
   {
     get { return _enableAbort; }
     set { _enableAbort = value; }
@@ -800,11 +794,11 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableAbort"/> property. </summary>
   /// <value>
-  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>.
+  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see langword="alse"/>.
   /// </value>
   protected virtual bool IsAbortEnabled
   {
-    get { return _enableAbort != NaBooleanEnum.False; }
+    get { return _enableAbort != false; }
   }
 
   /// <summary> Gets the value returned by <see cref="IsAbortEnabled"/>. </summary>
@@ -818,8 +812,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   submitted page because of the cache). 
   /// </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> enable out of sequence post-backs.
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  ///   <see langword="true"/> enable out of sequence post-backs. Defaults to <see langword="null"/>, which is interpreted as <see langword="false"/>.
   /// </value>
   /// <remarks>
   ///   <para>
@@ -831,8 +824,8 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   [Description(  "The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
                + "submitted page because of the cache). Undefined is interpreted as false.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableOutOfSequencePostBacks
+  [DefaultValue (null)]
+  public virtual bool? EnableOutOfSequencePostBacks
   {
     get { return _enableOutOfSequencePostBacks; }
     set { _enableOutOfSequencePostBacks = value; }
@@ -840,12 +833,12 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableOutOfSequencePostBacks"/> property. </summary>
   /// <value>
-  ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see cref="NaBooleanEnum.True"/>
+  ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see langword="true"/>
   ///   and <see cref="IsAbortEnabled"/> evaluates <see langword="false"/>.
   /// </value>
   protected virtual bool AreOutOfSequencePostBacksEnabled
   {
-    get { return _enableOutOfSequencePostBacks == NaBooleanEnum.True && ! IsAbortEnabled; }
+    get { return _enableOutOfSequencePostBacks == true && ! IsAbortEnabled; }
   }
 
   /// <summary> Gets the value returned by <see cref="AreOutOfSequencePostBacksEnabled"/>. </summary>
@@ -855,8 +848,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Gets a flag that describes whether the current postback cycle was caused by resubmitting a page from the 
-  ///   client's cache.
+  ///   Gets a flag that describes whether the current postback cycle was caused by resubmitting a page from the client's cache.
   /// </summary>
   /// <value> <see langword="true"/> if the page has been re-submitted. </value>
   public bool IsOutOfSequencePostBack 
@@ -866,8 +858,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="ShowAbortConfirmation"/> property. </summary>
   /// <value> 
-  ///   <see langword="true"/> if <see cref="SmartPage.IsAbortConfirmationEnabled"/> and <see cref="IsAbortEnabled"/> 
-  ///   evaluate <see langword="true"/>. 
+  ///   <see langword="true"/> if <see cref="SmartPage.IsAbortConfirmationEnabled"/> and <see cref="IsAbortEnabled"/> evaluate <see langword="true"/>. 
   /// </value>
   protected override bool IsAbortConfirmationEnabled
   {
@@ -875,12 +866,10 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary> 
-  ///   Gets the value of the base class's <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> property ANDed with
-  ///   <see cref="IsAbortEnabled"/>.
+  ///   Gets the value of the base class's <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> property ANDed with <see cref="IsAbortEnabled"/>.
   /// </summary>
   /// <value> 
-  ///   <see langword="true"/> if <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> and <see cref="IsAbortEnabled"/> 
-  ///   evaluate <see langword="true"/>. 
+  ///   <see langword="true"/> if <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> and <see cref="IsAbortEnabled"/> evaluate <see langword="true"/>. 
   /// </value>
   protected override bool IsDirtyStateTrackingEnabled
   {
@@ -892,8 +881,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   request or returns to a page that has already been submittet (i.e. a cached page).
   /// </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to enable the status messages. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  ///   <see langword="true"/> to enable the status messages. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
   ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
@@ -902,8 +890,8 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
              + "second request or returns to a page that has already been submitted (i.e. a cached page). "
              + "Undefined is interpreted as true.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableStatusMessages
+  [DefaultValue (null)]
+  public virtual bool? EnableStatusMessages
   {
     get { return _enableStatusMessages; }
     set { _enableStatusMessages = value; }
@@ -915,7 +903,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   /// </summary>
   protected virtual bool AreStatusMessagesEnabled
   {
-    get { return _enableStatusMessages != NaBooleanEnum.False; }
+    get { return _enableStatusMessages != false; }
   }
 
   /// <summary> Gets the value returned by <see cref="AreStatusMessagesEnabled"/>. </summary>
@@ -928,7 +916,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public override NaBooleanEnum EnableStatusIsSubmittingMessage
+  public override bool? EnableStatusIsSubmittingMessage
   {
     get
     {

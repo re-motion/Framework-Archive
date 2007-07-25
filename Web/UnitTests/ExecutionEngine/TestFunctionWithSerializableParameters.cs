@@ -1,5 +1,4 @@
 using System;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -16,12 +15,12 @@ public class TestFunctionWithSerializableParameters: WxeFunction
 	{
 	}
 
-  public TestFunctionWithSerializableParameters (string StringValue, NaInt32 NaInt32Value, int IntValue)
+  public TestFunctionWithSerializableParameters (string StringValue, int? NaInt32Value, int IntValue)
     : base (StringValue, NaInt32Value, IntValue)
   {
   }
 
-  public TestFunctionWithSerializableParameters (string StringValue, NaInt32 NaInt32Value)
+  public TestFunctionWithSerializableParameters (string StringValue, int? NaInt32Value)
     : this (StringValue, NaInt32Value, -1)
   {
   }
@@ -34,9 +33,9 @@ public class TestFunctionWithSerializableParameters: WxeFunction
   }
 
   [WxeParameter (2, true, WxeParameterDirection.In)]
-  public NaInt32 NaInt32Value
+  public int? NaInt32Value
   {
-    get { return (NaInt32) Variables["NaInt32Value"]; }
+    get { return (int?) Variables["NaInt32Value"]; }
     set { Variables["NaInt32Value"] = value; }
   }
 

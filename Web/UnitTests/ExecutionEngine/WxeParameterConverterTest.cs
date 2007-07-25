@@ -1,7 +1,6 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Collections;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -28,7 +27,7 @@ public class WxeParameterConverterTest
     _requiredObjectInParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.In, typeof (object));
     _requiredStringInParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.In, typeof (string));
     _requiredInt32InParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.In, typeof (Int32));
-    _requiredNaInt32InParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.In, typeof (NaInt32));
+    _requiredNaInt32InParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.In, typeof (Int32?));
     _requiredOutParameter = new WxeParameterDeclaration (c_param, true, WxeParameterDirection.Out, typeof (string));
 
     _stringInParameter = new WxeParameterDeclaration (c_param, false, WxeParameterDirection.In, typeof (string));
@@ -49,7 +48,7 @@ public class WxeParameterConverterTest
   public void ConvertObjectToStringRequiredStringInParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredStringInParameter);
-    Assert.AreEqual ("", converter.ConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.ConvertObjectToString (null));
   }
 
   [Test]
@@ -79,13 +78,13 @@ public class WxeParameterConverterTest
   public void ConvertObjectToStringRequiredInt32InParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    Assert.AreEqual ("", converter.ConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.ConvertObjectToString (null));
   }
 
   [Test]
   public void ConvertObjectToStringRequiredNaInt32InParameter()
   {
-    NaInt32 value = new NaInt32 (1);
+    int? value = 1;
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
     Assert.AreEqual (value.ToString(), converter.ConvertObjectToString (value));
   }
@@ -94,22 +93,21 @@ public class WxeParameterConverterTest
   public void ConvertObjectToStringRequiredNaInt32InParameterWithNaInt32Null()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
-    Assert.AreEqual ("", converter.ConvertObjectToString (NaInt32.Null));
+    Assert.AreEqual (string.Empty, converter.ConvertObjectToString (null));
   }
 
   [Test]
   public void ConvertObjectToStringRequiredNaInt32InParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
-    Assert.AreEqual ("", converter.ConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.ConvertObjectToString (null));
   }
 
   [Test]
   public void ConvertObjectToStringInt32InParameter()
   {
-    int value = 1;
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_int32InParameter);
-    Assert.AreEqual (value.ToString(), converter.ConvertObjectToString (value));
+    Assert.AreEqual (1.ToString(), converter.ConvertObjectToString (1));
   }
 
   [Test]
@@ -215,53 +213,49 @@ public class WxeParameterConverterTest
   [Test]
   public void TryConvertObjectToStringRequiredInt32InParameter()
   {
-    int value = 1;
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    Assert.AreEqual (value.ToString(), converter.TryConvertObjectToString (value));
+    Assert.AreEqual (1.ToString(), converter.TryConvertObjectToString (1));
   }
 
   [Test]
   public void TryConvertObjectToStringRequiredInt32InParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    Assert.AreEqual ("", converter.ConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.ConvertObjectToString (null));
   }
 
   [Test]
   public void TryConvertObjectToStringInt32InParameter()
   {
-    int value = 1;
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
-    Assert.AreEqual (value.ToString(), converter.TryConvertObjectToString (value));
+    Assert.AreEqual (1.ToString(), converter.TryConvertObjectToString (1));
   }
 
   [Test]
   public void TryConvertObjectToStringInt32InParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_int32InParameter);
-    Assert.AreEqual ("", converter.TryConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.TryConvertObjectToString (null));
   }
   [Test]
   public void TryConvertObjectToStringRequiredNaInt32InParameter()
   {
-    NaInt32 value = new NaInt32 (1);
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
-    Assert.AreEqual (value.ToString(), converter.TryConvertObjectToString (value));
+    Assert.AreEqual (1.ToString(), converter.TryConvertObjectToString (1));
   }
 
   [Test]
   public void TryConvertObjectToStringRequiredNaInt32InParameterWithNaInt32Null()
   {
-    NaInt32 value = NaInt32.Null;
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
-    Assert.AreEqual ("", converter.TryConvertObjectToString (value));
+    Assert.AreEqual (string.Empty, converter.TryConvertObjectToString (null));
   }
 
   [Test]
   public void TryConvertObjectToStringRequiredNaInt32InParameterWithNull()
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredNaInt32InParameter);
-    Assert.AreEqual ("", converter.TryConvertObjectToString (null));
+    Assert.AreEqual (string.Empty, converter.TryConvertObjectToString (null));
   }
 
   [Test]

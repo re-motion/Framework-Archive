@@ -1,3 +1,20 @@
+1.7.46
+======
+- Rubicon.Web.UI.Controls.LengthValidator
+  * MinimumLength und MaximumLength verwenden nun nullable Int32 anstatt NaInt32.
+
+- Rubicon.Web.UI.Controls.NumericValidator
+  * AllowNegative verwendet nun Boolean anstatt NaBoolean.
+
+- Rubicon.Web.UI.Controls.WebButton  
+  * UseLegacyButton nun Boolean anstatt NaBooleanEnum.
+
+- Rubicon.Web.UI.SmartPage
+  * EnableStatusIsSubmittingMessage, EnableSmartScrolling, EnableSmartFocusing verwenden nun nullable Boolean anstatt von NaBooleanEnum.
+
+- Rubicon.Web.ExecutionEngine.WxePage
+  * EnableOutOfSequencePostBacks, EnableAbort, EnableStatusMessages verwenden nun nullable Boolean anstatt von NaBooleanEnum.
+
 1.7.42
 ======
 - Rubicon.Web.UI.Design

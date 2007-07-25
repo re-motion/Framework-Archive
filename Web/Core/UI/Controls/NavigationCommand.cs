@@ -3,7 +3,6 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
 using System.Web.UI;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 
@@ -109,7 +108,7 @@ public class NavigationCommand: Command
     object[] parameterValues = WxeFunction.ParseActualParameters (parameterDeclarations, WxeFunctionCommand.Parameters, CultureInfo.InvariantCulture);   
     
     NameValueCollection queryString = WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
-    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
+    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
     NameValueCollectionUtility.Append (queryString, additionalUrlParameters);
     
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);

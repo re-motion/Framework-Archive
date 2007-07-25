@@ -8,7 +8,6 @@ using System.Threading;
 using System.Web;
 using Rubicon.Collections;
 using Rubicon.Logging;
-using Rubicon.NullableValueTypes;
 using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
@@ -591,21 +590,21 @@ namespace Rubicon.Web.ExecutionEngine
   public class WxeParameterAttribute : Attribute
   {
     private int _index;
-    private NaBoolean _required;
+    private bool? _required;
     private WxeParameterDirection _direction;
 
     public WxeParameterAttribute (int index, WxeParameterDirection direction)
-      : this (index, NaBoolean.Null, direction)
+      : this (index, null, direction)
     {
     }
 
     public WxeParameterAttribute (int index, bool required)
-      : this (index, new NaBoolean (required), WxeParameterDirection.In )
+      : this (index, required, WxeParameterDirection.In )
     {
     }
 
     public WxeParameterAttribute (int index)
-      : this (index, NaBoolean.Null, WxeParameterDirection.In)
+      : this (index, null, WxeParameterDirection.In)
     {
     }
 
@@ -618,11 +617,11 @@ namespace Rubicon.Web.ExecutionEngine
     ///     and <see langword="false"/> for reference types. </param>
     /// <param name="direction"> Declares the parameter as input or output parameter, or both. </param>
     public WxeParameterAttribute (int index , bool required, WxeParameterDirection direction)
-      : this (index, new NaBoolean (required), direction)
+      : this (index, (bool?) required, direction)
     {
     }
 
-    private WxeParameterAttribute (int index, NaBoolean required, WxeParameterDirection direction)
+    private WxeParameterAttribute (int index, bool? required, WxeParameterDirection direction)
     {
       _index = index;
       _required = required;
@@ -658,7 +657,7 @@ namespace Rubicon.Web.ExecutionEngine
         return null;
 
       WxeParameterAttribute attribute = attributes[0];
-      if (attribute._required.IsNull)
+      if (!attribute._required.HasValue)
         attribute._required = property.PropertyType.IsValueType;
       return attribute;
     }

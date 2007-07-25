@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 using Rubicon.Logging;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.Utilities;
@@ -237,8 +236,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
     else if (! StringUtility.IsNullOrEmpty (returnToSelfArg))
     {
-      NaBoolean returnToSelf = NaBoolean.Parse (returnToSelfArg);
-      if (returnToSelf.IsTrue)
+      if (bool.Parse (returnToSelfArg))
         function.ReturnUrl = context.Request.RawUrl;
     }
 

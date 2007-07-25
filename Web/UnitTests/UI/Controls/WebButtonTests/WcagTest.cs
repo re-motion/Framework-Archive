@@ -1,6 +1,5 @@
 using System;
 using NUnit.Framework;
-using Rubicon.NullableValueTypes;
 using Rubicon.Web.UnitTests.Configuration;
 
 namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
@@ -23,7 +22,7 @@ public class WcagTest : BaseTest
   public void EvaluateWaiConformityDebugLevelUndefined()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-    _webButton.UseLegacyButton = NaBooleanEnum.False;
+    _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
     
     Assert.IsFalse (WcagHelperMock.HasWarning);
@@ -34,7 +33,7 @@ public class WcagTest : BaseTest
   public void EvaluateWaiConformityLevelA()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-    _webButton.UseLegacyButton = NaBooleanEnum.False;
+    _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
     
     Assert.IsFalse (WcagHelperMock.HasWarning);
@@ -45,7 +44,7 @@ public class WcagTest : BaseTest
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsFalse()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    _webButton.UseLegacyButton = NaBooleanEnum.False;
+    _webButton.UseLegacyButton = false;
     _webButton.EvaluateWaiConformity();
     
     Assert.IsTrue (WcagHelperMock.HasError);
@@ -58,7 +57,7 @@ public class WcagTest : BaseTest
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsUndefined()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    _webButton.UseLegacyButton = NaBooleanEnum.Undefined;
+    _webButton.UseLegacyButton = null;
     _webButton.EvaluateWaiConformity();
 
     Assert.IsTrue (WcagHelperMock.HasError);
@@ -72,7 +71,7 @@ public class WcagTest : BaseTest
   public void IsLegacyButtonEnabledWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-    _webButton.UseLegacyButton = NaBooleanEnum.False;
+    _webButton.UseLegacyButton = false;
     Assert.IsTrue (_webButton.IsLegacyButtonEnabled);
   }
 
@@ -80,7 +79,7 @@ public class WcagTest : BaseTest
   public void IsLegacyButtonEnabledWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-    _webButton.UseLegacyButton = NaBooleanEnum.False;
+    _webButton.UseLegacyButton = false;
     Assert.IsFalse (_webButton.IsLegacyButtonEnabled);
   }
 }

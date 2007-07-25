@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
 using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
@@ -30,7 +29,7 @@ namespace Rubicon.Web.UI.Controls
     PostBackOptions _options;
 #endif
 
-    private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
+    private bool _useLegacyButton = false;
 
     private ISecurableObject _securableObject;
     private MissingPermissionBehavior _missingPermissionBehavior = MissingPermissionBehavior.Invisible;
@@ -241,7 +240,7 @@ namespace Rubicon.Web.UI.Controls
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
       {
-        if (_useLegacyButton != NaBooleanEnum.True)
+        if (!_useLegacyButton)
           WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
 #if NET11
       if (! _useSubmitBehavior)
@@ -346,17 +345,15 @@ namespace Rubicon.Web.UI.Controls
     }
 
     /// <summary> 
-    ///   Gets or sets the flag that determines whether to use a legacy (i.e. input) element for the button or the modern 
-    ///   form (i.e. button). 
+    ///   Gets or sets the flag that determines whether to use a legacy (i.e. input) element for the button or the modern form (i.e. button). 
     /// </summary>
     /// <value> 
-    ///   <see cref="NaBooleanEnum.True"/> to enable the legacy version. 
-    ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+    ///   <see langword="true"/> to enable the legacy version. Defaults to <see langword="false"/>.
     /// </value>
     [Description ("Determines whether to use a legacy (i.e. input) element for the button or the modern form (i.e. button).")]
     [Category ("Behavior")]
-    [DefaultValue (NaBooleanEnum.Undefined)]
-    public NaBooleanEnum UseLegacyButton
+    [DefaultValue (false)]
+    public bool UseLegacyButton
     {
       get { return _useLegacyButton; }
       set { _useLegacyButton = value; }
@@ -364,7 +361,7 @@ namespace Rubicon.Web.UI.Controls
 
     protected bool IsLegacyButtonEnabled
     {
-      get { return WcagHelper.Instance.IsWaiConformanceLevelARequired () || _useLegacyButton == NaBooleanEnum.True; }
+      get { return WcagHelper.Instance.IsWaiConformanceLevelARequired () || _useLegacyButton; }
     }
 
     private string EnsureEndWithSemiColon (string value)
