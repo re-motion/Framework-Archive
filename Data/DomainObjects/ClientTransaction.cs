@@ -929,28 +929,27 @@ public abstract class ClientTransaction : ITransaction
   #region ITransaction Members
 
   /// <summary>
-  /// Child Transactions are not supported by the framework so an exception is thrown when this method is called.
+  /// Delegates to <see cref="CreateSubTransaction"/>:
   /// </summary>
-  /// <exception cref="System.NotImplementedException">Method is called.</exception>
   ITransaction ITransaction.CreateChild ()
   {
-    throw new NotImplementedException ("ClientTransactions do not support nested transactions.");
+    return CreateSubTransaction ();
   }
 
   /// <summary>
-  /// Child Transactions are not supported by the framework, therefore the property always returns false.
+  /// Returns true if this transaction has a non-null <see cref="ParentTransaction"/>; returns false otherwise.
   /// </summary>
   bool ITransaction.IsChild
   {
-    get { return false; }
+    get { return ParentTransaction != null; }
   }
 
   /// <summary>
-  /// Child Transactions are not supported by the framework, therefore the property always returns false.
+  /// Always returns true.
   /// </summary>
   bool ITransaction.CanCreateChild
   {
-    get { return false; }
+    get { return true; }
   }
 
   /// <summary>
@@ -961,11 +960,11 @@ public abstract class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Child Transactions are not supported by the framework, therefore the property always returns <see langword="null"/>.
+  /// Returns the <see cref="ParentTransaction"/>.
   /// </summary>
   ITransaction ITransaction.Parent
   {
-    get { return null; }
+    get { return ParentTransaction; }
   }
 
   #endregion

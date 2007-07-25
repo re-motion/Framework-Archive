@@ -793,6 +793,7 @@
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\ClientTransactionAsITransactionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionCollectionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionRelationChangesTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionTest.cs" />
