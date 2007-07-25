@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="BindableObjectAttribute.cs" />
     <Compile Include="BindableObject\BindableObjectClass.cs" />
+    <Compile Include="BindableObject\BindableObjectClassWithIdentity.cs" />
     <Compile Include="BindableObject\BindableObjectDataSource.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,7 +108,9 @@
     <Compile Include="BindableObject\BindableObjectProvider.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilter.cs" />
     <Compile Include="BindableObject\DesignModeBindableObjectProvider.cs" />
+    <Compile Include="BindableObject\GetObjectServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\IBusinessObjectGlobalizationService.cs" />
+    <Compile Include="BindableObject\IGetObjectService.cs" />
     <Compile Include="BindableObject\Properties\BooleanProperty.cs" />
     <Compile Include="BindableObject\Properties\GuidProperty.cs" />
     <Compile Include="BindableObject\SearchAvailableObjectsServiceTypeAttribute.cs" />

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindableObject\BindableObjectClassTest.cs" />
+    <Compile Include="BindableObject\BindableObjectClassWithIdentityTest.cs" />
     <Compile Include="BindableObject\BindableObjectDataSourceTests\DesignTime.cs" />
     <Compile Include="BindableObject\BindableObjectDataSourceTests\RunTime.cs" />
     <Compile Include="BindableObject\BindableObjectGlobalizationServiceTest.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="BindableObject\EnumerationPropertyTests\GetValueInfoByIdentifier.cs" />
     <Compile Include="BindableObject\EnumerationPropertyTests\GetValueInfoByValue.cs" />
     <Compile Include="BindableObject\EnumerationTestBase.cs" />
+    <Compile Include="BindableObject\TestDomain\ClassWithIdentityAndGetObjectServiceAttribute.cs" />
     <Compile Include="BindableObject\PropertyBaseTests\SecurityTest.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\SearchAvailableObjects.cs" />
     <Compile Include="BindableObject\ReferencePropertyTests\GetReferenceClass.cs" />
@@ -74,12 +76,14 @@
     <Compile Include="BindableObject\ReferencePropertyTests\Common.cs" />
     <Compile Include="BindableObject\DateTimePropertyTest.cs" />
     <Compile Include="BindableObject\NumericPropertyTest.cs" />
+    <Compile Include="BindableObject\TestDomain\ClassWithIdentity.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithBusinessObjectProperties.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithOverriddenDisplayName.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithResources.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithSearchServiceTypeAttribute.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithUndefinedEnumValue.cs" />
     <Compile Include="BindableObject\TestDomain\ClassWithDisabledEnumValue.cs" />
+    <Compile Include="BindableObject\TestDomain\ICustomGetObjectService.cs" />
     <Compile Include="BindableObject\TestDomain\SecurableClassWithOverriddenDisplayName.cs" />
     <Compile Include="BindableObject\TestDomain\ISearchServiceOnProperty.cs" />
     <Compile Include="BindableObject\TestDomain\EnumWithUndefinedValueFromOtherType.cs" />
