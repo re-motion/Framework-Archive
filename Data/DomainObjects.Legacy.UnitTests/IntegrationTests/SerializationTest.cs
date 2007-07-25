@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Legacy.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.Transaction;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Legacy.UnitTests.TestDomain;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 {
@@ -446,7 +447,6 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
     }
 
     [Test]
-    [Ignore ("TODO: FS: This will be fixed when DomainObject is decoupled from DataContainer.")]
     public void BidirectionalRelationsIncludingHierarchyOfObjects ()
     {
       Employee employee1 = Employee.GetObject (DomainObjectIDs.Employee1);
@@ -481,7 +481,9 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
       Employee[] employees = new Employee[] { employee1, employee2, employee3, employee4, employee5, employee6, employee7 };
 
-      Employee[] deserializedEmployees = (Employee[]) SerializeAndDeserialize (employees);
+      object[] deserializedItems = Serializer.SerializeAndDeserialize (new object[] { ClientTransactionScope.CurrentTransaction, employees });
+      ClientTransaction deserializedTransaction = (ClientTransaction) deserializedItems[0];
+      Employee[] deserializedEmployees = (Employee[]) deserializedItems[1];
 
       Employee deserializedEmployee1 = deserializedEmployees[0];
       Employee deserializedEmployee2 = deserializedEmployees[1];
@@ -491,53 +493,55 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
       Employee deserializedEmployee6 = deserializedEmployees[5];
       Employee deserializedEmployee7 = deserializedEmployees[6];
 
-      DomainObjectCollection deserializedEmployee1Subordinates = deserializedEmployee1.Subordinates;
-      Employee deserializedEmployee1Supervisor = deserializedEmployee1.Supervisor;
-      Computer deserializedEmployee1Computer = deserializedEmployee1.Computer;
-      DomainObjectCollection deserializedEmployee2Subordinates = deserializedEmployee2.Subordinates;
-      Employee deserializedEmployee2Supervisor = deserializedEmployee2.Supervisor;
-      Computer deserializedEmployee2Computer = deserializedEmployee2.Computer;
-      DomainObjectCollection deserializedEmployee3Subordinates = deserializedEmployee3.Subordinates;
-      Employee deserializedEmployee3Supervisor = deserializedEmployee3.Supervisor;
-      Computer deserializedEmployee3Computer = deserializedEmployee3.Computer;
-      DomainObjectCollection deserializedEmployee4Subordinates = deserializedEmployee4.Subordinates;
-      Employee deserializedEmployee4Supervisor = deserializedEmployee4.Supervisor;
-      Computer deserializedEmployee4Computer = deserializedEmployee4.Computer;
-      DomainObjectCollection deserializedEmployee5Subordinates = deserializedEmployee5.Subordinates;
-      Employee deserializedEmployee5Supervisor = deserializedEmployee5.Supervisor;
-      Computer deserializedEmployee5Computer = deserializedEmployee5.Computer;
-      DomainObjectCollection deserializedEmployee6Subordinates = deserializedEmployee6.Subordinates;
-      Employee deserializedEmployee6Supervisor = deserializedEmployee6.Supervisor;
-      Computer deserializedEmployee6Computer = deserializedEmployee6.Computer;
-      DomainObjectCollection deserializedEmployee7Subordinates = deserializedEmployee7.Subordinates;
-      Employee deserializedEmployee7Supervisor = deserializedEmployee1.Supervisor;
-      Computer deserializedEmployee7Computer = deserializedEmployee7.Computer;
+      using (deserializedTransaction.EnterScope ())
+      {
+        DomainObjectCollection deserializedEmployee1Subordinates = deserializedEmployee1.Subordinates;
+        Employee deserializedEmployee1Supervisor = deserializedEmployee1.Supervisor;
+        Computer deserializedEmployee1Computer = deserializedEmployee1.Computer;
+        DomainObjectCollection deserializedEmployee2Subordinates = deserializedEmployee2.Subordinates;
+        Employee deserializedEmployee2Supervisor = deserializedEmployee2.Supervisor;
+        Computer deserializedEmployee2Computer = deserializedEmployee2.Computer;
+        DomainObjectCollection deserializedEmployee3Subordinates = deserializedEmployee3.Subordinates;
+        Employee deserializedEmployee3Supervisor = deserializedEmployee3.Supervisor;
+        Computer deserializedEmployee3Computer = deserializedEmployee3.Computer;
+        DomainObjectCollection deserializedEmployee4Subordinates = deserializedEmployee4.Subordinates;
+        Employee deserializedEmployee4Supervisor = deserializedEmployee4.Supervisor;
+        Computer deserializedEmployee4Computer = deserializedEmployee4.Computer;
+        DomainObjectCollection deserializedEmployee5Subordinates = deserializedEmployee5.Subordinates;
+        Employee deserializedEmployee5Supervisor = deserializedEmployee5.Supervisor;
+        Computer deserializedEmployee5Computer = deserializedEmployee5.Computer;
+        DomainObjectCollection deserializedEmployee6Subordinates = deserializedEmployee6.Subordinates;
+        Employee deserializedEmployee6Supervisor = deserializedEmployee6.Supervisor;
+        Computer deserializedEmployee6Computer = deserializedEmployee6.Computer;
+        DomainObjectCollection deserializedEmployee7Subordinates = deserializedEmployee7.Subordinates;
+        Employee deserializedEmployee7Supervisor = deserializedEmployee1.Supervisor;
+        Computer deserializedEmployee7Computer = deserializedEmployee7.Computer;
 
-      Assert.AreEqual (employee1Subordinates.Count, deserializedEmployee1Subordinates.Count);
-      AreEqual (employee1Supervisor, deserializedEmployee1Supervisor);
-      AreEqual (employee1Computer, deserializedEmployee1Computer);
-      Assert.AreEqual (employee2Subordinates.Count, deserializedEmployee2Subordinates.Count);
-      AreEqual (employee2Supervisor, deserializedEmployee2Supervisor);
-      AreEqual (employee2Computer, deserializedEmployee2Computer);
-      Assert.AreEqual (employee3Subordinates.Count, deserializedEmployee3Subordinates.Count);
-      AreEqual (employee3Supervisor, deserializedEmployee3Supervisor);
-      AreEqual (employee3Computer, deserializedEmployee3Computer);
-      Assert.AreEqual (employee4Subordinates.Count, deserializedEmployee4Subordinates.Count);
-      AreEqual (employee4Supervisor, deserializedEmployee4Supervisor);
-      AreEqual (employee4Computer, deserializedEmployee4Computer);
-      Assert.AreEqual (employee5Subordinates.Count, deserializedEmployee5Subordinates.Count);
-      AreEqual (employee5Supervisor, deserializedEmployee5Supervisor);
-      AreEqual (employee5Computer, deserializedEmployee5Computer);
-      Assert.AreEqual (employee6Subordinates.Count, deserializedEmployee6Subordinates.Count);
-      AreEqual (employee6Supervisor, deserializedEmployee6Supervisor);
-      AreEqual (employee6Computer, deserializedEmployee6Computer);
-      Assert.AreEqual (employee7Subordinates.Count, deserializedEmployee7Subordinates.Count);
-      AreEqual (employee7Supervisor, deserializedEmployee7Supervisor);
-      AreEqual (employee7Computer, deserializedEmployee7Computer);
+        Assert.AreEqual (employee1Subordinates.Count, deserializedEmployee1Subordinates.Count);
+        AreEqual (employee1Supervisor, deserializedEmployee1Supervisor);
+        AreEqual (employee1Computer, deserializedEmployee1Computer);
+        Assert.AreEqual (employee2Subordinates.Count, deserializedEmployee2Subordinates.Count);
+        AreEqual (employee2Supervisor, deserializedEmployee2Supervisor);
+        AreEqual (employee2Computer, deserializedEmployee2Computer);
+        Assert.AreEqual (employee3Subordinates.Count, deserializedEmployee3Subordinates.Count);
+        AreEqual (employee3Supervisor, deserializedEmployee3Supervisor);
+        AreEqual (employee3Computer, deserializedEmployee3Computer);
+        Assert.AreEqual (employee4Subordinates.Count, deserializedEmployee4Subordinates.Count);
+        AreEqual (employee4Supervisor, deserializedEmployee4Supervisor);
+        AreEqual (employee4Computer, deserializedEmployee4Computer);
+        Assert.AreEqual (employee5Subordinates.Count, deserializedEmployee5Subordinates.Count);
+        AreEqual (employee5Supervisor, deserializedEmployee5Supervisor);
+        AreEqual (employee5Computer, deserializedEmployee5Computer);
+        Assert.AreEqual (employee6Subordinates.Count, deserializedEmployee6Subordinates.Count);
+        AreEqual (employee6Supervisor, deserializedEmployee6Supervisor);
+        AreEqual (employee6Computer, deserializedEmployee6Computer);
+        Assert.AreEqual (employee7Subordinates.Count, deserializedEmployee7Subordinates.Count);
+        AreEqual (employee7Supervisor, deserializedEmployee7Supervisor);
+        AreEqual (employee7Computer, deserializedEmployee7Computer);
+      }
     }
 
     [Test]
-    [Ignore ("TODO: FS: This will be fixed when DomainObject is decoupled from DataContainer.")]
     public void UnidirectionalRelation ()
     {
       Location location1 = Location.GetObject (DomainObjectIDs.Location1);
@@ -549,18 +553,23 @@ namespace Rubicon.Data.DomainObjects.Legacy.UnitTests.IntegrationTests
 
       Location[] locations = new Location[] { location1, location2, location3 };
 
-      Location[] deserializedLocations = (Location[]) SerializeAndDeserialize (locations);
+      object[] deserializedItems = Serializer.SerializeAndDeserialize (new object[] { ClientTransactionScope.CurrentTransaction, locations });
+      ClientTransaction deserializedTransaction = (ClientTransaction) deserializedItems[0];
+      Location[] deserializedLocations = (Location[]) deserializedItems[1];
 
       Location deserializedLocation1 = deserializedLocations[0];
       Location deserializedLocation2 = deserializedLocations[1];
       Location deserializedLocation3 = deserializedLocations[2];
 
-      Assert.AreEqual (location1.ID, deserializedLocation1.ID);
-      AreEqual (location1.Client, deserializedLocation1.Client);
-      Assert.AreEqual (location2.ID, deserializedLocation2.ID);
-      AreEqual (location2.Client, deserializedLocation2.Client);
-      Assert.AreEqual (location3.ID, deserializedLocation3.ID);
-      AreEqual (location3.Client, deserializedLocation3.Client);
+      using (deserializedTransaction.EnterScope ())
+      {
+        Assert.AreEqual (location1.ID, deserializedLocation1.ID);
+        AreEqual (location1Client, deserializedLocation1.Client);
+        Assert.AreEqual (location2.ID, deserializedLocation2.ID);
+        AreEqual (location2Client, deserializedLocation2.Client);
+        Assert.AreEqual (location3.ID, deserializedLocation3.ID);
+        AreEqual (location3Client, deserializedLocation3.Client);
+      }
     }
 
     private void AreEqual (DomainObject expected, DomainObject actual)

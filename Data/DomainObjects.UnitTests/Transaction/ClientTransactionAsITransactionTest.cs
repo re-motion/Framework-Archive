@@ -8,18 +8,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
   [TestFixture]
   public class ClientTransactionAsITransactionTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-    
     private ITransaction _transaction;
-    private ITransaction _transactionMock;
 
     public override void SetUp()
     {
  	     base.SetUp();
-      _mockRepository = new MockRepository();
      
       _transaction = ClientTransactionMock;
-      _transactionMock = _mockRepository.CreateMock<ClientTransactionMock>();
     }
 
     [Test]
@@ -41,7 +36,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       ITransaction child = _transaction.CreateChild ();
       Assert.IsTrue (child.IsChild);
-      Assert.IsFalse (_transactionMock.IsChild);
+      Assert.IsFalse (_transaction.IsChild);
       Assert.IsTrue (child.CreateChild().IsChild);
     }
 

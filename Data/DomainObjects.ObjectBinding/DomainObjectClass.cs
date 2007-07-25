@@ -26,7 +26,6 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
     s_frameworkPropertyNames = new List<string> ();
     s_frameworkPropertyNames.Add ("IsDiscarded");
     s_frameworkPropertyNames.Add ("State");
-    s_frameworkPropertyNames.Add ("InitialClientTransaction");
     s_frameworkPropertyNames.Add ("ID");
     s_frameworkPropertyNames.Add ("DataContainer");
   }

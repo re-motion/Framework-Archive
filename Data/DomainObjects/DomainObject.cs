@@ -340,7 +340,6 @@ public class DomainObject
   public event EventHandler Deleted;
 
   private ObjectID _id;
-  private ClientTransaction _initialClientTransaction; // the ClientTransaction this object was originally created or loaded with
   private Set<ClientTransaction> _enlistedTransactions;
 
   // construction and disposing
@@ -375,7 +374,7 @@ public class DomainObject
 
     clientTransaction.TransactionEventSink.NewObjectCreating (GetPublicDomainObjectType ());
 
-    DataContainer firstDataContainer = _initialClientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
+    DataContainer firstDataContainer = clientTransaction.CreateNewDataContainer (GetPublicDomainObjectType ());
     firstDataContainer.SetDomainObject (this);
 
     InitializeFromDataContainer (firstDataContainer);
@@ -415,11 +414,9 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    _initialClientTransaction = dataContainer.ClientTransaction;
-
     _id = dataContainer.ID;
     _enlistedTransactions = new Set<ClientTransaction> ();
-    _enlistedTransactions.Add (_initialClientTransaction.RootTransaction);
+    _enlistedTransactions.Add (dataContainer.ClientTransaction.RootTransaction);
   }
 
   /// <summary>
@@ -479,20 +476,6 @@ public class DomainObject
   {
     if (IsDiscarded)
       throw new ObjectDiscardedException (ID);
-  }
-
-  /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> this <see cref="DomainObject"/> instance was originally created or loaded
-  /// with. In addition, the <see cref="DomainObject"/> can be used from other transactions as well, see <see cref="CanBeUsedInTransaction"/>
-  /// and <see cref="EnlistInTransaction"/>.
-  /// </summary>
-  /// <remarks>
-  /// <see cref="InitialClientTransaction"/> is just for reference, the properties and methods of <see cref="DomainObject"/> will usually use
-  /// the <see cref="ClientTransactionScope.CurrentTransaction"/>.
-  /// </remarks>
-  public ClientTransaction InitialClientTransaction
-  {
-    get { return _initialClientTransaction; }
   }
 
   /// <summary>

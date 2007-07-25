@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Rubicon.ObjectBinding;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Serialization
 {
@@ -48,14 +49,20 @@ public class SerializationTest : DatabaseTest
   }
 
   [Test]
-  [Ignore ("TODO: FS: This will be fixed when DomainObject is decoupled from DataContainer.")]
   public void BindableDomainObjectWithReflector ()
   {
     Order order = Order.GetObject (DomainObjectIDs.Order1);
+    int previousOrderNumber = order.OrderNumber;
 
-    Order deserializedOrder = (Order) SerializeAndDeserialize (order);
+    object[] deserializedItems = Serializer.SerializeAndDeserialize (new object[] { order, ClientTransactionScope.CurrentTransaction});
+    
+    Order deserializedOrder = (Order) deserializedItems[0];
+    ClientTransaction deserializedTransaction = (ClientTransaction) deserializedItems[1];
 
-    Assert.AreEqual (((IBusinessObject) order).GetProperty ("OrderNumber"), ((IBusinessObject) deserializedOrder).GetProperty ("OrderNumber"));
+    using (deserializedTransaction.EnterScope ())
+    {
+      Assert.AreEqual (previousOrderNumber, ((IBusinessObject) deserializedOrder).GetProperty ("OrderNumber"));
+    }
   }
 
   [Test]

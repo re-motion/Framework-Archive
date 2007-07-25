@@ -197,5 +197,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Assert.IsNotNull (deserializedClientTransaction);
     }
+
+    [Test]
+    public void SubClientTransactionSerializationTest ()
+    {
+      ClientTransaction clientTransaction = ClientTransaction.NewTransaction ().CreateSubTransaction();
+
+      ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (clientTransaction);
+
+      Assert.IsNotNull (deserializedClientTransaction);
+      Assert.IsNotNull (deserializedClientTransaction.ParentTransaction);
+    }
   }
 }
