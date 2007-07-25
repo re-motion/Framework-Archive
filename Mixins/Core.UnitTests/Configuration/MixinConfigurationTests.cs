@@ -5,7 +5,7 @@ using System.Threading;
 using Rubicon.Mixins.UnitTests.SampleTypes;
 using System.Reflection;
 
-namespace Rubicon.Mixins.UnitTests.Configurationw
+namespace Rubicon.Mixins.UnitTests.Configuration
 {
   [TestFixture]
   public class MixinConfigurationTests
