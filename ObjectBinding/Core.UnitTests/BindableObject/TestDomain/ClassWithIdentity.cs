@@ -1,12 +1,22 @@
 using System;
+using Rubicon.Mixins;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  [BindableObject]
+  [BindableObjectWithIdentity]
   public class ClassWithIdentity
   {
-    public ClassWithIdentity ()
+    private readonly string _uniqueIdentifier;
+
+    public ClassWithIdentity (string uniqueIdentifier)
     {
+      _uniqueIdentifier = uniqueIdentifier;
+    }
+
+    [Override]
+    public string UniqueIdentifier
+    {
+      get { return _uniqueIdentifier; }
     }
   }
 }

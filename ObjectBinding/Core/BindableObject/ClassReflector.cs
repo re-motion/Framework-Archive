@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -37,7 +38,16 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private BindableObjectClass CreateBindableObjectClass ()
     {
-      BindableObjectClass bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);
+      BindableObjectClass bindableObjectClass;
+      if (MixinConfiguration.ActiveContext.ContainsClassContext (_type.IsGenericType ? _type.GetGenericTypeDefinition() : _type)
+          && TypeFactory.GetActiveConfiguration (_type).Mixins.ContainsKey (typeof (BindableObjectWithIdentityMixin)))
+      {
+        bindableObjectClass = new BindableObjectClassWithIdentity (_type, _businessObjectProvider);
+      }
+      else
+      {
+        bindableObjectClass = new BindableObjectClass (_type, _businessObjectProvider);
+      }
       bindableObjectClass.SetProperties (GetProperties());
 
       return bindableObjectClass;

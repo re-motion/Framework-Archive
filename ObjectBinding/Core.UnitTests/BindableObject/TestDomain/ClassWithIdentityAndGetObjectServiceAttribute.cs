@@ -1,14 +1,24 @@
 using System;
+using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 
 namespace Rubicon.ObjectBinding.UnitTests.BindableObject.TestDomain
 {
-  [BindableObject]
+  [BindableObjectWithIdentity]
   [GetObjectServiceType (typeof (ICustomGetObjectService))]
   public class ClassWithIdentityAndGetObjectServiceAttribute
   {
-    public ClassWithIdentityAndGetObjectServiceAttribute ()
+    private readonly string _uniqueIdentifier;
+
+    public ClassWithIdentityAndGetObjectServiceAttribute (string uniqueIdentifier)
     {
+      _uniqueIdentifier = uniqueIdentifier;
+    }
+
+    [Override]
+    public string UniqueIdentifier
+    {
+      get { return _uniqueIdentifier; }
     }
   }
 }

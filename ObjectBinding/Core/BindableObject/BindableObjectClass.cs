@@ -113,17 +113,22 @@ namespace Rubicon.ObjectBinding.BindableObject
         _properties.Add (property);
     }
 
-    private void CheckTypeForBindableObjectMixin (Type type)
+    protected virtual void CheckTypeForBindableObjectMixin (Type type)
+    {
+      CheckTypeForBindableObjectMixin<BindableObjectMixin, IBusinessObject> (type);
+    }
+
+    protected void CheckTypeForBindableObjectMixin<TBindableObjectMixin, TBusinessObjectInterface> (Type type)
     {
       if (!MixinConfiguration.ActiveContext.ContainsClassContext (type.IsGenericType ? type.GetGenericTypeDefinition() : type)
-          || !TypeFactory.GetActiveConfiguration (type).Mixins.ContainsKey (typeof (BindableObjectMixin)))
+          || !TypeFactory.GetActiveConfiguration (type).Mixins.ContainsKey (typeof (TBindableObjectMixin)))
       {
         throw new ArgumentException (
             string.Format (
                 "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
                 type.FullName,
-                typeof (IBusinessObject).FullName,
-                typeof (BindableObjectMixin).FullName),
+                typeof (TBusinessObjectInterface).FullName,
+                typeof (TBindableObjectMixin).FullName),
             "type");
       }
     }

@@ -54,6 +54,7 @@
     <Compile Include="BindableObject\BindableObjectMixinTests\SetProperty.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTests\GetProperty.cs" />
     <Compile Include="BindableObject\BindableObjectMixinTests\GetPropertyString.cs" />
+    <Compile Include="BindableObject\BindableObjectWithIdentityMixinTest.cs" />
     <Compile Include="BindableObject\BooleanPropertyTest.cs" />
     <Compile Include="BindableObject\ConstantEnumerationValueFilterTest.cs" />
     <Compile Include="BindableObject\Design\SearchFieldControllerTest.cs" />

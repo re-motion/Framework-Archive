@@ -20,6 +20,11 @@ namespace Rubicon.ObjectBinding.BindableObject
       return service.GetObject (this, uniqueIdentifier);
     }
 
+    protected override void CheckTypeForBindableObjectMixin (Type type)
+    {
+      CheckTypeForBindableObjectMixin<BindableObjectWithIdentityMixin, IBusinessObjectWithIdentity> (type);
+    }
+
     private IGetObjectService GetGetObjectService ()
     {
       IGetObjectService service = (IGetObjectService) BusinessObjectProvider.GetService (_getObjectServiceType);
