@@ -9,11 +9,11 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI;
-
-using OBRTest;
+using ObjectBoundRepeater=Rubicon.ObjectBinding.Sample.ObjectBoundRepeater;
 
 namespace OBWTest
 {
@@ -24,8 +24,8 @@ public class RepeaterTest : SmartPage
 {
   protected BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected OBRTest.ObjectBoundRepeater Repeater2;
-  protected OBRTest.ObjectBoundRepeater Repeater3;
+  protected ObjectBoundRepeater Repeater2;
+  protected ObjectBoundRepeater Repeater3;
   protected Rubicon.Web.UI.Controls.WebButton SaveButton;
 
 	private void Page_Load(object sender, System.EventArgs e)

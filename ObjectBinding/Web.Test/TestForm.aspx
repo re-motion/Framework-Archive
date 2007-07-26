@@ -1,5 +1,5 @@
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+
+
 
 <%@ Page language="c#" Codebehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
@@ -10,11 +10,11 @@
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
+<rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
 <body>
 <form id=Form method=post runat="server">
-<rwc:LazyContainer runat="server" id="LazyContainer"><obw:bocTextValue id="TextField" runat="server" readonly="True"></obw:bocTextValue></rwc:LazyContainer>
+<rubicon:LazyContainer runat="server" id="LazyContainer"><rubicon:bocTextValue id="TextField" runat="server" readonly="True"></rubicon:bocTextValue></rubicon:LazyContainer>
 <p><asp:Button id="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
 <table id="FormGrid" cellspacing="1" cellpadding="1" width="300" border="1" runat="server">
   <tr>
@@ -24,11 +24,11 @@
     <td><asp:textbox id="TextBox1" runat="server"></asp:textbox><asp:requiredfieldvalidator id="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredFieldValidator" ControlToValidate="TextBox1" enableclientscript="False"></asp:requiredfieldvalidator></td></tr>
   <tr>
     <td></td>
-    <td><obw:boctextvalue id="field" runat=server required="True" valuetype="String">
+    <td><rubicon:boctextvalue id="field" runat=server required="True" valuetype="String">
 <textboxstyle textmode="SingleLine">
-</TextBoxStyle></obw:boctextvalue></td></tr>
+</TextBoxStyle></rubicon:boctextvalue></td></tr>
 </table>
-<rwc:formgridmanager id="fgm" runat="server"/>
+<rubicon:formgridmanager id="fgm" runat="server"/>
 </form>
 
   </body>

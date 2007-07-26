@@ -1,5 +1,5 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+
+
 <%@ Page language="c#" Codebehind="PersonsForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.PersonsForm" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
@@ -10,7 +10,7 @@
     <meta content=C# name=CODE_LANGUAGE>
     <meta content=JavaScript name=vs_defaultClientScript>
     <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-    <rwc:htmlheadcontents runat="server" id="HtmlHeadContents"></rwc:htmlheadcontents>
+    <rubicon:htmlheadcontents runat="server" id="HtmlHeadContents"></rubicon:htmlheadcontents>
   </head>
   <body>
     <form id=Form method=post runat="server"><h1>Persons Form</h1>
@@ -19,17 +19,17 @@
           <td colSpan=2>Persons</td></tr>
         <tr>
           <td></td>
-          <td><obc:BocList id="PersonList" runat="server" PropertyIdentifier="" DataSourceControl="CurrentObject" ShowAllProperties="True" >
+          <td><rubicon:BocList id="PersonList" runat="server" PropertyIdentifier="" DataSourceControl="CurrentObject" ShowAllProperties="True" >
 <fixedcolumns>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
 <persistedcommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-</FixedColumns></obc:BocList></td></tr>
+</rubicon:BocSimpleColumnDefinition>
+</FixedColumns></rubicon:BocList></td></tr>
           </table>
       <p><asp:button id="PostBackButton" runat="server" Text="Post Back"></asp:button></p>
-      <p><rwc:formgridmanager id=FormGridManager runat="server" visible="true"></rwc:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="OBRTest.Person, OBRTest" /></p></form>
+      <p><rubicon:formgridmanager id=FormGridManager runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person" /></p></form>
 
   </body>
 </html>

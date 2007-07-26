@@ -9,10 +9,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
-using OBRTest;
 
 namespace OBWTest
 {
@@ -23,7 +23,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebTreeView WebTreeView;
-  protected OBRTest.PersonTreeView PersonTreeView;
+  protected PersonTreeView PersonTreeView;
   protected System.Web.UI.WebControls.Button RefreshPesonTreeViewButton;
   protected System.Web.UI.WebControls.Button Button1;
   protected System.Web.UI.WebControls.Button Node101Button;
@@ -62,14 +62,14 @@ public class SingleTestTreeView : SingleBocTestBasePage
     WebTreeNodeCollection nodes;
 
     nodes = WebTreeView.Nodes;
-    nodes.Add (new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/OBRTest.Job.gif", "Icon", "ToolTip", Unit.Pixel(16), Unit.Pixel(16))));
+    nodes.Add (new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", "ToolTip", Unit.Pixel (16), Unit.Pixel (16))));
     nodes.Add (new WebTreeNode ("node1", "Node 1"));
     nodes.Add (new WebTreeNode ("node2", "Node 2"));
     nodes.Add (new WebTreeNode ("node3", "Node 3"));
     nodes.Add (new WebTreeNode ("node4", "Node 4"));
 
     nodes = ((WebTreeNode) WebTreeView.Nodes[0]).Children;
-    nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/OBRTest.Job.gif"));
+    nodes.Add (new WebTreeNode ("node00", "Node 0-0", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
     nodes.Add (new WebTreeNode ("node01", "Node 0-1"));
     nodes.Add (new WebTreeNode ("node02", "Node 0-2"));
     nodes.Add (new WebTreeNode ("node03", "Node 0-3"));
@@ -77,9 +77,9 @@ public class SingleTestTreeView : SingleBocTestBasePage
 
     nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
     nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
-    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/OBRTest.Job.gif")));
-    nodes.Add (new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/OBRTest.Job.gif", "Icon", null, Unit.Pixel(16), Unit.Pixel(16))));
-    nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/OBRTest.Job.gif"));
+    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif")));
+    nodes.Add (new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif", "Icon", null, Unit.Pixel (16), Unit.Pixel (16))));
+    nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/Rubicon.ObjectBinding.Sample.Job.gif"));
     ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
 
     nodes = ((WebTreeNode) WebTreeView.Nodes[3]).Children;

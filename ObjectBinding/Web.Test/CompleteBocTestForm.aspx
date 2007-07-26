@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+
+
+
 <%@ Page language="c#" Codebehind="CompleteBocTestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.CompleteBocForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -10,7 +10,7 @@
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
 <body>
 <form id=Form method=post runat="server">
@@ -18,60 +18,60 @@
 <p>
 <table id=FormGrid runat="server">
   <tr>
-    <td colSpan=2><obc:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></obc:boctextvalue>&nbsp;<obc:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></obc:boctextvalue></td></tr>
+    <td colSpan=2><rubicon:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" datasourcecontrol="CurrentObject" ReadOnly="True"></rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" datasourcecontrol="CurrentObject" ReadOnly="True"></rubicon:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:boctextvalue id=TextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="FirstName" errormessage="Fehler">
+    <td><rubicon:boctextvalue id=TextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="FirstName" errormessage="Fehler">
 <textboxstyle textmode="SingleLine" autopostback="True">
-</TextBoxStyle></obw:boctextvalue></td></tr>
+</TextBoxStyle></rubicon:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
+    <td><rubicon:bocmultilinetextvalue id=MultilineTextField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="CV" DESIGNTIMEDRAGDROP="37" errormessage="Fehler">
 <textboxstyle textmode="MultiLine" autopostback="True">
-</TextBoxStyle></obw:bocmultilinetextvalue></td></tr>
+</TextBoxStyle></rubicon:bocmultilinetextvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="DateOfBirth" errormessage="Fehler">
+    <td><rubicon:bocdatetimevalue id=DateTimeField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="DateOfBirth" errormessage="Fehler">
 <datetextboxstyle autopostback="True">
-</DateTextBoxStyle></obw:bocdatetimevalue></td></tr>
+</DateTextBoxStyle></rubicon:bocdatetimevalue></td></tr>
   <tr>
     <td style="HEIGHT: 18px"></td>
-    <td style="HEIGHT: 18px"><obw:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus" errormessage="Fehler">
+    <td style="HEIGHT: 18px"><rubicon:bocenumvalue id=EnumField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="MarriageStatus" errormessage="Fehler">
 <listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
-</ListControlStyle></obw:bocenumvalue></td></tr>
+</ListControlStyle></rubicon:bocenumvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" errormessage="Fehler">
+    <td><rubicon:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" errormessage="Fehler">
 <dropdownliststyle autopostback="True">
 </DropDownListStyle>
 
 <persistedcommand>
-<obc:BocCommand Type="None"></obc:BocCommand>
-</PersistedCommand></obw:bocreferencevalue></td></tr>
+<rubicon:BocCommand Type="None"></rubicon:BocCommand>
+</PersistedCommand></rubicon:bocreferencevalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" errormessage="Fehler" autopostback="True"></obw:bocbooleanvalue></td></tr>
+    <td><rubicon:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" errormessage="Fehler" autopostback="True"></rubicon:bocbooleanvalue></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obw:boclist id=ListField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True" enableselection="True">
+    <td colSpan=2><rubicon:boclist id=ListField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Jobs" showsortingorder="True" alwaysshowpageinfo="True" enableselection="True">
 <fixedcolumns>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
 <persistedcommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-<obc:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="StartDate">
 <persistedcommand>
-<obc:BocListItemCommand Type="None"></obc:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obc:BocSimpleColumnDefinition>
-</FixedColumns></obw:boclist></td></tr></table></p>
-<p><rwc:formgridmanager id=FormGridManager runat="server" 
-visible="true"></rwc:formgridmanager><rubicon:BindableObjectDataSourceControl 
+</rubicon:BocSimpleColumnDefinition>
+</FixedColumns></rubicon:boclist></td></tr></table></p>
+<p><rubicon:formgridmanager id=FormGridManager runat="server" 
+visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl 
 id=CurrentObject runat="server" 
-typename="OBRTest.Person, OBRTest" /></p>
+typename="Rubicon.ObjectBinding.Sample::Person" /></p>
 <p><asp:button id=SaveButton runat="server" Text="Save" Width="80px"></asp:button><asp:button id=PostBackButton runat="server" Text="Post Back"></asp:button></p></form>
   </body>
 </html>

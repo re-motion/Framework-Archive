@@ -1,19 +1,17 @@
 using System;
 using System.Xml.Serialization;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.ObjectBinding;
 
-namespace OBRTest
+namespace Rubicon.ObjectBinding.Sample
 {
+  [XmlRoot ("Job")]
   [XmlType]
   [Serializable]
   public class Job : BindableXmlObject
   {
     public static Job GetObject (Guid id)
     {
-      Job job = GetObject<Job> (id);
-      if (job == null)
-        return null;
-      return job;
+      return GetObject<Job> (id);
     }
 
     public static Job CreateObject ()
@@ -42,6 +40,7 @@ namespace OBRTest
     }
 
     [XmlAttribute (DataType="date")]
+    [DateProperty]
     public DateTime StartDate
     {
       get { return _startDate; }
@@ -49,6 +48,7 @@ namespace OBRTest
     }
 
     [XmlAttribute (DataType="date")]
+    [DateProperty]
     public DateTime EndDate
     {
       get { return _endDate; }

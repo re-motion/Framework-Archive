@@ -1,199 +1,199 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocListUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocListUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
+
+
+
 <table id=FormGrid width="80%" runat="server">
   <tr>
-    <td colSpan=2><obw:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></obw:boctextvalue>&nbsp;<obw:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></obw:boctextvalue></td></tr>
+    <td colSpan=2><rubicon:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></rubicon:boctextvalue></td></tr>
   <tr>
     <td>Jobs</td>
-    <td><obw:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" showsortingorder="True" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="2" selection="SingleRadioButton" index="Disabled">
-</obw:boclist></td></tr>
+    <td><rubicon:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" showsortingorder="True" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="2" selection="SingleRadioButton" index="Disabled">
+</rubicon:boclist></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obrt:testboclist id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
+    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
 <fixedcolumns>
-<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
-<obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
+<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
+<rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
-<obw:BocListItemCommand Type="Event" CommandStateType="OBRTest::PersonListItemCommandState" ToolTip="An Event Command"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Event" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" ToolTip="An Event Command"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCommandColumnDefinition>
-<obw:BocCommandColumnDefinition ItemID="Href" Text="Href">
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
 <persistedcommand>
-<obw:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCommandColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<obw:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 <propertypathbindings>
-<obw:PropertyPathBinding PropertyPathIdentifier="LastName"></obw:PropertyPathBinding>
-<obw:PropertyPathBinding PropertyPathIdentifier="FirstName"></obw:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
 
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCompoundColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
+</rubicon:BocCompoundColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
 <persistedcommand>
-<obw:BocListItemCommand Type="Event"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="OBRTest::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></obw:BocCustomColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></rubicon:BocCustomColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></obw:BocDropDownMenuColumnDefinition>
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></rubicon:BocDropDownMenuColumnDefinition>
 </FixedColumns>
-</obrt:testboclist></td></tr>
+</ros:TestBocList></td></tr>
 <%--  <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obrt:testboclist id=Testboclist1 runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" indexoffset="100" ShowEmptyListMessage="True" enableselection="True" Index="SortedOrder" Selection="Multiple" rowmenudisplay="Automatic" readonly="True">
+    <td colSpan=2><ros:testboclist id=Testboclist1 runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" indexoffset="100" ShowEmptyListMessage="True" enableselection="True" Index="SortedOrder" Selection="Multiple" rowmenudisplay="Automatic" readonly="True">
 <fixedcolumns>
-<obw:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<obw:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 <propertypathbindings>
-<obw:PropertyPathBinding PropertyPathIdentifier="LastName"></obw:PropertyPathBinding>
-<obw:PropertyPathBinding PropertyPathIdentifier="FirstName"></obw:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
 
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCompoundColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
+</rubicon:BocCompoundColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
 <persistedcommand>
-<obw:BocListItemCommand Type="Event"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
+</rubicon:BocSimpleColumnDefinition>
 </FixedColumns>
-</obrt:testboclist></td></tr>
+</ros:testboclist></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obrt:testboclist id=EmptyList runat="server" datasourcecontrol="EmptyDataSourceControl" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple" required="True" readonly="False">
+    <td colSpan=2><ros:testboclist id=EmptyList runat="server" datasourcecontrol="EmptyDataSourceControl" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple" required="True" readonly="False">
 <listmenuitems>
-<obw:BocMenuItem Text="test" ItemID="test">
+<rubicon:BocMenuItem Text="test" ItemID="test">
 <persistedcommand>
-<obw:BocMenuItemCommand Type="Event"></obw:BocMenuItemCommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
 </PersistedCommand>
-</obw:BocMenuItem>
+</rubicon:BocMenuItem>
 </ListMenuItems>
 
 <optionsmenuitems>
-<obw:BocMenuItem Text="test" ItemID="test">
+<rubicon:BocMenuItem Text="test" ItemID="test">
 <persistedcommand>
-<obw:BocMenuItemCommand Type="Event"></obw:BocMenuItemCommand>
+<rubicon:BocMenuItemCommand Type="Event"></rubicon:BocMenuItemCommand>
 </PersistedCommand>
-</obw:BocMenuItem>
+</rubicon:BocMenuItem>
 </OptionsMenuItems>
 
 <fixedcolumns>
-<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
-<obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
+<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
+<rubicon:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
-<obw:BocListItemCommand Type="Event" CommandStateType="OBRTest::PersonListItemCommandState" ToolTip="An Event Command"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Event" CommandStateType="Rubicon.ObjectBinding.Sample::PersonListItemCommandState" ToolTip="An Event Command"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCommandColumnDefinition>
-<obw:BocCommandColumnDefinition ItemID="Href" Text="Href">
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
 <persistedcommand>
-<obw:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCommandColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
 <persistedcommand>
-<obw:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 <propertypathbindings>
-<obw:PropertyPathBinding PropertyPathIdentifier="LastName"></obw:PropertyPathBinding>
-<obw:PropertyPathBinding PropertyPathIdentifier="FirstName"></obw:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="LastName"></rubicon:PropertyPathBinding>
+<rubicon:PropertyPathBinding PropertyPathIdentifier="FirstName"></rubicon:PropertyPathBinding>
 </PropertyPathBindings>
 
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocCompoundColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" ColumnTitle="Partner">
+</rubicon:BocCompoundColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" ColumnTitle="Partner">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName">
 <persistedcommand>
-<obw:BocListItemCommand Type="Event"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" IsReadOnly="True">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="OBRTest::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></obw:BocCustomColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Rubicon.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></rubicon:BocCustomColumnDefinition>
+<rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased">
 <persistedcommand>
-<obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
+<rubicon:BocListItemCommand Type="None"></rubicon:BocListItemCommand>
 </PersistedCommand>
-</obw:BocSimpleColumnDefinition>
-<obw:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></obw:BocDropDownMenuColumnDefinition>
+</rubicon:BocSimpleColumnDefinition>
+<rubicon:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="0%" ColumnTitle="Menu"></rubicon:BocDropDownMenuColumnDefinition>
 </FixedColumns>
-</obrt:testboclist><obrt:testboclistvalidator id=EmptyListValidator runat="server" errormessage="List is empty." enableclientscript="False" controltovalidate="EmptyList"></obrt:testboclistvalidator></td></tr>
+</ros:testboclist><ros:testboclistvalidator id=EmptyListValidator runat="server" errormessage="List is empty." enableclientscript="False" controltovalidate="EmptyList"></ros:testboclistvalidator></td></tr>
   <tr>
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obw:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
+    <td colSpan=2><rubicon:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
 <fixedcolumns>
-<obw:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></obw:BocAllPropertiesPlacehoderColumnDefinition>
-<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
+<rubicon:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></rubicon:BocAllPropertiesPlacehoderColumnDefinition>
+<rubicon:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
 </FixedColumns>
-</obw:boclist></td></tr>--%>
+</rubicon:boclist></td></tr>--%>
 </table>
 <p><asp:button id=ChildrenListEndEditModeButton runat="server" Text="End Edit Mode"></asp:button><asp:button id=ChildrenListAddAndEditButton runat="server" Text="Add and Edit"></asp:button></p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="OBRTest.Person, OBRTest"/><rubicon:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" typename="OBRTest.Person, OBRTest"/></div>
+<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/><rubicon:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></div>

@@ -8,15 +8,15 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Text;
 using System.Reflection;
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
-using OBRTest;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
@@ -28,7 +28,7 @@ public class DesignTestTreeViewForm : DesignTestWxeBasePage
 {
   protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
-  protected OBRTest.PersonTreeView PersonTreeView;
+  protected PersonTreeView PersonTreeView;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private void Page_Load(object sender, System.EventArgs e)

@@ -14,7 +14,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
@@ -44,10 +44,10 @@ public class ClientForm : TestWxeBasePage
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
     _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();

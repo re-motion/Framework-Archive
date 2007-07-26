@@ -3,13 +3,12 @@ using System.Web;
 using System.Web.UI.WebControls;
 
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
-
-using OBRTest;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -21,8 +20,8 @@ public class BocListUserControl : BaseUserControl
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList JobList;
-  protected OBRTest.TestBocList ChildrenList;
-  protected OBRTest.TestBocList EmptyList;
+  protected TestBocList ChildrenList;
+  protected TestBocList EmptyList;
   protected System.Web.UI.WebControls.Button ChildrenListEndEditModeButton;
   protected System.Web.UI.WebControls.Button ChildrenListAddAndEditButton;
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
@@ -30,8 +29,8 @@ public class BocListUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected OBRTest.TestBocListValidator EmptyListValidator;
-  protected OBRTest.TestBocList Testboclist1;
+  protected TestBocListValidator EmptyListValidator;
+  protected TestBocList Testboclist1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;

@@ -1,10 +1,7 @@
 <%@ Register TagPrefix="uc1" TagName="TestTabbedPersonDetailsUserControl" Src="TestTabbedPersonDetailsUserControl.ascx" %>
 <%@ Page language="c#" Codebehind="RepeaterTest.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.RepeaterTest" %>
 <%@ Register TagPrefix="uc1" TagName="TestTabbedPersonJobsUserControl" Src="TestTabbedPersonJobsUserControl.ascx" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="cc1" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -16,17 +13,17 @@
   </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form1 method=post runat="server"><rubicon:webbutton id=SaveButton runat="server" Text="Save"></rubicon:webbutton>
-<obrt:objectboundrepeater id=Repeater2 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
+<ros:ObjectBoundRepeater id=Repeater2 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
 <itemtemplate>
     <div>
-    <obw:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
-</obw:boctextvalue>
-<cc1:reflectionbusinessobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" typename="OBRTest.Person,OBRTest"></cc1:reflectionbusinessobjectdatasourcecontrol>
+    <rubicon:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
+</rubicon:boctextvalue>
+<rubicon:bindableobjectdatasourcecontrol id="ItemDataSourceControl" runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/>
 </div>
 </ItemTemplate>
-</obrt:objectboundrepeater>
+</ros:ObjectBoundRepeater>
 <hr>
-<obrt:objectboundrepeater id=Repeater3 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
+<ros:ObjectBoundRepeater id=Repeater3 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
 <itemtemplate>
 <table style="width:100%">
 <tr>
@@ -40,9 +37,8 @@
 </td></tr>
 </table>
 </ItemTemplate>
-</obrt:objectboundrepeater>
+</ros:ObjectBoundRepeater>
 <hr>
-<cc1:reflectionbusinessobjectdatasourcecontrol id=CurrentObject runat="server" 
-typename="OBRTest.Person,OBRTest"></cc1:reflectionbusinessobjectdatasourcecontrol></form>
+<rubicon:bindableobjectdatasourcecontrol id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></form>
   </body>
 </html>

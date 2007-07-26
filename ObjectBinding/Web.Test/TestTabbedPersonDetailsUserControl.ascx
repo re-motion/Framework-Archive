@@ -1,6 +1,6 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+
+
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonDetailsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonDetailsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 
 
@@ -39,4 +39,4 @@
 <rubicon:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:BocCommand>
 </PersistedCommand></rubicon:bocreferencevalue></td></tr>
 </table>
-<p><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="OBRTest.Person, OBRTest" /></p>
+<p><rubicon:formgridmanager id="FormGridManager" runat="server" visible="true"></rubicon:formgridmanager><rubicon:BindableObjectDataSourceControl id="CurrentObject" runat="server" typename="Rubicon.ObjectBinding.Sample::Person" /></p>

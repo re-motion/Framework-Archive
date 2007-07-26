@@ -15,7 +15,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
@@ -40,10 +40,19 @@ public class TestTabbedForm : TestWxeBasePage
     get { return (TestTabbedFormWxeFunction) CurrentFunction; }
   }
 
+
   protected override void OnLoad(EventArgs e)
   {
     base.OnLoad (e);
 
+    int activeViewIndex = 0;
+    TabView activeView = (TabView) MultiView.Views[activeViewIndex];
+    if (activeViewIndex > 0)
+      MultiView.SetActiveView (activeView);
+  }
+
+  private void LoadUserControls ()
+  {
     // add tabs 
     AddTab ("1", "Test Tab 1", null);
     AddTab ("2", "Test Tab 2 foo bar", null);
@@ -53,29 +62,24 @@ public class TestTabbedForm : TestWxeBasePage
     AddTab ("6", "Test Tab 6 foo", null);
     AddTab ("7", "Test Tab 7 foo foo bar", null);
 
-//    AddMainMenuTab ("1", "Main Tab 1", null);
-//    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
-//    AddMainMenuTab ("3", "Main Tab 3 foo", null);
-//    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
-//    AddMainMenuTab ("5", "Main Tab 5", null);
-//    AddMainMenuTab ("6", "Main Tab 6 foo", null);
-//    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
+    //    AddMainMenuTab ("1", "Main Tab 1", null);
+    //    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
+    //    AddMainMenuTab ("3", "Main Tab 3 foo", null);
+    //    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
+    //    AddMainMenuTab ("5", "Main Tab 5", null);
+    //    AddMainMenuTab ("6", "Main Tab 6 foo", null);
+    //    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
 
-    List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
+    List<IDataEditControl> dataEditControls = new List<IDataEditControl> ();
     // load editor pages
     IDataEditControl dataEditControl;
-    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/OBRTest.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
+    dataEditControl = AddPage ("TestTabbedPersonJobsUserControl", "Jobs", new IconInfo ("Images/Rubicon.ObjectBinding.Sample.Job.gif"), "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add (dataEditControl);
-    _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray();
-
-    int activeViewIndex = 0;
-    TabView activeView = (TabView) MultiView.Views[activeViewIndex];
-    if (activeViewIndex > 0)
-      MultiView.SetActiveView (activeView);
+    _dataEditControls = (IDataEditControl[]) dataEditControls.ToArray ();
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -190,6 +194,8 @@ public class TestTabbedForm : TestWxeBasePage
 
     this.EnableAbort = true;
     this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+
+	  LoadUserControls();
 	}
 	#region Web Form Designer generated code
 
@@ -204,15 +210,18 @@ public class TestTabbedForm : TestWxeBasePage
   }
 	#endregion
 
-  protected override void OnUnload(EventArgs e)
+  protected override void OnUnload (EventArgs e)
   {
     base.OnUnload (e);
 
     if (_currentObjectSaved)
       return;
 
-    foreach (IDataEditControl control in _dataEditControls)
-      control.DataSource.SaveValues (true);
+    if (_dataEditControls != null)
+    {
+      foreach (IDataEditControl control in _dataEditControls)
+        control.DataSource.SaveValues (true);
+    }
   }
 
   private void CancelButton_Click(object sender, System.EventArgs e)

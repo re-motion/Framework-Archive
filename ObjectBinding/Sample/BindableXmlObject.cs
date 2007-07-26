@@ -3,11 +3,12 @@ using System.Xml.Serialization;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Sample
 {
   [Serializable]
   [BindableObjectWithIdentity]
   [GetObjectServiceType (typeof (XmlReflectionBusinessObjectStorageProvider))]
+  [SearchAvailableObjectsServiceType (typeof (BindableXmlObjectSearchService))]
   public abstract class BindableXmlObject
   {
     protected static T GetObject<T> (Guid id)
@@ -35,6 +36,7 @@ namespace Rubicon.ObjectBinding.Reflection
     }
 
     [XmlIgnore]
+    [ObjectBinding (Visible = false)]
     public Guid ID
     {
       get { return _id; }
@@ -49,6 +51,7 @@ namespace Rubicon.ObjectBinding.Reflection
 
     [XmlIgnore]
     [Override]
+    [ObjectBinding (Visible = false)]
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }

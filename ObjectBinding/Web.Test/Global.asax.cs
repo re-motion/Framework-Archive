@@ -1,6 +1,7 @@
 using System;
 using System.IO;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.ObjectBinding.BindableObject;
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.Web.Configuration;
 
 namespace OBWTest
@@ -39,7 +40,10 @@ namespace OBWTest
       if (!Directory.Exists (objectPath))
         Directory.CreateDirectory (objectPath);
 
-      XmlReflectionBusinessObjectStorageProvider.SetCurrent (new XmlReflectionBusinessObjectStorageProvider (objectPath));
+      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (objectPath);
+      XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
+      BindableObjectProvider.Current.AddService (typeof (XmlReflectionBusinessObjectStorageProvider), provider);
+      BindableObjectProvider.Current.AddService (typeof (BindableXmlObjectSearchService), new BindableXmlObjectSearchService());
     }
 
     protected void Session_Start (Object sender, EventArgs e)

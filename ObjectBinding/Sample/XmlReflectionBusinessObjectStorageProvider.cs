@@ -3,12 +3,12 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
+using Rubicon.Collections;
 using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject;
-using Rubicon.Reflection;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Reflection
+namespace Rubicon.ObjectBinding.Sample
 {
   public class XmlReflectionBusinessObjectStorageProvider : IGetObjectService
   {
@@ -28,6 +28,7 @@ namespace Rubicon.ObjectBinding.Reflection
 
     private readonly string _rootPath;
     private Hashtable _identityMap = new Hashtable();
+    private readonly InterlockedCache<Type, XmlAttributeOverrides> _attributeOverridesCache = new InterlockedCache<Type, XmlAttributeOverrides> ();
 
     public XmlReflectionBusinessObjectStorageProvider (string rootPath)
     {
@@ -57,7 +58,7 @@ namespace Rubicon.ObjectBinding.Reflection
       if (obj != null)
         return obj;
 
-      XmlSerializer serializer = new XmlSerializer (GetConcreteType (type), GetAttributeOverrides(type));
+      XmlSerializer serializer = new XmlSerializer (GetConcreteType (type), GetAttributeOverrides (GetConcreteType (type)));
 
       string typeDir = Path.Combine (_rootPath, type.FullName);
       string fileName = Path.Combine (typeDir, id.ToString());
@@ -76,8 +77,8 @@ namespace Rubicon.ObjectBinding.Reflection
     public BindableXmlObject[] GetObjects (Type type)
     {
       ArgumentUtility.CheckNotNull ("type", type);
-      
-      ArrayList objects = new ArrayList ();
+
+      ArrayList objects = new ArrayList();
 
       string typeDir = Path.Combine (_rootPath, type.FullName);
       string[] filenames = Directory.GetFiles (typeDir);
@@ -106,7 +107,7 @@ namespace Rubicon.ObjectBinding.Reflection
     {
       ArgumentUtility.CheckNotNull ("obj", obj);
 
-      XmlSerializer serializer = new XmlSerializer (obj.GetType());
+      XmlSerializer serializer = new XmlSerializer (obj.GetType (), GetAttributeOverrides (obj.GetType ()));
 
       Type targetType = GetTargetType (obj);
       string typeDir = Path.Combine (_rootPath, targetType.FullName);
@@ -121,12 +122,12 @@ namespace Rubicon.ObjectBinding.Reflection
       }
     }
 
-    public T CreateObject<T> () where T : BindableXmlObject
+    public T CreateObject<T> () where T: BindableXmlObject
     {
-      return (T) CreateObject (typeof (T), Guid.NewGuid ());
+      return (T) CreateObject (typeof (T), Guid.NewGuid());
     }
 
-    public T CreateObject<T> (Guid id) where T : BindableXmlObject
+    public T CreateObject<T> (Guid id) where T: BindableXmlObject
     {
       return (T) CreateObject (typeof (T), id);
     }
@@ -149,16 +150,15 @@ namespace Rubicon.ObjectBinding.Reflection
       if (_identityMap.ContainsKey (obj.ID))
         return;
 
-      WeakReference reference = new WeakReference (obj, false);
-      _identityMap.Add (obj.ID, reference);
+      _identityMap.Add (obj.ID, obj);
     }
 
     private BindableXmlObject GetFromIdentityMap (Guid id)
     {
-      WeakReference reference = (WeakReference) _identityMap[id];
-      if (reference == null)
+      BindableXmlObject bindableXmlObject = (BindableXmlObject) _identityMap[id];
+      if (bindableXmlObject == null)
         return null;
-      return (BindableXmlObject) reference.Target;
+      return bindableXmlObject;
     }
 
     private Type GetConcreteType (Type targetType)
@@ -171,16 +171,27 @@ namespace Rubicon.ObjectBinding.Reflection
       return ((BindableObjectClass) ((IBusinessObject) obj).BusinessObjectClass).Type;
     }
 
-    private XmlAttributeOverrides GetAttributeOverrides (Type targetType)
+    private XmlAttributeOverrides GetAttributeOverrides (Type concreteType)
+    {
+      return _attributeOverridesCache.GetOrCreateValue (concreteType, CreateAttributeOverrides);
+    }
+
+    private XmlAttributeOverrides CreateAttributeOverrides (Type type)
     {
       XmlAttributeOverrides attributeOverrides = new XmlAttributeOverrides();
-      Type concreteType = GetConcreteType (targetType);
-      foreach (PropertyInfo propertyInfo in targetType.GetProperties (BindingFlags.Instance | BindingFlags.Public))
+      foreach (MemberInfo memberInfo in type.FindMembers (
+          MemberTypes.Field | MemberTypes.Property,
+          BindingFlags.Instance | BindingFlags.Public,
+          delegate { return true; },
+          null))
       {
         XmlAttributes attributes = new XmlAttributes();
-        foreach (XmlElementAttribute attribute in AttributeUtility.GetCustomAttributes<XmlElementAttribute> (propertyInfo, true))
+        foreach (XmlElementAttribute attribute in AttributeUtility.GetCustomAttributes<XmlElementAttribute> (memberInfo, true))
           attributes.XmlElements.Add (attribute);
-        attributeOverrides.Add (concreteType, attributes);
+        attributes.XmlAttribute = AttributeUtility.GetCustomAttribute<XmlAttributeAttribute> (memberInfo, true);
+        attributes.XmlIgnore = attributes.XmlAttribute == null && attributes.XmlElements.Count == 0;
+
+        attributeOverrides.Add (type, memberInfo.Name, attributes);
       }
 
       return attributeOverrides;

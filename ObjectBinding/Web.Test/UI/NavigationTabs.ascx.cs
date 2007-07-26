@@ -5,7 +5,7 @@ using System.Web.UI.WebControls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.BindableObject;
 using Rubicon.ObjectBinding.BindableObject.Properties;
-using Rubicon.ObjectBinding.Reflection;
+
 using Rubicon.Web.Configuration;
 
 namespace OBWTest.UI

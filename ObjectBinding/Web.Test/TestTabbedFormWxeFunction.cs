@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.Web.ExecutionEngine;
-using OBRTest;
 
 namespace OBWTest
 {

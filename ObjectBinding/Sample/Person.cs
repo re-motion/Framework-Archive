@@ -1,26 +1,19 @@
 using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
-using Rubicon.ObjectBinding.Reflection;
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.Utilities;
 
-namespace OBRTest
+namespace Rubicon.ObjectBinding.Sample
 {
+  [XmlRoot ("Person")]
   [XmlType]
   [Serializable]
   public class Person : BindableXmlObject
   {
     public static Person GetObject (Guid id)
     {
-      Person person = GetObject<Person> (id);
-
-      if (person == null)
-        return null;
-
-      if (person.PartnerID != Guid.Empty)
-        person.Partner = Person.GetObject (person.PartnerID);
-
-      return person;
+      return GetObject<Person> (id);
     }
 
     public static Person CreateObject ()
@@ -87,6 +80,7 @@ namespace OBRTest
     }
 
     [XmlAttribute]
+    [DisableEnumValues(Gender.UnknownGender)]
     public Gender Gender
     {
       get { return _gender; }
@@ -94,6 +88,7 @@ namespace OBRTest
     }
 
     [XmlAttribute]
+    [DisableEnumValues (MarriageStatus.Bigamist, MarriageStatus.Polygamist)]
     public MarriageStatus MarriageStatus
     {
       get { return _marriageStatus; }
@@ -101,6 +96,7 @@ namespace OBRTest
     }
 
     [XmlElement]
+    [ObjectBinding (Visible = false)]
     public Guid PartnerID
     {
       get { return _partnerID; }
@@ -110,11 +106,12 @@ namespace OBRTest
     [XmlIgnore]
     public Person Partner
     {
-      get { return Person.GetObject (_partnerID); }
+      get { return (_partnerID != Guid.Empty) ? Person.GetObject (_partnerID) : null; }
       set { _partnerID = (value != null) ? value.ID : Guid.Empty; }
     }
 
     [XmlElement]
+    [ObjectBinding (Visible = false)]
     public Guid[] ChildIDs
     {
       get { return _childIDs; }
@@ -152,6 +149,7 @@ namespace OBRTest
     }
 
     [XmlElement]
+    [ObjectBinding (Visible = false)]
     public Guid[] JobIDs
     {
       get { return _jobIDs; }
@@ -189,6 +187,7 @@ namespace OBRTest
     }
 
     [XmlAttribute (DataType="date")]
+    [DateProperty]
     public DateTime DateOfDeath
     {
       get { return _dateOfDeath; }
@@ -234,7 +233,7 @@ namespace OBRTest
   {
     Male,
     Female,
-    Disabled_UnknownGender
+    UnknownGender
   }
 
   public enum MarriageStatus
@@ -242,7 +241,7 @@ namespace OBRTest
     Married,
     Single,
     Divorced,
-    Disabled_Bigamist,
-    Disabled_Polygamist,
+    Bigamist,
+    Polygamist,
   }
 }

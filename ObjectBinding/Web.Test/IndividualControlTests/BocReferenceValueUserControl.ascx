@@ -1,104 +1,104 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocReferenceValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocReferenceValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
-<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+
+
+
 
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="OBRTest.Person, OBRTest"/></div>
+<rubicon:formgridmanager id=FormGridManager runat="server"/><rubicon:BindableObjectDataSourceControl id=CurrentObject runat="server" typename="Rubicon.ObjectBinding.Sample::Person"/></div>
 <table id=FormGrid runat="server">
   <tr>
-    <td colSpan=4><obw:boctextvalue id=FirstNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="FirstName">
-</obw:boctextvalue>&nbsp;<obw:boctextvalue id=LastNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></obw:boctextvalue></td></tr>
+    <td colSpan=4><rubicon:boctextvalue id=FirstNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="FirstName">
+</rubicon:boctextvalue>&nbsp;<rubicon:boctextvalue id=LastNameField runat="server" readonly="True" datasourcecontrol="CurrentObject" PropertyIdentifier="LastName"></rubicon:boctextvalue></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=PartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" select="*" width="100%">
+    <td><rubicon:bocreferencevalue id=PartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%" EnableSelectStatement="True">
 <persistedcommand>
-<obw:BocCommand Type="Event"></obw:BocCommand>
+<rubicon:BocCommand Type="Event"></rubicon:BocCommand>
 </PersistedCommand>
 
 <optionsmenuitems>
-<obw:BocMenuItem Text="intern">
+<rubicon:BocMenuItem Text="intern">
 <persistedcommand>
-<obw:BocMenuItemCommand Type="Href" HrefCommand-Href="~/startForm.aspx"></obw:BocMenuItemCommand>
+<rubicon:BocMenuItemCommand Type="Href" HrefCommand-Href="~/startForm.aspx"></rubicon:BocMenuItemCommand>
 </PersistedCommand>
-</obw:BocMenuItem>
-<obw:BocMenuItem Text="extern">
+</rubicon:BocMenuItem>
+<rubicon:BocMenuItem Text="extern">
 <persistedcommand>
-<obw:BocMenuItemCommand Type="Href" HrefCommand-Target="_blank" HrefCommand-Href="~/startForm.aspx"></obw:BocMenuItemCommand>
+<rubicon:BocMenuItemCommand Type="Href" HrefCommand-Target="_blank" HrefCommand-Href="~/startForm.aspx"></rubicon:BocMenuItemCommand>
 </PersistedCommand>
-</obw:BocMenuItem>
+</rubicon:BocMenuItem>
 </OptionsMenuItems>
 
 <labelstyle cssclass="class">
-</LabelStyle></obw:bocreferencevalue></td>
+</LabelStyle></rubicon:bocreferencevalue></td>
     <td>bound</td>
     <td style="WIDTH: 20%"><asp:label id=PartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=ReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%" >
+    <td><rubicon:bocreferencevalue id=ReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" width="100%" >
 <persistedcommand>
-<obw:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="Event"></obw:BocCommand>
+<rubicon:BocCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="Event"></rubicon:BocCommand>
 </PersistedCommand>
 
 <labelstyle cssclass="class">
-</LabelStyle></obw:bocreferencevalue></td>
+</LabelStyle></rubicon:bocreferencevalue></td>
     <td>bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id=ReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=UnboundPartnerField runat="server" required="True" hasvalueembeddedinsideoptionsmenu="False" width="250px" showoptionsmenu="False">
+    <td><rubicon:bocreferencevalue id=UnboundPartnerField runat="server" required="True" hasvalueembeddedinsideoptionsmenu="False" width="250px" showoptionsmenu="False" EnableSelectStatement="False">
 <persistedcommand>
-<obw:boccommand Type="Event"></obw:boccommand>
-</PersistedCommand></obw:bocreferencevalue></td>
+<rubicon:boccommand Type="Event"></rubicon:boccommand>
+</PersistedCommand></rubicon:bocreferencevalue></td>
     <td>
       <p> unbound, value not set</p></td>
     <td style="WIDTH: 20%"><asp:label id=UnboundPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=UnboundReadOnlyPartnerField runat="server" readonly="True" enableicon="False" hasvalueembeddedinsideoptionsmenu="False" width="250px">
+    <td><rubicon:bocreferencevalue id=UnboundReadOnlyPartnerField runat="server" readonly="True" enableicon="False" hasvalueembeddedinsideoptionsmenu="False" width="250px" EnableSelectStatement="False">
 <persistedcommand>
-<obw:boccommand Type="Event"></obw:boccommand>
+<rubicon:boccommand Type="Event"></rubicon:boccommand>
 </PersistedCommand>
 
-</obw:bocreferencevalue></td>
+</rubicon:bocreferencevalue></td>
     <td>
       <p>unbound, value set, read only</p></td>
     <td style="WIDTH: 20%"><asp:label id=UnboundReadOnlyPartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=DisabledPartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" embeddedvalue="False" hasvalueembeddedinsideoptionsmenu="True" enabled="False">
+    <td><rubicon:bocreferencevalue id=DisabledPartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" embeddedvalue="False" hasvalueembeddedinsideoptionsmenu="True" enabled="False" EnableSelectStatement="False">
 
 <persistedcommand>
-<obw:boccommand Type="Event"></obw:boccommand>
-</PersistedCommand></obw:bocreferencevalue></td>
+<rubicon:boccommand Type="Event"></rubicon:boccommand>
+</PersistedCommand></rubicon:bocreferencevalue></td>
     <td>disabled, bound</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=DisabledReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="False" embeddedvalue="False">
+    <td><rubicon:bocreferencevalue id=DisabledReadOnlyPartnerField runat="server" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="False" embeddedvalue="False" EnableSelectStatement="False">
 
 <persistedcommand>
-<obw:boccommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></obw:boccommand>
-</PersistedCommand></obw:bocreferencevalue></td>
+<rubicon:boccommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></rubicon:boccommand>
+</PersistedCommand></rubicon:bocreferencevalue></td>
     <td>disabled, bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=DisabledUnboundPartnerField runat="server" required="True" enabled="False" embeddedvalue="False" width="250px">
+    <td><rubicon:bocreferencevalue id=DisabledUnboundPartnerField runat="server" required="True" enabled="False" embeddedvalue="False" width="250px" EnableSelectStatement="False">
 <persistedcommand>
-<obw:boccommand Type="None"></obw:boccommand>
-</PersistedCommand></obw:bocreferencevalue></td>
+<rubicon:boccommand></rubicon:boccommand>
+</PersistedCommand></rubicon:bocreferencevalue></td>
     <td>
       <p> disabled, unbound, value set</p></td>
     <td style="WIDTH: 20%"><asp:label id="DisabledUnboundPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td></td>
-    <td><obw:bocreferencevalue id=DisabledUnboundReadOnlyPartnerField runat="server" readonly="True" enableicon="False" enabled="False" embeddedvalue="False" width="250px" >
+    <td><rubicon:bocreferencevalue id=DisabledUnboundReadOnlyPartnerField runat="server" readonly="True" enableicon="False" enabled="False" embeddedvalue="False" width="250px" EnableSelectStatement="False" >
 <persistedcommand>
-<obw:boccommand Type="None"></obw:boccommand>
+<rubicon:boccommand></rubicon:boccommand>
 </PersistedCommand>
 
-</obw:bocreferencevalue></td>
+</rubicon:bocreferencevalue></td>
     <td>
       <p>disabled, unbound, value set, read only</p></td>
     <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr></table>

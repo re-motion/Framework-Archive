@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>OBRTest</AssemblyName>
+    <AssemblyName>Rubicon.ObjectBinding.Sample</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OBRTest</RootNamespace>
+    <RootNamespace>Rubicon.ObjectBinding.Sample</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -112,11 +112,6 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\Reflection\ObjectBinding.Reflection.csproj">
-      <Name>ObjectBinding.Reflection</Name>
-      <Project>{07113F20-C57A-4FB1-9E87-2BBE912F527B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Name>ObjectBinding.Web</Name>
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
@@ -124,7 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindableObject_Person.cs" />
+    <Compile Include="BindableXmlObject.cs" />
+    <Compile Include="BindableXmlObjectSearchService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -146,12 +142,14 @@
     <Compile Include="PersonTreeView.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ReflectionBusinessObjectWebUIService.cs" />
     <Compile Include="TestBocList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestBocListValidator.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XmlReflectionBusinessObjectStorageProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />

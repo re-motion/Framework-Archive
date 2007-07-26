@@ -3,14 +3,13 @@ using System.Web;
 using System.Web.UI.WebControls;
 
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
-
-using OBRTest;
 
 namespace OBWTest.IndividualControlTests
 {

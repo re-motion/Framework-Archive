@@ -75,9 +75,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <Name>log4net</Name>
-      <HintPath>..\Web\bin\Debug\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -110,15 +110,9 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\Reflection\ObjectBinding.Reflection.csproj">
-      <Name>ObjectBinding.Reflection</Name>
-      <Project>{07113F20-C57A-4FB1-9E87-2BBE912F527B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-    </ProjectReference>
-    <ProjectReference Include="..\Reflection.Test\ObjectBinding.Reflection.Test.csproj">
-      <Name>ObjectBinding.Reflection.Test</Name>
+    <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj">
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>ObjectBinding.Sample</Name>
     </ProjectReference>
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
       <Name>ObjectBinding.Web</Name>
@@ -132,13 +126,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindableObjectTest.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>BindableObjectTest.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BindableObjectTest.aspx.designer.cs">
-      <DependentUpon>BindableObjectTest.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -364,7 +351,6 @@
       <DependentUpon>WebUserControl1.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="BindableObjectTest.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
     </Content>
@@ -399,8 +385,8 @@
     <Content Include="Images\DeleteItemDisabled.gif" />
     <Content Include="Images\EditItem.gif" />
     <Content Include="Images\NullIcon.gif" />
-    <Content Include="Images\OBRTest.Job.gif" />
-    <Content Include="Images\OBRTest.Person.gif" />
+    <Content Include="Images\Rubicon.ObjectBinding.Sample.Job.gif" />
+    <Content Include="Images\Rubicon.ObjectBinding.Sample.Person.gif" />
     <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">
       <SubType>UserControl</SubType>
     </Content>

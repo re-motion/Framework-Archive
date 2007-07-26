@@ -9,8 +9,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
-using OBRTest;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest

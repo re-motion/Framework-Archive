@@ -3,13 +3,12 @@ using System.Web;
 using System.Web.UI.WebControls;
 
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Reflection;
+
+using Rubicon.ObjectBinding.Sample;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
-
-using OBRTest;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -19,15 +18,15 @@ public class BocListAsGridUserControl : BaseUserControl
   protected System.Web.UI.HtmlControls.HtmlTable Table3;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-  protected OBRTest.TestBocList ChildrenList;
-  protected OBRTest.TestBocList EmptyList;
+  protected TestBocList ChildrenList;
+  protected TestBocList EmptyList;
   protected System.Web.UI.WebControls.CheckBox ChildrenListEventCheckBox;
   protected System.Web.UI.WebControls.Label ChildrenListEventArgsLabel;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl EmptyDataSourceControl;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected OBRTest.TestBocListValidator EmptyListValidator;
-  protected OBRTest.TestBocList Testboclist1;
+  protected TestBocListValidator EmptyListValidator;
+  protected TestBocList Testboclist1;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocList AllColumnsList;
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;
   protected Rubicon.Web.UI.Controls.WebButton SwitchToEditModeButton;

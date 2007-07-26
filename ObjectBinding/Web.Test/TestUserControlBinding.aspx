@@ -1,6 +1,6 @@
 <%@ Page language="c#" Codebehind="TestUserControlBinding.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestUserControlBinding" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -27,7 +27,7 @@
         <TR>
           <TD></TD>
           <TD>
-            <obw:BocTextValue id="BocTextValue1" runat="server"></obw:BocTextValue></TD>
+            <rubicon:BocTextValue id="BocTextValue1" runat="server"></rubicon:BocTextValue></TD>
         </TR>
         <TR>
           <TD></TD>
@@ -35,8 +35,8 @@
         </TR>
       </TABLE>
       <P>
-        <obw:UserControlBinding id="UserControlBinding1" runat="server" UserControlPath="address.ascx" DataSourceControl="DataSource"
-          PropertyIdentifier="Partner"></obw:UserControlBinding></P>
+        <rubicon:UserControlBinding id="UserControlBinding1" runat="server" UserControlPath="address.ascx" DataSourceControl="DataSource"
+          PropertyIdentifier="Partner"></rubicon:UserControlBinding></P>
     </form>
   </body>
 </HTML>
