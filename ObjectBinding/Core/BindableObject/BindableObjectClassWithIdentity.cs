@@ -6,6 +6,20 @@ namespace Rubicon.ObjectBinding.BindableObject
   //TODO: doc
   public class BindableObjectClassWithIdentity : BindableObjectClass, IBusinessObjectClassWithIdentity
   {
+    internal static bool HasMixin (Type targetType)
+    {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+
+      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectClassWithIdentity));
+    }
+
+    internal static bool IncludesMixin (Type concreteType)
+    {
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+
+      return BindableObjectMixin.IncludesMixin (concreteType, typeof (BindableObjectClassWithIdentity));
+    }
+    
     private readonly Type _getObjectServiceType;
 
     public BindableObjectClassWithIdentity (Type type, BindableObjectProvider businessObjectProvider)
@@ -18,11 +32,6 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       IGetObjectService service = GetGetObjectService();
       return service.GetObject (this, uniqueIdentifier);
-    }
-
-    protected override void CheckTypeForBindableObjectMixin (Type type)
-    {
-      CheckTypeForBindableObjectMixin<BindableObjectWithIdentityMixin, IBusinessObjectWithIdentity> (type);
     }
 
     private IGetObjectService GetGetObjectService ()

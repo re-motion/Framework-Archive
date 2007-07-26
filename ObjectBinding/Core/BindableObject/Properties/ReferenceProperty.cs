@@ -1,4 +1,6 @@
 using System;
+using Rubicon.Mixins;
+using Rubicon.Mixins.CodeGeneration;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject.Properties
@@ -124,7 +126,7 @@ namespace Rubicon.ObjectBinding.BindableObject.Properties
 
     private bool IsBindableObjectImplementation ()
     {
-      return AttributeUtility.IsDefined<IBindableObjectAttribute> (_concreteType, true);
+      return BindableObjectMixin.IncludesMixin (_concreteType);
     }
 
     private IBusinessObjectClass GetReferenceClassFromService ()

@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.Serialization;
 using Rubicon.Mixins;
+using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Definitions;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -10,6 +12,42 @@ namespace Rubicon.ObjectBinding.BindableObject
   [Serializable]
   public class BindableObjectMixin : Mixin<object>, IBusinessObject
   {
+    internal static bool HasMixin (Type targetType)
+    {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+
+      return HasMixin (targetType, typeof (BindableObjectMixin));
+    }
+
+    internal static bool HasMixin (Type targetType, Type mixinType)
+    {
+      if (MixinConfiguration.ActiveContext.ContainsClassContext (targetType.IsGenericType ? targetType.GetGenericTypeDefinition () : targetType))
+      {
+        foreach (MixinDefinition mixin in TypeFactory.GetActiveConfiguration (targetType).Mixins)
+        {
+          if (mixinType.IsAssignableFrom (mixin.Type))
+            return true;
+        }
+      }
+      return false;
+    }
+
+    internal static bool IncludesMixin (Type concreteType)
+    {
+      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+
+      return IncludesMixin (concreteType, typeof (BindableObjectMixin));
+    }
+
+    internal static bool IncludesMixin (Type concreteType, Type mixinType)
+    {
+      ConcreteMixedTypeAttribute[] attributes = AttributeUtility.GetCustomAttributes<ConcreteMixedTypeAttribute> (concreteType, false);
+      if (attributes.Length > 0)
+        return HasMixin (attributes[0].BaseType, mixinType);
+
+      return false;
+    }
+
     [NonSerialized]
     private BindableObjectClass _bindableObjectClass;
 

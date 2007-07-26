@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Rubicon.Mixins;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
 
@@ -113,22 +112,16 @@ namespace Rubicon.ObjectBinding.BindableObject
         _properties.Add (property);
     }
 
-    protected virtual void CheckTypeForBindableObjectMixin (Type type)
+    protected void CheckTypeForBindableObjectMixin (Type type)
     {
-      CheckTypeForBindableObjectMixin<BindableObjectMixin, IBusinessObject> (type);
-    }
-
-    protected void CheckTypeForBindableObjectMixin<TBindableObjectMixin, TBusinessObjectInterface> (Type type)
-    {
-      if (!MixinConfiguration.ActiveContext.ContainsClassContext (type.IsGenericType ? type.GetGenericTypeDefinition() : type)
-          || !TypeFactory.GetActiveConfiguration (type).Mixins.ContainsKey (typeof (TBindableObjectMixin)))
+      if (!BindableObjectMixin.HasMixin (type))
       {
         throw new ArgumentException (
             string.Format (
                 "Type '{0}' does not implement the '{1}' interface via the '{2}'.",
                 type.FullName,
-                typeof (TBusinessObjectInterface).FullName,
-                typeof (TBindableObjectMixin).FullName),
+                typeof (IBusinessObject).FullName,
+                typeof (BindableObjectMixin).FullName),
             "type");
       }
     }
