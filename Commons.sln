@@ -339,6 +339,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Legacy.C
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.DomainObjects.Web.UnitTests", "Data\DomainObjects.Web.UnitTests\Data.DomainObjects.Web.UnitTests.csproj", "{44DE99BA-C698-4A3E-9888-9BE6F3B24C77}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TextTemplating) = postSolution
 		TextTemplating = 1
@@ -544,6 +550,10 @@ Global
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44DE99BA-C698-4A3E-9888-9BE6F3B24C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44DE99BA-C698-4A3E-9888-9BE6F3B24C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44DE99BA-C698-4A3E-9888-9BE6F3B24C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44DE99BA-C698-4A3E-9888-9BE6F3B24C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

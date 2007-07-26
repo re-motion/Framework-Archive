@@ -166,6 +166,7 @@
       Mixins.UnitTests,
       Data.DomainObjects.UnitTests, Data.DomainObjects.Legacy.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
       Data.DomainObjects.RdbmsTools.UnitTests, Data.DomainObjects.Legacy.CodeGenerator.UnitTests, 
+      Data.DomainObjects.Web.UnitTests,
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests, Security.Data.DomainObjects.UnitTests, 
       SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
@@ -528,6 +529,18 @@
     <property name="project.name" value="Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.dir" value="Data/DomainObjects.Legacy.CodeGenerator.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Legacy.CodeGenerator.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+  </target>
+
+  <target name="Data.DomainObjects.Web.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Data.DomainObjects" cascade="false"/>
+    <call target="Data.DomainObjects.Web" cascade="false"/>
+
+    <property name="project.name" value="Data.DomainObjects.Web.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.Web.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
   </target>
