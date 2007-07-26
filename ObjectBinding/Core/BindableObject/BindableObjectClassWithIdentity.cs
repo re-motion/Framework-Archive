@@ -10,14 +10,14 @@ namespace Rubicon.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
 
-      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectClassWithIdentity));
+      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectWithIdentityMixin));
     }
 
     internal static bool IncludesMixin (Type concreteType)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
 
-      return BindableObjectMixin.IncludesMixin (concreteType, typeof (BindableObjectClassWithIdentity));
+      return BindableObjectMixin.IncludesMixin (concreteType, typeof (BindableObjectWithIdentityMixin));
     }
     
     private readonly Type _getObjectServiceType;

@@ -34,11 +34,22 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject
     {
       BindableObjectClass bindableObjectClass = _classReflector.GetMetadata ();
 
+      Assert.That (bindableObjectClass, Is.InstanceOfType (typeof (IBusinessObjectClass)));
       Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (SimpleBusinessObjectClass)));
       Assert.That (bindableObjectClass.GetPropertyDefinitions()[0].Identifier, Is.EqualTo ("String"));
       Assert.That (bindableObjectClass.GetPropertyDefinitions ()[0].BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
     }
 
+    [Test]
+    public void GetMetadata_ForBindableObjectWithIdentity ()
+    {
+      ClassReflector classReflector = new ClassReflector (typeof (ClassWithIdentity), _businessObjectProvider);
+      BindableObjectClass bindableObjectClass = classReflector.GetMetadata ();
+
+      Assert.That (bindableObjectClass, Is.InstanceOfType (typeof (IBusinessObjectClassWithIdentity)));
+      Assert.That (bindableObjectClass.Type, Is.SameAs (typeof (ClassWithIdentity)));
+      Assert.That (bindableObjectClass.GetPropertyDefinitions ()[0].BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
+    }
 
     [Test]
     public void GetMetadata_FromCache ()
