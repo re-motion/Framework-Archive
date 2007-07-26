@@ -62,10 +62,10 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
       using (_mocks.Ordered ())
       {
-        Expect.Call (_mockWxeTransaction.Proxy_CurrentTransaction).Return (_mockPreviousTransaction);
         Expect.Call (_mockWxeTransaction.Proxy_CreateRootTransaction ()).Return (_mockTransaction);
         _mockWxeTransaction.Proxy_SetCurrentTransaction (_mockTransaction);
-        ExpectCommitAndReleaseTransaction (_mockWxeTransaction, _mockTransaction, _mockOtherTransaction);
+        Expect.Call (_mockWxeTransaction.Proxy_CurrentTransaction).Return (_mockTransaction);
+        ExpectCommitAndReleaseTransaction (_mockWxeTransaction, _mockTransaction, _mockTransaction);
         ExpectRestorePreviousCurrentTransaction (_mockWxeTransaction, _mockPreviousTransaction);
       }
 
@@ -187,18 +187,18 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     private void ExpectCommitAndReleaseTransaction (ProxyWxeTransaction wxeTransaction, ITransaction transaction, ITransaction currentTransaction)
     {
-      Expect.Call (wxeTransaction.Proxy_CurrentTransaction).Return (currentTransaction);
       wxeTransaction.Proxy_SetCurrentTransaction (transaction);
       wxeTransaction.Proxy_OnTransactionCommitting ();
       transaction.Commit ();
       wxeTransaction.Proxy_OnTransactionCommitted ();
-      wxeTransaction.Proxy_SetCurrentTransaction (currentTransaction);
+      wxeTransaction.Proxy_RestorePreviousTransaction ();
+      Expect.Call (wxeTransaction.Proxy_CurrentTransaction).Return (currentTransaction);
       transaction.Release ();
     }
 
     private void ExpectRestorePreviousCurrentTransaction (ProxyWxeTransaction wxeTransaction, ITransaction previousTransaction)
     {
-      wxeTransaction.Proxy_SetCurrentTransaction (previousTransaction);
+      wxeTransaction.Proxy_RestorePreviousTransaction ();
     }
   }
 }

@@ -125,6 +125,7 @@
     <Compile Include="AspNetFramework\PageMock.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxeTransactionBaseExecuteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -94,6 +94,7 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -105,6 +106,18 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\UnitTests\Web.UnitTests.csproj">
+      <Project>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</Project>
+      <Name>Web.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainObjects.Web\Data.DomainObjects.Web.csproj">
+      <Project>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</Project>
+      <Name>Data.DomainObjects.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
       <Name>Data.DomainObjects</Name>
@@ -828,6 +841,14 @@
     <Compile Include="UnitTestStorageProviderStubDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Web\TransactedFunctionTest.cs" />
+    <Compile Include="Web\WxeFunctions\AutoCommitTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\CreateChildIfParentTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\CreateNoneTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\CreateRootTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\CreateRootWithChildTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\NoAutoCommitTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\RemoveCurrentTransactionScopeFunction.cs" />
     <None Include="Properties\AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

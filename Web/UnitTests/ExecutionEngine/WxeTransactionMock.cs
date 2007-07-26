@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
+using NUnit.Framework;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -11,6 +13,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   public class WxeTransactionMock : WxeTransactionBase<TestTransaction>
   {
     private bool _hasCreatedRootTransaction;
+    private Stack<TestTransaction> _previousTransactions = new Stack<TestTransaction> ();
 
     public WxeTransactionMock (WxeStepList steps, bool autoCommit, bool forceRoot)
       : base (steps, autoCommit, forceRoot)
@@ -30,7 +33,19 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     protected override void SetCurrentTransaction (TestTransaction transaction)
     {
-      TestTransaction.Current = (TestTransaction) transaction;
+      _previousTransactions.Push (TestTransaction.Current);
+      TestTransaction.Current = transaction;
+    }
+
+    public void PublicSetCurrentTransaction (TestTransaction transaction)
+    {
+      SetCurrentTransaction (transaction);
+    }
+
+    protected override void RestorePreviousTransaction ()
+    {
+      Assert.IsNotEmpty (_previousTransactions);
+      TestTransaction.Current = _previousTransactions.Pop ();
     }
 
     public ArrayList Steps
@@ -67,12 +82,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       set { PrivateInvoke.SetNonPublicField (this, "_transaction", value); }
     }
 
-    public TestTransaction PreviousCurrentTransaction
-    {
-      get { return (TestTransaction) PrivateInvoke.GetNonPublicField (this, "_previousCurrentTransaction"); }
-      set { PrivateInvoke.SetNonPublicField (this, "_previousCurrentTransaction", value); }
-    }
-
     public new TestTransaction CreateTransaction ()
     {
       return base.CreateTransaction ();
@@ -91,6 +100,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public bool HasCreatedRootTransaction
     {
       get { return _hasCreatedRootTransaction; }
+    }
+
+    public Stack<TestTransaction> PreviousTransactions
+    {
+      get { return _previousTransactions; }
     }
 
     public new void OnTransactionCommitting ()
@@ -138,10 +152,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       base.RestorePreviousCurrentTransaction ();
     }
 
-    public override void Execute (WxeContext context)
-    {
-      throw new NotImplementedException ();
-    }
   }
 
 }

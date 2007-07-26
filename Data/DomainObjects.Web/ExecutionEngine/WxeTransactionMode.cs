@@ -9,6 +9,8 @@ public enum WxeTransactionMode
 {
   /// <summary>Create a new transaction.</summary>
   CreateRoot,
+  /// <summary>Create a new child transaction.</summary>
+  CreateChildIfParent,
   /// <summary>Never create a transaction.</summary>
   None
 }

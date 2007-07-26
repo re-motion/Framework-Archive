@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 {
@@ -12,6 +14,8 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 [Serializable]
   public class WxeTransaction : WxeTransactionBase<ClientTransaction>
 {
+    private Stack<ClientTransactionScope> _scopeStack = new Stack<ClientTransactionScope> ();
+
   /// <summary>Creates a new instance with an empty step list and autoCommit enabled that uses the existing transaction, if one exists.</summary>
   public WxeTransaction () : this (null, true, true)
   {
@@ -62,8 +66,9 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// <param name="transaction">The new transaction.</param>
   protected override void SetCurrentTransaction (ClientTransaction transaction)
   {
-    ClientTransactionScope.ResetActiveScope (); // throw away current scope (to avoid memory leaks)
-    new ClientTransactionScope (transaction); // set new scope
+    _scopeStack.Push (ClientTransactionScope.ActiveScope);
+    ClientTransactionScope newScope = new ClientTransactionScope (transaction); // set new scope and store old one
+    Assertion.Assert (ClientTransactionScope.ActiveScope == newScope);
   }
 
   /// <summary>
@@ -74,6 +79,19 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   protected override ClientTransaction CreateRootTransaction ()
   {
     return ClientTransaction.NewTransaction();
+  }
+
+  protected override void RestorePreviousTransaction ()
+  {
+    Assertion.Assert (_scopeStack.Count != 0, "RestorePreviousTransaction is never called more often than SetCurrentTransaction.");
+
+    if (ClientTransactionScope.ActiveScope == null)
+      throw new InconsistentClientTransactionScopeException ("Somebody else has removed ClientTransactionScope.ActiveScope.");
+    else
+      ClientTransactionScope.ActiveScope.Leave();
+
+    if (ClientTransactionScope.ActiveScope != _scopeStack.Pop ())
+      throw new InconsistentClientTransactionScopeException ("ClientTransactionScope.ActiveScope does not contain the expected transaction scope.");
   }
 }
 }

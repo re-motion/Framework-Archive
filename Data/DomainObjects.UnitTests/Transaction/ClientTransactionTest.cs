@@ -385,11 +385,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       ClientTransactionMock.Commit ();
 
+      Assert.IsFalse (ClientTransactionMock.IsDiscarded);
+
 			object orderTimestamp = order.InternalDataContainer.Timestamp;
 			object oldOrderTicketTimestamp = oldOrderTicket.InternalDataContainer.Timestamp;
 			object newOrderTicketTimestamp = newOrderTicket.InternalDataContainer.Timestamp;
 
       ClientTransactionMock.Commit ();
+
+      Assert.IsFalse (ClientTransactionMock.IsDiscarded);
 
 			Assert.AreEqual (orderTimestamp, order.InternalDataContainer.Timestamp);
 			Assert.AreEqual (oldOrderTicketTimestamp, oldOrderTicket.InternalDataContainer.Timestamp);
@@ -695,6 +699,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ReturnToParentTransactionReturnsFalse ()
     {
       Assert.IsFalse (ClientTransactionMock.ReturnToParentTransaction ());
+    }
+
+    [Test]
+    public void IsDiscardedReturnsFalse ()
+    {
+      Assert.IsFalse (ClientTransactionMock.IsDiscarded);
     }
   }
 }

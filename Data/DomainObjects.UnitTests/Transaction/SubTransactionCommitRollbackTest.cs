@@ -26,7 +26,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ReturnToParentTransactionMakesParentWriteable ()
     {
       Assert.IsTrue (_subTransaction.ParentTransaction.IsReadOnly);
+      Assert.IsFalse (_subTransaction.IsDiscarded);
       _subTransaction.ReturnToParentTransaction ();
+      Assert.IsTrue (_subTransaction.IsDiscarded);
       Assert.IsFalse (_subTransaction.ParentTransaction.IsReadOnly);
     }
 
@@ -46,6 +48,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanContinueToBeUsedAfterRollback ()
     {
       _subTransaction.Rollback ();
+      Assert.IsFalse (_subTransaction.IsDiscarded);
       using (_subTransaction.EnterScope ())
       {
         Order order = Order.NewObject ();
@@ -57,6 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void SubTransactionCanContinueToBeUsedAfterCommit ()
     {
       _subTransaction.Commit ();
+      Assert.IsFalse (_subTransaction.IsDiscarded);
       using (_subTransaction.EnterScope ())
       {
         Order order = Order.NewObject ();

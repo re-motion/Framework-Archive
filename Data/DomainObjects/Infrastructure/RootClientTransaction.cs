@@ -25,6 +25,11 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       _enlistedObjects = new Dictionary<ObjectID, DomainObject>();
     }
 
+    public override bool IsDiscarded
+    {
+      get { return false; }
+    }
+
     public override ClientTransaction ParentTransaction
     {
       get { return null; }

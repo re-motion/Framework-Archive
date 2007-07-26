@@ -47,5 +47,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Assert.AreSame (_transaction, child.Parent);
       Assert.AreSame (child, child.CreateChild ().Parent);
     }
+
+    [Test]
+    public void Release ()
+    {
+      ITransaction child = _transaction.CreateChild ();
+      Assert.IsTrue (((ClientTransaction) _transaction).IsReadOnly);
+      Assert.IsFalse (((ClientTransaction) child).IsDiscarded);
+      child.Release ();
+      Assert.IsFalse (((ClientTransaction) _transaction).IsReadOnly);
+      Assert.IsTrue (((ClientTransaction) child).IsDiscarded);
+    }
   }
 }

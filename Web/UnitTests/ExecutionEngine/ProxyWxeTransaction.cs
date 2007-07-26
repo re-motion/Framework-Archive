@@ -35,6 +35,13 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     public abstract void Proxy_SetCurrentTransaction (ITransaction transaction);
 
+    protected override void  RestorePreviousTransaction()
+    {
+      Proxy_RestorePreviousTransaction ();
+    }
+
+    public abstract void Proxy_RestorePreviousTransaction ();
+
     public override void Execute (WxeContext context)
     {
       base.Execute (context);

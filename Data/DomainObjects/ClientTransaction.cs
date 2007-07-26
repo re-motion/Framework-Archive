@@ -118,6 +118,13 @@ public abstract class ClientTransaction : ITransaction
   public abstract ClientTransaction ParentTransaction { get; }
 
   /// <summary>
+  /// Returns whether this <see cref="ClientTransaction"/> has been discarded. A transaction is discarded when it is a subtransaction
+  /// and control is returned to its <see cref="ParentTransaction"/>. Root transactions are never discarded.
+  /// </summary>
+  /// <value>True if control has been returned to the <see cref="ParentTransaction"/>.</value>
+  public abstract bool IsDiscarded { get; }
+
+  /// <summary>
   /// Gets the root transaction of this <see cref="ClientTransaction"/>, i.e. the top-level parent transaction in a row of subtransactions.
   /// </summary>
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
@@ -126,8 +133,8 @@ public abstract class ClientTransaction : ITransaction
   public abstract ClientTransaction RootTransaction { get; }
 
   /// <summary>
-  /// Returns control to the parent transaction and renders this transaction unusable, if a parent transaction exists. If this transaction doesn't
-  /// have a parent transaction, this method does nothing.
+  /// Returns control to the parent transaction and discards this transaction (rendering it unusable) if a parent transaction exists. If
+  /// this transaction doesn't have a parent transaction, this method does nothing.
   /// </summary>
   /// <returns>True if control was returned to the parent transaction, false if this transaction has no parent transaction.</returns>
   public abstract bool ReturnToParentTransaction ();
@@ -1018,6 +1025,7 @@ public abstract class ClientTransaction : ITransaction
   /// </summary>
   void ITransaction.Release ()
   {
+    ReturnToParentTransaction ();
   }
 
   /// <summary>

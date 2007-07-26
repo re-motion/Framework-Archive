@@ -44,6 +44,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     }
 
     private readonly ClientTransaction _parentTransaction;
+    private bool _isDiscarded;
 
     public SubClientTransaction (ClientTransaction parentTransaction)
         : base (ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction).ApplicationData,
@@ -61,6 +62,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       DataManager.Commit ();
 
       parentTransaction.TransactionEventSink.SubTransactionCreated (this);
+      _isDiscarded = false;
     }
 
     public override ClientTransaction ParentTransaction
@@ -73,9 +75,15 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       get { return ParentTransaction.RootTransaction; }
     }
 
+    public override bool IsDiscarded
+    {
+      get { return _isDiscarded; }
+    }
+
     public override bool ReturnToParentTransaction ()
     {
       ParentTransaction.IsReadOnly = false;
+      _isDiscarded = true;
       AddListener (new InvalidatedSubTransactionListener ());
       return true;
     }

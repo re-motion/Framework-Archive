@@ -25,7 +25,6 @@ namespace Rubicon.Web.ExecutionEngine
     }
 
     private TTransaction _transaction = null;
-    private TTransaction _previousCurrentTransaction = null;
     private bool _autoCommit;
     private bool _forceRoot;
     private bool _isPreviousCurrentTransactionRestored = false;
@@ -62,17 +61,36 @@ namespace Rubicon.Web.ExecutionEngine
     /// </remarks>
     protected abstract TTransaction CurrentTransaction { get; }
 
-    /// <summary> Sets the current <typeparamref name="TTransaction"/> to <paramref name="transaction"/>. </summary>
+    /// <summary> Sets the current <typeparamref name="TTransaction"/> to <paramref name="transaction"/> and stores the previous transaction
+    /// for later restoration. </summary>
     /// <param name="transaction"> The new current transaction. </param>
     /// <remarks> 
     ///   <note type="inotes">
     ///     It the <typeparamref name="TTransaction"/> implementation does not support the concept of a current transaction,
     ///     it is valid to implement an empty method.
     ///   </note>
+    ///   <para>
+    ///    Implementers can rely on each call to this method being paired with a call to <see cref="RestorePreviousTransaction"/>.
+    ///    However, <see cref="SetCurrentTransaction"/> can be called multiple times, bevore <see cref="RestorePreviousTransaction"/>
+    ///    is invoked. In that case, <see cref="RestorePreviousTransaction"/> must operate in a Last-In-First-Out (stack-like) fashion.
+    ///  </para>
     /// </remarks>
     protected abstract void SetCurrentTransaction (TTransaction transaction);
 
-    // TODO: Add ResetCurrentTransaction (TTransaction oldTransaction), which is called once for every SetCurrentTransaction
+    /// <summary> Resets the current <typeparamref name="TTransaction"/> to the transaction previously replaced via 
+    /// <see cref="SetCurrentTransaction"/>. </summary>
+    /// <remarks> 
+    ///   <note type="inotes">
+    ///     It the <typeparamref name="TTransaction"/> implementation does not support the concept of a current transaction,
+    ///     it is valid to implement an empty method.
+    ///   </note>
+    ///   <para>
+    ///     Implementes can rely on this method being called exactly once for each call of <see cref="SetCurrentTransaction"/>.
+    ///    However, <see cref="SetCurrentTransaction"/> can be called multiple times, bevore <see cref="RestorePreviousTransaction"/>
+    ///    is invoked. In that case, <see cref="RestorePreviousTransaction"/> must operate in a Last-In-First-Out (stack-like) fashion.
+    ///   </para>
+    /// </remarks>
+    protected abstract void RestorePreviousTransaction ();
 
     /// <summary> Creates a new transaction. </summary>
     /// <returns> A new instance of type <typeparamref name="TTransaction"/>. </returns>
@@ -187,7 +205,6 @@ namespace Rubicon.Web.ExecutionEngine
       if (!ExecutionStarted)
       {
         s_log.Debug ("Initializing execution of " + this.GetType ().FullName + ".");
-        _previousCurrentTransaction = CurrentTransaction;
         if (_transaction == null)
           _transaction = CreateTransaction ();
       }
@@ -237,7 +254,7 @@ namespace Rubicon.Web.ExecutionEngine
       if (_transaction != null)
       {
         s_log.Debug ("Committing " + _transaction.GetType ().Name + ".");
-        TTransaction currentTransaction = CurrentTransaction;
+        TTransaction previousTransaction = CurrentTransaction;
         SetCurrentTransaction (_transaction);
         try
         {
@@ -245,7 +262,8 @@ namespace Rubicon.Web.ExecutionEngine
         }
         finally
         {
-          SetCurrentTransaction (currentTransaction);
+          RestorePreviousTransaction ();
+          Assertion.Assert (CurrentTransaction == previousTransaction);
         }
         _transaction.Release ();
         _transaction = null;
@@ -289,7 +307,7 @@ namespace Rubicon.Web.ExecutionEngine
       if (_transaction != null)
       {
         s_log.Debug ("Rolling back " + _transaction.GetType ().Name + ".");
-        TTransaction currentTransaction = CurrentTransaction;
+        TTransaction previousTransaction = CurrentTransaction;
         SetCurrentTransaction (_transaction);
         try
         {
@@ -297,7 +315,8 @@ namespace Rubicon.Web.ExecutionEngine
         }
         finally
         {
-          SetCurrentTransaction (currentTransaction);
+          RestorePreviousTransaction ();
+          Assertion.Assert (CurrentTransaction == previousTransaction);
         }
         _transaction.Release ();
         _transaction = null;
@@ -338,10 +357,11 @@ namespace Rubicon.Web.ExecutionEngine
     /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
     protected void RestorePreviousCurrentTransaction ()
     {
-      if (ExecutionStarted && !_isPreviousCurrentTransactionRestored)
+      Assertion.Assert (ExecutionStarted);
+
+      if (!_isPreviousCurrentTransactionRestored)
       {
-        SetCurrentTransaction (_previousCurrentTransaction);
-        _previousCurrentTransaction = null;
+        RestorePreviousTransaction ();
         _isPreviousCurrentTransactionRestored = true;
       }
     }

@@ -31,6 +31,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       _rootWxeTransaction = new WxeTransactionMock (null, false, true);
       _rootWxeTransaction.Transaction = new TestTransaction ();
+      _rootWxeTransaction.PublicSetCurrentTransaction (_rootWxeTransaction.Transaction);
       ((TestTransaction) _rootWxeTransaction.Transaction).CanCreateChild = true;
       _rootWxeTransaction.TransactionCommitting += delegate { _events += " committing"; };
       _rootWxeTransaction.TransactionCommitted += delegate { _events += " committed"; };
@@ -40,7 +41,9 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _parentWxeTransaction = new WxeTransactionMock (null, true, false); // this simulates Execute
       _parentTransaction = new TestTransaction ();
       _parentTransaction.CanCreateChild = true;
-      _parentWxeTransaction.Transaction = _parentTransaction; // should actually include a call to SetCurrentTransaction
+      _parentWxeTransaction.Transaction = _parentTransaction;
+      _parentWxeTransaction.PublicSetCurrentTransaction (_parentTransaction);
+
       _childWxeTransaction = new WxeTransactionMock (null, true, false);
       _parentWxeTransaction.Add (_childWxeTransaction);
 
@@ -256,10 +259,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
       _wxeTransaction.StartExecution ();
 
-      TestTransaction.Current = new TestTransaction ();
-      _wxeTransaction.Transaction = null;
       TestTransaction previousCurrentTransaction = new TestTransaction ();
-      _wxeTransaction.PreviousCurrentTransaction = previousCurrentTransaction;
+      TestTransaction.Current = previousCurrentTransaction;
+      _wxeTransaction.PublicSetCurrentTransaction (null);
+
+      Assert.AreNotSame (previousCurrentTransaction, TestTransaction.Current);
+      
       _wxeTransaction.RestorePreviousCurrentTransaction ();
 
       Assert.AreSame (previousCurrentTransaction, TestTransaction.Current);
@@ -272,13 +277,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _wxeTransaction.StartExecution ();
 
       TestTransaction.Current = new TestTransaction ();
-      _wxeTransaction.Transaction = null;
-      _wxeTransaction.PreviousCurrentTransaction = new TestTransaction ();
+      _wxeTransaction.PublicSetCurrentTransaction (null);
       _wxeTransaction.RestorePreviousCurrentTransaction ();
 
       TestTransaction currentTransaction = new TestTransaction ();
       TestTransaction.Current = currentTransaction;
-      _wxeTransaction.RestorePreviousCurrentTransaction ();
+      _wxeTransaction.RestorePreviousCurrentTransaction (); // should not do anything
 
       Assert.AreSame (currentTransaction, TestTransaction.Current);
     }
@@ -297,7 +301,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _parentWxeTransaction.TransactionRolledBack += delegate { };
 
       _childWxeTransaction.Transaction = (TestTransaction) _parentWxeTransaction.Transaction.CreateChild ();
-      _childWxeTransaction.PreviousCurrentTransaction = _parentWxeTransaction.Transaction;
+      _childWxeTransaction.PreviousTransactions.Push (_parentWxeTransaction.Transaction);
 
       WxeTransactionMock parentWxeTransaction;
       using (Stream stream = new MemoryStream ())
@@ -313,7 +317,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       Assert.IsNotNull (childWxeTransaction);
       Assert.IsNotNull (parentWxeTransaction.Transaction);
       Assert.IsNotNull (childWxeTransaction.Transaction);
-      Assert.AreSame (parentWxeTransaction.Transaction, childWxeTransaction.PreviousCurrentTransaction);
+      Assert.AreSame (parentWxeTransaction.Transaction, childWxeTransaction.PreviousTransactions.Peek());
+      Assert.AreEqual (1, childWxeTransaction.PreviousTransactions.Count);
       Assert.IsTrue (parentWxeTransaction.AutoCommit);
       Assert.IsTrue (parentWxeTransaction.ForceRoot);
       Assert.IsTrue (parentWxeTransaction.IsPreviousCurrentTransactionRestored);

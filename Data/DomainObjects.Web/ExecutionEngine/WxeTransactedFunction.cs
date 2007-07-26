@@ -77,10 +77,15 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase<ClientTransaction
   /// <returns>A new WxeTransaction, if <see cref="WxeTransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
   protected override sealed WxeTransactionBase<ClientTransaction> CreateWxeTransaction ()
   {
-    if (_transactionMode == WxeTransactionMode.CreateRoot)
-      return CreateWxeTransaction (AutoCommit, true);
-
-    return null;
+    switch (_transactionMode)
+    {
+      case WxeTransactionMode.CreateRoot:
+        return CreateWxeTransaction (AutoCommit, true);
+      case WxeTransactionMode.CreateChildIfParent:
+        return CreateWxeTransaction (AutoCommit, false);
+      default:
+        return null;
+    }
   }
 
   /// <summary>
