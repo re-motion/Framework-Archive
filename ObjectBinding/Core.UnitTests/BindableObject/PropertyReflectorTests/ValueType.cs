@@ -55,6 +55,23 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithUndefinedEnum ()
+    {
+      PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithUndefinedEnumValue), "Scalar");
+      PropertyReflector propertyReflector = new PropertyReflector (propertyInfo, _businessObjectProvider);
+
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+
+      Assert.That (businessObjectProperty, Is.InstanceOfType (typeof (EnumerationProperty)));
+      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (propertyInfo));
+      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
+      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (EnumWithUndefinedValue)));
+      Assert.That (businessObjectProperty.IsList, Is.False);
+      Assert.That (businessObjectProperty.IsRequired, Is.False);
+      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+    }
+
+    [Test]
     public void GetMetadata_WithReadOnlyScalar ()
     {
       PropertyInfo propertyInfo = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyScalar");

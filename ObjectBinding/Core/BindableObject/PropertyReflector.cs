@@ -115,6 +115,8 @@ namespace Rubicon.ObjectBinding.BindableObject
 
     private bool GetIsRequired ()
     {
+      if (_propertyInfo.PropertyType.IsEnum && AttributeUtility.IsDefined<UndefinedEnumValueAttribute> (_propertyInfo.PropertyType, false))
+        return false;
       if (_propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType (_propertyInfo.PropertyType) == null)
         return true;
       return false;
