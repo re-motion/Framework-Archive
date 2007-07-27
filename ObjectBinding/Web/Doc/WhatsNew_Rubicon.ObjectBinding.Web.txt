@@ -1,9 +1,10 @@
 1.7.46
 ======
-- Einbage-Controls speichern nur noch den Wert zurück, wenn das Control Dirty ist:
+- Eingabe-Controls speichern nur noch den Wert zurück, wenn das Control Dirty ist:
   BocBooleanValue, BocCheckBox, BocDateTimeValue, BocEnumValue, BocList, BocMultilineTextValue, BocReferenceValue, BocTextValue,
   BusinessObjectReferenceDataSourceControl
-  
+- BocList konnte ReferenceValues nicht bearbeiten. Aufgetreten mit 1.7.45
+ 
 1.7.42
 ======
 - BocBooleanValue, BocCheckBox und BocDateTimeValue:

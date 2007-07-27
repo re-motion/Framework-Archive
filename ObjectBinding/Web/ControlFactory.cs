@@ -42,7 +42,7 @@ public sealed class ControlFactory
         return new BocBooleanValue();
       else if (property is IBusinessObjectEnumerationProperty)
         return new BocEnumValue();
-      else if (property is IBusinessObjectReferenceProperty && ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectWithIdentity)
+      else if (property is IBusinessObjectReferenceProperty && ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectClassWithIdentity)
         return new BocReferenceValue();
     }
     else
