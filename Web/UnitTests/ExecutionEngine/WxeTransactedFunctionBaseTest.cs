@@ -24,7 +24,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     private WxeTransactedFunctionMock _wxeTransactedFunction;
     private ProxyWxeTransaction _mockWxeTransaction;
     private ITransaction _mockTransaction;
-    private ITransaction _mockOtherTransaction;
     private ITransaction _mockPreviousTransaction;
     private IWxeTransactionFunctionEventSink _mockEventSink;
 
@@ -51,7 +50,6 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _wxeTransactedFunction.RolledBack += delegate { _events += " rolledBack"; };
 
       _mockTransaction = _mocks.CreateMock<ITransaction> ();
-      _mockOtherTransaction = _mocks.CreateMock<ITransaction> ();
       _mockPreviousTransaction = _mocks.CreateMock<ITransaction> ();
 
       _mockEventSink = _mocks.CreateMock<IWxeTransactionFunctionEventSink> ();
@@ -203,6 +201,46 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
       wxeTransaction.Proxy_SetPreviousCurrentTransaction (previousTransaction);
       Expect.Call (wxeTransaction.Proxy_CurrentTransaction).Return (previousTransaction);
+    }
+
+    [Test]
+    public void MyTransactionAndExecutionTransaction ()
+    {
+      ProxyWxeTransaction outerTransaction = _mocks.CreateMock<ProxyWxeTransaction> ();
+      outerTransaction.Transaction = _mocks.CreateMock<ITransaction> ();
+      Assert.IsNotNull (outerTransaction.Transaction);
+      WxeTransactedFunctionMock outerFunction = new WxeTransactedFunctionMock (outerTransaction);
+      outerFunction.InitiateCreateTransaction ();
+
+      WxeTransactedFunctionMock mediumNullFunction = new WxeTransactedFunctionMock (null);
+      outerFunction.Add (mediumNullFunction);
+      mediumNullFunction.InitiateCreateTransaction ();
+
+      ProxyWxeTransaction innerTransaction = _mocks.CreateMock<ProxyWxeTransaction> ();
+      innerTransaction.Transaction = _mocks.CreateMock<ITransaction> ();
+      Assert.IsNotNull (innerTransaction.Transaction);
+      WxeTransactedFunctionMock innerFunction = new WxeTransactedFunctionMock (innerTransaction);
+      mediumNullFunction.Add (innerFunction);
+      innerFunction.InitiateCreateTransaction ();
+
+      Assert.AreSame (outerTransaction.Transaction, outerFunction.OwnTransaction);
+      Assert.AreSame (outerTransaction.Transaction, outerFunction.ExecutionTransaction);
+
+      Assert.IsNull (mediumNullFunction.OwnTransaction);
+      Assert.AreSame (outerTransaction.Transaction, mediumNullFunction.ExecutionTransaction);
+
+      Assert.AreSame (innerTransaction.Transaction, innerFunction.OwnTransaction);
+      Assert.AreSame (innerTransaction.Transaction, innerFunction.ExecutionTransaction);
+    }
+
+    [Test]
+    public void NullMyTransactionAndExecutionTransaction ()
+    {
+      WxeTransactedFunctionMock outerFunction = new WxeTransactedFunctionMock (null);
+      outerFunction.InitiateCreateTransaction ();
+
+      Assert.IsNull (outerFunction.OwnTransaction);
+      Assert.IsNull (outerFunction.ExecutionTransaction);
     }
   }
 }

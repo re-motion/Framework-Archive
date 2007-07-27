@@ -48,7 +48,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     /// </summary>
     public new ClientTransaction Transaction
     {
-      get { return base.Transaction; }
+      get { return base.OwnTransaction; }
     }
 
     /// <summary>

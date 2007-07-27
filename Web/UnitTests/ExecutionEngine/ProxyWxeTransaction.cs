@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -12,6 +13,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public ProxyWxeTransaction ()
       : base (null, true, false)
     {
+    }
+
+    public new ITransaction Transaction
+    {
+      get { return base.Transaction; }
+      set { PrivateInvoke.SetNonPublicField (this, "_transaction", value); }
     }
 
     protected override ITransaction CreateRootTransaction ()

@@ -1,6 +1,7 @@
 using System;
 using Rubicon.Data;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -9,17 +10,32 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   [Serializable]
   public class WxeTransactedFunctionMock : WxeTransactedFunctionBase<ITransaction>
   {
-    private ProxyWxeTransaction _wxeTransaction;
+    private ProxyWxeTransaction _storedWxeTransaction;
 
     public WxeTransactedFunctionMock (ProxyWxeTransaction wxeTransaction)
       : base ()
     {
-      _wxeTransaction = wxeTransaction;
+      _storedWxeTransaction = wxeTransaction;
     }
 
     protected override WxeTransactionBase<ITransaction> CreateWxeTransaction ()
     {
-      return _wxeTransaction;
+      return _storedWxeTransaction;
+    }
+
+    public new ITransaction OwnTransaction
+    {
+      get { return base.OwnTransaction; }
+    }
+
+    public new ITransaction ExecutionTransaction
+    {
+      get { return base.ExecutionTransaction; }
+    }
+
+    public void InitiateCreateTransaction ()
+    {
+      PrivateInvoke.SetNonPublicField (this, "_wxeTransaction", CreateWxeTransaction ());
     }
   }
 }

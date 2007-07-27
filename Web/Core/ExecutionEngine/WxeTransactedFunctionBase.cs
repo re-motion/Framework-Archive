@@ -37,8 +37,8 @@ namespace Rubicon.Web.ExecutionEngine
     /// </remarks>
     protected abstract WxeTransactionBase<TTransaction> CreateWxeTransaction ();
 
-    /// <summary> Gets the underlying <typeparamref name="TTransaction"/>. </summary>
-    protected TTransaction Transaction
+    /// <summary> Gets the underlying <typeparamref name="TTransaction"/> owned by this <see cref="WxeTransactedFunctionBase{TTransaction}"/>.</summary>
+    protected TTransaction OwnTransaction
     {
       get
       {
@@ -46,6 +46,26 @@ namespace Rubicon.Web.ExecutionEngine
           return null;
         else
           return _wxeTransaction.Transaction;
+      }
+    }
+
+    /// <summary> Gets the underlying <typeparamref name="TTransaction"/> used when this <see cref="WxeTransactedFunctionBase{TTransaction}"/>
+    /// is executed. This is either <see cref="OwnTransaction"/> or, when this function does not have an own transaction, the
+    /// <see cref="ExecutionTransaction"/> of this function's parent function.</summary>
+    protected TTransaction ExecutionTransaction
+    {
+      get
+      {
+        if (OwnTransaction != null)
+          return OwnTransaction;
+        else
+        {
+          WxeTransactedFunctionBase<TTransaction> parent = GetStepByType<WxeTransactedFunctionBase<TTransaction>> (ParentFunction);
+          if (parent != null)
+            return parent.ExecutionTransaction;
+          else
+            return null;
+        }
       }
     }
 

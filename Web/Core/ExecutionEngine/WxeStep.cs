@@ -37,6 +37,18 @@ public abstract class WxeStep
     return null;
   }
 
+  /// <summary>
+  /// Gets the first step of the specified type <typeparamref name="T"/>.
+  /// </summary>
+  /// <typeparam name="T">The type of step to get.</typeparam>
+  /// <param name="step">The step from which to start searching for the given step type <typeparamref name="T"/>.</param>
+  /// <returns>The first step of type in the list of <see cref="ParentStep">ParentSteps</see>, starting from <paramref name="step"/>.</returns>
+  protected static T GetStepByType<T> (WxeStep step)
+      where T : WxeStep
+  {
+    return (T) GetStepByType (step, typeof (T));
+  }
+
   /// <summary> Used to pass a variable by reference to a <see cref="WxeFunction"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
