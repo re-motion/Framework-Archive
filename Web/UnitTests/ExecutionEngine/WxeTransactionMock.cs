@@ -42,10 +42,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       SetCurrentTransaction (transaction);
     }
 
-    protected override void RestorePreviousTransaction ()
+    protected override void SetPreviousCurrentTransaction (TestTransaction previousTransaction)
     {
       Assert.IsNotEmpty (_previousTransactions);
-      TestTransaction.Current = _previousTransactions.Pop ();
+      Assert.AreSame (_previousTransactions.Pop (), previousTransaction);
+      TestTransaction.Current = previousTransaction;
     }
 
     public ArrayList Steps
@@ -152,6 +153,10 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       base.RestorePreviousCurrentTransaction ();
     }
 
+    public void PublicSetPreviousTransaction (TestTransaction transaction)
+    {
+      PrivateInvoke.SetNonPublicField (this, "_previousCurrentTransaction", transaction);
+    }
   }
 
 }

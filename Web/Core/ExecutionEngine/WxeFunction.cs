@@ -229,7 +229,10 @@ namespace Rubicon.Web.ExecutionEngine
       _returnUrl = null;
       _actualParameters = actualParameters;
 
+
+      //Insert (0, OnExecutionStarted (context);
       Insert (0, new WxeMethodStep (this, s_checkPermissionsStep));
+      //Add (OnExecutionCompleted (context);
     }
 
     /// <summary> 

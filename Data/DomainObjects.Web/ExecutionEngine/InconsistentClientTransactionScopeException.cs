@@ -10,6 +10,10 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
   /// </summary>
   public class InconsistentClientTransactionScopeException : Exception
   {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InconsistentClientTransactionScopeException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
     public InconsistentClientTransactionScopeException (string message)
       : base (message)
     {

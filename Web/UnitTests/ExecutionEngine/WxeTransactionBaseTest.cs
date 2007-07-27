@@ -261,6 +261,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       TestTransaction previousCurrentTransaction = new TestTransaction ();
       TestTransaction.Current = previousCurrentTransaction;
+      _wxeTransaction.PublicSetPreviousTransaction (previousCurrentTransaction);
       _wxeTransaction.PublicSetCurrentTransaction (null);
 
       Assert.AreNotSame (previousCurrentTransaction, TestTransaction.Current);
@@ -277,6 +278,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       _wxeTransaction.StartExecution ();
 
       TestTransaction.Current = new TestTransaction ();
+      _wxeTransaction.PublicSetPreviousTransaction (TestTransaction.Current);
       _wxeTransaction.PublicSetCurrentTransaction (null);
       _wxeTransaction.RestorePreviousCurrentTransaction ();
 
