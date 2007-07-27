@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Rubicon.Utilities;
@@ -12,16 +13,27 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     private string _value;
     private TypeTreeViewController _typeTreeViewController;
     private SearchFieldController _searchFieldController;
+    private BindableObjectTypeFinder _typeFinder;
 
-    public BindableObjectTypePickerControl (IServiceProvider provider, IWindowsFormsEditorService editorService)
+    public BindableObjectTypePickerControl (IServiceProvider provider, IWindowsFormsEditorService editorService, BindableObjectTypeFinder typeFinder)
         : base (provider, editorService)
     {
-      InitializeComponent();
+      ArgumentUtility.CheckNotNull ("typeFinder", typeFinder);
+
+      Initialize (typeFinder);
     }
 
     public BindableObjectTypePickerControl ()
     {
-      InitializeComponent();
+      Initialize (null);
+    }
+
+    private void Initialize (BindableObjectTypeFinder typeFinder)
+    {
+      InitializeComponent ();
+      _searchFieldController = new SearchFieldController (SearchField, SearchButton);
+      _typeTreeViewController = new TypeTreeViewController (TypeTreeView);
+      _typeFinder = typeFinder;
     }
 
     public override string Value
@@ -30,11 +42,11 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       set { _value = value; }
     }
 
-    private void BindableObjectTypePickerControl_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      base.OnLoad (e);
       IncludeGacCheckBox.Checked = s_isGacIncluded;
-      PopulateTypeTreeView();
-      _searchFieldController = new SearchFieldController (SearchField, SearchButton);
+      PopulateTypeTreeView ();
     }
 
     private void IncludeGacCheckBox_CheckedChanged (object sender, System.EventArgs e)
@@ -51,18 +63,23 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
     private void PopulateTypeTreeView ()
     {
       Cursor cursorBackUp = Cursor;
+      Cursor = Cursors.WaitCursor;
+      
+      List<Type> types;
       try
       {
-        Cursor = Cursors.WaitCursor;
-        BindableObjectTypeFinder typeFinder = new BindableObjectTypeFinder (ServiceProvider);
-
-        _typeTreeViewController = new TypeTreeViewController (typeFinder.GetTypes(), TypeTreeView);
-        _typeTreeViewController.PopulateTreeNodes (_value);
+        types = _typeFinder.GetTypes (IncludeGacCheckBox.Checked);
       }
-      finally
+      catch (Exception e)
       {
+        MessageBox.Show (e.Message, "Error looking up the available types", MessageBoxButtons.OK, MessageBoxIcon.Error);
         Cursor = cursorBackUp;
+        EditorService.CloseDropDown ();
+        return;
       }
+      
+      _typeTreeViewController.PopulateTreeNodes (types, _value);
+      Cursor = cursorBackUp;
     }
 
     private void HandleSelectionChanged ()

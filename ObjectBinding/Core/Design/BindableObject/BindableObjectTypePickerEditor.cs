@@ -18,7 +18,7 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       ArgumentUtility.CheckNotNull ("editorService", editorService);
 
 
-      return new BindableObjectTypePickerControl (provider, editorService);
+      return new BindableObjectTypePickerControl (provider, editorService, new BindableObjectTypeFinder (provider));
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using Rubicon.Mixins;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.BindableObject
@@ -9,15 +10,7 @@ namespace Rubicon.ObjectBinding.BindableObject
     internal static bool HasMixin (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
-
-      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectWithIdentityMixin));
-    }
-
-    internal static bool IncludesMixin (Type concreteType)
-    {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-
-      return BindableObjectMixin.IncludesMixin (concreteType, typeof (BindableObjectWithIdentityMixin));
+      return BindableObjectMixin.HasMixin (targetType, typeof (BindableObjectWithIdentityMixin), MixinConfiguration.ActiveContext);
     }
     
     private readonly Type _getObjectServiceType;

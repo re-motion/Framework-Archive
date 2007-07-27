@@ -114,7 +114,6 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       this.Controls.Add (this.TypeTreeView);
       this.Name = "BindableObjectTypePickerControl";
       this.Size = new System.Drawing.Size (400, 401);
-      this.Load += new System.EventHandler (this.BindableObjectTypePickerControl_Load);
       this.ResumeLayout (false);
       this.PerformLayout ();
 

@@ -6,7 +6,7 @@ namespace Rubicon.ObjectBinding
 {
   //TODO: doc
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-  public sealed class BindableObjectAttribute : UsesAttribute, IBindableObjectAttribute
+  public sealed class BindableObjectAttribute : UsesAttribute
   {
     public BindableObjectAttribute ()
         : base (typeof (BindableObjectMixin))

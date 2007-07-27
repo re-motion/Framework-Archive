@@ -93,13 +93,42 @@ namespace Rubicon.Mixins
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
       
+      return GetConfiguration (targetType, MixinConfiguration.ActiveContext);
+    }
+
+    /// <summary>
+    /// Returns a non-null <see cref="BaseClassDefinition"/> for the a given target type.
+    /// </summary>
+    /// <param name="targetType">Base type for which an analyzed mixin configuration should be returned.</param>
+    /// <param name="applicationContext">The <see cref="ApplicationContext"/> to use.</param>
+    /// <returns>A non-null <see cref="BaseClassDefinition"/> for the a given target type.</returns>
+    /// <exception cref="ArgumentNullException">The <paramref name="targetType"/> parameter is <see langword="null"/>.</exception>
+    /// <exception cref="ConfigurationException">The current mixin configuration for the <paramref name="targetType"/> contains severe problems that
+    /// make generation of a <see cref="BaseClassDefinition"/> object impossible.</exception>
+    /// <exception cref="ValidationException">The current mixin configuration for the <paramref name="targetType"/> violates at least one validation
+    /// rule, which would make code generation impossible. </exception>
+    /// <remarks>
+    /// <para>
+    /// Use this to retrieve a cached analyzed mixin configuration object for the given target type. The cache is actually maintained by
+    /// <see cref="BaseClassDefinitionCache"/>, but this is the public API that should be used instead of directly accessing the cache.
+    /// </para>
+    /// <para>
+    /// Note that this method creates an empty but valid <see cref="BaseClassDefinition"/> for types that do not have a mixin configuration in
+    /// <paramref name="applicationContext"/>.
+    /// </para>
+    /// </remarks>
+    public static BaseClassDefinition GetConfiguration (Type targetType, ApplicationContext applicationContext)
+    {
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
+
       Type typeToLookup;
       if (targetType.IsGenericType)
         typeToLookup = targetType.GetGenericTypeDefinition ();
       else
         typeToLookup = targetType;
 
-      ClassContext context = MixinConfiguration.ActiveContext.GetClassContext (typeToLookup);
+      ClassContext context = applicationContext.GetClassContext (typeToLookup);
       if (context == null)
         context = new ClassContext (typeToLookup);
 

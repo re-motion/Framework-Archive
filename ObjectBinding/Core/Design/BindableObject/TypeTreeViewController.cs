@@ -19,19 +19,12 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       Class = 2
     }
 
-    private readonly List<Type> _types;
     private readonly TreeView _treeView;
 
-    public TypeTreeViewController (List<Type> types, TreeView treeView)
+    public TypeTreeViewController (TreeView treeView)
     {
-      _types = types;
       _treeView = treeView;
       _treeView.ImageList = CreateImageList (TreeViewIcons.Assembly, TreeViewIcons.Namespace, TreeViewIcons.Class);
-    }
-
-    public List<Type> Types
-    {
-      get { return _types; }
     }
 
     public TreeView TreeView
@@ -39,12 +32,12 @@ namespace Rubicon.ObjectBinding.Design.BindableObject
       get { return _treeView; }
     }
 
-    public void PopulateTreeNodes (string selectedValue)
+    public void PopulateTreeNodes (List<Type> types, string selectedValue)
     {
-      _treeView.BeginUpdate();
+      _treeView.BeginUpdate ();
       _treeView.Nodes.Clear();
 
-      foreach (Type type in _types)
+      foreach (Type type in types)
       {
         TreeNode assemblyNode = GetAssemblyNode (type, _treeView.Nodes);
         TrySelect (assemblyNode, selectedValue);

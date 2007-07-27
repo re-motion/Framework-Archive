@@ -9,6 +9,10 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
 {
   public class BindableObjectDataSourceDesigner : BocDataSourceDesigner
   {
+    public BindableObjectDataSourceDesigner ()
+    {
+    }
+
     public override string GetDesignTimeHtml ()
     {
       return CreatePlaceHolderDesignTimeHtml();
@@ -45,7 +49,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Design
     {
       if (string.IsNullOrEmpty (value))
         return true;
-      if (TypeUtility.GetDesignModeType (value, Component.Site, false) != null)
+      if (TypeUtility.GetDesignModeType (value, Component.Site, false) == null)
         return false;
       return true;
     }

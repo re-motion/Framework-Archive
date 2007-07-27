@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Sample
   [BindableObjectWithIdentity]
   [GetObjectServiceType (typeof (XmlReflectionBusinessObjectStorageProvider))]
   [SearchAvailableObjectsServiceType (typeof (BindableXmlObjectSearchService))]
-  public abstract class BindableXmlObject
+  public class BindableXmlObject
   {
     protected static T GetObject<T> (Guid id)
       where T:BindableXmlObject

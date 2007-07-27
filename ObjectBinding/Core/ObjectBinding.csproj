@@ -161,7 +161,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BindableObjectGlobalizationService.resx</DependentUpon>
     </Compile>
-    <Compile Include="BindableObject\IBindableObjectAttribute.cs" />
     <Compile Include="BindableObject\IEnumerationValueFilter.cs" />
     <Compile Include="IBusinessObjectBoundEditableControl.cs" />
     <Compile Include="IBusinessObjectDataSource.cs" />

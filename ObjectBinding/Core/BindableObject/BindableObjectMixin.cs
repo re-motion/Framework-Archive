@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using Rubicon.Mixins;
 using Rubicon.Mixins.CodeGeneration;
+using Rubicon.Mixins.Context;
 using Rubicon.Mixins.Definitions;
 using Rubicon.ObjectBinding.BindableObject.Properties;
 using Rubicon.Utilities;
@@ -15,15 +16,22 @@ namespace Rubicon.ObjectBinding.BindableObject
     internal static bool HasMixin (Type targetType)
     {
       ArgumentUtility.CheckNotNull ("targetType", targetType);
-
-      return HasMixin (targetType, typeof (BindableObjectMixin));
+      return HasMixin (targetType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
     }
 
-    internal static bool HasMixin (Type targetType, Type mixinType)
+    internal static bool HasMixin (Type targetType, ApplicationContext applicationContext)
     {
-      if (MixinConfiguration.ActiveContext.ContainsClassContext (targetType.IsGenericType ? targetType.GetGenericTypeDefinition () : targetType))
+      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull ("applicationContext", applicationContext);
+
+      return HasMixin (targetType, typeof (BindableObjectMixin), applicationContext);
+    }
+
+    internal static bool HasMixin (Type targetType, Type mixinType, ApplicationContext applicationContext)
+    {
+      if (applicationContext.ContainsClassContext (targetType.IsGenericType ? targetType.GetGenericTypeDefinition() : targetType))
       {
-        foreach (MixinDefinition mixin in TypeFactory.GetActiveConfiguration (targetType).Mixins)
+        foreach (MixinDefinition mixin in TypeFactory.GetConfiguration (targetType, applicationContext).Mixins)
         {
           if (mixinType.IsAssignableFrom (mixin.Type))
             return true;
@@ -35,15 +43,14 @@ namespace Rubicon.ObjectBinding.BindableObject
     internal static bool IncludesMixin (Type concreteType)
     {
       ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-
-      return IncludesMixin (concreteType, typeof (BindableObjectMixin));
+      return IncludesMixin (concreteType, typeof (BindableObjectMixin), MixinConfiguration.ActiveContext);
     }
 
-    internal static bool IncludesMixin (Type concreteType, Type mixinType)
+    internal static bool IncludesMixin (Type concreteType, Type mixinType, ApplicationContext applicationContext)
     {
       ConcreteMixedTypeAttribute[] attributes = AttributeUtility.GetCustomAttributes<ConcreteMixedTypeAttribute> (concreteType, false);
       if (attributes.Length > 0)
-        return HasMixin (attributes[0].BaseType, mixinType);
+        return HasMixin (attributes[0].BaseType, mixinType, applicationContext);
 
       return false;
     }

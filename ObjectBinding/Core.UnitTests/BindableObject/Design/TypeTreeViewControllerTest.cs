@@ -31,7 +31,7 @@ namespace Rubicon.ObjectBinding.UnitTests.BindableObject.Design
     {
       Assert.That (_treeView.ImageList, Is.Null);
 
-      TypeTreeViewController controller = new TypeTreeViewController (new List<Type> (), _treeView);
+      TypeTreeViewController controller = new TypeTreeViewController (_treeView);
       
       Assert.That (_treeView.ImageList, Is.Not.Null);
       Assert.That (_treeView.ImageList.Images.Count, Is.EqualTo (3));
