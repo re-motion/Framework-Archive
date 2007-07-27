@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions
+namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
 [Serializable]
 public class CreateRootTestTransactedFunction : WxeTransactedFunction

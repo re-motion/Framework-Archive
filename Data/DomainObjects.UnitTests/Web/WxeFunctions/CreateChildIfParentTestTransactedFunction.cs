@@ -7,7 +7,7 @@ using Rubicon.Web.ExecutionEngine;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions
+namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
 [Serializable]
 public class CreateChildIfParentTestTransactedFunction : WxeTransactedFunction

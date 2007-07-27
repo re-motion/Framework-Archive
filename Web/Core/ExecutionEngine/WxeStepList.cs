@@ -14,6 +14,8 @@ namespace Rubicon.Web.ExecutionEngine
   {
     /// <summary> ArrayList&lt;WxeStep&gt; </summary>
     private ArrayList _steps;
+    private WxeStep _firstStep;
+    private WxeStep _lastStep;
 
     private int _nextStep;
     private int _lastExecutedStep;
@@ -23,8 +25,24 @@ namespace Rubicon.Web.ExecutionEngine
       _steps = new ArrayList ();
       _nextStep = 0;
       _lastExecutedStep = -1;
-      InitialzeSteps ();
+
+      _firstStep = new WxeMethodStep (OnExecutionStarted);
+      _lastStep = new WxeMethodStep (OnExecutionFinished);
+      InitializeSteps ();
     }
+
+    /// <summary>
+    /// Called from the first step of this function, before any other step is executed.
+    /// </summary>
+    protected virtual void OnExecutionStarted ()
+    {
+    }
+
+    /// <summary>
+    /// Called from the last step of this function, after all other steps have been executed.
+    /// </summary>
+    protected virtual void OnExecutionFinished () { }
+
 
     /// <summary>
     ///   Moves all steps to <paramref name="innerList"/> and makes <paramref name="innerList"/> the only step of 
@@ -34,6 +52,10 @@ namespace Rubicon.Web.ExecutionEngine
     ///   This list will be the only step of the <see cref="WxeStepList"/> and contain all of the 
     ///   <see cref="WxeStepList"/>'s steps. Must be empty and not executing.
     /// </param>
+    /// <remarks>
+    /// Calling this method will also cause this instance's OnExecutionStarting and OnExecutionFinished methods to be called from the
+    /// <paramref name="innerList"/>.
+    /// </remarks>
     protected void Encapsulate (WxeStepList innerList)
     {
       if (this._nextStep != 0 || this._lastExecutedStep != -1)
@@ -47,13 +69,24 @@ namespace Rubicon.Web.ExecutionEngine
       foreach (WxeStep step in innerList._steps)
         step.SetParentStep (innerList);
 
+      innerList._firstStep = this._firstStep;
+      _firstStep.SetParentStep (innerList);
+
+      innerList._lastStep = this._lastStep;
+      _lastStep.SetParentStep (innerList);
+
       this._steps = new ArrayList (1);
       this._steps.Add (innerList);
+      this._firstStep = null;
+      this._lastStep = null;
       innerList.SetParentStep (this);
     }
 
     public override void Execute (WxeContext context)
     {
+      if (!ExecutionStarted && _firstStep != null)
+        _firstStep.Execute (context);
+
       for (int i = _nextStep; i < _steps.Count; ++i)
       {
         context.SetIsPostBack (i == _lastExecutedStep);
@@ -67,6 +100,9 @@ namespace Rubicon.Web.ExecutionEngine
 
       if (_steps.Count == 0)
         _lastExecutedStep = 0;
+
+      if ((_lastExecutedStep + 1 == _steps.Count || _steps.Count == 0) && _lastStep != null)
+        _lastStep.Execute (context);
     }
 
     public WxeStep this[int index]
@@ -140,7 +176,7 @@ namespace Rubicon.Web.ExecutionEngine
       get { return _lastExecutedStep >= 0; }
     }
 
-    private void InitialzeSteps ()
+    private void InitializeSteps ()
     {
       Type type = this.GetType ();
       MemberInfo[] members = NumberedMemberFinder.FindMembers (

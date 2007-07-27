@@ -3,11 +3,9 @@ using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.ExecutionEngine;
@@ -15,31 +13,15 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 namespace Rubicon.Data.DomainObjects.UnitTests.Web
 {
   [TestFixture]
-  public class TransactedFunctionTest : StandardMappingTest
+  public class WxeTransactedFunctionTest : WxeFunctionBaseTest
   {
-    private WxeContext _context;
-
-    public override void SetUp ()
-    {
-      HttpContext currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
-      currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
-      NameValueCollection queryString = new NameValueCollection ();
-      queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
-      HttpContextHelper.SetQueryString (currentHttpContext, queryString);
-      HttpContextHelper.SetCurrent (currentHttpContext);
-
-      _context = new WxeContextMock (currentHttpContext);
-
-      base.SetUp ();
-    }
-
     [Test]
     public void WxeTransactedFunctionCreateRoot ()
     {
       using (new ClientTransactionScope ())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        new CreateRootTestTransactedFunction (originalScope).Execute (_context);
+        new CreateRootTestTransactedFunction (originalScope).Execute (Context);
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
       }
     }
@@ -50,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       using (new ClientTransactionScope ())
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
-        new CreateRootWithChildTestTransactedFunction (originalScope.ScopedTransaction).Execute (_context);
+        new CreateRootWithChildTestTransactedFunction (originalScope.ScopedTransaction, new CreateChildIfParentTestTransactedFunction ()).Execute (Context);
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
       }
     }
@@ -61,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       using (new ClientTransactionScope ())
       {
         ClientTransactionScope originalScope  = ClientTransactionScope.ActiveScope;
-        new CreateNoneTestTransactedFunction (originalScope).Execute (_context);
+        new CreateNoneTestTransactedFunction (originalScope).Execute (Context);
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
       }
     }
@@ -75,7 +57,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
 
-        new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).Execute (_context);
+        new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).Execute (Context);
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
 
         Assert.AreEqual (10, GetInt32Property (ClientTransaction.NewTransaction ()));
@@ -91,7 +73,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
         SetInt32Property (5, ClientTransaction.NewTransaction ());
 
-        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).Execute (_context);
+        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ClassWithAllDataTypes1).Execute (Context);
 
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
 
@@ -108,7 +90,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
-        new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute (_context);
+        new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute (Context);
 
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
 
@@ -127,7 +109,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       {
         ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
 
-        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute (_context);
+        new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ClassWithAllDataTypes1).Execute (Context);
 
         Assert.AreSame (originalScope, ClientTransactionScope.ActiveScope);
 
@@ -145,7 +127,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       ClientTransactionScope originalScope = ClientTransactionScope.ActiveScope;
       try
       {
-        new RemoveCurrentTransactionScopeFunction ().Execute (_context);
+        new RemoveCurrentTransactionScopeFunction ().Execute (Context);
       }
       catch (WxeUnhandledException ex)
       {
@@ -162,7 +144,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       try
       {
         new ClientTransactionScope ();
-        new RemoveCurrentTransactionScopeFunction ().Execute (_context);
+        new RemoveCurrentTransactionScopeFunction ().Execute (Context);
       }
       catch (WxeUnhandledException ex)
       {
@@ -190,6 +172,47 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
 
         return objectWithAllDataTypes.Int32Property;
       }
+    }
+
+    [Test]
+    public void AutoEnlistingCreateNone ()
+    {
+      using (new ClientTransactionScope())
+      {
+        ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject();
+        inParameter.Int32Property = 7;
+        DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.None, inParameter);
+        function.Execute (Context);
+        ClassWithAllDataTypes outParameter = function.OutParameter;
+        Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.AreEqual (12, outParameter.Int32Property);
+      }
+    }
+
+    [Test]
+    [Ignore ("TODO: FS - Implement automatic parameter enlisting")]
+    public void AutoEnlistingCreateRoot ()
+    {
+      using (new ClientTransactionScope ())
+      {
+        ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
+        inParameter.Int32Property = 7;
+        DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
+            inParameter);
+        function.Execute (Context);
+        ClassWithAllDataTypes outParameter = function.OutParameter;
+        Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
+        Assert.AreNotEqual (12, outParameter.Int32Property);
+        Assert.AreEqual (7, outParameter.Int32Property);
+      }
+    }
+
+    [Test]
+    public void AutoEnlistingCreateChild()
+    {
+      SetDatabaseModifyable ();
+      DomainObjectParameterWithChildTestTransactedFunction function = new DomainObjectParameterWithChildTestTransactedFunction ();
+      function.Execute (Context);
     }
   }
 }

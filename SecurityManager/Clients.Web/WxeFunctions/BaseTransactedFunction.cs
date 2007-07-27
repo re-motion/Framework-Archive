@@ -46,7 +46,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
     {
       get
       {
-        ClientTransaction currentTransaction = Transaction;
+        ClientTransaction currentTransaction = OwnTransaction;
         if (currentTransaction == null)
         {
           WxeTransactedFunction transactedFunction = this;
@@ -54,7 +54,7 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
           {
             transactedFunction = (WxeTransactedFunction) GetStepByType (transactedFunction.ParentFunction, typeof (WxeTransactedFunction));
             if (transactedFunction != null)
-              currentTransaction = transactedFunction.Transaction;
+              currentTransaction = transactedFunction.OwnTransaction;
           }
         }
         return currentTransaction;

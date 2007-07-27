@@ -44,5 +44,15 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       ExecutionFinishedCalled = true;
       base.OnExecutionFinished ();
     }
+
+    public void CheckNotExecutionFinishedCalled()
+    {
+      Assert.IsFalse (ExecutionFinishedCalled);
+    }
+
+    public void AddAdditionalCheckStep ()
+    {
+      Add (new WxeMethodStep (CheckNotExecutionFinishedCalled));
+    }
   }
 }

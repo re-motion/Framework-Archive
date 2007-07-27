@@ -43,12 +43,19 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
       _transactionMode = transactionMode;
     }
 
-    /// <summary>
-    /// Gets a reference to the current <see cref="ClientTransaction"/>.
-    /// </summary>
-    public new ClientTransaction Transaction
+    /// <summary> Gets the underlying <see cref="ClientTransaction"/> owned by this 
+    /// <see cref="WxeTransactedFunctionBase{TTransaction}"/>.</summary>
+    public new ClientTransaction OwnTransaction
     {
       get { return base.OwnTransaction; }
+    }
+
+    /// <summary> Gets the underlying <see cref="ClientTransaction"/> used when this <see cref="WxeTransactedFunctionBase{TTransaction}"/>
+    /// is executed. This is either <see cref="OwnTransaction"/> or, when this function does not have an own transaction, the
+    /// <see cref="ExecutionTransaction"/> of this function's parent function.</summary>
+    public new ClientTransaction ExecutionTransaction
+    {
+      get { return base.ExecutionTransaction; }
     }
 
     /// <summary>

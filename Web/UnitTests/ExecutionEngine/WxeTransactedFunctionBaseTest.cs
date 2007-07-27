@@ -242,5 +242,14 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       Assert.IsNull (outerFunction.OwnTransaction);
       Assert.IsNull (outerFunction.ExecutionTransaction);
     }
+
+    [Test]
+    public void TransactionIsValidInOnExecutionStartedAndFinished ()
+    {
+      ExecutionStartedFinishedTestTransactedFunction function = new ExecutionStartedFinishedTestTransactedFunction();
+      function.Execute (CurrentWxeContext);
+      Assert.IsTrue (function.ExecutionStartedCalled);
+      Assert.IsTrue (function.ExecutionFinishedCalled);
+    }
   }
 }

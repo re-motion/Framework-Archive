@@ -3,7 +3,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions
+namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
   [Serializable]
   public class NoAutoCommitTestTransactedFunction: WxeTransactedFunction

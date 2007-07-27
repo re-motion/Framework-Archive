@@ -841,7 +841,11 @@
     <Compile Include="UnitTestStorageProviderStubDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web\TransactedFunctionTest.cs" />
+    <Compile Include="Web\WxeFunctionBaseTest.cs" />
+    <Compile Include="Web\WxeFunctions\CreateRootWithChildTestTransactedFunctionBase.cs" />
+    <Compile Include="Web\WxeFunctions\DomainObjectParameterTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\DomainObjectParameterWithChildTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeTransactedFunctionTest.cs" />
     <Compile Include="Web\WxeFunctions\AutoCommitTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\CreateChildIfParentTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\CreateNoneTestTransactedFunction.cs" />

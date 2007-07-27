@@ -6,10 +6,10 @@ using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using NUnit.Framework;
 
-namespace Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions
+namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
 [Serializable]
-public class CreateRootWithChildTestTransactedFunction : WxeTransactedFunction
+  public class CreateRootWithChildTestTransactedFunction : CreateRootWithChildTestTransactedFunctionBase
 {
   // types
 
@@ -19,10 +19,9 @@ public class CreateRootWithChildTestTransactedFunction : WxeTransactedFunction
 
   // construction and disposing
 
-  public CreateRootWithChildTestTransactedFunction (ClientTransaction previousClientTransaction) 
-      : base (WxeTransactionMode.CreateRoot, previousClientTransaction)
+  public CreateRootWithChildTestTransactedFunction (ClientTransaction previousClientTransaction, WxeFunction childFunction) 
+      : base (WxeTransactionMode.CreateRoot, childFunction, previousClientTransaction)
   {
-    Add (new CreateChildIfParentTestTransactedFunction ());
   }
 
   // methods and properties

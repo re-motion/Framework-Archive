@@ -5,7 +5,7 @@ using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Data.DomainObjects.Web.UnitTests.WxeFunctions
+namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
 [Serializable]
 public class CreateNoneTestTransactedFunction : WxeTransactedFunction

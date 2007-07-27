@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.AspNetFramework;
 
@@ -107,6 +108,50 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
       function.Execute (new WxeContextMock (WxeContextTest.CreateHttpContext ()));
       Assert.IsTrue (function.ExecutionStartedCalled);
       Assert.IsTrue (function.ExecutionFinishedCalled);
+    }
+
+    private WxeContextMock CreateContext ()
+    {
+      return new WxeContextMock (WxeContextTest.CreateHttpContext ());
+    }
+
+    [Test]
+    public void OnExecutionFinishedIsLastEvenWhenManuallyAddingStepsAfterConstruction ()
+    {
+      ExecutionStartedFinishedTestFunction function = new ExecutionStartedFinishedTestFunction ();
+      function.Add (new WxeMethodStep (function.CheckNotExecutionFinishedCalled));
+      function.Execute (CreateContext());
+    }
+
+    [Test]
+    public void OnExecutionFinishedIsLastEvenWhenManuallyAddingStepsWhileExecuting ()
+    {
+      ExecutionStartedFinishedTestFunction function = new ExecutionStartedFinishedTestFunction ();
+      function.Add (new WxeMethodStep (function.AddAdditionalCheckStep));
+      function.Execute (CreateContext());
+    }
+
+    [Test]
+    public void OnExecutionFinishedOccursBeforeSurroundingFunctionIsFinished ()
+    {
+      EncapsulatedExecutionStartedFinishedTestFunction function = new EncapsulatedExecutionStartedFinishedTestFunction ();
+      SurroundingExecutionStartedFinishedTestFunction surroundingFunction = new SurroundingExecutionStartedFinishedTestFunction (function);
+
+      surroundingFunction.Execute (CreateContext ());
+      Assert.IsTrue (surroundingFunction.ExecutionStartedCalled);
+      Assert.IsTrue (surroundingFunction.ExecutionFinishedCalled);
+      Assert.IsTrue (surroundingFunction.InnerFunction.ExecutionStartedCalled);
+      Assert.IsTrue (surroundingFunction.InnerFunction.ExecutionFinishedCalled);
+
+      Assert.That (surroundingFunction.Steps, Is.EquivalentTo (new string[] {
+        "Surrounding.Started",
+        "Surrounding.First",
+        "Encapsulated.Started",
+        "Encapsulated.Step1",
+        "Encapsulated.Finished",
+        "Surrounding.Last",
+        "Surrounding.Finished"
+      }));
     }
   }
 }

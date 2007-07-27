@@ -219,9 +219,7 @@ namespace Rubicon.Web.ExecutionEngine
       _returnUrl = null;
       _actualParameters = actualParameters;
 
-      Insert (0, new WxeMethodStep (OnExecutionStarted));
       Insert (0, new WxeMethodStep (CheckPermissions));
-      Add (new WxeMethodStep (OnExecutionFinished));
     }
 
     /// <summary> 
@@ -571,16 +569,6 @@ namespace Rubicon.Web.ExecutionEngine
 
       wxeSecurityAdapter.CheckAccess (this);
     }
-
-    /// <summary>
-    /// Called from the first step of this function, before any other step is executed.
-    /// </summary>
-    protected virtual void OnExecutionStarted () { }
-
-    /// <summary>
-    /// Called from the last step of this function, after all other steps have been executed.
-    /// </summary>
-    protected virtual void OnExecutionFinished () { }
   }
 
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
