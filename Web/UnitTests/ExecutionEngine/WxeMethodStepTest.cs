@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -70,11 +71,65 @@ public class WxeMethodStepTest: WxeTest
   }
 
   [Test]
-  public void ExecuteMethodStepWithoutContext()
+  public void MethodStepWithDelegate ()
+  {
+    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethod);
+    Assert.AreEqual ("PublicStepMethod", PrivateInvoke.GetNonPublicField (methodStep, "_methodName"));
+  }
+
+  [Test]
+  public void MethodStepWithDelegateWithContext ()
+  {
+    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethodWithContext);
+    Assert.AreEqual ("PublicStepMethodWithContext", PrivateInvoke.GetNonPublicField (methodStep, "_methodName"));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The delegate must contain a single method.", MatchType = MessageMatch.Contains)]
+  public void MethodStepWithDelegateThrowsOnMultiDelegate ()
+  {
+    Proc multiDelegate = _function.PublicStepMethod;
+    multiDelegate += _function.PublicStepMethod;
+    new WxeMethodStep (multiDelegate);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The delegate's target must be a non-null WxeStepList.",
+      MatchType = MessageMatch.Contains)]
+  public void MethodStepWithDelegateThrowsOnInvalidTarget ()
+  {
+    new WxeMethodStep (MethodStepWithDelegate);
+  }
+
+  [Test]
+  public void ExecuteMethodStepWithDelegate ()
+  {
+    WxeMethodStep methodStep = new WxeMethodStep (_function.PublicStepMethod);
+
+    Assert.AreNotEqual ("1", _function.LastExecutedStepID);
+
+    methodStep.Execute (CurrentWxeContext);
+
+    Assert.AreEqual ("1", _function.LastExecutedStepID);
+  }
+
+  [Test]
+  public void ExecuteMethodStepWithContext()
   {
     Type functionType = typeof (TestFunction);
     MethodInfo step2 = functionType.GetMethod ("Step2", BindingFlags.Instance | BindingFlags.NonPublic);
     WxeMethodStep methodStepWithContext = new WxeMethodStep (_function, step2);
+    
+    methodStepWithContext.Execute (CurrentWxeContext);
+    
+    Assert.AreEqual ("2", _function.LastExecutedStepID);
+    Assert.AreSame (CurrentWxeContext, _function.WxeContextStep2);
+  }
+
+  [Test]
+  public void ExecuteMethodStepWithDelegateWithContext()
+  {
+    WxeMethodStep methodStepWithContext = new WxeMethodStep (_function.PublicStepMethodWithContext);
     
     methodStepWithContext.Execute (CurrentWxeContext);
     

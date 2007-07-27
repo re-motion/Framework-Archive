@@ -23,13 +23,11 @@ public class WxeContextTest
 
   [SetUp]
   public virtual void SetUp()
-  {   
-    _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
-    _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
-    NameValueCollection queryString = new NameValueCollection();
+  {
+    NameValueCollection queryString = new NameValueCollection ();
     queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
-    HttpContextHelper.SetQueryString (_currentHttpContext, queryString);
-    HttpContextHelper.SetCurrent (_currentHttpContext);
+
+    _currentHttpContext = CreateHttpContext (queryString);
 
     _functionType = typeof (TestFunction);
     _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
@@ -43,6 +41,23 @@ public class WxeContextTest
     WebConfigurationMock.Current = new Rubicon.Web.Configuration.WebConfiguration();
     WebConfigurationMock.Current.ExecutionEngine.MaximumUrlLength = 100;
 
+  }
+
+  public static HttpContext CreateHttpContext (NameValueCollection queryString)
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
+    context.Response.ContentEncoding = System.Text.Encoding.UTF8;
+    HttpContextHelper.SetQueryString (context, queryString);
+    HttpContextHelper.SetCurrent (context);
+    return context;
+  }
+
+  public static HttpContext CreateHttpContext ()
+  {
+    NameValueCollection queryString = new NameValueCollection ();
+    queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
+
+    return CreateHttpContext (queryString);
   }
 
   [TearDown]
