@@ -363,7 +363,12 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       return (T) GetOriginalValueWithoutTypeCheck();
     }
 
-    internal object GetOriginalValueWithoutTypeCheck ()
+    /// <summary>
+    /// Gets the property's original value without performing a type check.
+    /// </summary>
+    /// <returns>The original value of the encapsulated property in the current transaction.</returns>
+    /// <exception cref="ObjectDiscardedException">The domain object was discarded.</exception>
+    public object GetOriginalValueWithoutTypeCheck ()
     {
       _domainObject.CheckIfObjectIsDiscarded();
       return _strategy.GetOriginalValueWithoutTypeCheck (this);

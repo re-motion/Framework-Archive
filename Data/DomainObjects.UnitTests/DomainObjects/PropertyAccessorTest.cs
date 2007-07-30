@@ -514,6 +514,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
+    public void GetOriginalValueWithoutTypeCheck ()
+    {
+      Order newOrder = Order.NewObject ();
+
+      newOrder.OrderTicket = OrderTicket.NewObject ();
+
+      object ticket = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValueWithoutTypeCheck ();
+      Assert.AreSame (ticket, newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetOriginalValue<OrderTicket> ());
+
+      newOrder.OrderItems.Add (OrderItem.NewObject ());
+
+      object items = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValueWithoutTypeCheck ();
+      Assert.AreSame (items,
+          newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ());
+
+      ++newOrder.OrderNumber;
+
+      object number = newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValueWithoutTypeCheck ();
+      Assert.AreEqual (number,
+          newOrder.Properties["Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber"].GetOriginalValue<int> ());
+    }
+
+    [Test]
     public void SetValueWithoutTypeCheck ()
     {
       Order newOrder = Order.NewObject ();

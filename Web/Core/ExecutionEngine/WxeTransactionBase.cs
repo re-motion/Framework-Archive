@@ -235,7 +235,10 @@ namespace Rubicon.Web.ExecutionEngine
       catch (Exception e)
       {
         if (e is System.Threading.ThreadAbortException)
+        {
+          RestorePreviousCurrentTransaction (); // leave stack in good order
           throw;
+        }
 
         RollbackAndReleaseTransaction ();
         RestorePreviousCurrentTransaction ();
