@@ -1,3 +1,20 @@
+1.7.47.0
+========
+- WxeTransactedFunction und WxeTransaction wurden um einen neuen Transaktionsmodus erweitert (CreateChildIfParent)
+- DomainObjects, die als Parameter an WxeTransactedFunctions übergeben oder als Out-Parameter zurückgegeben werden, werden automatisch in der
+  entsprechenden Transaktion registriert
+
+1.7.46.0
+========
+- Neue Transaktionsklassen: RootClientTransaction (entspricht bisheriger ClientTransaction), SubClientTransaction
+- Verweundung von Subtransaktionen: 
+using (myTransaction.CreateSubTransaction().EnterScope())
+{
+  // Änderungen innerhalb dieses Scopes werden beim Commit in myTransaction geschrieben, nicht in die Datenbank
+}
+- Falls kein Scope benutzt wird, muss ClientTransaction.ReturnToParentTransaction aufgerufen werden, um die Subtransaktion zu verwerfen
+- ClientTransaction.EnlistDomainObject statt DomainObject.EnlistInTransaction
+
 1.7.45.0
 ========
 - Bugfix: RPA mit Attribut-Mapping konnte nicht mit Enums umgehen, die keinen 0-Wert hatten.
