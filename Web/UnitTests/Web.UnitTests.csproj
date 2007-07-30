@@ -125,10 +125,6 @@
     <Compile Include="AspNetFramework\PageMock.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ExecutionEngine\ExecutionStartedFinishedTestTransactedFunction.cs" />
-    <Compile Include="ExecutionEngine\EncapsulatedExecutionStartedFinishedTestFunction.cs" />
-    <Compile Include="ExecutionEngine\SurroundingExecutionStartedFinishedTestFunction.cs" />
-    <Compile Include="ExecutionEngine\ExecutionStartedFinishedTestFunction.cs" />
     <Compile Include="ExecutionEngine\WxeTransactionBaseExecuteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

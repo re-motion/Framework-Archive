@@ -56,8 +56,8 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
         string message = string.Format ("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
         throw new InvalidOperationException (message);
       }
-
-      _enlistedObjects.Add (domainObject.ID, domainObject);
+      else if (alreadyEnlistedObject == null)
+        _enlistedObjects.Add (domainObject.ID, domainObject);
     }
 
     protected internal override bool IsEnlisted (DomainObject domainObject)
@@ -92,7 +92,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
       ObjectID newObjectID;
-      using (PersistenceManager persistenceManager = new PersistenceManager ())
+      using (PersistenceManager persistenceManager = new PersistenceManager())
       {
         newObjectID = persistenceManager.CreateNewObjectID (classDefinition);
       }
@@ -103,7 +103,7 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull ("id", id);
 
-      using (PersistenceManager persistenceManager = new PersistenceManager ())
+      using (PersistenceManager persistenceManager = new PersistenceManager())
       {
         DataContainer dataContainer = persistenceManager.LoadDataContainer (id);
         TransactionEventSink.ObjectLoading (dataContainer.ID);
@@ -117,20 +117,20 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObject LoadRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterSideEffectFreeScope ())
+      using (EnterSideEffectFreeScope())
       {
         DomainObject domainObject = GetObject (relationEndPointID.ObjectID, false);
 
-        using (PersistenceManager persistenceManager = new PersistenceManager ())
+        using (PersistenceManager persistenceManager = new PersistenceManager())
         {
-          DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer (), relationEndPointID);
+          DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.GetDataContainer(), relationEndPointID);
           if (relatedDataContainer != null)
           {
             TransactionEventSink.ObjectLoading (relatedDataContainer.ID);
             SetClientTransaction (relatedDataContainer);
             DataManager.RegisterExistingDataContainer (relatedDataContainer);
 
-            DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] { relatedDataContainer.DomainObject }, true);
+            DomainObjectCollection loadedDomainObjects = new DomainObjectCollection (new DomainObject[] {relatedDataContainer.DomainObject}, true);
             OnLoaded (new ClientTransactionEventArgs (loadedDomainObjects));
 
             return relatedDataContainer.DomainObject;
@@ -147,9 +147,9 @@ namespace Rubicon.Data.DomainObjects.Infrastructure
     internal protected override DomainObjectCollection LoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      using (EnterSideEffectFreeScope ())
+      using (EnterSideEffectFreeScope())
       {
-        using (PersistenceManager persistenceManager = new PersistenceManager ())
+        using (PersistenceManager persistenceManager = new PersistenceManager())
         {
           DataContainerCollection relatedDataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
           return MergeLoadedDomainObjects (relatedDataContainers, relationEndPointID);

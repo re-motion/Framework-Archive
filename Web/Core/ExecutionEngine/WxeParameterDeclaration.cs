@@ -95,6 +95,16 @@ public class WxeParameterDeclaration
     variables[parameterName] = value;
   }
 
+  /// <summary>
+  /// Gets the value of the parameter described by this declaration from a function's variable list.
+  /// </summary>
+  /// <param name="variables">The variable list to get the parameter value from.</param>
+  public object GetValue (NameObjectCollection variables)
+  {
+    ArgumentUtility.CheckNotNull ("variables", variables);
+    return variables[_name];
+  }
+
   public WxeParameterConverter Converter
   {
     get
@@ -104,39 +114,15 @@ public class WxeParameterDeclaration
       return _converter;
     }
   }
-}
 
-[Serializable]
-public class WxeVariableReference
-{
-  private string _name;
-
-  public WxeVariableReference (string variableName)
+  public bool IsIn
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("variableName", variableName);
-    if (! System.Text.RegularExpressions.Regex.IsMatch (variableName, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-      throw new ArgumentException (string.Format ("The variable name '{0}' is not valid.", variableName), "variableName");
-    _name = variableName;
+    get { return Direction == WxeParameterDirection.In || Direction == WxeParameterDirection.InOut; }
   }
 
-  public string Name
+  public bool IsOut
   {
-    get { return _name; }
-  }
-
-  public override bool Equals (object obj)
-  {
-    WxeVariableReference other = obj as WxeVariableReference;
-    if (other == null)
-      return false;
-    
-    return this._name == other._name;
-  }
-
-  public override int GetHashCode()
-  {
-    return _name.GetHashCode();
+    get { return Direction == WxeParameterDirection.Out || Direction == WxeParameterDirection.InOut; }
   }
 }
-
 }

@@ -9,13 +9,12 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 {
-  public class DomainObjectParameterWithChildTestTransactedFunction : CreateRootWithChildTestTransactedFunctionBase
+  public class DomainObjectParameterWithChildInvalidInTestTransactedFunction : CreateRootWithChildTestTransactedFunctionBase
   {
-    public DomainObjectParameterWithChildTestTransactedFunction ()
+    public DomainObjectParameterWithChildInvalidInTestTransactedFunction ()
         : base (WxeTransactionMode.CreateRoot, new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateChildIfParent, null))
     {
       Insert (0, new WxeMethodStep (FirstStep));
-      Add (new WxeMethodStep (LastStep));
     }
 
     private void FirstStep ()
@@ -24,20 +23,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions
 
       DomainObjectParameterTestTransactedFunction childFunction = (DomainObjectParameterTestTransactedFunction) ChildFunction;
       ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.GetObject (new DomainObjectIDs().ClassWithAllDataTypes2);
-      inParameter.Int32Property = 47;
-
+      inParameter.Delete ();
       childFunction.InParameter = inParameter;
-    }
-
-    private void LastStep ()
-    {
-      Assert.AreSame (OwnTransaction, ClientTransactionScope.CurrentTransaction);
-
-      DomainObjectParameterTestTransactedFunction childFunction = (DomainObjectParameterTestTransactedFunction) ChildFunction;
-      ClassWithAllDataTypes outParameter = childFunction.OutParameter;
-
-      Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
-      Assert.AreEqual (52, outParameter.Int32Property); // 47 + 5
     }
   }
 }

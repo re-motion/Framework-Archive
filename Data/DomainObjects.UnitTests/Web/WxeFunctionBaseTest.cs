@@ -7,6 +7,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Web
 {
+  [CLSCompliant (false)]
   public class WxeFunctionBaseTest : StandardMappingTest
   {
     private WxeContextMock _context;

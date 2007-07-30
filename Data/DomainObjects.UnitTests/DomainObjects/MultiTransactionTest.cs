@@ -296,5 +296,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
       }
     }
+
+    [Test]
+    public void MultipleEnlistingsAreIgnored()
+    {
+      Order order = Order.GetObject (DomainObjectIDs.Order1);
+      ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+      using (new ClientTransactionScope ())
+      {
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+        ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+
+        using (ClientTransactionScope.CurrentTransaction.CreateSubTransaction ().EnterScope ())
+        {
+          ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+          ClientTransactionScope.CurrentTransaction.EnlistDomainObject (order);
+        }
+      }
+    }
   }
 }

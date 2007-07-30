@@ -113,5 +113,65 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
     {
       get { return true; }
     }
+
+    protected override void OnTransactionCreated (ClientTransaction transaction)
+    {
+      Assertion.IsNotNull (transaction);
+      EnlistInParameters (transaction);
+      base.OnTransactionCreated (transaction);
+    }
+
+    public override void Execute (WxeContext context)
+    {
+      base.Execute (context);
+      if (ClientTransactionScope.HasCurrentTransaction)
+        EnlistOutParameters (ClientTransactionScope.CurrentTransaction);
+    }
+
+    private void EnlistInParameters (ClientTransaction transaction)
+    {
+      WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
+      for (int i = 0; i < parameterDeclarations.Length; i++)
+      {
+        WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+        if (parameterDeclaration.IsIn)
+        {
+          object parameter = parameterDeclaration.GetValue (Variables);
+          EnlistParameter (parameterDeclaration, parameter, transaction);
+        }
+      }
+    }
+
+    private void EnlistOutParameters (ClientTransaction transaction)
+    {
+      WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
+      for (int i = 0; i < parameterDeclarations.Length; i++)
+      {
+        WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+        if (parameterDeclaration.IsOut)
+        {
+          object parameter = parameterDeclaration.GetValue (Variables);
+          EnlistParameter (parameterDeclaration, parameter, transaction);
+        }
+      }
+    }
+
+    private void EnlistParameter (WxeParameterDeclaration parameterDeclaration, object parameter, ClientTransaction transaction)
+    {
+      DomainObject domainObject = parameter as DomainObject;
+      if (domainObject != null)
+      {
+        try
+        {
+          transaction.EnlistDomainObject (domainObject);
+        }
+        catch (Exception ex)
+        {
+          string message = string.Format ("The domain object '{0}' cannot be enlisted in the function's transaction. Maybe it was newly created "
+              + "and has not yet been committed, or it was deleted.", domainObject.ID);
+          throw new ArgumentException (message, parameterDeclaration.Name, ex);
+        }
+      }
+    }
   }
 }

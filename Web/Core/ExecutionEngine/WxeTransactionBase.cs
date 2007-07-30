@@ -125,7 +125,15 @@ namespace Rubicon.Web.ExecutionEngine
         s_log.Debug ("Created root " + this.GetType ().Name + ".");
       }
 
-      OnTransactionCreated (transaction);
+      try
+      {
+        OnTransactionCreated (transaction);
+      }
+      catch
+      {
+        transaction.Release ();
+        throw;
+      }
       return transaction;
     }
 

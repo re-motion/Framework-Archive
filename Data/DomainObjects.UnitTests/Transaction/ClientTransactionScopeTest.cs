@@ -373,14 +373,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ResetScope ()
     {
-      using (ClientTransactionScope scope = new ClientTransactionScope ())
-      {
-        Assert.IsNotNull (ClientTransactionScope.ActiveScope);
-        Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
-        ClientTransactionScope.ResetActiveScope ();
-        Assert.IsNull (ClientTransactionScope.ActiveScope);
-        Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
-      }
+      ClientTransactionScope scope = new ClientTransactionScope ();
+      Assert.IsNotNull (ClientTransactionScope.ActiveScope);
+      Assert.IsTrue (ClientTransactionScope.HasCurrentTransaction);
+      ClientTransactionScope.ResetActiveScope ();
+      Assert.IsNull (ClientTransactionScope.ActiveScope);
+      Assert.IsFalse (ClientTransactionScope.HasCurrentTransaction);
     }
 
     [Test]
@@ -400,6 +398,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       }
 
       mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        ExpectedMessage = "This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one.")]
+    public void LeaveNonActiveScopeThrows ()
+    {
+      try
+      {
+        using (new ClientTransactionScope (AutoRollbackBehavior.Rollback))
+        {
+          new ClientTransactionScope ();
+        }
+      }
+      finally
+      {
+        ClientTransactionScope.ResetActiveScope (); // for TearDown
+      }
     }
   }
 }

@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Web.WxeFunctions;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
@@ -190,20 +191,87 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
     }
 
     [Test]
-    [Ignore ("TODO: FS - Implement automatic parameter enlisting")]
     public void AutoEnlistingCreateRoot ()
     {
+      SetDatabaseModifyable ();
+
+      // TODO: WxeTransaction.OnExecutionStarted wirft eine Exception => ungültiger Zustand im RestorePreviousTransaction (ExecutionStarted == false)
+      // TODO: Die Fehlersituation führt auch dazu, dass im ClientTransactionScope.Leave ein Fehler auftritt, weil
+      // ClientTransactionScope.ActiveScope nicht gleich dem ist, dessen Leave-Methode ausgeführt wird => checken
+
       using (new ClientTransactionScope ())
       {
         ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
+        inParameter.DateTimeProperty = DateTime.Now;
+        inParameter.DateProperty = DateTime.Now.Date;
+        inParameter.Int32Property = 4;
+        ClientTransactionScope.CurrentTransaction.Commit ();
+
         inParameter.Int32Property = 7;
         DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
             inParameter);
         function.Execute (Context);
         ClassWithAllDataTypes outParameter = function.OutParameter;
+
         Assert.IsTrue (outParameter.CanBeUsedInTransaction (ClientTransactionScope.CurrentTransaction));
         Assert.AreNotEqual (12, outParameter.Int32Property);
-        Assert.AreEqual (7, outParameter.Int32Property);
+        Assert.AreEqual (9, outParameter.Int32Property);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object 'ClassWithAllDataTypes|.*' cannot be enlisted in the "
+        + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType =  MessageMatch.Regex)]
+    public void AutoEnlistingCreateRootThrowsWhenInvalidInParameter ()
+    {
+      using (new ClientTransactionScope ())
+      {
+        ClassWithAllDataTypes inParameter = ClassWithAllDataTypes.NewObject ();
+        DomainObjectParameterTestTransactedFunction function = new DomainObjectParameterTestTransactedFunction (WxeTransactionMode.CreateRoot,
+            inParameter);
+        try
+        {
+          function.Execute (Context);
+        }
+        catch (WxeUnhandledException ex)
+        {
+          try
+          {
+            throw ex.InnerException;
+          }
+          catch (ArgumentException aex)
+          {
+            Assert.AreEqual ("InParameter", aex.ParamName);
+            throw;
+          }
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object 'ClassWithAllDataTypes|.*' cannot be enlisted in the "
+        + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType = MessageMatch.Regex)]
+    public void AutoEnlistingCreateRootThrowsWhenInvalidOutParameter ()
+    {
+      using (new ClientTransactionScope ())
+      {
+        DomainObjectParameterInvalidOutTestTransactedFunction function = new DomainObjectParameterInvalidOutTestTransactedFunction (WxeTransactionMode.CreateRoot);
+        try
+        {
+          function.Execute (Context);
+        }
+        catch (WxeUnhandledException ex)
+        {
+          try
+          {
+            throw ex.InnerException;
+          }
+          catch (ArgumentException aex)
+          {
+            Assert.AreEqual ("OutParameter", aex.ParamName);
+            throw;
+          }
+        }
       }
     }
 
@@ -213,6 +281,54 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Web
       SetDatabaseModifyable ();
       DomainObjectParameterWithChildTestTransactedFunction function = new DomainObjectParameterWithChildTestTransactedFunction ();
       function.Execute (Context);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object 'ClassWithAllDataTypes|.*' cannot be enlisted in the "
+        + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType = MessageMatch.Regex)]
+    public void AutoEnlistingCreateChildWithInvalidInParameter()
+    {
+      DomainObjectParameterWithChildInvalidInTestTransactedFunction function = new DomainObjectParameterWithChildInvalidInTestTransactedFunction ();
+      try
+      {
+        function.Execute (Context);
+       }
+      catch (WxeUnhandledException ex)
+      {
+        try
+        {
+          throw ex.InnerException;
+        }
+        catch (ArgumentException aex)
+        {
+          Assert.AreEqual ("InParameter", aex.ParamName);
+          throw;
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The domain object 'ClassWithAllDataTypes|.*' cannot be enlisted in the "
+        + "function's transaction. Maybe it was newly created and has not yet been committed, or it was deleted.", MatchType = MessageMatch.Regex)]
+    public void AutoEnlistingCreateChildWithInvalidOutParameter ()
+    {
+      DomainObjectParameterWithChildInvalidOutTestTransactedFunction function = new DomainObjectParameterWithChildInvalidOutTestTransactedFunction ();
+      try
+      {
+        function.Execute (Context);
+      }
+      catch (WxeUnhandledException ex)
+      {
+        try
+        {
+          throw ex.InnerException;
+        }
+        catch (ArgumentException aex)
+        {
+          Assert.AreEqual ("OutParameter", aex.ParamName);
+          throw;
+        }
+      }
     }
   }
 }

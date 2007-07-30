@@ -199,6 +199,9 @@ namespace Rubicon.Data.DomainObjects
       if (_hasBeenLeft)
         throw new InvalidOperationException ("The ClientTransactionScope has already been left.");
 
+      if (ActiveScope != this)
+        throw new InvalidOperationException ("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one.");
+
       ExecuteAutoRollbackBehavior ();
       ClientTransactionScope.SetActiveScope (_previousScope);
       _hasBeenLeft = true;

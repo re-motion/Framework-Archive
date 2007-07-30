@@ -36,7 +36,10 @@ namespace Rubicon.SecurityManager.UnitTests
     [TearDown]
     public virtual void TearDown ()
     {
-      _clientTransactionScope.Leave ();
+      if (_clientTransactionScope == ClientTransactionScope.ActiveScope)
+        _clientTransactionScope.Leave ();
+      else
+        ClientTransactionScope.ResetActiveScope ();
     }
   }
 }

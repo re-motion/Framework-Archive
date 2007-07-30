@@ -842,6 +842,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web\WxeFunctionBaseTest.cs" />
+    <Compile Include="Web\WxeFunctions\DomainObjectParameterInvalidOutTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\DomainObjectParameterWithChildInvalidOutTestTransactedFunction.cs" />
+    <Compile Include="Web\WxeFunctions\DomainObjectParameterWithChildInvalidInTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\CreateRootWithChildTestTransactedFunctionBase.cs" />
     <Compile Include="Web\WxeFunctions\DomainObjectParameterTestTransactedFunction.cs" />
     <Compile Include="Web\WxeFunctions\DomainObjectParameterWithChildTestTransactedFunction.cs" />
